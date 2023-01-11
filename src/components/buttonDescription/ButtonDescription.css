@@ -1,0 +1,21 @@
+.btn-custom-description {
+    outline: none;
+    display: block;
+    border: 0;
+    font-size: 15px;
+    padding: 16px 40px;
+    border-radius: 30px;
+    background-color: #0081d5;
+    cursor: pointer;
+    color: white;
+    transition: all 0.1s linear;
+    margin-top: 2rem;
+}
+
+.btns-description{
+    margin-bottom: 2rem;
+}
+
+.col-description{
+    text-align: center;
+}

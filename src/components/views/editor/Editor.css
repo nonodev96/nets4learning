@@ -1,0 +1,120 @@
+* {
+  color: black;
+}
+
+.editor {
+  min-height: 70vh;
+  width: 100%;
+  flex-wrap: nowrap;
+}
+.header-model-editor {
+  margin-bottom: 1rem;
+}
+p {
+  margin: 1rem 1rem 1rem 1rem;
+}
+
+.editors {
+  margin: 2rem 2rem 2rem 2rem;
+}
+
+.container-fluid-w1900 {
+  max-width: 1900px;
+}
+.borde {
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+
+.buttons-group {
+  border: 1px solid grey;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+.items2 {
+  padding: 1rem;
+}
+
+.btn-custom {
+  outline: none;
+  display: block;
+  border: 0;
+  font-size: 16px;
+  padding: 13px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.1s linear;
+}
+
+.blue,
+.blue:focus {
+  background-color: #0081d5;
+}
+
+.blue:hover {
+  background-color: #005c99;
+}
+.blue:active {
+  background-color: #1aa3ff;
+}
+
+.yellow,
+.yellow:focus {
+  background-color: #ffc107;
+}
+
+.yellow:hover {
+  background-color: #cc9a05;
+}
+.yellow:active {
+  background-color: #ffcd38;
+}
+
+.green,
+.green:focus {
+  background-color: #198754;
+}
+
+.green:hover {
+  background-color: #105635;
+}
+.green:active {
+  background-color: #24c278;
+}
+
+.red,
+.red:focus {
+  background-color: #dc3545;
+}
+.red:hover {
+  background-color: #960a22;
+}
+.red:active {
+  background-color: #fb294c;
+}
+
+.top-pane {
+  /* background-color: hsl(225, 6%, 25%); */
+}
+
+.pane {
+  height: 70vh;
+  width: 100%;
+  display: flex;
+}
+
+.console{
+  font-size: small;
+}
+
+.xtraHeight{
+  width: 100%;
+}
