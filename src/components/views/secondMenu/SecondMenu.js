@@ -86,15 +86,19 @@ export default function SecondMenu(props) {
         {modelsType2.map((type, i) => {
           const actualColor = colors[i % colors.length];
           const style = "btn-custom " + actualColor;
-          return (<Col key={i}>
-            <Button onClick={() => handleClick(i)}
-                    type="button"
-                    className={style}>
-              {type}
-            </Button>
-          </Col>);
+          return (
+            <Col key={i}>
+              <Button onClick={() => handleClick(i)}
+                      type="button"
+                      className={style}>
+                {type}
+              </Button>
+            </Col>
+          );
         })}
       </Row>
+      {/*ELIMINADO */}
+      {/*
       <Row>
         {modelsType.map((type, i) => {
           if (i === buttonActive) {
@@ -112,13 +116,18 @@ export default function SecondMenu(props) {
           }
         })}
       </Row>
-      <div className={buttonActive === -1 ? "container smargen" : "borde container smargen"}>
-        <div className="details-menu">
-          {buttonActive !== -1 ? (
-            <ButtonDescription data={modelsDescription[buttonActive]} click={handleClickEmpezar}/>) : ("")
-          }
-        </div>
-      </div>
+      */}
+      <Row>
+        <Col>
+          <div className={buttonActive === -1 ? "container smargen" : "borde container smargen"}>
+            <div className="details-menu">
+              {buttonActive !== -1 ? (
+                <ButtonDescription data={modelsDescription[buttonActive]} click={handleClickEmpezar}/>) : ("")
+              }
+            </div>
+          </div>
+        </Col>
+      </Row>
     </div>
   </>);
 }

@@ -426,9 +426,10 @@ export default function ObjectDetection(props) {
             <ul>
               <li>
                 <b>A la izquierda</b><br/>
-                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa".
+                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
+                capa".<br/>
+                Puedes modificar dos parámetros:
               </li>
-              <li>Puedes modificar dos parámetros:</li>
               <ul>
                 <li><b>Unidades de la capa:</b><br/> Cuantas unidades deseas que tenga esa capa</li>
                 <li><b>Función de activación:</b><br/> Función de activación para esa capa</li>
@@ -436,9 +437,9 @@ export default function ObjectDetection(props) {
 
               <li>
                 <b>A la derecha </b><br/>
-                Se pueden ver parámetros generales necesarios para la creación del modelo.
+                Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                Estos parámetros son:
               </li>
-              <li>Estos parámetros son:</li>
               <ul>
                 <li>
                   <b>Tasa de entrenamiento:</b><br/>
@@ -713,16 +714,16 @@ export default function ObjectDetection(props) {
                       height="28"
                       style={{ display: 'none' }}></canvas>
               <div id="resultado"></div>
-              {/* SUBMIT BUTOON */}
+              {/* SUBMIT BUTTON */}
             </div>
           </div>
-        </div>
 
-        <div className="header-model-editor mg-top">
-          <p>
-            Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no sean
-            correctas.
-          </p>
+          <div className="header-model-editor mg-top">
+            <p>
+              Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
+              sean correctas.
+            </p>
+          </div>
         </div>
 
         {/* BLOCK 3 */}

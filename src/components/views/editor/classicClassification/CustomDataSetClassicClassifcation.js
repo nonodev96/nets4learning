@@ -414,8 +414,8 @@ export default function CustomDataSetClassification(props) {
           {dataSet === 0 ? (
             <div className="header-model-editor">
               <p>
-                Carga tu propio dataSet con la siguiente{' '}
-                <a href="" onClick={downloadFile} id="dwn-btn">estructura</a> pulsando este botón.
+                Carga tu propio dataSet con la siguiente <a href="" onClick={downloadFile} id="dwn-btn">estructura</a>
+                pulsando este botón.
               </p>
               <input style={{ marginLeft: '1rem' }}
                      type="file"
@@ -447,12 +447,12 @@ export default function CustomDataSetClassification(props) {
 
               <li>
                 <b>A la derecha </b><br/>
-                se pueden ver parámetros generales necesarios para la creación del modelo. Estos parámetros son:
+                Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                Estos parámetros son:
               </li>
-
               <ul>
                 <li>
-                  <b>Tasa de entrenamiento:</b>
+                  <b>Tasa de entrenamiento:</b><br/>
                   Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento y
                   reglas para el test
                 </li>
@@ -461,7 +461,7 @@ export default function CustomDataSetClassification(props) {
                   cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
                 </li>
                 <li>
-                  <b>Optimizador:</b>
+                  <b>Optimizador:</b><br/>
                   Es una función que como su propio nombre indica se usa para optimizar los modelos.
                   Esto es frecuentemente usado para evitar estancarse en un máximo local.
                 </li>

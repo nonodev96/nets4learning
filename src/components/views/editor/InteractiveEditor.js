@@ -252,12 +252,12 @@ function InteractiveEditor(props) {
               })}
 
               {/* ADD LAYER */}
-              <button className="btn-add-layer"
+              <Button className="btn-add-layer"
                       type="button"
                       onClick={() => handlerAddLayer()}
                       variant="primary">
                 Añadir capa
-              </button>
+              </Button>
             </div>
           </Col>
 
@@ -343,11 +343,11 @@ function InteractiveEditor(props) {
         <div className="column2">
           <Col className="col-specific">
             {/*FIXME*/}
-            <button className="btn-add-layer"
+            <Button className="btn-add-layer"
                     type="submit"
                     variant="primary">
               Crear y entrenar modelo
-            </button>
+            </Button>
           </Col>
         </div>
 
@@ -365,12 +365,12 @@ function InteractiveEditor(props) {
                                 onChange={() => handleChangeTestInput()}/>
                 </Form.Group>
                 {/* SUBMIT BUTTON */}
-                <button className="btn-add-layer"
+                <Button className="btn-add-layer"
                         type="button"
                         onClick={handleVectorTest}
                         variant="primary">
                   Ver resultado
-                </button>
+                </Button>
               </div>
             </div>
           </Col>

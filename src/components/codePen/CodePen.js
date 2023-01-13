@@ -27,17 +27,16 @@ export default function CodePen(props) {
             {open ? <BsArrowsAngleExpand/> : <BsArrowsAngleContract/>}
           </button>
         </div>
-        <ControlledEditor onBeforeChange={handleChange}
+        <ControlledEditor className="code-mirror-wrapper"
+                          onBeforeChange={handleChange}
                           value={value}
-                          className="code-mirror-wrapper"
                           options={{
                             lineWrapping: true,
                             lint: true,
                             mode: language,
                             theme: "material",
                             lineNumbers: true,
-                          }}
-        />
+                          }}/>
       </div>
     </>
   );

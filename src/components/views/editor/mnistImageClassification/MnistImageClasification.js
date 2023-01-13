@@ -13,7 +13,7 @@ import LayerEdit from './LayerEdit.js'
 export default function MnistImageClassification(props) {
   const { dataSet } = props
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
+  // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState()
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
@@ -165,67 +165,66 @@ export default function MnistImageClassification(props) {
       // var canvas
       // canvas = document.getElementById('bigcanvas')
 
-      var smallcanvas = document.getElementById('smallcanvas')
-      var ctx2 = smallcanvas.getContext('2d')
+      const smallcanvas = document.getElementById('smallcanvas')
+      const ctx2 = smallcanvas.getContext('2d')
       // numberClass.resample_single(canvas, 28, 28, smallcanvas)
 
-      var imgData = ctx2.getImageData(0, 0, 28, 28)
-      var arr = [] //El arreglo completo
-      var arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo indice
-      for (var p = 0; p < imgData.data.length; p += 4) {
-        var valor = imgData.data[p + 3] / 255
-        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte queda dentro de un arreglo en el indice 0... again
+      const imgData = ctx2.getImageData(0, 0, 28, 28)
+      let arr = [] // El arreglo completo
+      let arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+      for (let p = 0; p < imgData.data.length; p += 4) {
+        let valor = imgData.data[p + 3] / 255
+        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el índice 0... again
         if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] // Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
+      arr = [arr] // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
       // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
-      var tensor4 = tf.tensor4d(arr)
-      var resultados = Model.predict(tensor4).dataSync()
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+      const tensor4 = tf.tensor4d(arr)
+      const resultados = Model.predict(tensor4).dataSync()
+      const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
       console.log('Prediccion', mayorIndice)
       // document.getElementById('demo').innerHTML = mayorIndice
 
-      alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+      await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
 
   const handleVectorTestImageUpload = async () => {
     if (Model === undefined) {
-      alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
+      await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
-      var canvas
-      canvas = document.getElementById('imageCanvas')
-      var smallcanvas = document.getElementById('smallcanvas')
-      var ctx2 = smallcanvas.getContext('2d')
+      const canvas = document.getElementById('imageCanvas')
+      const smallcanvas = document.getElementById('smallcanvas')
+      const ctx2 = smallcanvas.getContext('2d')
       numberClass.resample_single(canvas, 28, 28, smallcanvas)
 
-      var imgData = ctx2.getImageData(0, 0, 28, 28)
-      var arr = [] //El arreglo completo
-      var arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo indice
-      for (var p = 0; p < imgData.data.length; p += 4) {
-        var valor = imgData.data[p + 3] / 255
-        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte queda dentro de un arreglo en el indice 0... again
-        if (arr28.length == 28) {
+      const imgData = ctx2.getImageData(0, 0, 28, 28)
+      let arr = [] //El arreglo completo
+      let arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+      for (let p = 0; p < imgData.data.length; p += 4) {
+        let valor = imgData.data[p + 3] / 255
+        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
+        if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-      //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 28, 28, 1
-      var tensor4 = tf.tensor4d(arr)
-      var resultados = Model.predict(tensor4).dataSync()
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+      arr = [arr] //Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+      //Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
+      const tensor4 = tf.tensor4d(arr)
+      const resultados = Model.predict(tensor4).dataSync()
+      const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.log('Prediccion', mayorIndice)
+      console.log('Predicción', mayorIndice)
       // document.getElementById('demo').innerHTML = mayorIndice
 
-      alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+      await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
 
@@ -249,7 +248,7 @@ export default function MnistImageClassification(props) {
       setLayer(array)
       setNLayer(nLayer + 1)
     } else {
-      alertHelper.alertWarning("No se pueden añadir más capas")
+      await alertHelper.alertWarning("No se pueden añadir más capas")
     }
   }
 
@@ -259,8 +258,7 @@ export default function MnistImageClassification(props) {
     if (array.length === 1) {
       alertHelper.alertWarning('No puedes eliminar la última capa')
     } else {
-      var i
-      for (i = 0; i < array.length; i++) {
+      for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])
       }
       if (ActiveLayer === idLayer && idLayer > 0) setActiveLayer(idLayer - 1)
@@ -356,9 +354,7 @@ export default function MnistImageClassification(props) {
 
   const handleChangeActivation = (index) => {
     let array = Layer
-    array[index].activation = document.getElementById(
-      `formActivationLayer${index}`,
-    ).value
+    array[index].activation = document.getElementById(`formActivationLayer${index}`,).value
     setLayer(array)
   }
 
@@ -372,7 +368,6 @@ export default function MnistImageClassification(props) {
     let aux = document.getElementById('FormLoss').value
     if (aux !== undefined) {
       setLossValue(aux)
-    } else {
     }
   }
 
@@ -380,7 +375,6 @@ export default function MnistImageClassification(props) {
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
-    } else {
     }
   }
 
@@ -388,16 +382,15 @@ export default function MnistImageClassification(props) {
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
-    } else {
     }
   }
 
   const handleChangeFileUpload = async (e) => {
-    var tgt = e.target || window.event.srcElement,
-      files = tgt.files
+    const tgt = e.target || window.event.srcElement
+    const files = tgt.files
 
-    var canvas = document.getElementById('imageCanvas')
-    var ctx = canvas.getContext('2d')
+    const canvas = document.getElementById('imageCanvas')
+    const ctx = canvas.getContext('2d')
 
     function draw() {
       canvas.width = 200
@@ -410,7 +403,7 @@ export default function MnistImageClassification(props) {
       console.error("The provided file couldn't be loaded as an Image media")
     }
 
-    var img = new Image()
+    const img = new Image()
     img.onload = draw
     img.onerror = failed
     img.src = URL.createObjectURL(files[0])
@@ -426,9 +419,8 @@ export default function MnistImageClassification(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha pre cargado una arquitectura. Programa dentro
-              de la función "createArchitecture". A esta función se el pasa un
-              array preparado que continue la información del dataset.
+              A continuación se ha pre cargado una arquitectura. Programa dentro de la función "createArchitecture".
+              A esta función se el pasa un array preparado que continue la información del dataset.
             </p>
           </div>
           {/* {numberClass.start()} */}
@@ -450,9 +442,10 @@ export default function MnistImageClassification(props) {
 
               <li>
                 <b>A la izquierda</b><br/>
-                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa".
+                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
+                capa". <br/>
+                Puedes modificar dos parámetros:
               </li>
-              <li>Puedes modificar dos parámetros:</li>
               <ul>
                 <li>
                   <b>Unidades de la capa:</b> cuantas unidades deseas que tenga esa capa.
@@ -464,9 +457,9 @@ export default function MnistImageClassification(props) {
 
               <li>
                 <b>A la derecha </b><br/>
-                Se pueden ver parámetros generales necesarios para la creación del modelo.
+                Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                Estos parámetros son:
               </li>
-              <li>Estos parámetros son:</li>
               <ul>
                 <li>
                   <b>Tasa de entrenamiento:</b><br/>
@@ -738,13 +731,13 @@ export default function MnistImageClassification(props) {
               {/* SUBMIT BUTTON */}
             </div>
           </div>
-        </div>
-
-        <div className="header-model-editor mg-top">
-          <p>
-            Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no sean
-            correctas.
-          </p>
+          <div className="header-model-editor mg-top">
+            <p>
+              Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
+              sean
+              correctas.
+            </p>
+          </div>
         </div>
 
         {/* BLOCK 3 */}

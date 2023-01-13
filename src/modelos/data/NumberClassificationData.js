@@ -61,8 +61,10 @@ export class MnistData {
 
         for (let i = 0; i < NUM_DATASET_ELEMENTS / chunkSize; i++) {
           const datasetBytesView = new Float32Array(
-            datasetBytesBuffer, i * IMAGE_SIZE * chunkSize * 4,
-            IMAGE_SIZE * chunkSize);
+            datasetBytesBuffer,
+            i * IMAGE_SIZE * chunkSize * 4,
+            IMAGE_SIZE * chunkSize
+          );
           ctx.drawImage(img, 0, i * chunkSize, img.width, chunkSize, 0, 0, img.width, chunkSize);
 
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

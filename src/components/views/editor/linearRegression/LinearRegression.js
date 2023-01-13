@@ -144,12 +144,10 @@ export default function LinearRegression(props) {
       array2.push(array[i])
     }
     for (i = idLayer + 1; i < array.length; i++) {
-      document.getElementById(
-        `formUnitsLayer${i - 1}`,
-      ).value = document.getElementById(`formUnitsLayer${i}`).value
-      document.getElementById(
-        `formActivationLayer${i - 1}`,
-      ).value = document.getElementById(`formActivationLayer${i}`).value
+      document.getElementById(`formUnitsLayer${i - 1}`,).value =
+        document.getElementById(`formUnitsLayer${i}`).value
+      document.getElementById(`formActivationLayer${i - 1}`).value =
+        document.getElementById(`formActivationLayer${i}`).value
       array2.push(array[i])
     }
     setLayer(array2)
@@ -201,9 +199,9 @@ export default function LinearRegression(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha precargado una arquitectura. Programa dentro
+              A continuación se ha pre cargado una arquitectura. Programa dentro
               de la función "createArchitecture". A esta función se el pasa un
-              array preparado que contine la información del dataset.
+              array preparado que continue la información del dataset.
             </p>
           </div>
         </div>
@@ -394,9 +392,9 @@ export default function LinearRegression(props) {
           <Row>
             <Col>
               <div id="demo"
-                className="borde console"
-                width="100%"
-                height="100%">
+                   className="borde console"
+                   width="100%"
+                   height="100%">
                 Aquí se muestran los resultados
               </div>
             </Col>

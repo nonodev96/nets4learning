@@ -1,6 +1,7 @@
 import React from 'react'
 import './GraphicRed.css'
 import Graph from 'react-graph-vis'
+import { ArrowRight } from "react-bootstrap-icons";
 
 export default function GraphicRed(props) {
   const { layer, setActiveLayer, tipo } = props
@@ -63,17 +64,27 @@ export default function GraphicRed(props) {
   return (
     <>
       <div className="row">
-          <div className=" col-md-1" style={{ display: 'flex',"align-items": "center", "margin-bottom": "2rem"}}>
+        <div className="col-md-1"
+             style={{
+               display: 'flex',
+               alignItems: "center",
+               marginBottom: "2rem"
+             }}>
           <div className="col-md-6" style={{ writingMode: 'vertical-rl' }}>ENTRADA</div>
-          <div className="col-md-6">-></div>
+          <div className="col-md-6"><ArrowRight style={{ "fontSize": "xxx-large" }}/></div>
         </div>
         <div className="mynetwork col-md-10">
-          <Graph graph={graph} options={options} events={events} />
+          <Graph graph={graph} options={options} events={events}/>
         </div>
-        <div className="col-md-1" style={{ display: 'flex',"align-items": "center","margin-bottom": "2rem" }}>
-          <div className="col-md-6">-></div>
+        <div className="col-md-1"
+             style={{
+               display: 'flex',
+               alignItems: "center",
+               marginBottom: "2rem"
+             }}>
+          <div className="col-md-6"><ArrowRight style={{ "fontSize": "xxx-large" }}/></div>
           <div className="col-md-6" style={{ writingMode: 'vertical-rl' }}>SALIDA</div>
-          </div>
+        </div>
       </div>
     </>
   )

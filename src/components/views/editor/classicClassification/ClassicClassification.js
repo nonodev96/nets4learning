@@ -19,7 +19,7 @@ export default function ClassicClassification(props) {
     'Regresión lineal',
   ]
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
+  // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
     { units: 10, activation: 'Sigmoid' },
@@ -282,7 +282,12 @@ export default function ClassicClassification(props) {
 
             {/* GENERAL PARAMETERS */}
             <Col xl className="col-general">
-              <div className="container borde general-settings">
+              <div className="container borde general-settings position-sticky">
+               <div className="">
+                 <div className="sticky">
+                   container borde general-settings
+                 </div>
+               </div>
                 {/* LEARNING RATE */}
                 <Form.Group className="mb-3" controlId="formTrainRate">
                   <Form.Label>Tasa de entrenamiento</Form.Label>
@@ -290,8 +295,7 @@ export default function ClassicClassification(props) {
                                 placeholder="Introduce la tasa de entrenamiento"
                                 defaultValue={learningValue}/>
                   <Form.Text className="text-muted">
-                    Recuerda que debe ser un valor entre 0 y 100 (es un
-                    porcentaje)
+                    Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                   </Form.Text>
                 </Form.Group>
 

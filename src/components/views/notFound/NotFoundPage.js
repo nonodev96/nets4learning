@@ -1,5 +1,5 @@
 // import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
+// import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 // const Container = styled.div`
@@ -29,12 +29,8 @@ export default function NotFoundPage() {
            width: "100vw",
          }}>
       {/* <Container> */}
-      <h1 style={{ color: "white" }}>
-        Error 404
-      </h1>
-      <Typography style={{ padding: "2rem" }} variant="h5">
-        No se ha encontrado la página solicitada
-      </Typography>
+      <h1 style={{ color: "white" }}>Error 404</h1>
+      <h4 style={{ padding: "2rem" }}>No se ha encontrado la página solicitada</h4>
       <Link to={process.env.REACT_APP_DOMAIN}>Volver al inicio</Link>
       {/* </Container> */}
     </div>

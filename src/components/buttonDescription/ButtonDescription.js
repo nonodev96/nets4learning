@@ -12,7 +12,7 @@ export default function ButtonDescription(props) {
         <Row className="btns-description">
           {data.buttons.map((a, i) => {
             return (
-              <Col className="col-description" key={i}>
+              <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="text-align: center" key={i}>
                 <Button className="btn-custom-description" key={i} onClick={a.accion}>
                   {a.Title}
                 </Button>

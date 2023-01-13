@@ -55,7 +55,7 @@ function EditArchitecture() {
     <>
       <NavBar/>
       <div className="container">
-        <h1 className="titulos">{modelsType[id]}</h1>
+        <h1 className="titulos mt-2">{modelsType[id]}</h1>
       </div>
       {selectedEditor()}
       <Footer/>

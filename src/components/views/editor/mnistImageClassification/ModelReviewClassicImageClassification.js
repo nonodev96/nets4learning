@@ -67,9 +67,7 @@ export default function ModelReviewClassicImageClassification(props) {
 
     if (dataSet !== 0) {
       getModel()
-    } else {
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleVectorTest = async () => {

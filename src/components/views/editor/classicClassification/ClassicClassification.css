@@ -23,9 +23,9 @@ p {
   margin: 1rem 1rem 1rem 1rem;
 }
 
-p {
-  margin: 1rem 1rem 1rem 1rem;
-}
+/*p {*/
+/*  margin: 1rem 1rem 1rem 1rem;*/
+/*}*/
 
 .editors {
   margin: 2rem 2rem 2rem 2rem;
@@ -167,11 +167,11 @@ p {
 .console {
   font-size: small;
 }
-
-Form {
-  margin: 1rem 1rem 1rem 1rem;
-  color: black;
-}
+/*ELIMINADO*/
+/*Form {*/
+/*  margin: 1rem 1rem 1rem 1rem;*/
+/*  color: black;*/
+/*}*/
 
 .column {
   box-sizing: border-box;
@@ -201,11 +201,6 @@ Form {
   margin-bottom: 2rem;
 }
 
-.col-specific {
-  max-width: 590px;
-  padding: 2rem;
-
-}
 
 .col-general {
   max-width: 590px;
@@ -215,22 +210,6 @@ Form {
   justify-content: center;
 }
 
-.columnamargin {
-  margin: 2rem;
-}
-
-.container {
-  margin-bottom: 2rem;
-}
-
-.row {
-  /* margin-bottom: 2rem; */
-}
-
-.cen {
-  display: contents;
-
-}
 
 .btn-add-layer {
   position: relative;
@@ -256,12 +235,4 @@ Form {
 .canvas-container {
   border: 1px solid black;
   align-items: center;
-}
-
-.mg-top {
-  margin-top: 2rem;
-}
-
-h3, h1, p {
-  text-align: justify;
 }

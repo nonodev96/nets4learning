@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import Footer from '../../footer/Footer'
 import NavBar from '../../navBar/NavBar'
 import { modelsType } from '../initialMenu/InitialMenu'
@@ -42,7 +42,7 @@ export default function UploadModelMenu(props) {
     if (aux !== undefined) setModel(aux)
   }
 
-  const handleSubmmit = async () => {
+  const handleSubmit = async () => {
     // const jsonUpload = document.getElementById('json-upload')
     // const weightsUpload = document.getElementById('weights-upload')
 
@@ -73,59 +73,54 @@ export default function UploadModelMenu(props) {
   return (
     <>
       <NavBar/>
-      <Form>
-        <div className="container">
-          <h1>{modelsType[id]}</h1>
-          <div className="header-model-editor">
-            <p>
-              Selecciona a continuación el Modelo Pre-entrenado sobre el que se va a trabajar.
-              Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente vista.
-            </p>
-          </div>
-          {/* {numberClass.start()} */}
-        </div>
-        <div className="container">
-          <Row>
-            <Col>
-              <Form.Group className="mb-3" controlId="FormModel">
+      <Container >
+        <Row className="mt-3">
+          <Col>
+            <h1>{modelsType[id]}</h1>
+            <div className="card">
+              <div className="card-body">
+                <article>
+                  <p>
+                    Selecciona a continuación el Modelo Pre-entrenado sobre el que se va a trabajar.
+                  </p>
+                  <p>
+                    Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente
+                    vista.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
+            <Form>
+              <Form.Group controlId="FormModel">
                 <Form.Label>Selecciona un Modelo</Form.Label>
                 <Form.Select aria-label="Default select example"
                              onChange={handleChangeModel}>
-                  <option>Selecciona un Modelo</option>
-                  {ModelList[id].map((item, id) => {
-                    return (<option key={id} value={id}>{item}</option>)
-                  })}
+                  {/*<option>Selecciona un Modelo</option>*/}
+                  {
+                    ModelList[id].map((item, id) => {
+                      return (
+                        <option key={id} value={id}>
+                          {item}
+                        </option>
+                      )
+                    })
+                  }
                 </Form.Select>
               </Form.Group>
-            </Col>
-            {/* <Col>
-              <div className="header-model-editor">
-                <p>
-                  Carga tu propio Modelo. Ten en cuenta que tienes que subir
-                  primero el archivo .json y despues el fichero .bin{' '}
-                </p>
-                <input
-                  id="json-upload"
-                  style={{ marginLeft: '1rem' }}
-                  type="file"
-                  name="json"
-                  accept=".json"
-                  // onChange={handleChangeModelJsonUpload}
-                ></input>
 
+              <Button className="btn-custom-description"
+                      onClick={() => handleSubmit()}>
+                Continuar
+              </Button>
+            </Form>
 
-              </div>
-            </Col> */}
-          </Row>
-        </div>
-
-        <div className="container">
-          <Button className="btn-custom-description"
-                  onClick={() => handleSubmmit()}>
-            Continuar
-          </Button>
-        </div>
-      </Form>
+          </Col>
+        </Row>
+      </Container>
       <Footer/>
     </>
   )

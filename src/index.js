@@ -5,16 +5,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import tema from "./themeConfig.js";
-import { ThemeProvider } from "@mui/system";
+// import { ThemeProvider } from "@mui/system";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const app = (
-  <ThemeProvider theme={tema}>
+  // <ThemeProvider theme={tema}>
     <BrowserRouter>
       <App/>
     </BrowserRouter>
-  </ThemeProvider>
+  // </ThemeProvider>
 );
 
 

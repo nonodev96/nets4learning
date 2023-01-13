@@ -58,10 +58,9 @@ export default function Editor(props) {
       <div className="container">
         <div className="borde header-model-editor">
           <p>
-            A continuación se ha precargado una arquitectura.
-            Programa dentro de la función "createArchitecture". A esta función
-            se el pasa un array preparado que contine la información del
-            dataset.
+            A continuación se ha pre cargado una arquitectura.
+            Programa dentro de la función "createArchitecture".
+            A esta función se el pasa un array preparado que continue la información del dataset.
           </p>
         </div>
       </div>
@@ -69,37 +68,29 @@ export default function Editor(props) {
         <Row className="editor">
           <Col className="codigo" xs={8} id="editorTexto">
             <div className="pane borde">
-              <CodePen
-                language="javascript"
-                displayName="JS"
-                value={js}
-                onChange={setJs}
-              />
+              <CodePen language="javascript"
+                       displayName="JS"
+                       value={js}
+                       onChange={setJs}/>
             </div>
           </Col>
           <Col className="buttons-group">
             <div className="container items">
               <Row className="items2">
-                <p>
-                  Aquí puedes ejecutar el código que has creado o añadir
-                  diferentes capas al modelo
-                </p>
                 <Col>
-                  <button
-                    onClick={handleClickPlay}
-                    className="btn-custom green play"
-                    type="button"
-                  >
+                  <p>Aquí puedes ejecutar el código que has creado o añadir diferentes capas al modelo</p>
+                </Col>
+                <Col>
+                  <button onClick={handleClickPlay}
+                          className="btn-custom green play"
+                          type="button">
                     Play
                   </button>
                 </Col>
                 <Col>
-                  <button
-                    // onClick={}
-                    onClick={HandleButtonClasificador}
-                    className="btn-custom red clear"
-                    type="button"
-                  >
+                  <button onClick={HandleButtonClasificador}
+                          className="btn-custom red clear"
+                          type="button">
                     Clear
                   </button>
                 </Col>
@@ -107,11 +98,9 @@ export default function Editor(props) {
 
               <Row className="items2">
                 <p>Añade una neurona básica</p>
-                <button
-                  // onClick={HandleButtonClasificador}
-                  className="btn-custom blue"
-                  type="button"
-                >
+                <button className="btn-custom blue"
+                        // onClick={HandleButtonClasificador}
+                        type="button">
                   Tipo Clasificador
                 </button>
               </Row>
@@ -136,7 +125,7 @@ export default function Editor(props) {
             </div>
           </Col>
         </Row>
-        <div id="resultado">Aqui va el Resultado</div>
+        <div id="resultado">Aquí va el Resultado</div>
         <div className="">
           <Row>
             <Col>

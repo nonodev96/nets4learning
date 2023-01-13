@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, Card } from 'react-bootstrap'
 import './InitialMenu.css'
-
-import SecondMenu from '../secondMenu/SecondMenu'
-// import ButtonDescription from "../../buttonDescription/ButtonDescription";
 
 export const modelsType = [
   'Clasificación clasica',
@@ -21,8 +18,8 @@ export default function InitialMenu() {
 
   // const modelsType = [
   //   "Empieza de cero y crea tu propia arquitectura",
-  //   "Edita una arquitectura hecho por tí o facilitado por nosotros",
-  //   "Entrena un modelo hecho por tí o  si no tienes, no te preocupes te prestamos uno :)",
+  //   "Edita una arquitectura creada por tí o facilitado por nosotros",
+  //   "Entrena un modelo hecho por tí o si no tienes, no te preocupes te prestamos uno :)",
   //   "Ejecutar un modelo hecho por tí o facilitado por nosotros",
   // ];
 
@@ -43,7 +40,7 @@ export default function InitialMenu() {
     if (type === 1) history.push(process.env.REACT_APP_DOMAIN + '/select-model/' + ButtonActive)
   }
 
-  const colors = ['yellow', 'red', 'green', 'blue']
+  const colors = ['primary', 'danger', 'warning', 'info']
 
   const handleClick = (modelType) => {
     setButtonActive(modelType)
@@ -63,36 +60,29 @@ export default function InitialMenu() {
         return ''
       case 0:
         return (
-          <div className="container">
-            <h3 className="titulos">La clasificación</h3>
-            <article>
-              <p>
-                La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una o
-                más variables independientes.
-              </p>
-              <p>La clasificación se utiliza para predecir respuestas discretas.
-              </p>
-            </article>
-
-            <Row className="btns-description">
-              <Col className="col-description">
-                <Button className="btn-custom-description"
-                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
-              </Col>
-
-              {/* <Col className="col-description">
-                <Button className="btn-custom-description" onClick={()=>handleClickTrainEdit(ButtonActive,3)}>Cargar dataset</Button>
-              </Col> */}
-              <Col className="col-description">
-                <Button className="btn-custom-description"
-                        onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
-                  Crear/Editar arquitectura
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          <>
+            <div className="card">
+              <div className="card-header">
+                <h3 className="">La clasificación</h3>
+              </div>
+              <div className="card-body">
+                <article>
+                  <p>
+                    La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
+                    o más variables independientes.
+                  </p>
+                  <p>La clasificación se utiliza para predecir respuestas discretas.</p>
+                  <Button onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                  <Button onClick={() => handleClickTrainEdit(ButtonActive, 2)}
+                          style={{ "marginLeft": "1em" }}>
+                    Crear y edita arquitectura
+                  </Button>
+                </article>
+              </div>
+            </div>
+          </>
         )
       // case 1:
       //   return (
@@ -127,66 +117,57 @@ export default function InitialMenu() {
       //   )
       case 2:
         return (
-          <div className="container">
-            <h3 className="titulos">La clasificación</h3>
-            <article>
-              <p>
-                La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
-                semejanzas.
-              </p>
-              <p>
-                Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a poco
-                qué caracteriza a cada objeto.
-              </p>
-            </article>
-
-            <Row className="btns-description">
-              <Col className="col-description">
-                <Button className="btn-custom-description"
-                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
-              </Col>
-              {/* <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 2)}
-                >
-                  Crear/Editar arquitectura
-                </Button>
-              </Col> */}
-            </Row>
-          </div>
+          <>
+            <div className="card">
+              <div className="card-header">
+                <h3>La clasificación</h3>
+              </div>
+              <div className="card-body">
+                <article>
+                  <p>
+                    La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
+                    semejanzas.
+                  </p>
+                  <p>
+                    Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a
+                    poco qué caracteriza a cada objeto.
+                  </p>
+                  <Button onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                </article>
+              </div>
+            </div>
+          </>
         )
       case 3:
         return (
-          <div className="container">
-            <h3 className="titulos">La clasificación </h3>
-            <article>
-              <p>
-                La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar la
-                clase a la que pertenece el dependiente según una o más variables independientes.
-              </p>
-              <p>
-                En este caso la variable de entrada será una imagen.
-              </p>
-            </article>
+          <>
+            <div className="card">
+              <div className="card-header">
+                <h3>La clasificación</h3>
+              </div>
+              <div className="card-body">
+                <article>
+                  <p>
+                    La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar
+                    la clase a la que pertenece el dependiente según una o más variables independientes.
+                  </p>
+                  <p>
+                    En este caso la variable de entrada será una imagen.
+                  </p>
+                  <Button onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                  <Button style={{ "marginLeft": "1em" }}
+                          onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
+                    Crear y edita arquitectura
+                  </Button>
+                </article>
+              </div>
+            </div>
 
-            <Row className="btns-description">
-              <Col className="col-description">
-                <Button className="btn-custom-description"
-                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
-              </Col>
-              <Col className="col-description">
-                <Button className="btn-custom-description"
-                        onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
-                  Crear/Editar arquitectura
-                </Button>
-              </Col>
-            </Row>
-          </div>
+          </>
         )
       default:
         return ''
@@ -195,20 +176,22 @@ export default function InitialMenu() {
 
   return (
     <>
-      <div className="container">
-        <Row>
-          {modelsType.map((type, i) => {
-            if (i !== 1) {
-              const actualColor = colors[i % colors.length]
-              const style = 'btn-custom ' + actualColor
-              return (
-                <Col key={i}>
-                  <Button className={style} onClick={() => handleClick(i)}>{type}</Button>
-                </Col>
-              )
-            }
-          })}
-        </Row>
+      <Row>
+        {modelsType.map((type, i) => {
+          if (i !== 1) {
+            const actualColor = colors[i % colors.length]
+            return (
+              <Col key={i} className="d-grid gap-2">
+                <Button variant={actualColor}
+                        size={"lg"}
+                        onClick={() => handleClick(i)}>{type}</Button>
+              </Col>
+            )
+          }
+        })}
+      </Row>
+
+      {/*
         <Row>
           {modelsType.map((type, i) => {
             if (i !== 1) {
@@ -228,9 +211,13 @@ export default function InitialMenu() {
             }
           })}
         </Row>
+        */}
 
-        <div className="details-menu">{menuSelection()}</div>
-      </div>
+      <Row className="mt-3">
+        <Col>
+          {menuSelection()}
+        </Col>
+      </Row>
     </>
   )
 }

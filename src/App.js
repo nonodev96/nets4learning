@@ -16,24 +16,25 @@ import UploadArchitectureMenu from "./components/views/uploadArcitectureMenu/Upl
 import UploadModelMenu from "./components/views/uploadModelMenu/UploadModelMenu";
 
 function App() {
+  const DOMAIN = process.env.REACT_APP_DOMAIN;
   return (
     <div className="body">
       <Router>
         <Switch>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/starting/"} component={Starting}></Route>
+          <Route exact path={DOMAIN + "/starting/"} component={Starting}></Route>
           {/* <Route exact path="/upload-architecture-custom/" component={}></Route> */}
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/select-model/:id"} component={UploadModelMenu}></Route>
+          <Route exact path={DOMAIN + "/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
+          <Route exact path={DOMAIN + "/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
+          <Route exact path={DOMAIN + "/select-model/:id"} component={UploadModelMenu}></Route>
           {/* <Route exact path="/upload-training-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-training/" component={}></Route> */}
           {/* <Route exact path="/upload-model-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-model/" component={}></Route> */}
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/secondary/:id"} component={SecondMenu}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/editor/:id"} component={Editor}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/training"} component={Training}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN+ "/test"} component={Test}></Route>
-          <Route exact path={process.env.REACT_APP_DOMAIN} component={Home}></Route>
+          <Route exact path={DOMAIN + "/secondary/:id"} component={SecondMenu}></Route>
+          <Route exact path={DOMAIN + "/editor/:id"} component={Editor}></Route>
+          <Route exact path={DOMAIN + "/training"} component={Training}></Route>
+          <Route exact path={DOMAIN + "/test"} component={Test}></Route>
+          <Route exact path={DOMAIN} component={Home}></Route>
 
           <Route component={NotFoundPage}></Route>
         </Switch>
@@ -41,4 +42,5 @@ function App() {
     </div>
   );
 }
+
 export default withRouter(App);
