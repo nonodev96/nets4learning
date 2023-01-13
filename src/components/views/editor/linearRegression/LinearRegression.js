@@ -1,11 +1,7 @@
-import { React, useState } from 'react'
+import { useState } from 'react'
+import { Col, Row, Form, CloseButton, Button } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { Col, Row, CloseButton } from 'react-bootstrap'
-import { Form } from 'react-bootstrap'
-import {
-  createClassicClassification,
-  getIrisDataType,
-} from '../../../../modelos/ArchitectureHelper'
+import { createClassicClassification, getIrisDataType } from '../../../../modelos/ArchitectureHelper'
 import './ClassicClassification.css'
 import *  as alertHelper from "../../../../utils/alertHelper"
 
@@ -19,7 +15,7 @@ export default function LinearRegression(props) {
     'Regresión lineal',
   ]
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRECARGAN UNOS AJUSTRS U OTROS
+  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
     { units: 10, activation: 'Sigmoid' },
@@ -76,11 +72,10 @@ export default function LinearRegression(props) {
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
-
     console.log('Comenzamos a crear el modelo')
 
     try {
-      console.log('Estas sion las metricas', Layer)
+      console.log('Estas son las metricas', Layer)
       const model = await createClassicClassification(
         parseInt(document.getElementById('formTrainRate').value) / 100,
         0.1,
@@ -93,7 +88,7 @@ export default function LinearRegression(props) {
       console.log('Modelo creado y entrenado')
       console.log(model)
       setModel(model)
-      alertHelper.alertSuccess("Modelo entrenado con éxito")
+      await alertHelper.alertSuccess("Modelo entrenado con éxito")
       // const input = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4])
       // const prediction = model.predict(input)
       // const predictionWithArgMax = model.predict(input).argMax(-1).dataSync()
@@ -111,7 +106,7 @@ export default function LinearRegression(props) {
 
   const handleVectorTest = async () => {
     console.log(string)
-    let input=[[],[1,string.split(";").length]];
+    let input = [[], [1, string.split(";").length]];
 
     string.split(";").forEach(element => {
       input[0].push(parseFloat(element))
@@ -144,7 +139,7 @@ export default function LinearRegression(props) {
   const handlerRemoveLayer = (idLayer) => {
     let array = Layer
     let array2 = []
-    var i
+    let i
     for (i = 0; i < idLayer; i++) {
       array2.push(array[i])
     }
@@ -170,16 +165,12 @@ export default function LinearRegression(props) {
   }
 
   const handleChangeTestInput = () => {
-    setstring(
-      document.getElementById(`formTestInput`).value)
-
+    setstring(document.getElementById(`formTestInput`).value)
   }
 
   const handleChangeActivation = (index) => {
     let array = Layer
-    array[index].activation = document.getElementById(
-      `formActivationLayer${index}`,
-    ).value
+    array[index].activation = document.getElementById(`formActivationLayer${index}`).value
     setLayer(array)
   }
 
@@ -187,7 +178,6 @@ export default function LinearRegression(props) {
     let aux = document.getElementById('FormLoss').value
     if (aux !== undefined) {
       setLossValue(aux)
-    } else {
     }
   }
 
@@ -195,7 +185,6 @@ export default function LinearRegression(props) {
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
-    } else {
     }
   }
 
@@ -203,7 +192,6 @@ export default function LinearRegression(props) {
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
-    } else {
     }
   }
 
@@ -232,37 +220,27 @@ export default function LinearRegression(props) {
                       <div className="title-pane">
                         Capa {index + 1}
                         {/* <div className="spacer"></div> */}
-                        <CloseButton
-                          onClick={() => handlerRemoveLayer(index)}
-                        />
+                        <CloseButton onClick={() => handlerRemoveLayer(index)}/>
                       </div>
                       {/* UNITS */}
-                      <Form.Group
-                        className="mb-3"
-                        controlId={'formUnitsLayer' + index}
-                      >
+                      <Form.Group className="mb-3"
+                                  controlId={'formUnitsLayer' + index}>
                         <Form.Label>Unidades de la capa</Form.Label>
-                        <Form.Control
-                          type="number"
-                          placeholder="Introduce el número de unidades de la capa"
-                          defaultValue={item.units}
-                          onChange={() => handleChangeUnits(index)}
-                        />
+                        <Form.Control type="number"
+                                      placeholder="Introduce el número de unidades de la capa"
+                                      defaultValue={item.units}
+                                      onChange={() => handleChangeUnits(index)}/>
                       </Form.Group>
 
                       {/* ACTIVATION FUNCTION */}
-                      <Form.Group
-                        className="mb-3"
-                        controlId={'formActivationLayer' + index}
-                      >
+                      <Form.Group className="mb-3"
+                                  controlId={'formActivationLayer' + index}>
                         <Form.Label>
                           Selecciona la función de activación
                         </Form.Label>
-                        <Form.Select
-                          aria-label="Default select example"
-                          defaultValue={item.activation}
-                          onChange={() => handleChangeActivation(index)}
-                        >
+                        <Form.Select aria-label="Default select example"
+                                     defaultValue={item.activation}
+                                     onChange={() => handleChangeActivation(index)}>
                           <option>Selecciona la función de activación</option>
                           {ACTIVATION_TYPE.map((itemAct, indexAct) => {
                             return (
@@ -274,7 +252,7 @@ export default function LinearRegression(props) {
                         </Form.Select>
                         <Form.Text className="text-muted">
                           Será el optimizador que se usará para activar la
-                          funcion
+                          función
                         </Form.Text>
                       </Form.Group>
                     </div>
@@ -283,14 +261,12 @@ export default function LinearRegression(props) {
               })}
 
               {/* ADD LAYER */}
-              <button
-                className="btn-add-layer"
-                type="button"
-                onClick={() => handlerAddLayer()}
-                variant="primary"
-              >
+              <Button className="btn-add-layer"
+                      type="button"
+                      onClick={() => handlerAddLayer()}
+                      variant="primary">
                 Añadir capa
-              </button>
+              </Button>
             </div>
           </Col>
 
@@ -300,93 +276,69 @@ export default function LinearRegression(props) {
               {/* LEARNING RATE */}
               <Form.Group className="mb-3" controlId="formTrainRate">
                 <Form.Label>Tasa de entrenamiento</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Introduce la tasa de entrenamiento"
-                  defaultValue={learningValue}
-                />
+                <Form.Control type="number"
+                              placeholder="Introduce la tasa de entrenamiento"
+                              defaultValue={learningValue}/>
                 <Form.Text className="text-muted">
-                  Recuerda que debe ser un valor entre 0 y 100 (es un
-                  porcentaje)
+                  Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                 </Form.Text>
               </Form.Group>
 
               {/* Nº OT ITERATIONS */}
               <Form.Group className="mb-3" controlId="formNumberOfEpochs">
                 <Form.Label>Nº de iteraciones</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Introduce el número de iteraciones"
-                  defaultValue={NumberEpochs}
-                />
+                <Form.Control type="number"
+                              placeholder="Introduce el número de iteraciones"
+                              defaultValue={NumberEpochs}/>
                 <Form.Text className="text-muted">
-                  *Mientras más alto sea, mas taradará en ejecutarse el
-                  entrenamiento
+                  *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                 </Form.Text>
               </Form.Group>
 
               {/* OPTIMIZATION FUNCTION */}
               <Form.Group className="mb-3" controlId="FormOptimizer">
                 <Form.Label>Selecciona el optimizador</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  defaultValue={Optimizer}
-                  onChange={handleChangeOptimization}
-                >
+                <Form.Select aria-label="Default select example"
+                             defaultValue={Optimizer}
+                             onChange={handleChangeOptimization}>
                   <option>Selecciona el optimizador</option>
                   {OPTIMIZER_TYPE.map((item, id) => {
-                    return (
-                      <option key={id} value={item}>
-                        {item}
-                      </option>
-                    )
+                    return (<option key={id} value={item}>{item}</option>)
                   })}
                 </Form.Select>
                 <Form.Text className="text-muted">
-                  Será el optimizador que se usará para activar la funcion
+                  Será el optimizador que se usará para activar la función
                 </Form.Text>
               </Form.Group>
               {/* LOSS FUNCTION */}
               <Form.Group className="mb-3" controlId="FormLoss">
                 <Form.Label>Selecciona la función de pérdida</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  defaultValue={LossValue}
-                  onChange={handleChangeLoss}
-                >
+                <Form.Select aria-label="Default select example"
+                             defaultValue={LossValue}
+                             onChange={handleChangeLoss}>
                   <option>Selecciona la función de pérdida</option>
                   {LOSS_TYPE.map((item, id) => {
-                    return (
-                      <option key={id} value={item}>
-                        {item}
-                      </option>
-                    )
+                    return (<option key={id} value={item}>{item}</option>)
                   })}
                 </Form.Select>
                 <Form.Text className="text-muted">
-                  Será el optimizador que se usará para activar la funcion
+                  Será el optimizador que se usará para activar la función
                 </Form.Text>
               </Form.Group>
 
               {/* METRICS FUNCTION */}
               <Form.Group className="mb-3" controlId="FormMetrics">
                 <Form.Label>Selecciona la métrica</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  defaultValue={MetricsValue}
-                  onChange={handleChangeMetrics}
-                >
+                <Form.Select aria-label="Default select example"
+                             defaultValue={MetricsValue}
+                             onChange={handleChangeMetrics}>
                   <option>Selecciona la métrica</option>
                   {METRICS_TYPE.map((item, id) => {
-                    return (
-                      <option key={id} value={item}>
-                        {item}
-                      </option>
-                    )
+                    return (<option key={id} value={item}>{item}</option>)
                   })}
                 </Form.Select>
                 <Form.Text className="text-muted">
-                  Será el optimizador que se usará para activar la funcion
+                  Será el optimizador que se usará para activar la función
                 </Form.Text>
               </Form.Group>
             </div>
@@ -399,14 +351,13 @@ export default function LinearRegression(props) {
         {/* BLOCK  BUTTON */}
         <div className="column2">
           <Col className="col-specific">
-            <button
+            {/* FIXME No hace nada*/}
+            <Button
               className="btn-add-layer"
               type="submit"
-              // onClick=
-              variant="primary"
-            >
+              variant="primary">
               Crear y entrenar modelo
-            </button>
+            </Button>
           </Col>
         </div>
 
@@ -422,34 +373,30 @@ export default function LinearRegression(props) {
                   <Form.Control
                     placeholder="Introduce el vector a probar"
                     defaultValue="0.1;4.3;2.1;0.2"
-                     onChange={() => handleChangeTestInput()}
+                    onChange={() => handleChangeTestInput()}
                   />
                 </Form.Group>
-                {/* SUBMIT BUTOON */}
-                <button
-                  className="btn-add-layer"
-                  type="button"
-                  onClick={handleVectorTest}
-                  variant="primary"
-                >
+                {/* SUBMIT BUTTON */}
+                <Button className="btn-add-layer"
+                        type="button"
+                        onClick={handleVectorTest}
+                        variant="primary">
                   Ver resultado
-                </button>
+                </Button>
               </div>
             </div>
           </Col>
         </div>
 
         {/* BLOCK 3 */}
-        <div id="salida">Aqui va el Resultado</div>
+        <div id="salida">Aquí va el resultado</div>
         <div className="resultados">
           <Row>
             <Col>
-              <div
-                id="demo"
+              <div id="demo"
                 className="borde console"
                 width="100%"
-                height="100%"
-              >
+                height="100%">
                 Aquí se muestran los resultados
               </div>
             </Col>

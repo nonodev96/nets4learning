@@ -17,29 +17,28 @@ export default function CodePen(props) {
   }
 
   return (
-    <div className={`editor-container ${open ? "" : "collapsed"}`}>
-      <div className="editor-title">
-        {displayName}
-        <button
-          type="button"
-          className="expand-collapse-btn"
-          onClick={() => setOpen((prevOpen) => !prevOpen)}
-        >
-          {open ? <BsArrowsAngleExpand /> : <BsArrowsAngleContract />}
-        </button>
+    <>
+      <div className={`editor-container ${open ? "" : "collapsed"}`}>
+        <div className="editor-title">
+          {displayName}
+          <button type="button"
+                  className="expand-collapse-btn"
+                  onClick={() => setOpen((prevOpen) => !prevOpen)}>
+            {open ? <BsArrowsAngleExpand/> : <BsArrowsAngleContract/>}
+          </button>
+        </div>
+        <ControlledEditor onBeforeChange={handleChange}
+                          value={value}
+                          className="code-mirror-wrapper"
+                          options={{
+                            lineWrapping: true,
+                            lint: true,
+                            mode: language,
+                            theme: "material",
+                            lineNumbers: true,
+                          }}
+        />
       </div>
-      <ControlledEditor
-        onBeforeChange={handleChange}
-        value={value}
-        className="code-mirror-wrapper"
-        options={{
-          lineWrapping: true,
-          lint: true,
-          mode: language,
-          theme: "material",
-          lineNumbers: true,
-        }}
-      />
-    </div>
+    </>
   );
 }

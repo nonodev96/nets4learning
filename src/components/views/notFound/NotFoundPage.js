@@ -1,5 +1,5 @@
 // import styled from "@emotion/styled";
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 // const Container = styled.div`
@@ -19,19 +19,17 @@ import { Link } from "react-router-dom";
 
 export default function NotFoundPage() {
   return (
-    <div
-      id="fondo"
-      style={{
-        backgroundColor: "#5B5857",
-        fontSize: "18px",
-        fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-        paddingTop: "40px",
-        height: "100vh",
-        width: "100vw",
-      }}
-    >
+    <div id="fondo"
+         style={{
+           backgroundColor: "#5B5857",
+           fontSize: "18px",
+           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
+           paddingTop: "40px",
+           height: "100vh",
+           width: "100vw",
+         }}>
       {/* <Container> */}
-      <h1 style={{ color: "white" }} >
+      <h1 style={{ color: "white" }}>
         Error 404
       </h1>
       <Typography style={{ padding: "2rem" }} variant="h5">

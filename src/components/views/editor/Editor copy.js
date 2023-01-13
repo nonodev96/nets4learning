@@ -43,7 +43,7 @@ export default function Editor() {
       validationData: [xTest, yTest],
       callbacks: {
         onEpochEnd: async (epoch, logs) => {
-          var mostrar=document.getElementById("demo").innerHTML +="Epoch: " + epoch + " Logs:" + logs.loss);
+          var mostrar=document.getElementById("demo").innerHTML +="Epoch: " + epoch + " Logs:" + logs.loss)
           await tf.nextFrame();
         },
       },
@@ -144,7 +144,7 @@ export default function Editor() {
           const prediction = model.predict(input);
         
           const predictionWithArgMax = model.predict(input).argMax(-1).dataSync();
-          alert(prediction + "\ntipo: " + IRIS_CLASSES[predictionWithArgMax]);
+          alert(prediction + "\n" + IRIS_CLASSES[predictionWithArgMax]);
         }
         var console = {
           panel: $(parent.document.body).append("<div>"),

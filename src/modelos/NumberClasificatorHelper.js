@@ -1,11 +1,8 @@
 import * as tf from '@tensorflow/tfjs'
-import { MnistData } from './data/NumberClassificationData'
 import * as tfvis from '@tensorflow/tfjs-vis'
-import {
-  createLoss,
-  createMetrics,
-  createOptimizerId,
-} from '../modelos/ArchitectureHelper'
+import { MnistData } from './data/NumberClassificationData'
+import { createLoss, createMetrics, createOptimizerId } from './ArchitectureHelper'
+
 async function showExamples(data) {
   // Create a container in the visor
   const surface = tfvis
@@ -44,22 +41,20 @@ export async function run(
   idMetrics,
 ) {
   document.getElementById('salida').innerHTML +=
-    '<p>MODELO CREADO A PARTIR DE: <b>numberOfEpoch:</b> ' +
-    numberOfEpoch +
-    ' <b>sLOptimizer:</b> ' +
-    sLOptimizer +
-    ' <b>idLoss:</b> ' +
-    idLoss +
-    ' <b>idMetrics:</b> ' +
-    idMetrics +
-    '</p>'
+    `
+<p>MODELO CREADO A PARTIR DE: 
+<b>numberOfEpoch:</b> ${numberOfEpoch} 
+<b>sLOptimizer:</b> ${sLOptimizer} 
+<b>idLoss:</b> ${idLoss} 
+<b>idMetrics:</b> ${idMetrics}</p>
+`
 
   const data = new MnistData()
   await data.load()
   await showExamples(data)
 
   const model = getModel(sLOptimizer, layerList, idLoss, idMetrics)
-  tfvis.show.modelSummary(
+  await tfvis.show.modelSummary(
     { name: 'Arquitectura del modelo', tab: 'Modelo' },
     model,
   )
@@ -219,7 +214,7 @@ async function showAccuracy(model, data) {
   const [preds, labels] = doPrediction(model, data)
   const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, preds)
   const container = { name: 'Exactitud', tab: 'Evaluación' }
-  tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
+  await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
 
   labels.dispose()
 }
@@ -228,7 +223,7 @@ async function showConfusion(model, data) {
   const [preds, labels] = doPrediction(model, data)
   const confusionMatrix = await tfvis.metrics.confusionMatrix(labels, preds)
   const container = { name: 'Matriz de confusión', tab: 'Evaluación' }
-  tfvis.render.confusionMatrix(container, {
+  await tfvis.render.confusionMatrix(container, {
     values: confusionMatrix,
     tickLabels: classNames,
   })
@@ -246,52 +241,52 @@ async function showConfusion(model, data) {
  * Cambiado por RT, resize canvas ahora es donde se pone el chiqitillllllo
  */
 export function resample_single(canvas, width, height, resize_canvas) {
-  var width_source = canvas.width
-  var height_source = canvas.height
+  let width_source = canvas.width
+  let height_source = canvas.height
   width = Math.round(width)
   height = Math.round(height)
 
-  var ratio_w = width_source / width
-  var ratio_h = height_source / height
-  var ratio_w_half = Math.ceil(ratio_w / 2)
-  var ratio_h_half = Math.ceil(ratio_h / 2)
+  let ratio_w = width_source / width
+  let ratio_h = height_source / height
+  let ratio_w_half = Math.ceil(ratio_w / 2)
+  let ratio_h_half = Math.ceil(ratio_h / 2)
 
-  var ctx = canvas.getContext('2d')
-  var ctx2 = resize_canvas.getContext('2d')
-  var img = ctx.getImageData(0, 0, width_source, height_source)
-  var img2 = ctx2.createImageData(width, height)
-  var data = img.data
-  var data2 = img2.data
+  let ctx = canvas.getContext('2d')
+  let ctx2 = resize_canvas.getContext('2d')
+  let img = ctx.getImageData(0, 0, width_source, height_source)
+  let img2 = ctx2.createImageData(width, height)
+  let data = img.data
+  let data2 = img2.data
 
-  for (var j = 0; j < height; j++) {
-    for (var i = 0; i < width; i++) {
-      var x2 = (i + j * width) * 4
-      var weight = 0
-      var weights = 0
-      var weights_alpha = 0
-      var gx_r = 0
-      var gx_g = 0
-      var gx_b = 0
-      var gx_a = 0
-      var center_y = (j + 0.5) * ratio_h
-      var yy_start = Math.floor(j * ratio_h)
-      var yy_stop = Math.ceil((j + 1) * ratio_h)
-      for (var yy = yy_start; yy < yy_stop; yy++) {
-        var dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half
-        var center_x = (i + 0.5) * ratio_w
-        var w0 = dy * dy //pre-calc part of w
-        var xx_start = Math.floor(i * ratio_w)
-        var xx_stop = Math.ceil((i + 1) * ratio_w)
-        for (var xx = xx_start; xx < xx_stop; xx++) {
-          var dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half
-          var w = Math.sqrt(w0 + dx * dx)
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width; i++) {
+      let x2 = (i + j * width) * 4
+      let weight = 0
+      let weights = 0
+      let weights_alpha = 0
+      let gx_r = 0
+      let gx_g = 0
+      let gx_b = 0
+      let gx_a = 0
+      let center_y = (j + 0.5) * ratio_h
+      let yy_start = Math.floor(j * ratio_h)
+      let yy_stop = Math.ceil((j + 1) * ratio_h)
+      for (let yy = yy_start; yy < yy_stop; yy++) {
+        let dy = Math.abs(center_y - (yy + 0.5)) / ratio_h_half
+        let center_x = (i + 0.5) * ratio_w
+        let w0 = dy * dy //pre-calc part of w
+        let xx_start = Math.floor(i * ratio_w)
+        let xx_stop = Math.ceil((i + 1) * ratio_w)
+        for (let xx = xx_start; xx < xx_stop; xx++) {
+          let dx = Math.abs(center_x - (xx + 0.5)) / ratio_w_half
+          let w = Math.sqrt(w0 + dx * dx)
           if (w >= 1) {
             //pixel too far
             continue
           }
           //hermite filter
           weight = 2 * w * w * w - 3 * w * w + 1
-          var pos_x = 4 * (xx + yy * width_source)
+          let pos_x = 4 * (xx + yy * width_source)
           //alpha
           gx_a += weight * data[pos_x + 3]
           weights_alpha += weight
@@ -310,10 +305,10 @@ export function resample_single(canvas, width, height, resize_canvas) {
     }
   }
 
-  //Ya que esta, exagerarlo. Blancos blancos y negros negros..?
+  // Ya que esta, exagerarlo. Blancos blancos y negros negros..?
 
-  for (var p = 0; p < data2.length; p += 4) {
-    var gris = data2[p] //Esta en blanco y negro
+  for (let p = 0; p < data2.length; p += 4) {
+    let gris = data2[p] // Está en blanco y negro
 
     if (gris < 100) {
       gris = 0 //exagerarlo

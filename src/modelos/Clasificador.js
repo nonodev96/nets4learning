@@ -157,8 +157,8 @@ export const IRIS_DATA = [
   [5.9, 3.0, 5.1, 1.8, 2],
 ];
 
-export const CAR_CLASSES=["unacc", "acc", "good", "vgood"]
-export const CAR_DATA_CLASSES=[["vhigh", "high", "med", "low"],["vhigh", "high", "med", "low"],["2", "3", "4", "5more"],["2", "4", "more"],["small", "med", "big"],["low", "med", "high"]]
+export const CAR_CLASSES = ["unacc", "acc", "good", "vgood"]
+export const CAR_DATA_CLASSES = [["vhigh", "high", "med", "low"], ["vhigh", "high", "med", "low"], ["2", "3", "4", "5more"], ["2", "4", "more"], ["small", "med", "big"], ["low", "med", "high"]]
 
 function convertToTensors(data, targets, testSplit) {
   const numExamples = data.length;
@@ -175,14 +175,14 @@ function convertToTensors(data, targets, testSplit) {
   // Create a `tf.Tensor` to hold the feature data.
   //var dataByClass = tf.oneHot(dataByClass2, 27);
   const xs = tf.tensor2d(data, [numExamples, xDims]);
-  
+
   console.log(targets)
   // Create a 1D `tf.Tensor` to hold the labels, and convert the number label
   // from the set {0, 1, 2} into one-hot encoding (.e.g., 0 --> [1, 0, 0]).
   const ys = tf.oneHot(tf.tensor1d(targets).toInt(), IRIS_NUM_CLASSES);
 
   // Split the data into training and test sets, using `slice`.
-  console.log("Este es el xtrain dentro del convert to tensors",data,xDims)
+  console.log("Este es el xTrain dentro del convert to tensors", data, xDims)
   const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
   const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
   const yTrain = ys.slice([0, 0], [numTrainExamples, IRIS_NUM_CLASSES]);
@@ -234,7 +234,7 @@ export function getIrisData(testSplit) {
   });
 }
 
-export function getData(testSplit,classes,data) {
+export function getData(testSplit, classes, data) {
   return tf.tidy(() => {
     const dataByClass = [];
     const targetByClass = [];
@@ -275,23 +275,27 @@ export function getData(testSplit,classes,data) {
   });
 }
 
-async function trainModel(xTrain, yTrain, xTest, yTest,verbose) {
+async function trainModel(xTrain, yTrain, xTest, yTest, verbose) {
+
+
+  // https://www.tensorflow.org/js/guide/models_and_layers
   const model = tf.sequential();
+  model.add(tf.layers.dense({
+    inputShape: [xTrain.shape[1]],
+    // TODO CHECK
+    units: 10,
+    activation: "sigmoid",
+  }));
+
+  model.add(tf.layers.dense({
+    // TODO CHECK
+    units: 3,
+    activation: "softmax"
+  }));
+
   const learningRate = 0.01;
   const numberOfEpoch = 40;
   const optimizer = tf.train.adam(learningRate);
-
-  
-  model.add(
-    tf.layers.dense({
-      units: 10,
-      activation: "sigmoid",
-      inputShape: [xTrain.shape[1]],
-    })
-  );
-
-  model.add(tf.layers.dense({ units: 3, activation: "softmax" }));
-
   model.compile({
     optimizer: optimizer,
     loss: "categoricalCrossentropy",
@@ -303,8 +307,8 @@ async function trainModel(xTrain, yTrain, xTest, yTest,verbose) {
     validationData: [xTest, yTest],
     callbacks: {
       onEpochEnd: async (epoch, logs) => {
-        if(verbose)
-        document.getElementById("demo").innerHTML+="<p>Epoch: " + epoch + " Logs:" + logs.loss+"</p>";
+        if (verbose)
+          document.getElementById("demo").innerHTML += `<p>Epoch: ${epoch} Logs:${logs.loss}</p>`;
         await tf.nextFrame();
       },
     },
@@ -312,7 +316,7 @@ async function trainModel(xTrain, yTrain, xTest, yTest,verbose) {
   return model;
 }
 
-export  default async function doIris(testSplit,verbose) {
+export default async function doIris(testSplit, verbose) {
 
   const [xTrain, yTrain, xTest, yTest] = getIrisData(testSplit);
   const model = await trainModel(xTrain, yTrain, xTest, yTest);
@@ -343,13 +347,9 @@ export  default async function doIris(testSplit,verbose) {
   // alert("Prediction error rate: " + wrong / yTrue.length);
 }
 
-
+// TODO CHECK
 async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, shape) {
   const model = type;
-  const lR = learningRate;
-  const nOE = numberOfEpoch;
-  const opt = optimizer;
-
   model.add(
     tf.layers.dense({
       units: 10,
@@ -358,7 +358,14 @@ async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, 
     })
   );
 
-  model.add(tf.layers.dense({ units: 3, activation: "softmax" }));
+  model.add(tf.layers.dense({
+    units: 3,
+    activation: "softmax"
+  }));
+
+  const lR = learningRate;
+  const nOE = numberOfEpoch;
+  const opt = optimizer;
 
   model.compile({
     optimizer: optimizer,

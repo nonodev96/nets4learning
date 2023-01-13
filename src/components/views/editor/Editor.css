@@ -7,9 +7,11 @@
   width: 100%;
   flex-wrap: nowrap;
 }
+
 .header-model-editor {
   margin-bottom: 1rem;
 }
+
 p {
   margin: 1rem 1rem 1rem 1rem;
 }
@@ -21,6 +23,7 @@ p {
 .container-fluid-w1900 {
   max-width: 1900px;
 }
+
 .borde {
   border: 1px solid grey;
   border-radius: 10px;
@@ -38,6 +41,7 @@ p {
   display: flex;
   flex-direction: column;
 }
+
 .items2 {
   padding: 1rem;
 }
@@ -62,6 +66,7 @@ p {
 .blue:hover {
   background-color: #005c99;
 }
+
 .blue:active {
   background-color: #1aa3ff;
 }
@@ -74,6 +79,7 @@ p {
 .yellow:hover {
   background-color: #cc9a05;
 }
+
 .yellow:active {
   background-color: #ffcd38;
 }
@@ -86,6 +92,7 @@ p {
 .green:hover {
   background-color: #105635;
 }
+
 .green:active {
   background-color: #24c278;
 }
@@ -94,9 +101,11 @@ p {
 .red:focus {
   background-color: #dc3545;
 }
+
 .red:hover {
   background-color: #960a22;
 }
+
 .red:active {
   background-color: #fb294c;
 }
@@ -111,10 +120,10 @@ p {
   display: flex;
 }
 
-.console{
+.console {
   font-size: small;
 }
 
-.xtraHeight{
+.xtraHeight {
   width: 100%;
 }

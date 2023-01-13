@@ -14,7 +14,7 @@ import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObj
 function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()
   const modelsType = [
-    'Clasificación clasica',
+    'Clasificación clásica',
     'Regresión lineal',
     'Identificación de objetos',
     'Clasificador de imágenes',
@@ -23,46 +23,42 @@ function EditArchitecture() {
   const selectedEditor = () => {
     switch (id.toString()) {
       case '0':
-        // eslint-disable-next-line eqeqeq
-        if (tipo == 0) {
+        if (tipo === 0) {
           return <ModelReviewClassicClassification dataSet={ejemplo}/>
         } else {
-          return <CustomDataSetClassification dataSet={ejemplo} />
+          return <CustomDataSetClassification dataSet={ejemplo}/>
         }
       case '1':
-        // eslint-disable-next-line eqeqeq
-        if (tipo==0){
-          return <ObjectDetection />
-        }else{
-          return <ObjectDetection />
+        if (tipo === 0) {
+          return <ObjectDetection/>
+        } else {
+          return <ObjectDetection/>
         }
       case '2':
-        // eslint-disable-next-line eqeqeq
-        if (tipo==0){
+        if (tipo === 0) {
           return <ModelReviewObjectDetection dataSet={ejemplo}/>
-        }else{
+        } else {
           return <ObjectDetection dataSet={ejemplo}/>
         }
       case '3':
-        // eslint-disable-next-line eqeqeq
-        if (tipo == 0) {
+        if (tipo === 0) {
           return <ModelReviewClassicImageClassification dataSet={ejemplo}/>
         } else {
-          return <MnistImageClassification dataSet={ejemplo} />
+          return <MnistImageClassification dataSet={ejemplo}/>
         }
       default:
-        return <ClassicClassification dataSet={ejemplo} />
+        return <ClassicClassification dataSet={ejemplo}/>
     }
   }
 
   return (
     <>
-      <NavBar />
+      <NavBar/>
       <div className="container">
         <h1 className="titulos">{modelsType[id]}</h1>
       </div>
       {selectedEditor()}
-      <Footer />
+      <Footer/>
     </>
   )
 }

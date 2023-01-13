@@ -47,7 +47,7 @@ export default function CustomCanvasDrawer(props) {
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
     } else {
-      return
+
     }
   }
 

@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 export default function UploadClassicClassification(props) {
-const [WeightFile, SetweightFile] = useState()
-const [JsonFile, SetJsonFile] = useState()
-    
+  const [WeightFile, SetweightFile] = useState()
+  const [JsonFile, SetJsonFile] = useState()
+
   function download(filename, textInput) {
-    var element = document.createElement('a')
+    const element = document.createElement('a')
     element.setAttribute(
       'href',
       'data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput),
@@ -16,7 +16,7 @@ const [JsonFile, SetJsonFile] = useState()
   }
 
   const downloadFile = () => {
-    var url = 'plantilla.json'
+    const url = 'plantilla.json'
     download(
       url,
       `{
@@ -69,31 +69,25 @@ const [JsonFile, SetJsonFile] = useState()
   return (
     <div className="header-model-editor">
       <p>
-        Carga tu propio dataSet con la siguiente{' '}
-        <a href="" onClick={downloadFile} id="dwn-btn">
-          estructura
-        </a>{' '}
+        Carga tu propio dataSet con la siguiente
+        <a href="" onClick={downloadFile} id="dwn-btn">estructura</a>
         pulsando este botón.
       </p>
       <input type="file" name="doc" onChange={handleChangeWeightFileUpload}></input>
 
-      <input
-        type="button"
-        value="Click me"
-        onClick={() => {
-          console.log('Este es el custom dataset', WeightFile)
-        }}
-      ></input>
+      <input type="button"
+             value="Click me"
+             onClick={() => {
+               console.log('Este es el custom dataset', WeightFile)
+             }}></input>
 
       <input type="file" name="doc" onChange={handleChangeJsonFileUpload}></input>
 
-      <input
-        type="button"
-        value="Click me"
-        onClick={() => {
-          console.log('Este es el custom dataset', JsonFile)
-        }}
-      ></input>
+      <input type="button"
+             value="Click me"
+             onClick={() => {
+               console.log('Este es el custom dataset', JsonFile)
+             }}></input>
     </div>
   )
 }

@@ -5,12 +5,10 @@ import "./ButtonDescription.css";
 export default function ButtonDescription(props) {
   const { data } = props;
 
-  
   return (
     <>
       <Container>
         <h3 className="titulos">{data.text}</h3>
-
         <Row className="btns-description">
           {data.buttons.map((a, i) => {
             return (

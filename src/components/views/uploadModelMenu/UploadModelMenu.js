@@ -1,18 +1,31 @@
 import React, { useState } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
 import { Form, Button, Row, Col } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
 import Footer from '../../footer/Footer'
 import NavBar from '../../navBar/NavBar'
 import { modelsType } from '../initialMenu/InitialMenu'
-import { useHistory } from 'react-router-dom'
 import * as alertHelper from "../../../utils/alertHelper"
 
 
 export const ModelList = [
-  ['SUBIR MODELO PROPIO','CLASIFICACIÓN DE COCHES', 'IRIS-DATA - CLASIFICACIÓN DE PLANTA IRIS'],
+  [
+    'SUBIR MODELO PROPIO',
+    'CLASIFICACIÓN DE COCHES',
+    'IRIS-DATA - CLASIFICACIÓN DE PLANTA IRIS'
+  ],
   [],
-  ['SUBIR MODELO PROPIO','GEOMETRÍA FACIAL',"FACE MESH", "DETECTOR DE ARTICULACIONES"],
-  ['SUBIR MODELO PROPIO','MNIST - CLASIFICACIÓN DE NÚMEROS','CLASIFICADOR DE IMAGENES - MOBILENET', 'CLASIFICADOR DE IMAGENES - RESNET V2',],
+  [
+    'SUBIR MODELO PROPIO',
+    'GEOMETRÍA FACIAL',
+    "FACE MESH",
+    "DETECTOR DE ARTICULACIONES"
+  ],
+  [
+    'SUBIR MODELO PROPIO',
+    'MNIST - CLASIFICACIÓN DE NÚMEROS',
+    'CLASIFICADOR DE IMÁGENES - MOBILENET',
+    'CLASIFICADOR DE IMÁGENES - RESNET V2'
+  ],
 ]
 
 export default function UploadModelMenu(props) {
@@ -43,30 +56,30 @@ export default function UploadModelMenu(props) {
     // const model = await tf.loadLayersModel(tf.io.browserFiles([a[0], b[0]]))
 
     if (
-      (Model === -1 || Model === 'Selecciona un Modelo') 
+      (Model === -1 || Model === 'Selecciona un Modelo')
       // CustomModelJson === false &&
       // CustomModelBin === false
     ) {
-      alertHelper.alertWarning('Debes de seleccionar un Modelo')
+      await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
       if (Model === -1 || Model === 'Selecciona un Modelo') {
-        history.push(process.env.REACT_APP_DOMAIN+'/edit-architecture/' + id + '/' + 0 + '/' + -1)
+        history.push(process.env.REACT_APP_DOMAIN + '/edit-architecture/' + id + '/' + 0 + '/' + -1)
       } else {
-        history.push(process.env.REACT_APP_DOMAIN+'/edit-architecture/' + id + '/' + 0 + '/' + Model)
+        history.push(process.env.REACT_APP_DOMAIN + '/edit-architecture/' + id + '/' + 0 + '/' + Model)
       }
     }
   }
 
   return (
     <>
-      <NavBar />
+      <NavBar/>
       <Form>
         <div className="container">
           <h1>{modelsType[id]}</h1>
           <div className="header-model-editor">
             <p>
-              Selecciona a continuación el Modelo Pre-entrenado sobre el que se
-              va a trabajar, si deseas uasar uno propio, utiliza la opción del desplegable y carga los archivos enn la siguiente vista.
+              Selecciona a continuación el Modelo Pre-entrenado sobre el que se va a trabajar.
+              Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente vista.
             </p>
           </div>
           {/* {numberClass.start()} */}
@@ -76,17 +89,11 @@ export default function UploadModelMenu(props) {
             <Col>
               <Form.Group className="mb-3" controlId="FormModel">
                 <Form.Label>Selecciona un Modelo</Form.Label>
-                <Form.Select
-                  aria-label="Default select example"
-                  onChange={handleChangeModel}
-                >
+                <Form.Select aria-label="Default select example"
+                             onChange={handleChangeModel}>
                   <option>Selecciona un Modelo</option>
                   {ModelList[id].map((item, id) => {
-                    return (
-                      <option key={id} value={id}>
-                        {item}
-                      </option>
-                    )
+                    return (<option key={id} value={id}>{item}</option>)
                   })}
                 </Form.Select>
               </Form.Group>
@@ -113,15 +120,13 @@ export default function UploadModelMenu(props) {
         </div>
 
         <div className="container">
-          <Button
-            className="btn-custom-description"
-            onClick={() => handleSubmmit()}
-          >
+          <Button className="btn-custom-description"
+                  onClick={() => handleSubmmit()}>
             Continuar
           </Button>
         </div>
       </Form>
-      <Footer />
+      <Footer/>
     </>
   )
 }

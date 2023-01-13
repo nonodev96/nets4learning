@@ -7,12 +7,12 @@ import InitialMenu from "./views/initialMenu/InitialMenu";
 export default function Home() {
   return (
     <>
-      <NavBar />
+      <NavBar/>
       <div className="wrapper container">
         <h1 className="titulos">Bienvenido a Nets4learning, para continuar selecciona una de estas disciplinas </h1>
-        <InitialMenu />
+        <InitialMenu/>
       </div>
-      <Footer />
+      <Footer/>
     </>
   );
 }

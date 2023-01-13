@@ -1,16 +1,8 @@
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Button, Col, Form } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { Col, Form } from 'react-bootstrap'
-import {
-  dataSetList,
-  dataSetDescription,
-} from '../../uploadArcitectureMenu/UploadArchitectureMenu'
-import doIris from '../../../../modelos/Clasificador'
-import {
-  IRIS_CLASSES,
-  CAR_CLASSES,
-  CAR_DATA_CLASSES,
-} from '../../../../modelos/Clasificador'
+import { dataSetDescription, } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
+import { IRIS_CLASSES, CAR_CLASSES, CAR_DATA_CLASSES } from '../../../../modelos/Clasificador'
 import { ModelList } from '../../uploadModelMenu/UploadModelMenu'
 import * as alertHelper from '../../../../utils/alertHelper'
 
@@ -32,7 +24,7 @@ export default function ModelReviewClassicClassification(props) {
 
     async function getModel1() {
       const model = await tf.loadLayersModel(
-        'https://'+ process.env.REACT_APP_SOURCE_MODEL_DOMAIN +'/src/modelos/data/carClassification/mymodelCar.json',
+        'https://' + process.env.REACT_APP_SOURCE_MODEL_DOMAIN + '/src/modelos/data/carClassification/mymodelCar.json',
       )
       model.summary()
       setModel(model)
@@ -46,12 +38,12 @@ export default function ModelReviewClassicClassification(props) {
       )
       modelo.summary()
       setModel(modelo)
-      alertHelper.alertSuccess("Modelo cargado con éxito")
+      await alertHelper.alertSuccess("Modelo cargado con éxito")
     }
 
-    if (dataSet == 2) {
+    if (dataSet === 2) {
       getModel2()
-    } else if (dataSet == 1) {
+    } else if (dataSet === 1) {
       getModel1()
     } else {
     }
@@ -60,9 +52,9 @@ export default function ModelReviewClassicClassification(props) {
   const handleVectorTest = async () => {
     // vhigh;vhigh;2;2;big;med;
     if (String === undefined || String.length < 1) {
-      alertHelper.alertWarning('Introduce unos valores a probar')
+      await alertHelper.alertWarning('Introduce unos valores a probar')
     } else {
-      if (dataSet == 2) {
+      if (dataSet === 2) {
         try {
           let input = [[], [1, String.split(';').length]]
 
@@ -76,24 +68,21 @@ export default function ModelReviewClassicClassification(props) {
           const predictionWithArgMax = Model.predict(tensor)
             .argMax(-1)
             .dataSync()
-          alertHelper.alertInfo(
-            'Este es el resultado:\n' +
-              IRIS_CLASSES[predictionWithArgMax] +
-              '.\n' +
-              prediction,
+          await alertHelper.alertInfo(
+            `Este es el resultado: ${IRIS_CLASSES[predictionWithArgMax]}. ${prediction}`,
             IRIS_CLASSES[predictionWithArgMax],
           )
         } catch (error) {
-          alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
+          await alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
         }
-      } else if (dataSet == 1) {
+      } else if (dataSet === 1) {
         try {
           let array = String.split(';')
           let input = [[], [1, array.length]]
           let i = 0
           array.forEach((element) => {
             input[0].push(
-              CAR_DATA_CLASSES[i].findIndex((element) => element == array[i]),
+              CAR_DATA_CLASSES[i].findIndex((element) => element === array[i]),
             )
             i++
           })
@@ -104,16 +93,12 @@ export default function ModelReviewClassicClassification(props) {
             .argMax(-1)
             .dataSync()
 
-          alertHelper.alertInfo(
-            'Este es el resultado:\n' +
-              CAR_CLASSES[predictionWithArgMax] +
-              '.\n' +
-              prediction,
+          await alertHelper.alertInfo(
+            `Este es el resultado: ${CAR_CLASSES[predictionWithArgMax]}.${prediction}`,
             CAR_CLASSES[predictionWithArgMax],
           )
         } catch (error) {
-          alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
-
+          await alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
         }
       } else {
         try {
@@ -136,12 +121,9 @@ export default function ModelReviewClassicClassification(props) {
             .argMax(-1)
             .dataSync()
 
-          alertHelper.alertInfo(
-            'La solición es el tipo: ' + predictionWithArgMax,
-            predictionWithArgMax,
-          )
+          await alertHelper.alertInfo('La solución es el tipo: ' + predictionWithArgMax, predictionWithArgMax)
         } catch (error) {
-          alertHelper.alertError(error)
+          await alertHelper.alertError(error)
         }
       }
     }
@@ -154,26 +136,22 @@ export default function ModelReviewClassicClassification(props) {
       </div>
       <Col className="col-specific cen">
         <div className="container-fluid container-fluid-w1900">
-          {dataSet == 0 ? (
+          {dataSet === 0 ? (
             <div className="header-model-editor">
               <p>
                 Carga tu propio Modelo. Ten en cuenta que tienes que subir
-                primero el archivo .json y despues el fichero .bin{' '}
+                primero el archivo .json y después el fichero .bin
               </p>
-              <input
-                id="json-upload"
-                style={{ marginLeft: '1rem' }}
-                type="file"
-                name="json"
-                accept=".json"
-              ></input>
-              <input
-                id="weights-upload"
-                style={{ marginLeft: '1rem' }}
-                type="file"
-                accept=".bin"
-                name="bin"
-              ></input>
+              <input id="json-upload"
+                     style={{ marginLeft: '1rem' }}
+                     type="file"
+                     name="json"
+                     accept=".json"></input>
+              <input id="weights-upload"
+                     style={{ marginLeft: '1rem' }}
+                     type="file"
+                     accept=".bin"
+                     name="bin"></input>
             </div>
           ) : (
             <div className="header-model-editor">
@@ -182,19 +160,19 @@ export default function ModelReviewClassicClassification(props) {
           )}
 
           <div className="header-model-editor mg-top">
-            {dataSet == 1 ? (
+            {dataSet === 1 ? (
               <p>
                 Introduce separado por punto y coma los siguientes valores
                 correspondientes a el coche que se va a evaluar:{' '}
                 <b>(buying; maint; doors; persons; lug_boot; safety).</b>
               </p>
-            ) : dataSet == 2 ? (
+            ) : dataSet === 2 ? (
               <p>
                 Introduce separado por punto y coma los siguientes valores
                 correspondientes a la planta que se va a evaluar:{' '}
                 <b>(longitud sépalo;anchura sépalo;longitud petalo;anchura petalo).</b>
               </p>
-            ) : dataSet == 0 ? (
+            ) : dataSet === 0 ? (
               <p>
                 Introduce separado por punto y coma los valores{' '}
                 <b>(buying; maint; doors; persons; lug_boot; safety).</b>
@@ -202,7 +180,6 @@ export default function ModelReviewClassicClassification(props) {
             ) : (
               ''
             )}
-            
           </div>
           <div className="container pane borde">
             <div className="title-pane">Resultado</div>
@@ -215,15 +192,13 @@ export default function ModelReviewClassicClassification(props) {
               />
             </Form.Group>
 
-            {/* SUBMIT BUTOON */}
-            <button
-              className="btn-add-layer"
-              type="button"
-              onClick={handleVectorTest}
-              variant="primary"
-            >
+            {/* SUBMIT BUTTON */}
+            <Button className="btn-add-layer"
+                    type="button"
+                    onClick={handleVectorTest}
+                    variant="primary">
               Ver resultado
-            </button>
+            </Button>
           </div>
         </div>
       </Col>

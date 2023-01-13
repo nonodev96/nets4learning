@@ -1,7 +1,7 @@
-import {React, useState, useEffect} from 'react'
+import { React, useState, useEffect } from 'react'
 import * as tf from '@tensorflow/tfjs'
-import {Col, Row, CloseButton} from 'react-bootstrap'
-import {Form} from 'react-bootstrap'
+import { Col, Row, CloseButton } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import {
   createClassicClassification,
   createClassicClassificationCustomDataSet,
@@ -9,17 +9,14 @@ import {
 import './ClassicClassification.css'
 import * as clasificador from '../../../../modelos/Clasificador'
 import * as cochesDataset from '../../../../modelos/data/coches.json'
-import {
-  dataSetList,
-  dataSetDescription,
-} from '../../uploadArcitectureMenu/UploadArchitectureMenu'
-import * as alertHelper from '../../../../utils/alertHelper'
+import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import GraphicRed from '../../../../utils/graphicRed/GraphicRed.js'
+import * as alertHelper from '../../../../utils/alertHelper'
 
 export default function CustomDataSetClassification(props) {
-  const {dataSet} = props
+  const { dataSet } = props
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRECARGAN UNOS AJUSTRS U OTROS
+  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState()
   const [Layer, setLayer] = useState([])
   const NumberEpochs = 50
@@ -53,13 +50,13 @@ export default function CustomDataSetClassification(props) {
       setNLayer(array.length)
       console.log('ahora hay algo', array)
       console.log([
-        {units: 10, activation: 'Sigmoid'},
-        {units: 3, activation: 'Softmax'},
+        { units: 10, activation: 'Sigmoid' },
+        { units: 3, activation: 'Softmax' },
       ])
     } else {
       setLayer([
-        {units: 10, activation: 'Sigmoid'},
-        {units: 3, activation: 'Softmax'},
+        { units: 10, activation: 'Sigmoid' },
+        { units: 3, activation: 'Softmax' },
       ])
       setNLayer(2)
       if (dataSet === 1) {
@@ -212,7 +209,7 @@ export default function CustomDataSetClassification(props) {
     // vhigh;vhigh;2;2;big;med;
     let input = [[], [1, string.split(';').length]]
     if (dataSet === 0) {
-      if (CustomDataSet == undefined) {
+      if (CustomDataSet === undefined) {
         await alertHelper.alertError('Primero debes de cargar un dataSet')
         return
       }
@@ -261,7 +258,7 @@ export default function CustomDataSetClassification(props) {
     let array = Layer
     if (array.length < 6) {
 
-      array.push({units: 0, activation: 0})
+      array.push({ units: 0, activation: 0 })
       setLayer(array)
       setNLayer(nLayer + 1)
     } else {
@@ -394,14 +391,14 @@ export default function CustomDataSetClassification(props) {
           <div className="header-model-editor">
             {setUploadedArchitecture ? (
               <p>
-                A continuación se ha precargado la arquitectura del fichero
+                A continuación se ha pre cargado la arquitectura del fichero
                 importado en la vista anterior. Modifica los parámetros a tu
                 gusto para jugar con la red y descubrir diferentes
                 comportamientos de la misma.
               </p>
             ) : (
               <p>
-                A continuación se ha precargado una arquitectura. Modifica los
+                A continuación se ha pre cargado una arquitectura. Modifica los
                 parámetros a tu gusto para jugar con la red y descubrir
                 diferentes comportamientos de la misma.
               </p>
@@ -418,17 +415,12 @@ export default function CustomDataSetClassification(props) {
             <div className="header-model-editor">
               <p>
                 Carga tu propio dataSet con la siguiente{' '}
-                <a href="" onClick={downloadFile} id="dwn-btn">
-                  estructura
-                </a>{' '}
-                pulsando este botón.
+                <a href="" onClick={downloadFile} id="dwn-btn">estructura</a> pulsando este botón.
               </p>
-              <input
-                style={{marginLeft: '1rem'}}
-                type="file"
-                name="doc"
-                onChange={handleChangeFileUpload}
-              ></input>
+              <input style={{ marginLeft: '1rem' }}
+                     type="file"
+                     name="doc"
+                     onChange={handleChangeFileUpload}></input>
             </div>
           ) : (
             <div className="header-model-editor">
@@ -438,60 +430,69 @@ export default function CustomDataSetClassification(props) {
 
           {/* {numberClass.start()} */}
           <div className="header-model-editor">
-            <br/>
             <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
             <ul>
-              <br/> <b>A la izquierda </b>se pueden ver las capas de neuronas,
-              puedes agregar tantas como desees pulsando el botón "Añadir capa".
-              Puedes modificar dos parámetros:
+              <li>
+                <b>A la izquierda </b><br/>
+                se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa".
+              </li>
+
+              <li>
+                Puedes modificar dos parámetros:
+                <ul>
+                  <li><b>Unidades de la capa:</b> cuantas unidades deseas que tenga esa capa</li>
+                  <li><b>Función de activación:</b> función de activación para esa capa</li>
+                </ul>
+              </li>
+
+              <li>
+                <b>A la derecha </b><br/>
+                se pueden ver parámetros generales necesarios para la creación del modelo. Estos parámetros son:
+              </li>
+
               <ul>
                 <li>
-                  Unidades de la capa: cuantas unidades deseas que tenga esa
-                  capa
+                  <b>Tasa de entrenamiento:</b>
+                  Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento y
+                  reglas para el test
                 </li>
                 <li>
-                  Función de activación: función de activación para esa capa
+                  <b>Nº de iteraciones:</b>
+                  cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
+                </li>
+                <li>
+                  <b>Optimizador:</b>
+                  Es una función que como su propio nombre indica se usa para optimizar los modelos.
+                  Esto es frecuentemente usado para evitar estancarse en un máximo local.
+                </li>
+                <li>
+                  <b>Función de pérdida:</b><br/>
+                  Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
+                </li>
+                <li>
+                  <b>Métrica:</b><br/>
+                  Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
                 </li>
               </ul>
               <br/>
-              <b>A la derecha </b>se pueden ver parámetros generales necesarios
-              para la creación del modelo. Estos parámetros son:
-              <ul>
-                <li>
-                  Tasa de entrenamiento: Valor entre 0 y 100 el cual indica a la
-                  red qué cantidad de datos debe usar para el entreneamiento y
-                  cules para el test
-                </li>
-                <li>
-                  Nº de iteraciones: cantidad de ciclos que va a realizar la red
-                  (a mayor número, más tiempo tarda en entrenar)
-                </li>
-                <li>
-                  Optimizador: Es una función que como su propio nombre indica
-                  se usa para optimizar los modelos. Esto es frecuentemente
-                  usado para evitar estancarse en un máximo local.
-                </li>
-                <li>
-                  Función de pérdida: Es un método para evaluar qué tan bien un
-                  algoritmo específico modela los datos otorgados
-                </li>
-                <li>
-                  Métrica: es evaluación para valorar el rendimiento de un
-                  modelo de aprendizaje automático
-                </li>
-              </ul>
-              <br/>
-              <b>Crear y entrenar modelo. </b>Una vez se han rellenado todos los
-              campos anteriores podemos crear el modelo pulsando el botón.
-              <br/>
-              <b>Exportar modelo. </b>Si hemos creado el modelo correctamente
-              nos aparece este botón que nos permite exportar el modelo y
-              guardarlo localmente.
-              <br/>
-              <b>Resultado. </b> Un formulario que nos permite predecir el valor
-              de salida a partir de los valores de entrada que introducimos,
-              para ver la salida solamente hay que pulsar "Ver resultado".
-              <br/>
+
+              <li>
+                <b>Crear y entrenar modelo.</b><br/>
+                Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
+              </li>
+
+              <li>
+                <b>Exportar modelo.</b><br/>
+                Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
+                guardarlo localmente.
+              </li>
+
+              <li>
+                <b>Resultado.</b><br/>
+                Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
+                introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
+              </li>
+
             </ul>
           </div>
         </div>
@@ -515,44 +516,28 @@ export default function CustomDataSetClassification(props) {
                           />
                         </div>
                         {/* UNITS */}
-                        <Form.Group
-                          className="mb-3"
-                          controlId={'formUnitsLayer' + index}
-                        >
+                        <Form.Group className="mb-3"
+                                    controlId={'formUnitsLayer' + index}>
                           <Form.Label>Unidades de la capa</Form.Label>
-                          <Form.Control
-                            type="number"
-                            placeholder="Introduce el número de unidades de la capa"
-                            defaultValue={item.units}
-                            onChange={() => handleChangeUnits(index)}
-                          />
+                          <Form.Control type="number"
+                                        placeholder="Introduce el número de unidades de la capa"
+                                        defaultValue={item.units}
+                                        onChange={() => handleChangeUnits(index)}/>
                         </Form.Group>
-
                         {/* ACTIVATION FUNCTION */}
-                        <Form.Group
-                          className="mb-3"
-                          controlId={'formActivationLayer' + index}
-                        >
-                          <Form.Label>
-                            Selecciona la función de activación
-                          </Form.Label>
-                          <Form.Select
-                            aria-label="Default select example"
-                            defaultValue={item.activation}
-                            onChange={() => handleChangeActivation(index)}
-                          >
+                        <Form.Group className="mb-3"
+                                    controlId={'formActivationLayer' + index}>
+                          <Form.Label>Selecciona la función de activación</Form.Label>
+                          <Form.Select aria-label="Default select example"
+                                       defaultValue={item.activation}
+                                       onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
                             {ACTIVATION_TYPE.map((itemAct, indexAct) => {
-                              return (
-                                <option key={indexAct} value={itemAct}>
-                                  {itemAct}
-                                </option>
-                              )
+                              return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                             })}
                           </Form.Select>
                           <Form.Text className="text-muted">
-                            Será el optimizador que se usará para activar la
-                            funcion
+                            Será el optimizador que se usará para activar la función
                           </Form.Text>
                         </Form.Group>
                       </div>
@@ -561,11 +546,10 @@ export default function CustomDataSetClassification(props) {
                 })}
 
                 {/* ADD LAYER */}
-                <button
-                  className="btn-add-layer"
-                  type="button"
-                  onClick={() => handlerAddLayer()}
-                  variant="primary">
+                <button className="btn-add-layer"
+                        type="button"
+                        onClick={() => handlerAddLayer()}
+                        variant="primary">
                   Añadir capa
                 </button>
               </div>
@@ -583,62 +567,46 @@ export default function CustomDataSetClassification(props) {
                     defaultValue={learningValue}
                   />
                   <Form.Text className="text-muted">
-                    Recuerda que debe ser un valor entre 0 y 100 (es un
-                    porcentaje)
+                    Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                   </Form.Text>
                 </Form.Group>
 
                 {/* Nº OT ITERATIONS */}
                 <Form.Group className="mb-3" controlId="formNumberOfEpochs">
                   <Form.Label>Nº de iteraciones</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Introduce el número de iteraciones"
-                    defaultValue={NumberEpochs}
-                    onChange={handleChangeNoEpochs}
-                  />
+                  <Form.Control type="number"
+                                placeholder="Introduce el número de iteraciones"
+                                defaultValue={NumberEpochs}
+                                onChange={handleChangeNoEpochs}/>
                   <Form.Text className="text-muted">
-                    *Mientras más alto sea, mas taradará en ejecutarse el
-                    entrenamiento
+                    *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                   </Form.Text>
                 </Form.Group>
 
                 {/* OPTIMIZATION FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormOptimizer">
                   <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={Optimizer}
-                    onChange={handleChangeOptimization}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={Optimizer}
+                               onChange={handleChangeOptimization}>
                     <option>Selecciona el optimizador</option>
                     {OPTIMIZER_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
                 {/* LOSS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormLoss">
                   <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={LossValue}
-                    onChange={handleChangeLoss}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={LossValue}
+                               onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
                     {LOSS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
@@ -649,22 +617,16 @@ export default function CustomDataSetClassification(props) {
                 {/* METRICS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormMetrics">
                   <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={MetricsValue}
-                    onChange={handleChangeMetrics}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={MetricsValue}
+                               onChange={handleChangeMetrics}>
                     <option>Selecciona la métrica</option>
                     {METRICS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
               </div>
@@ -673,12 +635,9 @@ export default function CustomDataSetClassification(props) {
 
           {/* BLOCK  BUTTON */}
           <div className="col-specific cen">
-            <button
-              className="btn-add-layer mg-top "
-              type="submit"
-              // onClick=
-              variant="primary"
-            >
+            <button className="btn-add-layer mg-top "
+                    type="submit"
+                    variant="primary">
               Crear y entrenar modelo
             </button>
           </div>
@@ -686,43 +645,36 @@ export default function CustomDataSetClassification(props) {
           {/* SALIDA */}
           <div id="salida"></div>
 
-          {Model === undefined ? (
-            ''
-          ) : (
-            <button
-              className="btn-add-layer"
-              type="button"
-              onClick={handleDownloadModel}
-              variant="primary"
-            >
+          {Model === undefined ? ('') : (
+            <button className="btn-add-layer"
+                    type="button"
+                    onClick={handleDownloadModel}
+                    variant="primary">
               Exportar modelo
             </button>
           )}
 
           <div className="header-model-editor mg-top">
-            <p>
-              Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla{' '}
-              <b>ñ</b>.
-            </p>
+            <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
           </div>
         </div>
 
         {/* BLOCK 2 */}
         <div className="container">
           <div className="header-model-editor mg-top">
-            {dataSet == 1 ? (
+            {dataSet === 1 ? (
               <p>
                 Introduce separado por comas los siguientes valores
                 correspondientes a el coche que se va a evaluar:{' '}
                 <b>(buying, maint, doors, persons, lug_boot, safety).</b>
               </p>
-            ) : dataSet == 2 ? (
+            ) : dataSet === 2 ? (
               <p>
                 Introduce separado por comas los siguientes valores
                 correspondientes a la planta que se va a evaluar:{' '}
                 <b>(longitud sépalo,anchura sépalo,longitud petalo,anchura petalo).</b>
               </p>
-            ) : dataSet == 0 ? (
+            ) : dataSet === 0 ? (
               <p>
                 Introduce separado por comas los valores{' '}
                 <b>(buying, maint, doors, persons, lug_boot, safety).</b>
@@ -739,26 +691,16 @@ export default function CustomDataSetClassification(props) {
                 {/* VECTOR TEST */}
                 <Form.Group className="mb-3" controlId={'formTestInput'}>
                   <Form.Label>Introduce el vector a probar</Form.Label>
-                  <Form.Control
-                    placeholder="Introduce el vector a probar"
-                    defaultValue={
-                      dataSet == 1
-                        ? 'vhigh;vhigh;2;2;big;med'
-                        : dataSet == 2
-                          ? '0.1;4.3;2.1;0.2'
-                          : ''
-                    }
-                    onChange={() => handleChangeTestInput()}
-                  />
+                  <Form.Control placeholder="Introduce el vector a probar"
+                                defaultValue={dataSet === 1 ? 'vhigh;vhigh;2;2;big;med' : dataSet === 2 ? '0.1;4.3;2.1;0.2' : ''}
+                                onChange={() => handleChangeTestInput()}/>
                 </Form.Group>
 
-                {/* SUBMIT BUTOON */}
-                <button
-                  className="btn-add-layer"
-                  type="button"
-                  onClick={handleVectorTest}
-                  variant="primary"
-                >
+                {/* SUBMIT BUTTON */}
+                <button className="btn-add-layer"
+                        type="button"
+                        onClick={handleVectorTest}
+                        variant="primary">
                   Ver resultado
                 </button>
               </div>

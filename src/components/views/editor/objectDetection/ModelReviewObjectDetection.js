@@ -1,14 +1,10 @@
-/* eslint-disable eqeqeq */
-import { React, useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Col, Row, Form } from 'react-bootstrap'
-import {
-  dataSetList,
-  dataSetDescription,
-} from '../../uploadArcitectureMenu/UploadArchitectureMenu'
-import * as faceDetection from '@tensorflow-models/face-detection'
 import Webcam from 'react-webcam'
+import * as faceDetection from '@tensorflow-models/face-detection'
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import * as poseDetection from '@tensorflow-models/pose-detection'
+import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import { ModelList } from '../../uploadModelMenu/UploadModelMenu'
 import { alertSuccess, alertError } from '../../../../utils/alertHelper'
 
@@ -35,6 +31,7 @@ export default function ModelReviewObjectDetection(props) {
       setDetector(detector)
       console.log(Detector)
     }
+
     async function getModel0() {
       const model = await faceDetection.createDetector(
         faceDetection.SupportedModels.MediaPipeFaceDetector,
@@ -42,86 +39,82 @@ export default function ModelReviewObjectDetection(props) {
           runtime: 'tfjs', // or 'tfjs'
         },
       )
-      runFaceDetector(model)
+      await runFaceDetector(model)
     }
 
     async function getModel2() {
       const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
+      // FIXME
       const detectorConfig = {
         runtime: 'tfjs', // or 'tfjs'
         solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
       }
-      const detector = await faceLandmarksDetection.createDetector(
-        model,
-        detectorConfig,
-      )
-      runFaceDetector(detector)
+      const detector = await faceLandmarksDetection.createDetector(model, detectorConfig)
+      await runFaceDetector(detector)
     }
 
     async function getModel2b() {
       const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
+      // FIXME
       const detectorConfig = {
         runtime: 'tfjs', // or 'tfjs'
         solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
       }
-      const detector = await faceLandmarksDetection.createDetector(
-        model,
-        detectorConfig,
-      )
+      const detector = await faceLandmarksDetection.createDetector(model, detectorConfig)
       setDetector(detector)
     }
 
     async function getModel3() {
       const model = poseDetection.SupportedModels.MoveNet
       const detector = await poseDetection.createDetector(model)
-
-      runFaceDetector(detector)
+      await runFaceDetector(detector)
     }
 
     async function getModel3b() {
       const model = poseDetection.SupportedModels.MoveNet
       const detector = await poseDetection.createDetector(model)
-
       setDetector(detector)
     }
 
-    if (dataSet == 1) {
-      if (Camera) {
-        getModel0()
+    const init = async () => {
+      if (dataSet === 1) {
+        if (Camera) {
+          await getModel0()
+        } else {
+          await getModel()
+        }
+        if (!ShowedAlert) {
+          await alertSuccess("Modelo cargado con éxito")
+          setShowedAlert(true)
+        }
+      } else if (dataSet === 2) {
+        if (Camera) {
+          await getModel2()
+        } else {
+          await getModel2b()
+        }
+        if (!ShowedAlert) {
+          await alertSuccess("Modelo cargado con éxito")
+          setShowedAlert(true)
+        }
+      } else if (dataSet === 3) {
+        if (Camera) {
+          await getModel3()
+        } else {
+          await getModel3b()
+        }
+        if (!ShowedAlert) {
+          await alertSuccess("Modelo cargado con éxito")
+          setShowedAlert(true)
+        }
       } else {
-        getModel()
+        console.error('NO ENTRAMOS')
+        console.trace();
       }
-      if (!ShowedAlert){
-        alertSuccess("Modelo cargado con éxito")
-        setShowedAlert(true)
-      }
-
-    } else if (dataSet == 2) {
-      if (Camera) {
-        getModel2()
-      } else {
-        getModel2b()
-      }
-      if (!ShowedAlert){
-        alertSuccess("Modelo cargado con éxito")
-        setShowedAlert(true)
-      }
-
-    } else if (dataSet == 3) {
-      if (Camera) {
-        getModel3()
-      } else {
-        getModel3b()
-      }
-      if (!ShowedAlert){
-        alertSuccess("Modelo cargado con éxito")
-        setShowedAlert(true)
-      }
-
-    } else {
-      console.log('NO ENTRAMOS')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    init()
+      .catch(console.error)
   }, [Camera])
 
   const runFaceDetector = async (model) => {
@@ -147,8 +140,8 @@ export default function ModelReviewObjectDetection(props) {
       // Set canvas width
       canvasRef.current.width = videoWidth
       canvasRef.current.height = videoHeight
-      if (dataSet == 3) {
-        console.log("antes de la estimacion")
+      if (dataSet === 3) {
+        console.log("antes de la estimación")
 
         const pose = await model.estimatePoses(video)
         console.log(pose)
@@ -193,7 +186,7 @@ export default function ModelReviewObjectDetection(props) {
           })
         })
       }
-      if (dataSet != 3) {
+      if (dataSet !== 3) {
         const face = await model.estimateFaces(video)
         console.log(face)
         // Get canvas context
@@ -204,7 +197,7 @@ export default function ModelReviewObjectDetection(props) {
             ctx.strokeStyle = '#FF0902'
             // ctx.strokeRect(box.xMin, box.yMin, box.width, box.height)
             array.keypoints.forEach((element) => {
-              if (dataSet == 1) {
+              if (dataSet === 1) {
                 ctx.strokeRect(element.x, element.y, 5, 5)
               }
               ctx.strokeRect(element.x, element.y, 1, 1)
@@ -217,32 +210,32 @@ export default function ModelReviewObjectDetection(props) {
 
   const handleVectorTest = async () => {
     if (ImageUploaded) {
-      var canvas = document.getElementById('originalImage')
-      var ctx1 = canvas.getContext('2d')
+      const canvas = document.getElementById('originalImage')
+      const ctx1 = canvas.getContext('2d')
 
-      var resultCanvas = document.getElementById('resultCanvas')
-      var ctx2 = resultCanvas.getContext('2d')
+      const resultCanvas = document.getElementById('resultCanvas')
+      const ctx2 = resultCanvas.getContext('2d')
       resultCanvas.height = canvas.height
       resultCanvas.width = canvas.width
       ctx2.drawImage(canvas, 0, 0)
-      // console.log("TRANSFORMACION A 64")
-      var imgData = ctx1.getImageData(0, 0, canvas.height, canvas.width)
+      // console.log("TRANSFORMACIÓN A 64")
+      const imgData = ctx1.getImageData(0, 0, canvas.height, canvas.width)
 
-      if (dataSet != 3) {
+      if (dataSet !== 3) {
         const faces = await Detector.estimateFaces(imgData)
 
         console.log(faces)
         ctx2.strokeStyle = '#FF0902'
 
         faces[0].keypoints.forEach((element) => {
-          if (dataSet == 1) {
+          if (dataSet === 1) {
             ctx2.strokeRect(element.x, element.y, 10, 10)
           }
           ctx2.strokeRect(element.x, element.y, 1, 1)
         })
       }
 
-      if (dataSet == 3) {
+      if (dataSet === 3) {
         const poses = await Detector.estimatePoses(imgData)
 
         console.log(poses[0].keypoints)
@@ -300,7 +293,7 @@ export default function ModelReviewObjectDetection(props) {
         // OLD MODEL
         //       const face = await net.estimateFaces(video);
         // NEW MODEL
-        if (dataSet != 3) {
+        if (dataSet !== 3) {
           const face = await Detector.estimateFaces(video)
           console.log(face)
 
@@ -318,7 +311,7 @@ export default function ModelReviewObjectDetection(props) {
             })
           })
         }
-        if (dataSet == 3) {
+        if (dataSet === 3) {
           const pose = await Detector.estimatePoses(video)
           console.log(pose)
 
@@ -368,13 +361,14 @@ export default function ModelReviewObjectDetection(props) {
   }
 
   const handleChangeFileUpload = async (e) => {
-    var tgt = e.target || window.event.srcElement,
-      files = tgt.files
+    let tgt = e.target || window.event.srcElement
+    let files = tgt.files
 
-    var canvas = document.getElementById('originalImage')
-    var ctx = canvas.getContext('2d')
-    var canvas2 = document.getElementById('imageCanvas')
-    var ctx2 = canvas.getContext('2d')
+    const canvas = document.getElementById('originalImage')
+    const ctx = canvas.getContext('2d')
+
+    const canvas2 = document.getElementById('imageCanvas')
+    const ctx2 = canvas.getContext('2d')
 
     function draw() {
       canvas.width = 500
@@ -389,24 +383,14 @@ export default function ModelReviewObjectDetection(props) {
       canvas2.height = canvas2.width * (this.height / this.width)
       // step 1 - resize to 75%
       const oc = document.createElement('canvas')
-      const octx = oc.getContext('2d')
+      const oc_ctx = oc.getContext('2d')
       // Set the width & height to 75% of image
       oc.width = this.width * 0.75
       oc.height = this.height * 0.75
       // step 2, resize to temporary size
-      octx.drawImage(this, 0, 0, oc.width, oc.height)
+      oc_ctx.drawImage(this, 0, 0, oc.width, oc.height)
       // step 3, resize to final size
-      ctx.drawImage(
-        oc,
-        0,
-        0,
-        oc.width,
-        oc.height,
-        0,
-        0,
-        canvas.width,
-        canvas.height,
-      )
+      ctx.drawImage(oc, 0, 0, oc.width, oc.height, 0, 0, canvas.width, canvas.height)
       setImageUploaded(true)
     }
 
@@ -414,7 +398,7 @@ export default function ModelReviewObjectDetection(props) {
       alertError('Error al cargar el fichero')
     }
 
-    var img = new Image()
+    const img = new Image()
     img.onload = draw
     img.onerror = failed
     img.src = URL.createObjectURL(files[0])
@@ -435,26 +419,22 @@ export default function ModelReviewObjectDetection(props) {
       </div>
       <Col className="col-specific cen">
         <div className="container-fluid container-fluid-w1900">
-          {dataSet == 0 ? (
+          {dataSet === 0 ? (
             <div className="header-model-editor">
               <p>
                 Carga tu propio Modelo. Ten en cuenta que tienes que subir
                 primero el archivo .json y despues el fichero .bin{' '}
               </p>
-              <input
-                id="json-upload"
-                style={{ marginLeft: '1rem' }}
-                type="file"
-                name="json"
-                accept=".json"
-              ></input>
-              <input
-                id="weights-upload"
-                style={{ marginLeft: '1rem' }}
-                type="file"
-                accept=".bin"
-                name="bin"
-              ></input>
+              <input id="json-upload"
+                     style={{ marginLeft: '1rem' }}
+                     type="file"
+                     name="json"
+                     accept=".json"></input>
+              <input id="weights-upload"
+                     style={{ marginLeft: '1rem' }}
+                     type="file"
+                     accept=".bin"
+                     name="bin"></input>
             </div>
           ) : (
             <div className="header-model-editor">
@@ -465,13 +445,11 @@ export default function ModelReviewObjectDetection(props) {
           <div className="container xtraPane borde">
             <Form>
               <div key={`default-checkbox`} className="mb-3">
-                <Form.Check
-                  type="checkbox"
-                  id={`default-checkbox`}
-                  label={`Usar webcam`}
-                  value={Camera}
-                  onChange={handleChangeCamera}
-                />
+                <Form.Check type="checkbox"
+                            id={`default-checkbox`}
+                            label={`Usar webcam`}
+                            value={Camera}
+                            onChange={handleChangeCamera}/>
               </div>
             </Form>
             <div className="title-pane">Resultado</div>
@@ -490,45 +468,39 @@ export default function ModelReviewObjectDetection(props) {
             <div className="">
               {Camera ? (
                 <div style={{ position: 'relative' }}>
-                  <Webcam
-                    ref={webcamRef}
-                    style={{
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      left: 0,
-                      right: 0,
-                      textAlign: 'center',
-                      zIndex: 9,
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
+                  <Webcam ref={webcamRef}
+                          style={{
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            left: 0,
+                            right: 0,
+                            textAlign: 'center',
+                            zIndex: 9,
+                            width: '100%',
+                            height: '100%',
+                          }}/>
 
-                  <canvas
-                    ref={canvasRef}
-                    style={{
-                      position: 'absolute',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                      textAlign: 'center',
-                      left: 0,
-                      zIndex: 10,
-                      width: '100%',
-					  height:'100%'
-                    }}
-                  ></canvas>
+                  <canvas ref={canvasRef}
+                          style={{
+                            position: 'absolute',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            textAlign: 'center',
+                            left: 0,
+                            zIndex: 10,
+                            width: '100%',
+                            height: '100%'
+                          }}></canvas>
                 </div>
               ) : (
                 <div>
-                  <input
-                    style={{ 
-					   marginBottom: '2rem', 
-					   maxWidth: '100%' 
-					}}
-                    type="file"
-                    name="doc"
-                    onChange={handleChangeFileUpload}
-                  ></input>
+                  <input type="file"
+                         style={{
+                           marginBottom: '2rem',
+                           maxWidth: '100%'
+                         }}
+                         name="doc"
+                         onChange={handleChangeFileUpload}></input>
                   <Row>
                     <Col>
                       <canvas id="originalImage"></canvas>
@@ -542,20 +514,16 @@ export default function ModelReviewObjectDetection(props) {
               )}
             </div>
 
-            {/* SUBMIT BUTOON */}
+            {/* SUBMIT BUTTON */}
             {!Camera ? (
-              <button
-                style={{ marginTop: '2rem' }}
-                className="btn-add-layer"
-                type="button"
-                onClick={handleVectorTest}
-                variant="primary"
-              >
+              <button style={{ marginTop: '2rem' }}
+                      className="btn-add-layer"
+                      type="button"
+                      onClick={handleVectorTest}
+                      variant="primary">
                 Ver resultado
               </button>
-            ) : (
-              ''
-            )}
+            ) : ('')}
           </div>
         </div>
       </Col>

@@ -1,13 +1,9 @@
-import { React, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Col, Row, Form, CloseButton, Button } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { Col, Row, CloseButton } from 'react-bootstrap'
-import { Form } from 'react-bootstrap'
 import * as numberClass from '../../../../modelos/NumberClasificatorHelper.js'
 import CustomCanvasDrawer from '../../../../utils/customCanvasDrawer.js'
-import {
-  dataSetList,
-  dataSetDescription,
-} from '../../uploadArcitectureMenu/UploadArchitectureMenu.js'
+import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu.js'
 // import LayerEdit from './LayerEdit.js'
 import GraphicRed from '../../../../utils/graphicRed/GraphicRed.js'
 import * as alertHelper from "../../../../utils/alertHelper"
@@ -16,7 +12,7 @@ import * as alertHelper from "../../../../utils/alertHelper"
 export default function ObjectDetection(props) {
   const { dataSet } = props
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRECARGAN UNOS AJUSTRS U OTROS
+  // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState()
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
@@ -103,7 +99,11 @@ export default function ObjectDetection(props) {
             activation: 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
-          { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
+          {
+            class: 'MaxPooling2D',
+            poolSize: [2, 2],
+            strides2: [2, 2]
+          },
           {
             class: 'Conv2D',
             kernelSize: 5,
@@ -133,79 +133,85 @@ export default function ObjectDetection(props) {
         MetricsValue,
       )
       setModel(model)
-      alertHelper.alertSuccess("Modelo entrenado con éxito")
+      await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } else {
-      alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D')
+      await alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D')
     }
   }
 
   const handleVectorTest = async () => {
     if (Model === undefined) {
-      alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
+      await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
-      var canvas
-      canvas = document.getElementById('bigcanvas')
-      var smallcanvas = document.getElementById('smallcanvas')
-      var ctx2 = smallcanvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, smallcanvas)
+      const canvas = document.getElementById('bigcanvas')
 
-      var imgData = ctx2.getImageData(0, 0, 28, 28)
-      var arr = [] //El arreglo completo
-      var arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo indice
-      for (var p = 0; p < imgData.data.length; p += 4) {
-        var valor = imgData.data[p + 3] / 255
-        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte queda dentro de un arreglo en el indice 0... again
-        if (arr28.length == 28) {
+      const small_canvas = document.getElementById('small_canvas')
+      const ctx2 = small_canvas.getContext('2d')
+      numberClass.resample_single(canvas, 28, 28, small_canvas)
+
+      const imgData = ctx2.getImageData(0, 0, 28, 28)
+      // El arreglo completo
+      let arr = []
+      // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+      let arr28 = []
+      for (let p = 0; p < imgData.data.length; p += 4) {
+        let valor = imgData.data[p + 3] / 255
+        // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el índice 0... again
+        arr28.push([valor])
+        if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-      //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 28, 28, 1
-      var tensor4 = tf.tensor4d(arr)
-      var resultados = Model.predict(tensor4).dataSync()
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+      // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+      arr = [arr]
+      // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
+      const tensor4 = tf.tensor4d(arr)
+      const resultados = Model.predict(tensor4).dataSync()
+      const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+      console.log('Predicción', mayorIndice)
+      document.getElementById('demo').innerHTML = mayorIndice.toString()
 
-      console.log('Prediccion', mayorIndice)
-      document.getElementById('demo').innerHTML = mayorIndice
-
-      alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+      await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
 
   const handleVectorTestImageUpload = async () => {
     if (Model === undefined) {
-      alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
+      await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
-      var canvas
-      canvas = document.getElementById('imageCanvas')
-      var smallcanvas = document.getElementById('smallcanvas')
-      var ctx2 = smallcanvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, smallcanvas)
+      const canvas = document.getElementById('imageCanvas')
+      const small_canvas = document.getElementById('smallcanvas')
+      const ctx2 = small_canvas.getContext('2d')
+      numberClass.resample_single(canvas, 28, 28, small_canvas)
 
-      var imgData = ctx2.getImageData(0, 0, 28, 28)
-      var arr = [] //El arreglo completo
-      var arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo indice
-      for (var p = 0; p < imgData.data.length; p += 4) {
-        var valor = imgData.data[p + 3] / 255
-        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte queda dentro de un arreglo en el indice 0... again
-        if (arr28.length == 28) {
+      const imgData = ctx2.getImageData(0, 0, 28, 28)
+      //El arreglo completo
+      let arr = []
+      // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+      let arr28 = []
+      for (let p = 0; p < imgData.data.length; p += 4) {
+        let valor = imgData.data[p + 3] / 255
+        // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
+        arr28.push([valor])
+        if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-      //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 28, 28, 1
-      var tensor4 = tf.tensor4d(arr)
-      var resultados = Model.predict(tensor4).dataSync()
-      var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+      // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+      arr = [arr]
+      // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
+      const tensor4 = tf.tensor4d(arr)
+      let resultados = Model.predict(tensor4).dataSync()
+      let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.log('Prediccion', mayorIndice)
-      document.getElementById('demo').innerHTML = mayorIndice
+      console.log('Predicción', mayorIndice)
+      document.getElementById('demo').innerHTML = mayorIndice.toString()
 
-      alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+      await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
 
@@ -228,14 +234,13 @@ export default function ObjectDetection(props) {
     setNLayer(nLayer + 1)
   }
 
-  const handlerRemoveLayer = (idLayer) => {
+  const handlerRemoveLayer = async (idLayer) => {
     let array = Layer
     let array2 = []
     if (array.length === 1) {
-      alertHelper.alertWarning('No puedes eliminar la última capa')
+      await alertHelper.alertWarning('No puedes eliminar la última capa')
     } else {
-      var i
-      for (i = 0; i < array.length; i++) {
+      for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])
       }
       if (ActiveLayer === idLayer && idLayer > 0) setActiveLayer(idLayer - 1)
@@ -347,7 +352,6 @@ export default function ObjectDetection(props) {
     let aux = document.getElementById('FormLoss').value
     if (aux !== undefined) {
       setLossValue(aux)
-    } else {
     }
   }
 
@@ -355,7 +359,6 @@ export default function ObjectDetection(props) {
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
-    } else {
     }
   }
 
@@ -363,16 +366,15 @@ export default function ObjectDetection(props) {
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
-    } else {
     }
   }
 
   const handleChangeFileUpload = async (e) => {
-    var tgt = e.target || window.event.srcElement,
-      files = tgt.files
+    const tgt = e.target || window.event.srcElement
+    const files = tgt.files
 
-    var canvas = document.getElementById('imageCanvas')
-    var ctx = canvas.getContext('2d')
+    const canvas = document.getElementById('imageCanvas')
+    const ctx = canvas.getContext('2d')
 
     function draw() {
       canvas.width = 200
@@ -385,7 +387,7 @@ export default function ObjectDetection(props) {
       console.error("The provided file couldn't be loaded as an Image media")
     }
 
-    var img = new Image()
+    const img = new Image()
     img.onload = draw
     img.onerror = failed
     img.src = URL.createObjectURL(files[0])
@@ -401,9 +403,9 @@ export default function ObjectDetection(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha precargado una arquitectura. Programa dentro
+              A continuación se ha pre cargado una arquitectura. Programa dentro
               de la función "createArchitecture". A esta función se el pasa un
-              array preparado que contine la información del dataset.
+              array preparado que continue la información del dataset.
             </p>
           </div>
           {/* {numberClass.start()} */}
@@ -420,60 +422,64 @@ export default function ObjectDetection(props) {
 
           {/* {numberClass.start()} */}
           <div className="header-model-editor">
-            <br />
             <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
             <ul>
-              <br /> <b>A la izquierda </b>se pueden ver las capas de neuronas,
-              puedes agregar tantas como desees pulsando el botón "Añadir capa".
-              Puedes modificar dos parámetros:
+              <li>
+                <b>A la izquierda</b><br/>
+                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa".
+              </li>
+              <li>Puedes modificar dos parámetros:</li>
+              <ul>
+                <li><b>Unidades de la capa:</b><br/> Cuantas unidades deseas que tenga esa capa</li>
+                <li><b>Función de activación:</b><br/> Función de activación para esa capa</li>
+              </ul>
+
+              <li>
+                <b>A la derecha </b><br/>
+                Se pueden ver parámetros generales necesarios para la creación del modelo.
+              </li>
+              <li>Estos parámetros son:</li>
               <ul>
                 <li>
-                  Unidades de la capa: cuantas unidades deseas que tenga esa
-                  capa
+                  <b>Tasa de entrenamiento:</b><br/>
+                  Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento y
+                  reglas para el test
                 </li>
                 <li>
-                  Función de activación: función de activación para esa capa
+                  <b>Nº de iteraciones:</b><br/>
+                  Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
+                </li>
+                <li>
+                  <b>Optimizador:</b><br/>
+                  Es una función que como su propio nombre indica se usa para optimizar los modelos.
+                  Esto es frecuentemente usado para evitar estancarse en un máximo local.
+                </li>
+                <li>
+                  <b>Función de pérdida:</b><br/>
+                  Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
+                </li>
+                <li>
+                  <b>Métrica:</b><br/>
+                  Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
                 </li>
               </ul>
-              <br />
-              <b>A la derecha </b>se pueden ver parámetros generales necesarios
-              para la creación del modelo. Estos parámetros son:
-              <ul>
-                <li>
-                  Tasa de entrenamiento: Valor entre 0 y 100 el cual indica a la
-                  red qué cantidad de datos debe usar para el entreneamiento y
-                  cules para el test
-                </li>
-                <li>
-                  Nº de iteraciones: cantidad de ciclos que va a realizar la red
-                  (a mayor número, más tiempo tarda en entrenar)
-                </li>
-                <li>
-                  Optimizador: Es una función que como su propio nombre indica
-                  se usa para optimizar los modelos. Esto es frecuentemente
-                  usado para evitar estancarse en un máximo local.
-                </li>
-                <li>
-                  Función de pérdida: Es un método para evaluar qué tan bien un
-                  algoritmo específico modela los datos otorgados
-                </li>
-                <li>
-                  Métrica: es evaluación para valorar el rendimiento de un
-                  modelo de aprendizaje automático
-                </li>
-              </ul>
-              <br />
-              <b>Crear y entrenar modelo. </b>Una vez se han rellenado todos los
-              campos anteriores podemos crear el modelo pulsando el botón.
-              <br />
-              <b>Exportar modelo. </b>Si hemos creado el modelo correctamente
-              nos aparece este botón que nos permite exportar el modelo y
-              guardarlo localmente.
-              <br />
-              <b>Resultado. </b> Un formulario que nos permite predecir el valor
-              de salida a partir de los valores de entrada que introducimos,
-              para ver la salida solamente hay que pulsar "Ver resultado".
-              <br />
+
+              <li>
+                <b>Crear y entrenar modelo.</b><br/>
+                Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
+              </li>
+
+              <li>
+                <b>Exportar modelo.</b><br/>
+                Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
+                guardarlo localmente.
+              </li>
+
+              <li>
+                <b>Resultado.</b><br/>
+                Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
+                introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
+              </li>
             </ul>
           </div>
         </div>
@@ -481,7 +487,7 @@ export default function ObjectDetection(props) {
         {/* BLOCK 1 */}
         <div className="container">
           {/* <div className="column"> */}
-          <GraphicRed layer={Layer} setActiveLayer={setActiveLayer} />
+          <GraphicRed layer={Layer} setActiveLayer={setActiveLayer}/>
           <Row>
             {/* SPECIFIC PARAMETERS */}
             <Col xl className="col-specific">
@@ -491,21 +497,15 @@ export default function ObjectDetection(props) {
                     <div className="container pane-imgc borde">
                       <div className="title-pane">
                         Capa {ActiveLayer + 1}
-                        <CloseButton
-                          onClick={() => handlerRemoveLayer(ActiveLayer)}
-                        />
+                        <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
                       </div>
                       {/* UNITS */}
-                      <Form.Group
-                        className="mb-3"
-                        controlId={'formClass' + ActiveLayer}
-                      >
+                      <Form.Group className="mb-3"
+                                  controlId={'formClass' + ActiveLayer}>
                         <Form.Label>Clase de la capa</Form.Label>
-                        <Form.Select
-                          aria-label="Default select example"
-                          defaultValue={Layer[ActiveLayer].class}
-                          onChange={handleCambio}
-                        >
+                        <Form.Select aria-label="Default select example"
+                                     defaultValue={Layer[ActiveLayer].class}
+                                     onChange={handleCambio}>
                           <option>Selecciona la clase de la capa</option>
                           {CLASS_TYPE.map((itemAct, indexAct) => {
                             return (
@@ -536,28 +536,24 @@ export default function ObjectDetection(props) {
                 )}
 
                 {/* ADD LAYER */}
-                <button
-                  className="btn-add-layer"
-                  type="button"
-                  onClick={() => handlerAddLayer()}
-                  variant="primary"
-                >
+                <Button className="btn-add-layer"
+                        type="button"
+                        onClick={() => handlerAddLayer()}
+                        variant="primary">
                   Añadir capa
-                </button>
+                </Button>
               </div>
             </Col>
 
             {/* GENERAL PARAMETERS */}
-            <Col xl className="col-general">
+            <Col className="col-general">
               <div className="container borde general-settings">
                 {/* LEARNING RATE */}
                 <Form.Group className="mb-3" controlId="formTrainRate">
                   <Form.Label>Tasa de entrenamiento</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Introduce la tasa de entrenamiento"
-                    defaultValue={learningValue}
-                  />
+                  <Form.Control type="number"
+                                placeholder="Introduce la tasa de entrenamiento"
+                                defaultValue={learningValue}/>
                   <Form.Text className="text-muted">
                     Recuerda que debe ser un valor entre 0 y 100 (es un
                     porcentaje)
@@ -567,80 +563,59 @@ export default function ObjectDetection(props) {
                 {/* Nº OT ITERATIONS */}
                 <Form.Group className="mb-3" controlId="formNumberOfEpochs">
                   <Form.Label>Nº de iteraciones</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Introduce el número de iteraciones"
-                    defaultValue={NumberEpochs}
-                    onChange={handleChangeNoEpochs}
-                  />
+                  <Form.Control type="number"
+                                placeholder="Introduce el número de iteraciones"
+                                defaultValue={NumberEpochs}
+                                onChange={handleChangeNoEpochs}/>
                   <Form.Text className="text-muted">
-                    *Mientras más alto sea, mas taradará en ejecutarse el
-                    entrenamiento
+                    *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                   </Form.Text>
                 </Form.Group>
 
                 {/* OPTIMIZATION FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormOptimizer">
                   <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={Optimizer}
-                    onChange={handleChangeOptimization}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={Optimizer}
+                               onChange={handleChangeOptimization}>
                     <option>Selecciona el optimizador</option>
                     {OPTIMIZER_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
                 {/* LOSS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormLoss">
                   <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={LossValue}
-                    onChange={handleChangeLoss}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={LossValue}
+                               onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
                     {LOSS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
 
                 {/* METRICS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormMetrics">
                   <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={MetricsValue}
-                    onChange={handleChangeMetrics}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={MetricsValue}
+                               onChange={handleChangeMetrics}>
                     <option>Selecciona la métrica</option>
                     {METRICS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
               </div>
@@ -651,45 +626,38 @@ export default function ObjectDetection(props) {
           {/* INFO ADDITIONAL LAYERS */}
           <div className="header-model-editor mg-top">
             <p>
-              Adiccionalmente hay dos capas más que son comunes al resto de
-              redes de aprendizaje automático enfocadas en la clasificación de
-              imágenes
+              Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en
+              la clasificación de imágenes
             </p>
             <ul>
               <li>
-                flatten_Flatten: Esta capa aplana la salida 2D en un vector 1D
-                preprando el modelo para entrar en la última capa.
+                <b>flatten_Flatten:</b><br/>
+                Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la última capa.
               </li>
               <li>
-                dense_Dense1: Es la última capa y tiene 10 unidades de salida,
-                una por cada posible valor (del 0 al 9)
+                <b>dense_Dense1:</b><br/>
+                Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
               </li>
             </ul>
           </div>
 
           {/* BLOCK  BUTTON */}
           <div className="col-specific cen">
-            <button
-              className="btn-add-layer"
-              type="submit"
-              // onClick=
-              variant="primary"
-            >
+            <Button className="btn-add-layer"
+                    type="submit"
+                    variant="primary">
               Crear y entrenar modelo
-            </button>
+            </Button>
+          </div>
+
+          <div className="header-model-editor mg-top">
+            <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
           </div>
 
           <div className="header-model-editor mg-top">
             <p>
-              Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla{' '}
-              <b>ñ</b>.
-            </p>
-          </div>
-
-          <div className="header-model-editor mg-top">
-            <p>
-              Ahora puedes probar este modelo de dos formas, dibujando con el
-              ratón o subiendo una imagen desde tu equipo.
+              Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu
+              equipo.
             </p>
           </div>
 
@@ -698,14 +666,12 @@ export default function ObjectDetection(props) {
           {Model === undefined ? (
             ''
           ) : (
-            <button
-              className="btn-add-layer"
-              type="button"
-              onClick={handleDownloadModel}
-              variant="primary"
-            >
+            <Button className="btn-add-layer"
+                    type="button"
+                    onClick={handleDownloadModel}
+                    variant="primary">
               Exportar modelo
-            </button>
+            </Button>
           )}
         </div>
 
@@ -716,46 +682,36 @@ export default function ObjectDetection(props) {
               <div className="title-pane">Resultado</div>
               {/* VECTOR TEST */}
               <Row>
-                <Col
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CustomCanvasDrawer submitFunction={handleVectorTest} />
+                <Col style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}>
+                  <CustomCanvasDrawer submitFunction={handleVectorTest}/>
                 </Col>
-                <Col
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    marginBottom: '2rem',
-                  }}
-                >
-                  <input
-                    style={{ marginBottom: '2rem' }}
-                    type="file"
-                    name="doc"
-                    onChange={handleChangeFileUpload}
-                  ></input>
+                <Col style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  marginBottom: '2rem',
+                }}>
+                  <input style={{ marginBottom: '2rem' }}
+                         type="file"
+                         name="doc"
+                         onChange={handleChangeFileUpload}></input>
                   <canvas height="200" width="200" id="imageCanvas"></canvas>
-                  <button
-                    type="button"
-                    onClick={handleVectorTestImageUpload}
-                    className="btn-custom-canvas green"
-                  >
+                  <button type="button"
+                          onClick={handleVectorTestImageUpload}
+                          className="btn-custom-canvas green">
                     Validar
                   </button>
                 </Col>
               </Row>
 
-              <canvas
-                id="smallcanvas"
-                width="28"
-                height="28"
-                style={{ display: 'none' }}
-              ></canvas>
+              <canvas id="smallcanvas"
+                      width="28"
+                      height="28"
+                      style={{ display: 'none' }}></canvas>
               <div id="resultado"></div>
               {/* SUBMIT BUTOON */}
             </div>
@@ -764,8 +720,8 @@ export default function ObjectDetection(props) {
 
         <div className="header-model-editor mg-top">
           <p>
-            Ten en cuenta que no se han usado todos los datos para entrenar la
-            red y puede que sus predicciones no sean correctas.
+            Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no sean
+            correctas.
           </p>
         </div>
 
@@ -773,12 +729,10 @@ export default function ObjectDetection(props) {
         <div className="resultados">
           <Row>
             <Col>
-              <div
-                id="demo"
-                className="borde console"
-                width="100%"
-                height="100%"
-              >
+              <div id="demo"
+                   className="borde console"
+                   width="100%"
+                   height="100%">
                 Aquí se muestran los resultados
               </div>
             </Col>

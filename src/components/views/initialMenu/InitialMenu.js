@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import './InitialMenu.css'
-
-import { Row, Col, Button, Form } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { Row, Col, Button } from 'react-bootstrap'
+import './InitialMenu.css'
 
 import SecondMenu from '../secondMenu/SecondMenu'
 // import ButtonDescription from "../../buttonDescription/ButtonDescription";
@@ -40,8 +39,8 @@ export default function InitialMenu() {
     //     '/edit-architecture/' + ButtonActive + '/' + type + '/' + '-1',
     //   )
     // }
-    if (type === 2) history.push(process.env.REACT_APP_DOMAIN +'/select-dataset/' + ButtonActive)
-    if (type === 1) history.push(process.env.REACT_APP_DOMAIN +'/select-model/' + ButtonActive)
+    if (type === 2) history.push(process.env.REACT_APP_DOMAIN + '/select-dataset/' + ButtonActive)
+    if (type === 1) history.push(process.env.REACT_APP_DOMAIN + '/select-model/' + ButtonActive)
   }
 
   const colors = ['yellow', 'red', 'green', 'blue']
@@ -55,7 +54,6 @@ export default function InitialMenu() {
     let aux = document.getElementById('FormDataSet').value
     if (aux !== undefined) {
       setDataSet(aux)
-    } else {
     }
   }
 
@@ -66,19 +64,20 @@ export default function InitialMenu() {
       case 0:
         return (
           <div className="container">
-            <h3 className="titulos">
-              La clasificación es una técnica para determinar la clase a la
-              que pertenece el dependiente según una o más variables
-              independientes. La clasificación se utiliza para predecir
-              respuestas discretas.
-            </h3>
+            <h3 className="titulos">La clasificación</h3>
+            <article>
+              <p>
+                La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una o
+                más variables independientes.
+              </p>
+              <p>La clasificación se utiliza para predecir respuestas discretas.
+              </p>
+            </article>
 
             <Row className="btns-description">
               <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 1)}
-                >
+                <Button className="btn-custom-description"
+                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
                   Modelo Pre-entrenado
                 </Button>
               </Col>
@@ -87,10 +86,8 @@ export default function InitialMenu() {
                 <Button className="btn-custom-description" onClick={()=>handleClickTrainEdit(ButtonActive,3)}>Cargar dataset</Button>
               </Col> */}
               <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 2)}
-                >
+                <Button className="btn-custom-description"
+                        onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
                   Crear/Editar arquitectura
                 </Button>
               </Col>
@@ -131,19 +128,22 @@ export default function InitialMenu() {
       case 2:
         return (
           <div className="container">
-            <h3 className="titulos">
-              La clasificación de objetos consiste en organizar los elementos de
-              acuerdo a sus diferencias y semejanzas. Estos modelos son
-              entrenados con multitud de imágenes diferentes que les permite
-              aprender poco a poco qué caracteriza a cada objeto.
-            </h3>
+            <h3 className="titulos">La clasificación</h3>
+            <article>
+              <p>
+                La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
+                semejanzas.
+              </p>
+              <p>
+                Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a poco
+                qué caracteriza a cada objeto.
+              </p>
+            </article>
 
             <Row className="btns-description">
               <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 1)}
-                >
+                <Button className="btn-custom-description"
+                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
                   Modelo Pre-entrenado
                 </Button>
               </Col>
@@ -161,27 +161,27 @@ export default function InitialMenu() {
       case 3:
         return (
           <div className="container">
-            <h3 className="titulos">
-              La clasificacion de imagenes de igual forma que la clasificación
-              clásica nos sirve para determinar la clase a la que pertenece el
-              dependiente según una o más variables independientes. En este caso
-              la variable de entrada será una imagen.
-            </h3>
+            <h3 className="titulos">La clasificación </h3>
+            <article>
+              <p>
+                La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar la
+                clase a la que pertenece el dependiente según una o más variables independientes.
+              </p>
+              <p>
+                En este caso la variable de entrada será una imagen.
+              </p>
+            </article>
 
             <Row className="btns-description">
               <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 1)}
-                >
+                <Button className="btn-custom-description"
+                        onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
                   Modelo Pre-entrenado
                 </Button>
               </Col>
               <Col className="col-description">
-                <Button
-                  className="btn-custom-description"
-                  onClick={() => handleClickTrainEdit(ButtonActive, 2)}
-                >
+                <Button className="btn-custom-description"
+                        onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
                   Crear/Editar arquitectura
                 </Button>
               </Col>
@@ -203,13 +203,7 @@ export default function InitialMenu() {
               const style = 'btn-custom ' + actualColor
               return (
                 <Col key={i}>
-                  <button
-                    onClick={() => handleClick(i)}
-                    type="button"
-                    className={style}
-                  >
-                    {type}
-                  </button>{' '}
+                  <Button className={style} onClick={() => handleClick(i)}>{type}</Button>
                 </Col>
               )
             }

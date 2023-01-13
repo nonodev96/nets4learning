@@ -6,21 +6,23 @@
 p {
   color: black;
 }
+
 .header-model-editor {
   margin-bottom: 1rem;
   background-color: white;
   border: 2px solid white;
   border-radius: 8px;
   color: black;
-  box-shadow: 0px 2px 2px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 2px rgb(0 0 0 / 20%);
 }
 
 .general-settings {
   background-color: white;
-  box-shadow: 0px 2px 2px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 2px rgb(0 0 0 / 20%);
   color: black;
   margin: 1rem 1rem 1rem 1rem;
 }
+
 p {
   margin: 1rem 1rem 1rem 1rem;
 }
@@ -32,10 +34,11 @@ p {
 .container-fluid-w1900 {
   max-width: 1900px;
 }
+
 .borde {
   border: 2px solid white;
   border-radius: 8px;
-  box-shadow: 0px 2px 2px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 2px rgb(0 0 0 / 20%);
 }
 
 .buttons-group {
@@ -50,6 +53,7 @@ p {
   display: flex;
   flex-direction: column;
 }
+
 .items2 {
   padding: 1rem;
 }
@@ -74,6 +78,7 @@ p {
 .blue:hover {
   background-color: #005c99;
 }
+
 .blue:active {
   background-color: #1aa3ff;
 }
@@ -86,6 +91,7 @@ p {
 .yellow:hover {
   background-color: #cc9a05;
 }
+
 .yellow:active {
   background-color: #ffcd38;
 }
@@ -98,6 +104,7 @@ p {
 .green:hover {
   background-color: #105635;
 }
+
 .green:active {
   background-color: #24c278;
 }
@@ -106,9 +113,11 @@ p {
 .red:focus {
   background-color: #dc3545;
 }
+
 .red:hover {
   background-color: #960a22;
 }
+
 .red:active {
   background-color: #fb294c;
 }
@@ -122,9 +131,9 @@ p {
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 0rem 0rem 1rem 0rem;
+  margin: 0 0 1rem 0;
   background-color: white;
-  box-shadow: 0px 2px 2px rgb(0 0 0 / 20%);
+  box-shadow: 0 2px 2px rgb(0 0 0 / 20%);
   overflow: hidden;
   height: 250px;
 }
@@ -155,7 +164,7 @@ Form {
 .column {
   box-sizing: border-box;
   /* position: absolute; */
-  top: 0px;
+  top: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -169,7 +178,7 @@ Form {
 .column2 {
   box-sizing: border-box;
   /* position: absolute; */
-  top: 0px;
+  top: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -182,14 +191,11 @@ Form {
 
 .col-specific {
   max-width: 590px;
-  padding: 2rem, 2rem, 2rem, 2rem;
+  padding: 2rem;
 }
-.col-general {
-  max-width: 590px;
-  margin: 2rem, 2rem, 2rem, 2rem;
-}
+
 .columnamargin {
-  margin: 2rem, 2rem, 2rem, 2rem;
+  margin: 2rem;
 }
 
 .btn-add-layer {
@@ -201,14 +207,13 @@ Form {
   cursor: pointer;
   width: 100%;
   outline: 0;
-  border: 0;
   background: transparent;
   overflow: hidden;
-  border-radius: 10px;
   font-family: "Google Sans", Helvetica, Arial, sans-serif;
   border: 4px dashed #bdc1c6;
   border-radius: 18px;
 }
+
 .btn-add-layer:hover {
   color: #269ffd;
   border: 4px dashed #269ffd;

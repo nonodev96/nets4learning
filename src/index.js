@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const app = (
   <ThemeProvider theme={tema}>
     <BrowserRouter>
-      <App />
+      <App/>
     </BrowserRouter>
   </ThemeProvider>
 );

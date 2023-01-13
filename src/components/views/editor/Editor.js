@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./Editor.css";
 import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router";
 import doIris from "../../../modelos/Clasificador";
 import useLocalStorage from "../../../hooks/useLocalStorage";
 import CodePen from "../../codePen/CodePen";
-import { createClassicClassification, prueba } from "../../../modelos/ArchitectureHelper";
+import "./Editor.css";
 
 export default function Editor(props) {
   const { tipo } = props;
@@ -59,7 +58,7 @@ export default function Editor(props) {
       <div className="container">
         <div className="borde header-model-editor">
           <p>
-            Hola  tososA continuación se ha precargado una arquitectura.
+            A continuación se ha precargado una arquitectura.
             Programa dentro de la función "createArchitecture". A esta función
             se el pasa un array preparado que contine la información del
             dataset.
@@ -153,12 +152,10 @@ export default function Editor(props) {
               /> */}
             </Col>
             <Col>
-              <div
-                id="demo"
-                className="borde console"
-                width="100%"
-                height="100%"
-              >
+              <div id="demo"
+                   className="borde console"
+                   width="100%"
+                   height="100%">
                 <p>Aquí se muestran los resultados</p>
               </div>
             </Col>

@@ -14,10 +14,9 @@
   margin-top: 1rem;
   margin-right: 1rem;
   margin-left: 1rem;
-
 }
 
-.btn-group-canvas{
+.btn-group-canvas {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -27,8 +26,7 @@
   border: 1px solid black;
 }
 
-
-.container-canvas{
+.container-canvas {
   display: flex;
   justify-content: center;
 }

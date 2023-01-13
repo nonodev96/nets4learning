@@ -1,9 +1,9 @@
-.wrapper{
-    min-height: 100%;
-    clear:both;
+.wrapper {
+  min-height: 100%;
+  clear: both;
 }
 
-h1{
-    color: black;
-    padding: 1rem;
+h1 {
+  color: black;
+  padding: 1rem;
 }

@@ -1,14 +1,14 @@
 {
   "name": "react-tfg-david",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@material-ui/core": "^4.12.4",
     "@mediapipe/face_detection": "^0.4.1646425229",
     "@mediapipe/face_mesh": "^0.4.1633559619",
     "@mediapipe/pose": "^0.4.1633558788",
+    "@mui/material": "^5.11.4",
     "@mui/system": "^5.11.4",
     "@tensorflow-models/face-detection": "^1.0.1",
     "@tensorflow-models/face-landmarks-detection": "^1.0.1",
@@ -25,11 +25,11 @@
     "react-bootstrap": "^2.7.0",
     "react-codemirror2-react-17": "^1.0.0",
     "react-dom": "^17.0.2",
+    "react-graph-vis": "^1.0.7",
     "react-icons": "^4.7.1",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^5.0.1",
-    "react-graph-vis": "^1.0.7",
     "react-webcam": "^7.0.1",
     "sweetalert2": "^11.6.16",
     "sweetalert2-react-content": "^4.2.0",
@@ -37,10 +37,10 @@
     "web-vitals": "^3.1.0"
   },
   "devDependencies": {
-    "webpack": "^5.75.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
-    "@testing-library/user-event": "^14.4.3"
+    "@testing-library/user-event": "^14.4.3",
+    "webpack": "^5.75.0"
   },
   "scripts": {
     "start": "react-scripts start",

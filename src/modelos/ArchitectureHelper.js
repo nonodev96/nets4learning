@@ -39,7 +39,7 @@ export const clasificacionClasica = async function createArchitecture(
 
 export async function createClassicClassification(
   learningRate,
-  unknowRate,
+  unknownRate,
   numberOfEpoch,
   sLOptimizer,
   layerList,
@@ -47,7 +47,7 @@ export async function createClassicClassification(
   idMetrics,
 ) {
   const [xTrain, yTrain, xTest, yTest] = clasificador.getData(
-    unknowRate,
+    unknownRate,
     clasificador.IRIS_CLASSES,
     clasificador.IRIS_DATA,
   )
@@ -55,8 +55,8 @@ export async function createClassicClassification(
   document.getElementById('salida').innerHTML +=
     '<p>MODELO CREADO A PARTIR DE: <b>learningRate:</b> ' +
     learningRate +
-    ' <b>unknowRate:</b> ' +
-    unknowRate +
+    ' <b>unknownRate:</b> ' +
+    unknownRate +
     ' <b>numberOfEpoch:</b> ' +
     numberOfEpoch +
     ' <b>sLOptimizer:</b> ' +
@@ -134,7 +134,7 @@ export async function createClassicClassification(
     callbacks: fitCallbacks,
   })
 
-  console.log('Tennsor secuencial TRAIN', model)
+  console.log('Tensor secuencial TRAIN', model)
   console.log('Forma', model.shape)
   console.log(model)
   return model
@@ -207,7 +207,7 @@ export async function createClassicClassificationCustomDataSet(
     }
 
     console.log(layer)
-    console.log('Tennsor secuencial ' + index, model)
+    console.log('Tensor secuencial ' + index, model)
     console.log('Forma ' + index, model.shape)
   })
 
@@ -218,7 +218,7 @@ export async function createClassicClassificationCustomDataSet(
     metrics,
   })
 
-  console.log('Tennsor secuencial COMPILE', model)
+  console.log('Tensor secuencial COMPILE', model)
   console.log('Forma', xTrain.shape)
 
   //Creamos las métricas que van a aparecer en los gráficos
@@ -255,11 +255,11 @@ function getDataSetModif(dataSet, types) {
       (types) => types === dataSet.datos[i][typePos],
     )
   }
-  console.log('A1ui esta el datasessdfsdfsdfsd', dataSet.datos[0])
+  console.log('Aquí esta el data', dataSet.datos[0])
   return dataSet.datos
 }
 
-function getClassesFromDataSet(dataSet) {
+async function getClassesFromDataSet(dataSet) {
   try {
     let dataAux = []
     const indexDataAux = []
@@ -305,7 +305,7 @@ function getClassesFromDataSet(dataSet) {
     console.log(dataAux, targetData, indexDataAux)
     return [dataAux, targetData, indexDataAux]
   } catch (error) {
-    alertError(error)
+    await alertError(error)
   }
 }
 

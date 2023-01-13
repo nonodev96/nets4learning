@@ -1,23 +1,19 @@
-import { React, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { Col, Row, Form, CloseButton, Button } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { Col, Row, CloseButton } from 'react-bootstrap'
-import { Form } from 'react-bootstrap'
 import * as numberClass from '../../../../modelos/NumberClasificatorHelper.js'
+import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu.js'
 import CustomCanvasDrawer from '../../../../utils/customCanvasDrawer.js'
-import {
-  dataSetList,
-  dataSetDescription,
-} from '../../uploadArcitectureMenu/UploadArchitectureMenu.js'
-import LayerEdit from './LayerEdit.js'
 import GraphicRed from '../../../../utils/graphicRed/GraphicRed.js'
-import './MnistImageClasification.css'
 import * as alertHelper from "../../../../utils/alertHelper"
+import './MnistImageClasification.css'
+import LayerEdit from './LayerEdit.js'
 
 
 export default function MnistImageClassification(props) {
   const { dataSet } = props
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRECARGAN UNOS AJUSTRS U OTROS
+  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState()
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
@@ -79,10 +75,8 @@ export default function MnistImageClassification(props) {
     if (Recarga) {
       console.log(Layer)
     } else {
-      const uploadedArchitecture = localStorage.getItem(
-        'custom-architectureIMG',
-      )
-      if (uploadedArchitecture != 'nothing') {
+      const uploadedArchitecture = localStorage.getItem('custom-architectureIMG')
+      if (uploadedArchitecture !== 'nothing') {
         setLayer([
           {
             class: 'Conv2D',
@@ -92,7 +86,11 @@ export default function MnistImageClassification(props) {
             activation: 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
-          { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
+          {
+            class: 'MaxPooling2D',
+            poolSize: [2, 2],
+            strides2: [2, 2]
+          },
           {
             class: 'Conv2D',
             kernelSize: 5,
@@ -101,7 +99,11 @@ export default function MnistImageClassification(props) {
             activation: 'relu',
             kernelInitializer: 'varianceScaling',
           },
-          { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
+          {
+            class: 'MaxPooling2D',
+            poolSize: [2, 2],
+            strides2: [2, 2]
+          },
         ])
         setNLayer(4)
         setRecarga(true)
@@ -116,7 +118,11 @@ export default function MnistImageClassification(props) {
             activation: 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
-          { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
+          {
+            class: 'MaxPooling2D',
+            poolSize: [2, 2],
+            strides2: [2, 2]
+          },
           {
             class: 'Conv2D',
             kernelSize: 5,
@@ -146,15 +152,15 @@ export default function MnistImageClassification(props) {
         MetricsValue,
       )
       setModel(model)
-      alertHelper.alertSuccess("Modelo entrenado con éxito")
+      await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } else {
-      alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D',)
+      await alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D',)
     }
   }
 
   const handleVectorTest = async () => {
     if (Model === undefined) {
-      alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
+      await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
       // var canvas
       // canvas = document.getElementById('bigcanvas')
@@ -162,21 +168,21 @@ export default function MnistImageClassification(props) {
       var smallcanvas = document.getElementById('smallcanvas')
       var ctx2 = smallcanvas.getContext('2d')
       // numberClass.resample_single(canvas, 28, 28, smallcanvas)
-      
+
       var imgData = ctx2.getImageData(0, 0, 28, 28)
       var arr = [] //El arreglo completo
       var arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo indice
       for (var p = 0; p < imgData.data.length; p += 4) {
         var valor = imgData.data[p + 3] / 255
         arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte queda dentro de un arreglo en el indice 0... again
-        if (arr28.length == 28) {
+        if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] //Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
-      //Nah basicamente Debe estar en un arreglo nuevo en el indice 0, por ser un tensor4d en forma 1, 28, 28, 1
+      arr = [arr] // Meter el arreglo en otro arreglo por que si no tio tensorflow se enoja >:(
+      // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
       var tensor4 = tf.tensor4d(arr)
       var resultados = Model.predict(tensor4).dataSync()
       var mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
@@ -230,21 +236,21 @@ export default function MnistImageClassification(props) {
   // CONTROL DE LAS CAPAS
   const handlerAddLayer = async () => {
     let array = Layer
-    if (array.length<10){
+    if (array.length < 10) {
 
-    array.push({
-      class: 'Conv2D',
-      kernelSize: 0,
-      filters: 0,
-      strides: 0,
-      activation: 'Sigmoid',
-      kernelInitializer: 'varianceScaling',
-    })
-    setLayer(array)
-    setNLayer(nLayer + 1)
-  }else{
-    alertHelper.alertWarning("No se pueden añadir más capas")
-  }
+      array.push({
+        class: 'Conv2D',
+        kernelSize: 0,
+        filters: 0,
+        strides: 0,
+        activation: 'Sigmoid',
+        kernelInitializer: 'varianceScaling',
+      })
+      setLayer(array)
+      setNLayer(nLayer + 1)
+    } else {
+      alertHelper.alertWarning("No se pueden añadir más capas")
+    }
   }
 
   const handlerRemoveLayer = (idLayer) => {
@@ -420,9 +426,9 @@ export default function MnistImageClassification(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha precargado una arquitectura. Programa dentro
+              A continuación se ha pre cargado una arquitectura. Programa dentro
               de la función "createArchitecture". A esta función se el pasa un
-              array preparado que contine la información del dataset.
+              array preparado que continue la información del dataset.
             </p>
           </div>
           {/* {numberClass.start()} */}
@@ -439,60 +445,69 @@ export default function MnistImageClassification(props) {
 
           {/* {numberClass.start()} */}
           <div className="header-model-editor">
-            <br />
-            <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
             <ul>
-              <br /> <b>A la izquierda </b>se pueden ver las capas de neuronas,
-              puedes agregar tantas como desees pulsando el botón "Añadir capa".
-              Puedes modificar dos parámetros:
+              <li>Interfaz de edición de arquitectura.</li>
+
+              <li>
+                <b>A la izquierda</b><br/>
+                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa".
+              </li>
+              <li>Puedes modificar dos parámetros:</li>
               <ul>
                 <li>
-                  Unidades de la capa: cuantas unidades deseas que tenga esa
-                  capa
+                  <b>Unidades de la capa:</b> cuantas unidades deseas que tenga esa capa.
                 </li>
                 <li>
-                  Función de activación: función de activación para esa capa
+                  <b>Función de activación:</b> función de activación para esa capa.
                 </li>
               </ul>
-              <br />
-              <b>A la derecha </b>se pueden ver parámetros generales necesarios
-              para la creación del modelo. Estos parámetros son:
+
+              <li>
+                <b>A la derecha </b><br/>
+                Se pueden ver parámetros generales necesarios para la creación del modelo.
+              </li>
+              <li>Estos parámetros son:</li>
               <ul>
                 <li>
-                  Tasa de entrenamiento: Valor entre 0 y 100 el cual indica a la
-                  red qué cantidad de datos debe usar para el entreneamiento y
-                  cules para el test
+                  <b>Tasa de entrenamiento:</b><br/>
+                  Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento y
+                  reglas para el test.
                 </li>
                 <li>
-                  Nº de iteraciones: cantidad de ciclos que va a realizar la red
-                  (a mayor número, más tiempo tarda en entrenar)
+                  <b>Nº de iteraciones:</b><br/>
+                  Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
                 </li>
                 <li>
-                  Optimizador: Es una función que como su propio nombre indica
-                  se usa para optimizar los modelos. Esto es frecuentemente
-                  usado para evitar estancarse en un máximo local.
+                  <b>Optimizador:</b><br/>
+                  Es una función que como su propio nombre indica se usa para optimizar los modelos.
+                  Esto es frecuentemente usado para evitar estancarse en un máximo local.
                 </li>
                 <li>
-                  Función de pérdida: Es un método para evaluar qué tan bien un
-                  algoritmo específico modela los datos otorgados
+                  <b>Función de pérdida:</b><br/>
+                  Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados.
                 </li>
                 <li>
-                  Métrica: es evaluación para valorar el rendimiento de un
-                  modelo de aprendizaje automático
+                  <b>Métrica:</b><br/>
+                  Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático.
                 </li>
               </ul>
-              <br />
-              <b>Crear y entrenar modelo. </b>Una vez se han rellenado todos los
-              campos anteriores podemos crear el modelo pulsando el botón.
-              <br />
-              <b>Exportar modelo. </b>Si hemos creado el modelo correctamente
-              nos aparece este botón que nos permite exportar el modelo y
-              guardarlo localmente.
-              <br />
-              <b>Resultado. </b> Un formulario que nos permite predecir el valor
-              de salida a partir de los valores de entrada que introducimos,
-              para ver la salida solamente hay que pulsar "Ver resultado".
-              <br />
+
+              <li>
+                <b>Crear y entrenar modelo.</b><br/>
+                Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
+              </li>
+
+              <li>
+                <b>Exportar modelo. </b><br/>
+                Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
+                guardarlo localmente.
+              </li>
+
+              <li>
+                <b>Resultado. </b><br/>
+                Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
+                introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
+              </li>
             </ul>
           </div>
         </div>
@@ -510,44 +525,32 @@ export default function MnistImageClassification(props) {
                     <div className="container pane-imgc borde">
                       <div className="title-pane">
                         Capa {ActiveLayer + 1}
-                        <CloseButton
-                          onClick={() => handlerRemoveLayer(ActiveLayer)}
-                        />
+                        <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
                       </div>
                       {/* UNITS */}
-                      <Form.Group
-                        className="mb-3"
-                        controlId={'formClass' + ActiveLayer}
-                      >
+                      <Form.Group className="mb-3"
+                                  controlId={'formClass' + ActiveLayer}>
                         <Form.Label>Clase de la capa</Form.Label>
-                        <Form.Select
-                          aria-label="Default select example"
-                          defaultValue={Layer[ActiveLayer].class}
-                          onChange={handleCambio}
-                        >
+                        <Form.Select aria-label="Default select example"
+                                     defaultValue={Layer[ActiveLayer].class}
+                                     onChange={handleCambio}>
                           <option>Selecciona la clase de la capa</option>
                           {CLASS_TYPE.map((itemAct, indexAct) => {
-                            return (
-                              <option key={indexAct} value={itemAct}>
-                                {itemAct}
-                              </option>
-                            )
+                            return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                           })}
                         </Form.Select>
                       </Form.Group>
-                      <LayerEdit
-                        index={ActiveLayer}
-                        item={Layer[ActiveLayer]}
-                        handlerRemoveLayer={handlerRemoveLayer}
-                        handleChangeKernel={handleChangeKernel}
-                        handleChangeActivation={handleChangeActivation}
-                        handleChangeFilters={handleChangeFilters}
-                        handleChangeStrides={handleChangeStrides}
-                        handleChangePoolSize={handleChangePoolSize}
-                        handleChangeStridesMax={handleChangeStridesMax}
-                        ACTIVATION_TYPE={ACTIVATION_TYPE}
-                        CLASS_TYPE={CLASS_TYPE}
-                      />
+                      <LayerEdit index={ActiveLayer}
+                                 item={Layer[ActiveLayer]}
+                                 handlerRemoveLayer={handlerRemoveLayer}
+                                 handleChangeKernel={handleChangeKernel}
+                                 handleChangeActivation={handleChangeActivation}
+                                 handleChangeFilters={handleChangeFilters}
+                                 handleChangeStrides={handleChangeStrides}
+                                 handleChangePoolSize={handleChangePoolSize}
+                                 handleChangeStridesMax={handleChangeStridesMax}
+                                 ACTIVATION_TYPE={ACTIVATION_TYPE}
+                                 CLASS_TYPE={CLASS_TYPE}/>
                     </div>
                   </div>
                 ) : (
@@ -555,14 +558,12 @@ export default function MnistImageClassification(props) {
                 )}
 
                 {/* ADD LAYER */}
-                <button
-                  className="btn-add-layer"
-                  type="button"
-                  onClick={() => handlerAddLayer()}
-                  variant="primary"
-                >
+                <Button className="btn-add-layer"
+                        type="button"
+                        onClick={() => handlerAddLayer()}
+                        variant="primary">
                   Añadir capa
-                </button>
+                </Button>
               </div>
             </Col>
 
@@ -572,94 +573,70 @@ export default function MnistImageClassification(props) {
                 {/* LEARNING RATE */}
                 <Form.Group className="mb-3" controlId="formTrainRate">
                   <Form.Label>Tasa de entrenamiento</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Introduce la tasa de entrenamiento"
-                    defaultValue={learningValue}
-                  />
+                  <Form.Control type="number"
+                                placeholder="Introduce la tasa de entrenamiento"
+                                defaultValue={learningValue}/>
                   <Form.Text className="text-muted">
-                    Recuerda que debe ser un valor entre 0 y 100 (es un
-                    porcentaje)
+                    Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                   </Form.Text>
                 </Form.Group>
 
                 {/* Nº OT ITERATIONS */}
                 <Form.Group className="mb-3" controlId="formNumberOfEpochs">
                   <Form.Label>Nº de iteraciones</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Introduce el número de iteraciones"
-                    defaultValue={NumberEpochs}
-                    onChange={handleChangeNoEpochs}
-                  />
+                  <Form.Control type="number"
+                                placeholder="Introduce el número de iteraciones"
+                                defaultValue={NumberEpochs}
+                                onChange={handleChangeNoEpochs}/>
                   <Form.Text className="text-muted">
-                    *Mientras más alto sea, mas taradará en ejecutarse el
-                    entrenamiento
+                    *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                   </Form.Text>
                 </Form.Group>
 
                 {/* OPTIMIZATION FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormOptimizer">
                   <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={Optimizer}
-                    onChange={handleChangeOptimization}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={Optimizer}
+                               onChange={handleChangeOptimization}>
                     <option>Selecciona el optimizador</option>
                     {OPTIMIZER_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
                 {/* LOSS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormLoss">
                   <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={LossValue}
-                    onChange={handleChangeLoss}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={LossValue}
+                               onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
                     {LOSS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
 
                 {/* METRICS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormMetrics">
                   <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select
-                    aria-label="Default select example"
-                    defaultValue={MetricsValue}
-                    onChange={handleChangeMetrics}
-                  >
+                  <Form.Select aria-label="Default select example"
+                               defaultValue={MetricsValue}
+                               onChange={handleChangeMetrics}>
                     <option>Selecciona la métrica</option>
                     {METRICS_TYPE.map((item, id) => {
-                      return (
-                        <option key={id} value={item}>
-                          {item}
-                        </option>
-                      )
+                      return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
                   <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la funcion
+                    Será el optimizador que se usará para activar la función
                   </Form.Text>
                 </Form.Group>
               </div>
@@ -670,59 +647,50 @@ export default function MnistImageClassification(props) {
           {/* INFO ADDITIONAL LAYERS */}
           <div className="header-model-editor mg-top">
             <p>
-              Adiccionalmente hay dos capas más que son comunes al resto de
-              redes de aprendizaje automático enfocadas en la clasificación de
-              imágenes
+              Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en
+              la clasificación de imágenes
             </p>
             <ul>
               <li>
-                flatten_Flatten: Esta capa aplana la salida 2D en un vector 1D
-                preprando el modelo para entrar en la última capa.
+                <b>flatten_Flatten:</b><br/>
+                Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la
+                última capa.
               </li>
               <li>
-                dense_Dense1: Es la última capa y tiene 10 unidades de salida,
-                una por cada posible valor (del 0 al 9)
+                <b>dense_Dense1:</b><br/>
+                Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
               </li>
             </ul>
           </div>
 
           {/* BLOCK  BUTTON */}
           <div className="col-specific cen">
-            <button
-              className="btn-add-layer"
-              type="submit"
+            <button className="btn-add-layer"
+                    type="submit"
               // onClick=
-              variant="primary"
-            >
+                    variant="primary">
               Crear y entrenar modelo
             </button>
           </div>
 
           <div className="header-model-editor mg-top">
-            <p>
-              Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla{' '}
-              <b>ñ</b>.
-            </p>
+            <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
           </div>
 
           <div className="header-model-editor mg-top">
             <p>
-              Ahora puedes probar este modelo de dos formas, dibujando con el
-              ratón o subiendo una imagen desde tu equipo.
+              Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu
+              equipo.
             </p>
           </div>
 
           <div id="salida"></div>
 
-          {Model === undefined ? (
-            ''
-          ) : (
-            <button
-              className="btn-add-layer"
-              type="button"
-              onClick={handleDownloadModel}
-              variant="primary"
-            >
+          {Model === undefined ? ('') : (
+            <button className="btn-add-layer"
+                    type="button"
+                    onClick={handleDownloadModel}
+                    variant="primary">
               Exportar modelo
             </button>
           )}
@@ -735,56 +703,47 @@ export default function MnistImageClassification(props) {
               <div className="title-pane">Resultado</div>
               {/* VECTOR TEST */}
               <Row>
-                <Col
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CustomCanvasDrawer submitFunction={handleVectorTest} />
+                <Col style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}>
+                  <CustomCanvasDrawer submitFunction={handleVectorTest}/>
                 </Col>
-                <Col
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'column',
-                    marginBottom: '2rem',
-                  }}
-                >
-                  <input
-                    style={{ marginBottom: '2rem' }}
-                    type="file"
-                    name="doc"
-                    onChange={handleChangeFileUpload}
-                  ></input>
+                <Col style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  marginBottom: '2rem',
+                }}>
+                  <input style={{ marginBottom: '2rem' }}
+                         type="file"
+                         name="doc"
+                         onChange={handleChangeFileUpload}></input>
+
                   <canvas height="200" width="200" id="imageCanvas"></canvas>
-                  <button
-                    type="button"
-                    onClick={handleVectorTestImageUpload}
-                    className="btn-custom-canvas green"
-                  >
+                  <button type="button"
+                          onClick={handleVectorTestImageUpload}
+                          className="btn-custom-canvas green">
                     Validar
                   </button>
                 </Col>
               </Row>
 
-              <canvas
-                id="smallcanvas"
-                width="28"
-                height="28"
-                style={{ display: 'none' }}
-              ></canvas>
+              <canvas id="smallcanvas"
+                      width="28"
+                      height="28"
+                      style={{ display: 'none' }}></canvas>
               <div id="resultado"></div>
-              {/* SUBMIT BUTOON */}
+              {/* SUBMIT BUTTON */}
             </div>
           </div>
         </div>
 
         <div className="header-model-editor mg-top">
           <p>
-            Ten en cuenta que no se han usado todos los datos para entrenar la
-            red y puede que sus predicciones no sean correctas.
+            Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no sean
+            correctas.
           </p>
         </div>
 
