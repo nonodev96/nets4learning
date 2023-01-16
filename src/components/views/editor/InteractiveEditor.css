@@ -152,6 +152,8 @@ p {
   flex-direction: column;
 }
 
+
+
 .console {
   font-size: small;
 }
@@ -190,7 +192,6 @@ Form {
 }
 
 .col-specific {
-  max-width: 590px;
   padding: 2rem;
 }
 

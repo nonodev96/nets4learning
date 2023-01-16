@@ -123,7 +123,7 @@ export default function LinearRegression(props) {
 
     document.getElementById('demo').innerHTML =
       prediction + 'tipo: ' + getIrisDataType(predictionWithArgMax)
-    alertHelper.alertInfo(
+    await alertHelper.alertInfo(
       'Tipo: ' + getIrisDataType(predictionWithArgMax),
       getIrisDataType(predictionWithArgMax),
     )
@@ -195,13 +195,13 @@ export default function LinearRegression(props) {
 
   return (
     <>
-      <Form onSubmit={handleClickPlay}>
+      <Form onSubmit={handleClickPlay} id={"LinearRegression"}>
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha pre cargado una arquitectura. Programa dentro
-              de la función "createArchitecture". A esta función se el pasa un
-              array preparado que continue la información del dataset.
+              A continuación se ha pre cargado una arquitectura.
+              Programa dentro de la función "createArchitecture".
+              A esta función se el pasa un array preparado que continue la información del dataset.
             </p>
           </div>
         </div>
@@ -350,10 +350,9 @@ export default function LinearRegression(props) {
         <div className="column2">
           <Col className="col-specific">
             {/* FIXME No hace nada*/}
-            <Button
-              className="btn-add-layer"
-              type="submit"
-              variant="primary">
+            <Button className="btn-add-layer"
+                    type="submit"
+                    variant="primary">
               Crear y entrenar modelo
             </Button>
           </Col>
@@ -368,11 +367,9 @@ export default function LinearRegression(props) {
                 {/* VECTOR TEST */}
                 <Form.Group className="mb-3" controlId={'formTestInput'}>
                   <Form.Label>Introduce el vector a probar</Form.Label>
-                  <Form.Control
-                    placeholder="Introduce el vector a probar"
-                    defaultValue="0.1;4.3;2.1;0.2"
-                    onChange={() => handleChangeTestInput()}
-                  />
+                  <Form.Control placeholder="Introduce el vector a probar"
+                                defaultValue="0.1;4.3;2.1;0.2"
+                                onChange={() => handleChangeTestInput()}/>
                 </Form.Group>
                 {/* SUBMIT BUTTON */}
                 <Button className="btn-add-layer"

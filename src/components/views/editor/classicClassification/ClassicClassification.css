@@ -203,7 +203,6 @@ p {
 
 
 .col-general {
-  max-width: 590px;
   margin: 2rem;
   display: flex;
   flex-direction: column;

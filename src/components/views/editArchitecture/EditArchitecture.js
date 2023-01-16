@@ -1,13 +1,18 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import Footer from '../../footer/Footer'
-import NavBar from '../../navBar/NavBar'
+import { Container } from "react-bootstrap";
+
+import N4LFooter from '../../footer/N4LFooter'
+import N4LNavBar from '../../navBar/N4LNavBar'
 import './EdtiArchitecture.css'
+
 import ClassicClassification from '../editor/classicClassification/ClassicClassification'
+import CustomDataSetClassicClassification from '../editor/classicClassification/CustomDataSetClassicClassification'
+import ModelReviewClassicClassification from '../editor/classicClassification/ModelReviewClassicClassification'
+
 import MnistImageClassification from '../editor/mnistImageClassification/MnistImageClasification'
-import CustomDataSetClassification from '../editor/classicClassification/CustomDataSetClassicClassifcation'
-import ModelReviewClassicClassification from '../editor/classicClassification/ModelReviewClassicClassifcation'
 import ModelReviewClassicImageClassification from '../editor/mnistImageClassification/ModelReviewClassicImageClassification'
+
 import ObjectDetection from '../editor/objectDetection/ObjectDetection'
 import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
 
@@ -26,7 +31,7 @@ function EditArchitecture() {
         if (tipo === 0) {
           return <ModelReviewClassicClassification dataSet={ejemplo}/>
         } else {
-          return <CustomDataSetClassification dataSet={ejemplo}/>
+          return <CustomDataSetClassicClassification dataSet={ejemplo}/>
         }
       case '1':
         if (tipo === 0) {
@@ -53,12 +58,14 @@ function EditArchitecture() {
 
   return (
     <>
-      <NavBar/>
-      <div className="container">
-        <h1 className="titulos mt-2">{modelsType[id]}</h1>
-      </div>
+      <N4LNavBar/>
+      <Container>
+        <h1 className="mt-2">{modelsType[id]}</h1>
+      </Container>
+
       {selectedEditor()}
-      <Footer/>
+
+      <N4LFooter/>
     </>
   )
 }

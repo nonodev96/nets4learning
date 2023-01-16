@@ -403,9 +403,9 @@ export default function ObjectDetection(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha pre cargado una arquitectura. Programa dentro
-              de la función "createArchitecture". A esta función se el pasa un
-              array preparado que continue la información del dataset.
+              A continuación se ha pre cargado una arquitectura.
+              Programa dentro de la función "createArchitecture".
+              A esta función se el pasa un array preparado que continue la información del dataset.
             </p>
           </div>
           {/* {numberClass.start()} */}
@@ -625,7 +625,7 @@ export default function ObjectDetection(props) {
           {/* </div> */}
 
           {/* INFO ADDITIONAL LAYERS */}
-          <div className="header-model-editor mg-top">
+          <div className="header-model-editor mt-3">
             <p>
               Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en
               la clasificación de imágenes
@@ -651,11 +651,11 @@ export default function ObjectDetection(props) {
             </Button>
           </div>
 
-          <div className="header-model-editor mg-top">
+          <div className="header-model-editor mt-3">
             <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
           </div>
 
-          <div className="header-model-editor mg-top">
+          <div className="header-model-editor mt-3">
             <p>
               Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu
               equipo.
@@ -718,7 +718,7 @@ export default function ObjectDetection(props) {
             </div>
           </div>
 
-          <div className="header-model-editor mg-top">
+          <div className="header-model-editor mt-3">
             <p>
               Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
               sean correctas.

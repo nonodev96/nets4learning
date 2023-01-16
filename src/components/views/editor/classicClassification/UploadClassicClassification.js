@@ -67,27 +67,32 @@ export default function UploadClassicClassification(props) {
   }
 
   return (
-    <div className="header-model-editor">
-      <p>
-        Carga tu propio dataSet con la siguiente
-        <a href="" onClick={downloadFile} id="dwn-btn">estructura</a>
-        pulsando este botón.
-      </p>
-      <input type="file" name="doc" onChange={handleChangeWeightFileUpload}></input>
+    <>
+      <div className="header-model-editor" id={"UploadClassicClassification"}>
+        <p>
+          Carga tu propio dataSet con la siguiente<a href="" onClick={() => downloadFile} id="dwn-btn">estructura</a>
+          pulsando este botón.
+        </p>
+        <input type="file"
+               name="doc"
+               onChange={() => handleChangeWeightFileUpload}></input>
 
-      <input type="button"
-             value="Click me"
-             onClick={() => {
-               console.log('Este es el custom dataset', WeightFile)
-             }}></input>
+        <input type="button"
+               value="Click me"
+               onClick={() => {
+                 console.log('Este es el custom dataset', WeightFile)
+               }}></input>
 
-      <input type="file" name="doc" onChange={handleChangeJsonFileUpload}></input>
+        <input type="file"
+               name="doc"
+               onChange={() => handleChangeJsonFileUpload}></input>
 
-      <input type="button"
-             value="Click me"
-             onClick={() => {
-               console.log('Este es el custom dataset', JsonFile)
-             }}></input>
-    </div>
+        <input type="button"
+               value="Click me"
+               onClick={() => {
+                 console.log('Este es el custom dataset', JsonFile)
+               }}></input>
+      </div>
+    </>
   )
 }

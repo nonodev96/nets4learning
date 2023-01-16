@@ -13,8 +13,8 @@ export const modelsType = [
 export default function InitialMenu() {
   const history = useHistory()
 
-  const [ButtonActive, setButtonActive] = useState(-1)
-  const [DataSet, setDataSet] = useState(-1)
+  const [ButtonActive, setButtonActive] = useState(0)
+  const [DataSet, setDataSet] = useState(0)
 
   // const modelsType = [
   //   "Empieza de cero y crea tu propia arquitectura",
@@ -25,17 +25,6 @@ export default function InitialMenu() {
 
   const handleClickTrainEdit = (ButtonActive, type) => {
     console.log(ButtonActive, type, DataSet)
-    // if (DataSet == 2) {
-    //   history.push('/edit-architecture/' + ButtonActive + '/' + type + '/' + 2)
-    // } else if (DataSet == 1) {
-    //   history.push('/edit-architecture/' + ButtonActive + '/' + type + '/' + 1)
-    // } else if (DataSet == 0) {
-    //   history.push('/edit-architecture/' + ButtonActive + '/' + type + '/' + 0)
-    // } else {
-    //   history.push(
-    //     '/edit-architecture/' + ButtonActive + '/' + type + '/' + '-1',
-    //   )
-    // }
     if (type === 2) history.push(process.env.REACT_APP_DOMAIN + '/select-dataset/' + ButtonActive)
     if (type === 1) history.push(process.env.REACT_APP_DOMAIN + '/select-model/' + ButtonActive)
   }
@@ -61,16 +50,15 @@ export default function InitialMenu() {
       case 0:
         return (
           <>
-            <div className="card">
-              <div className="card-header">
-                <h3 className="">La clasificación</h3>
-              </div>
-              <div className="card-body">
-                <article>
-                  <p>
+            <Card>
+              <Card.Header>
+                <h3>La clasificación</h3>
+              </Card.Header>
+              <Card.Body>
+                  <Card.Text>
                     La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
                     o más variables independientes.
-                  </p>
+                  </Card.Text>
                   <p>La clasificación se utiliza para predecir respuestas discretas.</p>
                   <Button onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
                     Modelo Pre-entrenado
@@ -79,9 +67,8 @@ export default function InitialMenu() {
                           style={{ "marginLeft": "1em" }}>
                     Crear y edita arquitectura
                   </Button>
-                </article>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </>
         )
       // case 1:
@@ -118,16 +105,15 @@ export default function InitialMenu() {
       case 2:
         return (
           <>
-            <div className="card">
-              <div className="card-header">
+            <Card>
+              <Card.Header>
                 <h3>La clasificación</h3>
-              </div>
-              <div className="card-body">
-                <article>
-                  <p>
+              </Card.Header>
+              <Card.Body>
+                  <Card.Text>
                     La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
                     semejanzas.
-                  </p>
+                  </Card.Text>
                   <p>
                     Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a
                     poco qué caracteriza a cada objeto.
@@ -135,24 +121,22 @@ export default function InitialMenu() {
                   <Button onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
                     Modelo Pre-entrenado
                   </Button>
-                </article>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </>
         )
       case 3:
         return (
           <>
-            <div className="card">
-              <div className="card-header">
+            <Card>
+              <Card.Header>
                 <h3>La clasificación</h3>
-              </div>
-              <div className="card-body">
-                <article>
-                  <p>
+              </Card.Header>
+              <Card.Body>
+                  <Card.Text>
                     La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar
                     la clase a la que pertenece el dependiente según una o más variables independientes.
-                  </p>
+                  </Card.Text>
                   <p>
                     En este caso la variable de entrada será una imagen.
                   </p>
@@ -163,10 +147,8 @@ export default function InitialMenu() {
                           onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
                     Crear y edita arquitectura
                   </Button>
-                </article>
-              </div>
-            </div>
-
+              </Card.Body>
+            </Card>
           </>
         )
       default:
@@ -176,7 +158,7 @@ export default function InitialMenu() {
 
   return (
     <>
-      <Row>
+      <Row className={"mt-3"}>
         {modelsType.map((type, i) => {
           if (i !== 1) {
             const actualColor = colors[i % colors.length]
@@ -190,30 +172,7 @@ export default function InitialMenu() {
           }
         })}
       </Row>
-
-      {/*
-        <Row>
-          {modelsType.map((type, i) => {
-            if (i !== 1) {
-              if (i === ButtonActive) {
-                return (
-                  <Col key={10 + i}>
-                    <p className="vl"></p>
-                  </Col>
-                )
-              } else {
-                return (
-                  <Col key={10 + i}>
-                    <p className="vl-clear"></p>
-                  </Col>
-                )
-              }
-            }
-          })}
-        </Row>
-        */}
-
-      <Row className="mt-3">
+      <Row className={"mt-3"}>
         <Col>
           {menuSelection()}
         </Col>

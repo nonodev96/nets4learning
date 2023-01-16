@@ -199,9 +199,9 @@ function InteractiveEditor(props) {
         <div className="container">
           <div className="header-model-editor">
             <p>
-              A continuación se ha pre cargado una arquitectura. Programa dentro
-              de la función "createArchitecture". A esta función se el pasa un
-              array preparado que continue la información del dataset.
+              A continuación se ha pre cargado una arquitectura.
+              Programa dentro de la función "createArchitecture".
+              A esta función se el pasa un array preparado que continue la información del dataset.
             </p>
           </div>
         </div>

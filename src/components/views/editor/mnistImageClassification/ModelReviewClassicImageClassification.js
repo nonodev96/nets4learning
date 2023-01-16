@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import { useState, useEffect } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../../modelos/NumberClasificatorHelper.js'
 import { dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
@@ -265,28 +265,33 @@ export default function ModelReviewClassicImageClassification(props) {
       </div>
       <Col className="col-specific cen">
         <div className="container-fluid container-fluid-w1900">
-          {dataSet === 0 ? (
-            <div className="header-model-editor">
-              <p>
-                Carga tu propio Modelo. Ten en cuenta que tienes que subir
-                primero el archivo .json y después el fichero .bin{' '}
-              </p>
-              <input id="json-upload"
-                     style={{ marginLeft: '1rem' }}
-                     type="file"
-                     name="json"
-                     accept=".json"></input>
-              <input id="weights-upload"
-                     style={{ marginLeft: '1rem' }}
-                     type="file"
-                     accept=".bin"
-                     name="bin"></input>
-            </div>
-          ) : (
+          {{
+            0: <>
+              <div className="header-model-editor">
+                <p>
+                  Carga tu propio Modelo.
+                </p>
+                <p>
+                  Primero el archivo .json y después el fichero .bin
+                </p>
+                <input id="json-upload"
+                       style={{ marginLeft: '1rem' }}
+                       type="file"
+                       name="json"
+                       accept=".json"></input>
+                <input id="weights-upload"
+                       style={{ marginLeft: '1rem' }}
+                       type="file"
+                       accept=".bin"
+                       name="bin"></input>
+              </div>
+            </>,
+          }[dataSet]}
+          {dataSet !== 0 ? (
             <div className="header-model-editor">
               {dataSetDescription[3][dataSet]}
             </div>
-          )}
+          ) : ("")}
 
           <div className="container xtraPane borde">
             <div className="title-pane">Resultado</div>
@@ -322,11 +327,11 @@ export default function ModelReviewClassicImageClassification(props) {
                   <canvas id="originalImage" style={{ display: 'none' }}></canvas>
                   <canvas id="imageCanvas"></canvas>
                   <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-                  <button type="button"
+                  <Button type="button"
                           onClick={handleVectorTest}
                           className="btn-custom-canvas green">
                     Validar
-                  </button>
+                  </Button>
                 </Col>
                 <canvas id="smallcanvas"
                         width="28"
@@ -342,14 +347,13 @@ export default function ModelReviewClassicImageClassification(props) {
                 <canvas id="originalImage" style={{ display: 'none' }}></canvas>
                 <canvas id="imageCanvas"></canvas>
                 <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-                {/* SUBMIT BUTOON */}
-                <button style={{ marginTop: '2rem' }}
+                {/* SUBMIT Button */}
+                <Button style={{ marginTop: '2rem' }}
                         className="btn-add-layer"
-                        type="button"
                         onClick={handleVectorTest}
                         variant="primary">
                   Ver resultado
-                </button>
+                </Button>
               </div>
             )}
           </div>

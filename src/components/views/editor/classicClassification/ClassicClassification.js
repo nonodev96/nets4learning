@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Col, Row, CloseButton } from 'react-bootstrap'
+import { Col, Row, CloseButton, Button, Container } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
+import Card from 'react-bootstrap/Card';
 import * as tf from '@tensorflow/tfjs'
 import {
   createClassicClassification,
@@ -21,10 +22,7 @@ export default function ClassicClassification(props) {
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
-  const [Layer, setLayer] = useState([
-    { units: 10, activation: 'Sigmoid' },
-    { units: 3, activation: 'Softmax' },
-  ])
+  const [Layer, setLayer] = useState([{ units: 10, activation: 'Sigmoid' }, { units: 3, activation: 'Softmax' },])
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
@@ -32,7 +30,7 @@ export default function ClassicClassification(props) {
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [NoEpochs, setNoEpochs] = useState(50)
-  const [string, setstring] = useState('0.1;4.3;2.1;0.2')
+  const [string, setString] = useState('0.1;4.3;2.1;0.2')
 
   const OPTIMIZER_TYPE = [
     'Sgd',
@@ -156,7 +154,6 @@ export default function ClassicClassification(props) {
     for (i = idLayer + 1; i < array.length; i++) {
       document.getElementById(`formUnitsLayer${i - 1}`).value =
         document.getElementById(`formUnitsLayer${i}`).value
-
       document.getElementById(`formActivationLayer${i - 1}`).value =
         document.getElementById(`formActivationLayer${i}`).value
       array2.push(array[i])
@@ -172,7 +169,7 @@ export default function ClassicClassification(props) {
   }
 
   const handleChangeTestInput = () => {
-    setstring(document.getElementById(`formTestInput`).value)
+    setString(document.getElementById(`formTestInput`).value)
   }
 
   const handleChangeActivation = (index) => {
@@ -210,24 +207,27 @@ export default function ClassicClassification(props) {
 
   return (
     <>
-      <Form onSubmit={handleClickPlay}>
-        <div className="container">
-          <div className="header-model-editor">
-            <p>
-              A continuación se ha pre cargado una arquitectura. Programa dentro
-              de la función "createArchitecture". A esta función se el pasa un
-              array preparado que continue la información del dataset.
-            </p>
-          </div>
-          {/* {numberClass.start()} */}
-        </div>
+      <Form onSubmit={handleClickPlay} id={"ClassicClassification"}>
+        <Container>
+          <Row>
+            <Card>
+              <Card.Header></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  A continuación se ha pre cargado una arquitectura.
+                  Programa dentro de la función "createArchitecture".
+                  A esta función se el pasa un array preparado que continue la información del dataset.
+                </Card.Text>
+              </Card.Body>
+            </Card>
 
-        {/* BLOCK 1 */}
-        <div className="container">
-          {/* <div className="column"> */}
+          </Row>
+          {/* {numberClass.start()} */}
+
+          {/* BLOCK 1 */}
           <Row>
             {/* SPECIFIC PARAMETERS */}
-            <Col xl className="col-specific">
+            <Col xl={6} className="col-specific">
               <div className="container-fluid container-fluid-w1900">
                 {Layer.map((item, index) => {
                   return (
@@ -271,23 +271,18 @@ export default function ClassicClassification(props) {
                 })}
 
                 {/* ADD LAYER */}
-                <button className="btn-add-layer"
+                <Button className="btn-add-layer"
                         type="button"
                         onClick={() => handlerAddLayer()}
                         variant="primary">
                   Añadir capa
-                </button>
+                </Button>
               </div>
             </Col>
 
             {/* GENERAL PARAMETERS */}
             <Col xl className="col-general">
-              <div className="container borde general-settings position-sticky">
-               <div className="">
-                 <div className="sticky">
-                   container borde general-settings
-                 </div>
-               </div>
+              <div className="container borde general-settings">
                 {/* LEARNING RATE */}
                 <Form.Group className="mb-3" controlId="formTrainRate">
                   <Form.Label>Tasa de entrenamiento</Form.Label>
@@ -362,51 +357,45 @@ export default function ClassicClassification(props) {
               CREAR Y ENTRENAR MODELO
             </Button> */}
             </Col>
+
+            <Col xl={12}>
+              <Button type="submit"
+                      size="lg"
+                      variant="primary">
+                Crear y entrenar modelo
+              </Button>
+              <div id="salida"></div>
+            </Col>
+
           </Row>
-          {/* </div> */}
 
-          {/* BLOCK  BUTTON */}
-          {/* <div className=" "> */}
-          <div className="col-specific cen">
-            <button className="btn-add-layer"
-                    type="submit"
-                    variant="primary">
-              Crear y entrenar modelo
-            </button>
-          </div>
-          {/* </div> */}
+          {/* BLOCK 2 */}
+          <Row>
+            <Col className="col-specific cen">
+              <div className="container-fluid container-fluid-w1900">
+                <div className="container pane borde">
+                  <div className="title-pane">Resultado</div>
+                  {/* VECTOR TEST */}
+                  <Form.Group className="mb-3" controlId={'formTestInput'}>
+                    <Form.Label>Introduce el vector a probar</Form.Label>
+                    <Form.Control placeholder="Introduce el vector a probar"
+                                  defaultValue="0.1;4.3;2.1;0.2"
+                                  onChange={() => handleChangeTestInput()}/>
+                  </Form.Group>
 
-          <div id="salida"></div>
-        </div>
-
-        {/* BLOCK 2 */}
-        <div className="container">
-          <Col className="col-specific cen">
-            <div className="container-fluid container-fluid-w1900">
-              <div className="container pane borde">
-                <div className="title-pane">Resultado</div>
-                {/* VECTOR TEST */}
-                <Form.Group className="mb-3" controlId={'formTestInput'}>
-                  <Form.Label>Introduce el vector a probar</Form.Label>
-                  <Form.Control placeholder="Introduce el vector a probar"
-                                defaultValue="0.1;4.3;2.1;0.2"
-                                onChange={() => handleChangeTestInput()}/>
-                </Form.Group>
-
-                {/* SUBMIT BUTTON */}
-                <button className="btn-add-layer"
-                        type="button"
-                        onClick={handleVectorTest}
-                        variant="primary">
-                  Ver resultado
-                </button>
+                  {/* SUBMIT BUTTON */}
+                  <Button className="btn-add-layer"
+                          type="button"
+                          onClick={handleVectorTest}
+                          variant="primary">
+                    Ver resultado
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Col>
-        </div>
+            </Col>
+          </Row>
 
-        {/* BLOCK 3 */}
-        <div className="resultados">
+          {/* BLOCK 3 */}
           <Row>
             <Col>
               <div id="demo"
@@ -417,7 +406,7 @@ export default function ClassicClassification(props) {
               </div>
             </Col>
           </Row>
-        </div>
+        </Container>
       </Form>
     </>
   )

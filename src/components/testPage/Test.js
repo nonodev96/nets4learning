@@ -1,15 +1,15 @@
 import React from "react";
-import Footer from "../footer/Footer";
-import NavBar from "../navBar/NavBar";
+import N4LFooter from "../footer/N4LFooter";
+import N4LNavBar from "../navBar/N4LNavBar";
 
 export default function Test() {
   return (
     <>
-      <NavBar/>
+      <N4LNavBar/>
       <div className="container">
         <h1>Test de los modelos previamente creados</h1>
       </div>
-      <Footer/>
+      <N4LFooter/>
     </>
   )
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Editor.css";
 import { Col, Container, Row } from "react-bootstrap";
-import NavBar from "../../navBar/NavBar";
-import Footer from "../../footer/Footer";
+import N4LNavBar from "../../navBar/N4LNavBar";
+import N4LFooter from "../../footer/N4LFooter";
 import doIris from "../../../modelos/Clasificador";
 import { useParams } from "react-router";
 import useLocalStorage from "../../../hooks/useLocalStorage";
@@ -286,7 +286,7 @@ async function trainModel(xTrain, yTrain, xTest, yTest) {
           </Row>
         </div>
       </div>
-      {/* <Footer /> */}
+      {/* <N4LFooter /> */}
     </>
   );
 }

@@ -1,15 +1,15 @@
 import React from "react";
-import Footer from "./footer/Footer";
+import N4LFooter from "./footer/N4LFooter";
 import "./Home.css";
-import NavBar from "./navBar/NavBar";
+import N4LNavBar from "./navBar/N4LNavBar";
 import InitialMenu from "./views/initialMenu/InitialMenu";
 import { Col, Row } from "react-bootstrap";
 
 export default function Home() {
   return (
     <>
-      <NavBar/>
-      <div className="wrapper container" style={{"marginBottom": "1em"}}>
+      <N4LNavBar/>
+      <div className="container wrapper mb-3">
         <Row>
           <Col>
             <h1 className="mt-3">Bienvenido a Nets4learning</h1>
@@ -18,7 +18,7 @@ export default function Home() {
         </Row>
         <InitialMenu/>
       </div>
-      <Footer/>
+      <N4LFooter/>
     </>
   );
 }

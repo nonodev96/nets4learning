@@ -7,20 +7,16 @@ export default function ButtonDescription(props) {
 
   return (
     <>
-      <Container>
-        <h3 className="titulos">{data.text}</h3>
-        <Row className="btns-description">
-          {data.buttons.map((a, i) => {
-            return (
-              <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="text-align: center" key={i}>
-                <Button className="btn-custom-description" key={i} onClick={a.accion}>
-                  {a.Title}
-                </Button>
-              </Col>
-            );
-          })}
-        </Row>
-      </Container>
+      <Row>
+        <h3>{data.text}</h3>
+        {data.buttons.map((a, i) => {
+          return (
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} key={i}>
+              <Button key={i} onClick={a.accion}>{a.Title}</Button>
+            </Col>
+          );
+        })}
+      </Row>
     </>
   );
 }

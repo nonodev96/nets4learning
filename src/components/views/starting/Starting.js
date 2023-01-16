@@ -1,15 +1,15 @@
 import React from "react"
-import Footer from "../../footer/Footer"
-import NavBar from "../../navBar/NavBar"
+import N4LFooter from "../../footer/N4LFooter"
+import N4LNavBar from "../../navBar/N4LNavBar"
 import Editor from "../editor/Editor"
 
 export default function Starting() {
   return (
     <>
-      <NavBar/>
+      <N4LNavBar/>
       Añadir menú de elección de la arquitectura dependiendo del enfoque
       <Editor/>
-      <Footer/>
+      <N4LFooter/>
     </>
   )
 }

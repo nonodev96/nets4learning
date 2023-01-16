@@ -1,259 +1,249 @@
 import React, { useState } from 'react'
-import { Form, Button, Row, Col, Container } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import Footer from '../../footer/Footer'
-import NavBar from '../../navBar/NavBar'
+import N4LFooter from '../../footer/N4LFooter'
+import N4LNavBar from '../../navBar/N4LNavBar'
 import { modelsType } from '../initialMenu/InitialMenu'
 import { useHistory } from 'react-router-dom'
 import * as alertHelper from '../../../utils/alertHelper'
 
 export const dataSetList = [
-  ['SUBIR DATASET PROPIO', 'EVALUACIÓN DE COCHES', 'IRIS-DATA'],
+  [
+    'SUBIR DATASET PROPIO',
+    'EVALUACIÓN DE COCHES',
+    'IRIS-DATA'],
   [],
   [
     'SUBIR DATASET PROPIO',
     'DETECCIÓN DE CARA Y GEOMETRÍA FACIAL',
     'MALLA DE CARA',
   ],
-  ['SUBIR DATASET PROPIO', 'MNIST - CLASIFICADOR DE NÚMEROS'],
+  [
+    'SUBIR DATASET PROPIO',
+    'MNIST - CLASIFICADOR DE NÚMEROS'
+  ],
 ]
 export const dataSetDescription = [
   [
     'DATASET PROPIO',
     <>
-      <article>
-        <p>El dataSet Car Evaluation permite evaluar vehículos a través de la siguiente estructura:</p>
-        <ul>
-          <li>CAR Aceptación del vehículo</li>
-          <li>
-            PRICE precio en general
+      <p>El dataSet Car Evaluation permite evaluar vehículos a través de la siguiente estructura:</p>
+      <ul>
+        <li>CAR Aceptación del vehículo</li>
+        <li>
+          PRICE precio en general
+          <ul>
+            <li>BUTING precio de compra</li>
+            <li>MAINT costo del mantenimiento</li>
+          </ul>
+        </li>
+        <li>
+          TECH Características técnicas
+          <ul>
+            <li>COMFORT comfort</li>
             <ul>
-              <li>BUTING precio de compra</li>
-              <li>MAINT costo del mantenimiento</li>
+              <li>DOORS nº de puertas</li>
+              <li>PERSONS nº de plazas</li>
+              <li>LUG_BOOT tamaño del maletero</li>
             </ul>
-          </li>
-          <li>
-            TECH Características técnicas
-            <ul>
-              <li>COMFORT comfort</li>
-              <ul>
-                <li>DOORS nº de puertas</li>
-                <li>PERSONS nº de plazas</li>
-                <li>LUG_BOOT tamaño del maletero</li>
-              </ul>
-            </ul>
-            <ul>
-              <li>SAFETY seguridad estimada del vehículo</li>
-            </ul>
-          </li>
-        </ul>
+          </ul>
+          <ul>
+            <li>SAFETY seguridad estimada del vehículo</li>
+          </ul>
+        </li>
+      </ul>
 
-        <p>Por último los posibles valores que puede dar son:</p>
-        <ul>
-          <li>UNACC - Inaccesible</li>
-          <li>ACC - Accesible</li>
-          <li>GOOD - Bien</li>
-          <li>VGOOD - Muy bien</li>
-        </ul>
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li>UNACC - Inaccesible</li>
+        <li>ACC - Accesible</li>
+        <li>GOOD - Bien</li>
+        <li>VGOOD - Muy bien</li>
+      </ul>
 
-        <p>Estos son los valores de entrada que podrá tomar la red.</p>
-        <ul>
-          <li>buying: vhigh, high, med, low.</li>
-          <li>maint: vhigh, high, med, low.</li>
-          <li>doors: 2, 3, 4, 5more.</li>
-          <li>persons: 2, 4, more.</li>
-          <li>lug_boot: small, med, big.</li>
-          <li>safety: low, med, high.</li>
-        </ul>
-        <p>
-          Para obtener más información acerca de este dataSet visita<a
-          href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" rel="noreferrer" target="_blank">esta web</a>
-        </p>
-      </article>
+      <p>Estos son los valores de entrada que podrá tomar la red.</p>
+      <ul>
+        <li>buying: vhigh, high, med, low.</li>
+        <li>maint: vhigh, high, med, low.</li>
+        <li>doors: 2, 3, 4, 5more.</li>
+        <li>persons: 2, 4, more.</li>
+        <li>lug_boot: small, med, big.</li>
+        <li>safety: low, med, high.</li>
+      </ul>
+      <p>
+        Para obtener más información acerca de este dataSet visita
+        <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" rel="noreferrer" target="_blank"> esta web</a>
+      </p>
     </>,
 
     <>
-      <article>
-        <p>El dataSet Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo
-          y sépalo. </p>
-        <p>Tiene la siguiente estructura:</p>
-        <ul>
-          <li>Longitud del sépalo en cm</li>
-          <li>Anchura del sépalo en cm</li>
-          <li>Longitud del pétalo en cm</li>
-          <li>Anchura del pétalo en cm</li>
-        </ul>
+      <p>El dataSet Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo
+        y sépalo. </p>
+      <p>Tiene la siguiente estructura:</p>
+      <ul>
+        <li>Longitud del sépalo en cm</li>
+        <li>Anchura del sépalo en cm</li>
+        <li>Longitud del pétalo en cm</li>
+        <li>Anchura del pétalo en cm</li>
+      </ul>
 
-        <p>Por último los posibles valores que puede dar son:</p>
-        <ul>
-          <li>Iris Setosa</li>
-          <li>Iris Versicolour</li>
-          <li>Iris Virginica</li>
-        </ul>
-      </article>
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li>Iris Setosa</li>
+        <li>Iris Versicolour</li>
+        <li>Iris Virginica</li>
+      </ul>
     </>,
   ],
   [],
   [
     'DATASET PROPIO',
     <>
-      <article>
-        <p>
-          Este modelo es proporcionado por el hub de modelos de tensorflow. Este modelo lo podemos encontrar
-          <a target="blank" href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
-          Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para
-          finalmente hacer una malla de la misma.
-        </p>
+      <p>
+        Este modelo es proporcionado por el hub de modelos de tensorflow. Este modelo lo podemos encontrar
+        <a target="blank" href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
+        Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para
+        finalmente hacer una malla de la misma.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imagen o vídeo de entrada.</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imagen o vídeo de entrada.</li>
+      </ul>
 
-        <ul>
-          <p>Datos de salida:</p>
-          <li>Misma elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
-        </ul>
-      </article>
+      <ul>
+        <p>Datos de salida:</p>
+        <li>Misma elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
+      </ul>
     </>,
 
     <>
-      <article>
-        <p>
-          Este modelo es proporcionado por el hub de modelos de tensorflow.
-          Este modelo lo podemos encontrar <a target="blank"
-                                              href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1">aquí</a>.
-          Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como
-          los ojos, orejas, nariz y boca.
-        </p>
+      <p>
+        Este modelo es proporcionado por el hub de modelos de tensorflow.
+        Este modelo lo podemos encontrar <a target="blank"
+                                            href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1">aquí</a>.
+        Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como
+        los ojos, orejas, nariz y boca.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imagen o vídeo.</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imagen o vídeo.</li>
+      </ul>
 
-        <p>Datos de salida:</p>
-        <ul>
-          <li>Misma elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
-        </ul>
-      </article>
+      <p>Datos de salida:</p>
+      <ul>
+        <li>Misma elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
+      </ul>
     </>,
 
     <>
-      <article>
-        <p>
-          PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
-          Se puede usar para estimar una sola pose o varias a la vez.
-          En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.
-        </p>
+      <p>
+        PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
+        Se puede usar para estimar una sola pose o varias a la vez.
+        En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imogen o vídeo(webcam) a color.</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imogen o vídeo(webcam) a color.</li>
+      </ul>
 
-        <p>Datos de salida:</p>
-        <ul>
-          <li>Misma elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
-            ademas
-            de hombros, codos, manos, pies, rodillas y cadera.
-          </li>
-        </ul>
-      </article>
+      <p>Datos de salida:</p>
+      <ul>
+        <li>Misma elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
+          ademas
+          de hombros, codos, manos, pies, rodillas y cadera.
+        </li>
+      </ul>
     </>,
   ],
   [
     'DATASET PROPIO',
     <>
-      <article>
-        <p>
-          La base de datos <b>MNIST</b> es una gran base de datos de dígitos escritos a mano.
-          La base de datos se usa ampliamente para capacitación y pruebas en el campo del aprendizaje automático.
-        </p>
-        <p>
-          Fue creado "re-mezclando" las muestras de los conjuntos de datos originales del NIST.
-        </p>
-        <p>
-          El conjunto de datos de capacitación del NIST se tomó de la Oficina del Censo de los Estados Unidos.
-          Además, las imágenes en blanco y negro del NIST se normalizaron para encajar en un cuadro delimitador de
-          <b> 28x28 píxeles</b> y se suavizaron, lo que introdujo niveles de escala de grises.
-        </p>
+      <p>
+        La base de datos <b>MNIST</b> es una gran base de datos de dígitos escritos a mano.
+        La base de datos se usa ampliamente para capacitación y pruebas en el campo del aprendizaje automático.
+      </p>
+      <p>
+        Fue creado "re-mezclando" las muestras de los conjuntos de datos originales del NIST.
+      </p>
+      <p>
+        El conjunto de datos de capacitación del NIST se tomó de la Oficina del Censo de los Estados Unidos.
+        Además, las imágenes en blanco y negro del NIST se normalizaron para encajar en un cuadro delimitador de
+        <b> 28x28 píxeles</b> y se suavizaron, lo que introdujo niveles de escala de grises.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imogen en escala de grises y con un tamaño de 28x28 píxeles</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imogen en escala de grises y con un tamaño de 28x28 píxeles</li>
+      </ul>
 
-        <p>Por último los posibles valores que puede dar son:</p>
-        <ul>
-          <li>Un número entre 0 y 9</li>
-        </ul>
-      </article>
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li>Un número entre 0 y 9</li>
+      </ul>
     </>,
 
     <>
-      <article>
-        <p>
-          MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas
-          similares.
-          Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:
-          <a target="_blank" rel="noreferrer" href="https://arxiv.org/abs/1801.04381">
-            "Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation"
-          </a>, 2018.
-        </p>
+      <p>
+        MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas
+        similares.
+        Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:
+        <a target="_blank" rel="noreferrer" href="https://arxiv.org/abs/1801.04381">
+          "Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation"
+        </a>, 2018.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
+      </ul>
 
-        <p>Por último los posibles valores que puede dar son:</p>
-        <ul>
-          <li>
-            Un número de 0 a 1001 que son cada una de las categorías de esta
-            <a rel="noreferrer" target="_blank"
-               href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
-          </li>
-        </ul>
-      </article>
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li>
+          Un número de 0 a 1001 que son cada una de las categorías de esta
+          <a rel="noreferrer" target="_blank"
+             href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
+        </li>
+      </ul>
     </>,
     <>
-      <article>
-        <p>
-          ResNet V2 es una familiar de redes de arquitecturas para la clasificación de imágenes con un número variable
-          de capas.
-          Están basadas en la arquitectura ResNet original publicada por Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian
-          Sun:
-          <a rel="noreferrer" target={'_blank'} href="https://arxiv.org/abs/1512.03385">
-            "Deep Residual Learning for Image Recognition"
-          </a>, 2015.
-        </p>
-        <p>
-          La variación "V2" utilizada en el modelo que vamos a usar fue realizada por Kaiming He, Xiangyu Zhang,
-          Shaoqing Ren, Jian Sun:{' '}
-          <a rel="noreferrer" target={'_blank'}
-             href="https://arxiv.org/abs/1603.05027">
-            "Identity Mappings in Deep
-            Residual Networks"</a>, 2016.
-        </p>
-        <p>
-          La diferencia con ResNet V1 es el uso de la normalización por lotes antes de cada capa de peso. El modelo
-          cargado usa un total de 50 capas.
-        </p>
+      <p>
+        ResNet V2 es una familiar de redes de arquitecturas para la clasificación de imágenes con un número variable
+        de capas.
+        Están basadas en la arquitectura ResNet original publicada por Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian
+        Sun:
+        <a rel="noreferrer" target={'_blank'} href="https://arxiv.org/abs/1512.03385">
+          "Deep Residual Learning for Image Recognition"
+        </a>, 2015.
+      </p>
+      <p>
+        La variación "V2" utilizada en el modelo que vamos a usar fue realizada por Kaiming He, Xiangyu Zhang,
+        Shaoqing Ren, Jian Sun:{' '}
+        <a rel="noreferrer" target={'_blank'}
+           href="https://arxiv.org/abs/1603.05027">
+          "Identity Mappings in Deep
+          Residual Networks"</a>, 2016.
+      </p>
+      <p>
+        La diferencia con ResNet V1 es el uso de la normalización por lotes antes de cada capa de peso. El modelo
+        cargado usa un total de 50 capas.
+      </p>
 
-        <p>Datos de entrada:</p>
-        <ul>
-          <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
-        </ul>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
+      </ul>
 
-        <p>Por último los posibles valores que puede dar son:</p>
-        <ul>
-          <li>Un número de 0 a 1001 que son cada una de las categorías de esta
-            <a rel="noreferrer" target="_blank"
-               href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
-          </li>
-        </ul>
-      </article>
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li>Un número de 0 a 1001 que son cada una de las categorías de esta
+          <a rel="noreferrer" target="_blank"
+             href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
+        </li>
+      </ul>
     </>,
   ],
 ]
@@ -306,19 +296,17 @@ export default function UploadArchitectureMenu(props) {
 
   return (
     <>
-      <NavBar/>
+      <N4LNavBar/>
 
       <Container>
         <Row>
           <Col>
-            <h1 className="mt-3">{modelsType[id]}</h1>
-            <p>Selecciona a continuación el Data Set sobre se va a trabajar o carga tu propio Data Set.</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <div className="card">
-              <div className="card-body">
+            <Card className="mt-3">
+              <Card.Header>
+                <h1>{modelsType[id]}</h1>
+              </Card.Header>
+              <Card.Body>
+                <p>Selecciona a continuación el Data Set sobre se va a trabajar o carga tu propio Data Set.</p>
                 <Form>
                   <Row>
                     <Col>
@@ -356,12 +344,13 @@ export default function UploadArchitectureMenu(props) {
                     </Col>
                   </Row>
                 </Form>
-              </div>
-            </div>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>
-      <Footer/>
+
+      <N4LFooter/>
     </>
   )
 }

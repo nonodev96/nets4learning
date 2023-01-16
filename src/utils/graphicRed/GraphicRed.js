@@ -56,7 +56,7 @@ export default function GraphicRed(props) {
 
   const events = {
     select: function (event) {
-      var { nodes } = event
+      const { nodes } = event
       setActiveLayer(nodes[0])
       // console.log(nodes[0])
     },

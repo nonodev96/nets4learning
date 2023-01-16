@@ -11,6 +11,11 @@ import "./CodePen.css";
 export default function CodePen(props) {
   const { language, displayName, value, onChange } = props;
   const [open, setOpen] = useState(true);
+  const [theme, setTheme] = useState("light");
+
+  function toggleTheme() {
+    setTheme(theme === "light" ? "dark" : "light");
+  }
 
   function handleChange(editor, data, value) {
     onChange(value);
@@ -26,6 +31,11 @@ export default function CodePen(props) {
                   onClick={() => setOpen((prevOpen) => !prevOpen)}>
             {open ? <BsArrowsAngleExpand/> : <BsArrowsAngleContract/>}
           </button>
+          Tema del editor
+          <button className="btn"
+                  onClick={() => toggleTheme}>
+            Cambiar
+          </button>
         </div>
         <ControlledEditor className="code-mirror-wrapper"
                           onBeforeChange={handleChange}
@@ -34,7 +44,7 @@ export default function CodePen(props) {
                             lineWrapping: true,
                             lint: true,
                             mode: language,
-                            theme: "material",
+                            theme: theme,
                             lineNumbers: true,
                           }}/>
       </div>

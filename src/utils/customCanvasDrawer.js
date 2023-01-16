@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './customCanvasDrawer.css'
 
 export default function CustomCanvasDrawer(props) {
-  const {submitFunction}=props
+  const { submitFunction } = props
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
   const [isDrawing, setIsDrawing] = useState(false)
@@ -22,9 +22,9 @@ export default function CustomCanvasDrawer(props) {
     contextRef.current = context
 
     // React to touch events on the canvas
-    canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
     canvas.addEventListener('touchmove', handleTouchMove);
-    
+
     return () => canvas.removeEventListener("touchmove")
   }, [])
 
@@ -52,22 +52,22 @@ export default function CustomCanvasDrawer(props) {
   }
 
   const clear = () => {
-    contextRef.current.clearRect(0, 0,200,200);
+    contextRef.current.clearRect(0, 0, 200, 200);
   }
 
-function handleTouchStart(e) {
-  e.preventDefault();
-}
+  function handleTouchStart(e) {
+    e.preventDefault();
+  }
 
-function handleTouchMove(e) {
-  const rect = canvasRef.current.getBoundingClientRect();
-  const cssX = e.touches[0].clientX - rect.left;
-  const cssY = e.touches[0].clientY - rect.top;
-  const pixelX = cssX //* canvasRef.current.width  / rect.width;
-  const pixelY = cssY //* canvasRef.current.height / rect.height;
-  // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`;
-  contextRef.current.fillRect(pixelX - 10, pixelY - 10, 10, 10);
-}
+  function handleTouchMove(e) {
+    const rect = canvasRef.current.getBoundingClientRect();
+    const cssX = e.touches[0].clientX - rect.left;
+    const cssY = e.touches[0].clientY - rect.top;
+    const pixelX = cssX //* canvasRef.current.width  / rect.width;
+    const pixelY = cssY //* canvasRef.current.height / rect.height;
+    // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`;
+    contextRef.current.fillRect(pixelX - 10, pixelY - 10, 10, 10);
+  }
 
   // const startDrawing = ()=> {
   //   setIsDrawing(true)
@@ -77,19 +77,19 @@ function handleTouchMove(e) {
     <>
       <div className="container-canvas">
         <canvas id='bigcanvas'
-          onMouseDown={startDrawing}
-          onMouseUp={finishDrawing}
-          onMouseMove={draw}
-          ref={canvasRef} 
-          onChange={startDrawing}
-          className="border-canvas"
+                onMouseDown={startDrawing}
+                onMouseUp={finishDrawing}
+                onMouseMove={draw}
+                ref={canvasRef}
+                onChange={startDrawing}
+                className="border-canvas"
         ></canvas>
-          
+
       </div>
       <div className="btn-group-canvas">
         <button
-        type='button'
-        onClick={submitFunction}
+          type='button'
+          onClick={submitFunction}
           className="btn-custom-canvas green"
         >
           Validar

@@ -66,19 +66,19 @@ export default function LayerEdit(props) {
       ) : (
         <>
           <Row>
-            {/* POOLSIZE */}
+            {/* POOL_SIZE */}
             <Form.Group className="mb-3"
                         controlId={'formPoolSize0Layer' + index}>
-              <Form.Label>POOLSIZE de la capa</Form.Label>
+              <Form.Label>POOL SIZE de la capa</Form.Label>
               <Form.Control type="number"
                             placeholder="Introduce el número de POOLSIZE de la capa"
                             defaultValue={item.poolSize[0]}
                             onChange={() => handleChangePoolSize(index, 0)}/>
             </Form.Group>
 
-            {/* POOLSIZE2 */}
+            {/* POOL SIZE 2 */}
             <Form.Group className="mb-3" controlId={'formPoolSize1Layer' + index}>
-              <Form.Label>POOLSIZE de la capa</Form.Label>
+              <Form.Label>POOL SIZE de la capa</Form.Label>
               <Form.Control type="number"
                             placeholder="Introduce el número de POOLSIZE2 de la capa"
                             defaultValue={item.poolSize[1]}

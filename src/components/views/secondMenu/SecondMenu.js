@@ -1,23 +1,34 @@
 import React, { useState } from "react";
 import "./SecondMenu.css";
 
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import ButtonDescription from "../../buttonDescription/ButtonDescription";
 
 export default function SecondMenu(props) {
   const { id } = props;
 
-  const [buttonActive, setbuttonActive] = useState(-1);
+  const [buttonActive, setButtonActive] = useState(-1);
 
-  const modelsType = ["Clasificación clásica", "Regresión lineal", "Identificación de objetos", "Clasificador de imágenes",];
+  const modelsType = [
+    "Clasificación clásica",
+    "Regresión lineal",
+    "Identificación de objetos",
+    "Clasificador de imágenes"
+  ];
 
-  const modelsType2 = ["Empieza de cero y crea tu propia arquitectura", "Edita una arquitectura hecho por tí o facilitado por nosotros", "Entrena un modelo hecho por tí o  si no tienes, no te preocupes te prestamos uno :)", "Ejecutar un modelo hecho por tí o facilitado por nosotros",];
+  const modelsType_description = [
+    "Empieza de cero y crea tu propia arquitectura",
+    "Edita una arquitectura hecho por tí o facilitado por nosotros",
+    "Entrena un modelo hecho por tí o  si no tienes, no te preocupes te prestamos uno :)",
+    "Ejecutar un modelo hecho por tí o facilitado por nosotros"
+  ];
+
   const colors = ["yellow", "red", "green", "blue"];
   const history = useHistory();
 
   const handleClick = (modelType) => {
-    setbuttonActive(modelType);
+    setButtonActive(modelType);
   };
 
   const handleClickEmpezar = () => {
@@ -79,26 +90,27 @@ export default function SecondMenu(props) {
     }
   ];
 
-  return (<>
-    <div className="container">
-      <h2 className="titulos">{modelsType[id]}</h2>
-      <Row>
-        {modelsType2.map((type, i) => {
-          const actualColor = colors[i % colors.length];
-          const style = "btn-custom " + actualColor;
-          return (
-            <Col key={i}>
-              <Button onClick={() => handleClick(i)}
-                      type="button"
-                      className={style}>
-                {type}
-              </Button>
-            </Col>
-          );
-        })}
-      </Row>
-      {/*ELIMINADO */}
-      {/*
+  return (
+    <>
+      <Container>
+        <h2>{modelsType[id]}</h2>
+        <Row>
+          {modelsType_description.map((type, i) => {
+            const actualColor = colors[i % colors.length];
+            const style = "btn-custom " + actualColor;
+            return (
+              <Col key={i}>
+                <Button onClick={() => handleClick(i)}
+                        type="button"
+                        className={style}>
+                  {type}
+                </Button>
+              </Col>
+            );
+          })}
+        </Row>
+        {/*ELIMINADO */}
+        {/*
       <Row>
         {modelsType.map((type, i) => {
           if (i === buttonActive) {
@@ -117,17 +129,10 @@ export default function SecondMenu(props) {
         })}
       </Row>
       */}
-      <Row>
-        <Col>
-          <div className={buttonActive === -1 ? "container smargen" : "borde container smargen"}>
-            <div className="details-menu">
-              {buttonActive !== -1 ? (
-                <ButtonDescription data={modelsDescription[buttonActive]} click={handleClickEmpezar}/>) : ("")
-              }
-            </div>
-          </div>
-        </Col>
-      </Row>
-    </div>
-  </>);
+        {buttonActive !== -1 ? (
+          <ButtonDescription data={modelsDescription[buttonActive]} click={handleClickEmpezar}/>) : ("")
+        }
+      </Container>
+    </>
+  );
 }

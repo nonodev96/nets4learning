@@ -1,15 +1,16 @@
 import React from "react";
-import Footer from "../footer/Footer";
-import NavBar from "../navBar/NavBar";
+import { Container } from "react-bootstrap";
+import N4LFooter from "../footer/N4LFooter";
+import N4LNavBar from "../navBar/N4LNavBar";
 
 export default function Training() {
   return (
     <>
-      <NavBar/>
-      <div className="container">
+      <N4LNavBar/>
+      <Container>
         <h1>MENÚ DE ENTRENAMIENTO DE TU MODELO</h1>
-      </div>
-      <Footer/>
+      </Container>
+      <N4LFooter/>
     </>
   )
 }
