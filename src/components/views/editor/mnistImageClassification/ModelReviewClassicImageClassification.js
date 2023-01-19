@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import { useState, useEffect } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../../modelos/NumberClasificatorHelper.js'
 import { dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
@@ -259,106 +259,96 @@ export default function ModelReviewClassicImageClassification(props) {
   }
 
   return (
-    <div className="container">
-      <div className="container">
+    <Container>
+      <Row>
         <h2>{ModelList[3][dataSet]}</h2>
-      </div>
-      <Col className="col-specific cen">
-        <div className="container-fluid container-fluid-w1900">
-          {{
-            0: <>
+      </Row>
+      <Row>
+        <Col>
+          <div className="container-fluid container-fluid-w1900">
+            {{
+              0: <>
+                <div className="header-model-editor">
+                  <p>Carga tu propio Modelo.</p>
+                  <p>Primero el archivo .json y después el fichero .bin</p>
+                  <input id="json-upload"
+                         style={{ marginLeft: '1rem' }}
+                         type="file"
+                         name="json"
+                         accept=".json"></input>
+                  <input id="weights-upload"
+                         style={{ marginLeft: '1rem' }}
+                         type="file"
+                         accept=".bin"
+                         name="bin"></input>
+                </div>
+              </>,
+            }[dataSet]}
+            {dataSet !== 0 ? (
               <div className="header-model-editor">
-                <p>
-                  Carga tu propio Modelo.
-                </p>
-                <p>
-                  Primero el archivo .json y después el fichero .bin
-                </p>
-                <input id="json-upload"
-                       style={{ marginLeft: '1rem' }}
-                       type="file"
-                       name="json"
-                       accept=".json"></input>
-                <input id="weights-upload"
-                       style={{ marginLeft: '1rem' }}
-                       type="file"
-                       accept=".bin"
-                       name="bin"></input>
+                {dataSetDescription[3][dataSet]}
               </div>
-            </>,
-          }[dataSet]}
-          {dataSet !== 0 ? (
-            <div className="header-model-editor">
-              {dataSetDescription[3][dataSet]}
-            </div>
-          ) : ("")}
+            ) : ("")}
 
-          <div className="container xtraPane borde">
-            <div className="title-pane">Resultado</div>
-            {/* VECTOR TEST */}
-            {/* <Form.Group className="mb-3" controlId={'formTestInput'}>
-              <Form.Label>Introduce el vector a probar</Form.Label>
-              <Form.Control
-                placeholder="Introduce el vector a probar"
-                onChange={() => handleChangeTestInput()}
-              />
-            </Form.Group> */}
+            <div className="container xtraPane borde">
+              <div className="title-pane">Resultado</div>
+              {dataSet !== 2 && dataSet !== 3 ? (
+                <Row>
+                  <Col style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                    <CustomCanvasDrawer submitFunction={() => handleVectorTestImageUpload}/>
+                  </Col>
+                  <Col style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    marginBottom: '2rem',
+                  }}>
+                    <input style={{ marginBottom: '2rem' }}
+                           type="file"
+                           name="doc"
+                           onChange={() => handleChangeFileUpload}></input>
 
-            {dataSet !== 2 && dataSet !== 3 ? (
-              <Row>
-                <Col style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                  <CustomCanvasDrawer submitFunction={handleVectorTestImageUpload}/>
-                </Col>
-                <Col style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  marginBottom: '2rem',
-                }}>
+                    <canvas id="originalImage" style={{ display: 'none' }}></canvas>
+                    <canvas id="imageCanvas"></canvas>
+                    <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
+
+                    <Button type="button"
+                            onClick={() => handleVectorTest}
+                            className="btn-custom-canvas green">
+                      Validar
+                    </Button>
+                  </Col>
+                  <canvas id="smallcanvas"
+                          width="28"
+                          height="28"
+                          style={{ display: 'none' }}></canvas>
+                </Row>
+              ) : (
+                <div>
                   <input style={{ marginBottom: '2rem' }}
                          type="file"
                          name="doc"
-                         onChange={handleChangeFileUpload}
-                  ></input>
+                         onChange={() => handleChangeFileUpload}></input>
                   <canvas id="originalImage" style={{ display: 'none' }}></canvas>
                   <canvas id="imageCanvas"></canvas>
                   <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-                  <Button type="button"
-                          onClick={handleVectorTest}
-                          className="btn-custom-canvas green">
-                    Validar
+                  {/* SUBMIT Button */}
+                  <Button style={{ marginTop: '2rem' }}
+                          className="btn-add-layer"
+                          onClick={() => handleVectorTest}
+                          variant="primary">
+                    Ver resultado
                   </Button>
-                </Col>
-                <canvas id="smallcanvas"
-                        width="28"
-                        height="28"
-                        style={{ display: 'none' }}></canvas>
-              </Row>
-            ) : (
-              <div>
-                <input style={{ marginBottom: '2rem' }}
-                       type="file"
-                       name="doc"
-                       onChange={handleChangeFileUpload}></input>
-                <canvas id="originalImage" style={{ display: 'none' }}></canvas>
-                <canvas id="imageCanvas"></canvas>
-                <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-                {/* SUBMIT Button */}
-                <Button style={{ marginTop: '2rem' }}
-                        className="btn-add-layer"
-                        onClick={handleVectorTest}
-                        variant="primary">
-                  Ver resultado
-                </Button>
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </Col>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   )
 }

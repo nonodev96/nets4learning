@@ -34,7 +34,7 @@ export default function Editor() {
   
     model.compile({
       optimizer: optimizer,
-      loss: "categoricalCrossentropy",
+      loss: "categoricalCrossEntropy",
       metrics: ["accuracy"]
     });
   
@@ -120,7 +120,7 @@ async function trainModel(xTrain, yTrain, xTest, yTest) {
         
           model.compile({
             optimizer: optimizer,
-            loss: "categoricalCrossentropy",
+            loss: "categoricalCrossEntropy",
             metrics: ["accuracy"]
           });
         

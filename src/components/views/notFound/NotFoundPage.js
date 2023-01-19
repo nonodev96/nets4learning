@@ -1,6 +1,7 @@
 // import styled from "@emotion/styled";
 // import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { fontSize } from "@mui/system";
 
 // const Container = styled.div`
 //   width: 475px;
@@ -19,20 +20,14 @@ import { Link } from "react-router-dom";
 
 export default function NotFoundPage() {
   return (
-    <div id="fondo"
-         style={{
-           backgroundColor: "#5B5857",
-           fontSize: "18px",
-           fontFamily: "Helvetica Neue, Helvetica, Arial, sans-serif",
-           paddingTop: "40px",
-           height: "100vh",
-           width: "100vw",
-         }}>
-      {/* <Container> */}
-      <h1 style={{ color: "white" }}>Error 404</h1>
-      <h4 style={{ padding: "2rem" }}>No se ha encontrado la página solicitada</h4>
-      <Link to={process.env.REACT_APP_DOMAIN}>Volver al inicio</Link>
-      {/* </Container> */}
+    <div style={{ backgroundColor: "#222", height: "100vh", fontSize: "4em" }}>
+      <div className="d-flex flex-column align-items-center justify-content-center vh-100">
+        <h1 className="display-1 fw-bold text-white" style={{ fontSize: "4em", }}>404</h1>
+        <h4 className="fw-bold text-white" style={{ fontSize: "1em", }}>No se ha encontrado la página solicitada</h4>
+        <p className="lead">
+          <Link className="alert-link" to={process.env.REACT_APP_DOMAIN}>Volver al inicio</Link>
+        </p>
+      </div>
     </div>
   );
 }

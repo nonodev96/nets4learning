@@ -19,7 +19,7 @@ function InteractiveEditor(props) {
     'Regresión lineal',
   ]
 
-  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRECARGAN UNOS AJUSTRS U OTROS
+  //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
     { units: 10, activation: 'Sigmoid' },
@@ -28,10 +28,10 @@ function InteractiveEditor(props) {
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
-  const [string, setstring] = useState()
+  const [string, setString] = useState()
 
   const OPTIMIZER_TYPE = [
     'Sgd',
@@ -53,14 +53,14 @@ function InteractiveEditor(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossentropy',
+    'BinaryCrossEntropy',
     'CategoricalAccuracy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -163,7 +163,7 @@ function InteractiveEditor(props) {
   }
 
   const handleChangeTestInput = () => {
-    setstring(document.getElementById(`formTestInput`).value)
+    setString(document.getElementById(`formTestInput`).value)
   }
 
   const handleChangeActivation = (index) => {

@@ -305,7 +305,7 @@ async function trainModel(xTrain, yTrain, xTest, yTest, verbose) {
   const optimizer = tf.train.adam(learningRate);
   model.compile({
     optimizer: optimizer,
-    loss: "categoricalCrossentropy",
+    loss: "categoricalCrossEntropy",
     metrics: ["accuracy"],
   });
 
@@ -376,7 +376,7 @@ async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, 
 
   model.compile({
     optimizer: optimizer,
-    loss: "categoricalCrossentropy",
+    loss: "categoricalCrossEntropy",
     metrics: ["accuracy"],
   });
 }

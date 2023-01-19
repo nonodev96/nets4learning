@@ -49,9 +49,9 @@ export default function N4LFooter() {
               </p>
             </div>
           </Row>
-          <p className="personal-link copyright">
-            <a className="personal-link" target="blanck" href="https://dvalvico.es">David Valdivia </a>© 2022
-          </p>
+          {/*<p className="personal-link copyright">*/}
+          {/*  <a className="personal-link" target="blanck" href="https://dvalvico.es">David Valdivia </a>© 2022*/}
+          {/*</p>*/}
         </Container>
       </footer>
     </>

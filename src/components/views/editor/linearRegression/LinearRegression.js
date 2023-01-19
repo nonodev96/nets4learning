@@ -24,7 +24,7 @@ export default function LinearRegression(props) {
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setstring] = useState()
@@ -50,14 +50,14 @@ export default function LinearRegression(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossentropy',
+    'BinaryCrossEntropy',
     'CategoricalAccuracy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',

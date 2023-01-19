@@ -32,7 +32,7 @@ export const clasificacionClasica = async function createArchitecture(
 
   model.compile({
     optimizer: optimizer,
-    loss: 'categoricalCrossentropy',
+    loss: 'categoricalCrossEntropy',
     metrics: ['accuracy'],
   })
 }
@@ -53,19 +53,15 @@ export async function createClassicClassification(
   )
 
   document.getElementById('salida').innerHTML +=
-    '<p>MODELO CREADO A PARTIR DE: <b>learningRate:</b> ' +
-    learningRate +
-    ' <b>unknownRate:</b> ' +
-    unknownRate +
-    ' <b>numberOfEpoch:</b> ' +
-    numberOfEpoch +
-    ' <b>sLOptimizer:</b> ' +
-    sLOptimizer +
-    ' <b>idLoss:</b> ' +
-    idLoss +
-    ' <b>idMetrics:</b> ' +
-    idMetrics +
-    '</p>'
+    `
+<p>MODELO CREADO A PARTIR DE: 
+<b>learningRate:</b> ${learningRate} 
+<b>unknownRate:</b> ${unknownRate} 
+<b>numberOfEpoch:</b> ${numberOfEpoch} 
+<b>sLOptimizer:</b> ${sLOptimizer} 
+<b>idLoss:</b> ${idLoss} 
+<b>idMetrics:</b> ${idMetrics}
+</p>`
 
   //modo secuencial
   const model = tf.sequential()
@@ -372,7 +368,7 @@ export function createOptimizerId(idOptimizer) {
 // Devueve la pérdida seleccionada por el usuario
 export function createLoss(idLoss) {
   switch (idLoss) {
-    //categoricalCrossentropy??????
+    //categoricalCrossEntropy??????
     case 'AbsoluteDifference':
       // absoluteDifference,
       return 'absoluteDifference'
@@ -400,11 +396,11 @@ export function createLoss(idLoss) {
     case 'SoftmaxCrossEntropy':
       // softmaxCrossEntropy
       return 'softmaxCrossEntropy'
-    case 'CategoricalCrossentropy':
-      return 'categoricalCrossentropy'
+    case 'CategoricalCrossEntropy':
+      return 'categoricalCrossEntropy'
 
     default:
-      return 'categoricalCrossentropy'
+      return 'categoricalCrossEntropy'
   }
 }
 
@@ -416,14 +412,14 @@ export function createMetrics(idMetrics) {
       // binaryAccuracy,
       return ['binaryAccuracy']
     case 1:
-      // binaryCrossentropy,
-      return ['binaryCrossentropy']
+      // binaryCrossEntropy,
+      return ['binaryCrossEntropy']
     case 2:
       // categoricalAccuracy,
       return ['categoricalAccuracy']
     case 3:
-      // categoricalCrossentropy,
-      return ['categoricalCrossentropy']
+      // categoricalCrossEntropy,
+      return ['categoricalCrossEntropy']
     case 4:
       // cosineProximity,
       return ['cosineProximity']

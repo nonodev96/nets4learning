@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Col, Row, Form, CloseButton, Button } from 'react-bootstrap'
+import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../../modelos/NumberClasificatorHelper.js'
 import CustomCanvasDrawer from '../../../../utils/customCanvasDrawer.js'
@@ -21,7 +21,7 @@ export default function ObjectDetection(props) {
   const NumberEpochs = 10
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [NoEpochs, setNoEpochs] = useState(2)
@@ -48,14 +48,14 @@ export default function ObjectDetection(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossentropy',
+    'BinaryCrossEntropy',
     'CategoricalAccuracy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -252,17 +252,13 @@ export default function ObjectDetection(props) {
   //PARÁMETROS DE LAS CAPAS
   const handleChangeKernel = (index) => {
     let array = Layer
-    array[index].kernelSize = parseInt(
-      document.getElementById(`formKernelLayer${index}`).value,
-    )
+    array[index].kernelSize = parseInt(document.getElementById(`formKernelLayer${index}`).value)
     setLayer(array)
   }
 
   const handleChangeFilters = (index) => {
     let array = Layer
-    array[index].filters = parseInt(
-      document.getElementById(`formFiltersLayer${index}`).value,
-    )
+    array[index].filters = parseInt(document.getElementById(`formFiltersLayer${index}`).value)
     setLayer(array)
   }
 
@@ -336,9 +332,7 @@ export default function ObjectDetection(props) {
 
   const handleChangeActivation = (index) => {
     let array = Layer
-    array[index].activation = document.getElementById(
-      `formActivationLayer${index}`,
-    ).value
+    array[index].activation = document.getElementById(`formActivationLayer${index}`).value
     setLayer(array)
   }
 
@@ -393,114 +387,151 @@ export default function ObjectDetection(props) {
     img.src = URL.createObjectURL(files[0])
   }
 
-  // const handleChangeTestInput = () => {
-  //   setstring(document.getElementById(`formTestInput`).value)
-  // }
-
   return (
     <>
-      <Form onSubmit={handleClickPlay}>
-        <div className="container">
-          <div className="header-model-editor">
-            <p>
-              A continuación se ha pre cargado una arquitectura.
-              Programa dentro de la función "createArchitecture".
-              A esta función se el pasa un array preparado que continue la información del dataset.
-            </p>
-          </div>
-          {/* {numberClass.start()} */}
-        </div>
-
-        <div className="container">
-          <h2>{dataSetList[3][dataSet]}</h2>
-        </div>
-
-        <div className="container">
-          <div className="header-model-editor">
-            {dataSetDescription[3][dataSet]}
-          </div>
-
-          {/* {numberClass.start()} */}
-          <div className="header-model-editor">
-            <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
-            <ul>
-              <li>
-                <b>A la izquierda</b><br/>
-                Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                capa".<br/>
-                Puedes modificar dos parámetros:
-              </li>
-              <ul>
-                <li><b>Unidades de la capa:</b><br/> Cuantas unidades deseas que tenga esa capa</li>
-                <li><b>Función de activación:</b><br/> Función de activación para esa capa</li>
-              </ul>
-
-              <li>
-                <b>A la derecha </b><br/>
-                Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
-                Estos parámetros son:
-              </li>
-              <ul>
-                <li>
-                  <b>Tasa de entrenamiento:</b><br/>
-                  Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento y
-                  reglas para el test
-                </li>
-                <li>
-                  <b>Nº de iteraciones:</b><br/>
-                  Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
-                </li>
-                <li>
-                  <b>Optimizador:</b><br/>
-                  Es una función que como su propio nombre indica se usa para optimizar los modelos.
-                  Esto es frecuentemente usado para evitar estancarse en un máximo local.
-                </li>
-                <li>
-                  <b>Función de pérdida:</b><br/>
-                  Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
-                </li>
-                <li>
-                  <b>Métrica:</b><br/>
-                  Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
-                </li>
-              </ul>
-
-              <li>
-                <b>Crear y entrenar modelo.</b><br/>
-                Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
-              </li>
-
-              <li>
-                <b>Exportar modelo.</b><br/>
-                Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
-                guardarlo localmente.
-              </li>
-
-              <li>
-                <b>Resultado.</b><br/>
-                Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
-                introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* BLOCK 1 */}
-        <div className="container">
-          {/* <div className="column"> */}
-          <GraphicRed layer={Layer} setActiveLayer={setActiveLayer}/>
+      <Form onSubmit={handleClickPlay} id={"ObjectDetection"}>
+        <Container>
           <Row>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
+                  <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
+                  <Card.Text>
+                    A esta función se el pasa un array preparado que continue la información del dataset.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
+            <Col>
+              <Card>
+                <Card.Header>
+                  <h2>{dataSetList[3][dataSet]}</h2>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    {dataSetDescription[3][dataSet]}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
+            <Col>
+              <Card>
+                <Card.Header>
+                  <h2>{dataSetList[3][dataSet]}</h2>
+                </Card.Header>
+                <Card.Body>
+                  <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
+                  <ul>
+                    <li>
+                      <b>A la izquierda:</b><br/>
+                      Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
+                      capa".<br/>
+                      Puedes modificar dos parámetros:
+                    </li>
+                    <ul>
+                      <li><b>Unidades de la capa:</b><br/> Cuantas unidades deseas que tenga esa capa</li>
+                      <li><b>Función de activación:</b><br/> Función de activación para esa capa</li>
+                    </ul>
+
+                    <li>
+                      <b>A la derecha:</b><br/>
+                      Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                      Estos parámetros son:
+                    </li>
+                    <ul>
+                      <li>
+                        <b>Tasa de entrenamiento:</b><br/>
+                        Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el
+                        entrenamiento y
+                        reglas para el test
+                      </li>
+                      <li>
+                        <b>Nº de iteraciones:</b><br/>
+                        Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
+                      </li>
+                      <li>
+                        <b>Optimizador:</b><br/>
+                        Es una función que como su propio nombre indica se usa para optimizar los modelos.
+                        Esto es frecuentemente usado para evitar estancarse en un máximo local.
+                      </li>
+                      <li>
+                        <b>Función de pérdida:</b><br/>
+                        Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
+                      </li>
+                      <li>
+                        <b>Métrica:</b><br/>
+                        Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
+                      </li>
+                    </ul>
+
+                    <li>
+                      <b>Crear y entrenar modelo.</b><br/>
+                      Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
+                    </li>
+
+                    <li>
+                      <b>Exportar modelo.</b><br/>
+                      Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo
+                      y
+                      guardarlo localmente.
+                    </li>
+
+                    <li>
+                      <b>Resultado.</b><br/>
+                      Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
+                      introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
+                    </li>
+                  </ul>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+
+          {/* BLOCK 1 */}
+          <Row className={"mt-3"}>
+            <Col xl={12}>
+              <Card>
+                <Card.Header>
+                  <h3>Diseño de capas</h3>
+                </Card.Header>
+                <Card.Body>
+                  <GraphicRed layer={Layer} setActiveLayer={setActiveLayer}/>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
             {/* SPECIFIC PARAMETERS */}
-            <Col xl className="col-specific">
-              <div className="container-fluid container-fluid-w1900">
+            <Col xl={6}>
+              {/*TODO: falta el foreach */}
+              {/* ADD LAYER */}
+              <div className="d-grid gap-2">
+                <Button type="button"
+                        onClick={() => handlerAddLayer()}
+                        size={"lg"}
+                        variant="primary">
+                  Añadir capa
+                </Button>
+              </div>
+
+              <Accordion className={"mt-3"} defaultActiveKey={["0"]} alwaysOpen>
                 {ActiveLayer !== undefined ? (
-                  <div key={'Capa' + ActiveLayer}>
-                    <div className="container pane-imgc borde">
-                      <div className="title-pane">
-                        Capa {ActiveLayer + 1}
-                        <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
-                      </div>
-                      {/* UNITS */}
+                  <Accordion.Item eventKey={"0"}>
+                    <Accordion.Header>Capa {ActiveLayer + 1}</Accordion.Header>
+
+                    {/* UNITS */}
+                    <Accordion.Body>
+                      <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
+
                       <Form.Group className="mb-3"
                                   controlId={'formClass' + ActiveLayer}>
                         <Form.Label>Clase de la capa</Form.Label>
@@ -509,236 +540,237 @@ export default function ObjectDetection(props) {
                                      onChange={handleCambio}>
                           <option>Selecciona la clase de la capa</option>
                           {CLASS_TYPE.map((itemAct, indexAct) => {
-                            return (
-                              <option key={indexAct} value={itemAct}>
-                                {itemAct}
-                              </option>
-                            )
+                            return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                           })}
                         </Form.Select>
                       </Form.Group>
-                      {/* <LayerEdit
-                        index={ActiveLayer}
-                        item={Layer[ActiveLayer]}
-                        handlerRemoveLayer={handlerRemoveLayer}
-                        handleChangeKernel={handleChangeKernel}
-                        handleChangeActivation={handleChangeActivation}
-                        handleChangeFilters={handleChangeFilters}
-                        handleChangeStrides={handleChangeStrides}
-                        handleChangePoolSize={handleChangePoolSize}
-                        handleChangeStridesMax={handleChangeStridesMax}
-                        ACTIVATION_TYPE={ACTIVATION_TYPE}
-                        CLASS_TYPE={CLASS_TYPE}
-                      /> */}
-                    </div>
-                  </div>
-                ) : (
-                  ','
-                )}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ) : ("")}
+              </Accordion>
 
-                {/* ADD LAYER */}
-                <Button className="btn-add-layer"
-                        type="button"
-                        onClick={() => handlerAddLayer()}
-                        variant="primary">
-                  Añadir capa
-                </Button>
-              </div>
             </Col>
 
             {/* GENERAL PARAMETERS */}
-            <Col className="col-general">
-              <div className="container borde general-settings">
-                {/* LEARNING RATE */}
-                <Form.Group className="mb-3" controlId="formTrainRate">
-                  <Form.Label>Tasa de entrenamiento</Form.Label>
-                  <Form.Control type="number"
-                                placeholder="Introduce la tasa de entrenamiento"
-                                defaultValue={learningValue}/>
-                  <Form.Text className="text-muted">
-                    Recuerda que debe ser un valor entre 0 y 100 (es un
-                    porcentaje)
-                  </Form.Text>
-                </Form.Group>
+            <Col xl={6}>
+              <Card className={"sticky-top"}>
+                <Card.Body>
+                  {/* LEARNING RATE */}
+                  <Form.Group className="mb-3" controlId="formTrainRate">
+                    <Form.Label>Tasa de entrenamiento</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce la tasa de entrenamiento"
+                                  defaultValue={learningValue}/>
+                    <Form.Text className="text-muted">
+                      Recuerda que debe ser un valor entre 0 y 100 (es un
+                      porcentaje)
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* Nº OT ITERATIONS */}
-                <Form.Group className="mb-3" controlId="formNumberOfEpochs">
-                  <Form.Label>Nº de iteraciones</Form.Label>
-                  <Form.Control type="number"
-                                placeholder="Introduce el número de iteraciones"
-                                defaultValue={NumberEpochs}
-                                onChange={handleChangeNoEpochs}/>
-                  <Form.Text className="text-muted">
-                    *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
-                  </Form.Text>
-                </Form.Group>
+                  {/* Nº OT ITERATIONS */}
+                  <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                    <Form.Label>Nº de iteraciones</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce el número de iteraciones"
+                                  defaultValue={NumberEpochs}
+                                  onChange={handleChangeNoEpochs}/>
+                    <Form.Text className="text-muted">
+                      *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* OPTIMIZATION FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormOptimizer">
-                  <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={Optimizer}
-                               onChange={handleChangeOptimization}>
-                    <option>Selecciona el optimizador</option>
-                    {OPTIMIZER_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
-                {/* LOSS FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormLoss">
-                  <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={LossValue}
-                               onChange={handleChangeLoss}>
-                    <option>Selecciona la función de pérdida</option>
-                    {LOSS_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
+                  {/* OPTIMIZATION FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormOptimizer">
+                    <Form.Label>Selecciona el optimizador</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={Optimizer}
+                                 onChange={handleChangeOptimization}>
+                      <option>Selecciona el optimizador</option>
+                      {OPTIMIZER_TYPE.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
+                  {/* LOSS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormLoss">
+                    <Form.Label>Selecciona la función de pérdida</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={LossValue}
+                                 onChange={handleChangeLoss}>
+                      <option>Selecciona la función de pérdida</option>
+                      {LOSS_TYPE.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* METRICS FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormMetrics">
-                  <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={MetricsValue}
-                               onChange={handleChangeMetrics}>
-                    <option>Selecciona la métrica</option>
-                    {METRICS_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
-              </div>
+                  {/* METRICS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormMetrics">
+                    <Form.Label>Selecciona la métrica</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={MetricsValue}
+                                 onChange={handleChangeMetrics}>
+                      <option>Selecciona la métrica</option>
+                      {METRICS_TYPE.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
-          {/* </div> */}
 
-          {/* INFO ADDITIONAL LAYERS */}
-          <div className="header-model-editor mt-3">
-            <p>
-              Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en
-              la clasificación de imágenes
-            </p>
-            <ul>
-              <li>
-                <b>flatten_Flatten:</b><br/>
-                Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la última capa.
-              </li>
-              <li>
-                <b>dense_Dense1:</b><br/>
-                Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
-              </li>
-            </ul>
-          </div>
-
-          {/* BLOCK  BUTTON */}
-          <div className="col-specific cen">
-            <Button className="btn-add-layer"
-                    type="submit"
-                    variant="primary">
-              Crear y entrenar modelo
-            </Button>
-          </div>
-
-          <div className="header-model-editor mt-3">
-            <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
-          </div>
-
-          <div className="header-model-editor mt-3">
-            <p>
-              Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu
-              equipo.
-            </p>
-          </div>
-
-          <div id="salida"></div>
-
-          {Model === undefined ? (
-            ''
-          ) : (
-            <Button className="btn-add-layer"
-                    type="button"
-                    onClick={handleDownloadModel}
-                    variant="primary">
-              Exportar modelo
-            </Button>
-          )}
-        </div>
-
-        {/* BLOCK 2 */}
-        <div className="container">
-          <div className="container-fluid container-fluid-w1900">
-            <div className="container borde">
-              <div className="title-pane">Resultado</div>
-              {/* VECTOR TEST */}
-              <Row>
-                <Col style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                  <CustomCanvasDrawer submitFunction={handleVectorTest}/>
-                </Col>
-                <Col style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  marginBottom: '2rem',
-                }}>
-                  <input style={{ marginBottom: '2rem' }}
-                         type="file"
-                         name="doc"
-                         onChange={handleChangeFileUpload}></input>
-                  <canvas height="200" width="200" id="imageCanvas"></canvas>
-                  <button type="button"
-                          onClick={handleVectorTestImageUpload}
-                          className="btn-custom-canvas green">
-                    Validar
-                  </button>
-                </Col>
-              </Row>
-
-              <canvas id="smallcanvas"
-                      width="28"
-                      height="28"
-                      style={{ display: 'none' }}></canvas>
-              <div id="resultado"></div>
-              {/* SUBMIT BUTTON */}
-            </div>
-          </div>
-
-          <div className="header-model-editor mt-3">
-            <p>
-              Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
-              sean correctas.
-            </p>
-          </div>
-        </div>
-
-        {/* BLOCK 3 */}
-        <div className="resultados">
-          <Row>
+          <Row className={"mt-3"}>
             <Col>
-              <div id="demo"
-                   className="borde console"
-                   width="100%"
-                   height="100%">
-                Aquí se muestran los resultados
+              <Card>
+                <Card.Body>
+                  {/* INFO ADDITIONAL LAYERS */}
+                  <Card.Text>
+                    Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático
+                    enfocadas en la clasificación de imágenes
+                  </Card.Text>
+                  <ul>
+                    <li>
+                      <b>flatten_Flatten:</b><br/>
+                      Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la última capa.
+                    </li>
+                    <li>
+                      <b>dense_Dense1:</b><br/>
+                      Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
+                    </li>
+                  </ul>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
+            {/* BLOCK  BUTTON */}
+            <Col xl={12}>
+              <div className="d-grid gap-2">
+                <Button type="submit"
+                        size={"lg"}
+                        variant="primary">
+                  Crear y entrenar modelo
+                </Button>
               </div>
             </Col>
           </Row>
-        </div>
+
+          <Row className={"mt-3"}>
+            <Col xl={12}>
+              <Card>
+                <Card.Body>
+                  <Card.Text>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</Card.Text>
+                  <Card.Text>
+                    Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde
+                    tu equipo.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
+            <Col xl={12}>
+              <Card>
+                <Card.Body>
+                  <div id="salida"></div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          {Model === undefined ? ('') : (
+            <Row className={"mt-3"}>
+              <Col xl={12}>
+                <div className="d-grid gap-2">
+                  <Button type="button"
+                          onClick={handleDownloadModel}
+                          size={"lg"}
+                          variant="primary">
+                    Exportar modelo
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          )}
+
+          {/* BLOCK 2 */}
+          <Row>
+            <div className="container-fluid container-fluid-w1900">
+              <div className="container borde">
+                <div className="title-pane">Resultado</div>
+                {/* VECTOR TEST */}
+                <Row>
+                  <Col style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                    <CustomCanvasDrawer submitFunction={handleVectorTest}/>
+                  </Col>
+                  <Col style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    marginBottom: '2rem',
+                  }}>
+                    <input style={{ marginBottom: '2rem' }}
+                           type="file"
+                           name="doc"
+                           onChange={handleChangeFileUpload}></input>
+                    <canvas height="200" width="200" id="imageCanvas"></canvas>
+                    <button type="button"
+                            onClick={handleVectorTestImageUpload}
+                            className="btn-custom-canvas green">
+                      Validar
+                    </button>
+                  </Col>
+                </Row>
+
+                <canvas id="smallcanvas"
+                        width="28"
+                        height="28"
+                        style={{ display: 'none' }}></canvas>
+                <div id="resultado"></div>
+                {/* SUBMIT BUTTON */}
+              </div>
+            </div>
+
+            <div className="header-model-editor mt-3">
+              <p>
+                Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
+                sean correctas.
+              </p>
+            </div>
+          </Row>
+
+          {/* BLOCK 3 */}
+          <Row className="resultados">
+            <Row>
+              <Col>
+                <div id="demo"
+                     className="borde console"
+                     width="100%"
+                     height="100%">
+                  Aquí se muestran los resultados
+                </div>
+              </Col>
+            </Row>
+          </Row>
+        </Container>
+
       </Form>
     </>
   )

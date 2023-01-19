@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { withRouter, Switch } from "react-router-dom";
+import { withRouter, BrowserRouter, Switch } from "react-router-dom";
 import { Route } from "react-router";
 import Home from "./components/Home";
 
@@ -19,7 +18,7 @@ function App() {
   const DOMAIN = process.env.REACT_APP_DOMAIN;
   return (
     <div className="body">
-      <Router>
+      <BrowserRouter>
         <Switch>
           <Route exact path={DOMAIN + "/starting/"} component={Starting}></Route>
           {/* <Route exact path="/upload-architecture-custom/" component={}></Route> */}
@@ -38,7 +37,7 @@ function App() {
 
           <Route component={NotFoundPage}></Route>
         </Switch>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }

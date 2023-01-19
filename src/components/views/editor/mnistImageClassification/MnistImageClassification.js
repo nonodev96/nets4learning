@@ -6,7 +6,7 @@ import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/Upl
 import CustomCanvasDrawer from '../../../../utils/customCanvasDrawer.js'
 import GraphicRed from '../../../../utils/graphicRed/GraphicRed.js'
 import * as alertHelper from "../../../../utils/alertHelper"
-import './MnistImageClasification.css'
+import './MnistImageClassification.css'
 import LayerEdit from './LayerEdit.js'
 
 export default function MnistImageClassification(props) {
@@ -21,7 +21,7 @@ export default function MnistImageClassification(props) {
   const NumberEpochs = 15
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setstring] = useState('0.1;4.3;2.1;0.2')
@@ -49,14 +49,14 @@ export default function MnistImageClassification(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossentropy',
+    'BinaryCrossEntropy',
     'CategoricalAccuracy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -186,7 +186,7 @@ export default function MnistImageClassification(props) {
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.log('Prediccion', mayorIndice)
+      console.log('Predicción', mayorIndice)
       // document.getElementById('demo').innerHTML = mayorIndice
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -414,7 +414,7 @@ export default function MnistImageClassification(props) {
 
   return (
     <>
-      <Form onSubmit={handleClickPlay} id={"MnistImageClasification"}>
+      <Form onSubmit={handleClickPlay} id={"MnistImageClassification"}>
         <Container>
           <Row>
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -439,18 +439,14 @@ export default function MnistImageClassification(props) {
                   <li>Interfaz de edición de arquitectura.</li>
 
                   <li>
-                    <b>A la izquierda</b><br/>
+                    <b>A la izquierda:</b><br/>
                     Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
                     capa". <br/>
                     Puedes modificar dos parámetros:
                   </li>
                   <ul>
-                    <li>
-                      <b>Unidades de la capa:</b> cuantas unidades deseas que tenga esa capa.
-                    </li>
-                    <li>
-                      <b>Función de activación:</b> función de activación para esa capa.
-                    </li>
+                    <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa.</li>
+                    <li><b>Función de activación:</b><br/>Función de activación para esa capa.</li>
                   </ul>
 
                   <li>

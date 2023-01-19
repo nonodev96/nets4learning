@@ -15,6 +15,7 @@ import * as alertHelper from '../../../../utils/alertHelper'
 
 export default function CustomDataSetClassicClassification(props) {
   const { dataSet } = props
+  console.log("CustomDataSetClassicClassification")
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState()
@@ -22,7 +23,7 @@ export default function CustomDataSetClassicClassification(props) {
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setstring] = useState()
@@ -89,14 +90,14 @@ export default function CustomDataSetClassicClassification(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossentropy',
+    'BinaryCrossEntropy',
     'CategoricalAccuracy',
-    'CategoricalCrossentropy',
+    'CategoricalCrossEntropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -395,17 +396,17 @@ export default function CustomDataSetClassicClassification(props) {
               <Card>
                 <Card.Body>
                   {setUploadedArchitecture ? (
-                    <p>
+                    <Card.Text>
                       A continuación se ha pre cargado la arquitectura del fichero importado en la vista anterior.
                       Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
                       la misma.
-                    </p>
+                    </Card.Text>
                   ) : (
-                    <p>
+                    <Card.Text>
                       A continuación se ha pre cargado una arquitectura.
                       Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
                       la misma.
-                    </p>
+                    </Card.Text>
                   )}
                 </Card.Body>
               </Card>
@@ -421,14 +422,14 @@ export default function CustomDataSetClassicClassification(props) {
                   {{
                     0: <>
                       <p>
-                        Carga tu propio dataSet con la siguiente
+                        Carga tu propio dataSet con la siguiente{" "}
                         <a href="#" onClick={() => downloadFile}>estructura</a> pulsando
                         este botón.
                       </p>
-                      <div class="mb-3">
-                        <label for="formFile"
-                               class="form-label">Default file input example</label>
-                        <input class="form-control"
+                      <div className="mb-3">
+                        <label htmlFor="formFile"
+                               className="form-label">Default file input example</label>
+                        <input className="form-control"
                                type="file"
                                id="formFile"
                                onChange={() => handleChangeFileUpload}></input>
@@ -451,15 +452,15 @@ export default function CustomDataSetClassicClassification(props) {
                   <ul>
                     <li>
                       <b>A la izquierda </b><br/>
-                      se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
+                      Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
                       capa".
                     </li>
 
                     <li>
                       Puedes modificar dos parámetros:
                       <ul>
-                        <li><b>Unidades de la capa:</b> cuantas unidades deseas que tenga esa capa</li>
-                        <li><b>Función de activación:</b> función de activación para esa capa</li>
+                        <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa</li>
+                        <li><b>Función de activación:</b><br/>Función de activación para esa capa</li>
                       </ul>
                     </li>
 
@@ -477,8 +478,8 @@ export default function CustomDataSetClassicClassification(props) {
                         reglas para el test
                       </li>
                       <li>
-                        <b>Nº de iteraciones:</b>
-                        cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
+                        <b>Nº de iteraciones:</b><br/>
+                        Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
                       </li>
                       <li>
                         <b>Optimizador:</b><br/>
@@ -494,7 +495,6 @@ export default function CustomDataSetClassicClassification(props) {
                         Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
                       </li>
                     </ul>
-                    <br/>
 
                     <li>
                       <b>Crear y entrenar modelo.</b><br/>
@@ -504,8 +504,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <li>
                       <b>Exportar modelo.</b><br/>
                       Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo
-                      y
-                      guardarlo localmente.
+                      y guardarlo localmente.
                     </li>
 
                     <li>
@@ -537,9 +536,9 @@ export default function CustomDataSetClassicClassification(props) {
             <Col className={"mt-3"} xl={6}>
               {/* ADD LAYER */}
               <div className="d-grid gap-2">
-                <Button size={"lg"}
-                        type="button"
+                <Button type="button"
                         onClick={() => handlerAddLayer()}
+                        size={"lg"}
                         variant="primary">
                   Añadir capa
                 </Button>
@@ -702,9 +701,9 @@ export default function CustomDataSetClassicClassification(props) {
             <Col xl={12}>
               {Model === undefined ? ('') : (
                 <div className="d-grid gap-2">
-                  <Button size={"lg"}
-                          type="button"
+                  <Button type="button"
                           onClick={() => handleDownloadModel}
+                          size={"lg"}
                           variant="primary">
                     Exportar modelo
                   </Button>
@@ -735,21 +734,21 @@ export default function CustomDataSetClassicClassification(props) {
                   {{
                     0: <>
                       <Card.Text>
-                        Introduce separado por comas los valores
+                        Introduce separado por comas los valores: <br/>
                         <b>(buying, maint, doors, persons, lug_boot, safety).</b>
                       </Card.Text>
                     </>,
                     1: <>
                       <Card.Text>
                         Introduce separado por comas los siguientes valores correspondientes a el coche que se va a
-                        evaluar:
+                        evaluar:<br/>
                         <b>(buying, maint, doors, persons, lug_boot, safety).</b>
                       </Card.Text>
                     </>,
                     2: <>
                       <Card.Text>
                         Introduce separado por comas los siguientes valores correspondientes a la planta que se va a
-                        evaluar:
+                        evaluar: <br/>
                         <b>(longitud sépalo,anchura sépalo,longitud petalo,anchura petalo).</b>
                       </Card.Text>
                     </>

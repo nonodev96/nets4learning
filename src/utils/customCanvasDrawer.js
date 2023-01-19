@@ -46,8 +46,6 @@ export default function CustomCanvasDrawer(props) {
       const { offsetX, offsetY } = nativeEvent
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
-    } else {
-
     }
   }
 
@@ -63,38 +61,33 @@ export default function CustomCanvasDrawer(props) {
     const rect = canvasRef.current.getBoundingClientRect();
     const cssX = e.touches[0].clientX - rect.left;
     const cssY = e.touches[0].clientY - rect.top;
-    const pixelX = cssX //* canvasRef.current.width  / rect.width;
-    const pixelY = cssY //* canvasRef.current.height / rect.height;
+    //* canvasRef.current.width  / rect.width;
+    //* canvasRef.current.height / rect.height;
     // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`;
-    contextRef.current.fillRect(pixelX - 10, pixelY - 10, 10, 10);
+    contextRef.current.fillRect(cssX - 10, cssY - 10, 10, 10);
   }
-
-  // const startDrawing = ()=> {
-  //   setIsDrawing(true)
-  // }
 
   return (
     <>
       <div className="container-canvas">
         <canvas id='bigcanvas'
-                onMouseDown={startDrawing}
-                onMouseUp={finishDrawing}
-                onMouseMove={draw}
                 ref={canvasRef}
-                onChange={startDrawing}
-                className="border-canvas"
-        ></canvas>
+                onMouseDown={() => startDrawing}
+                onMouseUp={() => finishDrawing}
+                onMouseMove={() => draw}
+                onChange={() => startDrawing}
+                className="border-canvas"></canvas>
 
       </div>
       <div className="btn-group-canvas">
-        <button
-          type='button'
-          onClick={submitFunction}
-          className="btn-custom-canvas green"
-        >
+        <button type='button'
+                className="btn-custom-canvas green"
+                onClick={submitFunction}>
           Validar
         </button>
-        <button type="button" onClick={clear} className="btn-custom-canvas red">
+        <button type="button"
+                className="btn-custom-canvas red"
+                onClick={() => clear}>
           Limpiar
         </button>
       </div>

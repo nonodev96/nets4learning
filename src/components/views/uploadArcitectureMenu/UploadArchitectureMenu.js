@@ -27,58 +27,62 @@ export const dataSetDescription = [
   [
     'DATASET PROPIO',
     <>
-      <p>El dataSet Car Evaluation permite evaluar vehículos a través de la siguiente estructura:</p>
+      <p>El DataSet "Car Evaluation" permite evaluar vehículos a través de la siguiente estructura:</p>
       <ul>
-        <li>CAR Aceptación del vehículo</li>
+        <li><b>CAR</b> Aceptación del vehículo</li>
         <li>
-          PRICE precio en general
+          <b>PRICE:</b> Precio en general
           <ul>
-            <li>BUTING precio de compra</li>
-            <li>MAINT costo del mantenimiento</li>
+            <li><b>BUTING:</b> Precio de compra</li>
+            <li><b>MAINT:</b> Costo del mantenimiento</li>
           </ul>
         </li>
         <li>
-          TECH Características técnicas
+          <b>TECH:</b> Características técnicas
           <ul>
-            <li>COMFORT comfort</li>
-            <ul>
-              <li>DOORS nº de puertas</li>
-              <li>PERSONS nº de plazas</li>
-              <li>LUG_BOOT tamaño del maletero</li>
-            </ul>
-          </ul>
-          <ul>
-            <li>SAFETY seguridad estimada del vehículo</li>
+            <li>
+              <b>COMFORT:</b> Comfort
+              <ul>
+                <li><b>DOORS:</b> Nº de puertas</li>
+                <li><b>PERSONS:</b> Nº de plazas</li>
+                <li><b>LUG_BOOT:</b> Tamaño del maletero</li>
+              </ul>
+            </li>
+            <li><b>SAFETY:</b> Seguridad estimada del vehículo</li>
           </ul>
         </li>
       </ul>
 
       <p>Por último los posibles valores que puede dar son:</p>
       <ul>
-        <li>UNACC - Inaccesible</li>
-        <li>ACC - Accesible</li>
-        <li>GOOD - Bien</li>
-        <li>VGOOD - Muy bien</li>
+        <li><b>UNACC</b> - Inaccesible</li>
+        <li><b>ACC</b> - Accesible</li>
+        <li><b>GOOD</b> - Bien</li>
+        <li><b>VGOOD</b> - Muy bien</li>
       </ul>
 
       <p>Estos son los valores de entrada que podrá tomar la red.</p>
       <ul>
-        <li>buying: vhigh, high, med, low.</li>
-        <li>maint: vhigh, high, med, low.</li>
-        <li>doors: 2, 3, 4, 5more.</li>
-        <li>persons: 2, 4, more.</li>
-        <li>lug_boot: small, med, big.</li>
-        <li>safety: low, med, high.</li>
+        <li><b>buying:</b> vhigh, high, med, low.</li>
+        <li><b>maint:</b> vhigh, high, med, low.</li>
+        <li><b>doors:</b> 2, 3, 4, 5more.</li>
+        <li><b>persons:</b> 2, 4, more.</li>
+        <li><b>lug_boot:</b> small, med, big.</li>
+        <li><b>safety:</b> low, med, high.</li>
       </ul>
+
       <p>
-        Para obtener más información acerca de este dataSet visita
-        <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" rel="noreferrer" target="_blank"> esta web</a>
+        Para obtener más información acerca de este dataSet visita{" "}
+        <a target="_blank" href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation">esta web</a>{" "}
+        (<a target="_blank" href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/">Modelo</a>)
       </p>
     </>,
-
     <>
-      <p>El dataSet Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo
-        y sépalo. </p>
+      <p>
+        El dataSet Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo
+        y sépalo.
+      </p>
+
       <p>Tiene la siguiente estructura:</p>
       <ul>
         <li>Longitud del sépalo en cm</li>
@@ -100,8 +104,9 @@ export const dataSetDescription = [
     'DATASET PROPIO',
     <>
       <p>
-        Este modelo es proporcionado por el hub de modelos de tensorflow. Este modelo lo podemos encontrar
-        <a target="blank" href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
+        Este modelo es proporcionado por el hub de modelos de tensorflow.
+        Este modelo lo podemos encontrar <a target="blank"
+                                            href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
         Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para
         finalmente hacer una malla de la misma.
       </p>
@@ -111,15 +116,14 @@ export const dataSetDescription = [
         <li>Imagen o vídeo de entrada.</li>
       </ul>
 
+      <p>Datos de salida:</p>
       <ul>
-        <p>Datos de salida:</p>
         <li>Misma elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
       </ul>
     </>,
-
     <>
       <p>
-        Este modelo es proporcionado por el hub de modelos de tensorflow.
+        Este modelo es proporcionado por el HUB de modelos de tensorflow.
         Este modelo lo podemos encontrar <a target="blank"
                                             href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1">aquí</a>.
         Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como
@@ -136,7 +140,6 @@ export const dataSetDescription = [
         <li>Misma elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
       </ul>
     </>,
-
     <>
       <p>
         PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
@@ -151,9 +154,9 @@ export const dataSetDescription = [
 
       <p>Datos de salida:</p>
       <ul>
-        <li>Misma elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
-          ademas
-          de hombros, codos, manos, pies, rodillas y cadera.
+        <li>
+          Misma elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
+          ademas de hombros, codos, manos, pies, rodillas y cadera.
         </li>
       </ul>
     </>,
@@ -184,11 +187,10 @@ export const dataSetDescription = [
         <li>Un número entre 0 y 9</li>
       </ul>
     </>,
-
     <>
       <p>
         MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas
-        similares.
+        similares. <br/>
         Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:
         <a target="_blank" rel="noreferrer" href="https://arxiv.org/abs/1801.04381">
           "Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation"
@@ -222,10 +224,8 @@ export const dataSetDescription = [
       <p>
         La variación "V2" utilizada en el modelo que vamos a usar fue realizada por Kaiming He, Xiangyu Zhang,
         Shaoqing Ren, Jian Sun:{' '}
-        <a rel="noreferrer" target={'_blank'}
-           href="https://arxiv.org/abs/1603.05027">
-          "Identity Mappings in Deep
-          Residual Networks"</a>, 2016.
+        <a rel="noreferrer" target={'_blank'} href="https://arxiv.org/abs/1603.05027">
+          "Identity Mappings in Deep Residual Networks"</a>, 2016.
       </p>
       <p>
         La diferencia con ResNet V1 es el uso de la normalización por lotes antes de cada capa de peso. El modelo
@@ -247,6 +247,9 @@ export const dataSetDescription = [
     </>,
   ],
 ]
+export const getHTML_DataSetDescription = (row, dataset) => {
+  return dataSetDescription[row][dataset];
+}
 /**
  * Parte de la ruta de editar la arquitectura
  *
@@ -257,7 +260,7 @@ export const dataSetDescription = [
 export default function UploadArchitectureMenu(props) {
   const { id } = useParams()
   const [DataSet, setDataSet] = useState(-1)
-  const [CustomArchitecture, setCustomArchuitecture] = useState(false)
+  const [CustomArchitecture, setCustomArchitecture] = useState(false)
   const history = useHistory()
 
   const handleChangeDataSet = () => {
@@ -284,10 +287,10 @@ export default function UploadArchitectureMenu(props) {
     let reader = new FileReader()
     reader.readAsText(files[0])
     try {
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         localStorage.setItem('custom-architecture', e.target.result)
-        setCustomArchuitecture(true)
-        alertHelper.alertSuccess('Fichero cargado con éxito')
+        setCustomArchitecture(true)
+        await alertHelper.alertSuccess('Fichero cargado con éxito')
       }
     } catch (error) {
       await alertHelper.alertError(error)
@@ -299,15 +302,18 @@ export default function UploadArchitectureMenu(props) {
       <N4LNavBar/>
 
       <Container>
-        <Row>
+        <Row className="mt-3">
           <Col>
-            <Card className="mt-3">
+            <Card>
               <Card.Header>
                 <h1>{modelsType[id]}</h1>
               </Card.Header>
               <Card.Body>
-                <p>Selecciona a continuación el Data Set sobre se va a trabajar o carga tu propio Data Set.</p>
+                <Card.Text>
+                  Selecciona a continuación el Data Set sobre se va a trabajar o carga tu propio Data Set.
+                </Card.Text>
                 <Form>
+                  {/*FIXME Remove Row and Col */}
                   <Row>
                     <Col>
                       <Form.Group className="mb-3" controlId="FormDataSet">
@@ -332,7 +338,7 @@ export default function UploadArchitectureMenu(props) {
                       <input type="file"
                              name="doc"
                              accept=".json"
-                             onChange={handleChangeArchitectureUpload}></input>
+                             onChange={() => handleChangeArchitectureUpload}></input>
                     </Col>
                   </Row>
                   <Row>
