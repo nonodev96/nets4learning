@@ -26,7 +26,7 @@ function EditArchitecture() {
     'Clasificador de imágenes',
   ]
 
-  const selectedEditor = () => {
+  const Print_HTML_Editor = () => {
     // console.trace()
     // console.log({ tipo })
     switch (id.toString()) {
@@ -72,7 +72,7 @@ function EditArchitecture() {
         </Container>
 
         {/**/}
-        {selectedEditor()}
+        {Print_HTML_Editor()}
       </main>
       <N4LFooter/>
     </>

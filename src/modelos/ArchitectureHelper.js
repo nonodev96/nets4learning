@@ -52,8 +52,7 @@ export async function createClassicClassification(
     clasificador.IRIS_DATA,
   )
 
-  document.getElementById('salida').innerHTML +=
-    `
+  document.getElementById('salida').innerHTML += `
 <p>MODELO CREADO A PARTIR DE: 
 <b>learningRate:</b> ${learningRate} 
 <b>unknownRate:</b> ${unknownRate} 
@@ -69,7 +68,7 @@ export async function createClassicClassification(
   const loss = createLoss(idLoss)
   const metrics = createMetrics(idMetrics)
 
-  console.log('Tennsor secuencial', model)
+  console.log('Tensor secuencial', model)
   console.log('Forma', model.shape)
   console.log('ESTAS SON LAS UNIDADES DE LAS CAPAS', layerList)
   //Agregamos las capas
@@ -91,7 +90,7 @@ export async function createClassicClassification(
       )
     }
     console.log(layer)
-    console.log('Tennsor secuencial ' + index, model)
+    console.log('Tensor secuencial ' + index, model)
     console.log('Forma ' + index, model.shape)
   })
 
@@ -105,7 +104,7 @@ export async function createClassicClassification(
   //Mostramos la información del modelo en el panel lateral
   tfvis.show.modelSummary(
     { name: 'Arquitectura del modelo', tab: 'Modelo' },
-    model,
+    model
   )
 
   console.log('Tennsor secuencial COMPILE', model)
@@ -138,7 +137,7 @@ export async function createClassicClassification(
 
 export async function createClassicClassificationCustomDataSet(
   learningRate,
-  unknowRate,
+  unknownRate,
   numberOfEpoch,
   sLOptimizer,
   layerList,
@@ -146,34 +145,21 @@ export async function createClassicClassificationCustomDataSet(
   idMetrics,
   dataSet,
 ) {
-  const [
-    DATA_SET,
-    TARGET_SET_CLASSES,
-    DATA_SET_CLASSES,
-  ] = getClassesFromDataSet(dataSet)
+  const [DATA_SET, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await getClassesFromDataSet(dataSet)
 
-  const [xTrain, yTrain, xTest, yTest] = clasificador.getData(
-    unknowRate,
-    TARGET_SET_CLASSES,
-    DATA_SET,
-  )
+  const [xTrain, yTrain, xTest, yTest] = clasificador.getData(unknownRate, TARGET_SET_CLASSES, DATA_SET)
   console.log(xTrain, yTrain, xTest, yTest)
-  document.getElementById('salida').innerHTML +=
-    '<p>MODELO CREADO A PARTIR DE: <b>learningRate:</b> ' +
-    learningRate +
-    ' <b>unknowRate:</b> ' +
-    unknowRate +
-    ' <b>numberOfEpoch:</b> ' +
-    numberOfEpoch +
-    ' <b>sLOptimizer:</b> ' +
-    sLOptimizer +
-    ' <b>idLoss:</b> ' +
-    idLoss +
-    ' <b>idMetrics:</b> ' +
-    idMetrics +
-    '</p>'
+  document.getElementById('salida').innerHTML += `
+<h3>MODELO CREADO A PARTIR DE: </h3>
+<p><b>learningRate:</b> ${learningRate}</p>
+<p><b>unknownRate:</b> ${unknownRate}</p> 
+<p><b>numberOfEpoch:</b> ${numberOfEpoch}</p> 
+<p><b>sLOptimizer:</b> ${sLOptimizer}</p> 
+<p><b>idLoss:</b> ${idLoss}</p> 
+<p><b>idMetrics:</b> ${idMetrics}</p>
+`
 
-  //modo secuencial
+  // modo secuencial
   const model = tf.sequential()
   const optimizer = createOptimizer(learningRate, sLOptimizer)
   const loss = createLoss(idLoss)
@@ -207,17 +193,17 @@ export async function createClassicClassificationCustomDataSet(
     console.log('Forma ' + index, model.shape)
   })
 
-  //Compilamos el modelo
+  // Compilamos el modelo
   model.compile({
     optimizer,
     loss,
     metrics,
   })
 
-  console.log('Tensor secuencial COMPILE', model)
-  console.log('Forma', xTrain.shape)
+  console.log('Tensor secuencial COMPILE', { model })
+  console.log('Forma', { xTrain_shape: xTrain.shape })
 
-  //Creamos las métricas que van a aparecer en los gráficos
+  // Creamos las métricas que van a aparecer en los gráficos
   const metrics2 = ['loss', 'val_loss', 'acc', 'val_acc']
   const container = {
     name: 'Entrenamiento del modelo',
@@ -241,7 +227,7 @@ export async function createClassicClassificationCustomDataSet(
   })
 
   console.log(model)
-  return [model, TARGET_SET_CLASSES, DATA_SET_CLASSES]
+  return Promise.resolve([model, TARGET_SET_CLASSES, DATA_SET_CLASSES])
 }
 
 function getDataSetModif(dataSet, types) {
@@ -301,11 +287,12 @@ async function getClassesFromDataSet(dataSet) {
     console.log(dataAux, targetData, indexDataAux)
     return [dataAux, targetData, indexDataAux]
   } catch (error) {
+    console.error(error)
     await alertError(error)
   }
 }
 
-// Devueve el optimizador seleccionado por el usuario
+// Devuelve el optimizador seleccionado por el usuario
 function createOptimizer(learningRate, idOptimizer) {
   console.log(idOptimizer, 'ESTE ES EL OPTIMIZADOR')
   switch (idOptimizer) {
@@ -365,8 +352,9 @@ export function createOptimizerId(idOptimizer) {
   }
 }
 
-// Devueve la pérdida seleccionada por el usuario
+// Devuelve la pérdida seleccionada por el usuario
 export function createLoss(idLoss) {
+  console.log({idLoss})
   switch (idLoss) {
     //categoricalCrossEntropy??????
     case 'AbsoluteDifference':
@@ -400,13 +388,14 @@ export function createLoss(idLoss) {
       return 'categoricalCrossEntropy'
 
     default:
-      return 'categoricalCrossEntropy'
+      console.warn("createLoss()")
+      return 'categoricalCrossentropy'
   }
 }
 
 // Devueve la métrica seleccionada por el usuario
 export function createMetrics(idMetrics) {
-  console.log(idMetrics, 'EL ID DE LA METRICa')
+  console.log(idMetrics, 'EL ID DE LA MÉTRICA')
   switch (idMetrics) {
     case 0:
       // binaryAccuracy,

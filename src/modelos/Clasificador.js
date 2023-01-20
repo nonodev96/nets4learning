@@ -183,13 +183,13 @@ function convertToTensors(data, targets, testSplit) {
   //var dataByClass = tf.oneHot(dataByClass2, 27);
   const xs = tf.tensor2d(data, [numExamples, xDims]);
 
-  console.log(targets)
+  // console.log(targets)
   // Create a 1D `tf.Tensor` to hold the labels, and convert the number label
   // from the set {0, 1, 2} into one-hot encoding (.e.g., 0 --> [1, 0, 0]).
   const ys = tf.oneHot(tf.tensor1d(targets).toInt(), IRIS_NUM_CLASSES);
 
   // Split the data into training and test sets, using `slice`.
-  console.log("Este es el xTrain dentro del convert to tensors", data, xDims)
+  // console.log("Este es el xTrain dentro del convert to tensors", data, xDims)
   const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
   const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
   const yTrain = ys.slice([0, 0], [numTrainExamples, IRIS_NUM_CLASSES]);

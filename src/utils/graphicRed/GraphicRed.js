@@ -2,6 +2,7 @@ import React from 'react'
 import './GraphicRed.css'
 import Graph from 'react-graph-vis'
 import { ArrowRight } from "react-bootstrap-icons";
+import { Col, Row } from "react-bootstrap";
 
 export default function GraphicRed(props) {
   const { layer, setActiveLayer, tipo } = props
@@ -28,7 +29,7 @@ export default function GraphicRed(props) {
   for (let index = 1; index < layer.length; index++) {
     edges.push({ from: index - 1, to: index })
   }
-  console.log(edges)
+
   const graph = {
     nodes: nodes,
     edges: edges,
@@ -63,29 +64,41 @@ export default function GraphicRed(props) {
   }
   return (
     <>
-      <div className="row">
-        <div className="col-md-1"
+      <Row className={"mt-3"}>
+        <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
              style={{
                display: 'flex',
                alignItems: "center",
                marginBottom: "2rem"
              }}>
-          <div className="col-md-6" style={{ writingMode: 'vertical-rl' }}>ENTRADA</div>
-          <div className="col-md-6"><ArrowRight style={{ "fontSize": "xxx-large" }}/></div>
-        </div>
-        <div className="mynetwork col-md-10">
+          <div className="col-md-6"
+               style={{ writingMode: 'vertical-rl' }}>
+            ENTRADA
+          </div>
+          <div className="col-md-6"
+               style={{ textAlign: "center" }}>
+            <ArrowRight style={{ "fontSize": "xxx-large" }}/>
+          </div>
+        </Col>
+        <Col className={"mynetwork"} xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
           <Graph graph={graph} options={options} events={events}/>
-        </div>
-        <div className="col-md-1"
+        </Col>
+        <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
              style={{
                display: 'flex',
                alignItems: "center",
                marginBottom: "2rem"
              }}>
-          <div className="col-md-6"><ArrowRight style={{ "fontSize": "xxx-large" }}/></div>
-          <div className="col-md-6" style={{ writingMode: 'vertical-rl' }}>SALIDA</div>
-        </div>
-      </div>
+          <div className="col-md-6"
+               style={{ textAlign: "center" }}>
+            <ArrowRight style={{ "fontSize": "xxx-large" }}/>
+          </div>
+          <div className="col-md-6"
+               style={{ writingMode: 'vertical-rl', textAlign: 'left' }}>
+            SALIDA
+          </div>
+        </Col>
+      </Row>
     </>
   )
 }

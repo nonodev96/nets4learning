@@ -54,7 +54,7 @@ export default function MnistImageClassification(props) {
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossEntropy',
+    'BinaryCrossentropy',
     'CategoricalAccuracy',
     'CategoricalCrossEntropy',
     'CosineProximity',

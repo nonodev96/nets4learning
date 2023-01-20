@@ -53,7 +53,7 @@ export default function ObjectDetection(props) {
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossEntropy',
+    'BinaryCrossentropy',
     'CategoricalAccuracy',
     'CategoricalCrossEntropy',
     'CosineProximity',
@@ -427,7 +427,7 @@ export default function ObjectDetection(props) {
                   <h2>{dataSetList[3][dataSet]}</h2>
                 </Card.Header>
                 <Card.Body>
-                  <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
+                  <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
                   <ul>
                     <li>
                       <b>A la izquierda:</b><br/>

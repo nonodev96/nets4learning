@@ -9,24 +9,31 @@ import {
 import './ClassicClassification.css'
 import * as clasificador from '../../../../modelos/Clasificador'
 import * as cochesDataset from '../../../../modelos/data/coches.json'
-import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
+import {
+  dataSetList,
+  dataSetDescription,
+  getHTML_DataSetDescription
+} from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import GraphicRed from '../../../../utils/graphicRed/GraphicRed.js'
 import * as alertHelper from '../../../../utils/alertHelper'
+import { getNameDatasetByID_ClassicClassification, MODEL_CAR, MODEL_IRIS, MODEL_UPLOAD } from "../../../../ModelList";
 
 export default function CustomDataSetClassicClassification(props) {
   const { dataSet } = props
-  console.log("CustomDataSetClassicClassification")
+  // console.log("CustomDataSetClassicClassification", { dataSet })
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
-  const [nLayer, setNLayer] = useState()
-  const [Layer, setLayer] = useState([])
   const NumberEpochs = 50
   const learningValue = 1
+  const [nLayer, setNLayer] = useState(0)
+  const [Layer, setLayer] = useState([])
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  // LOSS_TYPE
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
+  // METRICS_TYPE
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
-  const [string, setstring] = useState()
+  const [string, setString] = useState("")
   const [NoEpochs, setNoEpochs] = useState(50)
   const [CustomDataSet, setCustomDataSet] = useState()
   const [DataSetClasses, setDataSetClasses] = useState([])
@@ -38,36 +45,35 @@ export default function CustomDataSetClassicClassification(props) {
     const uploadedArchitecture = localStorage.getItem('custom-architecture')
     if (uploadedArchitecture !== 'nothing') {
       setUploadedArchitecture(true)
-      const uploadedJson = JSON.parse(uploadedArchitecture)
-      const auxLayer = uploadedJson.modelTopology.config.layers
-      let array = []
+      const uploadedJSON = JSON.parse(uploadedArchitecture)
+      const auxLayer = uploadedJSON.modelTopology.config.layers
+      let _layerArray = []
       for (let i = 0; i < auxLayer.length; i++) {
-        array.push({
+        _layerArray.push({
           units: auxLayer[i].config.units,
           activation: auxLayer[i].config.activation,
         })
       }
-      setLayer(array)
-      setNLayer(array.length)
-      console.log('ahora hay algo', array)
-      console.log([
-        { units: 10, activation: 'Sigmoid' },
-        { units: 3, activation: 'Softmax' },
-      ])
+      // console.log({ _layerArray })
+      setLayer(_layerArray)
+      setNLayer(_layerArray.length)
     } else {
       setLayer([
-        { units: 10, activation: 'Sigmoid' },
-        { units: 3, activation: 'Softmax' },
+        { units: 10, activation: 'sigmoid' },
+        { units: 3, activation: 'softmax' },
       ])
       setNLayer(2)
-      if (dataSet === 1) {
-        setstring('vhigh;vhigh;2;2;big;med')
-      } else {
-        setstring('0.1;4.3;2.1;0.2')
+      switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+        case MODEL_CAR: {
+          setString('vhigh;vhigh;2;2;big;med')
+          break
+        }
+        default: {
+          setString('0.1;4.3;2.1;0.2')
+        }
       }
     }
     setActiveLayer(0)
-
   }, [])
 
   const OPTIMIZER_TYPE = [
@@ -90,14 +96,14 @@ export default function CustomDataSetClassicClassification(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
+    'CategoricalCrossentropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossEntropy',
+    'BinaryCrossentropy',
     'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
+    'CategoricalCrossentropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -109,107 +115,105 @@ export default function CustomDataSetClassicClassification(props) {
   ]
 
   const ACTIVATION_TYPE = ['Sigmoid', 'Softmax']
+  const ACTIVATION_TYPE_SELECT = [
+    { value: 'sigmoid', label: 'Sigmoid' },
+    { value: 'softmax', label: 'Softmax' }
+  ]
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
-    console.log(dataSet, 'Este es el dataset')
-    if (dataSet === 1) {
-      console.log('hora')
-      let aux = cochesDataset
-      console.log(aux.datos[0])
-      const [
-        model,
-        TARGET_SET_CLASSES,
-        DATA_SET_CLASSES,
-      ] = await createClassicClassificationCustomDataSet(
-        parseInt(document.getElementById('formTrainRate').value) / 100,
-        0.1,
-        parseInt(NoEpochs),
-        document.getElementById('FormOptimizer').value,
-        Layer,
-        LossValue,
-        MetricsValue,
-        aux,
-      )
-      setDataSetClasses(DATA_SET_CLASSES)
-      setTargetSetClasses(TARGET_SET_CLASSES)
-      setModel(model)
-      await alertHelper.alertSuccess('Modelo entrenado con éxito')
-    } else if (dataSet === 2) {
-      console.log('hola es el dataset2')
-      // await doIris(0.1)
-      const model = await createClassicClassification(
-        parseInt(document.getElementById('formTrainRate').value) / 100,
-        0.1,
-        parseInt(NoEpochs),
-        document.getElementById('FormOptimizer').value,
-        Layer,
-        LossValue,
-        MetricsValue,
-      )
-      setDataSetClasses([0, 1, 2, 3])
-      setTargetSetClasses(clasificador.IRIS_CLASSES)
-      setModel(model)
-      await alertHelper.alertSuccess('Modelo entrenado con éxito')
-    } else if (dataSet === 0) {
-      if (CustomDataSet !== undefined) {
-        const [
-          model,
-          TARGET_SET_CLASSES,
-          DATA_SET_CLASSES,
-        ] = await createClassicClassificationCustomDataSet(
-          parseInt(document.getElementById('formTrainRate').value) / 100,
-          0.1,
-          parseInt(NoEpochs),
-          document.getElementById('FormOptimizer').value,
-          Layer,
-          LossValue,
-          MetricsValue,
-          CustomDataSet,
+    console.log('Este es el dataset', { dataSet })
+    switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+      case MODEL_UPLOAD: {
+        if (CustomDataSet !== undefined) {
+          await alertHelper.alertError('Primero debes de cargar la arquitectura')
+          return
+        }
+        let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
+        let _unknownRate = 0.1
+        let _numberOfEpoch = parseInt(NoEpochs)
+        let _sLOptimizer = document.getElementById('FormOptimizer').value
+        let _layerList = Layer
+        let _idLoss = LossValue
+        let _idMetrics = MetricsValue
+        let _customDataSet = CustomDataSet
+        const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet(
+          _learningRate,
+          _unknownRate,
+          _numberOfEpoch,
+          _sLOptimizer,
+          _layerList,
+          _idLoss,
+          _idMetrics,
+          _customDataSet,
         )
         setDataSetClasses(DATA_SET_CLASSES)
         setTargetSetClasses(TARGET_SET_CLASSES)
         setModel(model)
         await alertHelper.alertSuccess('Modelo entrenado con éxito')
-      } else {
-        await alertHelper.alertError('Primero debes de cargar la arquitectura')
+
+        break;
+      }
+      case MODEL_CAR: {
+        let aux = cochesDataset
+        console.log({ aux })
+        console.log(aux.datos[0])
+        let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
+        let _unknownRate = 0.1
+        let _numberOfEpoch = parseInt(NoEpochs)
+        let _sLOptimizer = document.getElementById('FormOptimizer').value
+        let _layerList = Layer
+        let _idLoss = LossValue
+        let _idMetrics = MetricsValue
+        let _customDataSet = aux
+        const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet(
+          _learningRate,
+          _unknownRate,
+          _numberOfEpoch,
+          _sLOptimizer,
+          _layerList,
+          _idLoss,
+          _idMetrics,
+          _customDataSet
+        )
+        setDataSetClasses(DATA_SET_CLASSES)
+        setTargetSetClasses(TARGET_SET_CLASSES)
+        setModel(model)
+        await alertHelper.alertSuccess('Modelo entrenado con éxito')
+        break;
+      }
+      case MODEL_IRIS: {
+        console.log('hola es el dataset2')
+        // await doIris(0.1)
+        let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
+        let _unknownRate = 0.1
+        let _numberOfEpoch = parseInt(NoEpochs)
+        let _sLOptimizer = document.getElementById('FormOptimizer').value
+        let _layerList = Layer
+        let _idLoss = LossValue
+        let _idMetrics = MetricsValue
+        const model = await createClassicClassification(
+          _learningRate,
+          _unknownRate,
+          _numberOfEpoch,
+          _sLOptimizer,
+          _layerList,
+          _idLoss,
+          _idMetrics
+        )
+        setDataSetClasses([0, 1, 2, 3])
+        setTargetSetClasses(clasificador.IRIS_CLASSES)
+        setModel(model)
+        await alertHelper.alertSuccess('Modelo entrenado con éxito')
+        break;
       }
     }
-    // console.log('Comenzamos a crear el modelo')
-    // try {
-    //   console.log('Estas sion las metricas', Layer)
-    //   const model = await createClassicClassificationCustomDataSet(
-    //     parseInt(document.getElementById('formTrainRate').value) / 100,
-    //     0.1,
-    //     parseInt(NoEpochs),
-    //     document.getElementById('FormOptimizer').value,
-    //     Layer,
-    //     LossValue,
-    //     MetricsValue,
-    //     CustomDataSet
-    //   )
-    //   console.log('Modelo creado y entrenado')
-    //   console.log(model)
-    //   setModel(model)
-    //   // const input = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4])
-    //   // const prediction = model.predict(input)
-    //   // const predictionWithArgMax = model.predict(input).argMax(-1).dataSync()
-    //   // console.log('Probamos el modelo con [0.1, 4.3, 2.1, 0.2], [1, 4]')
-
-    //   // console.log('La solucion es:', predictionWithArgMax)
-
-    //   // document.getElementById('demo').innerHTML =
-    //   //   prediction + 'tipo: ' + getIrisDataType(predictionWithArgMax)
-    //   // alert('Tipo: ' + getIrisDataType(predictionWithArgMax))
-    // } catch (error) {
-    //   console.log(error)
-    // }
   }
 
   const handleVectorTest = async () => {
-    // vhigh;vhigh;2;2;big;med;
+    // vhigh;vhigh;2;2;big;med
     let input = [[], [1, string.split(';').length]]
-    if (dataSet === 0) {
+    if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
       if (CustomDataSet === undefined) {
         await alertHelper.alertError('Primero debes de cargar un dataSet')
         return
@@ -219,121 +223,137 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertError('Primero debes de entrenar el modelo')
       return
     }
-    if (dataSet === 2) {
-      string.split(';').forEach((element) => {
-        input[0].push(parseFloat(element))
-      })
-      console.log(input)
-    } else {
-      console.log(DataSetClasses)
-      let i = 0
-      string.split(';').forEach((element) => {
-        if (isNaN(parseFloat(element))) {
-          input[0].push(DataSetClasses[i].get(element))
-        } else {
-          input[0].push(DataSetClasses[i].get(parseFloat(element)))
-        }
-        i++
-      })
-    }
-
-    const tensor = tf.tensor2d(input[0], input[1])
-    const prediction = Model.predict(tensor)
-    const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
-
-    console.log('La solucion es:', predictionWithArgMax)
-    await alertHelper.alertInfo('Tipo: ' + TargetSetClasses[predictionWithArgMax],
-      TargetSetClasses[predictionWithArgMax],
-    )
     try {
+      // TODO comprobar que hace la sección
+      if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_IRIS) {
+        string.split(';').forEach((element) => {
+          input[0].push(parseFloat(element))
+        })
+      } else {
+        let i = 0
+        string.split(';').forEach((element) => {
+          if (isNaN(parseFloat(element))) {
+            input[0].push(DataSetClasses[i].get(element))
+          } else {
+            input[0].push(DataSetClasses[i].get(parseFloat(element)))
+          }
+          i++
+        })
+      }
 
-      // document.getElementById('demo').innerHTML =
-      // prediction + 'tipo: ' + TargetSetClasses[predictionWithArgMax]
-      console.log(TargetSetClasses)
+      const tensor = tf.tensor2d(input[0], input[1])
+      const prediction = Model.predict(tensor)
+      const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
+
+      console.log('La solución es: ', { predictionWithArgMax })
+      await alertHelper.alertInfo(
+        'Tipo: ' + TargetSetClasses[predictionWithArgMax],
+        TargetSetClasses[predictionWithArgMax],
+      )
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
   const handlerAddLayer = async () => {
-    let array = Layer
-    if (array.length < 6) {
-
-      array.push({ units: 0, activation: 0 })
-      setLayer(array)
+    let aux = Layer
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handlerAddLayer`)
+    }
+    // console.log({ aux })
+    if (aux.length < 6) {
+      aux.push({ units: 0, activation: 0 })
+      setLayer(aux)
       setNLayer(nLayer + 1)
     } else {
       await alertHelper.alertWarning("No se pueden añadir más capas")
     }
   }
 
-  const handlerRemoveLayer = (idLayer) => {
-    let array = Layer
-    let array2 = []
-    let i
-    for (i = 0; i < idLayer; i++) {
-      array2.push(array[i])
+  const handlerRemoveLayer = async (idLayer) => {
+    let aux = Layer
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handlerRemoveLayer`)
     }
-    for (i = idLayer + 1; i < array.length; i++) {
-      document.getElementById(
-        `formUnitsLayer${i - 1}`,
-      ).value = document.getElementById(`formUnitsLayer${i}`).value
-      document.getElementById(
-        `formActivationLayer${i - 1}`,
-      ).value = document.getElementById(`formActivationLayer${i}`).value
-      array2.push(array[i])
+    // console.log({ aux })
+    let new_layer = []
+    for (let i = 0; i < idLayer; i++) {
+      new_layer.push(aux[i])
     }
-    setLayer(array2)
+    for (let i = idLayer + 1; i < aux.length; i++) {
+      document.getElementById(`formUnitsLayer${i - 1}`).value =
+        document.getElementById(`formUnitsLayer${i}`).value
+      document.getElementById(`formActivationLayer${i - 1}`).value =
+        document.getElementById(`formActivationLayer${i}`).value
+      new_layer.push(aux[i])
+    }
+    setLayer(new_layer)
     setNLayer(nLayer - 1)
   }
 
-  const handleChangeUnits = (index) => {
-    let array = Layer
-    array[index].units = parseInt(
-      document.getElementById(`formUnitsLayer${index}`).value,
-    )
-    setLayer(array)
+  const handleChangeUnits = async (index) => {
+    let aux = Layer
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeUnits`)
+    }
+    // console.log({ aux })
+    aux[index].units = parseInt(document.getElementById(`formUnitsLayer${index}`).value)
+    setLayer(aux)
   }
 
-  const handleChangeTestInput = () => {
-    console.log(document.getElementById(`formTestInput`).value)
-    setstring(document.getElementById(`formTestInput`).value)
+  const handleChangeTestInput = async () => {
+    let aux = document.getElementById(`formTestInput`).value
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeTestInput`)
+    }
+    // console.log({ aux })
+    setString(aux)
   }
 
-  const handleChangeActivation = (index) => {
-    let array = Layer
-    array[index].activation = document.getElementById(
-      `formActivationLayer${index}`,
-    ).value
-    setLayer(array)
+  const handleChangeActivation = async (index) => {
+    let aux = Layer
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeActivation`)
+    }
+    // console.log({ aux })
+    aux[index].activation = document.getElementById(`formActivationLayer${index}`).value
+    setLayer(aux)
   }
 
-  const handleChangeNoEpochs = () => {
+  const handleChangeNoEpochs = async () => {
     let aux = document.getElementById('formNumberOfEpochs').value
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeNoEpochs`)
+    }
+    // console.log({ aux })
     setNoEpochs(aux)
   }
 
-  const handleChangeLoss = () => {
+  const handleChangeLoss = async () => {
     let aux = document.getElementById('FormLoss').value
-    if (aux !== undefined) {
-      setLossValue(aux)
-    } else {
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeLoss`)
     }
+    // console.log({ aux })
+    setLossValue(aux)
   }
 
-  const handleChangeOptimization = () => {
+  const handleChangeOptimization = async () => {
     let aux = document.getElementById('FormOptimizer').value
-    console.log(aux)
-    if (aux !== undefined) {
-      setOptimizer(aux)
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeLoss`)
     }
+    // console.log({ aux })
+    setOptimizer(aux)
   }
 
-  const handleChangeMetrics = () => {
-    let aux = document.getElementById('FormMetrics').key
-    if (aux !== undefined) {
-      setMetricsValue(aux)
+  const handleChangeMetrics = async () => {
+    let aux = document.getElementById('FormMetrics').value
+    if (aux === undefined) {
+      await alertHelper.alertWarning(`Error handleChangeMetrics`)
     }
+    // console.log({ aux })
+    setMetricsValue(aux)
   }
 
   const handleDownloadModel = () => {
@@ -342,10 +362,7 @@ export default function CustomDataSetClassicClassification(props) {
 
   function download(filename, textInput) {
     const element = document.createElement('a')
-    element.setAttribute(
-      'href',
-      'data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput),
-    )
+    element.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput))
     element.setAttribute('download', filename)
     document.body.appendChild(element)
     element.click()
@@ -358,7 +375,7 @@ export default function CustomDataSetClassicClassification(props) {
       `
 {
   "datos": [
-    ["dato1", "dato2", "dato3", "dato4", "dato5","resulaado1"],
+    ["dato1", "dato2", "dato3", "dato4", "dato5","resultado1"],
     ["dato11", "dato12", "dato13", "dato14", "dato15","resultado2"],
     ["dato21", "dato22", "dato23", "dato24", "dato25","resultado3"],
     ["dato31", "dato32", "dato33", "dato34", "dato35","resultado4"],
@@ -378,13 +395,17 @@ export default function CustomDataSetClassicClassification(props) {
       let object
       reader.onload = (e) => {
         // console.warn(e.target.result);
-        object = JSON.parse(e.target.result)
+        object = JSON.parse(e.target.result.toString())
         console.log('Este es el objeto', object)
         setCustomDataSet(object)
       }
     } catch (error) {
-      console.warn(error)
+      console.error(error)
     }
+  }
+
+  const capitalizeFirstLetter = (text) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   return (
@@ -438,7 +459,7 @@ export default function CustomDataSetClassicClassification(props) {
                   }[dataSet]}
                   {dataSet !== 0 ? (
                     // DEFAULT
-                    dataSetDescription[0][dataSet]
+                    getHTML_DataSetDescription(0, dataSet)
                   ) : ("")}
                 </Card.Body>
               </Card>
@@ -453,16 +474,13 @@ export default function CustomDataSetClassicClassification(props) {
                     <li>
                       <b>A la izquierda </b><br/>
                       Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                      capa".
-                    </li>
-
-                    <li>
+                      capa". <br/>
                       Puedes modificar dos parámetros:
-                      <ul>
-                        <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa</li>
-                        <li><b>Función de activación:</b><br/>Función de activación para esa capa</li>
-                      </ul>
                     </li>
+                    <ul>
+                      <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa</li>
+                      <li><b>Función de activación:</b><br/>Función de activación para esa capa</li>
+                    </ul>
 
                     <li>
                       <b>A la derecha </b><br/>
@@ -473,9 +491,7 @@ export default function CustomDataSetClassicClassification(props) {
                       <li>
                         <b>Tasa de entrenamiento:</b><br/>
                         Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el
-                        entrenamiento
-                        y
-                        reglas para el test
+                        entrenamiento y reglas para el test
                       </li>
                       <li>
                         <b>Nº de iteraciones:</b><br/>
@@ -572,12 +588,12 @@ export default function CustomDataSetClassicClassification(props) {
                         <Form.Group className="m3-3"
                                     controlId={'formActivationLayer' + index}>
                           <Form.Label>Selecciona la función de activación</Form.Label>
-                          <Form.Select aria-label="Default select example"
+                          <Form.Select aria-label={"Default select example: " + item.activation}
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
-                            {ACTIVATION_TYPE.map((itemAct, indexAct) => {
-                              return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
+                            {ACTIVATION_TYPE_SELECT.map((itemAct, indexAct) => {
+                              return (<option key={indexAct} value={itemAct.value}>{itemAct.label}</option>)
                             })}
                           </Form.Select>
                           <Form.Text className="text-muted">
@@ -697,20 +713,22 @@ export default function CustomDataSetClassicClassification(props) {
             </Col>
           </Row>
 
-          <Row className={"mt-3"}>
-            <Col xl={12}>
-              {Model === undefined ? ('') : (
+          {/* Botón descargar modelo */}
+          {(Model !== undefined) && (<>
+            <Row className={"mt-3"}>
+              <Col xl={12}>
                 <div className="d-grid gap-2">
                   <Button type="button"
-                          onClick={() => handleDownloadModel}
+                          onClick={handleDownloadModel}
                           size={"lg"}
                           variant="primary">
                     Exportar modelo
                   </Button>
                 </div>
-              )}
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </>)}
+
           {/*
           <Row className={"mt-3"}>
             <Col xl={12}>
@@ -721,7 +739,7 @@ export default function CustomDataSetClassicClassification(props) {
               </Card>
             </Col>
           </Row>
-*/}
+          */}
 
           {/* BLOCK 2 */}
           <Row className={"mt-3"}>
@@ -756,8 +774,10 @@ export default function CustomDataSetClassicClassification(props) {
                 </Card.Body>
               </Card>
             </Col>
+          </Row>
 
-            <Col xl={12} className={"mt-3"}>
+          <Row className={"mt-3"}>
+            <Col xl={12}>
               <Card>
                 <Card.Header>
                   <h3>Resultado</h3>
@@ -766,7 +786,11 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId={'formTestInput'}>
                     <Form.Label>Introduce el vector a probar</Form.Label>
                     <Form.Control placeholder="Introduce el vector a probar"
-                                  defaultValue={dataSet === 1 ? 'vhigh;vhigh;2;2;big;med' : dataSet === 2 ? '0.1;4.3;2.1;0.2' : ''}
+                                  defaultValue={
+                                    dataSet === '0' ? '' :
+                                      dataSet === '1' ? 'vhigh;vhigh;2;2;big;med' :
+                                        dataSet === '2' ? '0.1;4.3;2.1;0.2' : ''
+                                  }
                                   onChange={() => handleChangeTestInput()}/>
                   </Form.Group>
 

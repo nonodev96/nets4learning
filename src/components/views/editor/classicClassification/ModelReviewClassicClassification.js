@@ -67,7 +67,7 @@ export default function ModelReviewClassicClassification(props) {
     console.log("handleVectorTest")
     setIsButtonDisabled(true)
     // Ejemplo modelo del coche
-    // vhigh;vhigh;2;2;big;med;
+    // vhigh;vhigh;2;2;big;med
     if (textToCheck === undefined || textToCheck.length < 1) {
       await alertHelper.alertWarning('Introduce unos valores a probar')
       setIsButtonDisabled(false)

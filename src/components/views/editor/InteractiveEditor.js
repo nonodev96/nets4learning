@@ -58,7 +58,7 @@ function InteractiveEditor(props) {
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
-    'BinaryCrossEntropy',
+    'BinaryCrossentropy',
     'CategoricalAccuracy',
     'CategoricalCrossEntropy',
     'CosineProximity',

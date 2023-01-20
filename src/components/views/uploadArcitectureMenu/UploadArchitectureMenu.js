@@ -6,6 +6,7 @@ import N4LNavBar from '../../navBar/N4LNavBar'
 import { modelsType } from '../initialMenu/InitialMenu'
 import { useHistory } from 'react-router-dom'
 import * as alertHelper from '../../../utils/alertHelper'
+import DragAndDrop from "../../dragAndDrop/DragAndDrop";
 
 export const dataSetList = [
   [
@@ -282,13 +283,12 @@ export default function UploadArchitectureMenu(props) {
     }
   }
 
-  const handleChangeArchitectureUpload = async (e) => {
-    let files = e.target.files
+  const handleChangeArchitectureUpload = async (files) => {
     let reader = new FileReader()
     reader.readAsText(files[0])
     try {
       reader.onload = async (e) => {
-        localStorage.setItem('custom-architecture', e.target.result)
+        localStorage.setItem('custom-architecture', e.target.result.toString())
         setCustomArchitecture(true)
         await alertHelper.alertSuccess('Fichero cargado con éxito')
       }
@@ -313,8 +313,8 @@ export default function UploadArchitectureMenu(props) {
                   Selecciona a continuación el Data Set sobre se va a trabajar o carga tu propio Data Set.
                 </Card.Text>
                 <Form>
-                  {/*FIXME Remove Row and Col */}
-                  <Row>
+                  {/*FIXME: Remove Row and Col */}
+                  <Row className="mt-3">
                     <Col>
                       <Form.Group className="mb-3" controlId="FormDataSet">
                         <Form.Label>Selecciona un Data Set</Form.Label>
@@ -328,23 +328,28 @@ export default function UploadArchitectureMenu(props) {
                       </Form.Group>
                     </Col>
                   </Row>
-                  <Row>
+                  <Row className="mt-3">
                     <Col>
                       <p>
                         Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y
                         se cargará una arquitectura por defecto de ejemplo.
                       </p>
-                      <p>Carga tu propia arquitectura en formato .json </p>
-                      <input type="file"
-                             name="doc"
-                             accept=".json"
-                             onChange={() => handleChangeArchitectureUpload}></input>
+                      <p>Carga tu propia arquitectura en formato .json</p>
+                      <DragAndDrop name={"doc"}
+                                   id={"UploadArchitectureMenu"}
+                                   accept={{ 'application/json': ['.json'] }}
+                                   text={"Añada el fichero JSON"}
+                                   function_DropAccepted={handleChangeArchitectureUpload}
+                      />
+                      {/*<input type="file"*/}
+                      {/*       name="doc"*/}
+                      {/*       accept=".json"*/}
+                      {/*       onChange={handleChangeArchitectureUpload}></input>*/}
                     </Col>
                   </Row>
-                  <Row>
+                  <Row className="mt-3">
                     <Col>
-                      <Button className="mt-3"
-                              onClick={() => handleSubmit()}>
+                      <Button onClick={() => handleSubmit()}>
                         Continuar
                       </Button>
                     </Col>
