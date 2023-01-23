@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Button } from "react-bootstrap"
 import './customCanvasDrawer.css'
-import { Button } from "react-bootstrap";
 
 export default function CustomCanvasDrawer(props) {
   const { submitFunction } = props
@@ -23,8 +23,8 @@ export default function CustomCanvasDrawer(props) {
     contextRef.current = context
 
     // React to touch events on the canvas
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-    canvas.addEventListener('touchmove', handleTouchMove);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false })
+    canvas.addEventListener('touchmove', handleTouchMove)
 
     return () => canvas.removeEventListener("touchmove", null)
   }, [])
@@ -53,21 +53,21 @@ export default function CustomCanvasDrawer(props) {
   }
 
   const clear = () => {
-    contextRef.current.clearRect(0, 0, 200, 200);
+    contextRef.current.clearRect(0, 0, 200, 200)
   }
 
   function handleTouchStart(e) {
-    e.preventDefault();
+    e.preventDefault()
   }
 
   function handleTouchMove(e) {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const cssX = e.touches[0].clientX - rect.left;
-    const cssY = e.touches[0].clientY - rect.top;
-    //* canvasRef.current.width  / rect.width;
-    //* canvasRef.current.height / rect.height;
-    // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`;
-    contextRef.current.fillRect(cssX - 10, cssY - 10, 10, 10);
+    const rect = canvasRef.current.getBoundingClientRect()
+    const cssX = e.touches[0].clientX - rect.left
+    const cssY = e.touches[0].clientY - rect.top
+    //* canvasRef.current.width  / rect.width
+    //* canvasRef.current.height / rect.height
+    // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`
+    contextRef.current.fillRect(cssX - 10, cssY - 10, 10, 10)
   }
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
-import { ArrowRight } from "react-bootstrap-icons";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap"
+import { ArrowRight } from "react-bootstrap-icons"
 import Graph from 'react-graph-vis'
 import './GraphicRed.css'
 

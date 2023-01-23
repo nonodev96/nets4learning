@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { Col, Container, Row, Card } from "react-bootstrap";
-import doIris from "../../modelos/Clasificador";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import CodePen from "../../components/codePen/CodePen";
-import "./Editor.css";
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router"
+import { Col, Container, Row, Card } from "react-bootstrap"
+import doIris from "../../modelos/Clasificador"
+import useLocalStorage from "../../hooks/useLocalStorage"
+import CodePen from "../../components/codePen/CodePen"
+import "./Editor.css"
 
 export default function Editor(props) {
-  const { tipo } = props;
+  const { tipo } = props
+
+  const { id } = useParams()
 
   const [html, setHtml] = useLocalStorage(
     "html",
     `<div id="demo" className={"borde console"} width="100%" height="100%"><p>Aquí se muestran los resultados</p></div>`
-  );
-  const [css, setCss] = useLocalStorage("css", "");
-  const [js, setJs] = useLocalStorage("js", `hlhlhl`);
-  const [srcDoc, setSrcDoc] = useState("");
+  )
+  const [css, setCss] = useLocalStorage("css", "")
+  const [js, setJs] = useLocalStorage("js", `hlhlhl`)
+
+  const [srcDoc, setSrcDoc] = useState("")
+
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -25,22 +29,14 @@ export default function Editor(props) {
       <style>${css}</style>
       <script>${js}</script>
       </html>
-      `);
-    }, 250);
+      `)
+    }, 250)
 
-    return () => clearTimeout(timeout);
-  }, [html, css, js]);
-
-  const modelsType = [
-    "Clasificación clásica",
-    "Clasificación de imágenes",
-    "Identificación de objetos",
-    "Regresión lineal",
-  ];
-  const { id } = useParams();
+    return () => clearTimeout(timeout)
+  }, [html, css, js])
 
   const HandleButtonClasificador = async () => {
-    await doIris(0.1);
+    await doIris(0.1)
   };
 
   const handleClickPlay = () => {
@@ -62,7 +58,7 @@ export default function Editor(props) {
                 <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                 <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                 <Card.Text>
-                  A esta función se el pasa un array preparado que continue la información del dataset.
+                  A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                 </Card.Text>
               </Card.Body>
             </Card>

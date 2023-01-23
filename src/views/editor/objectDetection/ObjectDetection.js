@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
-import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../modelos/NumberClasificatorHelper'
 import * as alertHelper from "../../../utils/alertHelper"
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
+import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
 
 
 export default function ObjectDetection(props) {
@@ -397,7 +397,7 @@ export default function ObjectDetection(props) {
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                   <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del dataset.
+                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -407,12 +407,10 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header>
-                  <h2>{dataSetList[3][dataSet]}</h2>
-                </Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    {dataSetDescription[3][dataSet]}
+                    {DATASET_DESCRIPTION[3][dataSet]}
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -422,9 +420,7 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header>
-                  <h2>{dataSetList[3][dataSet]}</h2>
-                </Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
                 <Card.Body>
                   <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
                   <ul>
@@ -498,9 +494,7 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header>
-                  <h3>Diseño de capas</h3>
-                </Card.Header>
+                <Card.Header><h3>Diseño de capas</h3></Card.Header>
                 <Card.Body>
                   <GraphicRed layer={Layer} setActiveLayer={setActiveLayer}/>
                 </Card.Body>

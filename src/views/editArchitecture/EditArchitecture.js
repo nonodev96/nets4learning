@@ -16,7 +16,7 @@ import ModelReviewClassicImageClassification
 
 import ObjectDetection from '../editor/objectDetection/ObjectDetection'
 import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
-import { LIST_TYPE_MODELS } from "../../ModelList";
+import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
 
 function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()

@@ -8,9 +8,14 @@ import {
 import './ClassicClassification.css'
 import * as clasificador from '../../../modelos/Clasificador'
 import * as cochesDataset from '../../../modelos/data/coches.json'
-import { dataSetList, getHTML_DataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
-import { getNameDatasetByID_ClassicClassification, MODEL_CAR, MODEL_IRIS, MODEL_UPLOAD } from "../../../ModelList";
+import {
+  getHTML_DATASET_DESCRIPTION,
+  getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS,
+  MODEL_CAR,
+  MODEL_IRIS,
+  MODEL_UPLOAD
+} from "../../../DATA_MODEL";
 import * as alertHelper from '../../../utils/alertHelper'
 
 export default function CustomDataSetClassicClassification(props) {
@@ -109,7 +114,7 @@ export default function CustomDataSetClassicClassification(props) {
     'Accuracy',
   ]
 
-  const ACTIVATION_TYPE = ['Sigmoid', 'Softmax']
+
   const ACTIVATION_TYPE_SELECT = [
     { value: 'sigmoid', label: 'Sigmoid' },
     { value: 'softmax', label: 'Softmax' }
@@ -117,7 +122,7 @@ export default function CustomDataSetClassicClassification(props) {
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
-    console.log('Este es el dataset', { dataSet })
+    console.log('Este es el conjunto de datos: ', { dataSet })
     switch (getNameDatasetByID_ClassicClassification(dataSet)) {
       case MODEL_UPLOAD: {
         if (CustomDataSet !== undefined) {
@@ -398,10 +403,6 @@ export default function CustomDataSetClassicClassification(props) {
     }
   }
 
-  const capitalizeFirstLetter = (text) => {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  }
-
   return (
     <>
       <Form onSubmit={handleClickPlay} id={"CustomDataSetClassicClassification"}>
@@ -430,14 +431,12 @@ export default function CustomDataSetClassicClassification(props) {
 
             <Col xl={12} className={"mt-3"}>
               <Card>
-                <Card.Header>
-                  <h2>{dataSetList[0][dataSet]}</h2>
-                </Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[0][dataSet]}</h3></Card.Header>
                 <Card.Body>
                   {{
                     0: <>
                       <p>
-                        Carga tu propio dataSet con la siguiente{" "}
+                        Carga tu propio conjunto de datos con la siguiente{" "}
                         <a href="#" onClick={() => downloadFile}>estructura</a> pulsando
                         este botón.
                       </p>
@@ -453,7 +452,7 @@ export default function CustomDataSetClassicClassification(props) {
                   }[dataSet]}
                   {dataSet !== 0 ? (
                     // DEFAULT
-                    getHTML_DataSetDescription(0, dataSet)
+                    getHTML_DATASET_DESCRIPTION(0, dataSet)
                   ) : ("")}
                 </Card.Body>
               </Card>
@@ -533,9 +532,7 @@ export default function CustomDataSetClassicClassification(props) {
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header>
-                  <h3>Diseño de capas</h3>
-                </Card.Header>
+                <Card.Header><h3>Diseño de capas</h3></Card.Header>
                 <Card.Body>
                   <GraphicRed layer={Layer} setActiveLayer={setActiveLayer} tipo={0}/>
                 </Card.Body>
@@ -697,9 +694,7 @@ export default function CustomDataSetClassicClassification(props) {
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header>
-                  <h3>Salida</h3>
-                </Card.Header>
+                <Card.Header><h3>Salida</h3></Card.Header>
                 <Card.Body>
                   <div id="salida"></div>
                 </Card.Body>
@@ -773,9 +768,7 @@ export default function CustomDataSetClassicClassification(props) {
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header>
-                  <h3>Resultado</h3>
-                </Card.Header>
+                <Card.Header><h3>Resultado</h3></Card.Header>
                 <Card.Body>
                   <Form.Group className="mb-3" controlId={'formTestInput'}>
                     <Form.Label>Introduce el vector a probar</Form.Label>

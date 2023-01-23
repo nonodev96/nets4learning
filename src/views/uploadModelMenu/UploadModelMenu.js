@@ -4,7 +4,7 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
 import * as alertHelper from "../../utils/alertHelper"
-import { LIST_MODELS, LIST_TYPE_MODELS } from "../../ModelList";
+import { LIST_MODEL_OPTIONS, LIST_TYPE_MODELS } from "../../DATA_MODEL";
 
 export default function UploadModelMenu(props) {
   const { id } = useParams()
@@ -35,9 +35,7 @@ export default function UploadModelMenu(props) {
         <Row className="mt-3">
           <Col>
             <Card>
-              <Card.Header>
-                <h1>{LIST_TYPE_MODELS[id]}</h1>
-              </Card.Header>
+              <Card.Header><h3>{LIST_TYPE_MODELS[id]}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   Selecciona a continuación el Modelo Pre-entrenado sobre el que se va a trabajar.
@@ -52,7 +50,7 @@ export default function UploadModelMenu(props) {
                     <Form.Select aria-label="Default select example"
                                  onChange={handleChangeModel}>
                       <option>Selecciona un Modelo</option>
-                      {LIST_MODELS[id].map((item, id) => {
+                      {LIST_MODEL_OPTIONS[id].map((item, id) => {
                         return (<option key={id} value={id}>{item}</option>)
                       })}
                     </Form.Select>

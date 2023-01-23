@@ -1,6 +1,6 @@
 {
   "name": "tfg-nets4learning",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "homepage": "https://simidat.ujaen.es/nets4learning",
   "private": true,
   "dependencies": {

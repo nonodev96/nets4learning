@@ -188,14 +188,12 @@ export default function LinearRegression(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header>
-                  <h3>LinearRegression</h3>
-                </Card.Header>
+                <Card.Header><h3>Linear Regression</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                   <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del dataset.
+                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -350,7 +348,7 @@ export default function LinearRegression(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header>Resultado</Card.Header>
+                <Card.Header><h3>Resultado</h3></Card.Header>
                 <Card.Body>
                   {/* VECTOR TEST */}
                   <Form.Group className="mb-3" controlId={'formTestInput'}>
@@ -376,7 +374,7 @@ export default function LinearRegression(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header>Resultado</Card.Header>
+                <Card.Header><h3>Resultado</h3></Card.Header>
                 <Card.Body>
                   <div id="salida"></div>
                 </Card.Body>
@@ -388,7 +386,7 @@ export default function LinearRegression(props) {
           <Row className="mt-3">
             <Col>
               <Card>
-                <Card.Header>Resultados demo</Card.Header>
+                <Card.Header><h3>Resultados</h3></Card.Header>
                 <Card.Body>
                   <div id="demo"
                        width="100%"

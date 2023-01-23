@@ -6,25 +6,25 @@ import * as faceDetection from '@tensorflow-models/face-detection'
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
-import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
+import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm'
 
 
-import { getHTML_DataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import * as alertHelper from '../../../utils/alertHelper'
-import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
+import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 import {
-  getNameDatasetByID_ObjectDetection, LIST_MODELS,
+  getHTML_DATASET_DESCRIPTION,
+  getNameDatasetByID_ObjectDetection, LIST_MODEL_OPTIONS,
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_COCO_SSD,
   MODEL_FACE_DETECTION,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET,
   MODEL_UPLOAD
-} from "../../../ModelList";
+} from "../../../DATA_MODEL"
 
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`
-);
+)
 export default function ModelReviewObjectDetection(props) {
   const { dataSet } = props
 
@@ -38,7 +38,7 @@ export default function ModelReviewObjectDetection(props) {
   const webcamRef = useRef(null)
 
   async function enable_Model_FaceDetector() {
-    const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
+    const model = faceDetection.SupportedModels.MediaPipeFaceDetector
     const mediaPipeFaceDetectorTfjsModelConfig = {
       runtime: 'tfjs',
       maxFaces: 4
@@ -155,7 +155,7 @@ export default function ModelReviewObjectDetection(props) {
   const renderCoCoSsd = (ctx, predictions) => {
     let score
     ctx.fillStyle = '#fc0400'
-    ctx.font = "1em Verdana";
+    ctx.font = "1em Verdana"
     ctx.lineWidth = 5
     ctx.strokeStyle = 'rgba(0,255,21,0.84)'
 
@@ -167,13 +167,13 @@ export default function ModelReviewObjectDetection(props) {
   }
 
   const init = async () => {
-    const dataSetName = getNameDatasetByID_ObjectDetection(dataSet);
+    const dataSetName = getNameDatasetByID_ObjectDetection(dataSet)
     console.log("ModelReviewObjectDetection -> INIT", { dataSet, dataSetName })
     const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataSetName)
 
     if (!isValid) {
       await alertHelper.alertError("Error en la selección del modelo")
-      return;
+      return
     }
 
     if (!isShowedAlert) {
@@ -184,7 +184,7 @@ export default function ModelReviewObjectDetection(props) {
     switch (dataSetName) {
       case MODEL_UPLOAD: {
         // TODO
-        break;
+        break
       }
       case MODEL_FACE_DETECTION: {
         if (isCameraEnable) {
@@ -192,7 +192,7 @@ export default function ModelReviewObjectDetection(props) {
         } else {
           await enable_Model_FaceDetector_Picture()
         }
-        break;
+        break
       }
       case MODEL_FACE_MESH: {
         if (isCameraEnable) {
@@ -200,7 +200,7 @@ export default function ModelReviewObjectDetection(props) {
         } else {
           await enable_Model_FaceMesh_Picture()
         }
-        break;
+        break
       }
       case MODEL_MOVE_NET: {
         if (isCameraEnable) {
@@ -208,7 +208,7 @@ export default function ModelReviewObjectDetection(props) {
         } else {
           await enable_Model_MoveNet_Picture()
         }
-        break;
+        break
       }
       case MODEL_COCO_SSD: {
         if (isCameraEnable) {
@@ -216,14 +216,19 @@ export default function ModelReviewObjectDetection(props) {
         } else {
           await enable_Model_CoCoSsd_Picture()
         }
-        break;
+        break
+      }
+      default: {
+        console.error("Error, conjunto de datos no reconocido")
+        break
       }
     }
   }
-  // https://github.com/tensorflow/tfjs-models
 
+  // https://github.com/tensorflow/tfjs-models
   useEffect(() => {
-    init().catch(console.error)
+    init()
+      .catch(console.error)
   }, [isCameraEnable])
 
   function handleChangeCamera(event) {
@@ -254,7 +259,7 @@ export default function ModelReviewObjectDetection(props) {
    */
   async function detect(model) {
     if (ImageOrWebcamUploaded !== "IMAGE" && ImageOrWebcamUploaded !== "WEBCAM") {
-      await alertHelper.alertError("Error, no se ha seleccionado procesar una imagen o usar una webcam");
+      await alertHelper.alertError("Error, no se ha seleccionado procesar una imagen o usar una webcam")
     }
     let img_or_video
     if (ImageOrWebcamUploaded === "WEBCAM") {
@@ -322,8 +327,10 @@ export default function ModelReviewObjectDetection(props) {
         })
         break
       }
-
-
+      default: {
+        console.error("Error, conjunto de datos no reconocido")
+        break
+      }
     }
   }
 
@@ -382,7 +389,7 @@ export default function ModelReviewObjectDetection(props) {
         <Col>
           <Card>
             <Card.Body>
-              <Card.Title>{LIST_MODELS[2][dataSet]}</Card.Title>
+              <Card.Title>{LIST_MODEL_OPTIONS[2][dataSet]}</Card.Title>
               {/*FIXME: change {=== '0'} by a validator*/}
               {getNameDatasetByID_ObjectDetection(dataSet) === MODEL_UPLOAD ? (
                 <>
@@ -409,7 +416,7 @@ export default function ModelReviewObjectDetection(props) {
                   </Container>
                 </>
               ) : (
-                <>{getHTML_DataSetDescription(2, dataSet)}</>
+                <>{getHTML_DATASET_DESCRIPTION(2, dataSet)}</>
               )}
             </Card.Body>
           </Card>

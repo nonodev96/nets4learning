@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Col, Row, CloseButton, Container, Card, Form, Button  } from 'react-bootstrap'
+import { Col, Row, CloseButton, Container, Card, Form, Button } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import { createClassicClassification, getIrisDataType } from '../../modelos/ArchitectureHelper'
 import * as alertHelper from '../../utils/alertHelper'
@@ -187,14 +187,12 @@ export default function InteractiveEditor(props) {
           <Row>
             <Col>
               <Card>
-                <Card.Header>
-                  <h3>InteractiveEditor</h3>
-                </Card.Header>
+                <Card.Header><h3>Interactive Editor</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                   <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del dataset.
+                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                   </Card.Text>
                 </Card.Body>
               </Card>

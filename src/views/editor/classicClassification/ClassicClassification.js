@@ -193,14 +193,12 @@ export default function ClassicClassification(props) {
         <Container>
           <Row>
             <Card>
-              <Card.Header>
-                <h3>ClassicClassification</h3>
-              </Card.Header>
+              <Card.Header><h3>ClassicClassification</h3></Card.Header>
               <Card.Body>
                 <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                 <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                 <Card.Text>
-                  A esta función se el pasa un array preparado que continue la información del dataset.
+                  A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                 </Card.Text>
               </Card.Body>
             </Card>

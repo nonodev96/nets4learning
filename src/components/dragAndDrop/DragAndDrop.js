@@ -72,7 +72,7 @@ export default function DragAndDrop(props) {
   ))
 
   return (
-    <section className="container">
+    <section className="container p-0">
       <div {...getRootProps({ style, name })}>
         <input id={id}
                {...getInputProps()}/>

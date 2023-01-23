@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../modelos/NumberClasificatorHelper.js'
-import { dataSetList, dataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu.js'
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer.js'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
 import LayerEdit from './LayerEdit.js'
 import * as alertHelper from "../../../utils/alertHelper";
+import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
 
 export default function MnistImageClassification(props) {
   const { dataSet } = props
@@ -422,25 +422,23 @@ export default function MnistImageClassification(props) {
           <Row>
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
               <Card>
-                <Card.Header>
-                  <h3>MnistImageClassification</h3>
-                </Card.Header>
+                <Card.Header><h3>MnistImageClassification</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                   <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del dataset.
+                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
             <hr/>
 
-            <h2>{dataSetList[3][dataSet]}</h2>
+            <h2>{LIST_MODEL_OPTIONS[3][dataSet]}</h2>
 
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
               <div className="header-model-editor">
-                {dataSetDescription[3][dataSet]}
+                {DATASET_DESCRIPTION[3][dataSet]}
               </div>
 
               {/* {numberClass.start()} */}

@@ -3,16 +3,16 @@ import { useState, useEffect } from 'react'
 import { Button, Col, Container, Row, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../modelos/NumberClasificatorHelper.js'
-import { getHTML_DataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import * as datosAuxiliares from '../../../modelos/data/imageClassification/imgaClassificationHelper'
 import * as alertHelper from '../../../utils/alertHelper'
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import {
-  getNameDatasetByID_ImageClassification, LIST_MODELS,
+  getHTML_DATASET_DESCRIPTION,
+  getNameDatasetByID_ImageClassification, LIST_MODEL_OPTIONS,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET, MODEL_IMAGE_RESNET,
   MODEL_UPLOAD
-} from "../../../ModelList";
+} from "../../../DATA_MODEL";
 
 
 export default function ModelReviewClassicImageClassification(props) {
@@ -279,9 +279,7 @@ export default function ModelReviewClassicImageClassification(props) {
         <Row className={"mt-3"}>
           <Col>
             <Card>
-              <Card.Header>
-                <h3>{LIST_MODELS[3][dataSet]}</h3>
-              </Card.Header>
+              <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
               <Card.Body>
                 {{
                   0: <>
@@ -303,7 +301,7 @@ export default function ModelReviewClassicImageClassification(props) {
                 }[dataSet]}
                 {dataSet !== '0' ? (
                   <>
-                    {getHTML_DataSetDescription(3, dataSet)}
+                    {getHTML_DATASET_DESCRIPTION(3, dataSet)}
                   </>
                 ) : ("")}
               </Card.Body>
@@ -314,9 +312,7 @@ export default function ModelReviewClassicImageClassification(props) {
         <Row className={"mt-3"}>
           <Col>
             <Card>
-              <Card.Header>
-                <h3>Resultado</h3>
-              </Card.Header>
+              <Card.Header><h3>Resultado</h3></Card.Header>
               <Card.Body>
                 <Row>
                   <Col>

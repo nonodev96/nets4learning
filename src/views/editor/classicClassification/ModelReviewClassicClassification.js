@@ -4,15 +4,15 @@ import * as tf from '@tensorflow/tfjs'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../../utils/alertHelper'
 import { CONSOLE_LOG_h3 } from "../../../Constantes";
-import { getHTML_DataSetDescription, } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import { IRIS_CLASSES, CAR_CLASSES, CAR_DATA_CLASSES } from '../../../modelos/Clasificador'
 import {
+  getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
-  LIST_MODELS,
+  LIST_MODEL_OPTIONS,
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_UPLOAD
-} from "../../../ModelList";
+} from "../../../DATA_MODEL";
 
 export default function ModelReviewClassicClassification(props) {
   const { dataSet } = props
@@ -30,7 +30,8 @@ export default function ModelReviewClassicClassification(props) {
 
   async function loadModel_CAR() {
     console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel("http://localhost:3000/models/carClassification/mymodelCar.json")
+    console.log(`%c${JSON.stringify(process.env)}`, CONSOLE_LOG_h3)
+    const model = await tf.loadLayersModel(process.env.PUBLIC_URL + "/models/carClassification/mymodelCar.json")
     model.summary()
     setModel(model)
     await alertHelper.alertSuccess("Modelo cargado con éxito")
@@ -56,13 +57,17 @@ export default function ModelReviewClassicClassification(props) {
       case MODEL_IRIS:
         await loadModel_IRIS()
         break;
+      default: {
+        console.error("Error, conjunto de datos no reconocido")
+        break
+      }
     }
   }
 
   useEffect(() => {
     init()
       .catch(console.error)
-  }, [])
+  }, [dataSet])
 
   const handleVectorTest = async () => {
     console.log("handleVectorTest")
@@ -149,6 +154,10 @@ export default function ModelReviewClassicClassification(props) {
         }
         break;
       }
+      default:{
+        console.error("Error, conjunto de datos no reconocido")
+        break
+      }
     }
 
     setIsButtonDisabled(false)
@@ -158,7 +167,7 @@ export default function ModelReviewClassicClassification(props) {
     return ['0', '1', '2'].some(v => v === dataset)
   }
 
-  const getInfoDataSet = (dataSet) => {
+  const getInfoDataset = (dataSet) => {
     switch (getNameDatasetByID_ClassicClassification(dataSet)) {
       case MODEL_UPLOAD:
         return <>
@@ -189,7 +198,7 @@ export default function ModelReviewClassicClassification(props) {
           <Col>
             <Card>
               <Card.Body>
-                <Card.Title>{LIST_MODELS[0][dataSet]}</Card.Title>
+                <Card.Title>{LIST_MODEL_OPTIONS[0][dataSet]}</Card.Title>
                 {dataSet === '0' ? (
                   <>
                     <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
@@ -214,7 +223,7 @@ export default function ModelReviewClassicClassification(props) {
                     </Row>
                   </>
                 ) : (
-                  <> {getHTML_DataSetDescription(0, dataSet)}</>
+                  <> {getHTML_DATASET_DESCRIPTION(0, dataSet)}</>
                 )}
               </Card.Body>
             </Card>
@@ -227,7 +236,7 @@ export default function ModelReviewClassicClassification(props) {
             <Col>
               <Card>
                 <Card.Body>
-                  {getInfoDataSet(dataSet)}
+                  {getInfoDataset(dataSet)}
                 </Card.Body>
               </Card>
             </Col>

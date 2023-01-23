@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import ButtonDescription from "../../components/buttonDescription/ButtonDescription";
 import "./SecondMenu.css";
-import { LIST_TYPE_MODELS, LIST_TYPE_MODELS_DESCRIPTION } from "../../ModelList";
+import { LIST_TYPE_MODELS, LIST_TYPE_MODELS_DESCRIPTION } from "../../DATA_MODEL";
 
 export default function SecondMenu(props) {
   const { id } = props;

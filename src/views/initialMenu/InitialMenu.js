@@ -2,20 +2,12 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import './InitialMenu.css'
-import { LIST_TYPE_MODELS } from "../../ModelList";
+import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
 
 export default function InitialMenu() {
   const history = useHistory()
 
   const [buttonActive, setButtonActive] = useState(0)
-  const [dataSet, setDataSet] = useState(0)
-
-  // const modelsType = [
-  //   "Empieza de cero y crea tu propia arquitectura",
-  //   "Edita una arquitectura creada por tí o facilitado por nosotros",
-  //   "Entrena un modelo hecho por tí o si no tienes, no te preocupes te prestamos uno :)",
-  //   "Ejecutar un modelo hecho por tí o facilitado por nosotros",
-  // ];
 
   const handleClickTrainEdit = (_buttonActive, type) => {
     if (type === 1) history.push( '/select-model/' + _buttonActive)
@@ -29,13 +21,6 @@ export default function InitialMenu() {
     // history.push("/editor/" + modelType);
   }
 
-  const handleChangeDataSet = () => {
-    let aux = document.getElementById('FormDataSet').value
-    if (aux !== undefined) {
-      setDataSet(aux)
-    }
-  }
-
   const menuSelection = () => {
     switch (buttonActive) {
       case -1:
@@ -44,9 +29,7 @@ export default function InitialMenu() {
         return (
           <>
             <Card>
-              <Card.Header>
-                <h3>La clasificación</h3>
-              </Card.Header>
+              <Card.Header><h3>La clasificación</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
@@ -79,16 +62,14 @@ export default function InitialMenu() {
       //         <Col className="col-description">
       //           <Button
       //             className="btn-custom-description"
-      //             onClick={() => handleClickTrainEdit(ButtonActive, 1)}
-      //           >
+      //             onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
       //             Modelo Pre-entrenado
       //           </Button>
       //         </Col>
       //         <Col className="col-description">
       //           <Button
       //             className="btn-custom-description"
-      //             onClick={() => handleClickTrainEdit(ButtonActive, 2)}
-      //           >
+      //             onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
       //             Crear/Editar arquitectura
       //           </Button>
       //         </Col>
@@ -99,9 +80,7 @@ export default function InitialMenu() {
         return (
           <>
             <Card>
-              <Card.Header>
-                <h3>La clasificación</h3>
-              </Card.Header>
+              <Card.Header><h3>La clasificación</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
@@ -122,9 +101,7 @@ export default function InitialMenu() {
         return (
           <>
             <Card>
-              <Card.Header>
-                <h3>La clasificación</h3>
-              </Card.Header>
+              <Card.Header><h3>La clasificación</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar

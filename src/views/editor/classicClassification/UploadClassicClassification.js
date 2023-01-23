@@ -70,7 +70,7 @@ export default function UploadClassicClassification(props) {
     <>
       <div id={"UploadClassicClassification"}>
         <p>
-          Carga tu propio dataSet con la siguiente <a href="" onClick={() => downloadFile} id="dwn-btn">estructura</a>
+          Carga tu propio conjunto de datos con la siguiente <a href="" onClick={() => downloadFile} id="dwn-btn">estructura</a>
           pulsando este botón.
         </p>
         <input type="file"
@@ -80,7 +80,7 @@ export default function UploadClassicClassification(props) {
         <input type="button"
                value="Click me"
                onClick={() => {
-                 console.log('Este es el custom dataset', weightFile)
+                 console.log('Este es el custom conjunto de datos: ', weightFile)
                }}></input>
 
         <input type="file"
@@ -90,7 +90,7 @@ export default function UploadClassicClassification(props) {
         <input type="button"
                value="Click me"
                onClick={() => {
-                 console.log('Este es el custom dataset', fileJSON)
+                 console.log('Este es el custom conjunto de datos: ', fileJSON)
                }}></input>
       </div>
     </>

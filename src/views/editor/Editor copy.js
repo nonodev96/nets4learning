@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
-import { Col, Container, Row } from "react-bootstrap";
-import N4LNavBar from "../../components/navBar/N4LNavBar";
-import N4LFooter from "../../components/footer/N4LFooter";
-import CodePen from "../../components/codePen/CodePen";
-import doIris from "../../modelos/Clasificador";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import "./Editor.css";
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router"
+import { Col, Container, Row } from "react-bootstrap"
+import N4LNavBar from "../../components/navBar/N4LNavBar"
+import N4LFooter from "../../components/footer/N4LFooter"
+import CodePen from "../../components/codePen/CodePen"
+import doIris from "../../modelos/Clasificador"
+import useLocalStorage from "../../hooks/useLocalStorage"
+import "./Editor.css"
 
 export default function Editor() {
   const [html, setHtml] = useLocalStorage(
     "html",
     `<div id="demo" class="borde console" width="100%" height="100%"><p>Aquí se muestran los resultados</p></div>`
-  );
-  const [css, setCss] = useLocalStorage("css", "");
+  )
+  const [css, setCss] = useLocalStorage("css", "")
   const [js, setJs] = useLocalStorage(
     "js",
     `async function trainModel(xTrain, yTrain, xTest, yTest) {
-    const model = tf.sequential();
-    const learningRate = 0.01;
-    const numberOfEpoch = 40;
-    const optimizer = tf.train.adam(learningRate);
+    const model = tf.sequential()
+    const learningRate = 0.01
+    const numberOfEpoch = 40
+    const optimizer = tf.train.adam(learningRate)
   
     model.add(
       tf.layers.dense({
@@ -28,15 +28,15 @@ export default function Editor() {
         activation: "sigmoid",
         inputShape: [xTrain.shape[1]],
       })
-    );
+    )
   
-    model.add(tf.layers.dense({ units: 3, activation: "softmax" }));
+    model.add(tf.layers.dense({ units: 3, activation: "softmax" }))
   
     model.compile({
       optimizer: optimizer,
       loss: "categoricalCrossEntropy",
       metrics: ["accuracy"]
-    });
+    })
   
     const history = await model.fit(xTrain, yTrain, {
       epochs: numberOfEpoch,
@@ -44,30 +44,30 @@ export default function Editor() {
       callbacks: {
         onEpochEnd: async (epoch, logs) => {
           var mostrar = document.getElementById("demo").innerHTML +="Epoch: " + epoch + " Logs:" + logs.loss)
-          await tf.nextFrame();
+          await tf.nextFrame()
         }
       }
-    });
-    return model;
+    })
+    return model
   }
   
   async function doIris(testSplit) {
-    const [xTrain, yTrain, xTest, yTest] = getIrisData(testSplit);
-    const model = await trainModel(xTrain, yTrain, xTest, yTest);
+    const [xTrain, yTrain, xTest, yTest] = getIrisData(testSplit)
+    const model = await trainModel(xTrain, yTrain, xTest, yTest)
   
-    const input = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4]);
-    const prediction = model.predict(input);
+    const input = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4])
+    const prediction = model.predict(input)
   
-    const predictionWithArgMax = model.predict(input).argMax(-1).dataSync();
-    alert(prediction + "tipo: " + IRIS_CLASSES[predictionWithArgMax]);
+    const predictionWithArgMax = model.predict(input).argMax(-1).dataSync()
+    alert(prediction + "tipo: " + IRIS_CLASSES[predictionWithArgMax])
   }
   
-  var console = {
+  const console = {
     panel: $(parent.document.body).append("<div>"),
-    log: function(m){
-      this.panel.prepend("<div>"+m+"</div>");
+    log: (m)=>{
+      this.panel.prepend("<div>"+m+"</div>")
     }
-    };
+    }
     console.log("message");`
   );
   const [srcDoc, setSrcDoc] = useState("");
@@ -87,9 +87,10 @@ export default function Editor() {
   }, [html, css, js]);
 
   const modelsType = [
-    "Clasificación de imágenes",
-    "Regresión lineal",
     "Clasificación clásica",
+    "Regresión lineal",
+    "Identificación de objetos",
+    "Clasificación de imágenes",
   ];
   const { id } = useParams();
 
