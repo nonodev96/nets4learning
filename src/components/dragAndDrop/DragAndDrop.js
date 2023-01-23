@@ -71,7 +71,6 @@ export default function DragAndDrop(props) {
     </li>
   ))
 
-
   return (
     <section className="container">
       <div {...getRootProps({ style, name })}>

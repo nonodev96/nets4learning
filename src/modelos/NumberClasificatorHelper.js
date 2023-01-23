@@ -25,7 +25,9 @@ async function showExamples(data) {
     const canvas = document.createElement('canvas')
     canvas.width = 28
     canvas.height = 28
-    canvas.style = 'margin: 4px;'
+    canvas.style = {
+      'margin': '4px'
+    }
     await tf.browser.toPixels(imageTensor, canvas)
     surface.drawArea.appendChild(canvas)
 
@@ -40,8 +42,7 @@ export async function run(
   idLoss,
   idMetrics,
 ) {
-  document.getElementById('salida').innerHTML +=
-    `
+  document.getElementById('salida').innerHTML += `
 <p>MODELO CREADO A PARTIR DE: 
 <b>numberOfEpoch:</b> ${numberOfEpoch} 
 <b>sLOptimizer:</b> ${sLOptimizer} 

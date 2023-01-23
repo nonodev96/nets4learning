@@ -1,6 +1,5 @@
 import React from "react"
 import "./N4LFooter.css"
-import * as Icon from "react-bootstrap-icons"
 import { Container, Row } from "react-bootstrap";
 
 export default function N4LFooter() {

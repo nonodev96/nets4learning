@@ -393,7 +393,7 @@ export function createLoss(idLoss) {
   }
 }
 
-// Devueve la métrica seleccionada por el usuario
+// Devuelve la métrica seleccionada por el usuario
 export function createMetrics(idMetrics) {
   console.log(idMetrics, 'EL ID DE LA MÉTRICA')
   switch (idMetrics) {

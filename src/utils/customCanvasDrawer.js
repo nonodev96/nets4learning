@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './customCanvasDrawer.css'
+import { Button } from "react-bootstrap";
 
 export default function CustomCanvasDrawer(props) {
   const { submitFunction } = props
@@ -25,7 +26,7 @@ export default function CustomCanvasDrawer(props) {
     canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
     canvas.addEventListener('touchmove', handleTouchMove);
 
-    return () => canvas.removeEventListener("touchmove")
+    return () => canvas.removeEventListener("touchmove", null)
   }, [])
 
 
@@ -46,6 +47,8 @@ export default function CustomCanvasDrawer(props) {
       const { offsetX, offsetY } = nativeEvent
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
+    } else {
+      return
     }
   }
 
@@ -69,27 +72,25 @@ export default function CustomCanvasDrawer(props) {
 
   return (
     <>
-      <div className="container-canvas">
+      <div>
         <canvas id='bigcanvas'
+                style={{
+                  border: '1px solid black'
+                }}
                 ref={canvasRef}
-                onMouseDown={() => startDrawing}
-                onMouseUp={() => finishDrawing}
-                onMouseMove={() => draw}
-                onChange={() => startDrawing}
-                className="border-canvas"></canvas>
+                onMouseDown={startDrawing}
+                onMouseUp={finishDrawing}
+                onMouseMove={draw}
+                onChange={startDrawing}></canvas>
 
       </div>
-      <div className="btn-group-canvas">
-        <button type='button'
-                className="btn-custom-canvas green"
-                onClick={submitFunction}>
+      <div className="d-grid gap-2 col-6 mx-auto">
+        <Button onClick={submitFunction}>
           Validar
-        </button>
-        <button type="button"
-                className="btn-custom-canvas red"
-                onClick={() => clear}>
+        </Button>
+        <Button onClick={() => clear}>
           Limpiar
-        </button>
+        </Button>
       </div>
     </>
   )

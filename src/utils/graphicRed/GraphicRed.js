@@ -1,8 +1,8 @@
 import React from 'react'
-import './GraphicRed.css'
-import Graph from 'react-graph-vis'
 import { ArrowRight } from "react-bootstrap-icons";
 import { Col, Row } from "react-bootstrap";
+import Graph from 'react-graph-vis'
+import './GraphicRed.css'
 
 export default function GraphicRed(props) {
   const { layer, setActiveLayer, tipo } = props
@@ -10,20 +10,11 @@ export default function GraphicRed(props) {
   let nodes = []
   let edges = []
 
-  layer.map((element, index) => {
-    if (tipo === 0)
-      nodes.push({
-        id: index,
-        label: 'Capa ' + (index + 1),
-        title: 'Capa ' + (index + 1),
-      })
+  layer.forEach((element, index) => {
+    if (tipo === '0')
+      nodes.push({ id: index, label: 'Capa ' + (index + 1), title: 'Capa ' + (index + 1) })
     else
-      nodes.push({
-        id: index,
-        label: element.class,
-        title: 'Capa ' + (index + 1),
-      })
-    return null
+      nodes.push({ id: index, label: element.class, title: 'Capa ' + (index + 1) })
   })
 
   for (let index = 1; index < layer.length; index++) {
@@ -56,12 +47,12 @@ export default function GraphicRed(props) {
   }
 
   const events = {
-    select: function (event) {
+    select: (event) => {
       const { nodes } = event
       setActiveLayer(nodes[0])
-      // console.log(nodes[0])
     },
   }
+
   return (
     <>
       <Row className={"mt-3"}>

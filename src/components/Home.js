@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import N4LNavBar from "./navBar/N4LNavBar";
-import InitialMenu from "./views/initialMenu/InitialMenu";
+import InitialMenu from "../views/initialMenu/InitialMenu";
 import N4LFooter from "./footer/N4LFooter";
 import "./Home.css";
 

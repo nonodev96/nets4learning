@@ -6,13 +6,13 @@ import Home from "./components/Home";
 import "./App.css";
 import Test from "./components/testPage/Test";
 import Training from "./components/training/Training";
-import Editor from "./components/views/editor/Editor";
-import NotFoundPage from "./components/views/notFound/NotFoundPage";
-import Starting from "./components/views/starting/Starting";
-import SecondMenu from "./components/views/secondMenu/SecondMenu";
-import EditArchitecture from "./components/views/editArchitecture/EditArchitecture";
-import UploadArchitectureMenu from "./components/views/uploadArcitectureMenu/UploadArchitectureMenu";
-import UploadModelMenu from "./components/views/uploadModelMenu/UploadModelMenu";
+import Editor from "./views/editor/Editor";
+import NotFoundPage from "./views/notFound/NotFoundPage";
+import Starting from "./views/starting/Starting";
+import SecondMenu from "./views/secondMenu/SecondMenu";
+import EditArchitecture from "./views/editArchitecture/EditArchitecture";
+import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitectureMenu";
+import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 
 function App() {
   const DOMAIN = process.env.REACT_APP_DOMAIN;

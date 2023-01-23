@@ -283,8 +283,6 @@ export function getData(testSplit, classes, data) {
 }
 
 async function trainModel(xTrain, yTrain, xTest, yTest, verbose) {
-
-
   // https://www.tensorflow.org/js/guide/models_and_layers
   const model = tf.sequential();
   model.add(tf.layers.dense({
@@ -326,35 +324,10 @@ async function trainModel(xTrain, yTrain, xTest, yTest, verbose) {
 export default async function doIris(testSplit, verbose) {
 
   const [xTrain, yTrain, xTest, yTest] = getIrisData(testSplit);
-  const model = await trainModel(xTrain, yTrain, xTest, yTest);
-  return model
-  // const input = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4]);
-  // const prediction = model.predict(input);
-
-  // const predictionWithArgMax = model.predict(input).argMax(-1).dataSync();
-  // alert(predictionWithArgMax)
-  // document.getElementById("resultado").innerHTML=prediction + "tipo: " + IRIS_CLASSES[predictionWithArgMax];
-
-  // const xData = xTest.dataSync();
-  // const yTrue = yTest.argMax(-1).dataSync();
-
-  // const predictions = await model.predict(xTest);
-  // const yPred = predictions.argMax(-1).dataSync();
-
-  // var corret = 0;
-  // var wrong = 0;
-
-  // for (var i = 0; i < yTrue.length; i++) {
-  //   if (yTrue[i] == yPred[i]) {
-  //     corret++;
-  //   } else {
-  //     wrong++;
-  //   }
-  // }
-  // alert("Prediction error rate: " + wrong / yTrue.length);
+  return await trainModel(xTrain, yTrain, xTest, yTest)
 }
 
-// TODO CHECK
+// TODO: comprobar para que es esto
 async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, shape) {
   const model = type;
   model.add(

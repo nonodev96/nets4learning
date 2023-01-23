@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/mode/xml/xml";
@@ -23,31 +24,37 @@ export default function CodePen(props) {
 
   return (
     <>
-      <div className={`editor-container ${open ? "" : "collapsed"}`}>
-        <div className="editor-title">
-          {displayName}
-          <button type="button"
-                  className="expand-collapse-btn"
-                  onClick={() => setOpen((prevOpen) => !prevOpen)}>
-            {open ? <BsArrowsAngleExpand/> : <BsArrowsAngleContract/>}
-          </button>
-          Tema del editor
-          <button className="btn"
-                  onClick={() => toggleTheme}>
-            Cambiar
-          </button>
-        </div>
-        <ControlledEditor className="code-mirror-wrapper"
-                          onBeforeChange={handleChange}
-                          value={value}
-                          options={{
-                            lineWrapping: true,
-                            lint: true,
-                            mode: language,
-                            theme: theme,
-                            lineNumbers: true,
-                          }}/>
-      </div>
+      <Container>
+        <Row>
+          <Col>
+            <div className={`editor-container ${open ? "" : "collapsed"}`}>
+              <div className="editor-title">
+                {displayName}
+                <button type="button"
+                        className="expand-collapse-btn"
+                        onClick={() => setOpen((prevOpen) => !prevOpen)}>
+                  {open ? <BsArrowsAngleExpand/> : <BsArrowsAngleContract/>}
+                </button>
+                Tema del editor
+                <button className="btn"
+                        onClick={() => toggleTheme}>
+                  Cambiar
+                </button>
+              </div>
+              <ControlledEditor className="code-mirror-wrapper"
+                                onBeforeChange={handleChange}
+                                value={value}
+                                options={{
+                                  lineWrapping: true,
+                                  lint: true,
+                                  mode: language,
+                                  theme: theme,
+                                  lineNumbers: true,
+                                }}/>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 }
