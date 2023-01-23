@@ -1,27 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Col, Row, Form, Container, Card, Button } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from 'react'
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Webcam from 'react-webcam'
 
 import * as faceDetection from '@tensorflow-models/face-detection'
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import * as poseDetection from '@tensorflow-models/pose-detection'
-import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
+import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
 
 
 import { getHTML_DataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
-import { ModelList } from '../../uploadModelMenu/UploadModelMenu'
-import { alertSuccess, alertError } from '../../../utils/alertHelper'
+import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import {
-  getNameDatasetByID_ObjectDetection,
+  getNameDatasetByID_ObjectDetection, LIST_MODELS,
   LIST_MODELS_OBJECT_DETECTION,
-  MODEL_UPLOAD,
+  MODEL_COCO_SSD,
   MODEL_FACE_DETECTION,
   MODEL_FACE_MESH,
-  MODEL_MOVE_NET
+  MODEL_MOVE_NET,
+  MODEL_UPLOAD
 } from "../../../ModelList";
-import { MediaPipeHandsMediaPipeModelConfig } from "@tensorflow-models/hand-pose-detection/dist/mediapipe/types";
 
 tfjsWasm.setWasmPaths(
   `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`
@@ -30,7 +29,7 @@ export default function ModelReviewObjectDetection(props) {
   const { dataSet } = props
 
   // null, "IMAGE", "WEBCAM"
-  const [ImageUploaded, setImageUploaded] = useState(null)
+  const [ImageOrWebcamUploaded, setImageOrWebcam] = useState(null)
   const [Detector, setDetector] = useState(null)
   const [Model, setModel] = useState()
   const [isCameraEnable, setIsCameraEnable] = useState(false)
@@ -45,7 +44,7 @@ export default function ModelReviewObjectDetection(props) {
       maxFaces: 4
     }
     const detector = await faceDetection.createDetector(model, mediaPipeFaceDetectorTfjsModelConfig)
-    await runFaceDetector(detector)
+    await runDetector(detector)
   }
 
   async function enable_Model_FaceDetector_Picture() {
@@ -76,7 +75,7 @@ export default function ModelReviewObjectDetection(props) {
       maxFaces: 4
     }
     const detector = await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
-    await runFaceDetector(detector)
+    await runDetector(detector)
   }
 
   async function enable_Model_FaceMesh_Picture() {
@@ -104,7 +103,7 @@ export default function ModelReviewObjectDetection(props) {
     const model = poseDetection.SupportedModels.MoveNet
     // const moveNetModelConfig = {}
     const detector = await poseDetection.createDetector(model)
-    await runFaceDetector(detector)
+    await runDetector(detector)
   }
 
   async function enable_Model_MoveNet_Picture() {
@@ -140,18 +139,45 @@ export default function ModelReviewObjectDetection(props) {
     renderMoveNetDetector(ctx, poses)
   }
 
+  async function enable_Model_CoCoSsd() {
+    const model = await coCoSsdDetection.load()
+    // const moveNetModelConfig = {}
+    await runDetector(model)
+  }
+
+  async function enable_Model_CoCoSsd_Picture() {
+    const model = poseDetection.SupportedModels.MoveNet
+    // const moveNetModelConfig = {}
+    const detector = await poseDetection.createDetector(model)
+    setDetector(detector)
+  }
+
+  const renderCoCoSsd = (ctx, predictions) => {
+    let score
+    ctx.fillStyle = '#fc0400'
+    ctx.font = "1em Verdana";
+    ctx.lineWidth = 5
+    ctx.strokeStyle = 'rgba(0,255,21,0.84)'
+
+    predictions.forEach((prediction) => {
+      score = Math.round(parseFloat(prediction.score) * 100)
+      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] - 20)
+      ctx.strokeRect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3])
+    })
+  }
+
   const init = async () => {
     const dataSetName = getNameDatasetByID_ObjectDetection(dataSet);
     console.log("ModelReviewObjectDetection -> INIT", { dataSet, dataSetName })
     const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataSetName)
 
     if (!isValid) {
-      await alertError("Error en la selección del modelo")
+      await alertHelper.alertError("Error en la selección del modelo")
       return;
     }
 
     if (!isShowedAlert) {
-      await alertSuccess("Modelo cargado con éxito")
+      await alertHelper.alertSuccess("Modelo cargado con éxito")
       setIsShowedAlert(true)
     }
 
@@ -184,6 +210,14 @@ export default function ModelReviewObjectDetection(props) {
         }
         break;
       }
+      case MODEL_COCO_SSD: {
+        if (isCameraEnable) {
+          await enable_Model_CoCoSsd()
+        } else {
+          await enable_Model_CoCoSsd_Picture()
+        }
+        break;
+      }
     }
   }
   // https://github.com/tensorflow/tfjs-models
@@ -192,16 +226,18 @@ export default function ModelReviewObjectDetection(props) {
     init().catch(console.error)
   }, [isCameraEnable])
 
-  const handleChangeCamera = () => {
-    if (isCameraEnable) {
-      setIsCameraEnable(false)
+  function handleChangeCamera(event) {
+    const checked = event.target.checked
+    setIsCameraEnable(checked)
+    if (checked) {
+      setImageOrWebcam("WEBCAM")
     } else {
-      setIsCameraEnable(true)
+      setImageOrWebcam(null)
     }
-    console.log({ isCameraEnable })
+    console.log({ checked, isCameraEnable })
   }
 
-  const runFaceDetector = async (model) => {
+  async function runDetector(model) {
     function _init() {
       detect(model)
       requestAnimationFrame(_init)
@@ -217,65 +253,26 @@ export default function ModelReviewObjectDetection(props) {
    * @returns {Promise<void>}
    */
   async function detect(model) {
-    if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
+    if (ImageOrWebcamUploaded !== "IMAGE" && ImageOrWebcamUploaded !== "WEBCAM") {
+      await alertHelper.alertError("Error, no se ha seleccionado procesar una imagen o usar una webcam");
+    }
+    let img_or_video
+    if (ImageOrWebcamUploaded === "WEBCAM") {
       // Get Video Properties
       const video = webcamRef.current.video
       const videoWidth = webcamRef.current.video.videoWidth
-      const videoHeight = webcamRef.current.video.videoHeight
 
+      const videoHeight = webcamRef.current.video.videoHeight
       // Set video width
       webcamRef.current.video.width = videoWidth
-      webcamRef.current.video.height = videoHeight
 
+      webcamRef.current.video.height = videoHeight
       // Set canvas width
       canvasRef.current.width = videoWidth
       canvasRef.current.height = videoHeight
-
-
-      switch (getNameDatasetByID_ObjectDetection(dataSet)) {
-        case MODEL_UPLOAD: {
-          // TODO
-          break
-        }
-        case MODEL_FACE_DETECTION: {
-          const faces = await model.estimateFaces(video)
-          const ctx = canvasRef.current.getContext('2d')
-          requestAnimationFrame(() => {
-            renderFaceDetector(ctx, faces)
-          })
-          break
-        }
-        case MODEL_FACE_MESH: {
-          const faces = await model.estimateFaces(video)
-          const ctx = canvasRef.current.getContext('2d')
-          requestAnimationFrame(() => {
-            renderFaceMeshDetector(ctx, faces)
-          })
-          break
-        }
-        case MODEL_MOVE_NET: {
-          const poses = await model.estimatePoses(video)
-          const ctx = canvasRef.current.getContext('2d')
-          requestAnimationFrame(() => {
-            renderMoveNetDetector(ctx, poses)
-          })
-          break
-        }
-      }
-
+      img_or_video = video
     }
-  }
-
-  const handleVectorTest = async () => {
-    if (ImageUploaded !== "IMAGE" && ImageUploaded !== "WEBCAM") {
-      console.error("Debes subir una imagen o activar la webcam")
-      return;
-    }
-    if (ImageUploaded === "IMAGE") {
+    if (ImageOrWebcamUploaded === "IMAGE") {
       const canvas = document.getElementById('originalImage')
       const ctx1 = canvas.getContext('2d')
 
@@ -285,115 +282,53 @@ export default function ModelReviewObjectDetection(props) {
       resultCanvas.width = canvas.width
       ctx2.drawImage(canvas, 0, 0)
 
-      const imgData = ctx1.getImageData(0, 0, canvas.height, canvas.width)
-
-      switch (getNameDatasetByID_ObjectDetection(dataSet)) {
-        case MODEL_UPLOAD: {
-          // TODO
-          break
-        }
-        case MODEL_FACE_MESH: {
-          // TODO
-          break
-        }
-        case MODEL_FACE_DETECTION: {
-          // TODO
-          break
-        }
-        case MODEL_MOVE_NET: {
-          const poses = await Detector.estimatePoses(imgData)
-          ctx2.strokeStyle = '#FF0902'
-
-          let lineas = [
-            [10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7],
-            [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],
-          ]
-          poses.forEach((pose) => {
-            pose.keypoints.forEach((element) => {
-              ctx2.beginPath()
-              ctx2.arc(element.x, element.y, 5, 0, (Math.PI / 180) * 360)
-              ctx2.stroke()
-              // ctx2.strokeRect(element.x, element.y, 10, 10)
-            })
-            lineas.forEach((index) => {
-              ctx2.beginPath()
-              ctx2.moveTo(pose.keypoints[index[0]].x, pose.keypoints[index[0]].y)
-              ctx2.lineTo(pose.keypoints[index[1]].x, pose.keypoints[index[1]].y)
-              ctx2.stroke()
-            })
-          })
-
-          break
-        }
-        default: {
-          const faces = await Detector.estimateFaces(imgData)
-          console.log({ faces })
-          ctx2.strokeStyle = '#FF0902'
-          faces.forEach((face) => {
-            face.keypoints.forEach((element) => {
-              if (dataSet === '1') {
-                ctx2.strokeRect(element.x, element.y, 10, 10)
-              } else {
-                ctx2.strokeRect(element.x, element.y, 1, 1)
-              }
-            })
-          })
-          break
-        }
-
-      }
-
-
-    } else if (
-      typeof webcamRef.current !== 'undefined' &&
-      webcamRef.current !== null &&
-      webcamRef.current.video.readyState === 4
-    ) {
-      // Get Video Properties
-      const video = webcamRef.current.video
-      const videoWidth = webcamRef.current.video.videoWidth
-      const videoHeight = webcamRef.current.video.videoHeight
-
-      // Set video width
-      webcamRef.current.video.width = videoWidth
-      webcamRef.current.video.height = videoHeight
-
-      // Set canvas width
-      canvasRef.current.width = videoWidth
-      canvasRef.current.height = videoHeight
-
-      // Make Detections
-      // OLD MODEL
-      //       const face = await net.estimateFaces(video);
-      // NEW MODEL
-      switch (getNameDatasetByID_ObjectDetection(dataSet)) {
-        case MODEL_MOVE_NET: {
-          let poses = await Detector.estimatePoses(video)
-          const ctx = canvasRef.current.getContext('2d')
-          requestAnimationFrame(() => {
-            renderMoveNetDetector_Image(ctx, poses)
-          })
-          break;
-        }
-        default: {
-          if (dataSet !== '3') {
-            const faces = await Detector.estimateFaces(video)
-            const ctx = canvasRef.current.getContext('2d')
-            requestAnimationFrame(() => {
-              faces.forEach((face) => {
-                let box = face.box
-                ctx.strokeStyle = '#FF0902'
-                ctx.strokeRect(box.xMin, box.yMin, box.width, box.height)
-                face.keypoints.forEach((element) => {
-                  ctx.strokeRect(element.x, element.y, 10, 10)
-                })
-              })
-            })
-          }
-        }
-      }
+      img_or_video = ctx1.getImageData(0, 0, canvas.height, canvas.width)
     }
 
+    switch (getNameDatasetByID_ObjectDetection(dataSet)) {
+      case MODEL_UPLOAD: {
+        // TODO
+        break
+      }
+      case MODEL_FACE_DETECTION: {
+        const faces = await model.estimateFaces(img_or_video)
+        const ctx = canvasRef.current.getContext('2d')
+        requestAnimationFrame(() => {
+          renderFaceDetector(ctx, faces)
+        })
+        break
+      }
+      case MODEL_FACE_MESH: {
+        const faces = await model.estimateFaces(img_or_video)
+        const ctx = canvasRef.current.getContext('2d')
+        requestAnimationFrame(() => {
+          renderFaceMeshDetector(ctx, faces)
+        })
+        break
+      }
+      case MODEL_MOVE_NET: {
+        const poses = await model.estimatePoses(img_or_video)
+        const ctx = canvasRef.current.getContext('2d')
+        requestAnimationFrame(() => {
+          renderMoveNetDetector(ctx, poses)
+        })
+        break
+      }
+      case MODEL_COCO_SSD: {
+        const predictions = await model.detect(img_or_video)
+        const ctx = canvasRef.current.getContext('2d')
+        requestAnimationFrame(() => {
+          renderCoCoSsd(ctx, predictions)
+        })
+        break
+      }
+
+
+    }
+  }
+
+  const handleVectorTest = async () => {
+    console.log("ERROR")
   }
 
   const handleChangeFileUpload = (_files) => {
@@ -410,7 +345,6 @@ export default function ModelReviewObjectDetection(props) {
     function draw() {
       canvas.width = 500
       canvas.height = 500
-
       console.log({
         height: this.height,
         width: this.width,
@@ -428,11 +362,11 @@ export default function ModelReviewObjectDetection(props) {
       oc_ctx.drawImage(this, 0, 0, oc.width, oc.height)
       // step 3, resize to final size
       ctx.drawImage(oc, 0, 0, oc.width, oc.height, 0, 0, canvas.width, canvas.height)
-      setImageUploaded(true)
+      setImageOrWebcam("IMAGE")
     }
 
     async function failed() {
-      await alertError('Error al crear la imagen')
+      await alertHelper.alertError('Error al crear la imagen')
     }
 
     const img = new Image()
@@ -448,11 +382,11 @@ export default function ModelReviewObjectDetection(props) {
         <Col>
           <Card>
             <Card.Body>
-              <Card.Title>{ModelList[2][dataSet]}</Card.Title>
-              <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
+              <Card.Title>{LIST_MODELS[2][dataSet]}</Card.Title>
               {/*FIXME: change {=== '0'} by a validator*/}
               {getNameDatasetByID_ObjectDetection(dataSet) === MODEL_UPLOAD ? (
                 <>
+                  <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                   <Card.Text>
                     Ten en cuenta que tienes que subir primero el archivo .json y después el fichero .bin
                   </Card.Text>
@@ -556,28 +490,32 @@ export default function ModelReviewObjectDetection(props) {
                 </Row>
 
                 <Row className={"mt-3"}>
-                  <Col xl={4}>
+                  <Col xs={4} sm={4} md={4} lg={4} xl={4} xxl={4}>
                     <canvas id="originalImage"></canvas>
                   </Col>
-                  <Col xl={4}>
+                  <Col xs={4} sm={4} md={4} lg={4} xl={4} xxl={4}>
                     <canvas id="imageCanvas"></canvas>
                   </Col>
-                  <Col xl={4}>
+                  <Col xs={4} sm={4} md={4} lg={4} xl={4} xxl={4}>
                     <canvas id="resultCanvas"></canvas>
                   </Col>
                 </Row>
+
+                {/* SUBMIT BUTTON */}
+                {(!isCameraEnable) ? (
+                  <Row className={"mt-3"}>
+                    <div className="d-grid gap-2">
+                      <Button type="button"
+                              onClick={handleVectorTest}
+                              variant="primary">
+                        Ver resultado
+                      </Button>
+                    </div>
+                  </Row>
+                ) : ('')}
               </Container>
 
-              {/* SUBMIT BUTTON */}
-              {(!isCameraEnable) ? (
-                <div className="d-grid gap-2">
-                  <Button type="button"
-                          onClick={handleVectorTest}
-                          variant="primary">
-                    Ver resultado
-                  </Button>
-                </div>
-              ) : ('')}
+
             </Card.Body>
           </Card>
         </Col>

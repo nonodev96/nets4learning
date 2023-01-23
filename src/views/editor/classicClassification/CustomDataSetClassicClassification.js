@@ -253,9 +253,8 @@ export default function CustomDataSetClassicClassification(props) {
   const handlerAddLayer = async () => {
     let aux = Layer
     if (aux === undefined) {
-      await alertHelper.alertWarning(`Error handlerAddLayer`)
+      await alertHelper.alertWarning("Error handlerAddLayer")
     }
-    // console.log({ aux })
     if (aux.length < 6) {
       aux.push({ units: 0, activation: 0 })
       setLayer(aux)

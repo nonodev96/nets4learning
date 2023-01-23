@@ -4,10 +4,15 @@ import * as tf from '@tensorflow/tfjs'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../../utils/alertHelper'
 import { CONSOLE_LOG_h3 } from "../../../Constantes";
-import { dataSetDescription, getHTML_DataSetDescription, } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
-import { ModelList } from '../../uploadModelMenu/UploadModelMenu'
+import { getHTML_DataSetDescription, } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import { IRIS_CLASSES, CAR_CLASSES, CAR_DATA_CLASSES } from '../../../modelos/Clasificador'
-import { getNameDatasetByID_ClassicClassification, MODEL_CAR, MODEL_IRIS, MODEL_UPLOAD } from "../../../ModelList";
+import {
+  getNameDatasetByID_ClassicClassification,
+  LIST_MODELS,
+  MODEL_CAR,
+  MODEL_IRIS,
+  MODEL_UPLOAD
+} from "../../../ModelList";
 
 export default function ModelReviewClassicClassification(props) {
   const { dataSet } = props
@@ -23,39 +28,38 @@ export default function ModelReviewClassicClassification(props) {
     setTextToCheck(document.getElementById(`formTestInput`).value)
   }
 
+  async function loadModel_CAR() {
+    console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
+    const model = await tf.loadLayersModel("http://localhost:3000/models/carClassification/mymodelCar.json")
+    model.summary()
+    setModel(model)
+    await alertHelper.alertSuccess("Modelo cargado con éxito")
+  }
+
+  async function loadModel_IRIS() {
+    console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
+    const model = await tf.loadLayersModel(
+      "http://localhost:3000/models/irisClassification/mymodelIris.json"
+    )
+    model.summary()
+    setModel(model)
+    await alertHelper.alertSuccess("Modelo cargado con éxito")
+  }
+
+  const init = async () => {
+    // console.log({ dataSet })
+    // dataset to CONST
+    switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+      case MODEL_CAR:
+        await loadModel_CAR()
+        break;
+      case MODEL_IRIS:
+        await loadModel_IRIS()
+        break;
+    }
+  }
+
   useEffect(() => {
-    async function loadModel_CAR() {
-      console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
-      const model = await tf.loadLayersModel(
-        "http://localhost:3000/nets4learning/models/carClassification/mymodelCar.json"
-      )
-      model.summary()
-      setModel(model)
-      await alertHelper.alertSuccess("Modelo cargado con éxito")
-    }
-
-    async function loadModel_IRIS() {
-      console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
-      const model = await tf.loadLayersModel(
-        "http://localhost:3000/nets4learning/models/irisClassification/mymodelIris.json"
-      )
-      model.summary()
-      setModel(model)
-      await alertHelper.alertSuccess("Modelo cargado con éxito")
-    }
-
-    const init = async () => {
-      console.log({ dataSet })
-      // dataset to CONST
-      switch (getNameDatasetByID_ClassicClassification(dataSet)) {
-        case MODEL_CAR:
-          await loadModel_CAR()
-          break;
-        case MODEL_IRIS:
-          await loadModel_IRIS()
-          break;
-      }
-    }
     init()
       .catch(console.error)
   }, [])
@@ -185,10 +189,10 @@ export default function ModelReviewClassicClassification(props) {
           <Col>
             <Card>
               <Card.Body>
-                <Card.Title>{ModelList[0][dataSet]}</Card.Title>
-                <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
+                <Card.Title>{LIST_MODELS[0][dataSet]}</Card.Title>
                 {dataSet === '0' ? (
                   <>
+                    <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                     <Card.Text>
                       Ten en cuenta que tienes que subir primero el archivo .json y después el fichero .bin
                     </Card.Text>

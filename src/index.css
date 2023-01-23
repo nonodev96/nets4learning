@@ -17,3 +17,10 @@ code {
 .titulos {
   font-family: 'Open Sans', sans-serif;
 }
+
+.highlighter {
+  background: rgba(0, 255, 0, 0.25);
+  border: 1px dashed #fff;
+  z-index: 1;
+  position: absolute;
+}

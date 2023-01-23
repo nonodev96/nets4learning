@@ -15,25 +15,24 @@ import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitec
 import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 
 function App() {
-  const DOMAIN = process.env.REACT_APP_DOMAIN;
   return (
     <div className="body">
       <BrowserRouter>
         <Switch>
-          <Route exact path={DOMAIN + "/starting/"} component={Starting}></Route>
+          <Route exact path={"/starting/"} component={Starting}></Route>
           {/* <Route exact path="/upload-architecture-custom/" component={}></Route> */}
-          <Route exact path={DOMAIN + "/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
-          <Route exact path={DOMAIN + "/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
-          <Route exact path={DOMAIN + "/select-model/:id"} component={UploadModelMenu}></Route>
+          <Route exact path={"/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
+          <Route exact path={"/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
+          <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
           {/* <Route exact path="/upload-training-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-training/" component={}></Route> */}
           {/* <Route exact path="/upload-model-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-model/" component={}></Route> */}
-          <Route exact path={DOMAIN + "/secondary/:id"} component={SecondMenu}></Route>
-          <Route exact path={DOMAIN + "/editor/:id"} component={Editor}></Route>
-          <Route exact path={DOMAIN + "/training"} component={Training}></Route>
-          <Route exact path={DOMAIN + "/test"} component={Test}></Route>
-          <Route exact path={DOMAIN} component={Home}></Route>
+          <Route exact path={"/secondary/:id"} component={SecondMenu}></Route>
+          <Route exact path={"/editor/:id"} component={Editor}></Route>
+          <Route exact path={"/training"} component={Training}></Route>
+          <Route exact path={"/test"} component={Test}></Route>
+          <Route exact path={"/"} component={Home}></Route>
 
           <Route component={NotFoundPage}></Route>
         </Switch>

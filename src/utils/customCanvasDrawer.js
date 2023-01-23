@@ -72,7 +72,7 @@ export default function CustomCanvasDrawer(props) {
 
   return (
     <>
-      <div>
+      <div className={"d-flex justify-content-center"}>
         <canvas id='bigcanvas'
                 style={{
                   border: '1px solid black'
@@ -84,11 +84,13 @@ export default function CustomCanvasDrawer(props) {
                 onChange={startDrawing}></canvas>
 
       </div>
-      <div className="d-grid gap-2 col-6 mx-auto">
-        <Button onClick={submitFunction}>
+      <div className="d-grid gap-2 col-6 mx-auto mt-3">
+        <Button onClick={submitFunction}
+                variant={"primary"}>
           Validar
         </Button>
-        <Button onClick={() => clear}>
+        <Button onClick={() => clear}
+                variant={"warning"}>
           Limpiar
         </Button>
       </div>

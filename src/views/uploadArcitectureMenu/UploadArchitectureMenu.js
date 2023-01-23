@@ -4,15 +4,16 @@ import { useParams } from 'react-router-dom'
 import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
-import { modelsType } from '../initialMenu/InitialMenu'
 import { useHistory } from 'react-router-dom'
 import * as alertHelper from '../../utils/alertHelper'
+import { LIST_TYPE_MODELS } from "../../ModelList";
 
 export const dataSetList = [
   [
     'SUBIR DATASET PROPIO',
     'EVALUACIÓN DE COCHES',
-    'IRIS-DATA'],
+    'IRIS-DATA'
+  ],
   [],
   [
     'SUBIR DATASET PROPIO',
@@ -275,10 +276,10 @@ export default function UploadArchitectureMenu(props) {
       await alertHelper.alertWarning('Debes de seleccionar un Dataset')
     } else {
       if (CustomArchitecture) {
-        history.push(process.env.REACT_APP_DOMAIN + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push( '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       } else {
         localStorage.setItem('custom-architecture', 'nothing')
-        history.push(process.env.REACT_APP_DOMAIN + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push( '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       }
     }
   }
@@ -306,7 +307,7 @@ export default function UploadArchitectureMenu(props) {
           <Col>
             <Card>
               <Card.Header>
-                <h1>{modelsType[id]}</h1>
+                <h1>{LIST_TYPE_MODELS[id]}</h1>
               </Card.Header>
               <Card.Body>
                 <Card.Text>

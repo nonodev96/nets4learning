@@ -6,7 +6,7 @@ export default function N4LNavBar() {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href={process.env.REACT_APP_DOMAIN}>Nets4learning</Navbar.Brand>
+          <Navbar.Brand href={"/"}>Nets4learning</Navbar.Brand>
         </Container>
       </Navbar>
     </>

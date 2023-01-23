@@ -3,60 +3,46 @@ import { useHistory } from "react-router-dom";
 import { Row, Col, Button, Container } from "react-bootstrap";
 import ButtonDescription from "../../components/buttonDescription/ButtonDescription";
 import "./SecondMenu.css";
+import { LIST_TYPE_MODELS, LIST_TYPE_MODELS_DESCRIPTION } from "../../ModelList";
 
 export default function SecondMenu(props) {
   const { id } = props;
 
   const [buttonActive, setButtonActive] = useState(-1);
 
-  const modelsType = [
-    "Clasificación clásica",
-    "Regresión lineal",
-    "Identificación de objetos",
-    "Clasificador de imágenes"
-  ];
-
-  const modelsType_description = [
-    "Empieza de cero y crea tu propia arquitectura",
-    "Edita una arquitectura hecho por tí o facilitado por nosotros",
-    "Entrena un modelo hecho por tí o  si no tienes, no te preocupes te prestamos uno :)",
-    "Ejecutar un modelo hecho por tí o facilitado por nosotros"
-  ];
-
   const colors = ["yellow", "red", "green", "blue"];
-  const history = useHistory();
+  const History = useHistory();
 
   const handleClick = (modelType) => {
     setButtonActive(modelType);
   };
 
   const handleClickEmpezar = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/starting/");
+    History.push("/starting/");
   };
 
   const handleClickArchCustom = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/upload-architecture-custom/");
+    History.push("/upload-architecture-custom/");
   };
 
   const handleClickArchEdit = () => {
-
-    history.push(process.env.REACT_APP_DOMAIN + "/edit-architecture/" + id + "/2");
+    History.push("/edit-architecture/" + id + "/2");
   };
 
   const handleClickTrainCustom = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/upload-training-custom/");
+    History.push("/upload-training-custom/");
   };
 
   const handleClickTrainEdit = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/edit-training/");
+    History.push("/edit-training/");
   };
 
   const handleClickModelCustom = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/upload-model-custom/");
+    History.push("/upload-model-custom/");
   };
 
   const handleClickModelEdit = () => {
-    history.push(process.env.REACT_APP_DOMAIN + "/edit-model/");
+    History.push("/edit-model/");
   };
 
   const modelsDescription = [
@@ -92,9 +78,9 @@ export default function SecondMenu(props) {
   return (
     <>
       <Container>
-        <h2>{modelsType[id]}</h2>
+        <h2>{LIST_TYPE_MODELS[id]}</h2>
         <Row>
-          {modelsType_description.map((type, i) => {
+          {LIST_TYPE_MODELS_DESCRIPTION.map((type, i) => {
             const actualColor = colors[i % colors.length];
             const style = "btn-custom " + actualColor;
             return (

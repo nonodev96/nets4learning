@@ -16,15 +16,11 @@ import ModelReviewClassicImageClassification
 
 import ObjectDetection from '../editor/objectDetection/ObjectDetection'
 import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
+import { LIST_TYPE_MODELS } from "../../ModelList";
 
 function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()
-  const modelsType = [
-    'Clasificación clásica',
-    'Regresión lineal',
-    'Identificación de objetos',
-    'Clasificador de imágenes',
-  ]
+
 
   const Print_HTML_Model_View = () => {
     // console.trace()
@@ -67,7 +63,7 @@ function EditArchitecture() {
         <Container>
           <Row className={"mt-2"}>
             <Col xl={12}>
-              <h1>{modelsType[id]}</h1>
+              <h1>{LIST_TYPE_MODELS[id]}</h1>
             </Col>
           </Row>
         </Container>

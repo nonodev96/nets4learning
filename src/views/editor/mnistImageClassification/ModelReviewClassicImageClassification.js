@@ -5,11 +5,10 @@ import * as tf from '@tensorflow/tfjs'
 import * as numberClass from '../../../modelos/NumberClasificatorHelper.js'
 import { getHTML_DataSetDescription } from '../../uploadArcitectureMenu/UploadArchitectureMenu'
 import * as datosAuxiliares from '../../../modelos/data/imageClassification/imgaClassificationHelper'
-import { ModelList } from '../../uploadModelMenu/UploadModelMenu.js'
 import * as alertHelper from '../../../utils/alertHelper'
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import {
-  getNameDatasetByID_ImageClassification,
+  getNameDatasetByID_ImageClassification, LIST_MODELS,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET, MODEL_IMAGE_RESNET,
   MODEL_UPLOAD
@@ -30,9 +29,9 @@ export default function ModelReviewClassicImageClassification(props) {
       }
       case MODEL_IMAGE_MNIST: {
         const model = await tf.loadLayersModel(
-          'http://localhost:3000/nets4learning/models/mnistClassification/mymodel.json'
+          'http://localhost:3000/models/mnistClassification/mymodel.json'
         );
-        model.summary()
+        // model.summary()
         setModel(model)
         await alertHelper.alertSuccess('Modelo cargado con éxito')
         break
@@ -43,7 +42,6 @@ export default function ModelReviewClassicImageClassification(props) {
           'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_050_192/classification/3/default/1',
           { fromTFHub: true },
         )
-        console.log(model)
         setModel(model)
         await alertHelper.alertSuccess('Modelo cargado con éxito')
         break
@@ -255,6 +253,25 @@ export default function ModelReviewClassicImageClassification(props) {
     }
   }
 
+  function Print_HTML_Section() {
+    switch (dataSet) {
+      case MODEL_UPLOAD: {
+        return <>
+
+        </>
+      }
+      case MODEL_IMAGE_MNIST: {
+        break
+      }
+      case MODEL_IMAGE_RESNET: {
+        break
+      }
+      case MODEL_IMAGE_MOBILENET: {
+        break
+      }
+    }
+  }
+
   return (
     <>
       <Container id={"ModelReviewClassicImageClassification"}>
@@ -263,7 +280,7 @@ export default function ModelReviewClassicImageClassification(props) {
           <Col>
             <Card>
               <Card.Header>
-                <h3>{ModelList[3][dataSet]}</h3>
+                <h3>{LIST_MODELS[3][dataSet]}</h3>
               </Card.Header>
               <Card.Body>
                 {{
@@ -297,63 +314,43 @@ export default function ModelReviewClassicImageClassification(props) {
         <Row className={"mt-3"}>
           <Col>
             <Card>
-              <Card.Header>Resultado</Card.Header>
+              <Card.Header>
+                <h3>Resultado</h3>
+              </Card.Header>
               <Card.Body>
-                {dataSet !== '2' && dataSet !== '3' ? (
-                  <>
-                    <Row className={"mt-3"}>
-                      <Col>
-                        <CustomCanvasDrawer submitFunction={() => handleVectorTestImageUpload}/>
-                      </Col>
-                      <Col>
-                        <input style={{ marginBottom: '2rem' }}
-                               type="file"
-                               name="doc"
-                               onChange={() => handleChangeFileUpload}></input>
+                <Row>
+                  <Col>
+                    <CustomCanvasDrawer submitFunction={() => handleVectorTestImageUpload}/>
+                  </Col>
+                </Row>
+                <Row className={"mt-3"}>
+                  <Col>
+                    <input style={{ marginBottom: '2rem' }}
+                           type="file"
+                           name="doc"
+                           onChange={() => handleChangeFileUpload}></input>
 
-                        <canvas id="originalImage" style={{ display: 'none' }}></canvas>
-                        <canvas id="imageCanvas"></canvas>
-                        <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
+                    <canvas id="originalImage" style={{ display: 'none' }}></canvas>
+                    <canvas id="imageCanvas"></canvas>
+                    <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
 
-                        <div className="d-grid gap-2">
-                          <Button type="button"
-                                  onClick={() => handleVectorTest}
-                                  variant={"primary"}>
-                            Validar
-                          </Button>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row className={"mt-3"}>
-                      <Col>
-                        <canvas id="smallcanvas"
-                                width="28"
-                                height="28"
-                                style={{ display: 'none' }}></canvas>
-                      </Col>
-                    </Row>
-                  </>
-                ) : (
-                  <Row>
-                    <Col>
-                      <div>
-                        <input style={{ marginBottom: '2rem' }}
-                               type="file"
-                               name="doc"
-                               onChange={() => handleChangeFileUpload}></input>
-                        <canvas id="originalImage" style={{ display: 'none' }}></canvas>
-                        <canvas id="imageCanvas"></canvas>
-                        <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-                        {/* SUBMIT Button */}
-                        <Button onClick={() => handleVectorTest}
-                                variant="primary">
-                          Ver resultado
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-
-                )}
+                    <div className="d-grid gap-2">
+                      <Button type="button"
+                              onClick={() => handleVectorTest}
+                              variant={"primary"}>
+                        Validar
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+                <Row className={"mt-3"}>
+                  <Col>
+                    <canvas id="smallcanvas"
+                            width="28"
+                            height="28"
+                            style={{ display: 'none' }}></canvas>
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>

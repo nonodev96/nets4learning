@@ -68,7 +68,7 @@ export default function UploadClassicClassification(props) {
 
   return (
     <>
-      <div className="header-model-editor" id={"UploadClassicClassification"}>
+      <div id={"UploadClassicClassification"}>
         <p>
           Carga tu propio dataSet con la siguiente <a href="" onClick={() => downloadFile} id="dwn-btn">estructura</a>
           pulsando este botón.

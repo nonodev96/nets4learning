@@ -7,7 +7,7 @@ export default function NotFoundPage() {
         <h1 className="display-1 fw-bold text-white" style={{ fontSize: "4em", }}>404</h1>
         <h4 className="fw-bold text-white" style={{ fontSize: "1em", }}>No se ha encontrado la página solicitada</h4>
         <p className="lead">
-          <Link className="alert-link" to={process.env.REACT_APP_DOMAIN}>Volver al inicio</Link>
+          <Link className="alert-link" to={"/"}>Volver al inicio</Link>
         </p>
       </div>
     </div>

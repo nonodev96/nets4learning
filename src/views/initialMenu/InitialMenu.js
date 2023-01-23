@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import './InitialMenu.css'
-
-export const modelsType = [
-  'Clasificación clásica',
-  'Deep Learning',
-  'Identificación de objetos',
-  'Clasificador de imágenes',
-]
+import { LIST_TYPE_MODELS } from "../../ModelList";
 
 export default function InitialMenu() {
   const history = useHistory()
@@ -24,8 +18,8 @@ export default function InitialMenu() {
   // ];
 
   const handleClickTrainEdit = (_buttonActive, type) => {
-    if (type === 1) history.push(process.env.REACT_APP_DOMAIN + '/select-model/' + _buttonActive)
-    if (type === 2) history.push(process.env.REACT_APP_DOMAIN + '/select-dataset/' + _buttonActive)
+    if (type === 1) history.push( '/select-model/' + _buttonActive)
+    if (type === 2) history.push( '/select-dataset/' + _buttonActive)
   }
 
   const colors = ['primary', 'danger', 'warning', 'info']
@@ -136,9 +130,9 @@ export default function InitialMenu() {
                   La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar
                   la clase a la que pertenece el dependiente según una o más variables independientes.
                 </Card.Text>
-                <p>
+                <Card.Text>
                   En este caso la variable de entrada será una imagen.
-                </p>
+                </Card.Text>
                 <Button onClick={() => handleClickTrainEdit(buttonActive, 1)}>
                   Modelo Pre-entrenado
                 </Button>
@@ -159,7 +153,7 @@ export default function InitialMenu() {
     <>
       <Container>
         <Row className={"mt-3"}>
-          {modelsType.map((type, i) => {
+          {LIST_TYPE_MODELS.map((type, i) => {
             if (i !== 1) {
               const actualColor = colors[i % colors.length]
               return (
