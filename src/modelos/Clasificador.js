@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 
 export const IRIS_CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"];
-const IRIS_NUM_CLASSES = IRIS_CLASSES.length;
+export const IRIS_NUM_CLASSES = IRIS_CLASSES.length;
 
 //http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
 export const IRIS_DATA = [

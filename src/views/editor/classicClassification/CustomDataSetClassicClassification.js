@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as tf from '@tensorflow/tfjs'
-import { Col, Row, CloseButton, Container, Button, Form, Card, Accordion } from 'react-bootstrap'
+import { Col, Row, Container, Button, Form, Card, Accordion } from 'react-bootstrap'
 import {
   createClassicClassification,
   createClassicClassificationCustomDataSet,
@@ -11,7 +11,8 @@ import * as cochesDataset from '../../../modelos/data/coches.json'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
 import {
   getHTML_DATASET_DESCRIPTION,
-  getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS,
+  getNameDatasetByID_ClassicClassification,
+  LIST_MODEL_OPTIONS,
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_UPLOAD
@@ -32,8 +33,8 @@ export default function CustomDataSetClassicClassification(props) {
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   // METRICS_TYPE
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
-  const [Model, setModel] = useState()
-  const [string, setString] = useState("")
+  const [Model, setModel] = useState(null)
+  const [String, setString] = useState("")
   const [NoEpochs, setNoEpochs] = useState(50)
   const [CustomDataSet, setCustomDataSet] = useState()
   const [DataSetClasses, setDataSetClasses] = useState([])
@@ -64,6 +65,14 @@ export default function CustomDataSetClassicClassification(props) {
       ])
       setNLayer(2)
       switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+        case MODEL_UPLOAD: {
+          setString("")
+          break
+        }
+        case MODEL_IRIS: {
+          setString("5;5;4;2")
+          break
+        }
         case MODEL_CAR: {
           setString('vhigh;vhigh;2;2;big;med')
           break
@@ -156,8 +165,7 @@ export default function CustomDataSetClassicClassification(props) {
       }
       case MODEL_CAR: {
         let aux = cochesDataset
-        console.log({ aux })
-        console.log(aux.datos[0])
+        console.log({ cochesDataset })
         let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
         let _unknownRate = 0.1
         let _numberOfEpoch = parseInt(NoEpochs)
@@ -183,8 +191,7 @@ export default function CustomDataSetClassicClassification(props) {
         break;
       }
       case MODEL_IRIS: {
-        console.log('hola es el dataset2')
-        // await doIris(0.1)
+        console.log('hola es el dataset 2')
         let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
         let _unknownRate = 0.1
         let _numberOfEpoch = parseInt(NoEpochs)
@@ -207,12 +214,15 @@ export default function CustomDataSetClassicClassification(props) {
         await alertHelper.alertSuccess('Modelo entrenado con éxito')
         break;
       }
+      default: {
+        console.error("Error, opción no disponible")
+      }
     }
   }
 
   const handleVectorTest = async () => {
     // vhigh;vhigh;2;2;big;med
-    let input = [[], [1, string.split(';').length]]
+    let input = [[], [1, String.split(';').length]]
     if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
       if (CustomDataSet === undefined) {
         await alertHelper.alertError('Primero debes de cargar un dataSet')
@@ -224,26 +234,38 @@ export default function CustomDataSetClassicClassification(props) {
       return
     }
     try {
-      // TODO comprobar que hace la sección
-      if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_IRIS) {
-        string.split(';').forEach((element) => {
-          input[0].push(parseFloat(element))
-        })
-      } else {
-        let i = 0
-        string.split(';').forEach((element) => {
-          if (isNaN(parseFloat(element))) {
-            input[0].push(DataSetClasses[i].get(element))
-          } else {
-            input[0].push(DataSetClasses[i].get(parseFloat(element)))
-          }
-          i++
-        })
+      switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+        case MODEL_UPLOAD: {
+          let i = 0
+          String.split(';').forEach((element) => {
+            if (isNaN(parseFloat(element))) {
+              input[0].push(DataSetClasses[i].get(element))
+            } else {
+              input[0].push(DataSetClasses[i].get(parseFloat(element)))
+            }
+            i++
+          })
+          break
+        }
+        case MODEL_CAR: {
+          // med;high;4;4;small;high
+          String.split(';').forEach((element) => {
+            input[0].push(parseFloat(element))
+          })
+          break
+        }
+        case MODEL_IRIS: {
+          break
+        }
+        default: {
+          console.error("Error, opción no permitida")
+          break
+        }
       }
 
       const tensor = tf.tensor2d(input[0], input[1])
       const prediction = Model.predict(tensor)
-      const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
+      const predictionWithArgMax = prediction.argMax(-1).dataSync()
 
       console.log('La solución es: ', { predictionWithArgMax })
       await alertHelper.alertInfo(

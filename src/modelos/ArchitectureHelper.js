@@ -64,14 +64,14 @@ export async function createClassicClassification(
 
   //modo secuencial
   const model = tf.sequential()
-  const optimizer = createOptimizer(learningRate, sLOptimizer)
+  const optimizer = createOptimizer(sLOptimizer, { learningRate })
   const loss = createLoss(idLoss)
   const metrics = createMetrics(idMetrics)
 
   console.log('Tensor secuencial', model)
   console.log('Forma', model.shape)
   console.log('ESTAS SON LAS UNIDADES DE LAS CAPAS', layerList)
-  //Agregamos las capas
+  // Agregamos las capas
   layerList.forEach((layer, index) => {
     if (index === 0) {
       model.add(
@@ -94,20 +94,21 @@ export async function createClassicClassification(
     console.log('Forma ' + index, model.shape)
   })
 
-  //Compilamos el modelo
+  // Compilamos el modelo
   model.compile({
     optimizer: optimizer,
     loss: loss,
     metrics: metrics,
   })
 
-  //Mostramos la información del modelo en el panel lateral
-  tfvis.show.modelSummary(
+  // Mostramos la información del modelo en el panel lateral
+  await tfvis.show.modelSummary(
     { name: 'Arquitectura del modelo', tab: 'Modelo' },
     model
   )
 
-  console.log('Tennsor secuencial COMPILE', model)
+
+  console.log('Tensor secuencial COMPILE', model)
   console.log('Forma', model.shape)
   console.log('ESTA ES LA FORMA DE XTRAIN', xTrain)
 
@@ -161,13 +162,12 @@ export async function createClassicClassificationCustomDataSet(
 
   // modo secuencial
   const model = tf.sequential()
-  const optimizer = createOptimizer(learningRate, sLOptimizer)
+  const optimizer = createOptimizer(sLOptimizer, { learningRate })
   const loss = createLoss(idLoss)
   const metrics = createMetrics(idMetrics)
 
   console.log('loss', loss, idLoss, createLoss(idLoss))
   console.log('Tensor secuencial', model)
-  console.log('Forma', model.shape)
 
   //Agregamos las capas
   layerList.forEach((layer, index) => {
@@ -293,47 +293,56 @@ async function getClassesFromDataSet(dataSet) {
 }
 
 // Devuelve el optimizador seleccionado por el usuario
-function createOptimizer(learningRate, idOptimizer) {
-  console.log(idOptimizer, 'ESTE ES EL OPTIMIZADOR')
+function createOptimizer(idOptimizer, params) {
+  console.log('ESTE ES EL OPTIMIZADOR', idOptimizer)
   switch (idOptimizer) {
     case 'Sgd':
       // Sgd,
-      return tf.train.Sgd(learningRate)
+      let { learningRate: lr } = params
+      return tf.train.sgd(lr)
     case 'Momentum':
       // momentum,
-      return tf.train.momentum(learningRate)
+      let { learningRate: lr_2, momentum, useNesterov } = params
+      return tf.train.momentum(lr_2, momentum, useNesterov)
     case 'Adagrag':
       // adagrag,
-      return tf.train.adagrag(learningRate)
+      let { learningRate: lr_3 } = params
+      return tf.train.adagrad(lr_3)
     case 'Adadelta':
       // adadelta,
-      return tf.train.adadelta(learningRate)
+      let { learningRate: lr_4 } = params
+      return tf.train.adadelta(lr_4)
     case 'Adam':
       // Adam,
-      return tf.train.adam(learningRate)
+      let { learningRate: lr_5 } = params
+      return tf.train.adam(lr_5)
     case 'Adamax':
       // adamax,
-      return tf.train.adamax(learningRate)
+      let { learningRate: lr_6 } = params
+      return tf.train.adamax(lr_6)
     case 'Rmsprop':
       // rmsprop
-      return tf.train.rmsprop(learningRate)
+      let { learningRate: lr_7 } = params
+      return tf.train.rmsprop(lr_7)
 
     default:
-      return tf.train.adam(learningRate)
+      console.error("Opción no disponible")
   }
 }
 
+//
 export function createOptimizerId(idOptimizer) {
+  console.error("Error, no esta optimizando nada")
   switch (idOptimizer) {
     case 'Sgd':
       // Sgd,
-      return tf.train.Sgd()
+      return tf.train.sgd()
     case 'Momentum':
       // momentum,
       return tf.train.momentum()
     case 'Adagrag':
       // adagrag,
-      return tf.train.adagrag()
+      return tf.train.adagrad()
     case 'Adadelta':
       // adadelta,
       return tf.train.adadelta()
@@ -354,7 +363,7 @@ export function createOptimizerId(idOptimizer) {
 
 // Devuelve la pérdida seleccionada por el usuario
 export function createLoss(idLoss) {
-  console.log({idLoss})
+  console.log({ idLoss })
   switch (idLoss) {
     //categoricalCrossEntropy??????
     case 'AbsoluteDifference':
