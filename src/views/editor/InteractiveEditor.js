@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-import { Col, Row, CloseButton, Container, Card, Form, Button } from 'react-bootstrap'
+import { Col, Row, CloseButton, Container, Card, Form, Button, Accordion } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { createClassicClassification, getIrisDataType } from '../../modelos/ArchitectureHelper'
+import {
+  createClassicClassification,
+  TYPE_ACTIVATION, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+} from '../../modelos/ArchitectureHelper'
+import { getIrisDataType } from "../../modelos/ClassificationHelper_IRIS"
 import * as alertHelper from '../../utils/alertHelper'
 import './InteractiveEditor.css'
 
@@ -9,78 +13,30 @@ import './InteractiveEditor.css'
 export default function InteractiveEditor(props) {
   const { tipo } = props
 
-  const modelsType = [
-    'Clasificación clásica',
-    'Clasificación de imágenes',
-    'Identificación de objetos',
-    'Regresión lineal',
-  ]
-
   //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
     { units: 10, activation: 'Sigmoid' },
     { units: 3, activation: 'Softmax' },
   ])
-  const NumberEpochs = 50
-  const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setString] = useState()
 
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-  const ACTIVATION_TYPE = ['Sigmoid', 'Softmax']
+  const NumberEpochs = 50
+  const learningValue = 1
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
-
-    console.log('Comenzamos a crear el modelo')
 
     try {
       console.log('Estas sion las métricas', Layer)
       const model = await createClassicClassification(
         parseInt(document.getElementById('formTrainRate').value) / 100,
         0.1,
-        parseInt(document.getElementById('formNumberOfEpochs').value),
+        parseInt(document.getElementById('FormNumberOfEpochs').value),
         document.getElementById('FormOptimizer').value,
         Layer,
         LossValue,
@@ -184,7 +140,7 @@ export default function InteractiveEditor(props) {
     <>
       <Form onSubmit={handleClickPlay} id={"InteractiveEditor"}>
         <Container>
-          <Row>
+          <Row className={"mt-3"}>
             <Col>
               <Card>
                 <Card.Header><h3>Interactive Editor</h3></Card.Header>
@@ -200,17 +156,24 @@ export default function InteractiveEditor(props) {
           </Row>
 
           {/* BLOCK 1 */}
-          <div className="column">
+          <Row className={"mt-3"}>
             {/* SPECIFIC PARAMETERS */}
-            <Col className="col-specific">
-              <div className="container-fluid container-fluid-w1900">
+            <Col>
+              <div className="d-grid gap-2">
+                {/* ADD LAYER */}
+                <Button type="button"
+                        onClick={() => handlerAddLayer()}
+                        variant="primary">
+                  Añadir capa
+                </Button>
+              </div>
+              <Accordion className={"mt-3"} defaultActiveKey={["0"]} alwaysOpen>
                 {Layer.map((item, index) => {
                   return (
-                    <div key={index}>
-                      <div className="container pane borde">
-                        <div className="title-pane">
-                          Capa {index + 1}
-                          {/* <div className="spacer"></div> */}
+                    <Accordion.Item key={index} eventKey={index.toString()}>
+                      <Accordion.Header>Capa {index + 1}</Accordion.Header>
+                      <Accordion.Body>
+                        <div className="d-grid gap-2">
                           <CloseButton onClick={() => handlerRemoveLayer(index)}/>
                         </div>
                         {/* UNITS */}
@@ -222,7 +185,6 @@ export default function InteractiveEditor(props) {
                                         defaultValue={item.units}
                                         onChange={() => handleChangeUnits(index)}/>
                         </Form.Group>
-
                         {/* ACTIVATION FUNCTION */}
                         <Form.Group className="mb-3"
                                     controlId={'formActivationLayer' + index}>
@@ -231,7 +193,7 @@ export default function InteractiveEditor(props) {
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
-                            {ACTIVATION_TYPE.map((itemAct, indexAct) => {
+                            {TYPE_ACTIVATION.map((itemAct, indexAct) => {
                               return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                             })}
                           </Form.Select>
@@ -239,117 +201,115 @@ export default function InteractiveEditor(props) {
                             Será el optimizador que se usará para activar la función
                           </Form.Text>
                         </Form.Group>
-                      </div>
-                    </div>
+                      </Accordion.Body>
+                    </Accordion.Item>
                   )
                 })}
-
-                {/* ADD LAYER */}
-                <Button className="btn-add-layer"
-                        type="button"
-                        onClick={() => handlerAddLayer()}
-                        variant="primary">
-                  Añadir capa
-                </Button>
-              </div>
+              </Accordion>
             </Col>
 
             {/* GENERAL PARAMETERS */}
             <Col>
-              <div className="container borde general-settings">
-                {/* LEARNING RATE */}
-                <Form.Group className="mb-3" controlId="formTrainRate">
-                  <Form.Label>Tasa de entrenamiento</Form.Label>
-                  <Form.Control type="number"
-                                placeholder="Introduce la tasa de entrenamiento"
-                                defaultValue={learningValue}/>
-                  <Form.Text className="text-muted">
-                    Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
-                  </Form.Text>
-                </Form.Group>
+              <Card className={"sticky-top"}>
+                <Card.Body>
+                  {/* LEARNING RATE */}
+                  <Form.Group className="mb-3" controlId="formTrainRate">
+                    <Form.Label>Tasa de entrenamiento</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce la tasa de entrenamiento"
+                                  defaultValue={learningValue}/>
+                    <Form.Text className="text-muted">
+                      Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* Nº OT ITERATIONS */}
-                <Form.Group className="mb-3" controlId="formNumberOfEpochs">
-                  <Form.Label>Nº de iteraciones</Form.Label>
-                  <Form.Control type="number"
-                                placeholder="Introduce el número de iteraciones"
-                                defaultValue={NumberEpochs}/>
-                  <Form.Text className="text-muted">
-                    *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
-                  </Form.Text>
-                </Form.Group>
+                  {/* Nº OT ITERATIONS */}
+                  <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
+                    <Form.Label>Nº de iteraciones</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce el número de iteraciones"
+                                  defaultValue={NumberEpochs}/>
+                    <Form.Text className="text-muted">
+                      *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* OPTIMIZATION FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormOptimizer">
-                  <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={Optimizer}
-                               onChange={handleChangeOptimization}>
-                    <option>Selecciona el optimizador</option>
-                    {OPTIMIZER_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
-                {/* LOSS FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormLoss">
-                  <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={LossValue}
-                               onChange={handleChangeLoss}>
-                    <option>Selecciona la función de pérdida</option>
-                    {LOSS_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
+                  {/* OPTIMIZATION FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormOptimizer">
+                    <Form.Label>Selecciona el optimizador</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={Optimizer}
+                                 onChange={handleChangeOptimization}>
+                      <option>Selecciona el optimizador</option>
+                      {TYPE_OPTIMIZER.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
+                  {/* LOSS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormLoss">
+                    <Form.Label>Selecciona la función de pérdida</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={LossValue}
+                                 onChange={handleChangeLoss}>
+                      <option>Selecciona la función de pérdida</option>
+                      {TYPE_LOSS.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
 
-                {/* METRICS FUNCTION */}
-                <Form.Group className="mb-3" controlId="FormMetrics">
-                  <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select aria-label="Default select example"
-                               defaultValue={MetricsValue}
-                               onChange={handleChangeMetrics}>
-                    <option>Selecciona la métrica</option>
-                    {METRICS_TYPE.map((item, id) => {
-                      return (<option key={id} value={item}>{item}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    Será el optimizador que se usará para activar la función
-                  </Form.Text>
-                </Form.Group>
-              </div>
+                  {/* METRICS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormMetrics">
+                    <Form.Label>Selecciona la métrica</Form.Label>
+                    <Form.Select aria-label="Default select example"
+                                 defaultValue={MetricsValue}
+                                 onChange={handleChangeMetrics}>
+                      <option>Selecciona la métrica</option>
+                      {TYPE_METRICS.map((item, id) => {
+                        return (<option key={id} value={item}>{item}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
+                </Card.Body>
+              </Card>
+
+
               {/* <Button variant="primary" type="submit">
               CREAR Y ENTRENAR MODELO
             </Button> */}
             </Col>
-          </div>
+          </Row>
 
           {/* BLOCK  BUTTON */}
-          <div className="column2">
-            <Col className="col-specific">
-              {/*FIXME*/}
-              <Button className="btn-add-layer"
-                      type="submit"
-                      variant="primary">
-                Crear y entrenar modelo
-              </Button>
+          <Row className="mt-3">
+            <Col>
+              <div className="d-grid gap-2">
+                {/* TODO */}
+                <Button type="submit"
+                        size={"lg"}
+                        variant="primary">
+                  Crear y entrenar modelo
+                </Button>
+              </div>
             </Col>
-          </div>
+          </Row>
 
           {/* BLOCK 2 */}
-          <div className="column2">
-            <Col className="col-specific">
-              <div className="container-fluid container-fluid-w1900">
-                <div className="container pane borde">
-                  <div className="title-pane">Resultado</div>
+          <Row className="mt-3">
+            <Col>
+              <Card>
+                <Card.Header><h3>Prueba</h3></Card.Header>
+                <Card.Body>
                   {/* VECTOR TEST */}
                   <Form.Group className="mb-3" controlId={'formTestInput'}>
                     <Form.Label>Introduce el vector a probar</Form.Label>
@@ -358,33 +318,45 @@ export default function InteractiveEditor(props) {
                                   onChange={() => handleChangeTestInput()}/>
                   </Form.Group>
                   {/* SUBMIT BUTTON */}
-                  <Button className="btn-add-layer"
-                          type="button"
-                          onClick={handleVectorTest}
-                          variant="primary">
-                    Ver resultado
-                  </Button>
-                </div>
-              </div>
+                  <div className="d-grid gap-2">
+                    <Button type="button"
+                            onClick={handleVectorTest}
+                            variant="primary">
+                      Ver resultado
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
             </Col>
-          </div>
+          </Row>
 
           {/* BLOCK 3 */}
-          <div id="salida">Aquí va el Resultado</div>
-          <div className="resultados">
-            <Row>
-              <Col>
-                <div id="demo"
-                     className="borde console"
-                     width="100%"
-                     height="100%">
-                  Aquí se muestran los resultados
-                </div>
-              </Col>
-            </Row>
-          </div>
-        </Container>
+          <Row className="mt-3">
+            <Col>
+              <Card>
+                <Card.Header><h3>Resultado</h3></Card.Header>
+                <Card.Body>
+                  <div id="demo" className="console">
+                    Aquí se muestran los resultados
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
 
+          <Row className="mt-3">
+            <Col>
+              <Card>
+                <Card.Header><h3>Resultado</h3></Card.Header>
+                <Card.Body>
+                  <div id="demo" className="console">
+                    Aquí se muestran los resultados
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </Form>
     </>
   )

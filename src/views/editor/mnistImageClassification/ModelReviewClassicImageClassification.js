@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Button, Col, Container, Row, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from '../../../modelos/NumberClasificatorHelper.js'
+import * as numberClass from '../../../modelos/ClassificationHelper_MNIST'
 import * as datosAuxiliares from '../../../modelos/data/imageClassification/imgaClassificationHelper'
 import * as alertHelper from '../../../utils/alertHelper'
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'

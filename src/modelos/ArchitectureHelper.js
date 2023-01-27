@@ -1,58 +1,42 @@
 import * as tf from '@tensorflow/tfjs'
-import * as clasificador from './Clasificador'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { alertError } from '../utils/alertHelper'
+import { IRIS_CLASSES, IRIS_DATA } from "./ClassificationHelper_IRIS";
+import * as clasificadorIRIS from "./ClassificationHelper_IRIS";
 
-export function getIrisDataType(id) {
-  return clasificador.IRIS_CLASSES[id]
-}
 
-//TODO: prueba, eliminar funcion
-export const clasificacionClasica = async function createArchitecture(
-  type,
-  learningRate,
-  numberOfEpoch,
-  optimizer,
-  shape,
-) {
+// TODO: prueba, eliminar function
+export const clasificacionClasica = async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, shape) {
   const model = type
   const lR = learningRate
   const nOE = numberOfEpoch
   const opt = optimizer
 
-  model.add(
-    tf.layers.dense({
-      units: 10,
-      activation: 'sigmoid',
-      inputShape: [shape],
-    }),
-  )
+  const layerList = []
+  layerList.push(tf.layers.dense({ units: 10, activation: 'sigmoid', inputShape: [shape] }))
+  layerList.push(tf.layers.dense({ units: 3, activation: 'softmax' }))
 
-  model.add(tf.layers.dense({ units: 3, activation: 'softmax' }))
+  for (const layer of layerList) {
+    model.add(layer)
+  }
 
   model.compile({
     optimizer: optimizer,
-    loss: 'categoricalCrossEntropy',
+    loss: 'categoricalCrossentropy',
     metrics: ['accuracy'],
   })
 }
 
-export async function createClassicClassification(
-  learningRate,
-  unknownRate,
-  numberOfEpoch,
-  sLOptimizer,
-  layerList,
-  idLoss,
-  idMetrics,
-) {
-  const [xTrain, yTrain, xTest, yTest] = clasificador.getData(
-    unknownRate,
-    clasificador.IRIS_CLASSES,
-    clasificador.IRIS_DATA,
-  )
+export async function createClassicClassification(learningRate, unknownRate, numberOfEpoch, sLOptimizer, layerList, idLoss, idMetrics) {
+  const [xTrain, yTrain, xTest, yTest] = clasificadorIRIS.getData(unknownRate, IRIS_CLASSES, IRIS_DATA)
 
-  document.getElementById('salida').innerHTML += `
+  // modo secuencial
+  const model = tf.sequential()
+  const optimizer = createOptimizer(sLOptimizer, { learningRate })
+  const loss = createLoss(idLoss)
+  const metrics = createMetrics(idMetrics)
+
+  const text = `
 <p>MODELO CREADO A PARTIR DE: 
 <b>learningRate:</b> ${learningRate} 
 <b>unknownRate:</b> ${unknownRate} 
@@ -61,184 +45,102 @@ export async function createClassicClassification(
 <b>idLoss:</b> ${idLoss} 
 <b>idMetrics:</b> ${idMetrics}
 </p>`
+  document.getElementById('salida').innerHTML += text
 
-  //modo secuencial
-  const model = tf.sequential()
-  const optimizer = createOptimizer(sLOptimizer, { learningRate })
-  const loss = createLoss(idLoss)
-  const metrics = createMetrics(idMetrics)
-
-  console.log('Tensor secuencial', model)
-  console.log('Forma', model.shape)
-  console.log('ESTAS SON LAS UNIDADES DE LAS CAPAS', layerList)
   // Agregamos las capas
   layerList.forEach((layer, index) => {
-    if (index === 0) {
-      model.add(
-        tf.layers.dense({
-          units: layer.units,
-          activation: layer.activation.toLowerCase(),
-          inputShape: [xTrain.shape[1]],
-        }),
-      )
-    } else {
-      model.add(
-        tf.layers.dense({
-          units: layer.units,
-          activation: layer.activation.toLowerCase(),
-        }),
-      )
-    }
-    console.log(layer)
-    console.log('Tensor secuencial ' + index, model)
-    console.log('Forma ' + index, model.shape)
+    const newLayer = tf.layers.dense({
+      units: layer.units,
+      activation: layer.activation.toLowerCase(), ...(index === 0) && { inputShape: [xTrain.shape[1]] },
+    })
+    model.add(newLayer)
   })
 
   // Compilamos el modelo
   model.compile({
-    optimizer: optimizer,
-    loss: loss,
-    metrics: metrics,
+    optimizer: optimizer, loss: loss, metrics: metrics,
   })
 
   // Mostramos la información del modelo en el panel lateral
-  await tfvis.show.modelSummary(
-    { name: 'Arquitectura del modelo', tab: 'Modelo' },
-    model
-  )
+  const containerSummary = {
+    name: 'Arquitectura del modelo', tab: 'Modelo', styles: {}
+  }
+  await tfvis.show.modelSummary(containerSummary, model)
 
-
-  console.log('Tensor secuencial COMPILE', model)
-  console.log('Forma', model.shape)
-  console.log('ESTA ES LA FORMA DE XTRAIN', xTrain)
-
-  //Creamos las métricas que van a aparecer en los gráficos
-  const metrics2 = ['loss', 'val_loss', 'acc', 'val_acc']
-  const container = {
-    name: 'Entrenamiento del modelo',
-    tab: 'Entrenamiento',
-    styles: { height: '1000px' },
+  // Creamos las métricas que van a aparecer en los gráficos
+  const metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+  const containerFitCallbacks = {
+    name: 'Entrenamiento del modelo', tab: 'Entrenamiento', styles: { /*height: '1000px'*/ },
   }
 
-  const fitCallbacks = tfvis.show.fitCallbacks(container, metrics2, {
+  const fitCallbacks = tfvis.show.fitCallbacks(containerFitCallbacks, metrics_labels, {
     callbacks: ['onEpochEnd'],
   })
 
   const history = await model.fit(xTrain, yTrain, {
-    epochs: numberOfEpoch,
-    validationData: [xTest, yTest],
-    callbacks: fitCallbacks,
+    epochs: numberOfEpoch, validationData: [xTest, yTest], callbacks: fitCallbacks,
   })
 
-  console.log('Tensor secuencial TRAIN', model)
-  console.log('Forma', model.shape)
-  console.log(model)
+  console.log('Layer list', { layerList })
+  console.log('Tensor sequential compile', { model })
+  console.log('xTRAIN', { xTrain })
+  console.log('History', { history })
+  console.log('Configuration model', { config: model.getConfig() })
+
   return model
 }
 
-export async function createClassicClassificationCustomDataSet(
-  learningRate,
-  unknownRate,
-  numberOfEpoch,
-  sLOptimizer,
-  layerList,
-  idLoss,
-  idMetrics,
-  dataSet,
-) {
+export async function createClassicClassificationCustomDataSet(learningRate, unknownRate, numberOfEpoch, idOptimizer, layerList, idLoss, idMetrics, dataSet) {
   const [DATA_SET, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await getClassesFromDataSet(dataSet)
+  const [xTrain, yTrain, xTest, yTest] = clasificadorIRIS.getData(unknownRate, TARGET_SET_CLASSES, DATA_SET)
 
-  const [xTrain, yTrain, xTest, yTest] = clasificador.getData(unknownRate, TARGET_SET_CLASSES, DATA_SET)
   console.log(xTrain, yTrain, xTest, yTest)
   document.getElementById('salida').innerHTML += `
 <h3>MODELO CREADO A PARTIR DE: </h3>
-<p><b>learningRate:</b> ${learningRate}</p>
-<p><b>unknownRate:</b> ${unknownRate}</p> 
-<p><b>numberOfEpoch:</b> ${numberOfEpoch}</p> 
-<p><b>sLOptimizer:</b> ${sLOptimizer}</p> 
+<p><b>idOptimizer:</b> ${idOptimizer}</p> 
+<ul>
+    <li><b>learningRate:</b> ${learningRate}</li>
+</ul>
 <p><b>idLoss:</b> ${idLoss}</p> 
 <p><b>idMetrics:</b> ${idMetrics}</p>
+<p><b>unknownRate:</b> ${unknownRate}</p> 
+<p><b>numberOfEpoch:</b> ${numberOfEpoch}</p> 
 `
 
   // modo secuencial
   const model = tf.sequential()
-  const optimizer = createOptimizer(sLOptimizer, { learningRate })
+  const optimizer = createOptimizer(idOptimizer, { learningRate })
   const loss = createLoss(idLoss)
   const metrics = createMetrics(idMetrics)
 
-  console.log('loss', loss, idLoss, createLoss(idLoss))
-  console.log('Tensor secuencial', model)
-
   //Agregamos las capas
   layerList.forEach((layer, index) => {
-    if (index === 0) {
-      model.add(
-        tf.layers.dense({
-          units: layer.units,
-          activation: layer.activation.toLowerCase(),
-          inputShape: [xTrain.shape[1]],
-        }),
-      )
-    } else {
-      model.add(
-        tf.layers.dense({
-          units: layer.units,
-          activation: layer.activation.toLowerCase(),
-        }),
-      )
-    }
-
-    console.log(layer)
-    console.log('Tensor secuencial ' + index, model)
-    console.log('Forma ' + index, model.shape)
+    model.add(tf.layers.dense({
+      units: layer.units,
+      activation: layer.activation.toLowerCase(), ...(index === 0) && { inputShape: [xTrain.shape[1]] },
+    }))
   })
 
   // Compilamos el modelo
   model.compile({
-    optimizer,
-    loss,
-    metrics,
+    optimizer: optimizer, loss: loss, metrics: metrics
   })
 
-  console.log('Tensor secuencial COMPILE', { model })
-  console.log('Forma', { xTrain_shape: xTrain.shape })
-
   // Creamos las métricas que van a aparecer en los gráficos
-  const metrics2 = ['loss', 'val_loss', 'acc', 'val_acc']
-  const container = {
-    name: 'Entrenamiento del modelo',
-    tab: 'Entrenamiento',
-    styles: { height: '1000px' },
+  const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+  const fit_callbacks_container = {
+    name: 'Entrenamiento del modelo', tab: 'Entrenamiento', styles: { height: '1000px' },
   }
-
-  const fitCallbacks = tfvis.show.fitCallbacks(container, metrics2, {
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
     callbacks: ['onEpochEnd'],
   })
 
   await model.fit(xTrain, yTrain, {
-    epochs: numberOfEpoch,
-    validationData: [xTest, yTest],
-    callbacks: fitCallbacks,
-    // onEpochEnd: async (epoch, logs) => {
-    //   document.getElementById('salida').innerHTML +=
-    //     '<p>Epoch: ' + epoch + ' Logs:' + logs.loss + '</p>'
-    //   await tf.nextFrame()
-    // },
+    epochs: numberOfEpoch, validationData: [xTest, yTest], callbacks: fitCallbacks
   })
 
-  console.log(model)
+  console.log({ model })
   return Promise.resolve([model, TARGET_SET_CLASSES, DATA_SET_CLASSES])
-}
-
-function getDataSetModif(dataSet, types) {
-  const typePos = dataSet.datos[0].length - 1
-  for (let i = 0; i < dataSet.datos.length; i++) {
-    dataSet.datos[i][typePos] = types.findIndex(
-      (types) => types === dataSet.datos[i][typePos],
-    )
-  }
-  console.log('Aquí esta el data', dataSet.datos[0])
-  return dataSet.datos
 }
 
 async function getClassesFromDataSet(dataSet) {
@@ -284,7 +186,7 @@ async function getClassesFromDataSet(dataSet) {
     for (let val of iterator) {
       targetData.push(val)
     }
-    console.log(dataAux, targetData, indexDataAux)
+    console.log({ dataAux, targetData, indexDataAux })
     return [dataAux, targetData, indexDataAux]
   } catch (error) {
     console.error(error)
@@ -292,183 +194,243 @@ async function getClassesFromDataSet(dataSet) {
   }
 }
 
-// Devuelve el optimizador seleccionado por el usuario
+/**
+ * tf.train.
+ * sgd
+ * momentum
+ * adadelta
+ * adagrad
+ * rmsprop
+ * adamax
+ * adam
+ *
+ * @param idOptimizer
+ * @param params
+ * @returns {Optimizer}
+ */
 function createOptimizer(idOptimizer, params) {
-  console.log('ESTE ES EL OPTIMIZADOR', idOptimizer)
+  console.log({ idOptimizer, params })
+  let { learningRate } = params
   switch (idOptimizer) {
     case 'Sgd':
-      // Sgd,
-      let { learningRate: lr } = params
-      return tf.train.sgd(lr)
+      return tf.train.sgd(learningRate)
     case 'Momentum':
-      // momentum,
-      let { learningRate: lr_2, momentum, useNesterov } = params
-      return tf.train.momentum(lr_2, momentum, useNesterov)
-    case 'Adagrag':
-      // adagrag,
-      let { learningRate: lr_3 } = params
-      return tf.train.adagrad(lr_3)
-    case 'Adadelta':
-      // adadelta,
-      let { learningRate: lr_4 } = params
-      return tf.train.adadelta(lr_4)
-    case 'Adam':
-      // Adam,
-      let { learningRate: lr_5 } = params
-      return tf.train.adam(lr_5)
-    case 'Adamax':
-      // adamax,
-      let { learningRate: lr_6 } = params
-      return tf.train.adamax(lr_6)
+      let { momentum = 0.9 } = params
+      return tf.train.momentum(learningRate, momentum)
     case 'Rmsprop':
-      // rmsprop
-      let { learningRate: lr_7 } = params
-      return tf.train.rmsprop(lr_7)
+      return tf.train.rmsprop(learningRate)
+    case 'Adam':
+      return tf.train.adam(learningRate)
+    case 'Adadelta':
+      return tf.train.adadelta(learningRate)
+    case 'Adamax':
+      return tf.train.adamax(learningRate)
+    case 'Adagrag':
+      return tf.train.adagrad(learningRate)
 
     default:
-      console.error("Opción no disponible")
+      console.error("createOptimizer()", { idOptimizer, params })
+      return tf.train.adam(learningRate)
   }
 }
 
-//
-export function createOptimizerId(idOptimizer) {
-  console.error("Error, no esta optimizando nada")
+/**
+ * tf.train.
+ * sgd
+ * momentum
+ * adadelta
+ * adagrad
+ * rmsprop
+ * adamax
+ * adam
+ *
+ * @param idOptimizer
+ * @param params
+ * @returns {Optimizer}
+ */
+export function createOptimizerId(idOptimizer, params) {
+  console.log({ idOptimizer, params })
+  let { learningRate } = params
   switch (idOptimizer) {
     case 'Sgd':
-      // Sgd,
-      return tf.train.sgd()
+      return tf.train.sgd(learningRate)
     case 'Momentum':
-      // momentum,
-      return tf.train.momentum()
-    case 'Adagrag':
-      // adagrag,
-      return tf.train.adagrad()
+      let { momentum = 0.9 } = params
+      return tf.train.momentum(learningRate, momentum)
+    case 'Rmsprop':
+      return tf.train.rmsprop(learningRate)
+    case 'Adam':
+      return tf.train.adam()
     case 'Adadelta':
-      // adadelta,
       return tf.train.adadelta()
-    case 'Adam':
-      // Adam,
-      return tf.train.adam()
     case 'Adamax':
-      // adamax,
       return tf.train.adamax()
-    case 'Rmsprop':
-      // rmsprop
-      return tf.train.rmsprop()
+    case 'Adagrag':
+      return tf.train.adagrad(learningRate)
 
     default:
+      console.error("createOptimizerId()", { idOptimizer, params })
       return tf.train.adam()
   }
 }
 
-// Devuelve la pérdida seleccionada por el usuario
+/**
+ * tf.losses.{}
+ *
+ * absoluteDifference
+ * computeWeightedLoss
+ * cosineDistance
+ * hingeLoss
+ * huberLoss
+ * logLoss
+ * meanSquaredError
+ * sigmoidCrossEntropy
+ * softmaxCrossEntropy
+ *
+ * @param idLoss
+ * @returns {string}
+ */
 export function createLoss(idLoss) {
   console.log({ idLoss })
+
   switch (idLoss) {
-    //categoricalCrossEntropy??????
     case 'AbsoluteDifference':
-      // absoluteDifference,
       return 'absoluteDifference'
     case 'ComputeWeightedLoss':
-      // computeWeightedLoss,
       return 'computeWeightedLoss'
     case 'CosineDistance':
-      // cosineDistance,
       return 'cosineDistance'
     case 'HingeLoss':
-      // hingeLoss,
       return 'hingeLoss'
     case 'HuberLoss':
-      // huberLoss,
       return 'huberLoss'
     case 'LogLoss':
-      // logLoss,
       return 'logLoss'
     case 'MeanSquaredError':
-      // meanSquaredError
       return 'meanSquaredError'
     case 'SigmoidCrossEntropy':
-      // sigmoidCrossEntropy
       return 'sigmoidCrossEntropy'
     case 'SoftmaxCrossEntropy':
-      // softmaxCrossEntropy
       return 'softmaxCrossEntropy'
-    case 'CategoricalCrossEntropy':
-      return 'categoricalCrossEntropy'
+    case 'CategoricalCrossentropy':
+      return 'categoricalCrossentropy'
 
     default:
-      console.warn("createLoss()")
+      console.warn("createLoss()", { idLoss })
       return 'categoricalCrossentropy'
   }
 }
 
-// Devuelve la métrica seleccionada por el usuario
+/**
+ * 0  => binaryAccuracy
+ * 1  => binaryCrossEntropy
+ * 2  => categoricalAccuracy
+ * 3  => categoricalCrossentropy
+ * 4  => cosineProximity
+ * 5  => meanAbsoluteError
+ * 6  => meanAbsolutePercentageError
+ * 7  => meanSquaredError
+ * 8  => precision
+ * 9  => recall
+ * 10 => sparseCategoricalAccuracy
+ * 11 => accuracy
+ *
+ * @param idMetrics
+ * @returns {string[]}
+ */
 export function createMetrics(idMetrics) {
-  console.log(idMetrics, 'EL ID DE LA MÉTRICA')
+  console.log({ idMetrics })
   switch (idMetrics) {
     case 0:
-      // binaryAccuracy,
       return ['binaryAccuracy']
     case 1:
-      // binaryCrossEntropy,
       return ['binaryCrossEntropy']
     case 2:
-      // categoricalAccuracy,
       return ['categoricalAccuracy']
     case 3:
-      // categoricalCrossEntropy,
-      return ['categoricalCrossEntropy']
+      return ['categoricalCrossentropy']
     case 4:
-      // cosineProximity,
       return ['cosineProximity']
     case 5:
-      // meanAbsoluteError,
       return ['meanAbsoluteError']
     case 6:
-      // meanAbsolutePercentageError
       return ['meanAbsolutePercentageError']
     case 7:
-      // meanSquaredError
       return ['meanSquaredError']
     case 8:
-      // precision
       return ['precision']
     case 9:
-      // recall
       return ['recall']
     case 10:
-      // sparseCategoricalAccuracy
       return ['sparseCategoricalAccuracy']
     case 11:
-      //accuracy
       return ['accuracy']
 
     default:
+      console.warn("createMetrics()", { idMetrics })
       return ['accuracy']
   }
 }
 
-// async function showAccuracy(model, data) {
-//   const [preds, labels] = doPrediction(model, data)
-//   const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, preds)
-//   const container = { name: 'Exactitud', tab: 'Evaluación' }
-//   tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
+export const TYPE_OPTIMIZER_OBJECT = {
+  Sgd: 'Sgd',
+  Momentum: 'Momentum',
+  Adagrag: 'Adagrag',
+  Adadelta: 'Adadelta',
+  Adam: 'Adam',
+  Adamax: 'Adamax',
+  Rmsprop: 'Rmsprop',
+}
+export const TYPE_OPTIMIZER = Object.values(TYPE_OPTIMIZER_OBJECT)
 
-//   labels.dispose()
-// }
+export const TYPE_LOST_OBJECT = {
+  AbsoluteDifference: 'AbsoluteDifference',
+  ComputeWeightedLoss: 'ComputeWeightedLoss',
+  CosineDistance: 'CosineDistance',
+  HingeLoss: 'HingeLoss',
+  HuberLoss: 'HuberLoss',
+  LogLoss: 'LogLoss',
+  MeanSquaredError: 'MeanSquaredError',
+  SigmoidCrossEntropy: 'SigmoidCrossEntropy',
+  SoftmaxCrossEntropy: 'SoftmaxCrossEntropy',
+  CategoricalCrossentropy: 'CategoricalCrossentropy',
+}
+export const TYPE_LOSS = Object.values(TYPE_LOST_OBJECT)
 
-// function doPrediction(model, data, testDataSize = 500) {
+export const TYPE_METRICS_OBJECT = {
+  BinaryAccuracy: 'BinaryAccuracy',
+  BinaryCrossentropy: 'BinaryCrossentropy',
+  CategoricalAccuracy: 'CategoricalAccuracy',
+  CategoricalCrossentropy: 'CategoricalCrossentropy',
+  CosineProximity: 'CosineProximity',
+  MeanAbsoluteError: 'MeanAbsoluteError',
+  MeanAbsolutePercentageErr: 'MeanAbsolutePercentageErr',
+  MeanSquaredError: 'MeanSquaredError',
+  Precision: 'Precision',
+  Recall: 'Recall',
+  SparseCategoricalAccuracy: 'SparseCategoricalAccuracy',
+  Accuracy: 'Accuracy',
+}
+export const TYPE_METRICS = Object.values(TYPE_METRICS_OBJECT)
 
-//   const testData = data.nextTestBatch(testDataSize)
-//   const testxs = testData.xs.reshape([
-//     testDataSize,
-//     IMAGE_WIDTH,
-//     IMAGE_HEIGHT,
-//     1,
-//   ])
-//   const labels = testData.labels.argMax(-1)
-//   const preds = model.predict(testxs).argMax(-1)
+export const TYPE_ACTIVATION_OBJECT = {
+  Sigmoid: 'Sigmoid',
+  Softmax: 'Softmax',
+}
+export const TYPE_ACTIVATION = Object.values(TYPE_ACTIVATION_OBJECT)
 
-//   testxs.dispose()
-//   return [preds, labels]
-// }
+export const TYPE_CLASS_OBJECT = {
+  Conv2D: 'Conv2D',
+  MaxPooling2D: 'MaxPooling2D',
+}
+
+export const TYPE_CLASS = Object.values(TYPE_CLASS_OBJECT)
+
+export function objectToSelectOptions(obj) {
+  return Object.entries(obj).map((v) => {
+    return {
+      key: v[0].toLowerCase(),
+      label: v[0],
+    }
+  })
+}

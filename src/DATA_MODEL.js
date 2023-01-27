@@ -101,14 +101,6 @@ export const DATASET_DESCRIPTION = [
         </li>
       </ul>
 
-      <p>Por último los posibles valores que puede dar son:</p>
-      <ul>
-        <li><b>UNACC</b> - Inaccesible</li>
-        <li><b>ACC</b> - Accesible</li>
-        <li><b>GOOD</b> - Bien</li>
-        <li><b>VGOOD</b> - Muy bien</li>
-      </ul>
-
       <p>Estos son los valores de entrada que podrá tomar la red.</p>
       <ul>
         <li><b>buying:</b> vhigh, high, med, low.</li>
@@ -117,6 +109,14 @@ export const DATASET_DESCRIPTION = [
         <li><b>persons:</b> 2, 4, more.</li>
         <li><b>lug_boot:</b> small, med, big.</li>
         <li><b>safety:</b> low, med, high.</li>
+      </ul>
+
+      <p>Por último los posibles valores que puede dar son:</p>
+      <ul>
+        <li><b>UNACC</b> - Inaccesible</li>
+        <li><b>ACC</b> - Accesible</li>
+        <li><b>GOOD</b> - Bien</li>
+        <li><b>VGOOD</b> - Muy bien</li>
       </ul>
 
       <p>
@@ -166,7 +166,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de salida:</p>
       <ul>
-        <li>Misma elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
+        <li>Mismo elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
       </ul>
     </>,
     <>
@@ -185,7 +185,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de salida:</p>
       <ul>
-        <li>Misma elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
+        <li>Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
       </ul>
     </>,
     <>
@@ -203,11 +203,14 @@ export const DATASET_DESCRIPTION = [
       <p>Datos de salida:</p>
       <ul>
         <li>
-          Misma elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
+          Mismo elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
           ademas de hombros, codos, manos, pies, rodillas y cadera.
         </li>
       </ul>
     </>,
+    <>
+      <p>Pendiente</p>
+    </>
   ],
   [
     'DATASET PROPIO',
@@ -297,6 +300,7 @@ export const DATASET_DESCRIPTION = [
 ]
 
 export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
+  console.log({ row, dataset })
   return DATASET_DESCRIPTION[row][dataset];
 }
 
@@ -315,7 +319,7 @@ const getNameDatasetByID_ClassicClassification = (dataSet) => {
 
 
 const getNameDatasetByID_ObjectDetection = (dataSet) => {
-  switch (dataSet) {
+  switch (dataSet.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -345,6 +349,7 @@ const getNameDatasetByID_ImageClassification = (dataSet) => {
       console.error("Error, opción no disponible")
   }
 }
+
 
 export {
   getNameDatasetByID_ClassicClassification,

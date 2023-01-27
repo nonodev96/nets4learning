@@ -13,6 +13,7 @@ import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
 import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitectureMenu";
 import "./App.css";
+import InteractiveEditor from "./views/editor/InteractiveEditor";
 
 function App() {
   return (
@@ -26,13 +27,14 @@ function App() {
           <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
           {/*<Route exact path={"/starting/"} component={Starting}></Route>*/}
           {/*<Route exact path={"/secondary/:id"} component={SecondMenu}></Route>*/}
-          <Route exact path={"/editor/:id"} component={Editor}></Route>
+          {/*<Route exact path={"/editor/:id"} component={Editor}></Route>*/}
           {/*<Route exact path={"/training"} component={Training}></Route>*/}
           {/*<Route exact path={"/test"} component={Test}></Route>*/}
           {/* <Route exact path="/upload-training-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-training/" component={}></Route> */}
           {/* <Route exact path="/upload-model-custom/" component={}></Route> */}
           {/* <Route exact path="/edit-model/" component={}></Route> */}
+          <Route exact path={"/test"} component={InteractiveEditor}></Route>
 
           <Route component={NotFoundPage}></Route>
         </Switch>

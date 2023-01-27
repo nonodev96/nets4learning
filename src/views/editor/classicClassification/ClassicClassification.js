@@ -1,19 +1,16 @@
 import { useState } from 'react'
 import { Col, Row, CloseButton, Button, Container, Card, Form } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { createClassicClassification, getIrisDataType } from '../../../modelos/ArchitectureHelper'
+import {
+  createClassicClassification,
+  TYPE_ACTIVATION, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+} from '../../../modelos/ArchitectureHelper'
 import * as alertHelper from '../../../utils/alertHelper'
 import './ClassicClassification.css'
+import * as iris from "../../../modelos/ClassificationHelper_IRIS";
 
 export default function ClassicClassification(props) {
   const { tipo, ejemplo } = props
-
-  const modelsType = [
-    'Clasificación clásica',
-    'Clasificación de imágenes',
-    'Identificación de objetos',
-    'Regresión lineal',
-  ]
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
@@ -21,61 +18,21 @@ export default function ClassicClassification(props) {
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [NoEpochs, setNoEpochs] = useState(50)
   const [string, setString] = useState('0.1;4.3;2.1;0.2')
 
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-  const ACTIVATION_TYPE = ['Sigmoid', 'Softmax']
-
   const handleClickPlay = async (event) => {
     event.preventDefault()
-    console.log('Comenzamos a crear el modelo')
     try {
       if (ejemplo === 0) {
         if (Model === undefined) {
           await alertHelper.alertError("Primero debes de cargar la arquitectura")
         }
       }
+      console.log('Comenzamos a crear el modelo')
       console.log('Estas son las métricas', Layer)
       if (tipo === 0) {
         const model = await createClassicClassification(
@@ -110,13 +67,11 @@ export default function ClassicClassification(props) {
 
     console.log('La solución es:', predictionWithArgMax)
 
-    document.getElementById('demo').innerHTML =
-      prediction + 'tipo: ' + getIrisDataType(predictionWithArgMax)
+    const iris_prediction = iris.getIrisDataType(predictionWithArgMax)
 
-    await alertHelper.alertInfo(
-      'Tipo: ' + getIrisDataType(predictionWithArgMax),
-      getIrisDataType(predictionWithArgMax),
-    )
+    document.getElementById('demo').innerHTML = prediction + 'tipo: ' + iris_prediction
+
+    await alertHelper.alertInfo('Tipo: ' + iris_prediction, iris_prediction)
   }
 
   const handlerAddLayer = async () => {
@@ -161,7 +116,7 @@ export default function ClassicClassification(props) {
   }
 
   const handleChangeNoEpochs = () => {
-    let aux = document.getElementById('formNumberOfEpochs').value
+    let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
@@ -239,7 +194,7 @@ export default function ClassicClassification(props) {
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
-                            {ACTIVATION_TYPE.map((itemAct, indexAct) => {
+                            {TYPE_ACTIVATION.map((itemAct, indexAct) => {
                               return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                             })}
                           </Form.Select>
@@ -269,6 +224,8 @@ export default function ClassicClassification(props) {
                 <Form.Group className="mb-3" controlId="formTrainRate">
                   <Form.Label>Tasa de entrenamiento</Form.Label>
                   <Form.Control type="number"
+                                min={0}
+                                max={100}
                                 placeholder="Introduce la tasa de entrenamiento"
                                 defaultValue={learningValue}/>
                   <Form.Text className="text-muted">
@@ -277,7 +234,7 @@ export default function ClassicClassification(props) {
                 </Form.Group>
 
                 {/* Nº OT ITERATIONS */}
-                <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                   <Form.Label>Nº de iteraciones</Form.Label>
                   <Form.Control type="number"
                                 placeholder="Introduce el número de iteraciones"
@@ -295,7 +252,7 @@ export default function ClassicClassification(props) {
                                defaultValue={Optimizer}
                                onChange={handleChangeOptimization}>
                     <option>Selecciona el optimizador</option>
-                    {OPTIMIZER_TYPE.map((item, id) => {
+                    {TYPE_OPTIMIZER.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -310,7 +267,7 @@ export default function ClassicClassification(props) {
                                defaultValue={LossValue}
                                onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
-                    {LOSS_TYPE.map((item, id) => {
+                    {TYPE_LOSS.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -326,7 +283,7 @@ export default function ClassicClassification(props) {
                                defaultValue={MetricsValue}
                                onChange={handleChangeMetrics}>
                     <option>Selecciona la métrica</option>
-                    {METRICS_TYPE.map((item, id) => {
+                    {TYPE_METRICS.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -379,10 +336,7 @@ export default function ClassicClassification(props) {
           {/* BLOCK 3 */}
           <Row>
             <Col>
-              <div id="demo"
-                   className="borde console"
-                   width="100%"
-                   height="100%">
+              <div id="demo" className="console">
                 Aquí se muestran los resultados
               </div>
             </Col>

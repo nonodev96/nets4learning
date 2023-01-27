@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Bangers);
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,8 +12,12 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.console {
+  font-size: small;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .titulos {
@@ -23,4 +29,18 @@ code {
   border: 1px dashed #fff;
   z-index: 1;
   position: absolute;
+}
+
+.visor {
+  z-index: 1000;
+}
+
+.nets4-border-1 {
+  background: #fff;
+  border: solid black;
+  float: left;
+
+  border-width: 3px 4px 3px 5px;
+  border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
+  transform: rotate(2deg);
 }

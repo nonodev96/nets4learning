@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useParams } from "react-router"
 import { Col, Container, Row, Card } from "react-bootstrap"
-import doIris from "../../modelos/Clasificador"
+import { doIris } from "../../modelos/ClassificationHelper_IRIS"
 import useLocalStorage from "../../hooks/useLocalStorage"
 import CodePen from "../../components/codePen/CodePen"
 import "./Editor.css"
@@ -13,10 +13,10 @@ export default function Editor(props) {
 
   const [html, setHtml] = useLocalStorage(
     "html",
-    `<div id="demo" className={"borde console"} width="100%" height="100%"><p>Aquí se muestran los resultados</p></div>`
+    `<div id="demo" className={"console"}><p>Aquí se muestran los resultados</p></div>`
   )
   const [css, setCss] = useLocalStorage("css", "")
-  const [js, setJs] = useLocalStorage("js", `hlhlhl`)
+  const [js, setJs] = useLocalStorage("js", ``)
 
   const [srcDoc, setSrcDoc] = useState("")
 
@@ -25,9 +25,14 @@ export default function Editor(props) {
     const timeout = setTimeout(() => {
       setSrcDoc(`
       <html lang="es">
-      <body>${html}</body>
-      <style>${css}</style>
-      <script>${js}</script>
+      <head>
+        <title>Test</title>
+        <style>${css}</style>
+      </head>
+      <body>
+        ${html}
+        <script>${js}</script>
+      </body>
       </html>
       `)
     }, 250)
@@ -40,12 +45,7 @@ export default function Editor(props) {
   };
 
   const handleClickPlay = () => {
-    // const editText = document.getElementById("editorTexto");
-    // console.log(editText);
-    // fun(js);
-    // let a = eval(js);
-    // console.log("Esta es la salida", a);
-    // const model=createClassicClassification(0.01,0.1,40,)
+    console.trace("handleClickPlay")
   };
 
   return (
@@ -65,9 +65,9 @@ export default function Editor(props) {
           </Col>
         </Row>
 
-        <div className="container-fluid container-fluid-w1900">
-          <Row className="editor">
-            <Col className="codigo" xs={8} id="editorTexto">
+        <div className="container-fluid ">
+          <Row className="mt-3 editor">
+            <Col  xs={8} className="codigo"id="editorTexto">
               <div className="pane borde">
                 <CodePen language="javascript"
                          displayName="JS"
@@ -131,10 +131,7 @@ export default function Editor(props) {
             <Row>
               <Col></Col>
               <Col>
-                <div id="demo"
-                     className="borde console"
-                     width="100%"
-                     height="100%">
+                <div id="demo" className="console">
                   <p>Aquí se muestran los resultados</p>
                 </div>
               </Col>

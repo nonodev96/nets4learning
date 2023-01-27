@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -9,9 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const app = (
   // <ThemeProvider theme={tema}>
-  <BrowserRouter>
-    <App/>
-  </BrowserRouter>
+  <StrictMode>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  </StrictMode>
   // </ThemeProvider>
 );
 

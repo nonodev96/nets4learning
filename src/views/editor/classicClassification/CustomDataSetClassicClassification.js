@@ -2,14 +2,6 @@ import React, { useState, useEffect } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import { Col, Row, Container, Button, Form, Card, Accordion } from 'react-bootstrap'
 import {
-  createClassicClassification,
-  createClassicClassificationCustomDataSet,
-} from '../../../modelos/ArchitectureHelper'
-import './ClassicClassification.css'
-import * as clasificador from '../../../modelos/Clasificador'
-import * as cochesDataset from '../../../modelos/data/coches.json'
-import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
-import {
   getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
   LIST_MODEL_OPTIONS,
@@ -17,11 +9,20 @@ import {
   MODEL_IRIS,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL";
+import {
+  createClassicClassification,
+  createClassicClassificationCustomDataSet, objectToSelectOptions, TYPE_ACTIVATION_OBJECT,
+  TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER,
+} from '../../../modelos/ArchitectureHelper'
+import * as iris from "../../../modelos/ClassificationHelper_IRIS";
+import * as cars from '../../../modelos/data/coches.json'
 import * as alertHelper from '../../../utils/alertHelper'
+import GraphicRed from '../../../utils/graphicRed/GraphicRed'
+import { CONSOLE_LOG_h3 } from "../../../Constantes";
+import './ClassicClassification.css'
 
 export default function CustomDataSetClassicClassification(props) {
   const { dataSet } = props
-  // console.log("CustomDataSetClassicClassification", { dataSet })
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const NumberEpochs = 50
@@ -85,50 +86,6 @@ export default function CustomDataSetClassicClassification(props) {
     setActiveLayer(0)
   }, [])
 
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossentropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-
-  const ACTIVATION_TYPE_SELECT = [
-    { value: 'sigmoid', label: 'Sigmoid' },
-    { value: 'softmax', label: 'Softmax' }
-  ]
-
   const handleClickPlay = async (event) => {
     event.preventDefault()
     console.log('Este es el conjunto de datos: ', { dataSet })
@@ -164,8 +121,8 @@ export default function CustomDataSetClassicClassification(props) {
         break;
       }
       case MODEL_CAR: {
-        let aux = cochesDataset
-        console.log({ cochesDataset })
+        let aux = cars
+        console.log({ cochesDataset: cars })
         let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
         let _unknownRate = 0.1
         let _numberOfEpoch = parseInt(NoEpochs)
@@ -209,7 +166,7 @@ export default function CustomDataSetClassicClassification(props) {
           _idMetrics
         )
         setDataSetClasses([0, 1, 2, 3])
-        setTargetSetClasses(clasificador.IRIS_CLASSES)
+        setTargetSetClasses(iris.IRIS_CLASSES)
         setModel(model)
         await alertHelper.alertSuccess('Modelo entrenado con éxito')
         break;
@@ -342,7 +299,7 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   const handleChangeNoEpochs = async () => {
-    let aux = document.getElementById('formNumberOfEpochs').value
+    let aux = document.getElementById('FormNumberOfEpochs').value
     if (aux === undefined) {
       await alertHelper.alertWarning(`Error handleChangeNoEpochs`)
     }
@@ -409,15 +366,17 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   const handleChangeFileUpload = (e) => {
-    let files = e.target.files
-    let reader = new FileReader()
-    reader.readAsText(files[0])
+    if (e.target.files.length !== 1) {
+      console.log("%cError, no se ha podido leer el fichero", CONSOLE_LOG_h3)
+      return;
+    }
     try {
+      let files = e.target.files
+      let reader = new FileReader()
+      reader.readAsText(files[0])
       let object
       reader.onload = (e) => {
-        // console.warn(e.target.result);
         object = JSON.parse(e.target.result.toString())
-        console.log('Este es el objeto', object)
         setCustomDataSet(object)
       }
     } catch (error) {
@@ -433,7 +392,7 @@ export default function CustomDataSetClassicClassification(props) {
             <Col xl={12} className={"mt-3"}>
               <Card>
                 <Card.Body>
-                  {setUploadedArchitecture ? (
+                  {UploadedArchitecture ? (
                     <Card.Text>
                       A continuación se ha pre cargado la arquitectura del fichero importado en la vista anterior.
                       Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
@@ -605,9 +564,11 @@ export default function CustomDataSetClassicClassification(props) {
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
-                            {ACTIVATION_TYPE_SELECT.map((itemAct, indexAct) => {
-                              return (<option key={indexAct} value={itemAct.value}>{itemAct.label}</option>)
-                            })}
+                            {objectToSelectOptions(TYPE_ACTIVATION_OBJECT)
+                              .map(({ key, label }, indexAct) => {
+                                return (<option key={indexAct} value={key}>{label}</option>)
+                              })
+                            }
                           </Form.Select>
                           <Form.Text className="text-muted">
                             Será el optimizador que se usará para activar la función
@@ -636,7 +597,7 @@ export default function CustomDataSetClassicClassification(props) {
                   </Form.Group>
 
                   {/* Nº OT ITERATIONS */}
-                  <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                  <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                     <Form.Label>Nº de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
@@ -654,7 +615,7 @@ export default function CustomDataSetClassicClassification(props) {
                                  defaultValue={Optimizer}
                                  onChange={handleChangeOptimization}>
                       <option>Selecciona el optimizador</option>
-                      {OPTIMIZER_TYPE.map((item, id) => {
+                      {TYPE_OPTIMIZER.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -670,7 +631,7 @@ export default function CustomDataSetClassicClassification(props) {
                                  defaultValue={LossValue}
                                  onChange={handleChangeLoss}>
                       <option>Selecciona la función de pérdida</option>
-                      {LOSS_TYPE.map((item, id) => {
+                      {TYPE_LOSS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -686,7 +647,7 @@ export default function CustomDataSetClassicClassification(props) {
                                  defaultValue={MetricsValue}
                                  onChange={handleChangeMetrics}>
                       <option>Selecciona la métrica</option>
-                      {METRICS_TYPE.map((item, id) => {
+                      {TYPE_METRICS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from '../../../modelos/NumberClasificatorHelper'
+import * as numberClass from '../../../modelos/ClassificationHelper_MNIST'
 import * as alertHelper from "../../../utils/alertHelper"
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
-import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
+import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
+import { TYPE_CLASS, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../modelos/ArchitectureHelper";
 
 
 export default function ObjectDetection(props) {
@@ -20,53 +21,13 @@ export default function ObjectDetection(props) {
   const NumberEpochs = 10
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [NoEpochs, setNoEpochs] = useState(2)
   const [Recarga, setRecarga] = useState(false)
   const [ImageUploaded, setImageUploaded] = useState(false)
 
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-  const ACTIVATION_TYPE = ['Sigmoid', 'Relu']
-  const CLASS_TYPE = ['Conv2D', 'MaxPooling2D']
 
   useEffect(() => {
     if (Recarga) {
@@ -124,7 +85,7 @@ export default function ObjectDetection(props) {
   const handleClickPlay = async (event) => {
     event.preventDefault()
     if (Layer[0].class === 'Conv2D') {
-      const model = await numberClass.run(
+      const model = await numberClass.MNIST_run(
         parseInt(NoEpochs),
         document.getElementById('FormOptimizer').value,
         Layer,
@@ -179,39 +140,40 @@ export default function ObjectDetection(props) {
   const handleVectorTestImageUpload = async () => {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
-    } else {
-      const canvas = document.getElementById('imageCanvas')
-      const small_canvas = document.getElementById('smallcanvas')
-      const ctx2 = small_canvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, small_canvas)
-
-      const imgData = ctx2.getImageData(0, 0, 28, 28)
-      //El arreglo completo
-      let arr = []
-      // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
-      let arr28 = []
-      for (let p = 0; p < imgData.data.length; p += 4) {
-        let valor = imgData.data[p + 3] / 255
-        // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
-        arr28.push([valor])
-        if (arr28.length === 28) {
-          arr.push(arr28)
-          arr28 = []
-        }
-      }
-
-      // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
-      arr = [arr]
-      // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
-      const tensor4 = tf.tensor4d(arr)
-      let resultados = Model.predict(tensor4).dataSync()
-      let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-
-      console.log('Predicción', mayorIndice)
-      document.getElementById('demo').innerHTML = mayorIndice.toString()
-
-      await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+      return
     }
+    const canvas = document.getElementById('imageCanvas')
+    const small_canvas = document.getElementById('smallcanvas')
+    const ctx2 = small_canvas.getContext('2d')
+    numberClass.resample_single(canvas, 28, 28, small_canvas)
+
+    const imgData = ctx2.getImageData(0, 0, 28, 28)
+    //El arreglo completo
+    let arr = []
+    // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+    let arr28 = []
+    for (let p = 0; p < imgData.data.length; p += 4) {
+      let valor = imgData.data[p + 3] / 255
+      // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
+      arr28.push([valor])
+      if (arr28.length === 28) {
+        arr.push(arr28)
+        arr28 = []
+      }
+    }
+
+    // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+    arr = [arr]
+    // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
+    const tensor4 = tf.tensor4d(arr)
+    let resultados = Model.predict(tensor4).dataSync()
+    let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+
+    console.log('Predicción', mayorIndice)
+    document.getElementById('demo').innerHTML = mayorIndice.toString()
+
+    await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
+
   }
 
   const handleDownloadModel = () => {
@@ -337,7 +299,7 @@ export default function ObjectDetection(props) {
 
   // PARÁMETROS GENERALES
   const handleChangeNoEpochs = () => {
-    let aux = document.getElementById('formNumberOfEpochs').value
+    let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
@@ -474,8 +436,7 @@ export default function ObjectDetection(props) {
                     <li>
                       <b>Exportar modelo.</b><br/>
                       Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo
-                      y
-                      guardarlo localmente.
+                      y guardarlo localmente.
                     </li>
 
                     <li>
@@ -505,7 +466,7 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             {/* SPECIFIC PARAMETERS */}
             <Col xl={6}>
-              {/*TODO: falta el foreach */}
+              {/* TODO: falta el foreach */}
               {/* ADD LAYER */}
               <div className="d-grid gap-2">
                 <Button type="button"
@@ -532,7 +493,7 @@ export default function ObjectDetection(props) {
                                      defaultValue={Layer[ActiveLayer].class}
                                      onChange={handleCambio}>
                           <option>Selecciona la clase de la capa</option>
-                          {CLASS_TYPE.map((itemAct, indexAct) => {
+                          {TYPE_CLASS.map((itemAct, indexAct) => {
                             return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                           })}
                         </Form.Select>
@@ -555,13 +516,12 @@ export default function ObjectDetection(props) {
                                   placeholder="Introduce la tasa de entrenamiento"
                                   defaultValue={learningValue}/>
                     <Form.Text className="text-muted">
-                      Recuerda que debe ser un valor entre 0 y 100 (es un
-                      porcentaje)
+                      Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                     </Form.Text>
                   </Form.Group>
 
                   {/* Nº OT ITERATIONS */}
-                  <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                  <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                     <Form.Label>Nº de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
@@ -579,7 +539,7 @@ export default function ObjectDetection(props) {
                                  defaultValue={Optimizer}
                                  onChange={handleChangeOptimization}>
                       <option>Selecciona el optimizador</option>
-                      {OPTIMIZER_TYPE.map((item, id) => {
+                      {TYPE_OPTIMIZER.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -594,7 +554,7 @@ export default function ObjectDetection(props) {
                                  defaultValue={LossValue}
                                  onChange={handleChangeLoss}>
                       <option>Selecciona la función de pérdida</option>
-                      {LOSS_TYPE.map((item, id) => {
+                      {TYPE_LOSS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -610,7 +570,7 @@ export default function ObjectDetection(props) {
                                  defaultValue={MetricsValue}
                                  onChange={handleChangeMetrics}>
                       <option>Selecciona la métrica</option>
-                      {METRICS_TYPE.map((item, id) => {
+                      {TYPE_METRICS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -750,15 +710,17 @@ export default function ObjectDetection(props) {
           </Row>
 
           {/* BLOCK 3 */}
-          <Row className="resultados">
+          <Row className="mt-3">
             <Row>
               <Col>
-                <div id="demo"
-                     className="borde console"
-                     width="100%"
-                     height="100%">
-                  Aquí se muestran los resultados
-                </div>
+                <Card>
+                  <Card.Header><h3>Resultados</h3></Card.Header>
+                  <Card.Body>
+                    <div id="demo" className="console">
+                      Aquí se muestran los resultados
+                    </div>
+                  </Card.Body>
+                </Card>
               </Col>
             </Row>
           </Row>

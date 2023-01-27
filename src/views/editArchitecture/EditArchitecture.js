@@ -21,10 +21,7 @@ import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
 function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()
 
-
   const Print_HTML_Model_View = () => {
-    // console.trace()
-    // console.log({ tipo })
     switch (id.toString()) {
       case '0':
         if (tipo === '0') {

@@ -164,14 +164,6 @@ p {
   flex-direction: column;
 }
 
-.console {
-  font-size: small;
-}
-/*ELIMINADO*/
-/*Form {*/
-/*  margin: 1rem 1rem 1rem 1rem;*/
-/*  color: black;*/
-/*}*/
 
 .column {
   box-sizing: border-box;

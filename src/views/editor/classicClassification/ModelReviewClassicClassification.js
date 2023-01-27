@@ -4,7 +4,8 @@ import * as tf from '@tensorflow/tfjs'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../../utils/alertHelper'
 import { CONSOLE_LOG_h3 } from "../../../Constantes";
-import { IRIS_CLASSES, CAR_CLASSES, CAR_DATA_CLASSES } from '../../../modelos/Clasificador'
+import { CAR_CLASSES, CAR_DATA_CLASSES } from '../../../modelos/ClassificationHelper_CAR'
+import { IRIS_CLASSES } from '../../../modelos/ClassificationHelper_IRIS'
 import {
   getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
@@ -18,9 +19,9 @@ export default function ModelReviewClassicClassification(props) {
   const { dataSet } = props
 
   // Parte 1: Definimos (cargamos) el modelo
-  const [Model, setModel] = useState()
+  const [Model, setModel] = useState(null)
   // Parte 2: Introducimos el vector a probar
-  const [textToCheck, setTextToCheck] = useState()
+  const [textToCheck, setTextToCheck] = useState("")
   // Parte 3: Comprobamos con la lógica del modelo si funciona
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
@@ -30,8 +31,8 @@ export default function ModelReviewClassicClassification(props) {
 
   async function loadModel_CAR() {
     console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
-    console.log(`%c${JSON.stringify(process.env)}`, CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel(process.env.PUBLIC_URL + "/models/carClassification/mymodelCar.json")
+    const model = await tf.loadLayersModel(
+      process.env.PUBLIC_URL + "/models/carClassification/mymodelCar.json")
     model.summary()
     setModel(model)
     await alertHelper.alertSuccess("Modelo cargado con éxito")
@@ -40,8 +41,7 @@ export default function ModelReviewClassicClassification(props) {
   async function loadModel_IRIS() {
     console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
     const model = await tf.loadLayersModel(
-      "http://localhost:3000/models/irisClassification/mymodelIris.json"
-    )
+      process.env.PUBLIC_URL + "/models/irisClassification/mymodelIris.json")
     model.summary()
     setModel(model)
     await alertHelper.alertSuccess("Modelo cargado con éxito")
@@ -70,7 +70,6 @@ export default function ModelReviewClassicClassification(props) {
   }, [dataSet])
 
   const handleVectorTest = async () => {
-    console.log("handleVectorTest")
     setIsButtonDisabled(true)
     // Ejemplo modelo del coche
     // vhigh;vhigh;2;2;big;med
@@ -154,7 +153,7 @@ export default function ModelReviewClassicClassification(props) {
         }
         break;
       }
-      default:{
+      default: {
         console.error("Error, conjunto de datos no reconocido")
         break
       }

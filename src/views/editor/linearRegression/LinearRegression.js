@@ -1,19 +1,16 @@
 import { useState } from 'react'
-import { Col, Row, Form, CloseButton, Button, Container, Card} from 'react-bootstrap'
+import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import { createClassicClassification, getIrisDataType } from '../../../modelos/ArchitectureHelper'
+import {
+  createClassicClassification,
+  TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+} from '../../../modelos/ArchitectureHelper'
+import { getIrisDataType } from "../../../modelos/ClassificationHelper_IRIS"
 import './ClassicClassification.css'
 import *  as alertHelper from "../../../utils/alertHelper"
 
 export default function LinearRegression(props) {
   const { tipo } = props
-
-  const modelsType = [
-    'Clasificación clásica',
-    'Clasificación de imágenes',
-    'Identificación de objetos',
-    'Regresión lineal',
-  ]
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
@@ -24,50 +21,10 @@ export default function LinearRegression(props) {
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setString] = useState()
-
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-  const ACTIVATION_TYPE = ['Sigmoid', 'Softmax']
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
@@ -78,7 +35,7 @@ export default function LinearRegression(props) {
       const model = await createClassicClassification(
         parseInt(document.getElementById('formTrainRate').value) / 100,
         0.1,
-        parseInt(document.getElementById('formNumberOfEpochs').key),
+        parseInt(document.getElementById('FormNumberOfEpochs').key),
         document.getElementById('FormOptimizer').key,
         Layer,
         LossValue,
@@ -233,7 +190,7 @@ export default function LinearRegression(props) {
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
                             <option>Selecciona la función de activación</option>
-                            {ACTIVATION_TYPE.map((itemAct, indexAct) => {
+                            {TYPE_ACTIVATION.map((itemAct, indexAct) => {
                               return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                             })}
                           </Form.Select>
@@ -270,7 +227,7 @@ export default function LinearRegression(props) {
                 </Form.Group>
 
                 {/* Nº OT ITERATIONS */}
-                <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                   <Form.Label>Nº de iteraciones</Form.Label>
                   <Form.Control type="number"
                                 placeholder="Introduce el número de iteraciones"
@@ -287,7 +244,7 @@ export default function LinearRegression(props) {
                                defaultValue={Optimizer}
                                onChange={handleChangeOptimization}>
                     <option>Selecciona el optimizador</option>
-                    {OPTIMIZER_TYPE.map((item, id) => {
+                    {TYPE_OPTIMIZER.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -302,7 +259,7 @@ export default function LinearRegression(props) {
                                defaultValue={LossValue}
                                onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
-                    {LOSS_TYPE.map((item, id) => {
+                    {TYPE_LOSS.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -318,7 +275,7 @@ export default function LinearRegression(props) {
                                defaultValue={MetricsValue}
                                onChange={handleChangeMetrics}>
                     <option>Selecciona la métrica</option>
-                    {METRICS_TYPE.map((item, id) => {
+                    {TYPE_METRICS.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>

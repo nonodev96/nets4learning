@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from '../../../modelos/NumberClasificatorHelper.js'
-import CustomCanvasDrawer from '../../../utils/customCanvasDrawer.js'
-import GraphicRed from '../../../utils/graphicRed/GraphicRed.js'
-import LayerEdit from './LayerEdit.js'
+import * as numberClass from '../../../modelos/ClassificationHelper_MNIST'
+import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
+import GraphicRed from '../../../utils/graphicRed/GraphicRed'
+import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
 
@@ -20,7 +20,7 @@ export default function MnistImageClassification(props) {
   const NumberEpochs = 15
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossEntropy')
+  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
   const [string, setString] = useState('0.1;4.3;2.1;0.2')
@@ -48,14 +48,14 @@ export default function MnistImageClassification(props) {
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
-    'CategoricalCrossEntropy',
+    'CategoricalCrossentropy',
   ]
 
   const METRICS_TYPE = [
     'BinaryAccuracy',
     'BinaryCrossentropy',
     'CategoricalAccuracy',
-    'CategoricalCrossEntropy',
+    'CategoricalCrossentropy',
     'CosineProximity',
     'MeanAbsoluteError',
     'MeanAbsolutePercentageErr',
@@ -146,7 +146,7 @@ export default function MnistImageClassification(props) {
   const handleClickPlay = async (event) => {
     event.preventDefault()
     if (Layer[0].class === 'Conv2D') {
-      const model = await numberClass.run(
+      const model = await numberClass.MNIST_run(
         parseInt(NoEpochs),
         document.getElementById('FormOptimizer').value,
         Layer,
@@ -362,7 +362,7 @@ export default function MnistImageClassification(props) {
 
   // PARÁMETROS GENERALES
   const handleChangeNoEpochs = () => {
-    let aux = document.getElementById('formNumberOfEpochs').value
+    let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
@@ -578,7 +578,7 @@ export default function MnistImageClassification(props) {
                     </Form.Group>
 
                     {/* Nº OT ITERATIONS */}
-                    <Form.Group className="mb-3" controlId="formNumberOfEpochs">
+                    <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                       <Form.Label>Nº de iteraciones</Form.Label>
                       <Form.Control type="number"
                                     placeholder="Introduce el número de iteraciones"

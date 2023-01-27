@@ -1,8 +1,17 @@
 {
   "name": "tfg-nets4learning",
   "version": "0.3.0",
-  "homepage": "https://simidat.ujaen.es/nets4learning",
+  "homepage": "/build",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "deploy:development": "sh -ac '. ./.env.development; npm run build'",
+    "deploy:production": "sh -ac '. ./.env.production; npm run build'",
+    "deploy:simidat": "sh -ac '. ./.env.simidat; npm run build'"
+  },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -49,12 +58,6 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
     "webpack": "^5.75.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
