@@ -214,6 +214,17 @@ class ModelReviewObjectDetection extends React.Component {
     await this.processData(model, ctx, img_or_video)
   }
 
+  async processImage(model) {
+    const originalImageCanvas = document.getElementById('originalImageCanvas')
+    const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
+
+    const processImageCanvas = document.getElementById('processImageCanvas')
+    const processImageCanvas_ctx = processImageCanvas.getContext('2d')
+
+    const resultCanvas = document.getElementById('resultCanvas')
+    const resultCanvas_ctx = resultCanvas.getContext('2d')
+  }
+
   async processData(model, ctx, img_or_video) {
     switch (getNameDatasetByID_ObjectDetection(this.state.dataset)) {
       case MODEL_UPLOAD: {
@@ -238,6 +249,7 @@ class ModelReviewObjectDetection extends React.Component {
       case MODEL_COCO_SSD: {
         const predictions = await model.detect(img_or_video)
         this.renderCoCoSsd(ctx, predictions)
+        console.log({ predictions, ctx })
         break
       }
       default: {
@@ -246,7 +258,6 @@ class ModelReviewObjectDetection extends React.Component {
       }
     }
   }
-
 
   runModelWithDetector() {
     let id = 0
@@ -276,7 +287,7 @@ class ModelReviewObjectDetection extends React.Component {
     console.log({ webcamChecked, isCameraProcessModel: this.state.isCameraProcessModel })
   }
 
-  handleChangeFileUpload(_files) {
+  async handleChangeFileUpload(_files) {
     // let tgt = e.target || window.event.srcElement
     console.log("ModelReviewObjectDetection -> handleChangeFileUpload", { _files })
     let files = _files
@@ -287,36 +298,40 @@ class ModelReviewObjectDetection extends React.Component {
     const processImageCanvas = document.getElementById('processImageCanvas')
     const processImageCanvas_ctx = processImageCanvas.getContext('2d')
 
-    function draw() {
-      originalImageCanvas.width = 500
-      originalImageCanvas.height = 500
-      console.log({
-        height: this.height, width: this.width, ratio: this.height / this.width, resize: this.width * 0.75,
-      })
-      processImageCanvas.height = processImageCanvas.width * (this.height / this.width)
-      // step 1 - resize to 75%
-      const oc = document.createElement('canvas')
-      const oc_ctx = oc.getContext('2d')
-      // Set the width & height to 75% of image
-      oc.width = this.width * 0.75
-      oc.height = this.height * 0.75
-      // step 2, resize to temporary size
-      oc_ctx.drawImage(this, 0, 0, oc.width, oc.height)
-      // step 3, resize to final size
-      originalImageCanvas_ctx.drawImage(oc, 0, 0, oc.width, oc.height, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
+    const resultCanvas = document.getElementById('resultCanvas')
+    const resultCanvas_ctx = resultCanvas.getContext('2d')
+
+    await this.init()
+    let that = this;
+
+    async function draw(event) {
+      this.width = this.width * 0.25
+      this.height = this.height * 0.25
+      originalImageCanvas.width = this.width
+      originalImageCanvas.height = this.height
+      processImageCanvas.width = this.width
+      processImageCanvas.height = this.height
+
+      originalImageCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
+      const imgData = originalImageCanvas_ctx.getImageData(0, 0, originalImageCanvas.height, originalImageCanvas.width)
+
+      await that.processData(that.state.modelDetector, processImageCanvas_ctx, imgData)
+
+      resultCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
+      await that.processData(that.state.modelDetector, resultCanvas_ctx, imgData)
     }
 
-    async function failed() {
-      await alertHelper.alertError('Error al crear la imagen')
+    function failed() {
+      console.error('Error al crear la imagen')
     }
 
     const img = new Image()
+    img.src = URL.createObjectURL(files[0])
     img.onload = draw
     img.onerror = failed
-    img.src = URL.createObjectURL(files[0])
   }
 
-  handleProcessImage() {
+  async handleProcessImage() {
     console.log("handleProcessImage")
   }
 
@@ -337,6 +352,7 @@ class ModelReviewObjectDetection extends React.Component {
                       <Container fluid={true}>
                         <Row>
                           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                            {/*TODO*/}
                             <DragAndDrop name={"json"}
                                          accept={{ 'application/octet-stream': ['.bin'] }}
                                          text={"Añada el fichero binario"}
@@ -364,18 +380,21 @@ class ModelReviewObjectDetection extends React.Component {
                 <Card.Header><h3>Reconocimiento en tiempo real</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>WebCam</Card.Title>
-                  <Form>
-                    <div key={`default-checkbox`}
-                         className="mb-3">
-                      <Form.Check type="checkbox"
-                                  id={'default-checkbox'}
-                                  label={`Usar webcam`}
-                                  value={this.state.isCameraEnable ? "true" : "false"}
-                                  onChange={this.handleChangeCamera}/>
-                    </div>
-                  </Form>
-                  <hr/>
+
                   <Container fluid={true}>
+                    <Row className={"mt-3"}>
+                      <Form>
+                        <div key={`default-checkbox`}
+                             className="mb-3">
+                          <Form.Check type="checkbox"
+                                      id={'default-checkbox'}
+                                      label={`Usar webcam`}
+                                      value={this.state.isCameraEnable ? "true" : "false"}
+                                      onChange={this.handleChangeCamera}/>
+                        </div>
+                      </Form>
+                    </Row>
+                    <hr/>
                     <Row className={"mt-3"}>
                       <Col className={"d-flex justify-content-center"}>
                         {this.state.isCameraEnable &&
@@ -423,39 +442,38 @@ class ModelReviewObjectDetection extends React.Component {
                                      accept={{
                                        'image/png': ['.png']
                                      }}
-                                     function_DropAccepted={this.handleChangeFileUpload}
-                        />
+                                     function_DropAccepted={this.handleChangeFileUpload}/>
                       </Col>
 
                       {/* SUBMIT BUTTON */}
-                      <div className="d-grid gap-2">
-                        <Button type="button"
-                                onClick={this.handleProcessImage}
-                                variant="primary">
-                          Ver resultado
-                        </Button>
-                      </div>
+                      {/*
+                        <div className="d-grid gap-2">
+                          <Button type="button"
+                                  onClick={this.handleProcessImage}
+                                  variant="primary">
+                            Ver resultado
+                          </Button>
+                        </div>
+                       */}
                     </Row>
-
-                    {
-                      <Row className={"mt-3"}>
-                        <Col className={"mt-3 d-flex justify-content-center"}>
-                          <canvas id="originalImageCanvas"
-                                  className={"nets4-border-1"}
-                                  width={250} height={250}></canvas>
-                        </Col>
-                        <Col className={"mt-3 d-flex justify-content-center"}>
-                          <canvas id="processImageCanvas"
-                                  className={"nets4-border-1"}
-                                  width={250} height={250}></canvas>
-                        </Col>
-                        <Col className={"mt-3 d-flex justify-content-center"}>
-                          <canvas id="resultCanvas"
-                                  className={"nets4-border-1"}
-                                  width={250} height={250}></canvas>
-                        </Col>
-                      </Row>
-                    }
+                    <hr/>
+                    <Row className={"mt-3"}>
+                      <Col className={"mt-3 d-flex justify-content-center"}>
+                        <canvas id="originalImageCanvas"
+                                className={"nets4-border-1"}
+                                width={250} height={250}></canvas>
+                      </Col>
+                      <Col className={"mt-3 d-flex justify-content-center"}>
+                        <canvas id="processImageCanvas"
+                                className={"nets4-border-1"}
+                                width={250} height={250}></canvas>
+                      </Col>
+                      <Col className={"mt-3 d-flex justify-content-center"}>
+                        <canvas id="resultCanvas"
+                                className={"nets4-border-1"}
+                                width={250} height={250}></canvas>
+                      </Col>
+                    </Row>
                   </Container>
                 </Card.Body>
               </Card>
