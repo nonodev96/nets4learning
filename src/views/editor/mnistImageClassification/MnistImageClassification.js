@@ -29,6 +29,7 @@ export default function MnistImageClassification(props) {
   const [ImageUploaded, setImageUploaded] = useState(false)
 
   const OPTIMIZER_TYPE = [
+
     'Sgd',
     'Momentum',
     'Adagrag',
@@ -41,13 +42,16 @@ export default function MnistImageClassification(props) {
   const LOSS_TYPE = [
     'AbsoluteDifference',
     'ComputeWeightedLoss',
+    //Todo Alejandro: ¿Es lo mismo cosineDistance de esta lista que cosineProximity de METRICS_TYPE?
     'CosineDistance',
     'HingeLoss',
     'HuberLoss',
     'LogLoss',
+    //Todo Alejandro: Repetido en esta listaw y en Metrics_type
     'MeanSquaredError',
     'SigmoidCrossEntropy',
     'SoftmaxCrossEntropy',
+    //Todo Alejandro: Repetido en esta listaw y en Metrics_type
     'CategoricalCrossentropy',
   ]
 
@@ -70,6 +74,7 @@ export default function MnistImageClassification(props) {
   const CLASS_TYPE = ['Conv2D', 'MaxPooling2D']
 
   useEffect(() => {
+    //TODO Alejandro: Tiene una muy parecida en objectDetection
     if (Recarga) {
       console.log(Layer)
     } else {
@@ -107,7 +112,9 @@ export default function MnistImageClassification(props) {
         setRecarga(true)
         setActiveLayer(0)
       } else {
+        // todo Alejandro: Esta parte es identica a la anterior, ¿el if es necesario o deberia saltar otra cosa?
         setLayer([
+
           {
             class: 'Conv2D',
             kernelSize: 5,
@@ -144,6 +151,7 @@ export default function MnistImageClassification(props) {
 
   // CREACIÓN DEL MODELO Y TESTEO
   const handleClickPlay = async (event) => {
+    //TODO Alejandro: Tiene una muy parecida en objectdetection
     event.preventDefault()
     if (Layer[0].class === 'Conv2D') {
       const model = await numberClass.MNIST_run(
@@ -161,21 +169,29 @@ export default function MnistImageClassification(props) {
   }
 
   const handleVectorTest = async () => {
+    //TODO Alejandro: Tiene una parecida en objectDetection
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
+
+      //todo Alejandro: Eliminar comentarios
+
       // var canvas
       // canvas = document.getElementById('bigcanvas')
 
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')
-      // numberClass.resample_single(canvas, 28, 28, smallcanvas)
 
+      //todo Alejandro: Eliminar comentario
+      // numberClass.resample_single(canvas, 28, 28, smallcanvas)
       const imgData = ctx2.getImageData(0, 0, 28, 28)
+
+      //NOTA Alejandro: Entiendo que hace una estructura de esta manera arr[arr28[1..28],arr28[1..28],..] hasta haber completado la imagen
       let arr = [] // El arreglo completo
       let arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
       for (let p = 0; p < imgData.data.length; p += 4) {
         let valor = imgData.data[p + 3] / 255
+        //NOTA Alejandro: ¿en que momento normaliza a 0-1?
         arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el índice 0... again
         if (arr28.length === 28) {
           arr.push(arr28)
@@ -190,16 +206,20 @@ export default function MnistImageClassification(props) {
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
       console.log('Predicción', mayorIndice)
+      //todo Alejandro: Eliminar comentario
       // document.getElementById('demo').innerHTML = mayorIndice
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
 
+  //TODO Alejandro: Esta función es idéntica a la anterior, considerar eliminar esta o la anterior
   const handleVectorTestImageUpload = async () => {
+    //TODO Alejandro: PArecido a objectDetection
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
+      //todo Alejandro: Está exactamente igual que en handleVectorTest, ¿No se puede factorizar?
       const canvas = document.getElementById('imageCanvas')
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')
@@ -231,11 +251,14 @@ export default function MnistImageClassification(props) {
   }
 
   const handleDownloadModel = () => {
+    //TODO Alejandro: Igual que en objectdetection
     Model.save('downloads://mymodel')
   }
 
   // CONTROL DE LAS CAPAS
   const handlerAddLayer = async () => {
+
+    //TODO Alejanddro: Tiene una PARECIDA en objectDetection
     let array = Layer
     if (array.length < 10) {
 
@@ -255,6 +278,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handlerRemoveLayer = (idLayer) => {
+    //TODO ALejandro: Misma funcion que en objectDetection
     let array = Layer
     let array2 = []
     if (array.length === 1) {
@@ -271,6 +295,7 @@ export default function MnistImageClassification(props) {
 
   //PARÁMETROS DE LAS CAPAS
   const handleChangeKernel = (index) => {
+    //TODO Alejandro: Misma funcion que en objectDetection
     let array = Layer
     array[index].kernelSize = parseInt(
       document.getElementById(`formKernelLayer${index}`).value,
@@ -279,6 +304,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeFilters = (index) => {
+    //TODO Alejandro: Misma funcion que en objectDetection
     let array = Layer
     array[index].filters = parseInt(
       document.getElementById(`formFiltersLayer${index}`).value,
@@ -287,6 +313,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeStrides = (index) => {
+    //TODO Alejandro: Misma función que en ObjectDetection
     let array = Layer
     array[index].strides = parseInt(
       document.getElementById(`formStridesLayer${index}`).value,
@@ -295,6 +322,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangePoolSize = (index, id) => {
+    /*Todo Alejandro: misma funcion que en objectDetection*/
     let array = Layer
     array[index].poolSize[id] = parseInt(
       document.getElementById(`formPoolSize${id}Layer${index}`).value,
@@ -303,6 +331,11 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeStridesMax = (index, id) => {
+    /*TODO Alejandro: en objectDetection hay otra función con el mismo nombre que hace exactamente lo mismo*/
+    /*TODO Alejandro: Echarle un ojo mas tarde, porque el elementid
+    *  te manda al layeredit donde hay tres funciones parecidas,
+    * pero que una te coge las capas en general, y las otras dos
+    * cogen cada una elementos distintos del mismo vector en objectDetection*/
     let array = Layer
     array[index].strides[id] = parseInt(
       document.getElementById(`formStrides${id}Layer${index}`).value,
@@ -311,6 +344,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeClass = (index) => {
+    //TODO Alejandro, en objectDetection hay otra clase igual, que hace exactamente lo mismo
     let array = Layer
     array[index].class = document.getElementById(`formClass${index}`).value
     if (array[index].class === 'Conv2D') {

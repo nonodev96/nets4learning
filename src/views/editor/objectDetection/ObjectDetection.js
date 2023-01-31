@@ -182,6 +182,8 @@ export default function ObjectDetection(props) {
 
   // CONTROL DE LAS CAPAS
   const handlerAddLayer = async () => {
+
+    //
     let array = Layer
     array.push({
       class: 'Conv2D',

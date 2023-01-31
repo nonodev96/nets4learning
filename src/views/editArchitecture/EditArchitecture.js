@@ -1,6 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router'
-import { Col, Container, Row } from "react-bootstrap";
+import {useParams} from 'react-router'
+import {Col, Container, Row} from "react-bootstrap";
 
 import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
@@ -16,10 +16,10 @@ import ModelReviewClassicImageClassification
 
 import ObjectDetection from '../editor/objectDetection/ObjectDetection'
 import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
-import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import {LIST_TYPE_MODELS} from "../../DATA_MODEL";
 
 function EditArchitecture() {
-  const { id, tipo, ejemplo } = useParams()
+  const {id, tipo, ejemplo} = useParams()
 
   const Print_HTML_Model_View = () => {
     switch (id.toString()) {
@@ -30,11 +30,7 @@ function EditArchitecture() {
           return <CustomDataSetClassicClassification dataSet={ejemplo}/>
         }
       case '1':
-        if (tipo === '0') {
-          return <ObjectDetection/>
-        } else {
-          return <ObjectDetection/>
-        }
+        return <ObjectDetection/>
       case '2':
         if (tipo === '0') {
           return <ModelReviewObjectDetection dataSet={ejemplo}/>
