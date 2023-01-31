@@ -197,7 +197,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de entrada:</p>
       <ul>
-        <li>Imogen o vídeo(webcam) a color.</li>
+        <li>Imagen o vídeo(webcam) a color.</li>
       </ul>
 
       <p>Datos de salida:</p>
@@ -230,7 +230,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de entrada:</p>
       <ul>
-        <li>Imogen en escala de grises y con un tamaño de 28x28 píxeles</li>
+        <li>Imagen en escala de grises y con un tamaño de 28x28 píxeles</li>
       </ul>
 
       <p>Por último los posibles valores que puede dar son:</p>
@@ -250,7 +250,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de entrada:</p>
       <ul>
-        <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
+        <li>Imagen con valores de color entre [0,1] de 224x224 píxeles.</li>
       </ul>
 
       <p>Por último los posibles valores que puede dar son:</p>
@@ -285,7 +285,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Datos de entrada:</p>
       <ul>
-        <li>Imogen con valores de color entre [0,1] de 224x224 píxeles.</li>
+        <li>Imagen con valores de color entre [0,1] de 224x224 píxeles.</li>
       </ul>
 
       <p>Por último los posibles valores que puede dar son:</p>
@@ -305,7 +305,7 @@ export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
 }
 
 const getNameDatasetByID_ClassicClassification = (dataSet) => {
-  switch (dataSet) {
+  switch (dataSet.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -336,7 +336,7 @@ const getNameDatasetByID_ObjectDetection = (dataSet) => {
 }
 // TODO
 const getNameDatasetByID_ImageClassification = (dataSet) => {
-  switch (dataSet) {
+  switch (dataSet.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -350,6 +350,15 @@ const getNameDatasetByID_ImageClassification = (dataSet) => {
   }
 }
 
+const LIST_OF_IMAGES = [
+  "bulldog.jpg",
+  "cat.jpg",
+  "cheetah.jpg",
+  "cruise.jpg",
+  "duck.jpg",
+  "elephant.jpg",
+  "lion.jpg",
+]
 
 export {
   getNameDatasetByID_ClassicClassification,
@@ -374,5 +383,7 @@ export {
   LIST_MODELS_IMAGE_CLASSIFICATION,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
-  MODEL_IMAGE_RESNET
+  MODEL_IMAGE_RESNET,
+
+  LIST_OF_IMAGES
 }

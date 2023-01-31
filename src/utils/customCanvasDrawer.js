@@ -4,9 +4,9 @@ import './customCanvasDrawer.css'
 
 export default function CustomCanvasDrawer(props) {
   const { submitFunction } = props
+  const [isDrawing, setIsDrawing] = useState(false)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
-  const [isDrawing, setIsDrawing] = useState(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -47,8 +47,6 @@ export default function CustomCanvasDrawer(props) {
       const { offsetX, offsetY } = nativeEvent
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
-    } else {
-      return
     }
   }
 
@@ -84,13 +82,18 @@ export default function CustomCanvasDrawer(props) {
                 onChange={startDrawing}></canvas>
 
       </div>
-      <div className="d-grid gap-2 col-6 mx-auto mt-3">
-        <Button onClick={submitFunction}
-                variant={"primary"}>
+      <div className="d-grid gap-2 col-6 mx-auto mt-3"
+           style={{ "gridTemplateColumns": "repeat(2, 1fr)" }}>
+        <Button variant={"primary"}
+                onClick={() => {
+                  submitFunction()
+                }}>
           Validar
         </Button>
-        <Button onClick={() => clear}
-                variant={"warning"}>
+        <Button variant={"warning"}
+                onClick={() => {
+                  clear()
+                }}>
           Limpiar
         </Button>
       </div>

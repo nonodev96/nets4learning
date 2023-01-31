@@ -1,89 +1,135 @@
 /* eslint-disable eqeqeq */
-import { useState, useEffect } from 'react'
-import { Button, Col, Container, Row, Card } from 'react-bootstrap'
+import React from 'react'
+import { Button, Col, Container, Row, Card, Modal } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
+import * as tf_mobilenet from '@tensorflow-models/mobilenet'
 import * as numberClass from '../../../modelos/ClassificationHelper_MNIST'
 import * as datosAuxiliares from '../../../modelos/data/imageClassification/imgaClassificationHelper'
 import * as alertHelper from '../../../utils/alertHelper'
-import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import {
   getHTML_DATASET_DESCRIPTION,
-  getNameDatasetByID_ImageClassification, LIST_MODEL_OPTIONS,
+  getNameDatasetByID_ImageClassification,
+  LIST_MODEL_OPTIONS,
   MODEL_IMAGE_MNIST,
-  MODEL_IMAGE_MOBILENET, MODEL_IMAGE_RESNET,
-  MODEL_UPLOAD
+  MODEL_IMAGE_MOBILENET,
+  MODEL_IMAGE_RESNET,
+  MODEL_UPLOAD,
+  LIST_OF_IMAGES
 } from "../../../DATA_MODEL";
+import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
+import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
+import VerticallyCenteredModal from "../../../components/verticallyCenteredModal/VerticallyCenteredModal";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-export default function ModelReviewClassicImageClassification(props) {
-  const { dataSet } = props
+export default class ModelReviewClassicImageClassification extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataset_ID: parseInt(props.dataSet ?? '0'),
+      dataSet: props.dataSet,
+      ImageUploaded: null,
+      model: null,
+      modalShow: false
+    }
+  }
 
-  const [ImageUploaded, setImageUploaded] = useState()
-  const [Model, setModel] = useState(null)
+  componentDidMount() {
+    this.loadModel()
+      .catch(console.error)
+  }
 
-  async function loadModel() {
-    switch (getNameDatasetByID_ImageClassification(dataSet)) {
+  async loadModel() {
+    switch (getNameDatasetByID_ImageClassification(this.state.dataSet)) {
       case MODEL_UPLOAD: {
-
+        const json = document.getElementById('json-upload')
+        const weights = document.getElementById('weights-upload')
+        // FIXME
+        const model = await tf.loadLayersModel(
+          tf.io.browserFiles([json.files[0], weights.files[0]]),
+        )
+        this.setState({ model })
+        await alertHelper.alertSuccess('Modelo cargado con éxito')
         break
       }
       case MODEL_IMAGE_MNIST: {
-        const model = await tf.loadLayersModel(
-          'http://localhost:3000/models/mnistClassification/mymodel.json'
-        );
+        // const model = await tf.loadLayersModel(
+        //   'http://localhost:3000/models/mnistClassification/mymodel.json'
+        // );
         // model.summary()
-        setModel(model)
-        await alertHelper.alertSuccess('Modelo cargado con éxito')
+        try {
+          const model = await tf.loadGraphModel(
+            "https://tfhub.dev/tensorflow/tfgan/eval/mnist/logits/1",
+            { fromTFHub: true }
+          )
+          this.setState({ model: model })
+          await alertHelper.alertSuccess('Modelo cargado con éxito')
+        } catch (error) {
+          console.log(error)
+        }
         break
       }
       case MODEL_IMAGE_MOBILENET: {
-        // 'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v1_50/classification/1/default/1',
-        const model = await tf.loadGraphModel(
-          'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_050_192/classification/3/default/1',
-          { fromTFHub: true },
-        )
-        setModel(model)
-        await alertHelper.alertSuccess('Modelo cargado con éxito')
+        try {
+          // // 'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v1_50/classification/1/default/1',
+          // const model = await tf.loadGraphModel(
+          //   'https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v1_050_192/classification/3/default/1',
+          //   { fromTFHub: true }
+          // )
+          // this.setState({ model })
+          // await alertHelper.alertSuccess('Modelo cargado con éxito')
+          this.setState({ model: await tf_mobilenet.load() })
+          await alertHelper.alertSuccess('Modelo cargado con éxito')
+        } catch (error) {
+          console.error(error)
+        }
         break
       }
       case MODEL_IMAGE_RESNET: {
-        const model = await tf.loadGraphModel(
-          'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/1/default/1',
-          { fromTFHub: true },
-        )
-        setModel(model)
-        await alertHelper.alertSuccess('Modelo cargado con éxito')
+        try {
+          const model = await tf.loadGraphModel(
+            "https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1",
+            { fromTFHub: true }
+          )
+          this.setState({ model: model })
+          await alertHelper.alertSuccess('Modelo cargado con éxito')
+        } catch (e) {
+          console.error(e)
+        }
         break
       }
     }
   }
 
-  useEffect(() => {
-    loadModel()
-      .catch(console.error)
-  }, [])
-
-  const handleVectorTest = async () => {
-    if (!ImageUploaded) {
+  async handleVectorTest() {
+    if (!this.state.ImageUploaded) {
       await alertHelper.alertError('Primero debes de subir una imagen')
       return
     }
     // FIXME
     let tensor4
 
-    switch (getNameDatasetByID_ImageClassification(dataSet)) {
+    switch (getNameDatasetByID_ImageClassification(this.state.dataSet)) {
       case MODEL_UPLOAD: {
         try {
-          const json = document.getElementById('json-upload')
-          const weights = document.getElementById('weights-upload')
-          // FIXME
-          const model = await tf.loadLayersModel(
-            tf.io.browserFiles([json.files[0], weights.files[0]]),
-          )
-
-          // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
-          // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
-          let resultados = model.predict(tensor4).dataSync()
+          let resultados = this.state.model.predict(tensor4).dataSync()
           let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
           console.log('Predicción', mayorIndice)
           // alert('¿El número es un ' + mayorIndice + '?')
@@ -94,15 +140,15 @@ export default function ModelReviewClassicImageClassification(props) {
         break
       }
       case MODEL_IMAGE_MNIST: {
-        const canvas = document.getElementById('originalImage')
-        const smallcanvas = document.getElementById('smallcanvas')
-        let ctx2 = smallcanvas.getContext('2d')
-        numberClass.resample_single(canvas, 28, 28, smallcanvas)
+        const originalImage = document.getElementById('originalImage')
+        const smallCanvas = document.getElementById('smallcanvas')
+        numberClass.resample_single(originalImage, 28, 28, smallCanvas)
 
-        let imgData = ctx2.getImageData(0, 0, 28, 28)
-        let arr = [] //El arreglo completo
-        let arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+        let smallCanvas_ctx = smallCanvas.getContext('2d')
+        let imgData = smallCanvas_ctx.getImageData(0, 0, 28, 28)
 
+        let arr = []
+        let arr28 = []
         for (let p = 0; p < imgData.data.length; p += 4) {
           let valor = imgData.data[p + 3] / 255
           // Agregar al arr28 y normalizar a 0-1. Aparte guarde dentro de un arreglo en el índice 0... again
@@ -116,36 +162,34 @@ export default function ModelReviewClassicImageClassification(props) {
         tensor4 = tf.tensor4d(arr)
 
         // FIXME: antes estaba abajo
-        if (dataSet === '1') {
-          let resultados = Model.predict(tensor4).dataSync()
-          let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-          // console.log('Predicción', mayorIndice)
-          // document.getElementById('demo').innerHTML = mayorIndice
-          // alert('¿El número es un ' + mayorIndice + '?')
-          await alertHelper.alertInfo(`¿El número es un : ${mayorIndice}?`, mayorIndice)
-        }
+        let resultados = this.state.model.predict(tensor4).dataSync()
+        console.log({ resultados: resultados })
+        let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
+        await alertHelper.alertInfo(`¿El número es un : ${mayorIndice}?`, mayorIndice)
         break
       }
-      case MODEL_IMAGE_MOBILENET:
-      case MODEL_IMAGE_RESNET:
-        const canvas = document.getElementById('originalImage')
-        const ctx1 = canvas.getContext('2d')
+      case MODEL_IMAGE_MOBILENET: {
+        break
+      }
+      case MODEL_IMAGE_RESNET: {
+        const originalImage = document.getElementById('originalImage')
+        const originalImage_ctx = originalImage.getContext('2d')
 
         const resultCanvas = document.getElementById('resultCanvas')
-        const ctx2 = resultCanvas.getContext('2d')
+        const resultCanvas_ctx = resultCanvas.getContext('2d')
 
         resultCanvas.height = 224
         resultCanvas.width = 224
 
-        const oc = document.createElement('canvas')
-        const octx = oc.getContext('2d')
+        const newCanvas = document.createElement('canvas')
+        const newCanvas_ctx = newCanvas.getContext('2d')
         // Set the width & height to 75% of image
-        oc.width = canvas.width * 0.75
-        oc.height = canvas.height * 0.75
-        // step 2, resize to temporary size
-        octx.drawImage(canvas, 0, 0, oc.width, oc.height)
+        newCanvas.width = originalImage.width * 0.75
+        newCanvas.height = originalImage.height * 0.75
 
-        ctx2.drawImage(oc, 0, 0, oc.width, oc.height, 0, 0, resultCanvas.width, resultCanvas.height)
+        // step 2, resize to temporary size
+        newCanvas_ctx.drawImage(originalImage, 0, 0, newCanvas.width, newCanvas.height)
+        resultCanvas_ctx.drawImage(newCanvas, 0, 0, newCanvas.width, newCanvas.height, 0, 0, resultCanvas.width, resultCanvas.height)
 
         const cat = document.getElementById('originalImage')
         // let tensor =  cast(browser.fromPixels(cat),'float32')
@@ -162,52 +206,51 @@ export default function ModelReviewClassicImageClassification(props) {
           .toFloat()
           .div(tf.scalar(127))
           .sub(tf.scalar(1))
+        const result = this.state.model.predict(normalized)
 
-        const solution = Model.predict(normalized)
+        let a = result.as1D().argMax().dataSync()[0]
 
-        let a = solution.as1D().argMax().dataSync()[0]
+
         // let b=solution.as1D().argMax().print()
-        console.log(a)
-        console.log(datosAuxiliares.imageNameList[a])
+        console.log(a, datosAuxiliares.imageNameList[a])
         // alert("El modelo predice que la imagen es: "+datosAuxiliares.imageNameList[a])
         await alertHelper.alertInfo(
           'El modelo predice que la imagen es: ' + datosAuxiliares.imageNameList[a],
           datosAuxiliares.imageNameList[a]
         )
         break
+      }
     }
   }
 
-  const handleVectorTestImageUpload = async () => {
-    const canvas = document.getElementById('bigcanvas')
-    const smallcanvas = document.getElementById('smallcanvas')
-    let ctx2 = smallcanvas.getContext('2d')
-    numberClass.resample_single(canvas, 28, 28, smallcanvas)
-    let imgData = ctx2.getImageData(0, 0, 28, 28)
-    let arr = [] // El arreglo completo
-    let arr28 = [] // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+  async handleVectorTest_CanvasDraw() {
+    const bigCanvas = document.getElementById('bigcanvas')
+    const smallCanvas = document.getElementById('smallcanvas')
+    let smallCanvas_ctx = smallCanvas.getContext('2d')
+    numberClass.resample_single(bigCanvas, 28, 28, smallCanvas)
+    let imgData = smallCanvas_ctx.getImageData(0, 0, 28, 28)
+    // El arreglo completo
+    let arr = []
+    // Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
+    let arr28 = []
     for (let p = 0; p < imgData.data.length; p += 4) {
       let valor = imgData.data[p + 3] / 255
-      arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el índice 0... again
+      // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el índice 0... again
+      arr28.push([valor])
       if (arr28.length === 28) {
         arr.push(arr28)
         arr28 = []
       }
     }
-
-    arr = [arr] // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
-    // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
+    arr = [arr]
     let tensor4 = tf.tensor4d(arr)
-    let resultados = Model.predict(tensor4).dataSync()
+    let resultados = this.state.model.predict(tensor4).dataSync()
     let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-
     console.log('Predicción', mayorIndice)
-    // document.getElementById('demo').innerHTML = mayorIndice
-
     await alertHelper.alertInfo(`¿El número es un ${mayorIndice}?`, mayorIndice)
   }
 
-  const handleChangeFileUpload = async (e) => {
+  async handleChangeFileUpload(e) {
     try {
       let tgt = e.target || window.event.srcElement;
       let files = tgt.files
@@ -236,7 +279,7 @@ export default function ModelReviewClassicImageClassification(props) {
         octx.drawImage(canvas, 0, 0, oc.width, oc.height)
 
         ctx2.drawImage(oc, 0, 0, oc.width, oc.height, 0, 0, imageCanvas.width, imageCanvas.height)
-        setImageUploaded(true)
+        this.setState({ ImageUploaded: true })
       }
 
       function failed() {
@@ -253,105 +296,183 @@ export default function ModelReviewClassicImageClassification(props) {
     }
   }
 
-  function Print_HTML_Section() {
-    switch (dataSet) {
+  async PredictImage({ target }) {
+    const predictions = await this.state.model.classify(target)
+    this.setState({ modalShow: true })
+    console.log({ predictions })
+  }
+
+  Print_HTML_Section() {
+    switch (getNameDatasetByID_ImageClassification(this.state.dataSet)) {
       case MODEL_UPLOAD: {
         return <>
-
+          <div>
+            <p>Carga tu propio Modelo.</p>
+            <p>Primero el archivo .json y después el fichero .bin</p>
+            <input id="json-upload"
+                   style={{ marginLeft: '1rem' }}
+                   type="file"
+                   name="json"
+                   accept=".json"></input>
+            <input id="weights-upload"
+                   style={{ marginLeft: '1rem' }}
+                   type="file"
+                   accept=".bin"
+                   name="bin"></input>
+          </div>
         </>
       }
-      case MODEL_IMAGE_MNIST: {
-        break
-      }
-      case MODEL_IMAGE_RESNET: {
-        break
-      }
+      case MODEL_IMAGE_MNIST:
+      case MODEL_IMAGE_RESNET:
       case MODEL_IMAGE_MOBILENET: {
-        break
+        return <>
+          {getHTML_DATASET_DESCRIPTION(3, this.state.dataset_ID)}
+        </>
+      }
+      default: {
+        console.error("Error, opción no disponible")
+        break;
       }
     }
   }
 
-  return (
-    <>
-      <Container id={"ModelReviewClassicImageClassification"}>
+  Print_HTML_TextOptions() {
+    return LIST_MODEL_OPTIONS[3][this.state.dataset_ID]
+  }
 
-        <Row className={"mt-3"}>
-          <Col>
-            <Card>
-              <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
-              <Card.Body>
-                {{
-                  0: <>
-                    <div>
-                      <p>Carga tu propio Modelo.</p>
-                      <p>Primero el archivo .json y después el fichero .bin</p>
-                      <input id="json-upload"
-                             style={{ marginLeft: '1rem' }}
-                             type="file"
-                             name="json"
-                             accept=".json"></input>
-                      <input id="weights-upload"
-                             style={{ marginLeft: '1rem' }}
-                             type="file"
-                             accept=".bin"
-                             name="bin"></input>
-                    </div>
-                  </>,
-                }[dataSet]}
-                {dataSet !== '0' ? (
-                  <>
-                    {getHTML_DATASET_DESCRIPTION(3, dataSet)}
-                  </>
-                ) : ("")}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+  Print_HTML_Bar() {
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Chart.js Bar Chart',
+        },
+      },
+    };
 
-        <Row className={"mt-3"}>
-          <Col>
-            <Card>
-              <Card.Header><h3>Resultado</h3></Card.Header>
-              <Card.Body>
-                <Row>
-                  <Col>
-                    <CustomCanvasDrawer submitFunction={() => handleVectorTestImageUpload}/>
-                  </Col>
-                </Row>
-                <Row className={"mt-3"}>
-                  <Col>
-                    <input style={{ marginBottom: '2rem' }}
-                           type="file"
-                           name="doc"
-                           onChange={() => handleChangeFileUpload}></input>
-
-                    <canvas id="originalImage" style={{ display: 'none' }}></canvas>
-                    <canvas id="imageCanvas"></canvas>
-                    <canvas id="resultCanvas" style={{ display: 'none' }}></canvas>
-
-                    <div className="d-grid gap-2">
-                      <Button type="button"
-                              onClick={() => handleVectorTest}
-                              variant={"primary"}>
-                        Validar
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-                <Row className={"mt-3"}>
-                  <Col>
-                    <canvas id="smallcanvas"
-                            width="28"
-                            height="28"
-                            style={{ display: 'none' }}></canvas>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const min = 0, max = 1000;
+    const data = {
+      labels,
+      datasets: [
+        {
+          label: 'Dataset 1',
+          data: labels.map(() => {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          }),
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        },
+        {
+          label: 'Dataset 2',
+          data: labels.map(() => {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          }),
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        },
+      ],
+    };
+    return <>
+      <Bar options={options} data={data}/>
     </>
-  )
+  }
+
+  render() {
+    return (
+      <>
+        <Container id={"ModelReviewClassicImageClassification"}>
+
+          <Row className={"mt-3"}>
+            <Col xl={3}>
+              <Card className={"sticky-top mb-3"}>
+                <Card.Body>
+                  <Card.Title>{this.Print_HTML_TextOptions()}</Card.Title>
+                  {this.Print_HTML_Section()}
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col xl={9}>
+              <Card>
+                <Card.Header><h3>Procesamiento de imágenes</h3></Card.Header>
+                <Card.Body>
+                  <DragAndDrop name={"doc"}
+                               text={"Añada una imagen de ejemplo"}
+                               labelFiles={"Fichero:"}
+                               accept={{ 'image/png': ['.png'] }}
+                               function_DropAccepted={this.handleChangeFileUpload}/>
+
+                  <div className="d-grid gap-2 col-6 mx-auto">
+                    <Button type="button"
+                            onClick={() => this.handleVectorTest}
+                            variant={"primary"}>
+                      Validar
+                    </Button>
+                  </div>
+                  <hr/>
+                </Card.Body>
+              </Card>
+
+              {getNameDatasetByID_ImageClassification(this.state.dataset_ID) === MODEL_IMAGE_MOBILENET &&
+                <Card className={"mt-3"}>
+                  <Card.Header><h3>Procesamiento con ejemplos</h3></Card.Header>
+                  <Card.Body>
+                    <Container fluid={true}>
+                      <Row>
+                        {LIST_OF_IMAGES.map((image, index) => {
+                          return <>
+                            <Col key={image} xl={4}>
+                              <img className={"img-fluid w-100"}
+                                   src={"/imágenes/" + image}
+                                   alt={"cat"}
+                                   onClick={($event) => this.PredictImage($event)}></img>
+                            </Col>
+                          </>
+                        })}
+                        <VerticallyCenteredModal show={this.state.modalShow}
+                                                 onHide={() => this.setState({ modalShow: false })}
+                                                 template_render={() => this.Print_HTML_Bar()}/>
+                      </Row>
+
+                    </Container>
+
+                  </Card.Body>
+                </Card>
+              }
+
+              <Card className={"mt-3"}>
+                <Card.Header><h3>Prueba dibujo</h3></Card.Header>
+                <Card.Body>
+                  <CustomCanvasDrawer submitFunction={() => {
+                    this.handleVectorTest_CanvasDraw().then((r) => {
+                      console.log("End", r)
+                    })
+                  }}/>
+                  <hr/>
+                  <div className="d-grid justify-content-center mt-3">
+                    <canvas id="originalImage"
+                            className={"nets4-border-1"}
+                            style={{ display: "none" }}></canvas>
+                    <canvas id="imageCanvas"
+                            className={"nets4-border-1"}
+                            style={{ display: "none" }}></canvas>
+                    <canvas id="resultCanvas"
+                            className={"nets4-border-1"}
+                            style={{ display: "none" }}></canvas>
+                    <canvas id="smallcanvas"
+                            className={"nets4-border-1"}
+                            style={{ display: "none" }}
+                            width="28" height="28"></canvas>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </>
+    )
+  }
 }
