@@ -27,8 +27,8 @@ export async function alertInfo(texto, value) {
     return MySwal.fire({
       icon: 'question',
       title: value,
-      confirmButtonColor: '#0081D5',
       text: texto,
+      confirmButtonColor: '#0081D5',
     })
   })
 }

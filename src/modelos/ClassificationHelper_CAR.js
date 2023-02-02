@@ -7,3 +7,29 @@ export const CAR_DATA_CLASSES = [
   ["small", "med", "big"],
   ["low", "med", "high"]
 ]
+export const CAR_DATA_CLASSES_KEYS = [
+  "buying",
+  "maint",
+  "doors",
+  "persons",
+  "lug_boot",
+  "safety",
+]
+export const CAR_DATA_OBJECT = {
+  buying: ["vhigh", "high", "med", "low"],
+  maint: ["vhigh", "high", "med", "low"],
+  doors: ["2", "3", "4", "5more"],
+  persons: ["2", "4", "more"],
+  lug_boot: ["small", "med", "big"],
+  safety: ["low", "med", "high"]
+}
+
+export const CAR_DATA_DEFAULT = {
+  buying: "vhigh",
+  maint: "vhigh",
+  doors: "2",
+  persons: "2",
+  lug_boot: "small",
+  safety: "low",
+}
+

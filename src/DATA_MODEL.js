@@ -52,22 +52,22 @@ const LIST_TYPE_MODELS_DESCRIPTION = [
 const LIST_MODEL_OPTIONS = [
   [
     'SUBIR MODELO PROPIO',
-    'CLASIFICACIÓN DE COCHES',
-    'IRIS-DATA - CLASIFICACIÓN DE PLANTA IRIS'
+    'CAR-DATA - Clasificación de coches',
+    'IRIS-DATA- Clasificación de planta iris'
   ],
   [],
   [
     'SUBIR MODELO PROPIO',
-    'GEOMETRÍA FACIAL',
-    "FACE MESH",
-    "DETECTOR DE ARTICULACIONES",
-    "DETECTOR DE OBJETOS"
+    'FACE DETECTOR - Geometría facial',
+    "FACE MESH - Malla facial",
+    "MOVE NET - Detector de articulaciones",
+    "COCO SSD - Detector de objetos"
   ],
   [
     'SUBIR MODELO PROPIO',
-    'MNIST - CLASIFICACIÓN DE NÚMEROS',
-    'CLASIFICADOR DE IMÁGENES - MOBILENET',
-    'CLASIFICADOR DE IMÁGENES - RESNET V2'
+    'MNIST - Clasificación de números',
+    'MOBILENET - Clasificador de imágenes',
+    'RESNET V2 - Clasificador de imágenes'
   ],
 ]
 
@@ -256,7 +256,7 @@ export const DATASET_DESCRIPTION = [
       <p>Por último los posibles valores que puede dar son:</p>
       <ul>
         <li>
-          Un número de 0 a 1001 que son cada una de las categorías de esta
+          Un número de 0 a 1001 que son cada una de las categorías de esta{" "}
           <a rel="noreferrer" target="_blank"
              href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
         </li>
@@ -290,7 +290,7 @@ export const DATASET_DESCRIPTION = [
 
       <p>Por último los posibles valores que puede dar son:</p>
       <ul>
-        <li>Un número de 0 a 1001 que son cada una de las categorías de esta
+        <li>Un número de 0 a 1001 que son cada una de las categorías de esta{" "}
           <a rel="noreferrer" target="_blank"
              href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
         </li>
@@ -300,7 +300,6 @@ export const DATASET_DESCRIPTION = [
 ]
 
 export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
-  console.log({ row, dataset })
   return DATASET_DESCRIPTION[row][dataset];
 }
 
@@ -351,7 +350,9 @@ const getNameDatasetByID_ImageClassification = (dataSet) => {
 }
 
 const LIST_OF_IMAGES = [
+  "beef-burger.jpg",
   "bulldog.jpg",
+  "butterfly.jpg",
   "cat.jpg",
   "cheetah.jpg",
   "cruise.jpg",

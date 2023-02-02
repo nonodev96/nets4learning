@@ -24,10 +24,10 @@ export default function UploadArchitectureMenu(props) {
       await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
     } else {
       if (CustomArchitecture) {
-        history.push('/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       } else {
         localStorage.setItem('custom-architecture', 'nothing')
-        history.push('/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       }
     }
   }
@@ -57,7 +57,8 @@ export default function UploadArchitectureMenu(props) {
               <Card.Header><h3>{LIST_TYPE_MODELS[id]}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  Selecciona a continuación el conjunto de datos sobre se va a trabajar o carga tu propio conjunto de datos.
+                  Selecciona a continuación el conjunto de datos sobre se va a trabajar o carga tu propio conjunto de
+                  datos.
                 </Card.Text>
                 <Form>
                   <Form.Group className="mb-3" controlId="FormDataSet">

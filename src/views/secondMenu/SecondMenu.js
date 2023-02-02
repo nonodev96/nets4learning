@@ -18,31 +18,31 @@ export default function SecondMenu(props) {
   };
 
   const handleClickEmpezar = () => {
-    History.push("/starting/");
+    History.push(process.env.PUBLIC_URL + "/starting/");
   };
 
   const handleClickArchCustom = () => {
-    History.push("/upload-architecture-custom/");
+    History.push(process.env.PUBLIC_URL + "/upload-architecture-custom/");
   };
 
   const handleClickArchEdit = () => {
-    History.push("/edit-architecture/" + id + "/2");
+    History.push(process.env.PUBLIC_URL + "/edit-architecture/" + id + "/2");
   };
 
   const handleClickTrainCustom = () => {
-    History.push("/upload-training-custom/");
+    History.push(process.env.PUBLIC_URL + "/upload-training-custom/");
   };
 
   const handleClickTrainEdit = () => {
-    History.push("/edit-training/");
+    History.push(process.env.PUBLIC_URL + "/edit-training/");
   };
 
   const handleClickModelCustom = () => {
-    History.push("/upload-model-custom/");
+    History.push(process.env.PUBLIC_URL + "/upload-model-custom/");
   };
 
   const handleClickModelEdit = () => {
-    History.push("/edit-model/");
+    History.push(process.env.PUBLIC_URL + "/edit-model/");
   };
 
   const modelsDescription = [

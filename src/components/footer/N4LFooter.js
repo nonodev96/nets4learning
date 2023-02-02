@@ -8,7 +8,7 @@ export default function N4LFooter() {
       <footer className="footer mt-auto py-3 bg-light">
         <Container>
           <Row>
-            <div className="col-sm-4 col-md-3 item">
+            <div className="col-md-4 item">
               <h3>Acerca de</h3>
               <ul>
                 <li>

@@ -1,7 +1,19 @@
 import * as tf from "@tensorflow/tfjs";
-
+// https://es.wikipedia.org/wiki/Conjunto_de_datos_flor_iris
 export const IRIS_CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"];
 export const IRIS_NUM_CLASSES = IRIS_CLASSES.length;
+export const IRIS_DATA_OBJECT = {
+  longitud_sepalo: 5.1,
+  anchura_sepalo: 3.5,
+  longitud_petalo: 1.4,
+  anchura_petalo: 0.2
+}
+export const IRIS_DATA_DEFAULT = {
+  longitud_sepalo: 5.1,
+  anchura_sepalo: 3.5,
+  longitud_petalo: 1.4,
+  anchura_petalo: 0.2
+}
 export const IRIS_DATA = [
   [5.1, 3.5, 1.4, 0.2, 0],
   [4.9, 3.0, 1.4, 0.2, 0],

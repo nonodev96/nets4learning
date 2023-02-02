@@ -21,9 +21,9 @@ export default function UploadModelMenu(props) {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
       if (Model === -1 || Model === 'Selecciona un Modelo') {
-        history.push( '/edit-architecture/' + id + '/' + 0 + '/' + -1)
+        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 0 + '/' + -1)
       } else {
-        history.push( '/edit-architecture/' + id + '/' + 0 + '/' + Model)
+        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 0 + '/' + Model)
       }
     }
   }
@@ -32,7 +32,7 @@ export default function UploadModelMenu(props) {
     <>
       <N4LNavBar/>
       <Container>
-        <Row className="mt-3">
+        <Row className="mt-3 mb-3">
           <Col>
             <Card>
               <Card.Header><h3>{LIST_TYPE_MODELS[id]}</h3></Card.Header>

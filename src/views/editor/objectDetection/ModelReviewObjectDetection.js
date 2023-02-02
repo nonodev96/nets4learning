@@ -1,13 +1,13 @@
 import React from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Webcam from 'react-webcam'
 
 import * as faceDetection from '@tensorflow-models/face-detection'
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
-import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm'
-
+import * as tfjs from '@tensorflow/tfjs'
+// import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm'
 
 import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
@@ -22,8 +22,7 @@ import {
   MODEL_MOVE_NET,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
-
-tfjsWasm.setWasmPaths(`https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`)
+// tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
 
 class ModelReviewObjectDetection extends React.Component {
@@ -40,7 +39,20 @@ class ModelReviewObjectDetection extends React.Component {
     this.canvasRef = React.createRef();
     this.handleChangeCamera = this.handleChangeCamera.bind(this);
     this.handleChangeFileUpload = this.handleChangeFileUpload.bind(this);
-    this.handleProcessImage = this.handleProcessImage.bind(this);
+    this.onUserMediaEvent = this.onUserMediaEvent.bind(this);
+    this.onUserMediaErrorEvent = this.onUserMediaErrorEvent.bind(this);
+    this.animation_id = 0
+  }
+
+  componentDidMount() {
+    tfjs.setBackend("webgl").then(() => {
+      tfjs.ready().then(async () => {
+        if (tfjs.getBackend() !== "webgl") {
+          await alertHelper.alertError("Backend de tensorflow no instalado")
+        }
+        await this.init()
+      });
+    })
   }
 
   async init() {
@@ -53,11 +65,6 @@ class ModelReviewObjectDetection extends React.Component {
       return
     }
 
-    if (!this.state.isShowedAlert) {
-      await alertHelper.alertSuccess("Modelo cargado con éxito")
-      this.state.isShowedAlert = true
-    }
-
     switch (datasetName) {
       case MODEL_UPLOAD: {
         // TODO
@@ -65,18 +72,26 @@ class ModelReviewObjectDetection extends React.Component {
       }
       case MODEL_FACE_DETECTION: {
         await this.enable_Model_FaceDetector()
+        await alertHelper.alertSuccess("Modelo cargado con éxito")
+        this.setState({ isShowedAlert: true })
         break
       }
       case MODEL_FACE_MESH: {
         await this.enable_Model_FaceMesh()
+        await alertHelper.alertSuccess("Modelo cargado con éxito")
+        this.setState({ isShowedAlert: true })
         break
       }
       case MODEL_MOVE_NET: {
         await this.enable_Model_MoveNet()
+        await alertHelper.alertSuccess("Modelo cargado con éxito")
+        this.setState({ isShowedAlert: true })
         break
       }
       case MODEL_COCO_SSD: {
         await this.enable_Model_CoCoSsd()
+        await alertHelper.alertSuccess("Modelo cargado con éxito")
+        this.setState({ isShowedAlert: true })
         break
       }
       default: {
@@ -89,20 +104,28 @@ class ModelReviewObjectDetection extends React.Component {
   //region FACE DETECTOR
   async enable_Model_FaceDetector() {
     const model = faceDetection.SupportedModels.MediaPipeFaceDetector
-    const mediaPipeFaceDetectorTfjsModelConfig = {
-      runtime: 'tfjs',
+    const mediaPipeFaceDetectorMediaPipeModelConfig = {
+      runtime: 'mediapipe',
+      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
+      modelType: 'short',
       maxFaces: 4
     }
     this.setState({
-      modelDetector: await faceDetection.createDetector(model, mediaPipeFaceDetectorTfjsModelConfig)
+      modelDetector: await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
     })
   }
 
   renderFaceDetector(ctx, faces) {
+    ctx.font = "8px Verdana"
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FF0902'
+    // ctx.strokeRect(element.x, element.y, 5, 5)
     faces.forEach((face) => {
-      ctx.strokeStyle = '#FF0902'
       face.keypoints.forEach((element) => {
-        ctx.strokeRect(element.x, element.y, 5, 5)
+        ctx.beginPath()
+        ctx.arc(element.x, element.y, 2, 0, (Math.PI / 180) * 360)
+        ctx.stroke()
+        ctx.fillText(`${element.name}`, element.x, element.y)
       })
     })
   }
@@ -145,21 +168,25 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   renderMoveNetDetector(ctx, poses) {
-    let lineas = [[10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7], [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],]
+    // let lineas = [[10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7], [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],]
+    let lineas = [[0, 1], [0, 2], [1, 3], [2, 4], [5, 6], [5, 7], [5, 11], [6, 8], [6, 12], [7, 9], [8, 10], [11, 12], [11, 13], [12, 14], [13, 15], [14, 16]]
     ctx.strokeStyle = '#FF0902'
     poses.forEach((pose) => {
-      lineas.forEach((index) => {
-        ctx.beginPath()
-        ctx.moveTo(pose.keypoints[index[0]].x, pose.keypoints[index[0]].y)
-        ctx.lineTo(pose.keypoints[index[1]].x, pose.keypoints[index[1]].y)
-        ctx.stroke()
-      })
-      pose.keypoints.forEach((element) => {
-        ctx.beginPath()
-        ctx.arc(element.x, element.y, 5, 0, (Math.PI / 180) * 360)
-        ctx.stroke()
-        // ctx.strokeRect(element.x, element.y, 10, 10)
-      })
+      if (pose.score > 0.4) {
+        lineas.forEach((index) => {
+          ctx.beginPath()
+          ctx.moveTo(pose.keypoints[index[0]].x, pose.keypoints[index[0]].y)
+          ctx.lineTo(pose.keypoints[index[1]].x, pose.keypoints[index[1]].y)
+          ctx.stroke()
+        })
+        pose.keypoints.forEach((element) => {
+          ctx.beginPath()
+          ctx.arc(element.x, element.y, 5, 0, (Math.PI / 180) * 360)
+          ctx.stroke()
+          ctx.fillText(`${element.name}`, element.x, element.y)
+          // ctx.strokeRect(element.x, element.y, 10, 10)
+        })
+      }
     })
   }
 
@@ -189,11 +216,27 @@ class ModelReviewObjectDetection extends React.Component {
 
   //endregion
 
+  runModelWithDetector() {
+    const frame = async () => {
+      if (this.state.isCameraEnable) {
+        try {
+          this.animation_id = requestAnimationFrame(async () => {
+            await this.processWebcam(this.state.modelDetector)
+            await frame()
+          })
+        } catch (e) {
+          console.log(`catch cancelAnimationFrame(${this.animation_id});`)
+          cancelAnimationFrame(this.animation_id);
+        }
+      }
+    }
+    this.animation_id = requestAnimationFrame(frame);
+  }
+
   async processWebcam(model) {
     if (typeof this.webcamRef.current === 'undefined'
       || this.webcamRef.current === null
       || this.webcamRef.current.video.readyState !== 4) {
-      //console.error("Error")
       return
     }
     // Get Video Properties
@@ -249,7 +292,6 @@ class ModelReviewObjectDetection extends React.Component {
       case MODEL_COCO_SSD: {
         const predictions = await model.detect(img_or_video)
         this.renderCoCoSsd(ctx, predictions)
-        console.log({ predictions, ctx })
         break
       }
       default: {
@@ -259,32 +301,21 @@ class ModelReviewObjectDetection extends React.Component {
     }
   }
 
-  runModelWithDetector() {
-    let id = 0
-    const frame = async () => {
-      if (this.state.isCameraEnable || this.webcamRef.current !== null) {
-        try {
-          await this.processWebcam(this.state.modelDetector)
-          id = requestAnimationFrame(() => frame())
-        } catch (e) {
-          console.log(e)
-          cancelAnimationFrame(id);
-        }
-      }
-    }
-    requestAnimationFrame(() => frame())
-  }
-
   async handleChangeCamera(event) {
-    console.log("handleChangeCamera")
     const webcamChecked = event.target.checked
     this.setState({ isCameraEnable: !!webcamChecked })
     if (webcamChecked === true) {
-      await this.init()
       this.runModelWithDetector()
-      this.setState({ isCameraProcessModel: true })
     }
-    console.log({ webcamChecked, isCameraProcessModel: this.state.isCameraProcessModel })
+  }
+
+  onUserMediaEvent(mediaStream) {
+
+  }
+
+  onUserMediaErrorEvent(error) {
+    console.log({ error })
+    cancelAnimationFrame(this.animation_id)
   }
 
   async handleChangeFileUpload(_files) {
@@ -331,15 +362,12 @@ class ModelReviewObjectDetection extends React.Component {
     img.onerror = failed
   }
 
-  async handleProcessImage() {
-    console.log("handleProcessImage")
-  }
-
   render() {
+    console.log("render")
     return (
       <Container id={"ModelReviewObjectDetection"}>
         <Row>
-          <Col xl={3}>
+          <Col xs={12} sm={12} md={12} xl={3}>
             <Card className={"sticky-top mb-3"}>
               <Card.Body>
                 <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]}</Card.Title>
@@ -373,7 +401,7 @@ class ModelReviewObjectDetection extends React.Component {
             </Card>
           </Col>
 
-          <Col xl={9}>
+          <Col xs={12} sm={12} md={12} xl={9}>
             {/*Es necesario un "Col" 9 y otro dentro*/}
             <Col>
               <Card>
@@ -405,6 +433,8 @@ class ModelReviewObjectDetection extends React.Component {
                                  overflow: 'hidden'
                                }}>
                             <Webcam ref={this.webcamRef}
+                                    onUserMedia={this.onUserMediaEvent}
+                                    onUserMediaError={this.onUserMediaErrorEvent}
                                     width={250} height={250}
                                     style={{
                                       position: 'relative',
@@ -444,17 +474,6 @@ class ModelReviewObjectDetection extends React.Component {
                                      }}
                                      function_DropAccepted={this.handleChangeFileUpload}/>
                       </Col>
-
-                      {/* SUBMIT BUTTON */}
-                      {/*
-                        <div className="d-grid gap-2">
-                          <Button type="button"
-                                  onClick={this.handleProcessImage}
-                                  variant="primary">
-                            Ver resultado
-                          </Button>
-                        </div>
-                       */}
                     </Row>
                     <hr/>
                     <Row className={"mt-3"}>

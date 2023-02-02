@@ -10,8 +10,8 @@ export default function InitialMenu() {
   const [buttonActive, setButtonActive] = useState(0)
 
   const handleClickTrainEdit = (_buttonActive, type) => {
-    if (type === 1) history.push( '/select-model/' + _buttonActive)
-    if (type === 2) history.push( '/select-dataset/' + _buttonActive)
+    if (type === 1) history.push(process.env.PUBLIC_URL + '/select-model/' + _buttonActive)
+    if (type === 2) history.push(process.env.PUBLIC_URL + '/select-dataset/' + _buttonActive)
   }
 
   const colors = ['primary', 'danger', 'warning', 'info']
@@ -129,12 +129,12 @@ export default function InitialMenu() {
   return (
     <>
       <Container>
-        <Row className={"mt-3"}>
+        <Row className={"row-cols-1 row-cols-md-3 row-cols-xl-3"}>
           {LIST_TYPE_MODELS.map((type, i) => {
             if (i !== 1) {
               const actualColor = colors[i % colors.length]
               return (
-                <Col key={i}>
+                <Col key={i} className={"mt-3"}>
                   <div className="d-grid gap-2">
                     <Button onClick={() => handleClick(i)}
                             variant={actualColor}

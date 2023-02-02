@@ -5,12 +5,15 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "start:development": "sh -ac '. ./.env.development; npm run start'",
+    "start:production": "sh -ac '. ./.env.production; npm run start'",
+    "start:simidat": "sh -ac '. ./.env.simidat; npm run start'",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "deploy:development": "sh -ac '. ./.env.development; npm run build'",
     "deploy:production": "sh -ac '. ./.env.production; npm run build'",
-    "deploy:simidat": "sh -ac '. ./.env.simidat; npm run build'"
+    "deploy:simidat": "sh -ac '. ./.env.simidat; npm run build'",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -30,7 +33,7 @@
     "@tensorflow/tfjs": "^3.14.0",
     "@tensorflow/tfjs-backend-wasm": "^3.14.0",
     "@tensorflow/tfjs-vis": "^1.5.1",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.0-alpha1",
     "brace": "^0.11.1",
     "chart.js": "^4.2.0",
     "codemirror": "^5.65.11",
