@@ -277,12 +277,12 @@ export default function MnistImageClassification(props) {
     }
   }
 
-  const handlerRemoveLayer = (idLayer) => {
+  const handlerRemoveLayer = async (idLayer) => {
     //TODO ALejandro: Misma funcion que en objectDetection
     let array = Layer
     let array2 = []
     if (array.length === 1) {
-      alertHelper.alertWarning('No puedes eliminar la última capa')
+     await alertHelper.alertWarning('No puedes eliminar la última capa')
     } else {
       for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])
@@ -363,6 +363,8 @@ export default function MnistImageClassification(props) {
   }
 
   const handleCambio = (e) => {
+    //TODO Alejandro: Igual a ObjectDetection
+    //TODO Alejandro: No encuentro muchas diferencias entre esta funcion y la anterior
     const option = e.target.value
     let a = Contador
     a = a + 1
@@ -387,8 +389,11 @@ export default function MnistImageClassification(props) {
     setContador(a)
     setLayer(array)
   }
-
+ /*TODO Alejandro:¿No se podria crear una funcion en la que aparte del index, se
+    metiera como parámetro de entrada la cadena del elemento id?. Asi tenemos menos funciones
+    y solo hariamos llamadas metiendo tipoDeCambio e index*/
   const handleChangeActivation = (index) => {
+    //TODO Alejandro: Igual que en ObjectDetection
     let array = Layer
     array[index].activation = document.getElementById(`formActivationLayer${index}`,).value
     setLayer(array)
@@ -396,11 +401,13 @@ export default function MnistImageClassification(props) {
 
   // PARÁMETROS GENERALES
   const handleChangeNoEpochs = () => {
+    //TODO Alejandro: Similar a ObjectDetection
     let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
   const handleChangeLoss = () => {
+    //TODO Alejandro: Similar a objectDetection
     let aux = document.getElementById('FormLoss').value
     if (aux !== undefined) {
       setLossValue(aux)
@@ -408,6 +415,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeOptimization = () => {
+    //TODO Alejandro: Similar a ObjecDetection
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
@@ -415,6 +423,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeMetrics = () => {
+    //TODO Alejandro: Igual a ObjectDetection
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
@@ -422,6 +431,7 @@ export default function MnistImageClassification(props) {
   }
 
   const handleChangeFileUpload = async (e) => {
+    //TODO Alejandro: Igual a ObjectDetection
     const tgt = e.target || window.event.srcElement
     const files = tgt.files
 
@@ -436,19 +446,23 @@ export default function MnistImageClassification(props) {
     }
 
     function failed() {
+      //TODO Alejandro: Igual a ObjectDetection
       console.error("The provided file couldn't be loaded as an Image media")
     }
 
+    //TODO Alejandro: Igual a ObjectDetection
     const img = new Image()
     img.onload = draw
     img.onerror = failed
     img.src = URL.createObjectURL(files[0])
   }
-
+ //TODO Alejandro: Funcion comentada, considerar borrar
   // const handleChangeTestInput = () => {
   //   setstring(document.getElementById(`formTestInput`).value)
   // }
 
+
+  //NOTA ALEJANDRO: Esta parte si es diferente de la de ObjectDetection
   return (
     <>
       <Form onSubmit={handleClickPlay} id={"MnistImageClassification"}>
