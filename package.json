@@ -1,7 +1,7 @@
 {
   "name": "tfg-nets4learning",
   "version": "0.3.0",
-  "homepage": "/build",
+  "homepage": "http://localhost:3000/nets4learning",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -12,6 +12,7 @@
     "deploy:development": "sh -ac '. ./.env.development; npm run build'",
     "deploy:production": "sh -ac '. ./.env.production; npm run build'",
     "deploy:simidat": "sh -ac '. ./.env.simidat; npm run build'",
+    "deploy:localpath": "sh -ac '. ./.env.localpath; npm run build'",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -38,6 +39,7 @@
     "chart.js": "^4.2.0",
     "codemirror": "^5.65.11",
     "fabric": "^5.3.0",
+    "history": "^5.3.0",
     "mnist": "^1.1.0",
     "react": "^17.0.2",
     "react-ace": "^10.1.0",

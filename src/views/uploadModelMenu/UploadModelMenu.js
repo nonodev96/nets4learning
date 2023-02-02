@@ -21,9 +21,9 @@ export default function UploadModelMenu(props) {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
       if (Model === -1 || Model === 'Selecciona un Modelo') {
-        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 0 + '/' + -1)
+        history.push('/edit-architecture/' + id + '/' + 0 + '/' + -1)
       } else {
-        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 0 + '/' + Model)
+        history.push('/edit-architecture/' + id + '/' + 0 + '/' + Model)
       }
     }
   }

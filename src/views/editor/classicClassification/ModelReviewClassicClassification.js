@@ -80,7 +80,9 @@ export default class ModelReviewClassicClassification extends React.Component {
 
   async loadModel_CAR() {
     console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel(process.env.PUBLIC_URL + "/models/carClassification/mymodelCar.json")
+    const model = await tf.loadLayersModel(
+      process.env.REACT_APP_PATH + "/models/carClassification/mymodelCar.json"
+    )
     this.setState({ model: model })
     await alertHelper.alertSuccess("Modelo cargado con éxito")
     // model.summary()
@@ -88,7 +90,8 @@ export default class ModelReviewClassicClassification extends React.Component {
 
   async loadModel_IRIS() {
     console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel(process.env.PUBLIC_URL + "/models/irisClassification/mymodelIris.json")
+    const model = await tf.loadLayersModel(
+      process.env.REACT_APP_PATH + "/models/irisClassification/mymodelIris.json")
     this.setState({ model: model })
     await alertHelper.alertSuccess("Modelo cargado con éxito")
     // model.summary()
@@ -114,11 +117,12 @@ export default class ModelReviewClassicClassification extends React.Component {
       case MODEL_UPLOAD: {
         try {
           let input = [[], [1, this.state.textToTest.split(';').length]]
-          // const json = document.getElementById('json-upload')
-          // const b = document.getElementById('weights-upload')
+          const json = document.getElementById('json-upload')
+          const b = document.getElementById('weights-upload')
           const model = await tf.loadLayersModel(
-            tf.io.browserFiles([this.files.json, this.files.binary]),
+            tf.io.browserFiles([json.files[0], b.files[0]]),
           )
+          console.log(model)
           let i = 0
           this.state.textToTest.split(';').forEach((element) => {
             input[0].push(i)

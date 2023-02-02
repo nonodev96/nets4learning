@@ -51,7 +51,10 @@ export default function DragAndDrop(props) {
     acceptedFiles,
   } = useDropzone({
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-    onDropAccepted: (files) => function_DropAccepted(files),
+    onDropAccepted: (files) => {
+      document.getElementById(id).files = files
+      function_DropAccepted(files)
+    },
     accept: accept,
     multiple: multiple
   })

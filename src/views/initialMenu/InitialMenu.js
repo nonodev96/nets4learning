@@ -10,8 +10,8 @@ export default function InitialMenu() {
   const [buttonActive, setButtonActive] = useState(0)
 
   const handleClickTrainEdit = (_buttonActive, type) => {
-    if (type === 1) history.push(process.env.PUBLIC_URL + '/select-model/' + _buttonActive)
-    if (type === 2) history.push(process.env.PUBLIC_URL + '/select-dataset/' + _buttonActive)
+    if (type === 1) history.push('/select-model/' + _buttonActive)
+    if (type === 2) history.push('/select-dataset/' + _buttonActive)
   }
 
   const colors = ['primary', 'danger', 'warning', 'info']

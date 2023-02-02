@@ -487,12 +487,13 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                   <Card.Header><h3>Procesamiento con ejemplos</h3></Card.Header>
                   <Card.Body>
                     <Container fluid={true}>
-                      <Row className=
-                             "row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-4 gap-2">
+                      <Row className={
+                        "row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3 row-cols-xxl-3 g-2"
+                      }>
                         {LIST_OF_IMAGES.map((image, index) => {
-                          return <div className={"col border bg-light d-flex"} key={image}>
-                            <img className={"img-fluid w-100"}
-                                 src={process.env.PUBLIC_URL + "/imágenes/" + image}
+                          return <div className={"border bg-light d-flex"} key={image}>
+                            <img className={"img-fluid w-100 h-100 object-fit-cover"}
+                                 src={process.env.REACT_APP_PATH + "/imágenes/" + image}
                                  alt={image}
                                  onClick={($event) => this.PredictImage($event)}></img>
                           </div>

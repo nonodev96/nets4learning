@@ -24,10 +24,10 @@ export default function UploadArchitectureMenu(props) {
       await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
     } else {
       if (CustomArchitecture) {
-        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push('/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       } else {
         localStorage.setItem('custom-architecture', 'nothing')
-        history.push(process.env.PUBLIC_URL + '/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
+        history.push('/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
       }
     }
   }
