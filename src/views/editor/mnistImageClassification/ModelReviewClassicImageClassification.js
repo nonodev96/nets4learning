@@ -493,7 +493,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                         {LIST_OF_IMAGES.map((image, index) => {
                           return <div className={"border bg-light d-flex"} key={image}>
                             <img className={"img-fluid w-100 h-100 object-fit-cover"}
-                                 src={process.env.REACT_APP_PATH + "/imágenes/" + image}
+                                 src={process.env.REACT_APP_PATH + "/assets/" + image}
                                  alt={image}
                                  onClick={($event) => this.PredictImage($event)}></img>
                           </div>
