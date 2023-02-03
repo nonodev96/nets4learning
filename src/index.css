@@ -44,3 +44,8 @@ code {
   border-radius: 95% 4% 92% 5%/4% 95% 6% 95%;
   transform: rotate(2deg);
 }
+
+.nets4-full-canvas {
+  min-width: 100%;
+  min-height: 100%;
+}

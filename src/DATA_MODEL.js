@@ -100,7 +100,6 @@ export const DATASET_DESCRIPTION = [
           </ul>
         </li>
       </ul>
-
       <p>Estos son los valores de entrada que podrá tomar la red.</p>
       <ul>
         <li><b>buying:</b> vhigh, high, med, low.</li>
@@ -110,7 +109,6 @@ export const DATASET_DESCRIPTION = [
         <li><b>lug_boot:</b> small, med, big.</li>
         <li><b>safety:</b> low, med, high.</li>
       </ul>
-
       <p>Por último los posibles valores que puede dar son:</p>
       <ul>
         <li><b>UNACC</b> - Inaccesible</li>
@@ -118,19 +116,18 @@ export const DATASET_DESCRIPTION = [
         <li><b>GOOD</b> - Bien</li>
         <li><b>VGOOD</b> - Muy bien</li>
       </ul>
-
       <p>
         Para obtener más información acerca de este conjunto de datos visita{" "}
         <a target="_blank" href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation">esta web</a>{" "}
         (<a target="_blank" href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/">Modelo</a>)
       </p>
     </>,
+
     <>
       <p>
         El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de
         su pétalo y sépalo.
       </p>
-
       <p>Tiene la siguiente estructura:</p>
       <ul>
         <li>Longitud del sépalo en cm</li>
@@ -138,7 +135,6 @@ export const DATASET_DESCRIPTION = [
         <li>Longitud del pétalo en cm</li>
         <li>Anchura del pétalo en cm</li>
       </ul>
-
       <p>Por último los posibles valores que puede dar son:</p>
       <ul>
         <li>Iris Setosa</li>
@@ -153,53 +149,49 @@ export const DATASET_DESCRIPTION = [
     <>
       <p>
         Este modelo es proporcionado por el hub de modelos de tensorflow.
-        Este modelo lo podemos encontrar <a target="blank"
-                                            href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
+        Este modelo lo podemos encontrar <a
+        target="_blank" href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1">aquí</a>.
         Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para
         finalmente hacer una malla de la misma.
       </p>
-
       <p>Datos de entrada:</p>
       <ul>
         <li>Imagen o vídeo de entrada.</li>
       </ul>
-
       <p>Datos de salida:</p>
       <ul>
         <li>Mismo elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
       </ul>
     </>,
+
     <>
       <p>
         Este modelo es proporcionado por el HUB de modelos de tensorflow.
-        Este modelo lo podemos encontrar <a target="blank"
-                                            href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1">aquí</a>.
+        Este modelo lo podemos encontrar <a
+        target="_blank" href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1">aquí</a>.
         Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como
         los ojos, orejas, nariz y boca.
       </p>
-
       <p>Datos de entrada:</p>
       <ul>
         <li>Imagen o vídeo.</li>
       </ul>
-
       <p>Datos de salida:</p>
       <ul>
         <li>Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
       </ul>
     </>,
+
     <>
       <p>
         PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
         Se puede usar para estimar una sola pose o varias a la vez.
         En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.
       </p>
-
       <p>Datos de entrada:</p>
       <ul>
-        <li>Imagen o vídeo(webcam) a color.</li>
+        <li>Imagen o vídeo (webcam) a color.</li>
       </ul>
-
       <p>Datos de salida:</p>
       <ul>
         <li>
@@ -208,8 +200,34 @@ export const DATASET_DESCRIPTION = [
         </li>
       </ul>
     </>,
+
     <>
-      <p>Pendiente</p>
+      <p>Modelo de detección de objetos que pretende localizar e identificar múltiples objetos en una sola imagen.</p>
+      <p>
+        Este modelo es una adaptación a TensorFlow.js del modelo COCO-SSD. Para más información sobre la API de
+        detección de objetos de Tensorflow, consulta este readme en <a
+        href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd"
+        target={"_blank"}>tensorflow/object_detection</a>.
+      </p>
+      <p>
+        Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección,
+        segmentación y subtitulado de objetos a gran escala. Puede encontrar más información <a
+        href="http://cocodataset.org/#home" target={"_blank"}>aquí</a>.
+        El modelo es capaz de detectar <a
+        href="https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts">80 clases de objetos</a>.
+        (SSD son las siglas de Single Shot MultiBox Detection).
+      </p>
+      <p>Datos de entrada:</p>
+      <ul>
+        <li>Imagen o vídeo (webcam) a color.</li>
+      </ul>
+      <p>Datos de salida:</p>
+      <ul>
+        <li>
+          Mismo elemento de entrada con una serie de puntos que delimitan los diferentes puntos de los objetos,
+          ademas de el nombre del objeto.
+        </li>
+      </ul>
     </>
   ],
   [

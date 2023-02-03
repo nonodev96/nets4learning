@@ -22,6 +22,7 @@ import {
   MODEL_MOVE_NET,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
+
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
 
@@ -31,6 +32,7 @@ class ModelReviewObjectDetection extends React.Component {
     super(props);
     this.state = {
       isCameraEnable: false,
+      isProcessedImage: false,
       dataset: parseInt(props.dataSet ?? "0"),
       isShowedAlert: false,
       modelDetector: null
@@ -209,8 +211,8 @@ class ModelReviewObjectDetection extends React.Component {
 
     predictions.forEach((prediction) => {
       score = Math.round(parseFloat(prediction.score) * 100)
-      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] - 20)
       ctx.strokeRect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3])
+      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] + 20)
     })
   }
 
@@ -331,17 +333,30 @@ class ModelReviewObjectDetection extends React.Component {
 
     const resultCanvas = document.getElementById('resultCanvas')
     const resultCanvas_ctx = resultCanvas.getContext('2d')
-
-    await this.init()
+    const container_w = document.getElementById("container-canvas").getBoundingClientRect().width
     let that = this;
 
+    let designer_width = container_w * 0.75
+    let designer_height = container_w * 0.50
+
     async function draw(event) {
-      this.width = this.width * 0.25
-      this.height = this.height * 0.25
+      const original_ratio = this.width / this.height
+      let designer_ratio = designer_width / designer_height
+
+      if (original_ratio > designer_ratio) {
+        designer_height = designer_width / original_ratio
+      } else {
+        designer_width = designer_height * original_ratio
+      }
+
+      this.width = designer_width
+      this.height = designer_height
       originalImageCanvas.width = this.width
       originalImageCanvas.height = this.height
       processImageCanvas.width = this.width
       processImageCanvas.height = this.height
+      resultCanvas.width = this.width
+      resultCanvas.height = this.height
 
       originalImageCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
       const imgData = originalImageCanvas_ctx.getImageData(0, 0, originalImageCanvas.height, originalImageCanvas.width)
@@ -350,6 +365,7 @@ class ModelReviewObjectDetection extends React.Component {
 
       resultCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
       await that.processData(that.state.modelDetector, resultCanvas_ctx, imgData)
+      that.setState({ isProcessedImage: true })
     }
 
     function failed() {
@@ -463,31 +479,33 @@ class ModelReviewObjectDetection extends React.Component {
                 <Card.Header><h3>Procesamiento de images</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>Subida de imágenes</Card.Title>
-                  <Container fluid={true}>
+                  <Container fluid={true} id={"container-canvas"}>
                     <Row className={"mt-3"}>
                       <Col>
                         <DragAndDrop name={"doc"}
                                      text={"Añada una imagen de ejemplo"}
                                      labelFiles={"Fichero:"}
                                      accept={{
-                                       'image/png': ['.png']
+                                       'image/png': ['.png'],
+                                       'image/jpg': ['.jpg'],
                                      }}
                                      function_DropAccepted={this.handleChangeFileUpload}/>
                       </Col>
                     </Row>
                     <hr/>
-                    <Row className={"mt-3"}>
-                      <Col className={"mt-3 d-flex justify-content-center"}>
+                    <Row className={"mt-3"}
+                         style={this.state.isProcessedImage ? {} : { display: "none" }}>
+                      <Col className={"col-12 d-flex justify-content-center"}>
                         <canvas id="originalImageCanvas"
                                 className={"nets4-border-1"}
                                 width={250} height={250}></canvas>
                       </Col>
-                      <Col className={"mt-3 d-flex justify-content-center"}>
+                      <Col className={"col-12 d-flex justify-content-center"}>
                         <canvas id="processImageCanvas"
                                 className={"nets4-border-1"}
                                 width={250} height={250}></canvas>
                       </Col>
-                      <Col className={"mt-3 d-flex justify-content-center"}>
+                      <Col className={"col-12 d-flex justify-content-center"}>
                         <canvas id="resultCanvas"
                                 className={"nets4-border-1"}
                                 width={250} height={250}></canvas>

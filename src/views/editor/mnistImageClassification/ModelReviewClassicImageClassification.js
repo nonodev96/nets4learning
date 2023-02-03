@@ -43,7 +43,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
     if (this.isMobile === undefined) {
       this.isMobile = isMobile()
     }
-    const labels = ["January", "February", "March", "April", "May", "June", "July"]
+    const labels = []
     const min = 0
     const max = 1000
 
