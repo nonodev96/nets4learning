@@ -20,10 +20,11 @@ ssh -t $usuario@simidat.ujaen.es "sudo docker ps"
 #Copiar archivo en contenedor
 echo "¿En que contenedor quieres copiar el archivo?"
 read contenedor
-ssh -t $usuario@simidat.ujaen.es "sudo docker cp build.zip" + $contenedor +"/usr/src/app"
+
+ssh -t $usuario@simidat.ujaen.es "sudo docker cp build.zip "  $contenedor " /usr/src/app"
 
 #Descomprimir archivo en contenedor
-ssh -t $usuario@simidat.ujaen.es "sudo docker exec " + $contenedor + "unzip build.zip"
+ssh -t $usuario@simidat.ujaen.es "sudo docker exec " $contenedor  " unzip build.zip"
 
 #Levantar servicio
-ssh -t $usuario@simidat.ujaen.es "sudo docker exec " + $contenedor + "serve ."
+ssh -t $usuario@simidat.ujaen.es "sudo docker exec "  $contenedor  " serve ."
