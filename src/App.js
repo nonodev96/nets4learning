@@ -18,7 +18,7 @@ import InteractiveEditor from "./views/editor/InteractiveEditor";
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
-  console.log(process.env)
+  // console.log(process.env)
   return (
     <div className="body">
       <BrowserRouter basename={REACT_APP_PATH}>

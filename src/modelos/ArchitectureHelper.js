@@ -139,7 +139,6 @@ export async function createClassicClassificationCustomDataSet(learningRate, unk
     epochs: numberOfEpoch, validationData: [xTest, yTest], callbacks: fitCallbacks
   })
 
-  console.log({ model })
   return Promise.resolve([model, TARGET_SET_CLASSES, DATA_SET_CLASSES])
 }
 

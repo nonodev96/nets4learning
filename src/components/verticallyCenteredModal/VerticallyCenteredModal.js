@@ -18,8 +18,6 @@ export default class VerticallyCenteredModal extends React.Component {
       headerTitle: "",
       template_render: static_template_render,
     }
-
-    console.log("", { props, this_pros: this.props })
   }
 
   componentDidMount() {

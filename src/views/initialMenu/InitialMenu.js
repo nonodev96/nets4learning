@@ -9,7 +9,7 @@ export default function InitialMenu() {
 
   const [buttonActive, setButtonActive] = useState(0)
 
-  const handleClickTrainEdit = (_buttonActive, type) => {
+  const handleClick_TrainEdit = (_buttonActive, type) => {
     if (type === 1) history.push('/select-model/' + _buttonActive)
     if (type === 2) history.push('/select-dataset/' + _buttonActive)
   }
@@ -35,14 +35,16 @@ export default function InitialMenu() {
                   La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
                   o más variables independientes.
                 </Card.Text>
-                <p>La clasificación se utiliza para predecir respuestas discretas.</p>
-                <Button onClick={() => handleClickTrainEdit(buttonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
-                <Button onClick={() => handleClickTrainEdit(buttonActive, 2)}
-                        style={{ "marginLeft": "1em" }}>
-                  Crear y edita arquitectura
-                </Button>
+                <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                  <Button style={{ display: "none " }}
+                          onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
+                    Crear y edita arquitectura
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </>
@@ -86,13 +88,15 @@ export default function InitialMenu() {
                   La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
                   semejanzas.
                 </Card.Text>
-                <p>
+                <Card.Text>
                   Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a
                   poco qué caracteriza a cada objeto.
-                </p>
-                <Button onClick={() => handleClickTrainEdit(buttonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </>
@@ -110,13 +114,15 @@ export default function InitialMenu() {
                 <Card.Text>
                   En este caso la variable de entrada será una imagen.
                 </Card.Text>
-                <Button onClick={() => handleClickTrainEdit(buttonActive, 1)}>
-                  Modelo Pre-entrenado
-                </Button>
-                <Button style={{ "marginLeft": "1em" }}
-                        onClick={() => handleClickTrainEdit(buttonActive, 2)}>
-                  Crear y edita arquitectura
-                </Button>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                    Modelo Pre-entrenado
+                  </Button>
+                  <Button style={{ display: "none " }}
+                          onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
+                    Crear y edita arquitectura
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </>

@@ -129,7 +129,6 @@ export default function ClassicClassification(props) {
 
   const handleChangeOptimization = () => {
     let aux = document.getElementById('FormOptimizer').value
-    console.log(aux)
     if (aux !== undefined) {
       setOptimizer(aux)
     }

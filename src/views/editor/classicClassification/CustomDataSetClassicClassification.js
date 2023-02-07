@@ -11,8 +11,12 @@ import {
 } from "../../../DATA_MODEL";
 import {
   createClassicClassification,
-  createClassicClassificationCustomDataSet, objectToSelectOptions, TYPE_ACTIVATION_OBJECT,
-  TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER,
+  createClassicClassificationCustomDataSet,
+  objectToSelectOptions,
+  TYPE_ACTIVATION_OBJECT,
+  TYPE_LOSS,
+  TYPE_METRICS,
+  TYPE_OPTIMIZER,
 } from '../../../modelos/ArchitectureHelper'
 import * as iris from "../../../modelos/ClassificationHelper_IRIS";
 import * as cars from '../../../modelos/data/coches.json'
@@ -44,46 +48,48 @@ export default function CustomDataSetClassicClassification(props) {
   const [TargetSetClasses, setTargetSetClasses] = useState([])
 
   useEffect(() => {
-    const uploadedArchitecture = localStorage.getItem('custom-architecture')
-    if (uploadedArchitecture !== 'nothing') {
-      setUploadedArchitecture(true)
-      const uploadedJSON = JSON.parse(uploadedArchitecture)
-      const auxLayer = uploadedJSON.modelTopology.config.layers
-      let _layerArray = []
-      for (let i = 0; i < auxLayer.length; i++) {
-        _layerArray.push({
-          units: auxLayer[i].config.units,
-          activation: auxLayer[i].config.activation,
-        })
+    switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+      case MODEL_UPLOAD: {
+        const uploadedArchitecture = localStorage.getItem('custom-architecture')
+        const uploadedJSON = JSON.parse(uploadedArchitecture)
+        const auxLayer = uploadedJSON.modelTopology.config.layers
+        let _layerArray = []
+        for (let i = 0; i < auxLayer.length; i++) {
+          _layerArray.push({
+            units: auxLayer[i].config.units,
+            activation: auxLayer[i].config.activation,
+          })
+        }
+        setUploadedArchitecture(true)
+        setLayer(_layerArray)
+        setNLayer(_layerArray.length)
+        setString("")
+        break
       }
-      // console.log({ _layerArray })
-      setLayer(_layerArray)
-      setNLayer(_layerArray.length)
-    } else {
-      setLayer([
-        { units: 10, activation: 'sigmoid' },
-        { units: 3, activation: 'softmax' },
-      ])
-      setNLayer(2)
-      switch (getNameDatasetByID_ClassicClassification(dataSet)) {
-        case MODEL_UPLOAD: {
-          setString("")
-          break
-        }
-        case MODEL_IRIS: {
-          setString("5;5;4;2")
-          break
-        }
-        case MODEL_CAR: {
-          setString('vhigh;vhigh;2;2;big;med')
-          break
-        }
-        default: {
-          setString('0.1;4.3;2.1;0.2')
-        }
+      case MODEL_IRIS: {
+        setLayer([
+          { units: 10, activation: 'Sigmoid' },
+          { units: 3, activation: 'Softmax' },
+        ])
+        setNLayer(2)
+        setActiveLayer(0)
+        setString("5;5;4;2")
+        break
+      }
+      case MODEL_CAR: {
+        setLayer([
+          { units: 10, activation: 'Sigmoid' },
+          { units: 3, activation: 'Softmax' },
+        ])
+        setNLayer(2)
+        setActiveLayer(0)
+        setString('vhigh;vhigh;2;2;big;med')
+        break
+      }
+      default: {
+        console.error("Error, opción no permitida")
       }
     }
-    setActiveLayer(0)
   }, [])
 
   const handleClickPlay = async (event) => {
@@ -122,7 +128,7 @@ export default function CustomDataSetClassicClassification(props) {
       }
       case MODEL_CAR: {
         let aux = cars
-        console.log({ cochesDataset: cars })
+
         let _learningRate = parseInt(document.getElementById('formTrainRate').value) / 100
         let _unknownRate = 0.1
         let _numberOfEpoch = parseInt(NoEpochs)
@@ -177,7 +183,7 @@ export default function CustomDataSetClassicClassification(props) {
     }
   }
 
-  const handleVectorTest = async () => {
+  const handleClick_TestVector = async () => {
     // vhigh;vhigh;2;2;big;med
     let input = [[], [1, String.split(';').length]]
     if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
@@ -224,7 +230,7 @@ export default function CustomDataSetClassicClassification(props) {
       const prediction = Model.predict(tensor)
       const predictionWithArgMax = prediction.argMax(-1).dataSync()
 
-      console.log('La solución es: ', { predictionWithArgMax })
+      console.log('La solución es: ', { predictionWithArgMax, prediction })
       await alertHelper.alertInfo(
         'Tipo: ' + TargetSetClasses[predictionWithArgMax],
         TargetSetClasses[predictionWithArgMax],
@@ -234,7 +240,7 @@ export default function CustomDataSetClassicClassification(props) {
     }
   }
 
-  const handlerAddLayer = async () => {
+  const handlerClick_AddLayer = async () => {
     let aux = Layer
     if (aux === undefined) {
       await alertHelper.alertWarning("Error handlerAddLayer")
@@ -248,7 +254,7 @@ export default function CustomDataSetClassicClassification(props) {
     }
   }
 
-  const handlerRemoveLayer = async (idLayer) => {
+  const handlerClick_RemoveLayer = async (idLayer) => {
     let aux = Layer
     if (aux === undefined) {
       await alertHelper.alertWarning(`Error handlerRemoveLayer`)
@@ -269,7 +275,7 @@ export default function CustomDataSetClassicClassification(props) {
     setNLayer(nLayer - 1)
   }
 
-  const handleChangeUnits = async (index) => {
+  const handleChange_Units = async (index) => {
     let aux = Layer
     if (aux === undefined) {
       await alertHelper.alertWarning(`Error handleChangeUnits`)
@@ -279,7 +285,7 @@ export default function CustomDataSetClassicClassification(props) {
     setLayer(aux)
   }
 
-  const handleChangeTestInput = async () => {
+  const handleChange_TestInput = async () => {
     let aux = document.getElementById(`formTestInput`).value
     if (aux === undefined) {
       await alertHelper.alertWarning(`Error handleChangeTestInput`)
@@ -288,7 +294,7 @@ export default function CustomDataSetClassicClassification(props) {
     setString(aux)
   }
 
-  const handleChangeActivation = async (index) => {
+  const handleChange_Activation = async (index) => {
     let aux = Layer
     if (aux === undefined) {
       await alertHelper.alertWarning(`Error handleChangeActivation`)
@@ -298,37 +304,37 @@ export default function CustomDataSetClassicClassification(props) {
     setLayer(aux)
   }
 
-  const handleChangeNoEpochs = async () => {
+  const handleChange_NoEpochs = async () => {
     let aux = document.getElementById('FormNumberOfEpochs').value
     if (aux === undefined) {
-      await alertHelper.alertWarning(`Error handleChangeNoEpochs`)
+      await alertHelper.alertWarning(`Error handleChange_NoEpochs`)
     }
     // console.log({ aux })
     setNoEpochs(aux)
   }
 
-  const handleChangeLoss = async () => {
+  const handleChange_Loss = async () => {
     let aux = document.getElementById('FormLoss').value
     if (aux === undefined) {
-      await alertHelper.alertWarning(`Error handleChangeLoss`)
+      await alertHelper.alertWarning(`Error handleChange_Loss`)
     }
     // console.log({ aux })
     setLossValue(aux)
   }
 
-  const handleChangeOptimization = async () => {
+  const handleChange_Optimization = async () => {
     let aux = document.getElementById('FormOptimizer').value
     if (aux === undefined) {
-      await alertHelper.alertWarning(`Error handleChangeLoss`)
+      await alertHelper.alertWarning(`Error handleChange_Optimization`)
     }
     // console.log({ aux })
     setOptimizer(aux)
   }
 
-  const handleChangeMetrics = async () => {
+  const handleChange_Metrics = async () => {
     let aux = document.getElementById('FormMetrics').value
     if (aux === undefined) {
-      await alertHelper.alertWarning(`Error handleChangeMetrics`)
+      await alertHelper.alertWarning(`Error handleChange_Metrics`)
     }
     // console.log({ aux })
     setMetricsValue(aux)
@@ -365,7 +371,7 @@ export default function CustomDataSetClassicClassification(props) {
     )
   }
 
-  const handleChangeFileUpload = (e) => {
+  const handleChange_FileUpload = (e) => {
     if (e.target.files.length !== 1) {
       console.log("%cError, no se ha podido leer el fichero", CONSOLE_LOG_h3)
       return;
@@ -392,19 +398,15 @@ export default function CustomDataSetClassicClassification(props) {
             <Col xl={12} className={"mt-3"}>
               <Card>
                 <Card.Body>
-                  {UploadedArchitecture ? (
-                    <Card.Text>
-                      A continuación se ha pre cargado la arquitectura del fichero importado en la vista anterior.
-                      Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
-                      la misma.
-                    </Card.Text>
-                  ) : (
-                    <Card.Text>
-                      A continuación se ha pre cargado una arquitectura.
-                      Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
-                      la misma.
-                    </Card.Text>
-                  )}
+                  <Card.Text>
+                    {UploadedArchitecture ? (
+                      "A continuación se ha pre cargado la arquitectura del fichero importado en la vista anterior."
+                    ) : (
+                      "A continuación se ha pre cargado una arquitectura."
+                    )}
+                    Modifica los parámetros a tu gusto para jugar con la red y descubrir diferentes comportamientos de
+                    la misma.
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -418,8 +420,7 @@ export default function CustomDataSetClassicClassification(props) {
                     0: <>
                       <p>
                         Carga tu propio conjunto de datos con la siguiente{" "}
-                        <a href="#" onClick={() => downloadFile}>estructura</a> pulsando
-                        este botón.
+                        <a href="#" onClick={() => downloadFile}>estructura</a> pulsando este botón.
                       </p>
                       <div className="mb-3">
                         <label htmlFor="formFile"
@@ -427,7 +428,7 @@ export default function CustomDataSetClassicClassification(props) {
                         <input className="form-control"
                                type="file"
                                id="formFile"
-                               onChange={() => handleChangeFileUpload}></input>
+                               onChange={() => handleChange_FileUpload}></input>
                       </div>
                     </>
                   }[dataSet]}
@@ -525,7 +526,7 @@ export default function CustomDataSetClassicClassification(props) {
               {/* ADD LAYER */}
               <div className="d-grid gap-2">
                 <Button type="button"
-                        onClick={() => handlerAddLayer()}
+                        onClick={() => handlerClick_AddLayer()}
                         size={"lg"}
                         variant="primary">
                   Añadir capa
@@ -542,7 +543,7 @@ export default function CustomDataSetClassicClassification(props) {
 
                       <Accordion.Body>
                         <div className="d-grid gap-2">
-                          <Button onClick={() => handlerRemoveLayer(index)}
+                          <Button onClick={() => handlerClick_RemoveLayer(index)}
                                   variant={"danger"}>
                             Eliminar capa {index + 1}
                           </Button>
@@ -554,7 +555,7 @@ export default function CustomDataSetClassicClassification(props) {
                           <Form.Control type="number"
                                         placeholder="Introduce el número de unidades de la capa"
                                         defaultValue={item.units}
-                                        onChange={() => handleChangeUnits(index)}/>
+                                        onChange={() => handleChange_Units(index)}/>
                         </Form.Group>
                         {/* ACTIVATION FUNCTION */}
                         <Form.Group className="m3-3"
@@ -562,7 +563,7 @@ export default function CustomDataSetClassicClassification(props) {
                           <Form.Label>Selecciona la función de activación</Form.Label>
                           <Form.Select aria-label={"Default select example: " + item.activation}
                                        defaultValue={item.activation}
-                                       onChange={() => handleChangeActivation(index)}>
+                                       onChange={() => handleChange_Activation(index)}>
                             <option>Selecciona la función de activación</option>
                             {objectToSelectOptions(TYPE_ACTIVATION_OBJECT)
                               .map(({ key, label }, indexAct) => {
@@ -602,7 +603,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={NumberEpochs}
-                                  onChange={handleChangeNoEpochs}/>
+                                  onChange={handleChange_NoEpochs}/>
                     <Form.Text className="text-muted">
                       *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                     </Form.Text>
@@ -613,7 +614,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <Form.Label>Selecciona el optimizador</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={Optimizer}
-                                 onChange={handleChangeOptimization}>
+                                 onChange={handleChange_Optimization}>
                       <option>Selecciona el optimizador</option>
                       {TYPE_OPTIMIZER.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -629,7 +630,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <Form.Label>Selecciona la función de pérdida</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={LossValue}
-                                 onChange={handleChangeLoss}>
+                                 onChange={handleChange_Loss}>
                       <option>Selecciona la función de pérdida</option>
                       {TYPE_LOSS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -645,7 +646,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <Form.Label>Selecciona la métrica</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={MetricsValue}
-                                 onChange={handleChangeMetrics}>
+                                 onChange={handleChange_Metrics}>
                       <option>Selecciona la métrica</option>
                       {TYPE_METRICS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -761,12 +762,12 @@ export default function CustomDataSetClassicClassification(props) {
                                       dataSet === '1' ? 'vhigh;vhigh;2;2;big;med' :
                                         dataSet === '2' ? '0.1;4.3;2.1;0.2' : ''
                                   }
-                                  onChange={() => handleChangeTestInput()}/>
+                                  onChange={() => handleChange_TestInput()}/>
                   </Form.Group>
 
                   {/* SUBMIT BUTTON */}
                   <Button type="button"
-                          onClick={handleVectorTest}
+                          onClick={handleClick_TestVector}
                           size={"lg"}
                           variant="primary">
                     Ver resultado

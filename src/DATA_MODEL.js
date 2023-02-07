@@ -67,9 +67,38 @@ const LIST_MODEL_OPTIONS = [
     'SUBIR MODELO PROPIO',
     'MNIST - Clasificación de números',
     'MOBILENET - Clasificador de imágenes',
-    'RESNET V2 - Clasificador de imágenes'
+    // TODO :3
+    // 'RESNET V2 - Clasificador de imágenes'
   ],
 ]
+
+
+export const LIST_MODEL_OPTIONS_IDS = {
+  CLASSIC_CLASSIFICATION: {
+    // 0
+    0: MODEL_UPLOAD,
+    1: MODEL_CAR,
+    2: MODEL_IRIS
+  },
+  LINEAR_REGRESSION: {
+    // 1
+  },
+  OBJECT_DETECTION: {
+    // 2
+    0: MODEL_UPLOAD,
+    1: MODEL_FACE_MESH,
+    2: MODEL_FACE_MESH,
+    3: MODEL_MOVE_NET,
+    4: MODEL_COCO_SSD
+  },
+  IMAGE_CLASSIFICATION: {
+    // 3
+    0: MODEL_UPLOAD,
+    1: MODEL_IMAGE_MNIST,
+    2: MODEL_IMAGE_MOBILENET,
+    3: MODEL_IMAGE_RESNET
+  }
+}
 
 export const DATASET_DESCRIPTION = [
   [

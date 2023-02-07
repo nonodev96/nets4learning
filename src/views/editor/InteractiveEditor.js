@@ -32,7 +32,7 @@ export default function InteractiveEditor(props) {
     event.preventDefault()
 
     try {
-      console.log('Estas sion las métricas', Layer)
+      console.log('Estas si son las métricas', Layer)
       const model = await createClassicClassification(
         parseInt(document.getElementById('formTrainRate').value) / 100,
         0.1,
@@ -43,7 +43,7 @@ export default function InteractiveEditor(props) {
         MetricsValue,
       )
       console.log('Modelo creado y entrenado')
-      console.log(model)
+      // console.log(model)
       setModel(model)
 
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
@@ -59,7 +59,6 @@ export default function InteractiveEditor(props) {
     string.split(';').forEach((element) => {
       input[0].push(parseFloat(element))
     })
-    console.log(input)
 
     const tensor = tf.tensor2d(input[0], input[1])
     // const tensor = tf.tensor2d([0.1, 4.3, 2.1, 0.2], [1, 4])

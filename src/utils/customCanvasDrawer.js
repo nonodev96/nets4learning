@@ -19,7 +19,7 @@ export default function CustomCanvasDrawer(props) {
     context.scale(2, 2)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
-    context.lineWidth = 10
+    context.lineWidth = 20
     contextRef.current = context
 
     // React to touch events on the canvas
@@ -60,12 +60,12 @@ export default function CustomCanvasDrawer(props) {
 
   function handleTouchMove(e) {
     const rect = canvasRef.current.getBoundingClientRect()
-    const cssX = e.touches[0].clientX - rect.left
+    const cssX = e.touches[0].clientX + -rect.left
     const cssY = e.touches[0].clientY - rect.top
     //* canvasRef.current.width  / rect.width
     //* canvasRef.current.height / rect.height
     // contextRef.current.fillStyle = `hsl(${performance.now() % 360 | 0},100%,50%)`
-    contextRef.current.fillRect(cssX - 10, cssY - 10, 10, 10)
+    contextRef.current.fillRect(cssX - 20, cssY - 20, 20, 20)
   }
 
   return (

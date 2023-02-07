@@ -5,16 +5,15 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "start:development": "sh -ac '. ./.env.development; npm run start'",
     "start:production": "sh -ac '. ./.env.production; npm run start'",
     "start:simidat": "sh -ac '. ./.env.simidat; npm run start'",
-    "build": "react-scripts build",
-    "deploy:development": "sh -ac '. ./.env.development; npm run build'",
-    "deploy:production": "sh -ac '. ./.env.production; npm run build'",
-    "deploy:simidat": "sh -ac '. ./.env.simidat; npm run build'",
-    "deploy:localpath": "sh -ac '. ./.env.localpath; npm run build'",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build:development": "sh -ac '. ./.env.development; npm run build'",
+    "build:production": "sh -ac '. ./.env.production; npm run build'",
+    "build:simidat": "sh -ac '. ./.env.simidat; npm run build'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -54,6 +53,7 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^5.0.1",
+    "react-vis-graph-wrapper": "^0.1.3",
     "react-webcam": "^7.0.1",
     "sweetalert2": "^11.6.16",
     "sweetalert2-react-content": "^4.2.0",

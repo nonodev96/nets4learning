@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
@@ -7,22 +7,23 @@ import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import {
   CAR_CLASSES,
   CAR_DATA_CLASSES,
-  CAR_DATA_CLASSES_KEYS,
-  CAR_DATA_OBJECT,
-  CAR_DATA_DEFAULT
+  CAR_DATA_DEFAULT,
+  CAR_DATA_OBJECT
 } from '../../../modelos/ClassificationHelper_CAR'
-import { IRIS_CLASSES, IRIS_DATA_DEFAULT, IRIS_DATA_OBJECT } from '../../../modelos/ClassificationHelper_IRIS'
+import {
+  IRIS_CLASSES,
+  IRIS_DATA_DEFAULT,
+  IRIS_DATA_OBJECT
+} from '../../../modelos/ClassificationHelper_IRIS'
 import {
   getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
-  getNameDatasetByID_ObjectDetection,
   LIST_MODEL_OPTIONS,
-  LIST_MODELS_CLASSIC_CLASSIFICATION,
-  LIST_MODELS_OBJECT_DETECTION,
   MODEL_CAR,
   MODEL_IRIS,
-  MODEL_UPLOAD
+  MODEL_UPLOAD,
 } from "../../../DATA_MODEL";
+import { isProduction } from "../../../utils/utils";
 
 export default class ModelReviewClassicClassification extends React.Component {
   constructor(props) {
@@ -38,8 +39,8 @@ export default class ModelReviewClassicClassification extends React.Component {
       binary: null,
       json: null
     }
-    this.handleChangeTestInput = this.handleChangeTestInput.bind(this)
-    this.handleVectorTest = this.handleVectorTest.bind(this)
+    this.handleChange_TestInput = this.handleChange_TestInput.bind(this)
+    this.handleClick_TestVector = this.handleClick_TestVector.bind(this)
     this.handleChangeParameter = this.handleChangeParameter.bind(this)
 
     this.handle_BinaryFileUpload = this.handle_BinaryFileUpload.bind(this)
@@ -79,31 +80,27 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   async loadModel_CAR() {
-    console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel(
-      process.env.REACT_APP_PATH + "/models/carClassification/mymodelCar.json"
-    )
-    this.setState({ model: model })
+    if (!isProduction) console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
+    this.model = await tf.loadLayersModel(
+      process.env.REACT_APP_PATH + "/models/carClassification/mymodelCar.json")
     await alertHelper.alertSuccess("Modelo cargado con éxito")
-    // model.summary()
   }
 
   async loadModel_IRIS() {
-    console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
-    const model = await tf.loadLayersModel(
+    if (!isProduction) console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
+    this.model = await tf.loadLayersModel(
       process.env.REACT_APP_PATH + "/models/irisClassification/mymodelIris.json")
-    this.setState({ model: model })
     await alertHelper.alertSuccess("Modelo cargado con éxito")
     // model.summary()
   }
 
-  handleChangeTestInput() {
+  handleChange_TestInput() {
     this.setState({
       textToTest: document.getElementById(`formTestInput`).value
     })
   }
 
-  async handleVectorTest() {
+  async handleClick_TestVector() {
     this.setState({ isButtonDisabled: true })
     // Ejemplo modelo del coche
     // vhigh;vhigh;2;2;big;med
@@ -116,24 +113,25 @@ export default class ModelReviewClassicClassification extends React.Component {
     switch (getNameDatasetByID_ClassicClassification(this.dataSet)) {
       case MODEL_UPLOAD: {
         try {
-          let input = [[], [1, this.state.textToTest.split(';').length]]
-          const json = document.getElementById('json-upload')
-          const b = document.getElementById('weights-upload')
           const model = await tf.loadLayersModel(
-            tf.io.browserFiles([json.files[0], b.files[0]]),
+            tf.io.browserFiles([this.files.json, this.files.binary]),
           )
-          console.log(model)
+          let array = this.state.textToTest.split(';')
+          let input = [[], [1, array.length]]
           let i = 0
-          this.state.textToTest.split(';').forEach((element) => {
-            input[0].push(i)
+          array.forEach((element) => {
+            input[0].push(CAR_DATA_CLASSES[i].findIndex((element) => element === array[i]))
             i++
           })
           const tensor = tf.tensor2d(input[0], input[1])
-          const predictionWithArgMax = model
-            .predict(tensor)
+          const prediction = model.predict(tensor)
+          const predictionWithArgMax = prediction
             .argMax(-1)
             .dataSync()
-          await alertHelper.alertInfo('La solución es el tipo: ' + predictionWithArgMax, predictionWithArgMax)
+          await alertHelper.alertInfo(
+            `La solución es el tipo: ${predictionWithArgMax}.${prediction}`,
+            prediction
+          )
         } catch (error) {
           console.error(error)
           await alertHelper.alertError(error)
@@ -151,8 +149,8 @@ export default class ModelReviewClassicClassification extends React.Component {
             i++
           })
           const tensor = tf.tensor2d(input[0], input[1])
-          const prediction = this.state.model.predict(tensor)
-          const predictionWithArgMax = this.state.model.predict(tensor)
+          const prediction = this.model.predict(tensor)
+          const predictionWithArgMax = this.model.predict(tensor)
             .argMax(-1)
             .dataSync()
           await alertHelper.alertInfo(
@@ -172,8 +170,8 @@ export default class ModelReviewClassicClassification extends React.Component {
             input[0].push(parseFloat(element))
           })
           const tensor = tf.tensor2d(input[0], input[1])
-          const prediction = this.state.model.predict(tensor)
-          const predictionWithArgMax = this.state.model.predict(tensor)
+          const prediction = this.model.predict(tensor)
+          const predictionWithArgMax = this.model.predict(tensor)
             .argMax(-1)
             .dataSync()
           await alertHelper.alertInfo(
@@ -195,12 +193,12 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.setState({ isButtonDisabled: false })
   }
 
-  handle_BinaryFileUpload(files) {
-    this.files.binary = files[0]
+  handle_JSONFileUpload(files) {
+    this.files.json = new File([files[0]], files[0].name, { type: files[0].type });
   }
 
-  handle_JSONFileUpload(files) {
-    this.files.json = files[0]
+  handle_BinaryFileUpload(files) {
+    this.files.binary = new File([files[0]], files[0].name, { type: files[0].type });
   }
 
   getInfoDataset() {
@@ -301,7 +299,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                        accept={{ 'application/json': ['.json'] }}
                                        text={"Añada el fichero JSON"}
                                        labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handle_BinaryFileUpload}/>
+                                       function_DropAccepted={this.handle_JSONFileUpload}/>
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <DragAndDrop name={"bin"}
@@ -309,7 +307,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                        accept={{ 'application/octet-stream': ['.bin'] }}
                                        text={"Añada el fichero binario"}
                                        labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handle_JSONFileUpload}/>
+                                       function_DropAccepted={this.handle_BinaryFileUpload}/>
                         </Col>
                       </Row>
                     </>
@@ -387,7 +385,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                           autoComplete="off"
                                           disabled={getNameDatasetByID_ClassicClassification(this.dataSet) !== MODEL_UPLOAD}
                                           value={this.state.textToTest}
-                                          onChange={this.handleChangeTestInput}/>
+                                          onChange={this.handleChange_TestInput}/>
                           </Form.Group>
                         </Col>
                       </Row>
@@ -397,7 +395,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                           {/* SUBMIT BUTTON */}
                           <div className="d-grid gap-2 mt-3">
                             <Button type="button"
-                                    onClick={this.handleVectorTest}
+                                    onClick={this.handleClick_TestVector}
                                     disabled={this.state.isButtonDisabled}
                                     size={"lg"}
                                     variant="primary">

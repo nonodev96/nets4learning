@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row } from "react-bootstrap"
 import { ArrowRight } from "react-bootstrap-icons"
-import Graph from 'react-graph-vis'
+import VisGraph from 'react-vis-graph-wrapper'
 import './GraphicRed.css'
 
 export default function GraphicRed(props) {
@@ -10,12 +10,19 @@ export default function GraphicRed(props) {
   let nodes = []
   let edges = []
 
-  layer.forEach((element, index) => {
-    if (tipo === '0')
-      nodes.push({ id: index, label: 'Capa ' + (index + 1), title: 'Capa ' + (index + 1) })
-    else
-      nodes.push({ id: index, label: element.class, title: 'Capa ' + (index + 1) })
-  })
+  for (let [index, element] of Object.entries(layer)) {
+    index = parseInt(index)
+    switch (tipo) {
+      case 0: {
+        nodes.push({ id: index, label: `Capa ${index + 1} \n ${element.activation}`, title: 'Capa ' + (index + 1) })
+        break
+      }
+      case 1: {
+        nodes.push({ id: index, label: element.class, title: 'Capa ' + (index + 1) })
+        break
+      }
+    }
+  }
 
   for (let index = 1; index < layer.length; index++) {
     edges.push({ from: index - 1, to: index })
@@ -72,7 +79,9 @@ export default function GraphicRed(props) {
           </div>
         </Col>
         <Col className={"mynetwork"} xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
-          <Graph graph={graph} options={options} events={events}/>
+          <VisGraph graph={graph}
+                    options={options}
+                    events={events}/>
         </Col>
         <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
              style={{

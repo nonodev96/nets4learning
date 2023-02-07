@@ -8,23 +8,19 @@ import { LIST_MODEL_OPTIONS, LIST_TYPE_MODELS } from "../../DATA_MODEL";
 
 export default function UploadModelMenu(props) {
   const { id } = useParams()
-  const [Model, setModel] = useState(-1)
+  const [ModelID, setModelID] = useState(-1)
   const history = useHistory()
 
   const handleChangeModel = () => {
     let aux = document.getElementById('FormModel').value
-    if (aux !== undefined) setModel(aux)
+    if (aux !== undefined) setModelID(aux)
   }
 
   const handleSubmit = async () => {
-    if (Model === -1 || Model === 'Selecciona un Modelo') {
+    if (ModelID === -1 || ModelID === 'Selecciona un Modelo') {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
-      if (Model === -1 || Model === 'Selecciona un Modelo') {
-        history.push('/edit-architecture/' + id + '/' + 0 + '/' + -1)
-      } else {
-        history.push('/edit-architecture/' + id + '/' + 0 + '/' + Model)
-      }
+      history.push('/edit-architecture/' + id + '/' + 0 + '/' + ModelID)
     }
   }
 
