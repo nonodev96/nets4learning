@@ -12,8 +12,8 @@ import NotFoundPage from "./views/notFound/NotFoundPage";
 import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
 import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitectureMenu";
-import "./App.css";
 import InteractiveEditor from "./views/editor/InteractiveEditor";
+import "./App.css";
 
 
 function App() {

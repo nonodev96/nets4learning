@@ -383,8 +383,8 @@ class ModelReviewObjectDetection extends React.Component {
     return (
       <Container id={"ModelReviewObjectDetection"}>
         <Row>
-          <Col xs={12} sm={12} md={12} xl={3}>
-            <Card className={"sticky-top mb-3"}>
+          <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
+            <Card className={"sticky-top mt-3 mb-3 border-info"}>
               <Card.Body>
                 <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]}</Card.Title>
                 {getNameDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ? (
@@ -417,10 +417,10 @@ class ModelReviewObjectDetection extends React.Component {
             </Card>
           </Col>
 
-          <Col xs={12} sm={12} md={12} xl={9}>
+          <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
             {/*Es necesario un "Col" 9 y otro dentro*/}
-            <Col>
-              <Card>
+            <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+              <Card className={"mt-3"}>
                 <Card.Header><h3>Reconocimiento en tiempo real</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>WebCam</Card.Title>
@@ -474,8 +474,8 @@ class ModelReviewObjectDetection extends React.Component {
               </Card>
             </Col>
 
-            <Col className={"mt-3"}>
-              <Card>
+            <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+              <Card className={"mt-3"}>
                 <Card.Header><h3>Procesamiento de images</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>Subida de imágenes</Card.Title>

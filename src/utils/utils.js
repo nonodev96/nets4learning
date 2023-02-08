@@ -7,7 +7,7 @@ export function isAndroid() {
 }
 
 export function isMobile() {
-  return isAndroid() || isiOS();
+  return navigator?.userAgentData?.mobile || isAndroid() || isiOS();
 }
 
 export function isProduction() {

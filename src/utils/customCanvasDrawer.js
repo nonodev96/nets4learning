@@ -82,7 +82,7 @@ export default function CustomCanvasDrawer(props) {
                 onChange={startDrawing}></canvas>
 
       </div>
-      <div className="d-grid gap-2 col-6 mx-auto mt-3"
+      <div className="d-grid gap-2 col-md-6 mx-auto mt-3"
            style={{ "gridTemplateColumns": "repeat(2, 1fr)" }}>
         <Button variant={"primary"}
                 onClick={() => {

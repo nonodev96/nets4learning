@@ -28,8 +28,8 @@ export default function InitialMenu() {
       case 0:
         return (
           <>
-            <Card>
-              <Card.Header><h3>La clasificación</h3></Card.Header>
+            <Card className={"border-primary"}>
+              <Card.Header><h3>Clasificación clásica</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
@@ -81,8 +81,8 @@ export default function InitialMenu() {
       case 2:
         return (
           <>
-            <Card>
-              <Card.Header><h3>La clasificación</h3></Card.Header>
+            <Card className={"border-warning"}>
+              <Card.Header><h3>Identificación de objetos</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
@@ -104,8 +104,8 @@ export default function InitialMenu() {
       case 3:
         return (
           <>
-            <Card>
-              <Card.Header><h3>La clasificación</h3></Card.Header>
+            <Card className={"border-info"}>
+              <Card.Header><h3>Clasificador de imágenes</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar

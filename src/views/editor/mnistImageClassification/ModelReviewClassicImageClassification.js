@@ -41,10 +41,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
 
   constructor(props) {
     super(props)
-    this.isMobile = navigator?.userAgentData?.mobile
-    if (this.isMobile === undefined) {
-      this.isMobile = isMobile()
-    }
+
     const labels = []
     const min = 0
     const max = 1000
@@ -114,7 +111,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
           this.setState({ modelLoaded: true })
           await alertHelper.alertSuccess("Modelo cargado con éxito")
         } catch (error) {
-          console.log(error)
+          console.error(error)
         }
         break
       }
@@ -156,7 +153,12 @@ export default class ModelReviewClassicImageClassification extends React.Compone
     let imgData = smallCanvas_ctx.getImageData(0, 0, 28, 28)
     let arr = [], arr28 = []
     for (let p = 0; p < imgData.data.length; p += 4) {
-      let valor = imgData.data[p + 3] / 255
+      imgData.data[p] = 255 - imgData.data[p];
+      imgData.data[p + 1] = 255 - imgData.data[p + 1];
+      imgData.data[p + 2] = 255 - imgData.data[p + 2];
+      imgData.data[p + 3] = 255;
+
+      let valor = imgData.data[p] / 255
       arr28.push([valor])
       if (arr28.length === 28) {
         arr.push(arr28)
@@ -212,8 +214,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         break
       }
       case MODEL_IMAGE_MNIST: {
-        let { results, index } = await this.ProcessMNIST()
-        console.log(results)
+        const { results, index } = await this.ProcessMNIST()
         const bar_data_image = {
           labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
           datasets: [{
@@ -225,7 +226,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         this.setState({ bar_data_image: bar_data_image })
         this.updateChart(this.chartRef_image.current)
 
-        await alertHelper.alertInfo(`¿El número es un ${index}?`, index)
+        // await alertHelper.alertInfo(`¿El número es un ${index}?`, index)
         break
       }
       case MODEL_IMAGE_MOBILENET: {
@@ -273,13 +274,13 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         const predict = this.model.predict(normalize)
         const index = predict.as1D().argMax(-1).dataSync()[0]
 
-        console.log({
-          data: await predict.data(),
-          predict,
-          index,
-          IMAGENET: datosAuxiliares.IMAGENET[index],
-          imageNameList: datosAuxiliares.imageNameList[index]
-        })
+        // console.log({
+        //   data: await predict.data(),
+        //   predict,
+        //   index,
+        //   IMAGENET: datosAuxiliares.IMAGENET[index],
+        //   imageNameList: datosAuxiliares.imageNameList[index]
+        // })
         await alertHelper.alertInfo(
           "El modelo predice que la imagen es: " + datosAuxiliares.IMAGENET[index],
           datosAuxiliares.imageNameList[index]
@@ -381,7 +382,6 @@ export default class ModelReviewClassicImageClassification extends React.Compone
   }
 
   updateChart(chart) {
-    console.log("updateChart")
     chart.update();
   }
 
@@ -423,7 +423,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
       img.onload = draw
       img.onerror = failed
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -456,9 +456,9 @@ export default class ModelReviewClassicImageClassification extends React.Compone
       <>
         <Container id={"ModelReviewClassicImageClassification"}>
 
-          <Row className={"mt-3"}>
-            <Col xs={12} sm={12} md={12} xl={3}>
-              <Card className={"sticky-top mb-3"}>
+          <Row>
+            <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
+              <Card className={"sticky-top mt-3 mb-3 border-info"}>
                 <Card.Body>
                   <Card.Title>{this.Print_HTML_TextOptions()}</Card.Title>
                   {this.Print_HTML_Section()}
@@ -466,68 +466,80 @@ export default class ModelReviewClassicImageClassification extends React.Compone
               </Card>
             </Col>
 
-            <Col xs={12} sm={12} md={12} xl={9}>
-              <Card style={this.isMNIST() ? {} : { display: "none" }}>
-                <Card.Header><h3>Procesamiento del dibujo</h3></Card.Header>
-                <Card.Body>
-                  <CustomCanvasDrawer submitFunction={() => {
-                    this.handleSubmit_TestCanvasDraw().then(({ results, index }) => {
-                      const bar_data_image = {
-                        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        datasets: [{
-                          label: "numbers",
-                          data: results,
-                          backgroundColor: "rgba(255, 99, 132, 0.5)"
-                        }]
-                      }
-                      this.setState({ bar_data_image: bar_data_image })
-                      this.updateChart(this.chartRef_image.current)
-                    })
-                  }}/>
-                  {/*
-                  <div className="d-flex justify-content-center mt-3">
-                    <Button onClick={this.handleClick_btn_MNIST_PRUEBAS}>Pruebas MNIST</Button>
-                  </div>
-                  */}
-                </Card.Body>
-              </Card>
-
-              <Card className={"mt-3"}>
-                <Card.Header><h3>Procesamiento de imágenes</h3></Card.Header>
-                <Card.Body>
-                  <Container fluid={true}>
-                    <Row className={"mt-3"}>
-                      <Col>
-                        <DragAndDrop name={"doc"}
-                                     text={"Añada una imagen de ejemplo"}
-                                     labelFiles={"Fichero:"}
-                                     accept={{
-                                       "image/png": [".png"],
-                                       "image/jpg": [".jpg"]
-                                     }}
-                                     function_DropAccepted={this.handleFileUpload_Image}/>
-
-                        <div className="d-grid gap-2 col-6 mx-auto">
-                          <Button type="button"
-                                  onClick={this.handleClick_TestImageUpload}
-                                  variant={"primary"}>
-                            Validar
-                          </Button>
+            <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
+              <Row>
+                {this.isMNIST() && <>
+                  <Col className={"d-grid"}
+                       xs={this.isMNIST() ? 12 : 12}
+                       sm={this.isMNIST() ? 12 : 12}
+                       md={this.isMNIST() ? 6 : 12}
+                       xl={this.isMNIST() ? 6 : 12}
+                       xxl={this.isMNIST() ? 6 : 12}>
+                    <Card className={"mt-3"}>
+                      <Card.Header><h3>Procesamiento del dibujo</h3></Card.Header>
+                      <Card.Body>
+                        <CustomCanvasDrawer submitFunction={() => {
+                          this.handleSubmit_TestCanvasDraw().then(({ results, index }) => {
+                            const bar_data_image = {
+                              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                              datasets: [{
+                                label: "numbers",
+                                data: results,
+                                backgroundColor: "rgba(255, 99, 132, 0.5)"
+                              }]
+                            }
+                            this.setState({ bar_data_image: bar_data_image })
+                            this.updateChart(this.chartRef_image.current)
+                          })
+                        }}/>
+                        {/*
+                        <div className="d-flex justify-content-center mt-3">
+                          <Button onClick={this.handleClick_btn_MNIST_PRUEBAS}>Pruebas MNIST</Button>
                         </div>
-                      </Col>
-                    </Row>
-                  </Container>
-                </Card.Body>
-              </Card>
+                        */}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </>}
+                <Col className={"d-grid"}
+                     xs={this.isMNIST() ? 12 : 12}
+                     sm={this.isMNIST() ? 12 : 12}
+                     md={this.isMNIST() ? 6 : 12}
+                     xl={this.isMNIST() ? 6 : 12}
+                     xxl={this.isMNIST() ? 6 : 12}>
+                  <Card className={"mt-3"}>
+                    <Card.Header><h3>Procesamiento de imágenes</h3></Card.Header>
+                    <Card.Body className={"d-grid"} style={{ alignContent: "space-between" }}>
+                      <DragAndDrop name={"doc"}
+                                   text={"Añada una imagen de ejemplo"}
+                                   labelFiles={"Fichero:"}
+                                   accept={{
+                                     "image/png": [".png"],
+                                     "image/jpg": [".jpg"]
+                                   }}
+                                   function_DropAccepted={this.handleFileUpload_Image}/>
+
+                      <div className="d-grid gap-2 col-6 mx-auto">
+                        <Button type="button"
+                                onClick={this.handleClick_TestImageUpload}
+                                variant={"primary"}>
+                          Validar
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+
 
               <Card className={"mt-3"}>
                 <Card.Header><h3>Resultado</h3></Card.Header>
                 <Card.Body>
                   <Container fluid={true}>
                     <Row className="mt-3">
-                      <Col>
+                      <Col className={"d-flex align-items-center justify-content-center"} id={"container-canvas"}>
                         <Row>
-                          <Col className={"col-12 d-flex justify-content-center"} id={"container-canvas"}>
+                          <Col className={"col-12 d-flex justify-content-center"}>
                             <canvas id="originalImage"
                                     width={200} height={200}
                                     className={"nets4-border-1"}></canvas>
@@ -546,12 +558,13 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                           </Col>
                           <Col className={"col-12 d-flex justify-content-center"}>
                             <canvas id="smallcanvas"
+                                    style={this.isMNIST() ? {} : { display: "none" }}
                                     width="28" height="28"
                                     className={"nets4-border-1"}></canvas>
                           </Col>
                         </Row>
                       </Col>
-                      <Col style={{ display: "flex" }}>
+                      <Col className={"d-flex align-items-center justify-content-center"}>
                         <Bar ref={this.chartRef_image}
                              options={this.bar_options}
                              data={this.state.bar_data_image}/>
@@ -589,7 +602,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         {getNameDatasetByID_ImageClassification(this.state.dataset_ID) === MODEL_IMAGE_MOBILENET &&
           <>
             <Modal show={this.state.isModalShow}
-                   fullscreen={this.isMobile}
+                   fullscreen={isMobile}
                    onHide={this.handleModal_Close}
                    onEntered={this.handleModal_Entered}
                    onExited={this.handleModal_Exited}
@@ -601,19 +614,17 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                   Predicción
                 </Modal.Title>
               </Modal.Header>
-              <Modal.Body>
-                <Container>
+              <Modal.Body className={"d-flex align-items-center justify-content-center"}>
+                <Container fluid={true}>
                   <Row>
-                    <Col xl={3}
-                         style={{
-                           display: "flex",
-                           alignItems: "center"
-                         }}>
+                    <Col xs={12} sm={12} md={4} xl={3} xxl={3}
+                         className={"d-flex align-items-center justify-content-center"}>
                       <img src={this.state.url_image}
                            alt={"Imágen auxiliar"}
                            className={"img-fluid w-100"}/>
                     </Col>
-                    <Col xl={9}>
+                    <Col xs={12} sm={12} md={8} xl={9} xxl={9}
+                         className={"d-flex align-items-end justify-content-center"}>
                       <Bar ref={this.chartRef}
                            options={this.state.bar_options}
                            data={this.state.bar_data_modal}/>

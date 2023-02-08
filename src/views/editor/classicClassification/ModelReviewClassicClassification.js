@@ -281,8 +281,8 @@ export default class ModelReviewClassicClassification extends React.Component {
       <>
         <Container id={"ModelReviewClassicClassification"}>
           <Row>
-            <Col xs={12} sm={12} md={12} xl={3}>
-              <Card className={"sticky-top mb-3"}>
+            <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
+              <Card className={"sticky-top mt-3 mb-3 border-info"}>
                 <Card.Header><h3>Modelo</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>{LIST_MODEL_OPTIONS[0][this.dataSet]}</Card.Title>
@@ -319,8 +319,8 @@ export default class ModelReviewClassicClassification extends React.Component {
             </Col>
 
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
-              <Col>
-                <Card>
+              <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+                <Card className={"mt-3"}>
                   <Card.Header><h3>Configuración</h3></Card.Header>
                   <Card.Body>
                     {this.getInfoDataset()}
@@ -328,8 +328,8 @@ export default class ModelReviewClassicClassification extends React.Component {
                 </Card>
               </Col>
 
-              <Col className={"mt-3"}>
-                <Card>
+              <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+                <Card className={"mt-3"}>
                   <Card.Header><h3>Prueba</h3></Card.Header>
                   <Card.Body>
                     <div>
