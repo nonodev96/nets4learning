@@ -2,8 +2,8 @@
 #Creación del build
 #npm i
 npm run build:simidat
-mkdir "build/nets4learning_2"
-mv build/* build/nets4learning_2/
+mkdir "build/n4l"
+mv build/* build/n4l/
 
 #Compresión del build
 zip -r deploy.zip build

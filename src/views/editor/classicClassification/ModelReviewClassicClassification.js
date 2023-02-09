@@ -30,6 +30,18 @@ export default class ModelReviewClassicClassification extends React.Component {
     super(props);
     this.dataSet = props.dataSet
     this.state = {
+      loading:
+        <>
+          <div class="spinner-border"
+               role="status"
+               style={{
+                 fontSize: "0.5em",
+                 height: "1rem",
+                 width: "1rem"
+               }}>
+            <span class="sr-only"></span>
+          </div>
+        </>,
       model: null,
       textToTest: "",
       isButtonDisabled: false,
@@ -56,6 +68,7 @@ export default class ModelReviewClassicClassification extends React.Component {
   async init() {
     switch (getNameDatasetByID_ClassicClassification(this.dataSet)) {
       case MODEL_UPLOAD: {
+        this.setState({ loading: "" })
         break
       }
       case MODEL_CAR: {
@@ -83,6 +96,7 @@ export default class ModelReviewClassicClassification extends React.Component {
     if (!isProduction) console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
     this.model = await tf.loadLayersModel(
       process.env.REACT_APP_PATH + "/models/carClassification/mymodelCar.json")
+    this.setState({ loading: "" })
     await alertHelper.alertSuccess("Modelo cargado con éxito")
   }
 
@@ -90,8 +104,8 @@ export default class ModelReviewClassicClassification extends React.Component {
     if (!isProduction) console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
     this.model = await tf.loadLayersModel(
       process.env.REACT_APP_PATH + "/models/irisClassification/mymodelIris.json")
+    this.setState({ loading: "" })
     await alertHelper.alertSuccess("Modelo cargado con éxito")
-    // model.summary()
   }
 
   handleChange_TestInput() {
@@ -285,7 +299,7 @@ export default class ModelReviewClassicClassification extends React.Component {
               <Card className={"sticky-top mt-3 mb-3 border-info"}>
                 <Card.Header><h3>Modelo</h3></Card.Header>
                 <Card.Body>
-                  <Card.Title>{LIST_MODEL_OPTIONS[0][this.dataSet]}</Card.Title>
+                  <Card.Title>{LIST_MODEL_OPTIONS[0][this.dataSet]} {this.state.loading}</Card.Title>
                   {getNameDatasetByID_ClassicClassification(this.dataSet) === MODEL_UPLOAD ? (
                     <>
                       <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>

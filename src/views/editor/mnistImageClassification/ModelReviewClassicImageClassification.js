@@ -68,7 +68,18 @@ export default class ModelReviewClassicImageClassification extends React.Compone
       isModalShow: false,
       url_image: "/imágenes/cat.jpg",
       bar_data_image: bar_data_default,
-      bar_data_modal: bar_data_default
+      bar_data_modal: bar_data_default,
+      loading: <>
+        <div class="spinner-border"
+             role="status"
+             style={{
+               fontSize: "0.5em",
+               height: "1rem",
+               width: "1rem"
+             }}>
+          <span class="sr-only"></span>
+        </div>
+      </>
     }
 
     this.chartRef = React.createRef()
@@ -101,6 +112,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
           tf.io.browserFiles([this.files.json, this.files.binary]),
         )
         this.setState({ modelLoaded: true })
+        this.setState({ loading: "" })
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         break
       }
@@ -109,6 +121,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
           this.model = await tf.loadLayersModel(
             process.env.REACT_APP_PATH + "/models/mnistClassification/mymodel.json")
           this.setState({ modelLoaded: true })
+          this.setState({ loading: "" })
           await alertHelper.alertSuccess("Modelo cargado con éxito")
         } catch (error) {
           console.error(error)
@@ -119,6 +132,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         try {
           this.model = await tf_mobilenet.load()
           this.setState({ modelLoaded: true })
+          this.setState({ loading: "" })
           await alertHelper.alertSuccess("Modelo cargado con éxito")
         } catch (error) {
           console.error(error)
@@ -132,6 +146,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
             { fromTFHub: true }
           )
           this.setState({ modelLoaded: true })
+          this.setState({ loading: "" })
           await alertHelper.alertSuccess("Modelo cargado con éxito")
         } catch (e) {
           console.error(e)
@@ -460,7 +475,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={"sticky-top mt-3 mb-3 border-info"}>
                 <Card.Body>
-                  <Card.Title>{this.Print_HTML_TextOptions()}</Card.Title>
+                  <Card.Title>{this.Print_HTML_TextOptions()} {this.state.loading}</Card.Title>
                   {this.Print_HTML_Section()}
                 </Card.Body>
               </Card>

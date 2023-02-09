@@ -35,7 +35,19 @@ class ModelReviewObjectDetection extends React.Component {
       isProcessedImage: false,
       dataset: parseInt(props.dataSet ?? "0"),
       isShowedAlert: false,
-      modelDetector: null
+      modelDetector: null,
+      loading:
+        <>
+          <div class="spinner-border"
+               role="status"
+               style={{
+                 fontSize: "0.5em",
+                 height: "1rem",
+                 width: "1rem"
+               }}>
+            <span class="sr-only"></span>
+          </div>
+        </>,
     }
     this.webcamRef = React.createRef();
     this.canvasRef = React.createRef();
@@ -76,24 +88,28 @@ class ModelReviewObjectDetection extends React.Component {
         await this.enable_Model_FaceDetector()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
+        this.setState({ loading: "" })
         break
       }
       case MODEL_FACE_MESH: {
         await this.enable_Model_FaceMesh()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
+        this.setState({ loading: "" })
         break
       }
       case MODEL_MOVE_NET: {
         await this.enable_Model_MoveNet()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
+        this.setState({ loading: "" })
         break
       }
       case MODEL_COCO_SSD: {
         await this.enable_Model_CoCoSsd()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
+        this.setState({ loading: "" })
         break
       }
       default: {
@@ -386,7 +402,7 @@ class ModelReviewObjectDetection extends React.Component {
           <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
             <Card className={"sticky-top mt-3 mb-3 border-info"}>
               <Card.Body>
-                <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]}</Card.Title>
+                <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]} {this.state.loading}</Card.Title>
                 {getNameDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ? (
                     <>
                       <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
