@@ -63,7 +63,7 @@ export default function N4LFooter() {
                   <a target="_blank"
                      rel="noreferrer"
                      href="https://eps.Ujaen.es"
-                     class="link-secondary">
+                     className="link-secondary">
                     Escuela Politécnica Superior de Jaén
                   </a>
                 </li>

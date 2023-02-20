@@ -6,7 +6,7 @@ mkdir "build/n4l"
 mv build/* build/n4l/
 
 #Compresión del build
-zip -r deploy.zip build
+zip deploy.zip build
 
 #Copia en el servidor
 echo "¿Con qué usuario vas a copiar?"
@@ -22,7 +22,7 @@ ssh -t "$usuario"@simidat.ujaen.es "sudo docker ps"
 echo "¿En que contenedor quieres copiar el archivo?"
 read -r contenedor
 echo "$contenedor"
-
+#pruebanets4learning2
 ssh -t "$usuario"@simidat.ujaen.es "sudo docker cp ./deploy.zip $contenedor:/usr/src/app"
 
 #Descomprimir archivo en contenedor

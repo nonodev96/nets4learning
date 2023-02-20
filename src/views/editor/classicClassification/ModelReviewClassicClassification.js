@@ -32,14 +32,14 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.state = {
       loading:
         <>
-          <div class="spinner-border"
+          <div className="spinner-border"
                role="status"
                style={{
                  fontSize: "0.5em",
                  height: "1rem",
                  width: "1rem"
                }}>
-            <span class="sr-only"></span>
+            <span className="sr-only"></span>
           </div>
         </>,
       model: null,

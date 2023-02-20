@@ -13,3 +13,9 @@ export function isMobile() {
 export function isProduction() {
   return process.env.REACT_APP_ENVIRONMENT === "production"
 }
+
+export function random_min_max(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

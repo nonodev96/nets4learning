@@ -396,7 +396,20 @@ const getNameDatasetByID_ImageClassification = (dataSet) => {
   }
 }
 
-const LIST_OF_IMAGES = [
+const LIST_OF_IMAGES_MNIST = [
+  "0_new.png",
+  "1_new.png",
+  "2_new.png",
+  "3_new.png",
+  "4_new.png",
+  "5_new.png",
+  "6_new.png",
+  "7_new.png",
+  "8_new.png",
+  "9_new.png"
+]
+
+const LIST_OF_IMAGES_MOBILENET = [
   "beef-burger.jpg",
   "bulldog.jpg",
   "butterfly.jpg",
@@ -433,5 +446,6 @@ export {
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET,
 
-  LIST_OF_IMAGES
+  LIST_OF_IMAGES_MNIST,
+  LIST_OF_IMAGES_MOBILENET,
 }

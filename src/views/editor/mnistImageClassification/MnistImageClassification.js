@@ -165,7 +165,7 @@ export default function MnistImageClassification(props) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
       // var canvas
-      // canvas = document.getElementById('bigcanvas')
+      // canvas = document.getElementById('drawCanvas')
 
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')

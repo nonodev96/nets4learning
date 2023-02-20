@@ -3,20 +3,20 @@ import { Button } from "react-bootstrap"
 import './customCanvasDrawer.css'
 
 export default function CustomCanvasDrawer(props) {
-  const { submitFunction } = props
+  const { submitFunction, clearFunction } = props
   const [isDrawing, setIsDrawing] = useState(false)
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    canvas.width = 200 * 2
-    canvas.height = 200 * 2
+    canvas.width = 600
+    canvas.height = 600
     canvas.style.width = '200px'
     canvas.style.heigt = '200px'
 
     const context = canvas.getContext('2d')
-    context.scale(2, 2)
+    context.scale(3, 3)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
     context.lineWidth = 20
@@ -60,7 +60,7 @@ export default function CustomCanvasDrawer(props) {
 
   function handleTouchMove(e) {
     const rect = canvasRef.current.getBoundingClientRect()
-    const cssX = e.touches[0].clientX + -rect.left
+    const cssX = e.touches[0].clientX - rect.left
     const cssY = e.touches[0].clientY - rect.top
     //* canvasRef.current.width  / rect.width
     //* canvasRef.current.height / rect.height
@@ -71,7 +71,7 @@ export default function CustomCanvasDrawer(props) {
   return (
     <>
       <div className={"d-flex justify-content-center"}>
-        <canvas id='bigcanvas'
+        <canvas id='drawCanvas'
                 style={{
                   border: '1px solid black'
                 }}
@@ -86,13 +86,15 @@ export default function CustomCanvasDrawer(props) {
            style={{ "gridTemplateColumns": "repeat(2, 1fr)" }}>
         <Button variant={"primary"}
                 onClick={() => {
-                  submitFunction()
+
+                  submitFunction(canvasRef.current, canvasRef.current.getContext("2d"))
                 }}>
           Validar
         </Button>
         <Button variant={"warning"}
                 onClick={() => {
                   clear()
+                  clearFunction()
                 }}>
           Limpiar
         </Button>

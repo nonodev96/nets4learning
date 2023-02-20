@@ -103,7 +103,7 @@ export default function ObjectDetection(props) {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
-      const canvas = document.getElementById('bigcanvas')
+      const canvas = document.getElementById('drawCanvas')
 
       const small_canvas = document.getElementById('small_canvas')
       const ctx2 = small_canvas.getContext('2d')

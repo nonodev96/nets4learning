@@ -2,14 +2,13 @@ import React from "react"
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap"
 import * as tf from "@tensorflow/tfjs"
 import * as tf_mobilenet from "@tensorflow-models/mobilenet"
-import * as numberClass from "../../../modelos/ClassificationHelper_MNIST"
-import * as datosAuxiliares from "../../../modelos/data/imageClassification/imgaClassificationHelper"
 import * as alertHelper from "../../../utils/alertHelper"
 import {
   getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ImageClassification,
   LIST_MODEL_OPTIONS,
-  LIST_OF_IMAGES,
+  LIST_OF_IMAGES_MNIST,
+  LIST_OF_IMAGES_MOBILENET,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET,
@@ -18,13 +17,11 @@ import {
 import CustomCanvasDrawer from "../../../utils/customCanvasDrawer"
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip, } from "chart.js"
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
 import { Bar } from "react-chartjs-2"
 import { isMobile } from "../../../utils/utils";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
-
-
 export default class ModelReviewClassicImageClassification extends React.Component {
   bar_options = {
     responsive: true,
@@ -41,56 +38,75 @@ export default class ModelReviewClassicImageClassification extends React.Compone
 
   constructor(props) {
     super(props)
-
-    const labels = []
-    const min = 0
-    const max = 1000
     this.model = null
     this.files = {
       json: null,
       binary: null
     }
-    const bar_data_default = {
-      labels: labels,
+    this.bar_data_default = {
+      labels: [],
       datasets: [{
         label: "",
         data: [],
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.4)',
+          'rgba(255, 159, 64, 0.4)',
+          'rgba(255, 205, 86, 0.4)',
+          'rgba(75, 192, 192, 0.4)',
+          'rgba(54, 162, 235, 0.4)',
+          'rgba(153, 102, 255, 0.4)',
+          'rgba(175, 175, 175, 0.4)'
+        ],
+        borderColor: [
+          'rgb(255, 99, 132)',
+          'rgb(255, 159, 64)',
+          'rgb(255, 205, 86)',
+          'rgb(75, 192, 192)',
+          'rgb(54, 162, 235)',
+          'rgb(153, 102, 255)',
+          'rgb(175, 175, 175)'
+        ],
+        borderWidth: 1
       }],
     }
+    this.dataSet = props.dataSet ?? "0"
+    this.dataset_ID = parseInt(props.dataSet ?? "0")
     this.state = {
-      dataset_ID: parseInt(props.dataSet ?? "0"),
-      dataSet: props.dataSet ?? "0",
       modelLoaded: false,
       // mobilenet
       isImageUploaded: false,
       // variables de [mobilenet]
       isModalShow: false,
-      url_image: "/imágenes/cat.jpg",
-      bar_data_image: bar_data_default,
-      bar_data_modal: bar_data_default,
-      loading: <>
-        <div class="spinner-border"
-             role="status"
-             style={{
-               fontSize: "0.5em",
-               height: "1rem",
-               width: "1rem"
-             }}>
-          <span class="sr-only"></span>
-        </div>
-      </>
+      bar_data_image: this.bar_data_default,
+      bar_data_modal: this.bar_data_default,
+      loading:
+        <>
+          <div className="spinner-border"
+               role="status"
+               style={{
+                 fontSize: "0.5em",
+                 height: "1rem",
+                 width: "1rem"
+               }}>
+            <span className="sr-only"></span>
+          </div>
+        </>
+    }
+    this.info = {
+      modal_image: null,
+      image_upload: null
     }
 
-    this.chartRef = React.createRef()
+    this.chartRef_modal = React.createRef()
     this.chartRef_image = React.createRef()
 
     this.handleModal_Close = this.handleModal_Close.bind(this)
     this.handleModal_Entered = this.handleModal_Entered.bind(this)
     this.handleModal_Exited = this.handleModal_Exited.bind(this)
     // this.handleClick_btn_MNIST_PRUEBAS = this.handleClick_btn_MNIST_PRUEBAS.bind(this)
-    this.handleClick_TestImageUpload = this.handleClick_TestImageUpload.bind(this)
-    this.handleSubmit_TestCanvasDraw = this.handleSubmit_TestCanvasDraw.bind(this)
+    this.handleClick_ImageUploaded_Predict = this.handleClick_ImageUploaded_Predict.bind(this)
+    this.handleClick_ImageByExamples_OpenDrawAndPredict = this.handleClick_ImageByExamples_OpenDrawAndPredict.bind(this)
+    this.handleCanvasDraw_Submit = this.handleCanvasDraw_Submit.bind(this)
 
     this.handleFileUpload_JSON = this.handleFileUpload_JSON.bind(this)
     this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
@@ -104,190 +120,233 @@ export default class ModelReviewClassicImageClassification extends React.Compone
   }
 
   async loadModel() {
-    switch (getNameDatasetByID_ImageClassification(this.state.dataSet)) {
-      case MODEL_UPLOAD: {
-        // FIXME
-        console.log({ files: [this.files.json, this.files.binary] })
-        this.model = await tf.loadLayersModel(
-          tf.io.browserFiles([this.files.json, this.files.binary]),
-        )
-        this.setState({ modelLoaded: true })
-        this.setState({ loading: "" })
-        await alertHelper.alertSuccess("Modelo cargado con éxito")
-        break
-      }
-      case MODEL_IMAGE_MNIST: {
-        try {
+    try {
+      switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+        case MODEL_UPLOAD: {
           this.model = await tf.loadLayersModel(
-            process.env.REACT_APP_PATH + "/models/mnistClassification/mymodel.json")
-          this.setState({ modelLoaded: true })
-          this.setState({ loading: "" })
-          await alertHelper.alertSuccess("Modelo cargado con éxito")
-        } catch (error) {
-          console.error(error)
+            tf.io.browserFiles([this.files.json, this.files.binary]),
+          )
+          break
         }
-        break
-      }
-      case MODEL_IMAGE_MOBILENET: {
-        try {
+        case MODEL_IMAGE_MNIST: {
+          this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/keras-mnist/model.json");
+          //this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/mnistClassification/mymodel.json")
+          break
+        }
+        case MODEL_IMAGE_MOBILENET: {
           this.model = await tf_mobilenet.load()
-          this.setState({ modelLoaded: true })
-          this.setState({ loading: "" })
-          await alertHelper.alertSuccess("Modelo cargado con éxito")
-        } catch (error) {
-          console.error(error)
+          break
         }
-        break
-      }
-      case MODEL_IMAGE_RESNET: {
-        try {
+        case MODEL_IMAGE_RESNET: {
           this.model = await tf.loadGraphModel(
             "https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1",
             { fromTFHub: true }
           )
-          this.setState({ modelLoaded: true })
-          this.setState({ loading: "" })
-          await alertHelper.alertSuccess("Modelo cargado con éxito")
-        } catch (e) {
-          console.error(e)
+          break
         }
-        break
+        default: {
+          console.error("Error, opción no válida")
+          break
+        }
       }
-      default: {
-        console.error("Error, opción no válida")
-        break
-      }
+      this.setState({ modelLoaded: true })
+      this.setState({ loading: "" })
+      await alertHelper.alertSuccess("Modelo cargado con éxito")
+    } catch (e) {
+      console.error(e)
     }
   }
 
-  async ProcessMNIST() {
+  async PredictMNIST_Image(imageData) {
+    let arr = [], arr28 = []
+    for (let p = 0; p < imageData.data.length; p += 4) {
+      imageData.data[p] = 255 - imageData.data[p];
+      imageData.data[p + 1] = 255 - imageData.data[p + 1];
+      imageData.data[p + 2] = 255 - imageData.data[p + 2];
+      imageData.data[p + 3] = 255;
+      let valor = imageData.data[p] / 255
+      arr28.push([valor])
+      if (arr28.length === 28) {
+        arr.push(arr28)
+        arr28 = []
+      }
+    }
+
+    let tensor4 = tf.tensor4d([arr])
+    let predictions = this.model.predict(tensor4).dataSync()
+    let index = predictions.indexOf(Math.max.apply(null, predictions))
+    return { predictions, index }
+  }
+
+  async PredictMNIST(imageData) {
+    let arr = [], arr28 = []
+    for (let p = 0; p < imageData.data.length; p += 4) {
+      let valor = imageData.data[p + 3] / 255
+      arr28.push([valor])
+      if (arr28.length === 28) {
+        arr.push(arr28)
+        arr28 = []
+      }
+    }
+
+    let tensor4 = tf.tensor4d([arr])
+    let predictions = this.model.predict(tensor4).dataSync()
+    let index = predictions.indexOf(Math.max.apply(null, predictions))
+    return { predictions, index }
+  }
+
+
+  async handleCanvasDraw_Submit(draw_canvas, draw_canvas_ctx) {
+    // Copia el 'drawCanvas' en originalImage
     const canvas = document.getElementById("originalImage")
-    let smallCanvas = document.getElementById("smallcanvas")
-    numberClass.resample_single(canvas, 28, 28, smallCanvas)
-    let smallCanvas_ctx = smallCanvas.getContext("2d")
-    let imgData = smallCanvas_ctx.getImageData(0, 0, 28, 28)
-    let arr = [], arr28 = []
-    for (let p = 0; p < imgData.data.length; p += 4) {
-      imgData.data[p] = 255 - imgData.data[p];
-      imgData.data[p + 1] = 255 - imgData.data[p + 1];
-      imgData.data[p + 2] = 255 - imgData.data[p + 2];
-      imgData.data[p + 3] = 255;
+    const canvas_ctx = canvas.getContext("2d")
+    canvas_ctx.drawImage(draw_canvas, 0, 0, canvas.width, canvas.height)
+    // copiamos con la imagen de 28x28
+    canvas_ctx.drawImage(draw_canvas, 10, 10, 28, 28)
+    // procesamos con la imagen de 28x28
+    let imageData = canvas_ctx.getImageData(10, 10, 28, 28)
+    const { predictions, index } = await this.PredictMNIST(imageData)
 
-      let valor = imgData.data[p] / 255
-      arr28.push([valor])
-      if (arr28.length === 28) {
-        arr.push(arr28)
-        arr28 = []
+    this.setState({
+      bar_data_image: {
+        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        datasets: [
+          {
+            label: "Predicción MNIST",
+            data: predictions,
+            backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
+            borderColor: this.bar_data_default.datasets[0].borderColor,
+            borderWidth: this.bar_data_default.datasets[0].borderWidth
+          }
+        ]
       }
-    }
-    let tensor4 = tf.tensor4d([arr])
-    let results = this.model.predict(tensor4).dataSync()
-    let index = results.indexOf(Math.max.apply(null, results))
-    return { results, index }
+    }, () => {
+      this.chartRef_image.current.update()
+    })
   }
 
-  async handleSubmit_TestCanvasDraw() {
-    const canvas = document.getElementById("bigcanvas")
-    let smallCanvas = document.getElementById("smallcanvas")
-    numberClass.resample_single(canvas, 28, 28, smallCanvas)
-    let smallCanvas_ctx = smallCanvas.getContext("2d")
-    let imgData = smallCanvas_ctx.getImageData(0, 0, 28, 28)
-    let arr = [], arr28 = []
-    for (let p = 0; p < imgData.data.length; p += 4) {
-      let valor = imgData.data[p + 3] / 255
-      arr28.push([valor])
-      if (arr28.length === 28) {
-        arr.push(arr28)
-        arr28 = []
-      }
-    }
-    let tensor4 = tf.tensor4d([arr])
-    let results = this.model.predict(tensor4).dataSync()
-    let index = results.indexOf(Math.max.apply(null, results))
-    return { results, index }
+  // Limpiamos el canvas
+  async handleCanvasDraw_Clear() {
+    const originalImage_canvas = document.getElementById("originalImage")
+    const originalImage_canvas_ctx = originalImage_canvas.getContext("2d")
+    originalImage_canvas_ctx.clearRect(0, 0, originalImage_canvas.width, originalImage_canvas.height)
   }
 
-  async handleClick_TestImageUpload() {
+  async handleClick_ImageUploaded_Predict() {
     if (!this.state.isImageUploaded) {
       await alertHelper.alertError("Primero debes de subir una imagen")
       return
     }
-    // FIXME
 
-    switch (getNameDatasetByID_ImageClassification(this.state.dataSet)) {
+    let image = new Image()
+    image.src = URL.createObjectURL(this.info.image_upload)
+    image.onerror = this.UTILS_image.failed
+
+    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         // FIXME
-        try {
-          const tensor4 = [[], [], [], []]
+        image.onload = async () => {// Limpiamos canvas
+          const canvas = document.getElementById("originalImage")
+          const canvas_ctx = canvas.getContext("2d")
+          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
+          // Pegamos la imagen
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
+
+          const tensor4 = tf.browser.fromPixels(canvas)
           const results = this.model.predict(tensor4).dataSync()
           const index = results.indexOf(Math.max.apply(null, results))
           await alertHelper.alertInfo("La predicción es: " + index, index)
-        } catch (error) {
-          console.error(error)
-          await alertHelper.alertError(error)
         }
         break
       }
       case MODEL_IMAGE_MNIST: {
-        const { results, index } = await this.ProcessMNIST()
-        const bar_data_image = {
-          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-          datasets: [{
-            label: "numbers",
-            data: results,
-            backgroundColor: "rgba(255, 99, 132, 0.5)"
-          }]
-        }
-        this.setState({ bar_data_image: bar_data_image })
-        this.updateChart(this.chartRef_image.current)
+        image.onload = async () => {
+          // Limpiamos canvas
+          const canvas = document.getElementById("originalImage")
+          const canvas_ctx = canvas.getContext("2d")
+          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
+          // Pegamos la imagen
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
 
-        // await alertHelper.alertInfo(`¿El número es un ${index}?`, index)
+          // Transformamos a un canvas de 28x28
+          canvas_ctx.drawImage(canvas, 10, 10, 28, 28)
+          const imageData = canvas_ctx.getImageData(10, 10, 28, 28)
+
+          const { predictions, index } = await this.PredictMNIST_Image(imageData)
+          this.setState({
+            bar_data_image: {
+              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              datasets: [
+                {
+                  label: "Predicción MNIST",
+                  data: predictions,
+                  backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
+                  borderColor: this.bar_data_default.datasets[0].borderColor,
+                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                }
+              ]
+            }
+          }, () => {
+            this.chartRef_image.current.update()
+          })
+        }
         break
       }
       case MODEL_IMAGE_MOBILENET: {
-        const originalImage = document.getElementById("originalImage")
-        const predictions = await this.model.classify(originalImage)
-        const bar_data_image = {
-          labels: [""],
-          datasets: predictions.map((value) => {
-            return {
-              label: value.className,
-              data: [value.probability],
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
+        image.onload = async () => {
+          // Limpiamos canvas
+          const canvas = document.getElementById("originalImage")
+          const canvas_ctx = canvas.getContext("2d")
+          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
+          // Pegamos la imagen
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
+
+          const predictions = await this.model.classify(canvas)
+          this.setState({
+            bar_data_image: {
+              labels: [""],
+              datasets: predictions.map((v, i) => {
+                return {
+                  label: v.className,
+                  data: [v.probability],
+                  backgroundColor: this.bar_data_default.datasets[0].backgroundColor[i % 7],
+                  borderColor: this.bar_data_default.datasets[0].borderColor[i % 7],
+                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                }
+              })
             }
           })
         }
-        this.setState({ bar_data_image: bar_data_image })
         break
       }
       case MODEL_IMAGE_RESNET: {
         // TODO
-        const originalImage = document.getElementById("originalImage")
-        const originalImage_ctx = originalImage.getContext("2d")
-
-        const resultCanvas = document.getElementById("resultCanvas")
-        const resultCanvas_ctx = resultCanvas.getContext("2d")
-
-        resultCanvas.height = 224
-        resultCanvas.width = 224
-
-        const newCanvas = document.createElement("canvas")
-        const newCanvas_ctx = newCanvas.getContext("2d")
-        newCanvas.width = originalImage.width * 0.75
-        newCanvas.height = originalImage.height * 0.75
-
-        newCanvas_ctx.drawImage(originalImage, 0, 0, newCanvas.width, newCanvas.height)
-        resultCanvas_ctx.drawImage(newCanvas, 0, 0, newCanvas.width, newCanvas.height)
-
-        const tensorImage = tf.browser.fromPixels(originalImage)
-          .resizeNearestNeighbor([224, 224])
-          .toFloat();
-        const normalize = tensorImage
-          .sub(tf.scalar(127.5))
-          .div(tf.scalar(127.5))
-          .expandDims();
-        const predict = this.model.predict(normalize)
-        const index = predict.as1D().argMax(-1).dataSync()[0]
+        //const originalImage = document.getElementById("originalImage")
+        //const originalImage_ctx = originalImage.getContext("2d")
+        //
+        //const resultCanvas = document.getElementById("resultCanvas")
+        //const resultCanvas_ctx = resultCanvas.getContext("2d")
+        //
+        //resultCanvas.height = 224
+        //resultCanvas.width = 224
+        //
+        //const newCanvas = document.createElement("canvas")
+        //const newCanvas_ctx = newCanvas.getContext("2d")
+        //newCanvas.width = originalImage.width * 0.75
+        //newCanvas.height = originalImage.height * 0.75
+        //
+        //newCanvas_ctx.drawImage(originalImage, 0, 0, newCanvas.width, newCanvas.height)
+        //resultCanvas_ctx.drawImage(newCanvas, 0, 0, newCanvas.width, newCanvas.height)
+        //
+        //const tensorImage = tf.browser.fromPixels(originalImage)
+        //  .resizeNearestNeighbor([224, 224])
+        //  .toFloat();
+        //const normalize = tensorImage
+        //  .sub(tf.scalar(127.5))
+        //  .div(tf.scalar(127.5))
+        //  .expandDims();
+        //const predict = this.model.predict(normalize)
+        //const index = predict.as1D().argMax(-1).dataSync()[0]
 
         // console.log({
         //   data: await predict.data(),
@@ -295,11 +354,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         //   index,
         //   IMAGENET: datosAuxiliares.IMAGENET[index],
         //   imageNameList: datosAuxiliares.imageNameList[index]
-        // })
-        await alertHelper.alertInfo(
-          "El modelo predice que la imagen es: " + datosAuxiliares.IMAGENET[index],
-          datosAuxiliares.imageNameList[index]
-        )
+        // })atosAuxiliares.imageNameList[index])
         break
       }
       default: {
@@ -309,51 +364,95 @@ export default class ModelReviewClassicImageClassification extends React.Compone
     }
   }
 
-  // TODO Pruebas MNIST
-  // async handleClick_btn_MNIST_PRUEBAS() {
-  //   const tf_model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/model-mnist/model.json")
-  //   const canvas_ctx = document.getElementById("bigcanvas").getContext("2d")
-  //   const tensor_3D_img = tf.browser.fromPixels(canvas_ctx.getImageData(0, 0, 200, 200), 1);
-  //   let smallImg = tf.image.resizeBilinear(tensor_3D_img, [28, 28]);
-  //   smallImg = tf.cast(smallImg, "float32");
-  //   const tensor = smallImg.expandDims(0).div(tf.scalar(255));
-  //   const predictedValues = tf_model.predict(tensor).dataSync();
-  //
-  //   let maxPrediction = 0;
-  //   let predictionIndex = -1;
-  //   for (let index = 0; index < predictedValues.length; index++) {
-  //     if (predictedValues[index] > maxPrediction) {
-  //       maxPrediction = predictedValues[index];
-  //       predictionIndex = index;
-  //     }
-  //   }
-  //   console.log({ prediction: predictionIndex, score: maxPrediction })
-  // }
-
-  async PredictImageByExamples({ target }) {
-    const predictions = await this.model.classify(target)
-    const labels = predictions.map(v => v.className)
-    const datasets = predictions.map(v => {
-      return {
-        label: v.className,
-        data: [v.probability],
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+  async handleClick_ImageByExamples_OpenDrawAndPredict(image_src) {
+    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+      case MODEL_UPLOAD: {
+        break
       }
-    })
-    const bar_data_modal = {
-      labels: [""],
-      datasets: datasets
+      case MODEL_IMAGE_MNIST: {
+        this.info.modal_image = image_src
+        break
+      }
+      case MODEL_IMAGE_MOBILENET: {
+        this.info.modal_image = image_src
+        break
+      }
+      case MODEL_IMAGE_RESNET: {
+        break
+      }
+      default: {
+        console.error("Error, opción no disponible")
+        break
+      }
+    }
+    this.setState({ isModalShow: true })
+  }
+
+  Print_HTML_Examples() {
+    let examples;
+    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+      case MODEL_UPLOAD: {
+        return <></>
+      }
+      case MODEL_IMAGE_MNIST: {
+        examples = LIST_OF_IMAGES_MNIST.map((image, index) => {
+          return <Col className={"border bg-light"} key={index}>
+            <img className={"img-fluid w-100 h-100 object-fit-cover"}
+                 src={process.env.REACT_APP_PATH + "/assets/" + image}
+                 alt={image}
+                 onClick={
+                   () => {
+                     this.handleClick_ImageByExamples_OpenDrawAndPredict(
+                       process.env.REACT_APP_PATH + "/assets/" + image
+                     ).then(r => undefined)
+                   }
+                 }></img>
+          </Col>
+        })
+        break;
+      }
+      case MODEL_IMAGE_MOBILENET: {
+        examples = LIST_OF_IMAGES_MOBILENET.map((image, index) => {
+          return <Col className={"border bg-light"} key={index}>
+            <img className={"img-fluid w-100 h-100 object-fit-cover"}
+                 src={process.env.REACT_APP_PATH + "/assets/" + image}
+                 alt={image}
+                 onClick={
+                   () => {
+                     this.handleClick_ImageByExamples_OpenDrawAndPredict(
+                       process.env.REACT_APP_PATH + "/assets/" + image
+                     ).then(r => undefined)
+                   }
+                 }></img>
+          </Col>
+        })
+        break
+      }
+      case MODEL_IMAGE_RESNET: {
+        break
+      }
+      default: {
+        console.error("Error, opción no disponible")
+        break
+      }
     }
 
-    this.setState({ url_image: target.src })
-    this.setState({ bar_data_modal: bar_data_modal })
-    this.setState({ isModalShow: true })
-    const chart = this.chartRef.current;
-    this.updateChart(chart)
+    return <>
+      <Card className={"mt-3"}>
+        <Card.Header><h3>Procesamiento con ejemplos</h3></Card.Header>
+        <Card.Body>
+          <Container fluid={true}>
+            <Row className={(this.isMNIST() ? "" : "row-cols-3") + " justify-content-center g-2"}>
+              {examples}
+            </Row>
+          </Container>
+        </Card.Body>
+      </Card>
+    </>
   }
 
   Print_HTML_Section() {
-    switch (getNameDatasetByID_ImageClassification(this.state.dataset_ID)) {
+    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         return <>
           <div>
@@ -383,7 +482,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
       case MODEL_IMAGE_MNIST:
       case MODEL_IMAGE_RESNET:
       case MODEL_IMAGE_MOBILENET: {
-        return getHTML_DATASET_DESCRIPTION(3, this.state.dataset_ID)
+        return getHTML_DATASET_DESCRIPTION(3, this.dataset_ID)
       }
       default: {
         console.error("Error, opción no disponible")
@@ -393,50 +492,14 @@ export default class ModelReviewClassicImageClassification extends React.Compone
   }
 
   Print_HTML_TextOptions() {
-    return LIST_MODEL_OPTIONS[3][this.state.dataset_ID]
-  }
-
-  updateChart(chart) {
-    chart.update();
+    return LIST_MODEL_OPTIONS[3][this.dataset_ID]
   }
 
   handleFileUpload_Image(files) {
     try {
       const blob = files[0]
-      const image = new File([blob], blob.name, { type: blob.type });
-      let originalImage = document.getElementById("originalImage")
-      let originalImage_ctx = originalImage.getContext("2d")
-      let __that = this
-      const container_w = document.getElementById("container-canvas").getBoundingClientRect().width
-      let designer_width = container_w * 0.75
-      let designer_height = container_w * 0.50
-
-      // TODO HEY
-      function draw() {
-        const original_ratio = this.width / this.height
-        let designer_ratio = designer_width / designer_height
-        if (original_ratio > designer_ratio) {
-          designer_height = designer_width / original_ratio
-        } else {
-          designer_width = designer_height * original_ratio
-        }
-        this.width = designer_width
-        this.height = designer_height
-        // Dibujamos a tam original
-        originalImage.width = this.width
-        originalImage.height = this.height
-        originalImage_ctx.drawImage(this, 0, 0, originalImage.width, originalImage.height)
-        __that.setState({ isImageUploaded: true })
-      }
-
-      function failed(event) {
-        console.error(event)
-      }
-
-      let img = new Image()
-      img.src = URL.createObjectURL(image)
-      img.onload = draw
-      img.onerror = failed
+      this.info.image_upload = new File([blob], blob.name, { type: blob.type })
+      this.setState({ isImageUploaded: true })
     } catch (error) {
       console.error(error)
     }
@@ -454,8 +517,91 @@ export default class ModelReviewClassicImageClassification extends React.Compone
     this.setState({ isModalShow: false })
   }
 
-  handleModal_Entered() {
+  async handleModal_Entered() {
+    const canvas = document.getElementById("modal_canvas_image")
+    const canvas_ctx = canvas.getContext("2d")
+    canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
 
+    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+      case MODEL_UPLOAD: {
+        break
+      }
+      case MODEL_IMAGE_MNIST: {
+        // Dibujar en el canvas del modal
+        let image = new Image()
+        image.src = this.info.modal_image
+        image.onerror = this.UTILS_image.failed
+        image.onload = async () => {
+          // Dibujamos la imagen en el canvas
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "modal_canvas_image", "modal_canvas_container")
+
+          // Transformar la imagen en un canvas de 28x28
+          canvas_ctx.drawImage(canvas, 10, 10, 28, 28)
+          const imageData = canvas_ctx.getImageData(10, 10, 28, 28)
+
+          // PREDICT
+          const { predictions, index } = await this.PredictMNIST_Image(imageData)
+
+          // SHOW Results
+          this.setState({
+            bar_data_modal: {
+              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              datasets: [
+                {
+                  label: "Predicción MNIST",
+                  data: predictions,
+                  backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
+                  borderColor: this.bar_data_default.datasets[0].borderColor,
+                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                }
+              ]
+            }
+          }, () => {
+            this.chartRef_modal.current.update()
+          })
+        }
+        break
+      }
+      case MODEL_IMAGE_MOBILENET: {
+        // DRAW
+        let image = new Image()
+        image.src = this.info.modal_image
+        image.onerror = this.UTILS_image.failed
+        image.onload = async () => {
+          // Dibujamos la imagen en el canvas
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "modal_canvas_image", "modal_canvas_container")
+
+          // PREDICT
+          const predictions = await this.model.classify(image)
+
+          // SHOW Results
+          this.setState({
+            bar_data_modal: {
+              labels: [""],
+              datasets: predictions.map((v, i) => {
+                return {
+                  label: v.className,
+                  data: [v.probability],
+                  backgroundColor: this.bar_data_default.datasets[0].backgroundColor[i % 7],
+                  borderColor: this.bar_data_default.datasets[0].borderColor[i % 7],
+                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                }
+              })
+            }
+          }, () => {
+            this.chartRef_modal.current.update()
+          })
+        }
+        break
+      }
+      case MODEL_IMAGE_RESNET: {
+        break
+      }
+      default: {
+        console.error("Error, opción no disponible")
+        break
+      }
+    }
   }
 
   handleModal_Exited() {
@@ -463,7 +609,33 @@ export default class ModelReviewClassicImageClassification extends React.Compone
   }
 
   isMNIST() {
-    return getNameDatasetByID_ImageClassification(this.state.dataset_ID) === MODEL_IMAGE_MNIST
+    return getNameDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST
+  }
+
+  UTILS_image = {
+    drawImageInCanvasWithContainer: (image, canvas_id, container_canvas_id) => {
+      const canvas = document.getElementById(canvas_id)
+      const canvas_ctx = canvas.getContext("2d")
+      const container_w = document.getElementById(container_canvas_id).getBoundingClientRect().width
+      const original_ratio = image.width / image.height
+      let designer_width = 200
+      let designer_height = 200
+      let designer_ratio = designer_width / designer_height
+      if (original_ratio > designer_ratio) {
+        designer_height = designer_width / original_ratio
+      } else {
+        designer_width = designer_height * original_ratio
+      }
+      image.width = designer_width
+      image.height = designer_height
+      // Dibujamos a tam original
+      canvas.width = image.width
+      canvas.height = image.height
+      canvas_ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+    },
+    failed: (event) => {
+      console.error(event)
+    }
   }
 
   render() {
@@ -473,7 +645,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
 
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
-              <Card className={"sticky-top mt-3 mb-3 border-info"}>
+              <Card className={"sticky-top mt-3 border-info"}>
                 <Card.Body>
                   <Card.Title>{this.Print_HTML_TextOptions()} {this.state.loading}</Card.Title>
                   {this.Print_HTML_Section()}
@@ -483,39 +655,32 @@ export default class ModelReviewClassicImageClassification extends React.Compone
 
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
               <Row>
-                {this.isMNIST() && <>
-                  <Col className={"d-grid"}
-                       xs={this.isMNIST() ? 12 : 12}
-                       sm={this.isMNIST() ? 12 : 12}
-                       md={this.isMNIST() ? 6 : 12}
-                       xl={this.isMNIST() ? 6 : 12}
-                       xxl={this.isMNIST() ? 6 : 12}>
-                    <Card className={"mt-3"}>
-                      <Card.Header><h3>Procesamiento del dibujo</h3></Card.Header>
-                      <Card.Body>
-                        <CustomCanvasDrawer submitFunction={() => {
-                          this.handleSubmit_TestCanvasDraw().then(({ results, index }) => {
-                            const bar_data_image = {
-                              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                              datasets: [{
-                                label: "numbers",
-                                data: results,
-                                backgroundColor: "rgba(255, 99, 132, 0.5)"
-                              }]
+                <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+                  {this.Print_HTML_Examples()}
+                </Col>
+
+                {
+                  this.isMNIST() &&
+                  <>
+                    <Col className={"d-grid"}
+                         xs={12} sm={12} md={6} xl={6} xxl={6}>
+                      <Card className={"mt-3"}>
+                        <Card.Header><h3>Procesamiento del dibujo</h3></Card.Header>
+                        <Card.Body>
+                          <CustomCanvasDrawer
+                            submitFunction={async (canvas, canvas_ctx) => {
+                              await this.handleCanvasDraw_Clear()
+                              await this.handleCanvasDraw_Submit(canvas, canvas_ctx)
+                            }}
+                            clearFunction={async () => {
+                              await this.handleCanvasDraw_Clear()
                             }
-                            this.setState({ bar_data_image: bar_data_image })
-                            this.updateChart(this.chartRef_image.current)
-                          })
-                        }}/>
-                        {/*
-                        <div className="d-flex justify-content-center mt-3">
-                          <Button onClick={this.handleClick_btn_MNIST_PRUEBAS}>Pruebas MNIST</Button>
-                        </div>
-                        */}
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </>}
+                            }/>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </>
+                }
                 <Col className={"d-grid"}
                      xs={this.isMNIST() ? 12 : 12}
                      sm={this.isMNIST() ? 12 : 12}
@@ -536,7 +701,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
 
                       <div className="d-grid gap-2 col-6 mx-auto">
                         <Button type="button"
-                                onClick={this.handleClick_TestImageUpload}
+                                onClick={this.handleClick_ImageUploaded_Predict}
                                 variant={"primary"}>
                           Validar
                         </Button>
@@ -551,8 +716,9 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                 <Card.Header><h3>Resultado</h3></Card.Header>
                 <Card.Body>
                   <Container fluid={true}>
-                    <Row className="mt-3">
-                      <Col className={"d-flex align-items-center justify-content-center"} id={"container-canvas"}>
+                    <Row>
+                      <Col className={"d-flex align-items-center justify-content-center"}
+                           id={"container_canvas"}>
                         <Row>
                           <Col className={"col-12 d-flex justify-content-center"}>
                             <canvas id="originalImage"
@@ -571,12 +737,6 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                                     width={250} height={250}
                                     className={"nets4-border-1"}></canvas>
                           </Col>
-                          <Col className={"col-12 d-flex justify-content-center"}>
-                            <canvas id="smallcanvas"
-                                    style={this.isMNIST() ? {} : { display: "none" }}
-                                    width="28" height="28"
-                                    className={"nets4-border-1"}></canvas>
-                          </Col>
                         </Row>
                       </Col>
                       <Col className={"d-flex align-items-center justify-content-center"}>
@@ -588,71 +748,49 @@ export default class ModelReviewClassicImageClassification extends React.Compone
                   </Container>
                 </Card.Body>
               </Card>
-
-              {getNameDatasetByID_ImageClassification(this.state.dataset_ID) === MODEL_IMAGE_MOBILENET &&
-                <Card className={"mt-3"}>
-                  <Card.Header><h3>Procesamiento con ejemplos</h3></Card.Header>
-                  <Card.Body>
-                    <Container fluid={true}>
-                      <Row className={
-                        "row-cols-1 row-cols-xs-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-3 row-cols-xxl-3 g-2"
-                      }>
-                        {LIST_OF_IMAGES.map((image, index) => {
-                          return <div className={"border bg-light d-flex"} key={image}>
-                            <img className={"img-fluid w-100 h-100 object-fit-cover"}
-                                 src={process.env.REACT_APP_PATH + "/assets/" + image}
-                                 alt={image}
-                                 onClick={($event) => this.PredictImageByExamples($event)}></img>
-                          </div>
-                        })}
-                      </Row>
-                    </Container>
-                  </Card.Body>
-                </Card>
-              }
             </Col>
           </Row>
         </Container>
 
-        {getNameDatasetByID_ImageClassification(this.state.dataset_ID) === MODEL_IMAGE_MOBILENET &&
-          <>
-            <Modal show={this.state.isModalShow}
-                   fullscreen={isMobile}
-                   onHide={this.handleModal_Close}
-                   onEntered={this.handleModal_Entered}
-                   onExited={this.handleModal_Exited}
-                   size="lg"
-                   aria-labelledby="contained-modal-title-vcenter"
-                   centered>
-              <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                  Predicción
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body className={"d-flex align-items-center justify-content-center"}>
-                <Container fluid={true}>
-                  <Row>
-                    <Col xs={12} sm={12} md={4} xl={3} xxl={3}
-                         className={"d-flex align-items-center justify-content-center"}>
-                      <img src={this.state.url_image}
-                           alt={"Imágen auxiliar"}
-                           className={"img-fluid w-100"}/>
-                    </Col>
-                    <Col xs={12} sm={12} md={8} xl={9} xxl={9}
-                         className={"d-flex align-items-end justify-content-center"}>
-                      <Bar ref={this.chartRef}
-                           options={this.state.bar_options}
-                           data={this.state.bar_data_modal}/>
-                    </Col>
-                  </Row>
-                </Container>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button onClick={this.handleModal_Close}>Aceptar</Button>
-              </Modal.Footer>
-            </Modal>
-          </>
-        }
+        <Modal show={this.state.isModalShow}
+               fullscreen={isMobile()}
+               onHide={this.handleModal_Close}
+               onEntered={this.handleModal_Entered}
+               onExited={this.handleModal_Exited}
+               size="lg"
+               aria-labelledby="contained-modal-title-vcenter"
+               centered>
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Predicción
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ display: "flex", alignItems: "center" }}>
+            <Container fluid={true}>
+              <Row style={{ alignItems: "center" }}>
+                <Col xs={12} sm={5} md={5} xl={3} xxl={3}>
+                  <div className={"d-flex align-items-center justify-content-center"}
+                       id={"modal_canvas_container"}>
+                    <canvas id="modal_canvas_image"
+                            style={{ aspectRatio: '1', width: "75%" }}
+                            className={"nets4-border-1"}></canvas>
+                  </div>
+                </Col>
+                <Col xs={12} sm={7} md={7} xl={9} xxl={9}>
+                  <div className={"d-flex align-items-center justify-content-center"}>
+                    <Bar ref={this.chartRef_modal}
+                         options={this.state.bar_options}
+                         data={this.state.bar_data_modal}/>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleModal_Close}>Aceptar</Button>
+          </Modal.Footer>
+        </Modal>
+
       </>
     )
   }
