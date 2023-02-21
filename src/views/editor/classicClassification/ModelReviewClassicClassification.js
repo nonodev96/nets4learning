@@ -1,17 +1,20 @@
 import React from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form, Pagination, Row, Table } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../../utils/alertHelper'
 import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import {
   CAR_CLASSES,
+  CAR_DATA,
   CAR_DATA_CLASSES,
+  CAR_DATA_CLASSES_KEYS,
   CAR_DATA_DEFAULT,
   CAR_DATA_OBJECT
 } from '../../../modelos/ClassificationHelper_CAR'
 import {
   IRIS_CLASSES,
+  IRIS_DATA, IRIS_DATA_CLASSES_KEYS,
   IRIS_DATA_DEFAULT,
   IRIS_DATA_OBJECT
 } from '../../../modelos/ClassificationHelper_IRIS'
@@ -24,11 +27,14 @@ import {
   MODEL_UPLOAD,
 } from "../../../DATA_MODEL";
 import { isProduction } from "../../../utils/utils";
+import N4L_TablePagination from "../../../components/table/N4L_TablePagination";
 
 export default class ModelReviewClassicClassification extends React.Component {
   constructor(props) {
     super(props);
     this.dataSet = props.dataSet
+    this.dataset_ID = parseInt(props.dataSet ?? "0")
+    this.dataset_key = getNameDatasetByID_ClassicClassification(this.dataset_ID)
     this.state = {
       loading:
         <>
@@ -43,6 +49,7 @@ export default class ModelReviewClassicClassification extends React.Component {
           </div>
         </>,
       model: null,
+      activePage: 0,
       textToTest: "",
       isButtonDisabled: false,
       dataToTest: {}
@@ -54,6 +61,7 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.handleChange_TestInput = this.handleChange_TestInput.bind(this)
     this.handleClick_TestVector = this.handleClick_TestVector.bind(this)
     this.handleChangeParameter = this.handleChangeParameter.bind(this)
+    this.handleClick_ChangePage = this.handleClick_ChangePage.bind(this)
 
     this.handle_BinaryFileUpload = this.handle_BinaryFileUpload.bind(this)
     this.handle_JSONFileUpload = this.handle_JSONFileUpload.bind(this)
@@ -66,7 +74,7 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   async init() {
-    switch (getNameDatasetByID_ClassicClassification(this.dataSet)) {
+    switch (this.dataset_key) {
       case MODEL_UPLOAD: {
         this.setState({ loading: "" })
         break
@@ -114,6 +122,10 @@ export default class ModelReviewClassicClassification extends React.Component {
     })
   }
 
+  handleClick_ChangePage = (pageNumber) => {
+    this.setState({ activePage: pageNumber });
+  }
+
   async handleClick_TestVector() {
     this.setState({ isButtonDisabled: true })
     // Ejemplo modelo del coche
@@ -124,7 +136,7 @@ export default class ModelReviewClassicClassification extends React.Component {
       return;
     }
 
-    switch (getNameDatasetByID_ClassicClassification(this.dataSet)) {
+    switch (this.dataset_key) {
       case MODEL_UPLOAD: {
         try {
           const model = await tf.loadLayersModel(
@@ -215,7 +227,43 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.files.binary = new File([files[0]], files[0].name, { type: files[0].type });
   }
 
-  getInfoDataset() {
+  Print_HTML_DATASET() {
+    let _data_head = []
+    let _data_body = [[]]
+    switch (this.dataset_key) {
+      case "UPLOAD":
+        return <></>
+      case MODEL_CAR: {
+        _data_head = CAR_DATA_CLASSES_KEYS
+        _data_body = CAR_DATA
+        break
+      }
+      case MODEL_IRIS: {
+        _data_head = IRIS_DATA_CLASSES_KEYS
+        _data_body = IRIS_DATA
+        break
+      }
+      default: {
+        console.error("Opción no válida")
+        break
+      }
+    }
+
+    return <>
+      <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+        <Card className={"mt-3"}>
+          <Card.Header><h3>Dataset</h3></Card.Header>
+          <Card.Body>
+
+            <N4L_TablePagination data_head={_data_head}
+                                 data_body={_data_body}/>
+          </Card.Body>
+        </Card>
+      </Col>
+    </>
+  }
+
+  Print_HTML_InfoDataset() {
     switch (getNameDatasetByID_ClassicClassification(this.dataSet)) {
       case MODEL_UPLOAD:
         return <>
@@ -337,7 +385,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                 <Card className={"mt-3"}>
                   <Card.Header><h3>Configuración</h3></Card.Header>
                   <Card.Body>
-                    {this.getInfoDataset()}
+                    {this.Print_HTML_InfoDataset()}
                   </Card.Body>
                 </Card>
               </Col>
@@ -431,6 +479,8 @@ export default class ModelReviewClassicClassification extends React.Component {
                   </Card.Body>
                 </Card>
               </Col>
+
+              {this.Print_HTML_DATASET()}
             </Col>
           </Row>
         </Container>

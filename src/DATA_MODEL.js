@@ -151,7 +151,6 @@ export const DATASET_DESCRIPTION = [
         (<a target="_blank" href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/">Modelo</a>)
       </p>
     </>,
-
     <>
       <p>
         El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de
@@ -192,7 +191,6 @@ export const DATASET_DESCRIPTION = [
         <li>Mismo elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
       </ul>
     </>,
-
     <>
       <p>
         Este modelo es proporcionado por el HUB de modelos de tensorflow.
@@ -210,7 +208,6 @@ export const DATASET_DESCRIPTION = [
         <li>Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
       </ul>
     </>,
-
     <>
       <p>
         PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
@@ -229,7 +226,6 @@ export const DATASET_DESCRIPTION = [
         </li>
       </ul>
     </>,
-
     <>
       <p>Modelo de detección de objetos que pretende localizar e identificar múltiples objetos en una sola imagen.</p>
       <p>

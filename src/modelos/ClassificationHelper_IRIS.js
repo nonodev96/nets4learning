@@ -14,6 +14,12 @@ export const IRIS_DATA_DEFAULT = {
   longitud_petalo: 1.4,
   anchura_petalo: 0.2
 }
+export const IRIS_DATA_CLASSES_KEYS = [
+  "Longitud sépalo",
+  "Anchura sépalo",
+  "Longitud petalo",
+  "Anchura petalo"
+]
 export const IRIS_DATA = [
   [5.1, 3.5, 1.4, 0.2, 0],
   [4.9, 3.0, 1.4, 0.2, 0],

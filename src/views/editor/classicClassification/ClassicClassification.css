@@ -50,3 +50,7 @@
   background-color: #fb294c;
 }
 
+.n4l-pagination .page-link {
+  width: 3rem;
+  text-align: center;
+}
