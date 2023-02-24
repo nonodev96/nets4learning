@@ -1,9 +1,9 @@
 import React from "react";
+import { MODEL_CAR } from "./modelos/ClassificationHelper_CAR";
+import { MODEL_IRIS } from "./modelos/ClassificationHelper_IRIS";
+import { MODEL_HEPATITIS } from "./modelos/ClassificationHelper_HEPATITIS";
 
 const MODEL_UPLOAD = "UPLOAD"
-
-const MODEL_CAR = "CAR"
-const MODEL_IRIS = "IRIS"
 
 const MODEL_FACE_MESH = "FACE-MESH"
 const MODEL_FACE_DETECTION = "FACE-DETECTION"
@@ -16,8 +16,9 @@ const MODEL_IMAGE_RESNET = "RES-NET"
 
 const LIST_MODELS_CLASSIC_CLASSIFICATION = [
   MODEL_UPLOAD,
-  MODEL_CAR,
-  MODEL_IRIS
+  MODEL_CAR.KEY,
+  MODEL_IRIS.KEY,
+  MODEL_HEPATITIS.KEY
 ]
 
 const LIST_MODELS_OBJECT_DETECTION = [
@@ -52,8 +53,9 @@ const LIST_TYPE_MODELS_DESCRIPTION = [
 const LIST_MODEL_OPTIONS = [
   [
     'SUBIR MODELO PROPIO',
-    'CAR-DATA - Clasificación de coches',
-    'IRIS-DATA- Clasificación de planta iris'
+    'CAR - Clasificación de coches',
+    'IRIS - Clasificación de flor iris',
+    'HEPATITIS - Clasificación de Hepatitis',
   ],
   [],
   [
@@ -77,8 +79,9 @@ export const LIST_MODEL_OPTIONS_IDS = {
   CLASSIC_CLASSIFICATION: {
     // 0
     0: MODEL_UPLOAD,
-    1: MODEL_CAR,
-    2: MODEL_IRIS
+    1: MODEL_CAR.KEY,
+    2: MODEL_IRIS.KEY,
+    3: MODEL_HEPATITIS.KEY,
   },
   LINEAR_REGRESSION: {
     // 1
@@ -104,72 +107,14 @@ export const DATASET_DESCRIPTION = [
   [
     'DATASET PROPIO',
     <>
-      <p>El conjunto de datos "Car Evaluation" permite evaluar vehículos a través de la siguiente estructura:</p>
-      <ul>
-        <li><b>CAR</b> Aceptación del vehículo</li>
-        <li>
-          <b>PRICE:</b> Precio en general
-          <ul>
-            <li><b>BUTING:</b> Precio de compra</li>
-            <li><b>MAINT:</b> Costo del mantenimiento</li>
-          </ul>
-        </li>
-        <li>
-          <b>TECH:</b> Características técnicas
-          <ul>
-            <li>
-              <b>COMFORT:</b> Comfort
-              <ul>
-                <li><b>DOORS:</b> Nº de puertas</li>
-                <li><b>PERSONS:</b> Nº de plazas</li>
-                <li><b>LUG_BOOT:</b> Tamaño del maletero</li>
-              </ul>
-            </li>
-            <li><b>SAFETY:</b> Seguridad estimada del vehículo</li>
-          </ul>
-        </li>
-      </ul>
-      <p>Estos son los valores de entrada que podrá tomar la red.</p>
-      <ul>
-        <li><b>buying:</b> vhigh, high, med, low.</li>
-        <li><b>maint:</b> vhigh, high, med, low.</li>
-        <li><b>doors:</b> 2, 3, 4, 5more.</li>
-        <li><b>persons:</b> 2, 4, more.</li>
-        <li><b>lug_boot:</b> small, med, big.</li>
-        <li><b>safety:</b> low, med, high.</li>
-      </ul>
-      <p>Por último los posibles valores que puede dar son:</p>
-      <ul>
-        <li><b>UNACC</b> - Inaccesible</li>
-        <li><b>ACC</b> - Accesible</li>
-        <li><b>GOOD</b> - Bien</li>
-        <li><b>VGOOD</b> - Muy bien</li>
-      </ul>
-      <p>
-        Para obtener más información acerca de este conjunto de datos visita{" "}
-        <a target="_blank" href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation">esta web</a>{" "}
-        (<a target="_blank" href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/">Modelo</a>)
-      </p>
+      {MODEL_CAR.DESCRIPTION}
     </>,
     <>
-      <p>
-        El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de
-        su pétalo y sépalo.
-      </p>
-      <p>Tiene la siguiente estructura:</p>
-      <ul>
-        <li>Longitud del sépalo en cm</li>
-        <li>Anchura del sépalo en cm</li>
-        <li>Longitud del pétalo en cm</li>
-        <li>Anchura del pétalo en cm</li>
-      </ul>
-      <p>Por último los posibles valores que puede dar son:</p>
-      <ul>
-        <li>Iris Setosa</li>
-        <li>Iris Versicolour</li>
-        <li>Iris Virginica</li>
-      </ul>
+      {MODEL_IRIS.DESCRIPTION}
     </>,
+    <>
+      {MODEL_HEPATITIS.DESCRIPTION}
+    </>
   ],
   [],
   [
@@ -351,9 +296,11 @@ const getNameDatasetByID_ClassicClassification = (dataSet) => {
     case '0':
       return MODEL_UPLOAD
     case '1':
-      return MODEL_CAR
+      return MODEL_CAR.KEY
     case '2':
-      return MODEL_IRIS
+      return MODEL_IRIS.KEY
+    case '3':
+      return MODEL_HEPATITIS.KEY
     default:
       console.error("Error, opción no disponible")
   }
@@ -430,6 +377,7 @@ export {
   LIST_MODELS_CLASSIC_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
+  MODEL_HEPATITIS,
   // Identificación de objetos
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_FACE_DETECTION,

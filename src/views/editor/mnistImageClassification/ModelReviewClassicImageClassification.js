@@ -130,7 +130,7 @@ export default class ModelReviewClassicImageClassification extends React.Compone
         }
         case MODEL_IMAGE_MNIST: {
           this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/keras-mnist/model.json");
-          //this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/mnistClassification/mymodel.json")
+          //this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification-image/mnist/mymodel.json")
           break
         }
         case MODEL_IMAGE_MOBILENET: {

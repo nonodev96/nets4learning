@@ -8,7 +8,7 @@ export default function N4L_TablePagination({ data_head, data_body }) {
   const rowsPerPage = 10
   const rowsCount = data_body.length;
   const startPage = 0
-  const pageCount = Math.ceil(data_body.length / rowsPerPage)
+  const pageCount = Math.ceil(rowsCount / rowsPerPage)
 
   const countDigit = (n) => {
     if (n / 10 === 0)
@@ -30,7 +30,6 @@ export default function N4L_TablePagination({ data_head, data_body }) {
             return <th key={"thead_" + i}>{v}</th>
           })
         }
-        <th>Resultados</th>
       </tr>
       </thead>
       <tbody>
@@ -50,49 +49,59 @@ export default function N4L_TablePagination({ data_head, data_body }) {
     </Table>
 
     <Pagination size="sm" className={"n4l-pagination justify-content-center"}>
-      <Pagination.First onClick={() => handleClick_ChangePage(0)}/>
-      {(activePage - 1 >= startPage) &&
-        <Pagination.Prev onClick={() => handleClick_ChangePage(activePage - 1)}/>
-      }
+      {(activePage > 0) && <></>}
+      <Pagination.First disabled={!(activePage > 0)}
+                        onClick={() => handleClick_ChangePage(0)}/>
 
-      {(activePage - 3 >= startPage) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage - 3)}>
-          {activePage - 3}
-        </Pagination.Item>
-      }
-      {(activePage - 2 >= startPage) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage - 2)}>
-          {activePage - 2}
-        </Pagination.Item>
-      }
-      {(activePage - 1 >= startPage) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage - 1)}>
-          {activePage - 1}
-        </Pagination.Item>
-      }
+      {(activePage - 1 >= startPage) && <></>}
+      <Pagination.Prev disabled={!(activePage - 1 >= startPage)}
+                       onClick={() => handleClick_ChangePage(activePage - 1)}/>
+
+      {(activePage - 3 >= startPage) && <></>}
+      <Pagination.Item disabled={!(activePage - 3 >= startPage)}
+                       onClick={() => handleClick_ChangePage(activePage - 3)}>
+        {(activePage - 3 >= startPage) ? activePage - 3 : "-"}
+      </Pagination.Item>
+
+      {(activePage - 2 >= startPage) && <></>}
+      <Pagination.Item disabled={!(activePage - 2 >= startPage)}
+                       onClick={() => handleClick_ChangePage(activePage - 2)}>
+        {(activePage - 2 >= startPage) ? activePage - 2 : "-"}
+      </Pagination.Item>
+
+      {(activePage - 1 >= startPage) && <></>}
+      <Pagination.Item disabled={!(activePage - 1 >= startPage)}
+                       onClick={() => handleClick_ChangePage(activePage - 1)}>
+        {(activePage - 1 >= startPage) ? activePage - 1 : "-"}
+      </Pagination.Item>
       <Pagination.Item active={true}>
         {activePage}
       </Pagination.Item>
-      {(activePage + 1 < pageCount - 1) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage + 1)}>
-          {activePage + 1}
-        </Pagination.Item>
-      }
-      {(activePage + 2 < pageCount - 2) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage + 2)}>
-          {activePage + 2}
-        </Pagination.Item>
-      }
-      {(activePage + 3 < pageCount - 3) &&
-        <Pagination.Item onClick={() => handleClick_ChangePage(activePage + 3)}>
-          {activePage + 3}
-        </Pagination.Item>
-      }
+      <Pagination.Item disabled={!(activePage + 1 < pageCount)}
+                       onClick={() => handleClick_ChangePage(activePage + 1)}>
+        {(activePage + 1 < pageCount) ? activePage + 1 : "-"}
+      </Pagination.Item>
+      {(activePage + 1 < pageCount) && <></>}
 
-      {(activePage + 1 < pageCount - 1) &&
-        <Pagination.Next onClick={() => handleClick_ChangePage(activePage + 1)}/>
-      }
-      <Pagination.Last onClick={() => handleClick_ChangePage(pageCount - 1)}/>
+      <Pagination.Item disabled={!(activePage + 2 < pageCount)}
+                       onClick={() => handleClick_ChangePage(activePage + 2)}>
+        {(activePage + 2 < pageCount) ? activePage + 2 : "-"}
+      </Pagination.Item>
+      {(activePage + 2 < pageCount) && <></>}
+
+      <Pagination.Item disabled={!(activePage + 3 < pageCount)}
+                       onClick={() => handleClick_ChangePage(activePage + 3)}>
+        {(activePage + 3 < pageCount) ? activePage + 3 : "-"}
+      </Pagination.Item>
+      {(activePage + 3 < pageCount) && <></>}
+
+
+      {(activePage + 1 < pageCount) && <></>}
+      <Pagination.Next disabled={!(activePage + 1 < pageCount)}
+                       onClick={() => handleClick_ChangePage(activePage + 1)}/>
+      {(activePage + 1 <= pageCount - 1) && <></>}
+      <Pagination.Last disabled={!(activePage + 1 <= pageCount - 1)}
+                       onClick={() => handleClick_ChangePage(pageCount - 1)}/>
     </Pagination>
   </>
 }
