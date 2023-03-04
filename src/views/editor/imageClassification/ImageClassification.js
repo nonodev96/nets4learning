@@ -8,7 +8,7 @@ import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
 
-export default function MnistImageClassification(props) {
+export default function ImageClassification(props) {
   const { dataSet } = props
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS

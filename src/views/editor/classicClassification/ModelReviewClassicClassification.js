@@ -1,19 +1,20 @@
 import React from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
+import * as tfVis from '@tensorflow/tfjs-vis'
 import * as alertHelper from '../../../utils/alertHelper'
-import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import {
   getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
   MODEL_UPLOAD,
   MODEL_CAR,
   MODEL_IRIS,
-  MODEL_HEPATITIS,
+  MODEL_HEPATITIS_C
 } from "../../../DATA_MODEL";
+import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import { isProduction } from "../../../utils/utils";
-import N4L_TablePagination from "../../../components/table/N4L_TablePagination";
+import N4LTablePagination from "../../../components/table/N4LTablePagination";
+import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 
 export default class ModelReviewClassicClassification extends React.Component {
   constructor(props) {
@@ -22,30 +23,31 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.dataset_ID = parseInt(props.dataSet ?? "0")
     this.dataset_key = getNameDatasetByID_ClassicClassification(this.dataset_ID)
     this.state = {
-      loading:
+      loading         :
         <>
           <div className="spinner-border"
                role="status"
                style={{
                  fontSize: "0.5em",
-                 height: "1rem",
-                 width: "1rem"
+                 height  : "1rem",
+                 width   : "1rem"
                }}>
             <span className="sr-only"></span>
           </div>
         </>,
-      model: null,
-      activePage: 0,
-      textToTest: "",
+      model           : null,
+      activePage      : 0,
+      textToTest      : "",
       isButtonDisabled: true,
-      dataToTest: {},
-      filesUpload: true
+      dataToTest      : {},
+      filesUpload     : true
     }
     this.files = {
       binary: null,
-      json: null,
-      csv: null
+      json  : null,
+      csv   : null
     }
+    this._isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
 
     switch (this.dataset_key) {
@@ -63,8 +65,8 @@ export default class ModelReviewClassicClassification extends React.Component {
         if (!isProduction) console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
         break;
       }
-      case MODEL_HEPATITIS.KEY: {
-        this._model = MODEL_HEPATITIS
+      case MODEL_HEPATITIS_C.KEY: {
+        this._model = MODEL_HEPATITIS_C
         if (!isProduction) console.log('%cCargando modelo hepatitis', CONSOLE_LOG_h3)
         break;
       }
@@ -79,6 +81,11 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.handleClick_TestVector = this.handleClick_TestVector.bind(this)
     this.handleClick_ChangePage = this.handleClick_ChangePage.bind(this)
     this.handleClick_LoadModel = this.handleClick_LoadModel.bind(this)
+
+    this.handleClick_Layers = this.handleClick_Layers.bind(this)
+    this.handleClick_Compile = this.handleClick_Compile.bind(this)
+    this.handleClick_Fit = this.handleClick_Fit.bind(this)
+    this.handleClick_Download = this.handleClick_Download.bind(this)
 
     this.handle_JSONFileUpload = this.handle_JSONFileUpload.bind(this)
     this.handle_BinaryFileUpload = this.handle_BinaryFileUpload.bind(this)
@@ -98,7 +105,7 @@ export default class ModelReviewClassicClassification extends React.Component {
       }
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS.KEY:
+      case MODEL_HEPATITIS_C.KEY:
         try {
           this.setState({ dataToTest: this._model.DATA_DEFAULT }, () => {
             this.setState({ textToTest: Object.values(this.state.dataToTest).join(";") })
@@ -140,6 +147,52 @@ export default class ModelReviewClassicClassification extends React.Component {
     }
   }
 
+  async handleClick_Layers() {
+    // https://stackoverflow.com/questions/44747343/keras-input-explanation-input-shape-units-batch-size-dim-etc
+    this.___model = tf.sequential()
+    this.___model.add(tf.layers.dense({ name: 'layer1', activation: 'relu', units: 10, inputDim: 12 }))
+    this.___model.add(tf.layers.dense({ name: 'layer2', activation: 'relu', units: 10 }))
+    this.___model.add(tf.layers.dense({ name: 'layer3', activation: 'relu', units: 10 }))
+    this.___model.add(tf.layers.dense({ name: 'layer4', activation: 'relu', units: 10 }))
+    this.___model.add(tf.layers.dense({ name: 'layer5', activation: 'relu', units: 10 }))
+    this.___model.add(tf.layers.dense({ name: 'layer6', activation: 'softmax', units: 5 }))
+
+    const surface = { name: 'Model Summary', tab: 'Model Inspection' };
+    await tfVis.show.modelSummary(surface, this.___model);
+
+    for (let i = 1; i < 6; i++) {
+      const surface1 = { name: 'Layer Summary' + i, tab: 'Layer ' + i };
+      await tfVis.show.layer(surface1, this.___model.getLayer('layer' + 1));
+    }
+  }
+
+  async handleClick_Compile() {
+    // Prepare the model for training: Specify the loss and the optimizer.
+    this.___model.compile({
+      optimizer: 'adam',
+      loss     : 'categoricalCrossentropy',
+      metrics  : ['acc']
+    })
+  }
+
+  async handleClick_Fit() {
+    // const data = MODEL_HEPATITIS_C._CLEAR_DATA
+    // Generate some synthetic data for training.
+    const xs = tf.tensor1d([32, 1, 38.5, 52.5, 7.7, 22.1, 7.5, 6.93, 3.23, 106, 12.1, 69])
+    const ys = tf.tensor1d([32, 1, 38.5, 70.3, 18, 24.7, 3.9, 11.17, 4.8, 74, 15.6, 76.5])
+    // Train the model using the data.
+
+    this.___model.fit(xs, ys, { batchSize: 128, epochs: 200 }).then(() => {
+      // Use the model to do inference on a data point the model hasn't seen before:
+      let d = this.___model.predict(tf.tensor1d([32, 1, 38.5, 70.3, 18, 24.7, 3.9, 11.17, 4.8, 74, 15.6, 76.5]))
+      console.log(d)
+    })
+  }
+
+  handleClick_Download() {
+    this.___model.save('downloads://my-model')
+  }
+
   async handleClick_TestVector() {
     this.setState({ isButtonDisabled: true })
     if (this.state.textToTest === undefined || this.state.textToTest.length < 1) {
@@ -150,63 +203,27 @@ export default class ModelReviewClassicClassification extends React.Component {
 
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
+
+        break;
+      }
+      case MODEL_CAR.KEY:
+      case MODEL_IRIS.KEY:
+      case MODEL_HEPATITIS_C.KEY: {
         try {
           let array = this.state.textToTest.split(';')
           let input = [[], [1, array.length]]
-          let i = 0
-          array.forEach(() => {
-            input[0].push(MODEL_CAR.DATA_CLASSES[i].findIndex((element) => element === array[i]))
-            i++
-          })
+          for (let index = 0; index < array.length; index++) {
+            input[0].push(await this._model.function_v_input(array[index], index, this._model.DATA_OBJECT_KEYS[index]))
+          }
           const tensor = tf.tensor2d(input[0], input[1])
+          console.log({ input_0: input[0], tensor })
           const prediction = this.model.predict(tensor)
           const predictionWithArgMax = prediction.argMax(-1).dataSync()
-          await alertHelper.alertInfo(`La solución es el tipo: ${predictionWithArgMax}.${prediction}`, MODEL_CAR.CLASSES[predictionWithArgMax])
+          await alertHelper.alertInfo(`La solución es el tipo: ${predictionWithArgMax}`, this._model.CLASSES[predictionWithArgMax], prediction)
         } catch (error) {
           console.error(error)
           await alertHelper.alertError(error)
         }
-        break;
-      }
-      case MODEL_CAR.KEY: {
-        try {
-          let array = this.state.textToTest.split(';')
-          let input = [[], [1, array.length]]
-          let i = 0
-          array.forEach(() => {
-            input[0].push(MODEL_CAR.DATA_CLASSES[i].findIndex((element) => element === array[i]))
-            i++
-          })
-          const tensor = tf.tensor2d(input[0], input[1])
-          const prediction = this.model.predict(tensor)
-          const predictionWithArgMax = this.model.predict(tensor).argMax(-1).dataSync()
-          await alertHelper.alertInfo(`Este es el resultado: ${MODEL_CAR.CLASSES[predictionWithArgMax]}.${prediction}`, MODEL_CAR.CLASSES[predictionWithArgMax])
-        } catch (error) {
-          console.error(error)
-          await alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
-        }
-        break;
-      }
-      case MODEL_IRIS.KEY: {
-        try {
-          let array = this.state.textToTest.split(';')
-          let input = [[], [1, array.length]]
-          array.forEach((element) => {
-            input[0].push(parseFloat(element))
-          })
-          const tensor = tf.tensor2d(input[0], input[1])
-          const prediction = this.model.predict(tensor)
-          const predictionWithArgMax = this.model.predict(tensor).argMax(-1).dataSync()
-          await alertHelper.alertInfo(`Este es el resultado: ${MODEL_IRIS.CLASSES[predictionWithArgMax]}. ${prediction}`, MODEL_IRIS.CLASSES[predictionWithArgMax])
-        } catch (error) {
-          console.error(error)
-          await alertHelper.alertError("Error al evaluar el modelo. Revisa que los datos introducidos son correctos")
-        }
-        break
-      }
-      case MODEL_HEPATITIS.KEY: {
-        // TODO
-        console.log("TODO")
         break;
       }
       default: {
@@ -264,7 +281,7 @@ export default class ModelReviewClassicClassification extends React.Component {
         </>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS.KEY:
+      case MODEL_HEPATITIS_C.KEY:
         return this._model.HTML_EXAMPLE
       default:
         return <>DEFAULT</>
@@ -277,7 +294,7 @@ export default class ModelReviewClassicClassification extends React.Component {
         return <></>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS.KEY:
+      case MODEL_HEPATITIS_C.KEY:
         return <>
           <div className="d-flex gap-2">
             {this._model.LIST_EXAMPLES.map((example, index) => {
@@ -292,17 +309,19 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   Print_HTML_TABLE_DATASET() {
+    let head = []
+    let body = [[]]
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
         if (this.files.csv !== null) {
           return <>
             <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
               <Card className={"mt-3"}>
-                <Card.Header><h3>Dataset</h3></Card.Header>
+                <Card.Header><h3>Conjunto de datos</h3></Card.Header>
                 <Card.Body>
 
-                  <N4L_TablePagination data_head={this.state.header}
-                                       data_body={this.state.body}/>
+                  <N4LTablePagination data_head={this.state.header}
+                                      data_body={this.state.body}/>
 
                 </Card.Body>
               </Card>
@@ -311,26 +330,39 @@ export default class ModelReviewClassicClassification extends React.Component {
         }
         break
       }
-      case MODEL_CAR.KEY:
-      case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS.KEY:
-        return <>
-          <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-            <Card className={"mt-3"}>
-              <Card.Header><h3>Dataset</h3></Card.Header>
-              <Card.Body>
-
-                <N4L_TablePagination data_head={this._model.TABLE_HEADER}
-                                     data_body={this._model.DATA}/>
-              </Card.Body>
-            </Card>
-          </Col>
-        </>
+      case MODEL_CAR.KEY: {
+        head = this._model.TABLE_HEADER
+        body = this._model.DATA
+        break
+      }
+      case MODEL_IRIS.KEY: {
+        head = this._model.TABLE_HEADER
+        body = this._model.DATA
+        break
+      }
+      case MODEL_HEPATITIS_C.KEY: {
+        head = this._model.TABLE_HEADER
+        body = this._model._CLEAR_DATA
+        break
+      }
       default: {
         console.error("Opción no válida")
-        return
+        return <></>
       }
     }
+
+    return <>
+      <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+        <Card className={"mt-3"}>
+          <Card.Header><h3>Dataset</h3></Card.Header>
+          <Card.Body>
+
+            <N4LTablePagination data_head={head}
+                                data_body={body}/>
+          </Card.Body>
+        </Card>
+      </Col>
+    </>
   }
 
   handleChangeParameter(key_parameter, value) {
@@ -341,6 +373,7 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   setExample(example) {
+    console.log(example)
     this.setState({
       dataToTest: example,
       textToTest: Object.values(example).join(";")
@@ -354,7 +387,7 @@ export default class ModelReviewClassicClassification extends React.Component {
         <Container id={"ModelReviewClassicClassification"}>
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
-              <Card className={"sticky-top mt-3 border-info"}>
+              <Card className={"sticky-top mt-3 border-info"} style={{ "zIndex": 0 }}>
                 <Card.Header><h3>Modelo</h3></Card.Header>
                 <Card.Body>
                   <Card.Title>{this._model?.TITLE ?? "Upload"} {this.state.loading}</Card.Title>
@@ -363,8 +396,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                     <>
                       <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                       <Card.Text>
-                        Ten en cuenta que tienes que subir el archivo .json y el fichero .bin para luego cargar el
-                        modelo
+                        Ten en cuenta que tienes que subir el archivo .json y el fichero .bin para luego cargar el modelo
                       </Card.Text>
                       <Row>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -469,17 +501,18 @@ export default class ModelReviewClassicClassification extends React.Component {
                           </Row>
                         </>
                       }
-                      {(this.dataset_key === MODEL_HEPATITIS.KEY) &&
+                      {(this.dataset_key === MODEL_HEPATITIS_C.KEY) &&
                         <>
                           <Row className={"mt-3"}>
-                            {MODEL_HEPATITIS.FORM.map((value, index) => {
+                            {this._model.FORM.map((value, index) => {
                               // VALUES:
                               // {name: "type1", type: "number" },
                               // {name: "type2", type: "float" },
                               // {name: "type3", type: "select", options: [{value: "", text: ""] },
                               switch (value.type) {
                                 case "number": {
-                                  return <Col key={"form" + index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={6}>
+                                  return <Col key={"form" + index} className={"mb-3"}
+                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group>
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
@@ -494,7 +527,8 @@ export default class ModelReviewClassicClassification extends React.Component {
                                 }
 
                                 case "float": {
-                                  return <Col key={"form" + index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={6}>
+                                  return <Col key={"form" + index} className={"mb-3"}
+                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
@@ -508,7 +542,8 @@ export default class ModelReviewClassicClassification extends React.Component {
                                   </Col>
                                 }
                                 case "select": {
-                                  return <Col key={"form" + index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={6}>
+                                  return <Col key={"form" + index} className={"mb-3"}
+                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Select aria-label="Default select example"
@@ -525,12 +560,49 @@ export default class ModelReviewClassicClassification extends React.Component {
                                     </Form.Group>
                                   </Col>
                                 }
+                                default:
+                                  return <></>
                               }
-                              console.log()
                             })}
                           </Row>
                         </>
                       }
+
+                      {
+                        (this.dataset_key === MODEL_HEPATITIS_C.KEY) &&
+                        <>
+                          <hr/>
+                          <Row className="mt-3">
+                            <Col>
+                              <Form.Group>
+                                <Form.Label>Selecciona el parámetro</Form.Label>
+                                <Form.Select aria-label="Default select example"
+                                             onChange={($event) => this.setExample(JSON.parse($event.target.value))}>
+                                  {this._model._CLEAR_DATA.map((row, index) => {
+                                    let value = JSON.stringify({
+                                      age : row[0],
+                                      sex : row[1],
+                                      alb : row[2],
+                                      alp : row[3],
+                                      alt : row[4],
+                                      ast : row[5],
+                                      bil : row[6],
+                                      che : row[7],
+                                      chol: row[8],
+                                      crea: row[9],
+                                      ggt : row[10],
+                                      prot: row[11],
+                                    })
+                                    return (<option key={"option_" + index} value={value}>Ejemplo {index} - {value}</option>)
+                                  })}
+                                </Form.Select>
+                                <Form.Text className="text-muted">Ejemplo</Form.Text>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+                        </>
+                      }
+
 
                       <Row className={"mt-3"}>
                         <Col>
@@ -577,6 +649,66 @@ export default class ModelReviewClassicClassification extends React.Component {
               {this.Print_HTML_TABLE_DATASET()}
             </Col>
           </Row>
+
+          {
+            (this._isDebug) &&
+            <Row className={"mt-3"}>
+              <Col>
+                <Card>
+                  <Card.Header><h3>Debug</h3></Card.Header>
+                  <Card.Body>
+                    <Card.Title>Pruebas modelo</Card.Title>
+
+
+                    <div className="d-grid gap-2 mt-3">
+                      <Button type="button"
+                              onClick={async () => {
+                                let m = await MODEL_CAR.loadModel()
+                                m.summary()
+                              }}
+                              size={"small"}
+                              variant="primary">
+                        CLEAR DATA
+                      </Button>
+                      <hr/>
+
+                      <Button type="button"
+                              onClick={() => tfVis.visor().toggle()}
+                              size={"small"}
+                              variant="outline-primary">
+                        Conmutar visor
+                      </Button>
+                      <Button type="button"
+                              onClick={this.handleClick_Layers}
+                              size={"small"}
+                              variant="outline-secondary">
+                        Definir capas
+                      </Button>
+                      <Button type="button"
+                              onClick={this.handleClick_Compile}
+                              size={"small"}
+                              variant="outline-warning">
+                        Compilar
+                      </Button>
+                      <Button type="button"
+                              onClick={this.handleClick_Fit}
+                              size={"small"}
+                              variant="outline-danger">
+                        Entrenar
+                      </Button>
+                      <Button type="button"
+                              onClick={this.handleClick_Download}
+                              size={"small"}
+                              variant="outline-success">
+                        Descargar
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          }
+
         </Container>
       </>
     )

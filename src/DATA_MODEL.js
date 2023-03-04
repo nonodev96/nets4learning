@@ -2,6 +2,7 @@ import React from "react";
 import { MODEL_CAR } from "./modelos/ClassificationHelper_CAR";
 import { MODEL_IRIS } from "./modelos/ClassificationHelper_IRIS";
 import { MODEL_HEPATITIS } from "./modelos/ClassificationHelper_HEPATITIS";
+import { MODEL_HEPATITIS_C } from "./modelos/ClassificationHelper_HEPATITIS-C";
 
 const MODEL_UPLOAD = "UPLOAD"
 
@@ -53,9 +54,9 @@ const LIST_TYPE_MODELS_DESCRIPTION = [
 const LIST_MODEL_OPTIONS = [
   [
     'SUBIR MODELO PROPIO',
-    'CAR - Clasificación de coches',
-    'IRIS - Clasificación de flor iris',
-    'HEPATITIS - Clasificación de Hepatitis',
+    'Clasificación de coches',
+    'Clasificación de flor iris',
+    'Clasificación de Hepatitis-C',
   ],
   [],
   [
@@ -81,7 +82,7 @@ export const LIST_MODEL_OPTIONS_IDS = {
     0: MODEL_UPLOAD,
     1: MODEL_CAR.KEY,
     2: MODEL_IRIS.KEY,
-    3: MODEL_HEPATITIS.KEY,
+    3: MODEL_HEPATITIS_C.KEY,
   },
   LINEAR_REGRESSION: {
     // 1
@@ -113,7 +114,7 @@ export const DATASET_DESCRIPTION = [
       {MODEL_IRIS.DESCRIPTION}
     </>,
     <>
-      {MODEL_HEPATITIS.DESCRIPTION}
+      {MODEL_HEPATITIS_C.DESCRIPTION}
     </>
   ],
   [],
@@ -155,7 +156,7 @@ export const DATASET_DESCRIPTION = [
     </>,
     <>
       <p>
-        PoseNet es un modelo de aprendizaje automático capaz de reconocer la pose del cuerpo en tiempo real.
+        PoseNet es un modelo de aprendizaje automático capaz de reconocer la posición del cuerpo en tiempo real.
         Se puede usar para estimar una sola pose o varias a la vez.
         En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.
       </p>
@@ -300,7 +301,7 @@ const getNameDatasetByID_ClassicClassification = (dataSet) => {
     case '2':
       return MODEL_IRIS.KEY
     case '3':
-      return MODEL_HEPATITIS.KEY
+      return MODEL_HEPATITIS_C.KEY
     default:
       console.error("Error, opción no disponible")
   }
@@ -377,7 +378,7 @@ export {
   LIST_MODELS_CLASSIC_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
-  MODEL_HEPATITIS,
+  MODEL_HEPATITIS_C,
   // Identificación de objetos
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_FACE_DETECTION,

@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { MnistData } from './ClassificationHelper_MNIST_Data'
-import { createLoss, createMetrics, createOptimizerId } from './ArchitectureHelper'
+import { createLoss, createMetrics, createOptimizer } from './ArchitectureHelper'
 
 const classNames = [
   'Zero',
@@ -74,12 +74,12 @@ export async function MNIST_run(numberOfEpoch, sLOptimizer, layerList, idLoss, i
   return model
 }
 
-function getModel(sLOptimizer, layerList, idLoss, idMetrics) {
+function getModel(idOptimizer, layerList, idLoss, idMetrics) {
   const model = tf.sequential()
   const IMAGE_WIDTH = 28
   const IMAGE_HEIGHT = 28
   const IMAGE_CHANNELS = 1
-  const optimizer = createOptimizerId(sLOptimizer, { learningRate: 1, momentum: 0.9 })
+  const optimizer = createOptimizer(idOptimizer, { learningRate: 0.01, momentum: 0.99 })
   const loss = createLoss(idLoss)
   const metrics = createMetrics(idMetrics)
 

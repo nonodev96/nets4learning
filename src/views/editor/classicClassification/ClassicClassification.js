@@ -3,7 +3,10 @@ import { Col, Row, CloseButton, Button, Container, Card, Form } from 'react-boot
 import * as tf from '@tensorflow/tfjs'
 import {
   createClassicClassification,
-  TYPE_ACTIVATION, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+  TYPE_ACTIVATION,
+  TYPE_OPTIMIZER,
+  TYPE_LOSSES,
+  TYPE_METRICS
 } from '../../../modelos/ArchitectureHelper'
 import * as alertHelper from '../../../utils/alertHelper'
 import './ClassicClassification.css'
@@ -14,7 +17,10 @@ export default function ClassicClassification(props) {
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
-  const [Layer, setLayer] = useState([{ units: 10, activation: 'Sigmoid' }, { units: 3, activation: 'Softmax' },])
+  const [Layer, setLayer] = useState([
+    { units: 10, activation: 'sigmoid' },
+    { units: 3, activation: 'softmax' }
+  ])
   const NumberEpochs = 50
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
@@ -32,20 +38,17 @@ export default function ClassicClassification(props) {
           await alertHelper.alertError("Primero debes de cargar la arquitectura")
         }
       }
-      console.log('Comenzamos a crear el modelo')
-      console.log('Estas son las métricas', Layer)
       if (tipo === 0) {
-        const model = await createClassicClassification(
-          parseInt(document.getElementById('formTrainRate').value) / 100,
-          0.1,
-          parseInt(NoEpochs),
-          document.getElementById('FormOptimizer').value,
-          Layer,
-          LossValue,
-          MetricsValue,
-        )
+        // const model = await createClassicClassification(
+        //   parseInt(document.getElementById('formTrainRate').value) / 100,
+        //   0.1,
+        //   parseInt(NoEpochs),
+        //   document.getElementById('FormOptimizer').value,
+        //   Layer,
+        //   LossValue,
+        //   MetricsValue,
+        // )
         await alertHelper.alertSuccess("Modelo creado con éxito")
-
       }
 
     } catch (error) {
@@ -266,7 +269,7 @@ export default function ClassicClassification(props) {
                                defaultValue={LossValue}
                                onChange={handleChangeLoss}>
                     <option>Selecciona la función de pérdida</option>
-                    {TYPE_LOSS.map((item, id) => {
+                    {TYPE_LOSSES.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>

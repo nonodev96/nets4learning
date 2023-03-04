@@ -40,9 +40,37 @@ export default function InitialMenu() {
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
                     Modelo Pre-entrenado
                   </Button>
-                  <Button style={{ display: "none " }}
-                          onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
-                    Crear y edita arquitectura
+                </div>
+              </Card.Body>
+            </Card>
+
+            <Card className={"border-primary mt-3"}>
+              <Card.Header><h3>Diseñar, crear y editar una arquitectura para clasificar</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  A través de esta herramienta podemos crear una red neuronal para clasificar datos multi-etiqueta.
+                  Diseñando, creando, entrenando y evaluando una arquitectura personalizada.
+                </Card.Text>
+                <Row>
+                  <Col>
+                    <ul>
+                      <li>Definir el número de capas, sus funciones de activación.</li>
+                      <li>Definir la tasa de entrenamiento.</li>
+                      <li>Definir el número de iteraciones.</li>
+                    </ul>
+                  </Col>
+                  <Col>
+                    <ul>
+                      <li>Definir el optimizador.</li>
+                      <li>Definir la función de perdida.</li>
+                      <li>Definir la métrica para la evaluación.</li>
+                    </ul>
+                  </Col>
+                </Row>
+                <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
+                    Diseñar, crear y editar arquitectura
                   </Button>
                 </div>
               </Card.Body>
@@ -150,6 +178,8 @@ export default function InitialMenu() {
                   </div>
                 </Col>
               )
+            } else {
+              return <></>
             }
           })}
         </Row>

@@ -4,7 +4,10 @@ export const LUNG_CANCER = {
   DESCRIPTION: <>
   </>,
   loadModel: async () => {
-
+    console.warn("TODO")
+  },
+  function_v_input: async (element, index) => {
+    console.warn("TODO")
   },
   CLASSES: [],
   NUM_CLASSES: 0,

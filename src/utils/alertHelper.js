@@ -18,7 +18,7 @@ export async function alertError(texto) {
   })
 }
 
-export async function alertInfo(texto, value) {
+export async function alertInfo(text, title, footer = "") {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
@@ -26,8 +26,9 @@ export async function alertInfo(texto, value) {
   }).then(() => {
     return MySwal.fire({
       icon: 'question',
-      title: value,
-      text: texto,
+      title: title,
+      text: text,
+      footer: footer,
       confirmButtonColor: '#0081D5',
     })
   })

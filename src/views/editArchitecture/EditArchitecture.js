@@ -7,18 +7,23 @@ import N4LNavBar from '../../components/navBar/N4LNavBar'
 import './EdtiArchitecture.css'
 
 import ClassicClassification from '../editor/classicClassification/ClassicClassification'
-import CustomDataSetClassicClassification from '../editor/classicClassification/CustomDataSetClassicClassification'
+
 import ModelReviewClassicClassification from '../editor/classicClassification/ModelReviewClassicClassification'
+import CustomDataSetClassicClassification from '../editor/classicClassification/CustomDataSetClassicClassification'
 
-import MnistImageClassification from '../editor/mnistImageClassification/MnistImageClassification'
-import ModelReviewClassicImageClassification
-  from '../editor/mnistImageClassification/ModelReviewClassicImageClassification'
+import ModelReviewLinearRegression from "../editor/linearRegression/ModelReviewLinearRegression";
+import LinearRegression from "../editor/linearRegression/LinearRegression";
 
-import ObjectDetection from '../editor/objectDetection/ObjectDetection'
 import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
+import ObjectDetection from '../editor/objectDetection/ObjectDetection'
+
+import ModelReviewImageClassification from '../editor/imageClassification/ModelReviewImageClassification'
+import ImageClassification from '../editor/imageClassification/ImageClassification'
+
+
 import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
 
-function EditArchitecture() {
+export default function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()
 
   const Print_HTML_Model_View = () => {
@@ -30,10 +35,11 @@ function EditArchitecture() {
           return <CustomDataSetClassicClassification dataSet={ejemplo}/>
         }
       case '1':
+        // TODO
         if (tipo === '0') {
-          return <ObjectDetection/>
+          return <ModelReviewLinearRegression  dataSet={ejemplo}/>
         } else {
-          return <ObjectDetection/>
+          return <LinearRegression dataSet={ejemplo}/>
         }
       case '2':
         if (tipo === '0') {
@@ -44,9 +50,9 @@ function EditArchitecture() {
       case '3':
         // TODO
         if (tipo === '0') {
-          return <ModelReviewClassicImageClassification dataSet={ejemplo}/>
+          return <ModelReviewImageClassification dataSet={ejemplo}/>
         } else {
-          return <MnistImageClassification dataSet={ejemplo}/>
+          return <ImageClassification dataSet={ejemplo}/>
         }
       default:
         return <ClassicClassification dataSet={ejemplo}/>
@@ -73,4 +79,3 @@ function EditArchitecture() {
   )
 }
 
-export default EditArchitecture

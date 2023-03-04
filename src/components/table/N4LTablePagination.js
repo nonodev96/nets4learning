@@ -1,7 +1,8 @@
 import React, { useState } from "react"
 import { Pagination, Table } from "react-bootstrap"
+import "./N4L_TablePaginator.css"
 
-export default function N4L_TablePagination({ data_head, data_body }) {
+export default function N4LTablePagination({ data_head, data_body }) {
 
   const [activePage, setActivePage] = useState(0);
 
@@ -10,45 +11,47 @@ export default function N4L_TablePagination({ data_head, data_body }) {
   const startPage = 0
   const pageCount = Math.ceil(rowsCount / rowsPerPage)
 
-  const countDigit = (n) => {
-    if (n / 10 === 0)
-      return 0;
-    return 1 + countDigit(parseInt(n / 10));
-  }
+  //const countDigit = (n) => {
+  //  if (n / 10 === 0)
+  //    return 0;
+  //  return 1 + countDigit(parseInt(n / 10));
+  //}
 
   const handleClick_ChangePage = (pageNumber) => {
     setActivePage(pageNumber);
   }
 
   return <>
-    <Table>
-      <thead>
-      <tr>
-        <th>ID</th>
+    <div className={"n4l-table-paginator-table-wrapper-scroll-x"}>
+      <Table className={"n4l-table-paginator-table"}>
+        <thead>
+        <tr>
+          <th>ID</th>
+          {
+            data_head.map((v, i) => {
+              return <th key={"thead_" + i}>{v}</th>
+            })
+          }
+        </tr>
+        </thead>
+        <tbody>
         {
-          data_head.map((v, i) => {
-            return <th key={"thead_" + i}>{v}</th>
+          Array.from(data_body).slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage).map((r_v, r_i) => {
+            return <tr key={"tbody_" + r_i}>
+              <th key={"tbody_id_" + r_i}>{(activePage * rowsPerPage) + r_i}</th>
+              {
+                r_v.map((c_v, c_i) => {
+                  return <td key={"tbody_" + r_i + "_" + c_i}>{c_v}</td>
+                })
+              }
+            </tr>
           })
         }
-      </tr>
-      </thead>
-      <tbody>
-      {
-        Array.from(data_body).slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage).map((r_v, r_i) => {
-          return <tr key={"tbody_" + r_i}>
-            <th key={"tbody_id"}>{r_i + activePage * rowsPerPage}</th>
-            {
-              r_v.map((c_v, c_i) => {
-                return <td key={"tbody_" + r_i + "_" + c_i}>{c_v}</td>
-              })
-            }
-          </tr>
-        })
-      }
-      </tbody>
-    </Table>
+        </tbody>
+      </Table>
+    </div>
 
-    <Pagination size="sm" className={"n4l-pagination justify-content-center"}>
+    <Pagination size="sm" className={"n4l-pagination justify-content-center mt-3"}>
       {(activePage > 0) && <></>}
       <Pagination.First disabled={!(activePage > 0)}
                         onClick={() => handleClick_ChangePage(0)}/>

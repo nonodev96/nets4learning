@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { Col, Row, CloseButton, Container, Card, Form, Button, Accordion } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import {
-  createClassicClassification,
-  TYPE_ACTIVATION, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+  TYPE_ACTIVATION,
+  TYPE_OPTIMIZER,
+  TYPE_LOSSES,
+  TYPE_METRICS,
 } from '../../modelos/ArchitectureHelper'
 import { getIrisDataType } from "../../modelos/ClassificationHelper_IRIS"
 import * as alertHelper from '../../utils/alertHelper'
@@ -16,8 +18,8 @@ export default function InteractiveEditor(props) {
   //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
-    { units: 10, activation: 'Sigmoid' },
-    { units: 3, activation: 'Softmax' },
+    { units: 10, activation: 'sigmoid' },
+    { units: 3, activation: 'softmax' },
   ])
   const [Optimizer, setOptimizer] = useState('Adam')
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
@@ -33,19 +35,16 @@ export default function InteractiveEditor(props) {
 
     try {
       console.log('Estas si son las métricas', Layer)
-      const model = await createClassicClassification(
-        parseInt(document.getElementById('formTrainRate').value) / 100,
-        0.1,
-        parseInt(document.getElementById('FormNumberOfEpochs').value),
-        document.getElementById('FormOptimizer').value,
-        Layer,
-        LossValue,
-        MetricsValue,
-      )
-      console.log('Modelo creado y entrenado')
-      // console.log(model)
-      setModel(model)
-
+      // const model = await createClassicClassification(
+      //   parseInt(document.getElementById('formTrainRate').value) / 100,
+      //   0.1,
+      //   parseInt(document.getElementById('FormNumberOfEpochs').value),
+      //   document.getElementById('FormOptimizer').value,
+      //   Layer,
+      //   LossValue,
+      //   MetricsValue,
+      // )
+      // setModel(model)
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } catch (error) {
       console.log(error)
@@ -255,7 +254,7 @@ export default function InteractiveEditor(props) {
                                  defaultValue={LossValue}
                                  onChange={handleChangeLoss}>
                       <option>Selecciona la función de pérdida</option>
-                      {TYPE_LOSS.map((item, id) => {
+                      {TYPE_LOSSES.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>

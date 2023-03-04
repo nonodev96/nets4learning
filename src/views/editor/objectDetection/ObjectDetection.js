@@ -6,7 +6,7 @@ import * as alertHelper from "../../../utils/alertHelper"
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
-import { TYPE_CLASS, TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../modelos/ArchitectureHelper";
+import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../modelos/ArchitectureHelper";
 
 
 export default function ObjectDetection(props) {
@@ -39,11 +39,11 @@ export default function ObjectDetection(props) {
       if (uploadedArchitecture !== 'nothing') {
         setLayer([
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 10,
-            strides: 1,
-            activation: 'Sigmoid',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 10,
+            strides          : 1,
+            activation       : 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
         ])
@@ -52,24 +52,24 @@ export default function ObjectDetection(props) {
       } else {
         setLayer([
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 10,
-            strides: 1,
-            activation: 'Sigmoid',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 10,
+            strides          : 1,
+            activation       : 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
           {
-            class: 'MaxPooling2D',
+            class   : 'MaxPooling2D',
             poolSize: [2, 2],
             strides2: [2, 2]
           },
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 16,
-            strides: 1,
-            activation: 'relu',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 16,
+            strides          : 1,
+            activation       : 'relu',
             kernelInitializer: 'varianceScaling',
           },
           { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
@@ -184,11 +184,11 @@ export default function ObjectDetection(props) {
   const handlerAddLayer = async () => {
     let array = Layer
     array.push({
-      class: 'Conv2D',
-      kernelSize: 0,
-      filters: 0,
-      strides: 0,
-      activation: 'Sigmoid',
+      class            : 'Conv2D',
+      kernelSize       : 0,
+      filters          : 0,
+      strides          : 0,
+      activation       : 'Sigmoid',
       kernelInitializer: 'varianceScaling',
     })
     setLayer(array)
@@ -265,7 +265,7 @@ export default function ObjectDetection(props) {
     setContador(aux++)
   }
 
-  const handleCambio = (e) => {
+  const handleChange_Class = (e) => {
     const option = e.target.value
     let a = Contador
     a = a + 1
@@ -273,16 +273,16 @@ export default function ObjectDetection(props) {
     array[ActiveLayer].class = option
     if (option === 'Conv2D') {
       array[ActiveLayer] = {
-        class: 'Conv2D',
-        kernelSize: 5,
-        filters: 10,
-        strides: 1,
-        activation: 'Sigmoid',
+        class            : 'Conv2D',
+        kernelSize       : 5,
+        filters          : 10,
+        strides          : 1,
+        activation       : 'Sigmoid',
         kernelInitializer: 'varianceScaling',
       }
     } else {
       array[ActiveLayer] = {
-        class: 'MaxPooling2D',
+        class   : 'MaxPooling2D',
         poolSize: [2, 2],
         strides2: [2, 2],
       }
@@ -491,8 +491,7 @@ export default function ObjectDetection(props) {
                         <Form.Label>Clase de la capa</Form.Label>
                         <Form.Select aria-label="Default select example"
                                      defaultValue={Layer[ActiveLayer].class}
-                                     onChange={handleCambio}>
-                          <option>Selecciona la clase de la capa</option>
+                                     onChange={handleChange_Class}>
                           {TYPE_CLASS.map((itemAct, indexAct) => {
                             return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                           })}
@@ -554,7 +553,7 @@ export default function ObjectDetection(props) {
                                  defaultValue={LossValue}
                                  onChange={handleChangeLoss}>
                       <option>Selecciona la función de pérdida</option>
-                      {TYPE_LOSS.map((item, id) => {
+                      {TYPE_LOSSES.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
                       })}
                     </Form.Select>
@@ -667,17 +666,17 @@ export default function ObjectDetection(props) {
                 {/* VECTOR TEST */}
                 <Row>
                   <Col style={{
-                    display: 'flex',
-                    flexDirection: 'column',
+                    display       : 'flex',
+                    flexDirection : 'column',
                     justifyContent: 'center',
                   }}>
                     <CustomCanvasDrawer submitFunction={handleVectorTest}/>
                   </Col>
                   <Col style={{
-                    display: 'flex',
-                    alignItems: 'center',
+                    display      : 'flex',
+                    alignItems   : 'center',
                     flexDirection: 'column',
-                    marginBottom: '2rem',
+                    marginBottom : '2rem',
                   }}>
                     <input style={{ marginBottom: '2rem' }}
                            type="file"

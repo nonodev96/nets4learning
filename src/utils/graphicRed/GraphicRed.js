@@ -5,7 +5,7 @@ import VisGraph from 'react-vis-graph-wrapper'
 import './GraphicRed.css'
 
 export default function GraphicRed(props) {
-  const { layer, setActiveLayer, tipo } = props
+  const { layer, /*setActiveLayer,*/ tipo } = props
 
   let nodes = []
   let edges = []
@@ -14,18 +14,29 @@ export default function GraphicRed(props) {
     index = parseInt(index)
     switch (tipo) {
       case 0: {
-        nodes.push({ id: index, label: `Capa ${index + 1} \n ${element.activation}`, title: 'Capa ' + (index + 1) })
+        nodes.push({
+          id   : index,
+          label: `Capa ${index + 1} \n ${element.units} - ${element.activation}`,
+          title: 'Capa ' + (index + 1)
+        })
         break
       }
       case 1: {
-        nodes.push({ id: index, label: element.class, title: 'Capa ' + (index + 1) })
+        nodes.push({
+          id   : index,
+          label: element.class,
+          title: 'Capa ' + (index + 1)
+        })
         break
       }
     }
   }
 
   for (let index = 1; index < layer.length; index++) {
-    edges.push({ from: index - 1, to: index })
+    edges.push({
+      from: index - 1,
+      to: index
+    })
   }
 
   const graph = {
@@ -36,27 +47,27 @@ export default function GraphicRed(props) {
   const options = {
     layout: {
       hierarchical: {
-        enabled: true,
+        enabled  : true,
         direction: 'LR',
       },
     },
-    edges: {
+    edges : {
       color: '#e61818',
     },
     //  height: "500px",
-    physics: {
+    physics    : {
       enabled: false,
     },
     interaction: {
-      dragView: false,
+      dragView : false,
       dragNodes: false,
     },
   }
 
   const events = {
-    select: (event) => {
-      const { nodes } = event
-      setActiveLayer(nodes[0])
+    select: (/*event*/) => {
+      // const { nodes } = event
+      // setActiveLayer(nodes[0])
     },
   }
 
@@ -65,8 +76,8 @@ export default function GraphicRed(props) {
       <Row className={"mt-3"}>
         <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
              style={{
-               display: 'flex',
-               alignItems: "center",
+               display     : 'flex',
+               alignItems  : "center",
                marginBottom: "2rem"
              }}>
           <div className="col-md-6"
@@ -85,8 +96,8 @@ export default function GraphicRed(props) {
         </Col>
         <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
              style={{
-               display: 'flex',
-               alignItems: "center",
+               display     : 'flex',
+               alignItems  : "center",
                marginBottom: "2rem"
              }}>
           <div className="col-md-6"
@@ -94,9 +105,12 @@ export default function GraphicRed(props) {
             <ArrowRight style={{ "fontSize": "xxx-large" }}/>
           </div>
           <div className="col-md-6"
-               style={{ writingMode: 'vertical-rl', textAlign: 'left' }}>
+               style={{ writingMode: 'vertical-lr', textAlign: 'left' }}>
             SALIDA
           </div>
+        </Col>
+        <Col xl={12}>
+          <p className={"text-muted"}>Puedes visitar la web <a href="https://netron.app/">netron.app</a> para visualizar la topología al completo</p>
         </Col>
       </Row>
     </>

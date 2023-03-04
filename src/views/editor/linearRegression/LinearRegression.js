@@ -2,21 +2,22 @@ import { useState } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import {
-  createClassicClassification,
-  TYPE_LOSS, TYPE_METRICS, TYPE_OPTIMIZER
+  TYPE_ACTIVATION,
+  TYPE_OPTIMIZER,
+  TYPE_LOSSES,
+  TYPE_METRICS,
 } from '../../../modelos/ArchitectureHelper'
 import { getIrisDataType } from "../../../modelos/ClassificationHelper_IRIS"
-import './ClassicClassification.css'
 import *  as alertHelper from "../../../utils/alertHelper"
 
 export default function LinearRegression(props) {
-  const { tipo } = props
+  const { dataSet } = props
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
   const [Layer, setLayer] = useState([
-    { units: 10, activation: 'Sigmoid' },
-    { units: 3, activation: 'Softmax' },
+    { units: 10, activation: 'sigmoid' },
+    { units: 3, activation: 'softmax' },
   ])
   const NumberEpochs = 50
   const learningValue = 1
@@ -31,18 +32,18 @@ export default function LinearRegression(props) {
     console.log('Comenzamos a crear el modelo')
 
     try {
-      console.log('Estas son las metricas', Layer)
-      const model = await createClassicClassification(
-        parseInt(document.getElementById('formTrainRate').value) / 100,
-        0.1,
-        parseInt(document.getElementById('FormNumberOfEpochs').key),
-        document.getElementById('FormOptimizer').key,
-        Layer,
-        LossValue,
-        MetricsValue,
-      )
-      console.log(model)
-      setModel(model)
+      console.log('Estas son las métricas', Layer)
+      // const model = await createClassicClassification(
+      //   parseInt(document.getElementById('formTrainRate').value) / 100,
+      //   0.1,
+      //   parseInt(document.getElementById('FormNumberOfEpochs').key),
+      //   document.getElementById('FormOptimizer').key,
+      //   Layer,
+      //   LossValue,
+      //   MetricsValue,
+      // )
+      // console.log(model)
+      // setModel(model)
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } catch (error) {
       console.log(error)
@@ -145,12 +146,12 @@ export default function LinearRegression(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header><h3>Linear Regression</h3></Card.Header>
+                <Card.Header><h3>Regresión linear</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
                   <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
+                    A esta función se el pasa un vector preparado que continue la información del conjunto de datos.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -183,13 +184,10 @@ export default function LinearRegression(props) {
                         {/* ACTIVATION FUNCTION */}
                         <Form.Group className="mb-3"
                                     controlId={'formActivationLayer' + index}>
-                          <Form.Label>
-                            Selecciona la función de activación
-                          </Form.Label>
-                          <Form.Select aria-label="Default select example"
+                          <Form.Label>Selecciona la función de activación</Form.Label>
+                          <Form.Select aria-label="Selecciona la función de activación"
                                        defaultValue={item.activation}
                                        onChange={() => handleChangeActivation(index)}>
-                            <option>Selecciona la función de activación</option>
                             {TYPE_ACTIVATION.map((itemAct, indexAct) => {
                               return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                             })}
@@ -240,10 +238,9 @@ export default function LinearRegression(props) {
                 {/* OPTIMIZATION FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormOptimizer">
                   <Form.Label>Selecciona el optimizador</Form.Label>
-                  <Form.Select aria-label="Default select example"
+                  <Form.Select aria-label="Selecciona el optimizador"
                                defaultValue={Optimizer}
                                onChange={handleChangeOptimization}>
-                    <option>Selecciona el optimizador</option>
                     {TYPE_OPTIMIZER.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
@@ -255,11 +252,10 @@ export default function LinearRegression(props) {
                 {/* LOSS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormLoss">
                   <Form.Label>Selecciona la función de pérdida</Form.Label>
-                  <Form.Select aria-label="Default select example"
+                  <Form.Select aria-label="Selecciona la función de pérdida"
                                defaultValue={LossValue}
                                onChange={handleChangeLoss}>
-                    <option>Selecciona la función de pérdida</option>
-                    {TYPE_LOSS.map((item, id) => {
+                    {TYPE_LOSSES.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}
                   </Form.Select>
@@ -271,10 +267,9 @@ export default function LinearRegression(props) {
                 {/* METRICS FUNCTION */}
                 <Form.Group className="mb-3" controlId="FormMetrics">
                   <Form.Label>Selecciona la métrica</Form.Label>
-                  <Form.Select aria-label="Default select example"
+                  <Form.Select aria-label="Selecciona la métrica"
                                defaultValue={MetricsValue}
                                onChange={handleChangeMetrics}>
-                    <option>Selecciona la métrica</option>
                     {TYPE_METRICS.map((item, id) => {
                       return (<option key={id} value={item}>{item}</option>)
                     })}

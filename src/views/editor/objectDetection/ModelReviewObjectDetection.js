@@ -413,13 +413,13 @@ class ModelReviewObjectDetection extends React.Component {
                         <Row>
                           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                             {/*TODO*/}
-                            <DragAndDrop name={"json"}
+                            <DragAndDrop name={"bin"}
                                          accept={{ 'application/octet-stream': ['.bin'] }}
                                          text={"Añada el fichero binario"}
                                          labelFiles={"Fichero:"}/>
                           </Col>
                           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                            <DragAndDrop name={"bin"}
+                            <DragAndDrop name={"json"}
                                          accept={{ 'application/json': ['.json'] }}
                                          text={"Añada el fichero JSON"}
                                          labelFiles={"Fichero:"}/>
