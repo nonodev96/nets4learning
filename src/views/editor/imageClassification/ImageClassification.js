@@ -7,6 +7,12 @@ import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
+import {
+  TYPE_CLASS,
+  TYPE_OPTIMIZER,
+  TYPE_LOSSES,
+  TYPE_METRICS, TYPE_ACTIVATION
+} from "../../../modelos/ArchitectureTypesHelper";
 
 export default function ImageClassification(props) {
   const { dataSet } = props
@@ -28,47 +34,6 @@ export default function ImageClassification(props) {
   const [Recarga, setRecarga] = useState(false)
   const [ImageUploaded, setImageUploaded] = useState(false)
 
-  const OPTIMIZER_TYPE = [
-    'Sgd',
-    'Momentum',
-    'Adagrag',
-    'Adadelta',
-    'Adam',
-    'Adamax',
-    'Rmsprop',
-  ]
-
-  const LOSS_TYPE = [
-    'AbsoluteDifference',
-    'ComputeWeightedLoss',
-    'CosineDistance',
-    'HingeLoss',
-    'HuberLoss',
-    'LogLoss',
-    'MeanSquaredError',
-    'SigmoidCrossEntropy',
-    'SoftmaxCrossEntropy',
-    'CategoricalCrossentropy',
-  ]
-
-  const METRICS_TYPE = [
-    'BinaryAccuracy',
-    'BinaryCrossentropy',
-    'CategoricalAccuracy',
-    'CategoricalCrossentropy',
-    'CosineProximity',
-    'MeanAbsoluteError',
-    'MeanAbsolutePercentageErr',
-    'MeanSquaredError',
-    'Precision',
-    'Recall',
-    'SparseCategoricalAccuracy',
-    'Accuracy',
-  ]
-
-  const ACTIVATION_TYPE = ['Sigmoid', 'Relu']
-  const CLASS_TYPE = ['Conv2D', 'MaxPooling2D']
-
   useEffect(() => {
     if (Recarga) {
       console.log(Layer)
@@ -77,28 +42,28 @@ export default function ImageClassification(props) {
       if (uploadedArchitecture !== 'nothing') {
         setLayer([
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 10,
-            strides: 1,
-            activation: 'Sigmoid',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 10,
+            strides          : 1,
+            activation       : 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
           {
-            class: 'MaxPooling2D',
+            class   : 'MaxPooling2D',
             poolSize: [2, 2],
             strides2: [2, 2]
           },
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 16,
-            strides: 1,
-            activation: 'relu',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 16,
+            strides          : 1,
+            activation       : 'relu',
             kernelInitializer: 'varianceScaling',
           },
           {
-            class: 'MaxPooling2D',
+            class   : 'MaxPooling2D',
             poolSize: [2, 2],
             strides2: [2, 2]
           },
@@ -109,28 +74,28 @@ export default function ImageClassification(props) {
       } else {
         setLayer([
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 10,
-            strides: 1,
-            activation: 'Sigmoid',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 10,
+            strides          : 1,
+            activation       : 'Sigmoid',
             kernelInitializer: 'varianceScaling',
           },
           {
-            class: 'MaxPooling2D',
+            class   : 'MaxPooling2D',
             poolSize: [2, 2],
             strides2: [2, 2]
           },
           {
-            class: 'Conv2D',
-            kernelSize: 5,
-            filters: 16,
-            strides: 1,
-            activation: 'relu',
+            class            : 'Conv2D',
+            kernelSize       : 5,
+            filters          : 16,
+            strides          : 1,
+            activation       : 'relu',
             kernelInitializer: 'varianceScaling',
           },
           {
-            class: 'MaxPooling2D',
+            class   : 'MaxPooling2D',
             poolSize: [2, 2],
             strides2: [2, 2]
           },
@@ -230,7 +195,7 @@ export default function ImageClassification(props) {
     }
   }
 
-  const handleDownloadModel = () => {
+  const handleClick_DownloadModel = () => {
     Model.save('downloads://mymodel')
   }
 
@@ -238,13 +203,12 @@ export default function ImageClassification(props) {
   const handlerAddLayer = async () => {
     let array = Layer
     if (array.length < 10) {
-
       array.push({
-        class: 'Conv2D',
-        kernelSize: 0,
-        filters: 0,
-        strides: 0,
-        activation: 'Sigmoid',
+        class            : 'Conv2D',
+        kernelSize       : 0,
+        filters          : 0,
+        strides          : 0,
+        activation       : 'sigmoid',
         kernelInitializer: 'varianceScaling',
       })
       setLayer(array)
@@ -254,11 +218,11 @@ export default function ImageClassification(props) {
     }
   }
 
-  const handlerRemoveLayer = (idLayer) => {
+  const handle_RemoveLayer = async (idLayer) => {
     let array = Layer
     let array2 = []
     if (array.length === 1) {
-      alertHelper.alertWarning('No puedes eliminar la última capa')
+      await alertHelper.alertWarning('No puedes eliminar la última capa')
     } else {
       for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])
@@ -270,7 +234,7 @@ export default function ImageClassification(props) {
   }
 
   //PARÁMETROS DE LAS CAPAS
-  const handleChangeKernel = (index) => {
+  const handleChange_Kernel = (index) => {
     let array = Layer
     array[index].kernelSize = parseInt(
       document.getElementById(`formKernelLayer${index}`).value,
@@ -278,7 +242,7 @@ export default function ImageClassification(props) {
     setLayer(array)
   }
 
-  const handleChangeFilters = (index) => {
+  const handleChange_Filters = (index) => {
     let array = Layer
     array[index].filters = parseInt(
       document.getElementById(`formFiltersLayer${index}`).value,
@@ -286,7 +250,7 @@ export default function ImageClassification(props) {
     setLayer(array)
   }
 
-  const handleChangeStrides = (index) => {
+  const handleChange_Strides = (index) => {
     let array = Layer
     array[index].strides = parseInt(
       document.getElementById(`formStridesLayer${index}`).value,
@@ -294,7 +258,7 @@ export default function ImageClassification(props) {
     setLayer(array)
   }
 
-  const handleChangePoolSize = (index, id) => {
+  const handleChange_PoolSize = (index, id) => {
     let array = Layer
     array[index].poolSize[id] = parseInt(
       document.getElementById(`formPoolSize${id}Layer${index}`).value,
@@ -302,7 +266,7 @@ export default function ImageClassification(props) {
     setLayer(array)
   }
 
-  const handleChangeStridesMax = (index, id) => {
+  const handleChange_StridesMax = (index, id) => {
     let array = Layer
     array[index].strides[id] = parseInt(
       document.getElementById(`formStrides${id}Layer${index}`).value,
@@ -328,7 +292,7 @@ export default function ImageClassification(props) {
     setContador(aux++)
   }
 
-  const handleCambio = (e) => {
+  const handleChange_Class = (e) => {
     const option = e.target.value
     let a = Contador
     a = a + 1
@@ -336,16 +300,16 @@ export default function ImageClassification(props) {
     array[ActiveLayer].class = option
     if (option === 'Conv2D') {
       array[ActiveLayer] = {
-        class: 'Conv2D',
-        kernelSize: 5,
-        filters: 10,
-        strides: 1,
-        activation: 'Sigmoid',
+        class            : 'Conv2D',
+        kernelSize       : 5,
+        filters          : 10,
+        strides          : 1,
+        activation       : 'Sigmoid',
         kernelInitializer: 'varianceScaling',
       }
     } else {
       array[ActiveLayer] = {
-        class: 'MaxPooling2D',
+        class   : 'MaxPooling2D',
         poolSize: [2, 2],
         strides2: [2, 2],
       }
@@ -354,33 +318,33 @@ export default function ImageClassification(props) {
     setLayer(array)
   }
 
-  const handleChangeActivation = (index) => {
+  const handleChange_Activation = (index) => {
     let array = Layer
     array[index].activation = document.getElementById(`formActivationLayer${index}`,).value
     setLayer(array)
   }
 
   // PARÁMETROS GENERALES
-  const handleChangeNoEpochs = () => {
+  const handleChange_NumberEpochs = () => {
     let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
-  const handleChangeLoss = () => {
+  const handleChange_Loss = () => {
     let aux = document.getElementById('FormLoss').value
     if (aux !== undefined) {
       setLossValue(aux)
     }
   }
 
-  const handleChangeOptimization = () => {
+  const handleChange_Optimization = () => {
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
     }
   }
 
-  const handleChangeMetrics = () => {
+  const handleChange_Metrics = () => {
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
@@ -422,7 +386,7 @@ export default function ImageClassification(props) {
           <Row>
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
               <Card>
-                <Card.Header><h3>MnistImageClassification</h3></Card.Header>
+                <Card.Header><h3>ImageClassification</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
                   <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
@@ -434,78 +398,81 @@ export default function ImageClassification(props) {
             </Col>
             <hr/>
 
-            <h2>{LIST_MODEL_OPTIONS[3][dataSet]}</h2>
 
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-              <div className="header-model-editor">
-                {DATASET_DESCRIPTION[3][dataSet]}
-              </div>
+              <Card>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
+                <Card.Body>
+                  {DATASET_DESCRIPTION[3][dataSet]}
+                </Card.Body>
+              </Card>
 
-              {/* {numberClass.start()} */}
-              <div className="header-model-editor">
-                <ul>
-                  <li>Interfaz de edición de arquitectura.</li>
-
-                  <li>
-                    <b>A la izquierda:</b><br/>
-                    Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                    capa". <br/>
-                    Puedes modificar dos parámetros:
-                  </li>
+              <Card>
+                <Card.Header><h3>Manual</h3></Card.Header>
+                <Card.Body>
                   <ul>
-                    <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa.</li>
-                    <li><b>Función de activación:</b><br/>Función de activación para esa capa.</li>
+                    <li>Interfaz de edición de arquitectura.</li>
+
+                    <li>
+                      <b>A la izquierda:</b><br/>
+                      Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
+                      capa". <br/>
+                      Puedes modificar dos parámetros:
+                    </li>
+                    <ul>
+                      <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa.</li>
+                      <li><b>Función de activación:</b><br/>Función de activación para esa capa.</li>
+                    </ul>
+
+                    <li>
+                      <b>A la derecha </b><br/>
+                      Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                      Estos parámetros son:
+                    </li>
+                    <ul>
+                      <li>
+                        <b>Tasa de entrenamiento:</b><br/>
+                        Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento
+                        y reglas para el test.
+                      </li>
+                      <li>
+                        <b>Nº de iteraciones:</b><br/>
+                        Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
+                      </li>
+                      <li>
+                        <b>Optimizador:</b><br/>
+                        Es una función que como su propio nombre indica se usa para optimizar los modelos.
+                        Esto es frecuentemente usado para evitar estancarse en un máximo local.
+                      </li>
+                      <li>
+                        <b>Función de pérdida:</b><br/>
+                        Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados.
+                      </li>
+                      <li>
+                        <b>Métrica:</b><br/>
+                        Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático.
+                      </li>
+                    </ul>
+
+                    <li>
+                      <b>Crear y entrenar modelo.</b><br/>
+                      Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
+                    </li>
+
+                    <li>
+                      <b>Exportar modelo. </b><br/>
+                      Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
+                      guardarlo localmente.
+                    </li>
+
+                    <li>
+                      <b>Resultado. </b><br/>
+                      Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
+                      introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
+                    </li>
                   </ul>
-
-                  <li>
-                    <b>A la derecha </b><br/>
-                    Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
-                    Estos parámetros son:
-                  </li>
-                  <ul>
-                    <li>
-                      <b>Tasa de entrenamiento:</b><br/>
-                      Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento
-                      y
-                      reglas para el test.
-                    </li>
-                    <li>
-                      <b>Nº de iteraciones:</b><br/>
-                      Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
-                    </li>
-                    <li>
-                      <b>Optimizador:</b><br/>
-                      Es una función que como su propio nombre indica se usa para optimizar los modelos.
-                      Esto es frecuentemente usado para evitar estancarse en un máximo local.
-                    </li>
-                    <li>
-                      <b>Función de pérdida:</b><br/>
-                      Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados.
-                    </li>
-                    <li>
-                      <b>Métrica:</b><br/>
-                      Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático.
-                    </li>
-                  </ul>
-
-                  <li>
-                    <b>Crear y entrenar modelo.</b><br/>
-                    Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
-                  </li>
-
-                  <li>
-                    <b>Exportar modelo. </b><br/>
-                    Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo y
-                    guardarlo localmente.
-                  </li>
-
-                  <li>
-                    <b>Resultado. </b><br/>
-                    Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
-                    introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
-                  </li>
-                </ul>
-              </div>
+                </Card.Body>
+              </Card>
             </Col>
 
             {/* BLOCK 1 */}
@@ -521,32 +488,31 @@ export default function ImageClassification(props) {
                         <div className="container pane-imgc borde">
                           <div className="title-pane">
                             Capa {ActiveLayer + 1}
-                            <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
+                            <CloseButton onClick={() => handle_RemoveLayer(ActiveLayer)}/>
                           </div>
                           {/* UNITS */}
                           <Form.Group className="mb-3"
                                       controlId={'formClass' + ActiveLayer}>
                             <Form.Label>Clase de la capa</Form.Label>
-                            <Form.Select aria-label="Default select example"
+                            <Form.Select aria-label="Selecciona la clase de la capa"
                                          defaultValue={Layer[ActiveLayer].class}
-                                         onChange={handleCambio}>
-                              <option>Selecciona la clase de la capa</option>
-                              {CLASS_TYPE.map((itemAct, indexAct) => {
-                                return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
+                                         onChange={handleChange_Class}>
+                              {TYPE_CLASS.map(({ key, label }, index) => {
+                                return (<option key={index} value={key}>{label}</option>)
                               })}
                             </Form.Select>
                           </Form.Group>
                           <LayerEdit index={ActiveLayer}
                                      item={Layer[ActiveLayer]}
-                                     handlerRemoveLayer={handlerRemoveLayer}
-                                     handleChangeKernel={handleChangeKernel}
-                                     handleChangeActivation={handleChangeActivation}
-                                     handleChangeFilters={handleChangeFilters}
-                                     handleChangeStrides={handleChangeStrides}
-                                     handleChangePoolSize={handleChangePoolSize}
-                                     handleChangeStridesMax={handleChangeStridesMax}
-                                     ACTIVATION_TYPE={ACTIVATION_TYPE}
-                                     CLASS_TYPE={CLASS_TYPE}/>
+                                     handler_RemoveLayer={handle_RemoveLayer}
+                                     handleChange_Kernel={handleChange_Kernel}
+                                     handleChange_Activation={handleChange_Activation}
+                                     handleChange_Filters={handleChange_Filters}
+                                     handleChange_Strides={handleChange_Strides}
+                                     handleChange_PoolSize={handleChange_PoolSize}
+                                     handleChange_StridesMax={handleChange_StridesMax}
+                                     ACTIVATION_TYPE={TYPE_ACTIVATION}
+                                     CLASS_TYPE={TYPE_CLASS}/>
                         </div>
                       </div>
                     ) : (
@@ -577,13 +543,13 @@ export default function ImageClassification(props) {
                       </Form.Text>
                     </Form.Group>
 
-                    {/* Nº OT ITERATIONS */}
+                    {/* Nº OF ITERATIONS */}
                     <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                       <Form.Label>Nº de iteraciones</Form.Label>
                       <Form.Control type="number"
                                     placeholder="Introduce el número de iteraciones"
                                     defaultValue={NumberEpochs}
-                                    onChange={handleChangeNoEpochs}/>
+                                    onChange={handleChange_NumberEpochs}/>
                       <Form.Text className="text-muted">
                         *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                       </Form.Text>
@@ -592,11 +558,10 @@ export default function ImageClassification(props) {
                     {/* OPTIMIZATION FUNCTION */}
                     <Form.Group className="mb-3" controlId="FormOptimizer">
                       <Form.Label>Selecciona el optimizador</Form.Label>
-                      <Form.Select aria-label="Default select example"
+                      <Form.Select aria-label="Selecciona el optimizador"
                                    defaultValue={Optimizer}
-                                   onChange={handleChangeOptimization}>
-                        <option>Selecciona el optimizador</option>
-                        {OPTIMIZER_TYPE.map((item, id) => {
+                                   onChange={handleChange_Optimization}>
+                        {TYPE_OPTIMIZER.map((item, id) => {
                           return (<option key={id} value={item}>{item}</option>)
                         })}
                       </Form.Select>
@@ -607,32 +572,30 @@ export default function ImageClassification(props) {
                     {/* LOSS FUNCTION */}
                     <Form.Group className="mb-3" controlId="FormLoss">
                       <Form.Label>Selecciona la función de pérdida</Form.Label>
-                      <Form.Select aria-label="Default select example"
+                      <Form.Select aria-label="Selecciona la función de pérdida"
                                    defaultValue={LossValue}
-                                   onChange={handleChangeLoss}>
-                        <option>Selecciona la función de pérdida</option>
-                        {LOSS_TYPE.map((item, id) => {
+                                   onChange={handleChange_Loss}>
+                        {TYPE_LOSSES.map((item, id) => {
                           return (<option key={id} value={item}>{item}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">
-                        Será el optimizador que se usará para activar la función
+                        Será la perdida que se usará para la evaluación
                       </Form.Text>
                     </Form.Group>
 
                     {/* METRICS FUNCTION */}
                     <Form.Group className="mb-3" controlId="FormMetrics">
                       <Form.Label>Selecciona la métrica</Form.Label>
-                      <Form.Select aria-label="Default select example"
+                      <Form.Select aria-label="Selecciona la métrica"
                                    defaultValue={MetricsValue}
-                                   onChange={handleChangeMetrics}>
-                        <option>Selecciona la métrica</option>
-                        {METRICS_TYPE.map((item, id) => {
+                                   onChange={handleChange_Metrics}>
+                        {TYPE_METRICS.map((item, id) => {
                           return (<option key={id} value={item}>{item}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">
-                        Será el optimizador que se usará para activar la función
+                        Será la métrica que se usará para la evaluación
                       </Form.Text>
                     </Form.Group>
                   </div>
@@ -641,33 +604,35 @@ export default function ImageClassification(props) {
               {/* </div> */}
 
               {/* INFO ADDITIONAL LAYERS */}
-              <div className="header-model-editor mt-3">
-                <p>
-                  Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas
-                  en
-                  la clasificación de imágenes
-                </p>
-                <ul>
-                  <li>
-                    <b>flatten_Flatten:</b><br/>
-                    Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la
-                    última capa.
-                  </li>
-                  <li>
-                    <b>dense_Dense1:</b><br/>
-                    Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
-                  </li>
-                </ul>
-              </div>
+              <Card>
+                <Card.Header><h3>Información adicional capas</h3></Card.Header>
+                <Card.Body>
+                  <p>
+                    Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas
+                    en la clasificación de imágenes
+                  </p>
+                  <ul>
+                    <li>
+                      <b>flatten_Flatten:</b><br/>
+                      Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la
+                      última capa.
+                    </li>
+                    <li>
+                      <b>dense_Dense1:</b><br/>
+                      Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
+                    </li>
+                  </ul>
+                </Card.Body>
+              </Card>
 
               {/* BLOCK  BUTTON */}
               <div className="col-specific cen">
-                <button className="btn-add-layer"
-                        type="submit"
-                  // onClick=
-                        variant="primary">
+                <Button variant="primary"
+                        onClick={() => {
+                          console.log("TODO")
+                        }}>
                   Crear y entrenar modelo
-                </button>
+                </Button>
               </div>
 
               <div className="header-model-editor mt-3">
@@ -684,12 +649,11 @@ export default function ImageClassification(props) {
               <div id="salida"></div>
 
               {Model === undefined ? ('') : (
-                <button className="btn-add-layer"
-                        type="button"
-                        onClick={handleDownloadModel}
+                <Button type="button"
+                        onClick={handleClick_DownloadModel}
                         variant="primary">
                   Exportar modelo
-                </button>
+                </Button>
               )}
             </Container>
 
@@ -700,19 +664,10 @@ export default function ImageClassification(props) {
                   <div className="title-pane">Resultado</div>
                   {/* VECTOR TEST */}
                   <Row>
-                    <Col style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                    }}>
+                    <Col className={"mt-3 d-flex justify-content-center flex-column"}>
                       <CustomCanvasDrawer submitFunction={handleVectorTest}/>
                     </Col>
-                    <Col style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      marginBottom: '2rem',
-                    }}>
+                    <Col className={"mt-3 d-flex justify-content-center flex-column"}>
                       <input style={{ marginBottom: '2rem' }}
                              type="file"
                              name="doc"

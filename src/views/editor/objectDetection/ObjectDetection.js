@@ -6,7 +6,12 @@ import * as alertHelper from "../../../utils/alertHelper"
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
-import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../modelos/ArchitectureHelper";
+import {
+  TYPE_CLASS,
+  TYPE_OPTIMIZER,
+  TYPE_LOSSES,
+  TYPE_METRICS
+} from "../../../modelos/ArchitectureTypesHelper";
 
 
 export default function ObjectDetection(props) {
@@ -195,7 +200,7 @@ export default function ObjectDetection(props) {
     setNLayer(nLayer + 1)
   }
 
-  const handlerRemoveLayer = async (idLayer) => {
+  const handleClick_RemoveLayer = async (idLayer) => {
     let array = Layer
     let array2 = []
     if (array.length === 1) {
@@ -484,7 +489,7 @@ export default function ObjectDetection(props) {
 
                     {/* UNITS */}
                     <Accordion.Body>
-                      <CloseButton onClick={() => handlerRemoveLayer(ActiveLayer)}/>
+                      <CloseButton onClick={() => handleClick_RemoveLayer(ActiveLayer)}/>
 
                       <Form.Group className="mb-3"
                                   controlId={'formClass' + ActiveLayer}>
@@ -492,8 +497,8 @@ export default function ObjectDetection(props) {
                         <Form.Select aria-label="Default select example"
                                      defaultValue={Layer[ActiveLayer].class}
                                      onChange={handleChange_Class}>
-                          {TYPE_CLASS.map((itemAct, indexAct) => {
-                            return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
+                          {TYPE_CLASS.map(({ key, label }, index) => {
+                            return (<option key={index} value={key}>{<label for=""></label>}</option>)
                           })}
                         </Form.Select>
                       </Form.Group>

@@ -164,24 +164,33 @@ export default function InitialMenu() {
     <>
       <Container>
         <Row className={"row-cols-1 row-cols-md-3 row-cols-xl-3"}>
-          {LIST_TYPE_MODELS.map((type, i) => {
-            if (i !== 1) {
-              const actualColor = colors[i % colors.length]
-              return (
-                <Col key={i} className={"mt-3"}>
-                  <div className="d-grid gap-2">
-                    <Button onClick={() => handleClick(i)}
-                            variant={actualColor}
-                            size={"lg"}>
-                      {type}
-                    </Button>
-                  </div>
-                </Col>
-              )
-            } else {
-              return <></>
-            }
-          })}
+          <Col className={"mt-3"}>
+            <div className="d-grid gap-2">
+              <Button onClick={() => handleClick(0)}
+                      variant={colors[0]}
+                      size={"lg"}>
+                {LIST_TYPE_MODELS[0]}
+              </Button>
+            </div>
+          </Col>
+          <Col className={"mt-3"}>
+            <div className="d-grid gap-2">
+              <Button onClick={() => handleClick(2)}
+                      variant={colors[2]}
+                      size={"lg"}>
+                {LIST_TYPE_MODELS[2]}
+              </Button>
+            </div>
+          </Col>
+          <Col className={"mt-3"}>
+            <div className="d-grid gap-2">
+              <Button onClick={() => handleClick(3)}
+                      variant={colors[3]}
+                      size={"lg"}>
+                {LIST_TYPE_MODELS[3]}
+              </Button>
+            </div>
+          </Col>
         </Row>
         <Row className={"mt-3"}>
           <Col xl={12}>

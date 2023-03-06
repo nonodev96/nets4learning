@@ -1,6 +1,13 @@
 {
   "classes"   : [ "unacc", "acc", "good", "vgood" ],
-  "attributes": [ "buying", "maint", "doors", "persons", "lug_boot", "safety" ],
+  "attributes": [
+    { "type": "select", "index_column": 0, "name": "buying",   "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
+    { "type": "select", "index_column": 1, "name": "maint",    "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
+    { "type": "select", "index_column": 2, "name": "doors",    "options": [{ "value": "2",     "text": "2"     }, { "value": "3",    "text": "3"    }, { "value": "4",    "text": "4"    }, { "value": "5more", "text": "5more" } ] },
+    { "type": "select", "index_column": 3, "name": "persons",  "options": [{ "value": "2",     "text": "2"     }, { "value": "4",    "text": "4"    }, { "value": "more", "text": "more" } ] },
+    { "type": "select", "index_column": 4, "name": "lug_boot", "options": [{ "value": "small", "text": "small" }, { "value": "med", "text": "med"   }, { "value": "big",  "text": "big"  } ] },
+    { "type": "select", "index_column": 5, "name": "safety",   "options": [{ "value": "low",   "text": "low"   }, { "value": "med", "text": "med"   }, { "value": "high", "text": "high" } ] }
+  ],
   "data"      : [
     ["vhigh", "vhigh", "2", "2", "small", "low", "unacc"],
     ["vhigh", "vhigh", "2", "2", "small", "med", "unacc"],

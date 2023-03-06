@@ -6,7 +6,7 @@ import {
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
   TYPE_METRICS,
-} from '../../../modelos/ArchitectureHelper'
+} from '../../../modelos/ArchitectureTypesHelper'
 import { getIrisDataType } from "../../../modelos/ClassificationHelper_IRIS"
 import *  as alertHelper from "../../../utils/alertHelper"
 

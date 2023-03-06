@@ -6,8 +6,6 @@ import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
 import './EdtiArchitecture.css'
 
-import ClassicClassification from '../editor/classicClassification/ClassicClassification'
-
 import ModelReviewClassicClassification from '../editor/classicClassification/ModelReviewClassicClassification'
 import CustomDataSetClassicClassification from '../editor/classicClassification/CustomDataSetClassicClassification'
 
@@ -22,6 +20,7 @@ import ImageClassification from '../editor/imageClassification/ImageClassificati
 
 
 import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import NotFoundPage from "../notFound/NotFoundPage";
 
 export default function EditArchitecture() {
   const { id, tipo, ejemplo } = useParams()
@@ -55,7 +54,7 @@ export default function EditArchitecture() {
           return <ImageClassification dataSet={ejemplo}/>
         }
       default:
-        return <ClassicClassification dataSet={ejemplo}/>
+        return <NotFoundPage/>
     }
   }
 

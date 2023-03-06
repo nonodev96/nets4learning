@@ -4,13 +4,13 @@ export default function LayerEdit(props) {
   const {
     index,
     item,
-    handlerRemoveLayer,
-    handleChangeKernel,
-    handleChangeActivation,
-    handleChangeFilters,
-    handleChangeStrides,
-    handleChangePoolSize,
-    handleChangeStridesMax,
+    handle_RemoveLayer,
+    handleChange_Kernel,
+    handleChange_Activation,
+    handleChange_Filters,
+    handleChange_Strides,
+    handleChange_PoolSize,
+    handleChange_StridesMax,
     ACTIVATION_TYPE,
   } = props
 
@@ -25,16 +25,16 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el tamaño del kernel de la capa"
                             defaultValue={item.kernelSize}
-                            onChange={() => handleChangeKernel(index)}/>
+                            onChange={() => handleChange_Kernel(index)}/>
             </Form.Group>
 
             {/* FILTERS */}
             <Form.Group className="mb-3" controlId={'formFiltersLayer' + index}>
               <Form.Label>Tamaño del filters</Form.Label>
               <Form.Control type="number"
-                            placeholder="Introduce el filters de la capa"
+                            placeholder="Introduce el filtro de la capa"
                             defaultValue={item.filters}
-                            onChange={() => handleChangeFilters(index)}/>
+                            onChange={() => handleChange_Filters(index)}/>
             </Form.Group>
 
             {/* STRIDES */}
@@ -43,7 +43,7 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el strides de la capa"
                             defaultValue={item.strides}
-                            onChange={() => handleChangeStrides(index)}/>
+                            onChange={() => handleChange_Strides(index)}/>
             </Form.Group>
 
             {/* ACTIVATION FUNCTION */}
@@ -52,7 +52,7 @@ export default function LayerEdit(props) {
               <Form.Label>Selecciona la función de activación</Form.Label>
               <Form.Select aria-label="Selecciona la función de activación"
                            defaultValue={item.activation}
-                           onChange={() => handleChangeActivation(index)}>
+                           onChange={() => handleChange_Activation(index)}>
                 {ACTIVATION_TYPE.map((itemAct, indexAct) => {
                   return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                 })}
@@ -73,7 +73,7 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el número de POOLSIZE de la capa"
                             defaultValue={item.poolSize[0]}
-                            onChange={() => handleChangePoolSize(index, 0)}/>
+                            onChange={() => handleChange_PoolSize(index, 0)}/>
             </Form.Group>
 
             {/* POOL SIZE 2 */}
@@ -82,7 +82,7 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el número de POOLSIZE2 de la capa"
                             defaultValue={item.poolSize[1]}
-                            onChange={() => handleChangePoolSize(index, 1)}/>
+                            onChange={() => handleChange_PoolSize(index, 1)}/>
             </Form.Group>
           </Row>
           <Row className={"mt-3"}>
@@ -92,7 +92,7 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el número de strides de la capa"
                             defaultValue={item.strides2[0]}
-                            onChange={() => handleChangeStridesMax(index, 0)}/>
+                            onChange={() => handleChange_StridesMax(index, 0)}/>
             </Form.Group>
 
             {/* strides max 2 */}
@@ -101,7 +101,7 @@ export default function LayerEdit(props) {
               <Form.Control type="number"
                             placeholder="Introduce el número de strides 2 de la capa"
                             defaultValue={item.strides2[1]}
-                            onChange={() => handleChangeStridesMax(index, 1)}/>
+                            onChange={() => handleChange_StridesMax(index, 1)}/>
             </Form.Group>
           </Row>
         </>

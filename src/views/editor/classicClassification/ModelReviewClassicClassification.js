@@ -82,14 +82,16 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.handleClick_ChangePage = this.handleClick_ChangePage.bind(this)
     this.handleClick_LoadModel = this.handleClick_LoadModel.bind(this)
 
+    this.handleFileUpload_JSON = this.handleFileUpload_JSON.bind(this)
+    this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
+    this.handleFileUpload_CSV = this.handleFileUpload_CSV.bind(this)
+
+    // Debug
     this.handleClick_Layers = this.handleClick_Layers.bind(this)
     this.handleClick_Compile = this.handleClick_Compile.bind(this)
     this.handleClick_Fit = this.handleClick_Fit.bind(this)
     this.handleClick_Download = this.handleClick_Download.bind(this)
 
-    this.handle_JSONFileUpload = this.handle_JSONFileUpload.bind(this)
-    this.handle_BinaryFileUpload = this.handle_BinaryFileUpload.bind(this)
-    this.handle_CSVFileUpload = this.handle_CSVFileUpload.bind(this)
   }
 
   componentDidMount() {
@@ -235,17 +237,17 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.setState({ isButtonDisabled: false })
   }
 
-  handle_JSONFileUpload(files) {
+  handleFileUpload_JSON(files) {
     this.files.json = new File([files[0]], files[0].name, { type: files[0].type });
     this.setState({ filesUpload: (this.files.json === null || this.files.binary === null) })
   }
 
-  handle_BinaryFileUpload(files) {
+  handleFileUpload_Binary(files) {
     this.files.binary = new File([files[0]], files[0].name, { type: files[0].type });
     this.setState({ filesUpload: (this.files.json === null || this.files.binary === null) })
   }
 
-  handle_CSVFileUpload(files) {
+  handleFileUpload_CSV(files) {
     this.files.csv = new File([files[0]], files[0].name, { type: files[0].type });
     const reader = new FileReader();
     reader.readAsText(this.files.csv)
@@ -390,13 +392,13 @@ export default class ModelReviewClassicClassification extends React.Component {
               <Card className={"sticky-top mt-3 border-info"} style={{ "zIndex": 0 }}>
                 <Card.Header><h3>Modelo</h3></Card.Header>
                 <Card.Body>
-                  <Card.Title>{this._model?.TITLE ?? "Upload"} {this.state.loading}</Card.Title>
+                  <Card.Title>{this._model?.TITLE ?? "Subir"} {this.state.loading}</Card.Title>
 
                   {this.dataset_key === MODEL_UPLOAD ? (
                     <>
-                      <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
+                      <Card.Subtitle className="mb-3 text-muted">Carga tu propio modelo.</Card.Subtitle>
                       <Card.Text>
-                        Ten en cuenta que tienes que subir el archivo .json y el fichero .bin para luego cargar el modelo
+                        Ten en cuenta que tienes que subir el archivo <b>.json</b> y el fichero <b>.bin</b> para luego cargar el modelo
                       </Card.Text>
                       <Row>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -405,7 +407,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                        accept={{ 'application/json': ['.json'] }}
                                        text={"Añada el fichero JSON"}
                                        labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handle_JSONFileUpload}/>
+                                       function_DropAccepted={this.handleFileUpload_JSON}/>
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <DragAndDrop name={"bin"}
@@ -413,7 +415,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                        accept={{ 'application/octet-stream': ['.bin'] }}
                                        text={"Añada el fichero binario"}
                                        labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handle_BinaryFileUpload}/>
+                                       function_DropAccepted={this.handleFileUpload_Binary}/>
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <div className="d-grid gap-2">
@@ -432,7 +434,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                        accept={{ 'text/csv': ['.csv'] }}
                                        text={"Añada el fichero csv"}
                                        labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handle_CSVFileUpload}/>
+                                       function_DropAccepted={this.handleFileUpload_CSV}/>
                         </Col>
                       </Row>
                     </>

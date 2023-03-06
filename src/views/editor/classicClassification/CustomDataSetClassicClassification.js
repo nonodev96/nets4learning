@@ -2,22 +2,16 @@ import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import {
-  getHTML_DATASET_DESCRIPTION,
-  getNameDatasetByID_ClassicClassification,
-  LIST_MODEL_OPTIONS,
-  MODEL_UPLOAD,
-  MODEL_CAR,
-  MODEL_IRIS,
-  MODEL_HEPATITIS_C
-} from "../../../DATA_MODEL";
+import { getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS, MODEL_CAR, MODEL_HEPATITIS_C, MODEL_IRIS, MODEL_UPLOAD } from "../../../DATA_MODEL";
 import {
   createClassicClassificationCustomDataSet,
+} from '../../../modelos/ArchitectureHelper'
+import {
   TYPE_ACTIVATION,
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
-  TYPE_METRICS,
-} from '../../../modelos/ArchitectureHelper'
+  TYPE_METRICS
+} from "../../../modelos/ArchitectureTypesHelper";
 import cars_json from "../../../modelos/plantilla_car.json";
 import iris_json from "../../../modelos/plantilla_iris.json";
 import hepatitis_c_json from '../../../modelos/plantilla_hepatitisC.json'
@@ -33,18 +27,20 @@ export default function CustomDataSetClassicClassification(props) {
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
   const LearningRate_default = 1
-  const NumberEpochs_default = 50
+  const NumberEpochs_default = 10
   const TestSize_default = 10
+
+  const [generatedModels, setGeneratedModels] = useState([])
 
   const [nLayer, setNLayer] = useState(0)
   const [Layer, setLayer] = useState([])
 
   // OPTIMIZER
-  const [Optimizer, setOptimizer] = useState('adam')
+  const [idOptimizerValue, setIdOptimizerValue] = useState('adam')
   // LOSS_TYPE
-  const [LossValue, setLossValue] = useState('categoricalCrossentropy')
+  const [idLossValue, setIdLossValue] = useState('categoricalCrossentropy')
   // METRICS_TYPE
-  const [MetricsValue, setMetricsValue] = useState('accuracy')
+  const [idMetricsValue, setIdMetricsValue] = useState('accuracy')
 
   const [Model, setModel] = useState(null)
   const [StringTEST, setStringTEST] = useState("")
@@ -53,13 +49,12 @@ export default function CustomDataSetClassicClassification(props) {
   const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
   const [TestSize, setTestSize] = useState(TestSize_default)
 
-  const [CustomDataSet, setCustomDataSet] = useState()
+  const [CustomDataSet_JSON, setCustomDataSet_JSON] = useState()
   const [DataSetClasses, setDataSetClasses] = useState([])
   const [isUploadedArchitecture, setIsUploadedArchitecture] = useState(false)
 
   const [TargetSetClasses, setTargetSetClasses] = useState([])
 
-  const [generatedModels, setGeneratedModels] = useState([])
   const [isTraining, setIsTraining] = useState(false)
   const [DisabledDownloadModel, setDisabledDownloadModel] = useState(true)
 
@@ -68,7 +63,7 @@ export default function CustomDataSetClassicClassification(props) {
       case MODEL_UPLOAD: {
         const uploadedArchitecture = localStorage.getItem('custom-architecture')
         const uploadedJSON = JSON.parse(uploadedArchitecture)
-        const auxLayer = uploadedJSON.modelTopology.config.layers
+        const auxLayer = uploadedJSON?.modelTopology?.config?.layers ?? []
         let _layerArray = []
         for (let i = 0; i < auxLayer.length; i++) {
           _layerArray.push({
@@ -82,24 +77,24 @@ export default function CustomDataSetClassicClassification(props) {
         setStringTEST("")
         break
       }
-      case MODEL_IRIS.KEY: {
-        let layers = [
-          { units: 4, activation: 'sigmoid' },
-          { units: 3, activation: 'softmax' },
-        ]
-        setLayer(layers)
-        setNLayer(layers.length)
-        setStringTEST("5;5;4;2")
-        break
-      }
       case MODEL_CAR.KEY: {
         let layers = [
-          { units: 5, activation: 'sigmoid' },
+          { units: 10, activation: 'sigmoid' },
           { units: 4, activation: 'softmax' },
         ]
         setLayer(layers)
         setNLayer(layers.length)
-        setStringTEST('vhigh;vhigh;2;2;big;med')
+        setStringTEST('med;med;2;4;big;high')
+        break
+      }
+      case MODEL_IRIS.KEY: {
+        let layers = [
+          { units: 10, activation: 'sigmoid' },
+          { units: 3, activation: 'softmax' },
+        ]
+        setLayer(layers)
+        setNLayer(layers.length)
+        setStringTEST("5.9;3;5.1;1.8 ")
         break
       }
       case MODEL_HEPATITIS_C.KEY: {
@@ -123,29 +118,29 @@ export default function CustomDataSetClassicClassification(props) {
 
   const handleClickPlay = async (event) => {
     event.preventDefault()
-    console.log('Conjunto de datos: ', { dataSet })
-    let _customDataSet
+    console.debug('ID Conjunto de datos: ', { dataSet })
+    let _customDataset_JSON
 
     switch (getNameDatasetByID_ClassicClassification(dataSet)) {
       case MODEL_UPLOAD: {
-        console.log({ CustomDataSet })
-        if (CustomDataSet === undefined) {
-          await alertHelper.alertError('Primero debes de cargar la arquitectura')
+        console.debug({ CustomDataSet_JSON: CustomDataSet_JSON })
+        if (CustomDataSet_JSON === undefined) {
+          await alertHelper.alertError('Primero debes de cargar los datos')
           return
         }
-        _customDataSet = CustomDataSet
+        _customDataset_JSON = CustomDataSet_JSON
         break;
       }
       case MODEL_CAR.KEY: {
-        _customDataSet = cars_json
+        _customDataset_JSON = cars_json
         break;
       }
       case MODEL_IRIS.KEY: {
-        _customDataSet = iris_json
+        _customDataset_JSON = iris_json
         break;
       }
       case MODEL_HEPATITIS_C.KEY: {
-        _customDataSet = hepatitis_c_json
+        _customDataset_JSON = hepatitis_c_json
         break;
       }
       default: {
@@ -159,38 +154,50 @@ export default function CustomDataSetClassicClassification(props) {
       let _learningRate = LearningRate / 100
       let _numberOfEpoch = parseInt(NumberEpochs)
       let _testSize = TestSize / 100
-      let _idOptimizer = document.getElementById('FormOptimizer').value
       let _layerList = Layer
-      let _idLoss = LossValue
-      let _idMetrics = MetricsValue
-      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet(
-        _learningRate,
-        _testSize,
-        _numberOfEpoch,
-        _idOptimizer,
-        _layerList,
-        _idLoss,
-        _idMetrics,
-        _customDataSet
-      )
-      setGeneratedModels(oldArray => [...oldArray, {
+
+      let _idOptimizer = idOptimizerValue
+      let _idLoss = idLossValue
+      let _idMetrics = idMetricsValue
+
+      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet({
         learningRate : _learningRate,
-        testSize     : _testSize,
         numberOfEpoch: _numberOfEpoch,
+        testSize     : _testSize,
         layerList    : _layerList,
+        dataset_JSON : _customDataset_JSON,
         idOptimizer  : _idOptimizer,
         idLoss       : _idLoss,
-        idMetrics    : _idMetrics,
-        customDataSet: _customDataSet
-      }])
+        idMetrics    : _idMetrics
+      })
+      setGeneratedModels(oldArray => [
+        ...oldArray.map((oldModel) => {
+          return { ...oldModel, isLoad: false }
+        }), {
+          idMODEL           : oldArray.length + 1,
+          isLoad            : true,
+          model             : model,
+          TARGET_SET_CLASSES: TARGET_SET_CLASSES,
+          DATA_SET_CLASSES  : DATA_SET_CLASSES,
+
+          learningRate : _learningRate,
+          testSize     : _testSize,
+          numberOfEpoch: _numberOfEpoch,
+          layerList    : JSON.parse(JSON.stringify(_layerList)),
+          idOptimizer  : _idOptimizer,
+          idLoss       : _idLoss,
+          idMetrics    : _idMetrics
+        }]
+      )
       setIsTraining(false)
       setDisabledDownloadModel(false)
       setDataSetClasses(DATA_SET_CLASSES)
       setTargetSetClasses(TARGET_SET_CLASSES)
+
       setModel(model)
       await alertHelper.alertSuccess('Modelo entrenado con éxito')
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setIsTraining(false)
     }
@@ -198,7 +205,7 @@ export default function CustomDataSetClassicClassification(props) {
 
   const handleClick_TestVector = async () => {
     if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
-      if (CustomDataSet === undefined) {
+      if (CustomDataSet_JSON === undefined) {
         await alertHelper.alertError('Primero debes de cargar un dataSet')
         return
       }
@@ -207,54 +214,88 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertError('Primero debes de entrenar el modelo')
       return
     }
-    // vhigh;vhigh;2;2;big;med
+    let dataset_JSON = null
     let input = [[], [1, StringTEST.split(';').length]]
     try {
       switch (getNameDatasetByID_ClassicClassification(dataSet)) {
         case MODEL_UPLOAD: {
-          let i = 0
-          StringTEST.split(';').forEach((element) => {
-            if (isNaN(parseFloat(element))) {
-              input[0].push(DataSetClasses[i].get(element))
-            } else {
-              input[0].push(DataSetClasses[i].get(parseFloat(element)))
-            }
-            i++
-          })
+          dataset_JSON = CustomDataSet_JSON
           break
         }
         case MODEL_CAR.KEY: {
-          // med;high;4;4;small;high
-          for (const element of StringTEST.split(';')) {
-            const index = StringTEST.split(';').indexOf(element);
-            input[0].push(await MODEL_CAR.function_v_input(element, index, cars_json.attributes[index]))
-          }
+          dataset_JSON = cars_json
+          //   // vhigh;vhigh;2;2;big;med
+          //   // med;high;4;4;small;high
+          //   for (const element of StringTEST.split(';')) {
+          //     const index = StringTEST.split(';').indexOf(element);
+          //     input[0].push(await MODEL_CAR.function_v_input(element, index, cars_json.attributes[index]))
+          //   }
           break
         }
         case MODEL_IRIS.KEY: {
-          for (const element of StringTEST.split(';')) {
-            const index = StringTEST.split(';').indexOf(element);
-            input[0].push(await MODEL_IRIS.function_v_input(element, index, iris_json.attributes[index]))
-          }
+          dataset_JSON = iris_json
+          //   for (const element of StringTEST.split(';')) {
+          //     const index = StringTEST.split(';').indexOf(element);
+          //     input[0].push(await MODEL_IRIS.function_v_input(element, index, iris_json.attributes[index]))
+          //   }
           break
         }
         case MODEL_HEPATITIS_C.KEY: {
-          for (const element of StringTEST.split(';')) {
-            const index = StringTEST.split(';').indexOf(element);
-            input[0].push(await MODEL_HEPATITIS_C.function_v_input(element, index, hepatitis_c_json.attributes[index]))
-          }
+          dataset_JSON = hepatitis_c_json
+          //   for (const element of StringTEST.split(';')) {
+          //     const index = StringTEST.split(';').indexOf(element);
+          //     input[0].push(await MODEL_HEPATITIS_C.function_v_input(element, index, hepatitis_c_json.attributes[index]))
+          //   }
           break
         }
         default: {
           console.error("Error, opción no permitida")
-          break
+          return
         }
       }
-      const tensor = tf.tensor2d(input[0], input[1])
-      const prediction = Model.predict(tensor)
-      const predictionWithArgMax = prediction.argMax(-1).dataSync()
+      console.debug("Dataset_JSON", { dataset_JSON })
+      let i = 0
+      for (const element of StringTEST.split(';')) {
+        let name = dataset_JSON?.attributes[i].name
+        let type = dataset_JSON?.attributes[i].type
+        console.debug("By column:", name, {
+          element  : element,
+          type     : type,
+          id_number: DataSetClasses[i].get(parseInt(element)),
+          id_float : DataSetClasses[i].get(parseFloat(element)),
+          id_select: DataSetClasses[i].get(element),
+        })
+        switch (type) {
+          case "number": {
+            input[0].push(DataSetClasses[i].get(parseInt(element)))
+            break
+          }
+          case "float": {
+            input[0].push(DataSetClasses[i].get(parseFloat(element)))
+            break
+          }
+          case "select": {
+            input[0].push(DataSetClasses[i].get(element))
+            break
+          }
+          default: {
+            console.warn("Columna desconocida?")
+            break
+          }
+        }
+        i++
+      }
 
-      console.log('La solución es: ', { predictionWithArgMax, prediction, TargetSetClasses })
+      if (input[0].some((tag) => tag === undefined)) {
+        await alertHelper.alertInfo("Valor indefinido", "Error, input no válido")
+        return;
+      }
+
+      console.log("DataSetClasses: ", { DataSetClasses }, ...input[0])
+      const tensor = tf.tensor2d(input[0], input[1])
+      const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
+
+      console.info('La solución es: ', { predictionWithArgMax, TargetSetClasses })
       await alertHelper.alertInfo(
         'Tipo: ' + TargetSetClasses[predictionWithArgMax],
         `` + TargetSetClasses[predictionWithArgMax]
@@ -365,8 +406,7 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Loss`)
       return
     }
-    // console.log({ aux })
-    setLossValue(aux)
+    setIdLossValue(aux)
   }
 
   const handleChange_Optimization = async () => {
@@ -375,7 +415,7 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Optimization`)
       return
     }
-    setOptimizer(aux)
+    setIdOptimizerValue(aux)
   }
 
   const handleChange_Metrics = async () => {
@@ -384,12 +424,26 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Metrics`)
       return
     }
-    // console.log({ aux })
-    setMetricsValue(aux)
+    setIdMetricsValue(aux)
   }
 
-  const handleDownloadModel = () => {
-    Model.save('downloads://mymodel')
+  const handleClick_LoadGeneratedModel = ({ model, idMODEL }) => {
+    const newList = generatedModels.map((item) => {
+      if (item.idMODEL === idMODEL) {
+        return { ...item, isLoad: true }
+      }
+      return { ...item, isLoad: false };
+    })
+    setGeneratedModels(newList);
+    setModel(model)
+  }
+
+  const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
+    model.save('downloads://my-model-' + idMODEL)
+  }
+
+  const handleClick_DownloadModel = () => {
+    Model.save('downloads://my-model')
   }
 
   const handleClick_Debug = () => {
@@ -408,15 +462,30 @@ export default function CustomDataSetClassicClassification(props) {
   const downloadFile = () => {
     const filename = 'plantilla.json'
     const testInput = `{
-  "classes"    : [ "clase_1",    "clase_2",    "clase_3",    "clase__",   "clase_n" ],
-  "attributes" : [ "atributo_1", "atributo_2", "atributo__", "atributo_n" ],
-  "data"       : [
-    ["dato01", "dato_02", "dato_03", "dato_04", "dato_05", "resultado_1"],
-    ["dato11", "dato_12", "dato_13", "dato_14", "dato_15", "resultado_2"],
-    ["dato21", "dato_22", "dato_23", "dato_24", "dato_25", "resultado_3"],
-    ["dato31", "dato_32", "dato_33", "dato_34", "dato_35", "resultado_4"],
-    ["dato41", "dato_42", "dato_43", "dato_44", "dato_45", "resultado_5"],
-    ["dato51", "dato_52", "dato_53", "dato_54", "dato_55", "resultado_6"]
+  "missing_values"   : false,
+  "missing_value_key": "?",
+  "classes"          : [ "Clase 1", "Clase 2", "Clase 3", "Clase 4", "Clase n" ],
+  "attributes"       : [
+    { "name": "Atributo 1", "index_column": 0, "type": "number" },
+    { "name": "Atributo 2", "index_column": 1, "type": "float"  },
+    { "name": "Atributo 3", "index_column": 2, "type": "float"  },
+    { 
+      "name"        : "Atributo m", 
+      "index_column": 3,
+      "type"        : "select", 
+      "options"     : [ 
+        { "value": "option_1", "text": "Opción 1" }, 
+        { "value": "option_2", "text": "Opción 2" } 
+      ]
+    }
+  ],
+  "data"             : [
+    ["dato_entero_01", "dato_decimal_02", "dato_decimal_04", "option_1", "resultado_1"],
+    ["dato_entero_11", "dato_decimal_12", "dato_decimal_14", "option_1", "resultado_2"],
+    ["dato_entero_21", "dato_decimal_22", "dato_decimal_24", "option_1", "resultado_3"],
+    ["dato_entero_31", "dato_decimal_32", "dato_decimal_34", "option_2", "resultado_4"],
+    ["dato_entero_41", "dato_decimal_42", "dato_decimal_44", "option_2", "resultado_5"],
+    ["dato_entero_51", "dato_decimal_52", "dato_decimal_54", "option_2", "resultado_6"]
   ]
 }`
     _download(filename, testInput)
@@ -432,9 +501,9 @@ export default function CustomDataSetClassicClassification(props) {
       let reader = new FileReader()
       reader.readAsText(file_json)
       reader.onload = (e) => {
-        let json = JSON.parse(e.target.result.toString())
-        console.log(json)
-        setCustomDataSet(json)
+        // TODO
+        // COMPROBAR: ¿Es un json con el formato de la plantilla?
+        setCustomDataSet_JSON(JSON.parse(e.target.result.toString()))
       }
     } catch (error) {
       console.error(error)
@@ -452,7 +521,7 @@ export default function CustomDataSetClassicClassification(props) {
               <Accordion defaultActiveKey={["description_architecture_editor"]}
                          alwaysOpen>
                 <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
-                  <Accordion.Header><h3>Manual</h3></Accordion.Header>
+                  <Accordion.Header><h3>Manual del generador de modelos</h3></Accordion.Header>
                   <Accordion.Body>
                     <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
                     <ul>
@@ -513,7 +582,7 @@ export default function CustomDataSetClassicClassification(props) {
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item key={"1"} eventKey={"description_dataset"}>
-                  <Accordion.Header><h3>Dataset: {LIST_MODEL_OPTIONS[0][dataSet]}</h3></Accordion.Header>
+                  <Accordion.Header><h3>Dataset: {dataSet === '0' ? "Subir datos" : LIST_MODEL_OPTIONS[0][dataSet]}</h3></Accordion.Header>
                   <Accordion.Body>
                     {{
                       '0': <>
@@ -523,7 +592,7 @@ export default function CustomDataSetClassicClassification(props) {
                                      labelFiles={"Fichero:"}
                                      function_DropAccepted={handleChange_FileUpload}/>
                         <p className="text-muted">
-                          Carga tu propio conjunto de datos con la siguiente estructura, usa está platilla.
+                          Para carga tu propio conjunto de datos, usa está platilla.
                         </p>
                         <p className={"text-center"}>
                           <Button variant={"outline-info"}
@@ -620,8 +689,8 @@ export default function CustomDataSetClassicClassification(props) {
                           <Form.Select aria-label={"Default select example: " + item.activation}
                                        defaultValue={item.activation}
                                        onChange={() => handleChange_Activation(index)}>
-                            {TYPE_ACTIVATION.map(([key, value], indexAct) => {
-                              return (<option key={indexAct} value={key}>{value}</option>)
+                            {TYPE_ACTIVATION.map(({ key, label }, index) => {
+                              return (<option key={index} value={key}>{label}</option>)
                             })
                             }
                           </Form.Select>
@@ -686,10 +755,10 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormOptimizer">
                     <Form.Label>Selecciona el optimizador</Form.Label>
                     <Form.Select aria-label="Default select example"
-                                 defaultValue={Optimizer}
+                                 defaultValue={idOptimizerValue}
                                  onChange={handleChange_Optimization}>
-                      {TYPE_OPTIMIZER.map(([key, value], id) => {
-                        return (<option key={id} value={key}>{value}</option>)
+                      {TYPE_OPTIMIZER.map(({ key, label }, index) => {
+                        return (<option key={index} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -701,10 +770,10 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormLoss">
                     <Form.Label>Selecciona la función de pérdida</Form.Label>
                     <Form.Select aria-label="Selecciona la función de pérdida"
-                                 defaultValue={LossValue}
+                                 defaultValue={idLossValue}
                                  onChange={handleChange_Loss}>
-                      {TYPE_LOSSES.map(([key, value], id) => {
-                        return (<option key={id} value={key}>{value}</option>)
+                      {TYPE_LOSSES.map(({ key, label }, index) => {
+                        return (<option key={index} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -716,10 +785,10 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormMetrics">
                     <Form.Label>Selecciona la métrica</Form.Label>
                     <Form.Select aria-label="Selecciona la métrica"
-                                 defaultValue={MetricsValue}
+                                 defaultValue={idMetricsValue}
                                  onChange={handleChange_Metrics}>
-                      {TYPE_METRICS.map(([key, value], id) => {
-                        return (<option key={id} value={key}>{value}</option>)
+                      {TYPE_METRICS.map(({ key, label }, index) => {
+                        return (<option key={index} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -768,6 +837,15 @@ export default function CustomDataSetClassicClassification(props) {
                             }}>
                       Cerrar visor
                     </Button>
+                    {(Model !== undefined) &&
+                      <Button className={"ms-1"}
+                              disabled={DisabledDownloadModel}
+                              onClick={handleClick_DownloadModel}
+                              size={"sm"}
+                              variant="outline-primary">
+                        Exportar modelo actual
+                      </Button>
+                    }
                   </div>
                 </Card.Header>
                 <Card.Body>
@@ -775,6 +853,7 @@ export default function CustomDataSetClassicClassification(props) {
                     <thead>
                     <tr>
                       <th>ID</th>
+                      <th>Cargar</th>
                       <th>Entrenamiento</th>
                       <th>Nº de iteraciones</th>
                       <th>Pruebas</th>
@@ -787,33 +866,36 @@ export default function CustomDataSetClassicClassification(props) {
                     </thead>
                     <tbody>
                     {generatedModels.map((value, index) => {
-                      // learningRate
-                      // testSize
-                      // numberOfEpoch
-                      // layerList
-                      // idOptimizer
-                      // idLoss       :
-                      // idMetrics
-                      // customDataSet
                       return (
                         <tr key={"model_list_row_" + index}>
-                          <td>{index}</td>
+                          <td>{value.idMODEL}</td>
+                          <td>
+                            <Button variant={value.isLoad ? 'outline-success' : "outline-info"}
+                                    size={"sm"}
+                                    disabled={value.isLoad}
+                                    onClick={() => handleClick_LoadGeneratedModel(value)}>
+                              {value.isLoad ? "Cargado" : "Cargar"}
+                            </Button>
+                          </td>
                           <td>{value.learningRate * 100}%</td>
                           <td>{value.numberOfEpoch}</td>
                           <td>{value.testSize * 100}%</td>
                           <td>
                             {value.layerList.map((value, index) => {
-                              return <span key={index}><small>{value.units} - {value.activation}</small><br/></span>
+                              return (
+                                <span key={index} style={{ fontFamily: "monospace" }}>
+                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br/>
+                                </span>
+                              )
                             })}
                           </td>
                           <td>{value.idOptimizer}</td>
                           <td>{value.idLoss}</td>
                           <td>{value.idMetrics}</td>
                           <td>
-                            <Button variant={"outline-info"}
+                            <Button variant={"outline-primary"}
                                     size={"sm"}
-                                    onClick={() => {
-                                    }}>
+                                    onClick={() => handleClick_DownloadGeneratedModel(value)}>
                               Descargar
                             </Button>
                           </td>
@@ -834,23 +916,7 @@ export default function CustomDataSetClassicClassification(props) {
       </Form>
 
       <Container>
-        {(Model !== undefined) &&
-          <>
-            <Row className={"mt-3"}>
-              <Col xl={12}>
-                <div className="d-grid gap-2">
-                  <Button type="button"
-                          disabled={DisabledDownloadModel}
-                          onClick={handleDownloadModel}
-                          size={"lg"}
-                          variant="primary">
-                    Exportar modelo
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </>
-        }
+
 
         {/* BLOCK 2 */}
         <Row className={"mt-3"}>
@@ -896,66 +962,6 @@ export default function CustomDataSetClassicClassification(props) {
                                   defaultValue={StringTEST}
                                   onChange={() => handleChange_TestInput()}/>
                   </Form.Group>
-
-                  <Container>
-                    {isDebug &&
-                      <Row>
-                        <Col>
-                          <h3>Coches</h3>
-                          <pre>
-<b>0</b> 3;3;3;1;1;0<br/>
-<b>0</b> 3;3;3;1;0;0<br/>
-<b>0</b> 3;3;3;1;2;0<br/>
-<b>1</b> 3;3;3;1;0;1<br/>
-<b>2</b> 3;3;3;1;1;2<br/>
-<b>2</b> 3;3;3;1;2;2<br/>
-<b>3</b> 3;3;3;1;1;1<br/>
-<b>3</b> 3;3;3;1;0;2<br/>
-<b>3</b> 3;3;3;1;2;1<br/>
-</pre>
-                        </Col>
-                        <Col>
-                          <h3>Iris</h3>
-                          <pre>
-<b>0</b> 3;2;0;0 <br/>
-<b>0</b> 14;8;2;0 <br/>
-<b>0</b> 4;12;0;0 <br/>
-<b>1</b> 15;2;9;6 <br/>
-<b>1</b> 16;2;10;7 <br/>
-<b>1</b> 17;3;11;7 <br/>
-<b>1</b> 23;16;9;13 <br/>
-<b>1</b> 16;7;22;8 <br/>
-<b>1</b> 27;16;21;6 <br/>
-<b>2</b> 25;1;42;21 <br/>
-<b>2</b> 19;21;23;16 <br/>
-<b>2</b> 18;1;42;19 <br/>
-<b>2</b> 26;6;41;21 <br/>
-<b>2</b> 21;1;26;12 <br/>
-                        </pre>
-                        </Col>
-                        <Col>
-                          <h3>Hepatitis C</h3>
-                          <pre>
-<b>3</b> 27;0;185;169;330;284;183;397;231;108;145;195 <br/>
-<b>3</b> 27;0;182;9;331;285;184;398;307;95;158;123 <br/>
-<b>3</b> 29;0;12;82;332;286;164;399;62;109;347;38 <br/>
-<b>3</b> 33;0;188;375;333;287;168;167;103;6;348;187 <br/>
-<b>3</b> 41;0;186;408;334;288;170;400;90;110;349;196 <br/>
-<b>3</b> 10;1;173;95;335;289;173;401;259;111;350;9 <br/>
-<b>3</b> 17;1;173;409;336;290;12;289;308;112;351;197 <br/>
-<b>3</b> 20;1;12;410;337;34;172;173;309;113;352;198 <br/>
-<b>3</b> 26;1;181;411;199;291;120;402;310;62;353;43 <br/>
-<b>3</b> 27;1;12;273;27;292;174;403;311;114;354;64 <br/>
-<b>3</b> 30;1;162;412;338;293;185;324;143;115;355;123 <br/>
-<b>3</b> 32;1;189;413;339;294;186;404;312;13;304;8 <br/>
-<b>3</b> 32;1;25;414;340;295;187;405;313;116;133;183 <br/>
-<b>3</b> 14;1;173;375;131;259;186;406;29;59;356;27 <br/>
-<b>3</b> 27;1;65;375;341;29668;81;50;40;357;88 <br/>
-</pre>
-                        </Col>
-                      </Row>
-                    }
-                  </Container>
 
                   {/* SUBMIT BUTTON */}
                   <Button type="button"

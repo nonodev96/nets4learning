@@ -3,18 +3,14 @@ import { withRouter, BrowserRouter, Switch } from "react-router-dom";
 import { Redirect, Route, Router } from "react-router";
 
 import Home from "./components/Home";
-// import Test from "./components/testPage/Test";
-// import Training from "./components/training/Training";
-import Editor from "./views/editor/Editor";
-// import Starting from "./views/starting/Starting";
-// import SecondMenu from "./views/secondMenu/SecondMenu";
 import NotFoundPage from "./views/notFound/NotFoundPage";
 import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
 import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitectureMenu";
 import InteractiveEditor from "./views/editor/InteractiveEditor";
-import "./App.css";
+import Manual from "./views/manual/Manual";
 
+import "./App.css";
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
@@ -27,7 +23,7 @@ function App() {
           <Route exact path={"/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
           <Route exact path={"/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
           <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
-          {/* <Route exact path="/upload-architecture-custom/" component={}></Route> */}
+          <Route exact path="/manual/" component={Manual}></Route>
           {/* <Route exact path={"/starting/"} component={Starting}></Route> */}
           {/* <Route exact path={"/secondary/:id"} component={SecondMenu}></Route> */}
           {/* <Route exact path={"/editor/:id"} component={Editor}></Route> */}

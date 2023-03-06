@@ -5,8 +5,8 @@ import {
   TYPE_ACTIVATION,
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
-  TYPE_METRICS,
-} from '../../modelos/ArchitectureHelper'
+  TYPE_METRICS
+} from "../../modelos/ArchitectureTypesHelper";
 import { getIrisDataType } from "../../modelos/ClassificationHelper_IRIS"
 import * as alertHelper from '../../utils/alertHelper'
 import './InteractiveEditor.css'
