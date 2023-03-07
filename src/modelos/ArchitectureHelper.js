@@ -206,23 +206,23 @@ export function createLoss(idLoss, params) {
   // https://github.com/tensorflow/tfjs/issues/1315
   switch (idLoss) {
     case 'absoluteDifference':
-      return 'absoluteDifference'
+      return [tf.losses.absoluteDifference]
     case 'computeWeightedLoss':
-      return 'computeWeightedLoss'
+      return [tf.losses.computeWeightedLoss]
     case 'cosineDistance':
-      return 'cosineDistance'
+      return [tf.losses.cosineDistance]
     case 'hingeLoss':
-      return 'hingeLoss'
+      return [tf.losses.hingeLoss]
     case 'huberLoss':
-      return 'huberLoss'
+      return [tf.losses.huberLoss]
     case 'logLoss':
-      return 'logLoss'
+      return [tf.losses.logLoss]
     case 'meanSquaredError':
-      return 'meanSquaredError'
+      return [tf.losses.meanSquaredError]
     case 'sigmoidCrossEntropy':
-      return 'sigmoidCrossEntropy'
+      return [tf.losses.sigmoidCrossEntropy]
     case 'softmaxCrossEntropy':
-      return 'softmaxCrossEntropy'
+      return [tf.losses.softmaxCrossEntropy]
     // Metric
     case 'categoricalCrossentropy':
       return 'categoricalCrossentropy'
@@ -255,27 +255,27 @@ export function createMetrics(idMetrics, params) {
 
   switch (idMetrics) {
     case 'binaryAccuracy':
-      return ['binaryAccuracy']
+      return [tf.metrics.binaryAccuracy]
     case 'binaryCrossentropy':
-      return ['binaryCrossentropy']
+      return [tf.metrics.binaryCrossentropy]
     case 'categoricalAccuracy':
-      return ['categoricalAccuracy']
+      return [tf.metrics.categoricalAccuracy]
     case 'categoricalCrossentropy':
-      return ['categoricalCrossentropy']
+      return [tf.metrics.categoricalCrossentropy]
     case 'cosineProximity':
-      return ['cosineProximity']
+      return [tf.metrics.cosineProximity]
     case 'meanAbsoluteError':
-      return ['meanAbsoluteError']
+      return [tf.metrics.meanAbsoluteError]
     case 'meanAbsolutePercentageError':
-      return ['meanAbsolutePercentageError']
+      return [tf.metrics.meanAbsolutePercentageError]
     case 'meanSquaredError':
-      return ['meanSquaredError']
+      return [tf.metrics.meanSquaredError]
     case 'precision':
-      return ['precision']
+      return [tf.metrics.precision]
     case 'recall':
-      return ['recall']
+      return [tf.metrics.recall]
     case 'sparseCategoricalAccuracy':
-      return ['sparseCategoricalAccuracy']
+      return [tf.metrics.sparseCategoricalAccuracy]
     // DEFAULT Tensorflow js
     case 'accuracy':
       return ['accuracy']

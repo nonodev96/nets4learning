@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import NotFoundPage from "./views/notFound/NotFoundPage";
 import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
-import UploadArchitectureMenu from "./views/uploadArcitectureMenu/UploadArchitectureMenu";
+import UploadArchitectureMenu from "./views/uploadArchitectureMenu/UploadArchitectureMenu";
 import InteractiveEditor from "./views/editor/InteractiveEditor";
 import Manual from "./views/manual/Manual";
 

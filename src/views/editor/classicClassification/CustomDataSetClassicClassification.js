@@ -138,7 +138,22 @@ export default function CustomDataSetClassicClassification(props) {
   useEffect(() => {
     switch (getNameDatasetByID_ClassicClassification(dataSet)) {
       case MODEL_UPLOAD: {
-        setLayers(DEFAULT_LAYERS)
+        const uploadedArchitecture = localStorage.getItem('custom-architecture')
+        if (uploadedArchitecture !== "{}") {
+          console.log(uploadedArchitecture)
+          const uploadedJSON = JSON.parse(uploadedArchitecture)
+          const auxLayer = uploadedJSON?.modelTopology?.config?.layers ?? []
+          let _layerArray = []
+          for (let i = 0; i < auxLayer.length; i++) {
+            _layerArray.push({
+              units     : auxLayer[i].config.units,
+              activation: auxLayer[i].config.activation,
+            })
+          }
+          setLayers(_layerArray)
+        } else {
+          setLayers(DEFAULT_LAYERS)
+        }
         // setStringToPredict("")
         break
       }
@@ -176,6 +191,9 @@ export default function CustomDataSetClassicClassification(props) {
         console.error("Error, opción no permitida")
       }
     }
+    return () => {
+      tfvis.visor().close()
+    };
   }, [dataSet])
 
   const handleClickPlay = async (event) => {

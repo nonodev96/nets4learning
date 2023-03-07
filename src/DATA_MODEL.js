@@ -60,14 +60,14 @@ const LIST_MODEL_OPTIONS = [
   ],
   [],
   [
-    'SUBIR CONJUNTO DE DATOS PROPIO',
+    'SUBIR MODELO PROPIO',
     'FACE DETECTOR - Geometría facial',
     "FACE MESH - Malla facial",
     "MOVE NET - Detector de articulaciones",
     "COCO SSD - Detector de objetos"
   ],
   [
-    'SUBIR CONJUNTO DE DATOS PROPIO',
+    'SUBIR MODELO PROPIO',
     'MNIST - Clasificación de números',
     'MOBILENET - Clasificador de imágenes',
     // TODO :3

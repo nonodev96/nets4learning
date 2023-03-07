@@ -52,7 +52,7 @@ export default class ModelReviewClassicClassification extends React.Component {
 
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
-        this.setState({ loading: "" })
+        this.state.loading = ""
         break
       }
       case MODEL_CAR.KEY: {

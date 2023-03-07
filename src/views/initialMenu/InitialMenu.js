@@ -47,6 +47,8 @@ export default function InitialMenu() {
               <Card.Body>
                 <Card.Text>
                   A través de esta herramienta podemos crear una red neuronal para clasificar datos multi-etiqueta.
+                </Card.Text>
+                <Card.Text>
                   Diseñando, creando, entrenando y evaluando una arquitectura personalizada.
                 </Card.Text>
                 <Row>
