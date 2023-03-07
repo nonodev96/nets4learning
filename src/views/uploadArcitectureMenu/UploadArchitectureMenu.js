@@ -19,11 +19,11 @@ export default function UploadArchitectureMenu(props) {
   }
 
   const handleSubmit = async () => {
-    if (DataSet === -1 || DataSet === 'Selecciona un Data Set') {
+    if (DataSet === -1 || DataSet === 'Selecciona un conjunto de datos') {
       await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
     } else {
       if (!isUploadedArchitecture) {
-        localStorage.setItem('custom-architecture', 'nothing')
+        localStorage.setItem('custom-architecture', '{}')
       }
       history.push('/edit-architecture/' + id + '/' + 1 + '/' + DataSet)
     }
@@ -33,9 +33,11 @@ export default function UploadArchitectureMenu(props) {
     try {
       let reader = new FileReader()
       reader.readAsText(files[0])
-      reader.onload = async (e) => {
+      reader.onload =  (e) => {
         localStorage.setItem('custom-architecture', e.target.result.toString())
         setIsUploadedArchitecture(true)
+      }
+      reader.onloadend = async () => {
         await alertHelper.alertSuccess('Fichero cargado con éxito')
       }
     } catch (error) {

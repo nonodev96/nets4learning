@@ -41,7 +41,7 @@ export default function Editor(props) {
   }, [html, css, js])
 
   const HandleButtonClasificador = async () => {
-    await doIris(0.1)
+    // await doIris(0.1)
   };
 
   const handleClickPlay = () => {

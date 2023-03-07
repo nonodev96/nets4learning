@@ -10,10 +10,10 @@ export async function alertError(texto) {
     },
   }).then(() => {
     return MySwal.fire({
-      icon: 'error',
-      title: 'Opps...',
+      icon              : 'error',
+      title             : 'Opps...',
       confirmButtonColor: '#0081D5',
-      text: texto,
+      text              : texto,
     })
   })
 }
@@ -25,26 +25,28 @@ export async function alertInfo(text, title, footer = "") {
     },
   }).then(() => {
     return MySwal.fire({
-      icon: 'question',
-      title: title,
-      text: text,
-      footer: footer,
+      icon              : 'question',
+      title             : title,
+      text              : text,
+      footer            : footer,
       confirmButtonColor: '#0081D5',
     })
   })
 }
 
-export async function alertWarning(texto) {
+export async function alertWarning(title, params = { text: "", footer: "", htm: <></> }) {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
     },
   }).then(() => {
     return MySwal.fire({
-      icon: 'warning',
-      // title: value,
+      icon              : 'warning',
+      title             : title,
+      text              : params.text,
+      html              : params.html,
+      footer            : params.footer,
       confirmButtonColor: '#0081D5',
-      text: texto,
     })
   })
 }
@@ -57,10 +59,10 @@ export async function alertSuccess(texto) {
   }).then(() => {
     return MySwal.fire({
       // position: 'top-end',
-      icon: 'success',
+      icon             : 'success',
       showConfirmButton: false,
-      timer: 1500,
-      title: texto,
+      timer            : 1500,
+      title            : texto,
     })
   })
 }

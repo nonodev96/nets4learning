@@ -38,8 +38,8 @@ export default function ImageClassification(props) {
     if (Recarga) {
       console.log(Layer)
     } else {
-      const uploadedArchitecture = localStorage.getItem('custom-architectureIMG')
-      if (uploadedArchitecture !== 'nothing') {
+      const uploadedArchitecture = localStorage.getItem('custom-architecture-IMG')
+      if (uploadedArchitecture !== '{}') {
         setLayer([
           {
             class            : 'Conv2D',

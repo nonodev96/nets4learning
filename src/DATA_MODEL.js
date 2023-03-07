@@ -53,21 +53,21 @@ const LIST_TYPE_MODELS_DESCRIPTION = [
 
 const LIST_MODEL_OPTIONS = [
   [
-    'SUBIR MODELO PROPIO',
+    'SUBIR CONJUNTO DE DATOS PROPIO',
     'Clasificación de coches',
     'Clasificación de flor iris',
     'Clasificación de Hepatitis-C',
   ],
   [],
   [
-    'SUBIR MODELO PROPIO',
+    'SUBIR CONJUNTO DE DATOS PROPIO',
     'FACE DETECTOR - Geometría facial',
     "FACE MESH - Malla facial",
     "MOVE NET - Detector de articulaciones",
     "COCO SSD - Detector de objetos"
   ],
   [
-    'SUBIR MODELO PROPIO',
+    'SUBIR CONJUNTO DE DATOS PROPIO',
     'MNIST - Clasificación de números',
     'MOBILENET - Clasificador de imágenes',
     // TODO :3

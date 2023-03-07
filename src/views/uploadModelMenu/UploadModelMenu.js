@@ -24,6 +24,7 @@ export default function UploadModelMenu(props) {
     }
   }
 
+  console.debug("render UploadModelMenu")
   return (
     <>
       <N4LNavBar/>

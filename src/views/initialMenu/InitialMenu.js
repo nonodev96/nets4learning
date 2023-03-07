@@ -16,15 +16,13 @@ export default function InitialMenu() {
 
   const colors = ['primary', 'danger', 'warning', 'info']
 
-  const handleClick = (modelType) => {
+  const handleClick_OpenCardModel = (modelType) => {
     setButtonActive(modelType)
     // history.push("/editor/" + modelType);
   }
 
   const menuSelection = () => {
     switch (buttonActive) {
-      case -1:
-        return ''
       case 0:
         return (
           <>
@@ -160,13 +158,14 @@ export default function InitialMenu() {
     }
   }
 
+  console.debug("render InitialMenu")
   return (
     <>
       <Container>
         <Row className={"row-cols-1 row-cols-md-3 row-cols-xl-3"}>
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
-              <Button onClick={() => handleClick(0)}
+              <Button onClick={() => handleClick_OpenCardModel(0)}
                       variant={colors[0]}
                       size={"lg"}>
                 {LIST_TYPE_MODELS[0]}
@@ -175,7 +174,7 @@ export default function InitialMenu() {
           </Col>
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
-              <Button onClick={() => handleClick(2)}
+              <Button onClick={() => handleClick_OpenCardModel(2)}
                       variant={colors[2]}
                       size={"lg"}>
                 {LIST_TYPE_MODELS[2]}
@@ -184,7 +183,7 @@ export default function InitialMenu() {
           </Col>
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
-              <Button onClick={() => handleClick(3)}
+              <Button onClick={() => handleClick_OpenCardModel(3)}
                       variant={colors[3]}
                       size={"lg"}>
                 {LIST_TYPE_MODELS[3]}

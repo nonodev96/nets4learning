@@ -1,54 +1,110 @@
-import { alertError } from "../utils/alertHelper";
 import * as tf from "@tensorflow/tfjs";
+import * as dfd from "danfojs";
 
-export function getClassesFromDataSet(dataSet) {
+
+export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
+  const data_parsed = dataset_JSON.data.map((row) => {
+    return row.map((item) => {
+      if (dataset_JSON?.missing_value_key === item) return NaN
+      else return item
+    })
+  })
+  const columns_number = dataset_JSON.attributes.filter(({ type }) => {
+    return type === "number";
+  })
+  const columns_float = dataset_JSON.attributes.filter(({ type }) => {
+    return type === "float";
+  })
+  const columns_select = dataset_JSON.attributes.filter(({ type }) => {
+    return type === "select";
+  })
+  let df = new dfd.DataFrame(data_parsed)
+
+  console.log({ columns_number, columns_float, columns_select })
+  console.log({ data_parsed, df })
+
+  for (const column of columns_number) {
+    let index_column = column?.index_column.toString()
+    let value_to_fill = parseInt(df[index_column].median())
+    df = df.fillNa(value_to_fill, { columns: [index_column] })
+  }
+  for (const column of columns_float) {
+    let index_column = column?.index_column.toString()
+    let value_to_fill = df[index_column].median()
+    df = df.fillNa(value_to_fill, { columns: [index_column] })
+  }
+
+  let encoder = new dfd.LabelEncoder()
+
+  columns_select.forEach((col) => {
+    let index_column = col?.index_column.toString()
+
+    encoder.fit(df[index_column])
+    let enc_val = encoder.transform(df[index_column])
+    df.addColumn(index_column, enc_val, { inplace: true })
+  })
+
+  console.log("ENCODER", { df })
+
+
+  return df
+}
+
+export function convertToTensorsDataFrame(df, dataset_JSON) {
+
+
+  return []
+}
+
+export function getClassesFromDataSet(dataset_JSON) {
   try {
-    let dataAux = []
-    const typePos = dataSet.data[0].length - 1
-    for (let i = 0; i <= typePos; i++) {
-      dataAux.push([])
+    console.log({ dataset_JSON })
+    let data = []
+    const num_attributes = dataset_JSON.attributes.length
+    for (let i = 0; i <= num_attributes; i++) {
+      data.push([])
     }
 
-    for (const array of dataSet.data) {
-      for (let index = 0; index <= typePos; index++) {
-        dataAux[index].push(array[index])
+    for (const array of dataset_JSON.data) {
+      for (let index = 0; index <= num_attributes; index++) {
+        data[index].push(array[index])
       }
     }
 
     // Pasamos los atributos a identificadores
     // Por columna (atributo) vamos Mapa con K = el valor del atributo y V = ID del atributo
-    const indexDataAux = []
-    for (let i = 0; i <= typePos; i++) {
-      const mySet = new Set(dataAux[i])
-      let mapaAux = new Map()
+    const Array_MAPS_WITH_INDEX = []
+    for (let i = 0; i <= num_attributes; i++) {
+      const mySet = new Set(data[i])
+      let map = new Map()
       let j = 0
       for (const [element] of mySet.entries()) {
-        mapaAux.set(element, j)
+        map.set(element, j)
         j++
       }
-      indexDataAux.push(mapaAux)
+      Array_MAPS_WITH_INDEX.push(map)
     }
 
-    dataAux = []
-    for (const array of dataSet.data) {
+    data = []
+    for (const array of dataset_JSON.data) {
       let aux = []
-      for (let index = 0; index <= typePos; index++) {
-        aux.push(indexDataAux[index].get(array[index]))
+      for (let index = 0; index <= num_attributes; index++) {
+        aux.push(Array_MAPS_WITH_INDEX[index].get(array[index]))
       }
-      dataAux.push(aux)
+      data.push(aux)
     }
 
-    const targetData = []
-    for (let val of indexDataAux[typePos].keys()) {
-      targetData.push(val)
+    const list_targets = []
+    for (let val of Array_MAPS_WITH_INDEX[num_attributes].keys()) {
+      list_targets.push(val)
     }
-    return [dataAux, targetData, indexDataAux]
+    return [data, list_targets, Array_MAPS_WITH_INDEX]
   } catch (error) {
     console.error(error)
   }
 }
 
-export function convertToTensors(data, targets, testSize, numClasses) {
+function convertToTensors(data, targets, testSize, numClasses) {
   const numExamples = data.length;
   if (numExamples !== targets.length) {
     throw new Error('data and split have different numbers of examples');
@@ -90,6 +146,7 @@ export function convertToTensors(data, targets, testSize, numClasses) {
 }
 
 export function trainTestSplit(data, classes, testSize) {
+  console.log({ data, classes, testSize })
   return tf.tidy(() => {
     const dataByClass = [];
     const targetByClass = [];

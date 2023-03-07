@@ -39,9 +39,9 @@ export default function ObjectDetection(props) {
       console.log(Layer)
     } else {
       const uploadedArchitecture = localStorage.getItem(
-        'custom-architectureIMG',
+        'custom-architecture-IMG',
       )
-      if (uploadedArchitecture !== 'nothing') {
+      if (uploadedArchitecture !== '{}') {
         setLayer([
           {
             class            : 'Conv2D',

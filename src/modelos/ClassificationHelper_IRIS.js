@@ -1,5 +1,4 @@
 import * as tf from "@tensorflow/tfjs";
-import * as classificationHelper from './ClassificationHelper'
 
 export const MODEL_IRIS = {
   KEY              : "IRIS",
@@ -222,95 +221,95 @@ export function getIrisDataType(id) {
 
 
 // http://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
-
-
-function iris_getData(testSplitSize) {
-  return tf.tidy(() => {
-    const dataByClass = [];
-    const targetByClass = [];
-    for (let i = 0; i < MODEL_IRIS.CLASSES.length; i++) {
-      dataByClass.push([]);
-      targetByClass.push([]);
-    }
-    for (const example of MODEL_IRIS.DATA) {
-      // el ultimo dato es el objetivo
-      const target = example[example.length - 1];
-      // El resto de 0 a n-1 son los datos
-      const data = example.slice(0, example.length - 1);
-
-      dataByClass[target].push(data);
-      targetByClass[target].push(target);
-    }
-    const xTrains = [];
-    const yTrains = [];
-    const xTests = [];
-    const yTests = [];
-    for (let i = 0; i < MODEL_IRIS.CLASSES.length; i++) {
-      const [xTrain, yTrain, xTest, yTest] = classificationHelper.convertToTensors(dataByClass[i], targetByClass[i], testSplitSize, MODEL_IRIS.CLASSES.length);
-      xTrains.push(xTrain);
-      yTrains.push(yTrain);
-      xTests.push(xTest);
-      yTests.push(yTest);
-    }
-
-    const concatAxis = 0;
-    return [
-      tf.concat(xTrains, concatAxis),
-      tf.concat(yTrains, concatAxis),
-      tf.concat(xTests, concatAxis),
-      tf.concat(yTests, concatAxis),
-    ];
-  });
-}
-
-async function iris_trainModel(xTrain, yTrain, xTest, yTest, verbose) {
-  // https://www.tensorflow.org/js/guide/models_and_layers
-  const model = tf.sequential();
-  model.add(tf.layers.dense({
-    inputShape: [xTrain.shape[1]],
-    units     : 10,
-    activation: "sigmoid",
-  }));
-
-  model.add(tf.layers.dense({
-    units     : 3,
-    activation: "softmax"
-  }));
-
-  const learningRate = 0.01;
-  const numberOfEpoch = 40;
-  const optimizer = tf.train.adam(learningRate);
-  model.compile({
-    optimizer: optimizer,
-    loss     : "categoricalCrossentropy",
-    metrics  : ["accuracy"],
-  });
-
-  const history = await model.fit(xTrain, yTrain, {
-    epochs        : numberOfEpoch,
-    validationData: [xTest, yTest],
-    callbacks     : {
-      onEpochEnd: async (epoch, logs) => {
-        if (verbose) {
-          document.getElementById("demo").innerHTML += `
-<p>EPOCH (${epoch + 1}): </p>
-<ul>
-  <li>Train Accuracy: ${(logs.acc * 100).toFixed(2)}</li>
-  <li>  Val Accuracy: ${(logs.val_acc * 100).toFixed(2)}</li>
-</ul>
-`;
-        }
-        await tf.nextFrame();
-      },
-    },
-  });
-  console.log("History " + history.history.loss[0]);
-
-  return model;
-}
-
-
-export async function doIris(testSplit, verbose) {
-  const [xTrain, yTrain, xTest, yTest] = iris_getData(testSplit);
-  return await iris_trainModel(xTrain, yTrain, xTest, yTest, verbose)
-}
+//
+//
+// function iris_getData(testSplitSize) {
+//   return tf.tidy(() => {
+//     const dataByClass = [];
+//     const targetByClass = [];
+//     for (let i = 0; i < MODEL_IRIS.CLASSES.length; i++) {
+//       dataByClass.push([]);
+//       targetByClass.push([]);
+//     }
+//     for (const example of MODEL_IRIS.DATA) {
+//       // el ultimo dato es el objetivo
+//       const target = example[example.length - 1];
+//       // El resto de 0 a n-1 son los datos
+//       const data = example.slice(0, example.length - 1);
+//
+//       dataByClass[target].push(data);
+//       targetByClass[target].push(target);
+//     }
+//     const xTrains = [];
+//     const yTrains = [];
+//     const xTests = [];
+//     const yTests = [];
+//     for (let i = 0; i < MODEL_IRIS.CLASSES.length; i++) {
+//       const [xTrain, yTrain, xTest, yTest] = classificationHelper.convertToTensors(dataByClass[i], targetByClass[i], testSplitSize, MODEL_IRIS.CLASSES.length);
+//       xTrains.push(xTrain);
+//       yTrains.push(yTrain);
+//       xTests.push(xTest);
+//       yTests.push(yTest);
+//     }
+//
+//     const concatAxis = 0;
+//     return [
+//       tf.concat(xTrains, concatAxis),
+//       tf.concat(yTrains, concatAxis),
+//       tf.concat(xTests, concatAxis),
+//       tf.concat(yTests, concatAxis),
+//     ];
+//   });
+// }
+//
+// async function iris_trainModel(xTrain, yTrain, xTest, yTest, verbose) {
+//   // https://www.tensorflow.org/js/guide/models_and_layers
+//   const model = tf.sequential();
+//   model.add(tf.layers.dense({
+//     inputShape: [xTrain.shape[1]],
+//     units     : 10,
+//     activation: "sigmoid",
+//   }));
+//
+//   model.add(tf.layers.dense({
+//     units     : 3,
+//     activation: "softmax"
+//   }));
+//
+//   const learningRate = 0.01;
+//   const numberOfEpoch = 40;
+//   const optimizer = tf.train.adam(learningRate);
+//   model.compile({
+//     optimizer: optimizer,
+//     loss     : "categoricalCrossentropy",
+//     metrics  : ["accuracy"],
+//   });
+//
+//   const history = await model.fit(xTrain, yTrain, {
+//     epochs        : numberOfEpoch,
+//     validationData: [xTest, yTest],
+//     callbacks     : {
+//       onEpochEnd: async (epoch, logs) => {
+//         if (verbose) {
+//           document.getElementById("demo").innerHTML += `
+// <p>EPOCH (${epoch + 1}): </p>
+// <ul>
+//   <li>Train Accuracy: ${(logs.acc * 100).toFixed(2)}</li>
+//   <li>  Val Accuracy: ${(logs.val_acc * 100).toFixed(2)}</li>
+// </ul>
+// `;
+//         }
+//         await tf.nextFrame();
+//       },
+//     },
+//   });
+//   console.log("History " + history.history.loss[0]);
+//
+//   return model;
+// }
+//
+//
+// export async function doIris(testSplit, verbose) {
+//   const [xTrain, yTrain, xTest, yTest] = iris_getData(testSplit);
+//   return await iris_trainModel(xTrain, yTrain, xTest, yTest, verbose)
+// }

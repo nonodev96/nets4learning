@@ -109,9 +109,6 @@ export default function GraphicRed(props) {
             SALIDA
           </div>
         </Col>
-        <Col xl={12}>
-          <p className={"text-muted"}>Puedes visitar la web <a href="https://netron.app/">netron.app</a> para visualizar la topología al completo</p>
-        </Col>
       </Row>
     </>
   )

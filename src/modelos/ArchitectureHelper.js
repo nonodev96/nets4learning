@@ -3,25 +3,6 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import { getClassesFromDataSet, trainTestSplit } from "./ClassificationHelper";
 
 
-// TODO: prueba, eliminar function
-export async function createArchitecture(type, learningRate, numberOfEpoch, optimizer, shape) {
-  const model = type
-
-  const layerList = []
-  layerList.push(tf.layers.dense({ units: 10, activation: 'sigmoid', inputShape: [shape] }))
-  layerList.push(tf.layers.dense({ units: 3, activation: 'softmax' }))
-
-  for (const layer of layerList) {
-    model.add(layer)
-  }
-
-  model.compile({
-    optimizer: optimizer,
-    loss     : 'categoricalCrossentropy',
-    metrics  : ['accuracy'],
-  })
-}
-
 /*
 export async function createClassicClassification(learningRate, unknownRate, numberOfEpoch, sLOptimizer, layerList, idLoss, idMetrics) {
   const [xTrain, yTrain, xTest, yTest] = getData(unknownRate, IRIS_CLASSES, IRIS_DATA)
@@ -47,7 +28,8 @@ export async function createClassicClassification(learningRate, unknownRate, num
   layerList.forEach((layer, index) => {
     const newLayer = tf.layers.dense({
       units     : layer.units,
-      activation: layer.activation.toLowerCase(), ...(index === 0) && { inputShape: [xTrain.shape[1]] },
+      activation: layer.activation.toLowerCase(),
+      ...(index === 0) && { inputShape: [xTrain.shape[1]] },
     })
     model.add(newLayer)
   })
@@ -104,13 +86,12 @@ export async function createClassicClassificationCustomDataSet(params) {
     idLoss,
     idMetrics
   } = params
-  const [DATA_SET, TARGET_SET_CLASSES, DATA_SET_CLASSES] = getClassesFromDataSet(dataset_JSON)
-  const [xTrain, yTrain, xTest, yTest] = trainTestSplit(DATA_SET, TARGET_SET_CLASSES, testSize)
+  const [DATA, ARRAY_TARGETS, DATA_SET_CLASSES] = getClassesFromDataSet(dataset_JSON)
+  const [xTrain, yTrain, xTest, yTest] = trainTestSplit(DATA, ARRAY_TARGETS, testSize)
   // Modo secuencial
   console.debug("createClassicClassificationCustomDataSet", params)
-  console.debug("getClassesFromDataSet", { DATA_SET, TARGET_SET_CLASSES, DATA_SET_CLASSES })
+  console.debug("getClassesFromDataSet", { DATA, ARRAY_TARGETS, DATA_SET_CLASSES })
   console.debug("trainTestSplit", { xTrain, yTrain, xTest, yTest })
-
 
 
   const model = tf.sequential()
@@ -152,14 +133,14 @@ export async function createClassicClassificationCustomDataSet(params) {
       'onEpochEnd'
     ],
   })
-
+  console.log("Me quiero morir ", { xTrain, yTrain })
   await model.fit(xTrain, yTrain, {
     epochs        : numberOfEpoch,
     validationData: [xTest, yTest],
     callbacks     : fitCallbacks
   })
 
-  return Promise.resolve([model, TARGET_SET_CLASSES, DATA_SET_CLASSES])
+  return Promise.resolve([model, ARRAY_TARGETS, DATA_SET_CLASSES])
 }
 
 /**
@@ -254,7 +235,7 @@ export function createLoss(idLoss, params) {
 
 /**
  * 0  => binaryAccuracy
- * 1  => binaryCrossEntropy
+ * 1  => binaryCrossentropy
  * 2  => categoricalAccuracy
  * 3  => categoricalCrossentropy
  * 4  => cosineProximity
@@ -276,7 +257,7 @@ export function createMetrics(idMetrics, params) {
     case 'binaryAccuracy':
       return ['binaryAccuracy']
     case 'binaryCrossentropy':
-      return ['binaryCrossEntropy']
+      return ['binaryCrossentropy']
     case 'categoricalAccuracy':
       return ['categoricalAccuracy']
     case 'categoricalCrossentropy':
