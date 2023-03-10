@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import { getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS, MODEL_CAR, MODEL_HEPATITIS_C, MODEL_IRIS, MODEL_UPLOAD } from "../../../DATA_MODEL";
+import {
+  getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification,
+  LIST_MODEL_OPTIONS,
+  MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, MODEL_UPLOAD
+} from "../../../DATA_MODEL";
 import {
   createClassicClassificationCustomDataSet,
 } from '../../../modelos/ArchitectureHelper'
@@ -12,9 +16,9 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS
 } from "../../../modelos/ArchitectureTypesHelper";
-import cars_json from "../../../constants/plantilla_car.json";
-import iris_json from "../../../constants/plantilla_iris.json";
-import hepatitis_c_json from '../../../constants/plantilla_hepatitisC.json'
+import json_cars from "../../../constants/plantilla_car.json";
+import json_iris from "../../../constants/plantilla_iris.json";
+import json_lymphatcs from '../../../constants/plantilla_lymphatcs.json'
 import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
@@ -24,23 +28,16 @@ import './ClassicClassification.css'
 
 import * as dfd from "danfojs"
 import { transform_datasetJSON_To_DataFrame } from "../../../modelos/ClassificationHelper";
-import {
-  FILE_TEMPLATE,
-  FILE_TEMPLATE_IRIS,
-  FILE_TEMPLATE_LYMPHATCS,
-
-  FILE_TOPOLOGY,
-} from "../../../constants/files_examples";
-import { isNumber } from "chart.js/helpers";
 
 
 const LearningRate_default = 1
 const NumberEpochs_default = 20
 const TestSize_default = 10
-const DEFAULT_LAYERS = [{ units: 10, activation: 'sigmoid' }]
+const DEFAULT_LAYERS = [{ units: 10, activation: 'sigmoid' }, { units: 3, activation: 'softmaax' }]
 
 export default function CustomDataSetClassicClassification(props) {
   const { dataSet } = props
+  const dataset_key = getNameDatasetByID_ClassicClassification(dataSet)
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
@@ -62,7 +59,7 @@ export default function CustomDataSetClassicClassification(props) {
   const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
   const [TestSize, setTestSize] = useState(TestSize_default)
 
-  const [CustomDataSet_JSON, setCustomDataSet_JSON] = useState(null)
+  const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
   const [DataSetClasses, setDataSetClasses] = useState([])
 
   const [TargetSetClasses, setTargetSetClasses] = useState([])
@@ -136,7 +133,7 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   useEffect(() => {
-    switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+    switch (dataset_key) {
       case MODEL_UPLOAD: {
         const uploadedArchitecture = localStorage.getItem('custom-architecture')
         if (uploadedArchitecture !== "{}") {
@@ -154,37 +151,31 @@ export default function CustomDataSetClassicClassification(props) {
         } else {
           setLayers(DEFAULT_LAYERS)
         }
-        // setStringToPredict("")
         break
       }
       case MODEL_CAR.KEY: {
-        setCustomDataSet_JSON(cars_json)
+        setCustomDataSet_JSON(json_cars)
         setLayers([
           { units: 10, activation: 'sigmoid' },
           { units: 4, activation: 'softmax' },
         ])
-        // setStringToPredict('med;med;2;4;big;high')
         break
       }
       case MODEL_IRIS.KEY: {
-        setCustomDataSet_JSON(iris_json)
+        setCustomDataSet_JSON(json_iris)
         setLayers([
           { units: 10, activation: 'sigmoid' },
           { units: 3, activation: 'softmax' },
         ])
-        // setStringToPredict("5.9;3;5.1;1.8 ")
         break
       }
-      case MODEL_HEPATITIS_C.KEY: {
-        setCustomDataSet_JSON(hepatitis_c_json)
+      case MODEL_LYMPHOGRAPHY.KEY: {
+        setCustomDataSet_JSON(json_lymphatcs)
         setLayers([
           { units: 12, activation: 'sigmoid' },
           { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
-          { units: 5, activation: 'softmax' }
+          { units: 4, activation: 'softmax' }
         ])
-        // setStringToPredict('32;m;38.5;52.5;18;24.7;3.9;11.17;4.8;74;15.6;76.5')
         break
       }
       default: {
@@ -199,14 +190,15 @@ export default function CustomDataSetClassicClassification(props) {
   const handleClickPlay = async (event) => {
     event.preventDefault()
     console.debug('ID Conjunto de datos: ', { dataSet })
-    if (CustomDataSet_JSON === null) {
+    if (customDataSet_JSON === null) {
       await alertHelper.alertError('Primero debes de cargar los datos')
       return
     }
 
-    if (dataSet === '0') {
+    if (dataset_key === MODEL_UPLOAD) {
       const last_layer_units = layers[layers.length - 1].units ?? 0
-      const classes_length = CustomDataSet_JSON?.classes?.length ?? 0
+      const classes_length = customDataSet_JSON?.classes?.length ?? 0
+
       if (last_layer_units !== classes_length) {
         await alertHelper.alertWarning(
           "Forma del tensor incorrecta",
@@ -223,7 +215,7 @@ export default function CustomDataSetClassicClassification(props) {
       let _testSize = TestSize / 100
       let _layerList = layers
 
-      let _customDataset_JSON = CustomDataSet_JSON
+      let _customDataset_JSON = customDataSet_JSON
       let _idOptimizer = idOptimizerValue
       let _idLoss = idLossValue
       let _idMetrics = idMetricsValue
@@ -273,7 +265,7 @@ export default function CustomDataSetClassicClassification(props) {
 
   const handleClick_TestVector = async () => {
     if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
-      if (CustomDataSet_JSON === null) {
+      if (customDataSet_JSON === null) {
         await alertHelper.alertError('Primero debes de cargar un dataSet')
         return
       }
@@ -287,19 +279,19 @@ export default function CustomDataSetClassicClassification(props) {
     try {
       switch (getNameDatasetByID_ClassicClassification(dataSet)) {
         case MODEL_UPLOAD: {
-          dataset_JSON = CustomDataSet_JSON
+          dataset_JSON = customDataSet_JSON
           break
         }
         case MODEL_CAR.KEY: {
-          dataset_JSON = cars_json
+          dataset_JSON = json_cars
           break
         }
         case MODEL_IRIS.KEY: {
-          dataset_JSON = iris_json
+          dataset_JSON = json_iris
           break
         }
-        case MODEL_HEPATITIS_C.KEY: {
-          dataset_JSON = hepatitis_c_json
+        case MODEL_LYMPHOGRAPHY.KEY: {
+          dataset_JSON = json_lymphatcs
           break
         }
         default: {
@@ -355,8 +347,8 @@ export default function CustomDataSetClassicClassification(props) {
       const tensor = tf.tensor2d(input[0], input[1])
       const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
 
-      const prediction_class_name = CustomDataSet_JSON.classes.find((item) => {
-        if (isNumber(TargetSetClasses[predictionWithArgMax]))
+      const prediction_class_name = customDataSet_JSON.classes.find((item) => {
+        if (isFinite(TargetSetClasses[predictionWithArgMax]))
           return parseInt(item.key) === TargetSetClasses[predictionWithArgMax]
         else
           return item.key === TargetSetClasses[predictionWithArgMax]
@@ -404,7 +396,7 @@ export default function CustomDataSetClassicClassification(props) {
     }
     if (aux_layers.length < 10) {
       setLayers(oldLayers => [...oldLayers, {
-        units     : CustomDataSet_JSON?.classes?.length ?? 10,
+        units     : customDataSet_JSON?.classes?.length ?? 10,
         activation: 'softmax'
       }])
     } else {
@@ -534,48 +526,6 @@ export default function CustomDataSetClassicClassification(props) {
     Model.save('downloads://my-model')
   }
 
-  const _download = (filename, textInput) => {
-    const link = document.createElement('a')
-    link.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput))
-    link.setAttribute('download', filename)
-    document.body.appendChild(link)
-    link.click()
-    link.parentNode.removeChild(link);
-  }
-
-  const handleClick_DownloadFile_TemplateDataset = (FILE) => {
-    _download(FILE.title, FILE.content)
-  }
-
-  const handleClick_DownloadFile_CustomTopology = () => {
-    _download(FILE_TOPOLOGY.title, FILE_TOPOLOGY.content)
-  }
-
-  const handleChange_FileUploadCustomTopology = (files) => {
-    if (files.length !== 1) {
-      console.error("Error, no se ha podido cargar el fichero")
-      return;
-    }
-    try {
-      const file_json = new File([files[0]], files[0].name, { type: files[0].type });
-      let reader = new FileReader()
-      reader.readAsText(file_json)
-      reader.onload = (e) => {
-        // TODO
-        // COMPROBAR: ¿Es un json con el formato de la topología?
-        const uploadedJSON = JSON.parse(e.target.result.toString())
-        const auxLayers = uploadedJSON?.modelTopology?.config?.layers ?? []
-        const _layerArray = auxLayers.map((layer) => ({
-          units     : layer.config.units,
-          activation: layer.config.activation,
-        }))
-        setLayers(_layerArray)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const handleChange_FileUpload_TemplateDataset = (files) => {
     if (files.length !== 1) {
       console.error("Error, no se ha podido cargar el fichero")
@@ -604,49 +554,7 @@ export default function CustomDataSetClassicClassification(props) {
           <Row>
 
             <Col xl={12} className={"mt-3"}>
-              <Card className={"border-info"}>
-                <Card.Body>
-                  <h4>Pasos para el entrenamiento</h4>
-                  <ol>
-                    <li>Subimos el conjunto de datos que queremos analizar. (<code onClick={() => handleClick_DownloadFile_TemplateDataset(FILE_TEMPLATE)}>dataset.json</code>)</li>
-                    <li>Subimos una topología ya definida o la creamos nosotros. (<code onClick={handleClick_DownloadFile_CustomTopology}>my-model.json</code>)</li>
-                    <li>Definimos los hiperparámetros de la red neuronal.</li>
-                    <li>Entrenamos la red neuronal.</li>
-                    <li>Predecir en función de los tipos de datos seleccionados (categóricos, reales, numéricos, etc...).</li>
-                  </ol>
-
-                  <Card.Text>Debes tener en cuenta la forma de los datos, puedes jugar con las capas de la red y descubrir diferentes comportamientos de la red.</Card.Text>
-                  <Card.Text>Se recomienda para tareas de clasificación usar en las capas iniciales funciones de activación sigmoid, y en las capas finales funciones de activación softmax.</Card.Text>
-                  <Card.Text>Debes tener el número de unidades de la última capa que coincida con el número de categorías que tu red puede predecir.</Card.Text>
-
-                  <p className="text-muted">
-                    Descarga ficheros con conjuntos de datos preparados:
-
-                    <Button variant={"outline-info"}
-                            size={"sm"}
-                            onClick={() => handleClick_DownloadFile_TemplateDataset(FILE_TEMPLATE)}>Descargar plantilla</Button>
-                    <Button variant={"outline-info ms-3"}
-                            size={"sm"}
-                            onClick={() => handleClick_DownloadFile_TemplateDataset(FILE_TEMPLATE_IRIS)}>Descargar conjunto de datos | iris</Button>
-                    <Button variant={"outline-info ms-3"}
-                            size={"sm"}
-                            onClick={() => handleClick_DownloadFile_TemplateDataset(FILE_TEMPLATE_LYMPHATCS)}>Descargar conjunto de datos | lymphatcs</Button>
-
-                  </p>
-
-                  <p className="text-muted">
-                    Descarga ficheros con arquitecturas de modelos preparados:
-                    <Button variant={"outline-info"}
-                            size={"sm"}
-                            onClick={handleClick_DownloadFile_CustomTopology}>Descargar plantilla topología</Button>
-                  </p>
-
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col xl={12} className={"mt-3"}>
-              <Accordion defaultActiveKey={"description_architecture_editor"}>
+              <Accordion>
                 <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                   <Accordion.Header><h3>Manual del generador de modelos</h3></Accordion.Header>
                   <Accordion.Body>
@@ -726,16 +634,6 @@ export default function CustomDataSetClassicClassification(props) {
                     ) : ("")}
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item key={"2"} eventKey={"description_topology"}>
-                  <Accordion.Header><h3>2. Subir arquitectura de la red</h3></Accordion.Header>
-                  <Accordion.Body>
-                    <DragAndDrop name={"json"}
-                                 accept={{ 'application/json': ['.json'] }}
-                                 text={"Introduce la arquitectura modelo.json"}
-                                 labelFiles={"Fichero:"}
-                                 function_DropAccepted={handleChange_FileUploadCustomTopology}/>
-                  </Accordion.Body>
-                </Accordion.Item>
               </Accordion>
             </Col>
 
@@ -744,7 +642,7 @@ export default function CustomDataSetClassicClassification(props) {
                 <Card.Header>
                   <h3 className={"d-flex align-items-baseline"}>
                     Conjunto de datos
-                    {!CustomDataSet_JSON && <>
+                    {!customDataSet_JSON && <>
                       <div className="ms-4 spinner-border"
                            role="status"
                            style={{
@@ -760,10 +658,10 @@ export default function CustomDataSetClassicClassification(props) {
                 </Card.Header>
                 <Card.Body>
 
-                  {CustomDataSet_JSON &&
+                  {customDataSet_JSON &&
                     <>
-                      <N4LTablePagination data_head={[...CustomDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
-                                          data_body={CustomDataSet_JSON.data}/>
+                      <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
+                                          data_body={customDataSet_JSON.data}/>
 
                       <hr/>
 
@@ -771,7 +669,7 @@ export default function CustomDataSetClassicClassification(props) {
                         <summary>Atributos</summary>
                         <main>
                           <Row>
-                            {CustomDataSet_JSON.attributes.map((item, i1) => {
+                            {customDataSet_JSON.attributes.map((item, i1) => {
                               return <Col lg={2} key={i1}>
                                 <p><b>{item.name}</b></p>
                                 {item.type === "number" && <p>Numérico</p>}
@@ -785,7 +683,7 @@ export default function CustomDataSetClassicClassification(props) {
                       <details>
                         <summary>Clases</summary>
                         <main>
-                          <ol>{CustomDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
+                          <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
                         </main>
                       </details>
                     </>
@@ -976,7 +874,7 @@ export default function CustomDataSetClassicClassification(props) {
             <Col xl={12}>
               <div className="d-grid gap-2">
                 <Button type="submit"
-                        disabled={isTraining || !CustomDataSet_JSON}
+                        disabled={isTraining || !customDataSet_JSON}
                         size={"lg"}
                         variant="primary">
                   Crear y entrenar modelo
@@ -1088,8 +986,8 @@ export default function CustomDataSetClassicClassification(props) {
 
 
       {/* BLOCK 2 */}
-      {(CustomDataSet_JSON && Model) &&
-        (<DynamicFormDataset dataset_JSON={CustomDataSet_JSON}
+      {(customDataSet_JSON && Model) &&
+        (<DynamicFormDataset dataset_JSON={customDataSet_JSON}
                              dataSet={dataSet}
                              stringToPredict={stringToPredict}
                              setStringToPredict={setStringToPredict}
@@ -1104,7 +1002,7 @@ export default function CustomDataSetClassicClassification(props) {
               <Card className={"mt-3"}>
                 <Card.Header className={"d-flex align-items-center"}>
                   <h3>Debug</h3>
-                  <Button onClick={() => debug(CustomDataSet_JSON)}
+                  <Button onClick={() => debug(customDataSet_JSON)}
                           className={"ms-3"}
                           size={"sm"}
                           variant={"outline-primary"}>

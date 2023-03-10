@@ -19,7 +19,7 @@ import {
   MODEL_COCO_SSD,
   MODEL_FACE_DETECTION,
   MODEL_FACE_MESH,
-  MODEL_MOVE_NET,
+  MODEL_MOVE_NET_POSE_NET,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
 
@@ -98,7 +98,7 @@ class ModelReviewObjectDetection extends React.Component {
         this.setState({ loading: "" })
         break
       }
-      case MODEL_MOVE_NET: {
+      case MODEL_MOVE_NET_POSE_NET: {
         await this.enable_Model_MoveNet()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
@@ -302,7 +302,7 @@ class ModelReviewObjectDetection extends React.Component {
         this.renderFaceMeshDetector(ctx, faces)
         break
       }
-      case MODEL_MOVE_NET: {
+      case MODEL_MOVE_NET_POSE_NET: {
         const poses = await model.estimatePoses(img_or_video)
         this.renderMoveNetDetector(ctx, poses)
         break

@@ -6,22 +6,25 @@ export const MODEL_IRIS = {
   URL              : "https://archive.ics.uci.edu/ml/datasets/iris",
   DESCRIPTION      : <>
     <p>
-      El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de
-      su pétalo y sépalo.
+      El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo y sépalo.
     </p>
-    <p>Datos de entrada:</p>
-    <ul>
-      <li>Longitud del sépalo en cm</li>
-      <li>Anchura del sépalo en cm</li>
-      <li>Longitud del pétalo en cm</li>
-      <li>Anchura del pétalo en cm</li>
-    </ul>
-    <p>Por último los posibles valores que puede dar son:</p>
-    <ul>
-      <li>Iris Setosa</li>
-      <li>Iris Versicolour</li>
-      <li>Iris Virginica</li>
-    </ul>
+    <details>
+      <summary>Datos de entrada</summary>
+      <ol>
+        <li>Longitud del sépalo en cm</li>
+        <li>Anchura del sépalo en cm</li>
+        <li>Longitud del pétalo en cm</li>
+        <li>Anchura del pétalo en cm</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Datos de salida</summary>
+      <ol>
+        <li>Iris Setosa</li>
+        <li>Iris Versicolor</li>
+        <li>Iris Virginica</li>
+      </ol>
+    </details>
   </>,
   HTML_EXAMPLE     : <>
     <p>

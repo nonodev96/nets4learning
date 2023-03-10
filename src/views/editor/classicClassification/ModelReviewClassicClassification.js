@@ -9,7 +9,7 @@ import {
   MODEL_UPLOAD,
   MODEL_CAR,
   MODEL_IRIS,
-  MODEL_HEPATITIS_C
+  MODEL_LYMPHOGRAPHY
 } from "../../../DATA_MODEL";
 import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import { isProduction } from "../../../utils/utils";
@@ -65,9 +65,9 @@ export default class ModelReviewClassicClassification extends React.Component {
         if (!isProduction) console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
         break;
       }
-      case MODEL_HEPATITIS_C.KEY: {
-        this._model = MODEL_HEPATITIS_C
-        if (!isProduction) console.log('%cCargando modelo hepatitis', CONSOLE_LOG_h3)
+      case MODEL_LYMPHOGRAPHY.KEY: {
+        this._model = MODEL_LYMPHOGRAPHY
+        if (!isProduction) console.log('%cCargando modelo linfomas', CONSOLE_LOG_h3)
         break;
       }
       default: {
@@ -107,7 +107,7 @@ export default class ModelReviewClassicClassification extends React.Component {
       }
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS_C.KEY:
+      case MODEL_LYMPHOGRAPHY.KEY:
         try {
           this.setState({ dataToTest: this._model.DATA_DEFAULT }, () => {
             this.setState({ textToTest: Object.values(this.state.dataToTest).join(";") })
@@ -210,7 +210,7 @@ export default class ModelReviewClassicClassification extends React.Component {
       }
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS_C.KEY: {
+      case MODEL_LYMPHOGRAPHY.KEY: {
         try {
           let array = this.state.textToTest.split(';')
           let input = [[], [1, array.length]]
@@ -283,7 +283,7 @@ export default class ModelReviewClassicClassification extends React.Component {
         </>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS_C.KEY:
+      case MODEL_LYMPHOGRAPHY.KEY:
         return this._model.HTML_EXAMPLE
       default:
         return <>DEFAULT</>
@@ -296,7 +296,7 @@ export default class ModelReviewClassicClassification extends React.Component {
         return <></>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
-      case MODEL_HEPATITIS_C.KEY:
+      case MODEL_LYMPHOGRAPHY.KEY:
         return <>
           <div className="d-flex gap-2">
             {this._model.LIST_EXAMPLES.map((example, index) => {
@@ -342,9 +342,9 @@ export default class ModelReviewClassicClassification extends React.Component {
         body = this._model.DATA
         break
       }
-      case MODEL_HEPATITIS_C.KEY: {
+      case MODEL_LYMPHOGRAPHY.KEY: {
         head = this._model.TABLE_HEADER
-        body = this._model._CLEAR_DATA
+        body = this._model.DATA
         break
       }
       default: {
@@ -503,7 +503,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                           </Row>
                         </>
                       }
-                      {(this.dataset_key === MODEL_HEPATITIS_C.KEY) &&
+                      {(this.dataset_key === MODEL_LYMPHOGRAPHY.KEY) &&
                         <>
                           <Row className={"mt-3"}>
                             {this._model.FORM.map((value, index) => {
@@ -569,42 +569,6 @@ export default class ModelReviewClassicClassification extends React.Component {
                           </Row>
                         </>
                       }
-
-                      {
-                        (this.dataset_key === MODEL_HEPATITIS_C.KEY) &&
-                        <>
-                          <hr/>
-                          <Row className="mt-3">
-                            <Col>
-                              <Form.Group>
-                                <Form.Label>Selecciona el parámetro</Form.Label>
-                                <Form.Select aria-label="Default select example"
-                                             onChange={($event) => this.setExample(JSON.parse($event.target.value))}>
-                                  {this._model._CLEAR_DATA.map((row, index) => {
-                                    let value = JSON.stringify({
-                                      age : row[0],
-                                      sex : row[1],
-                                      alb : row[2],
-                                      alp : row[3],
-                                      alt : row[4],
-                                      ast : row[5],
-                                      bil : row[6],
-                                      che : row[7],
-                                      chol: row[8],
-                                      crea: row[9],
-                                      ggt : row[10],
-                                      prot: row[11],
-                                    })
-                                    return (<option key={"option_" + index} value={value}>Ejemplo {index} - {value}</option>)
-                                  })}
-                                </Form.Select>
-                                <Form.Text className="text-muted">Ejemplo</Form.Text>
-                              </Form.Group>
-                            </Col>
-                          </Row>
-                        </>
-                      }
-
 
                       <Row className={"mt-3"}>
                         <Col>

@@ -27,7 +27,7 @@ export default function InitialMenu() {
         return (
           <>
             <Card className={"border-primary"}>
-              <Card.Header><h3>Clasificación clásica</h3></Card.Header>
+              <Card.Header><h3>Clasificación tabular</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
@@ -36,7 +36,7 @@ export default function InitialMenu() {
                 <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelo Pre-entrenado
+                    Modelos entrenados
                   </Button>
                 </div>
               </Card.Body>
@@ -70,7 +70,7 @@ export default function InitialMenu() {
                 <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
-                    Diseñar, crear y editar arquitectura
+                    Entrenar un modelo
                   </Button>
                 </div>
               </Card.Body>
@@ -122,7 +122,7 @@ export default function InitialMenu() {
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelo Pre-entrenado
+                    Modelos entrenados
                   </Button>
                 </div>
               </Card.Body>
@@ -144,7 +144,7 @@ export default function InitialMenu() {
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelo Pre-entrenado
+                    Modelos entrenados
                   </Button>
                   <Button style={{ display: "none " }}
                           onClick={() => handleClick_TrainEdit(buttonActive, 2)}>

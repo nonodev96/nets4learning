@@ -66,6 +66,7 @@ export default function UploadArchitectureMenu(props) {
                                  onChange={handleChange_DataSet}>
                       <option>Selecciona un conjunto de datos</option>
                       {LIST_MODEL_OPTIONS[id].map((item, id) => {
+                        if (id === 0) return (<option key={id} value={id} disabled>{item}</option>)
                         return (<option key={id} value={id}>{item}</option>)
                       })}
                     </Form.Select>

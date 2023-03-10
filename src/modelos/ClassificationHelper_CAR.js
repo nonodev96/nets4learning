@@ -5,52 +5,55 @@ export const MODEL_CAR = {
   TITLE           : "CAR - Clasificación de coches",
   URL             : 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation',
   DESCRIPTION     : <>
-    <p>El conjunto de datos "Car Evaluation" permite evaluar vehículos a través de la siguiente estructura:</p>
-    <ul>
-      <li><b>CAR</b> Aceptación del vehículo</li>
-      <li>
-        <b>PRICE:</b> Precio en general
-        <ul>
-          <li><b>BUTING:</b> Precio de compra</li>
-          <li><b>MAINT:</b> Costo del mantenimiento</li>
-        </ul>
-      </li>
-      <li>
-        <b>TECH:</b> Características técnicas
-        <ul>
-          <li>
-            <b>COMFORT:</b> Comfort
-            <ul>
-              <li><b>DOORS:</b> Nº de puertas</li>
-              <li><b>PERSONS:</b> Nº de plazas</li>
-              <li><b>LUG_BOOT:</b> Tamaño del maletero</li>
-            </ul>
-          </li>
-          <li><b>SAFETY:</b> Seguridad estimada del vehículo</li>
-        </ul>
-      </li>
-    </ul>
-    <p>Estos son los valores de entrada que podrá tomar la red.</p>
-    <ul>
-      <li><b>buying:</b> vhigh, high, med, low.</li>
-      <li><b>maint:</b> vhigh, high, med, low.</li>
-      <li><b>doors:</b> 2, 3, 4, 5more.</li>
-      <li><b>persons:</b> 2, 4, more.</li>
-      <li><b>lug_boot:</b> small, med, big.</li>
-      <li><b>safety:</b> low, med, high.</li>
-    </ul>
-    <p>Por último los posibles valores que puede dar son:</p>
-    <ul>
-      <li><b>UNACC</b> - Inaccesible</li>
-      <li><b>ACC</b> - Accesible</li>
-      <li><b>GOOD</b> - Bien</li>
-      <li><b>VGOOD</b> - Muy bien</li>
-    </ul>
-    <p>
-      Para obtener más información acerca de este conjunto de datos visita{" "}
-      <a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation">esta web</a>{" "}
-      (<a target="_blank" rel="noopener" href="https://archive.ics.uci.edu/ml/machine-learning-databases/car/">Modelo</a>)
-    </p>
+    <p>El conjunto de datos <i>Car Evaluation</i> permite evaluar vehículos a través de la siguiente estructura</p>
+    <p>Para obtener más información acerca de este conjunto de datos visita el repositorio <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noopener">ics.uci.edu</a>.</p>
+    <details>
+      <summary>Información</summary>
+      <ol>
+        <li><b>CAR</b> Aceptación del vehículo</li>
+        <li>
+          <b>PRICE:</b> Precio en general
+          <ol>
+            <li><b>BUTING:</b> Precio de compra</li>
+            <li><b>MAINT:</b> Costo del mantenimiento</li>
+          </ol>
+        </li>
+        <li>
+          <b>TECH:</b> Características técnicas
+          <ol>
+            <li>
+              <b>COMFORT:</b> Comfort
+              <ol>
+                <li><b>DOORS:</b> Nº de puertas</li>
+                <li><b>PERSONS:</b> Nº de plazas</li>
+                <li><b>LUG_BOOT:</b> Tamaño del maletero</li>
+              </ol>
+            </li>
+            <li><b>SAFETY:</b> Seguridad estimada del vehículo</li>
+          </ol>
+        </li>
+      </ol>
+    </details>
+    <details>
+      <summary>Datos de entrada</summary>
+      <ol>
+        <li><b>buying:</b> vhigh, high, med, low.</li>
+        <li><b>maint:</b> vhigh, high, med, low.</li>
+        <li><b>doors:</b> 2, 3, 4, 5more.</li>
+        <li><b>persons:</b> 2, 4, more.</li>
+        <li><b>lug_boot:</b> small, med, big.</li>
+        <li><b>safety:</b> low, med, high.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Datos de salida</summary>
+      <ol>
+        <li><b>UNACC</b> - Inaccesible</li>
+        <li><b>ACC</b> - Accesible</li>
+        <li><b>GOOD</b> - Bien</li>
+        <li><b>VGOOD</b> - Muy bien</li>
+      </ol>
+    </details>
   </>,
   HTML_EXAMPLE    : <>
     <p>

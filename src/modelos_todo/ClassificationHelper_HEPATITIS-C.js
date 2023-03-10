@@ -10,24 +10,24 @@ export const MODEL_HEPATITIS_C = {
     </p>
     <details>
       <summary>Datos de entrada</summary>
-      <ol>
+      <ul>
         <li>
           <b>Category:</b> Distingue donantes sanos de personas afectadas y los grados de afectación. <br/>
           Categórica. 5 valores diferentes.
-          <ol>
+          <ul>
             <li>0=Blood Donor</li>
             <li>0s=suspectBlood Donor</li>
             <li>1=Hepatitis</li>
             <li>2=Fibrosis</li>
             <li>3=Cirrhosis</li>
-          </ol>
+          </ul>
         </li>
         <li><b>Age:</b> Edad del paciente. Numérica.</li>
         <li><b>Sex:</b> Sexo del paciente. <br/>Categórica. 2 valores diferentes.
-          <ol>
+          <ul>
             <li>m=male</li>
             <li>f=female</li>
-          </ol>
+          </ul>
         </li>
         <li><b>ALB:</b> Nivel de albúmina en sangre. Numérica.</li>
         <li><b>ALP:</b> Nivel de fosfatasa alcalina en sangre. Numérica</li>
@@ -39,17 +39,17 @@ export const MODEL_HEPATITIS_C = {
         <li><b>CREA:</b> Nivel de creatinina en sangre. Numérica.</li>
         <li><b>GGT:</b> Nivel de gamma glutamil transferasa en sangre. Numérica.</li>
         <li><b>PROT:</b> Nivel de proteína en sangre. Numérica.</li>
-      </ol>
+      </ul>
     </details>
     <details>
-      <summary>Datos de salida:</summary>
-      <ol>
-        <li><b>0=Blood Donor</b>: Donante de sangre</li>
-        <li><b>0s=suspect Blood Donor</b>: Donante de sangre sospechoso</li>
-        <li><b>1=Hepatitis</b>: Hepatitis</li>
-        <li><b>2=Fibrosis</b>: Fibrosis</li>
-        <li><b>3=Cirrhosis</b>: Cirrosis</li>
-      </ol>
+      <summary>Datos de salida</summary>
+      <ul>
+        <li><b>0</b> 0=Blood Donor</li>
+        <li><b>1</b> 0s=suspect Blood Donor</li>
+        <li><b>2</b> 1=Hepatitis</li>
+        <li><b>3</b> 2=Fibrosis</li>
+        <li><b>4</b> 3=Cirrhosis</li>
+      </ul>
     </details>
   </>,
   HTML_EXAMPLE     : <>
@@ -307,18 +307,18 @@ export const MODEL_HEPATITIS_C = {
   ],
   // @formatter:off
   FORM             : [
-    { type: "number", name: "age"  },
-    { type: "select", name: "sex", options: [{ value: "m", text: "male" }, { value: "f", text: "female" }] },
-    { type: "float",  name: "alb"  },
-    { type: "float",  name: "alp"  },
-    { type: "float",  name: "alt"  },
-    { type: "float",  name: "ast"  },
-    { type: "float",  name: "bil"  },
-    { type: "float",  name: "che"  },
-    { type: "float",  name: "chol" },
-    { type: "float",  name: "crea" },
-    { type: "float",  name: "ggt"  },
-    { type: "float",  name: "prot" },
+    { type: "int32",    name: "age"  },
+    { type: "select",   name: "sex", options: [{ value: "m", text: "male" }, { value: "f", text: "female" }] },
+    { type: "float32",  name: "alb"  },
+    { type: "float32",  name: "alp"  },
+    { type: "float32",  name: "alt"  },
+    { type: "float32",  name: "ast"  },
+    { type: "float32",  name: "bil"  },
+    { type: "float32",  name: "che"  },
+    { type: "float32",  name: "chol" },
+    { type: "float32",  name: "crea" },
+    { type: "float32",  name: "ggt"  },
+    { type: "float32",  name: "prot" },
   ],
   TABLE_HEADER: ["Age", "Sex", "ALB", "ALP", "ALT", "AST", "BIL", "CHE", "CHOL", "CREA", "GGT", "PROT", "Category"],
   //  N) Category (diagnosis) (values: '0=Blood Donor', '0s=suspect Blood Donor', '1=Hepatitis', '2=Fibrosis', '3=Cirrhosis'

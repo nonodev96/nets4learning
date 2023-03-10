@@ -8,6 +8,7 @@ import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
 import UploadArchitectureMenu from "./views/uploadArchitectureMenu/UploadArchitectureMenu";
 import InteractiveEditor from "./views/editor/InteractiveEditor";
+import Glossary from "./views/manual/Glossary";
 import Manual from "./views/manual/Manual";
 
 import "./App.css";
@@ -23,7 +24,8 @@ function App() {
           <Route exact path={"/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
           <Route exact path={"/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
           <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
-          <Route exact path="/manual/" component={Manual}></Route>
+          <Route exact path={"/manual/"} component={Manual}></Route>
+          <Route exact path={"/glossary/"} component={Glossary}></Route>
           {/* <Route exact path={"/starting/"} component={Starting}></Route> */}
           {/* <Route exact path={"/secondary/:id"} component={SecondMenu}></Route> */}
           {/* <Route exact path={"/editor/:id"} component={Editor}></Route> */}

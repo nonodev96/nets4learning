@@ -9,33 +9,38 @@ export const MODEL_HEPATITIS = {
     <p>
       El conjunto de datos de Hepatitis-Data permite clasificar
     </p>
-    <p>Datos de entrada:</p>
-    <ul>
-      <li><b>Class: </b> DIE, LIVE</li>
-      <li><b>AGE: </b> 10, 20, 30, 40, 50, 60, 70, 80</li>
-      <li><b>SEX: </b> male, female</li>
-      <li><b>STEROID: </b> no, yes</li>
-      <li><b>ANTIVIRALS: </b> no, yes</li>
-      <li><b>FATIGUE: </b> no, yes</li>
-      <li><b>MALAISE: </b> no, yes</li>
-      <li><b>ANOREXIA: </b> no, yes</li>
-      <li><b>LIVER BIG: </b> no, yes</li>
-      <li><b>LIVER FIRM: </b> no, yes</li>
-      <li><b>SPLEEN PALPABLE: </b> no, yes</li>
-      <li><b>SPIDERS: </b> no, yes</li>
-      <li><b>ASCITES: </b> no, yes</li>
-      <li><b>VARICES: </b> no, yes</li>
-      <li><b>BILIRUBIN: </b> 0.39, 0.80, 1.20, 2.00, 3.00, 4.00 *</li>
-      <li><b>ALK PHOSPHATE: </b> 33, 80, 120, 160, 200, 250</li>
-      <li><b>SGOT: </b> 13, 100, 200, 300, 400, 500,</li>
-      <li><b>ALBUMIN: </b> 2.1, 3.0, 3.8, 4.5, 5.0, 6.0</li>
-      <li><b>PROTIME: </b> 10, 20, 30, 40, 50, 60, 70, 80, 90</li>
-      <li><b>HISTOLOGY: </b> no, yes</li>
-    </ul>
-    <p>Datos de salida:</p>
-    <ul>
-      <li></li>
-    </ul>
+    <details>
+      <summary>Datos de entrada</summary>
+      <ul>
+        <li><b>Class: </b> DIE, LIVE</li>
+        <li><b>AGE: </b> 10, 20, 30, 40, 50, 60, 70, 80</li>
+        <li><b>SEX: </b> male, female</li>
+        <li><b>STEROID: </b> no, yes</li>
+        <li><b>ANTIVIRALS: </b> no, yes</li>
+        <li><b>FATIGUE: </b> no, yes</li>
+        <li><b>MALAISE: </b> no, yes</li>
+        <li><b>ANOREXIA: </b> no, yes</li>
+        <li><b>LIVER BIG: </b> no, yes</li>
+        <li><b>LIVER FIRM: </b> no, yes</li>
+        <li><b>SPLEEN PALPABLE: </b> no, yes</li>
+        <li><b>SPIDERS: </b> no, yes</li>
+        <li><b>ASCITES: </b> no, yes</li>
+        <li><b>VARICES: </b> no, yes</li>
+        <li><b>BILIRUBIN: </b> 0.39, 0.80, 1.20, 2.00, 3.00, 4.00 *</li>
+        <li><b>ALK PHOSPHATE: </b> 33, 80, 120, 160, 200, 250</li>
+        <li><b>SGOT: </b> 13, 100, 200, 300, 400, 500,</li>
+        <li><b>ALBUMIN: </b> 2.1, 3.0, 3.8, 4.5, 5.0, 6.0</li>
+        <li><b>PROTIME: </b> 10, 20, 30, 40, 50, 60, 70, 80, 90</li>
+        <li><b>HISTOLOGY: </b> no, yes</li>
+      </ul>
+    </details>
+    <details>
+      <summary>Datos de salida</summary>
+      <ul>
+        <li>DIE</li>
+        <li>LIVE</li>
+      </ul>
+    </details>
   </>,
   HTML_EXAMPLE     : <>
     <table className="table table-sm table-striped">
@@ -212,7 +217,7 @@ export const MODEL_HEPATITIS = {
       </tr>
       </tbody>
     </table>
-    <p className={"text-muted"}><a href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch8/5214817-eng.htm" target={"_blank"}>Explicación de los tipos de variables</a></p>
+    <p className={"text-muted"}><a href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch8/5214817-eng.htm" target={"_blank"} rel="noreferrer">Explicación de los tipos de variables</a></p>
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
       <br/>

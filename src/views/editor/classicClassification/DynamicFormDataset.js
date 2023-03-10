@@ -44,7 +44,8 @@ export default function DynamicFormDataset(props) {
     setStringToPredict(dataset_JSON.data[row_index].slice(0, -1).join(";"))
 
     dataset_JSON.attributes.forEach((att) => {
-      document.getElementById("FormControl_" + att.index_column).value = dataset_JSON.data[row_index][att?.index_column]
+      document.getElementById("FormControl_" + att.index_column).value =
+        dataset_JSON.data[row_index][att?.index_column]
     })
   }
 
@@ -90,8 +91,9 @@ export default function DynamicFormDataset(props) {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>
-                            <Form.Label>Selecciona el parámetro <b>{attribute.name}</b></Form.Label>
+                            <Form.Label><b>{attribute.name}</b></Form.Label>
                             <Form.Control type="number"
+                                          size={"sm"}
                                           placeholder={"Introduce el entero"}
                                           min={0}
                                           step={1}
@@ -105,8 +107,9 @@ export default function DynamicFormDataset(props) {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>
-                            <Form.Label>Selecciona el parámetro <b>{attribute.name}</b></Form.Label>
+                            <Form.Label><b>{attribute.name}</b></Form.Label>
                             <Form.Control type="number"
+                                          size={"sm"}
                                           placeholder={"Introduce el decimal"}
                                           min={0}
                                           step={0.1}
@@ -120,8 +123,9 @@ export default function DynamicFormDataset(props) {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>
-                            <Form.Label>Selecciona el parámetro <b>{attribute.name}</b></Form.Label>
+                            <Form.Label><b>{attribute.name}</b></Form.Label>
                             <Form.Select aria-label="Selecciona una opción"
+                                         size={"sm"}
                                          defaultValue={dataset_JSON.data[0][attribute?.index_column]}
                                          onChange={(e) => handleChange_Select(e, attribute?.index_column)}>
                               {attribute.options.map((option_value, option_index) => {
