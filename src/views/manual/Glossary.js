@@ -1,5 +1,5 @@
 import N4LNavBar from "../../components/navBar/N4LNavBar";
-import { Accordion, Col, Container, Row, Table } from "react-bootstrap";
+import { Accordion, Card, Col, Container, Row, Table } from "react-bootstrap";
 import N4LFooter from "../../components/footer/N4LFooter";
 import React from "react";
 
@@ -16,6 +16,79 @@ export default function Glossary(props) {
             </Col>
             <Col xl={12} className={"mt-3"}>
               <Accordion alwaysOpen defaultValue={"layers"}>
+                <Accordion.Item eventKey={"tabular"}>
+                  <Accordion.Header><h3>Descripción clasificación tabular</h3></Accordion.Header>
+                  <Accordion.Body>
+                    <p>
+                      La clasificación tabular es un tipo de aprendizaje supervisado en el que se utiliza un conjunto de datos etiquetados para entrenar un modelo de aprendizaje automático que pueda predecir la clase de un nuevo conjunto de
+                      datos. En la clasificación tabular, los datos de entrada y salida se representan en forma de una tabla con filas y columnas, donde cada fila representa una instancia o ejemplo de los datos, y cada columna representa
+                      una
+                      característica o atributo de los datos.
+                    </p>
+                    <p>
+                      Por ejemplo, si se quiere predecir si un cliente de un banco es solvente o no, las características o atributos que se pueden utilizar son: ingresos, deudas, historial crediticio, edad, etc. En la clasificación tabular,
+                      cada instancia o ejemplo del conjunto de datos tendrá valores para cada una de estas características y una etiqueta que indica si el cliente es solvente o no.
+                    </p>
+                    <p>
+                      Una vez que se tiene un conjunto de datos etiquetados, se utiliza un algoritmo de aprendizaje automático para entrenar un modelo que pueda predecir la etiqueta de nuevos conjuntos de datos. Este modelo puede ser
+                      utilizado para realizar predicciones precisas y rápidas sobre nuevas instancias de datos.
+                    </p>
+                    <p>
+                      La clasificación tabular es una técnica muy útil para resolver problemas de clasificación en una amplia variedad de campos, como la medicina, el comercio electrónico, la banca, la seguridad y muchos otros.
+                    </p>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey={"objects"}>
+                  <Accordion.Header><h3>Descripción identificación de objetos</h3></Accordion.Header>
+                  <Accordion.Body>
+                    <p>
+                      La identificación de objetos en redes neuronales es una técnica utilizada en el campo del aprendizaje automático y la visión por computadora para detectar y reconocer objetos en imágenes o videos. Es una tarea
+                      importante
+                      en el análisis de imágenes y es utilizada en aplicaciones como el reconocimiento de rostros, el seguimiento de objetos en tiempo real, la clasificación de objetos en imágenes médicas y la detección de objetos en
+                      vehículos autónomos.
+                    </p>
+                    <p>
+                      Las redes neuronales utilizadas para la identificación de objetos son modelos de aprendizaje profundo que se entrenan en conjuntos de datos etiquetados. El proceso de entrenamiento implica proporcionar a la red
+                      neuronas
+                      una gran cantidad de imágenes etiquetadas, y ajustar los pesos de las conexiones entre las neuronas para que la red pueda identificar objetos en nuevas imágenes con alta precisión.
+                    </p>
+                    <p>
+                      Una vez que la red neuronal ha sido entrenada, se utiliza para identificar objetos en nuevas imágenes. La red examina la imagen y, mediante el procesamiento de múltiples capas, extrae características importantes que se
+                      utilizan para identificar los objetos de interés. Luego, la red utiliza estas características para asignar una etiqueta a cada objeto detectado en la imagen.
+                    </p>
+                    <p>
+                      En resumen, la identificación de objetos en redes neuronales es una técnica importante en la visión por computadora y el aprendizaje automático que se utiliza para detectar y reconocer objetos en imágenes y videos. Se
+                      basa en el uso de redes neuronales profundas entrenadas en conjuntos de datos etiquetados para identificar y clasificar objetos en nuevas imágenes con alta precisión.
+                    </p>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey={"imagen"}>
+                  <Accordion.Header><h3>Descripción clasificador de imágenes</h3></Accordion.Header>
+                  <Accordion.Body>
+                    <p>
+                      El clasificador de imágenes es una técnica utilizada en las redes neuronales para clasificar imágenes en diferentes categorías o etiquetas. El objetivo de un clasificador de imágenes es tomar una imagen de entrada y
+                      predecir a qué clase pertenece, basándose en un conjunto de categorías o etiquetas predefinidas.
+                    </p>
+                    <p>
+                      En el aprendizaje profundo, los clasificadores de imágenes se basan en las redes neuronales convolucionales (CNN, por sus siglas en inglés), que son una arquitectura especializada para procesar imágenes. Estas redes
+                      neuronales tienen múltiples capas y operaciones de convolución que les permiten extraer características importantes de las imágenes, como bordes, formas y texturas.
+                    </p>
+                    <p>
+                      Para entrenar un clasificador de imágenes, se utiliza un conjunto de datos etiquetados que contiene imágenes y sus respectivas etiquetas de clase. Luego, se entrena la red neuronal utilizando este conjunto de datos
+                      para
+                      que aprenda a identificar patrones en las imágenes y asociarlos con las etiquetas de clase correspondientes.
+                    </p>
+                    <p>
+                      Una vez que la red neuronal ha sido entrenada, se puede utilizar para clasificar nuevas imágenes en diferentes categorías. El clasificador de imágenes examina la imagen de entrada y la procesa a través de la red
+                      neuronal
+                      para extraer características importantes y predecir a qué clase pertenece la imagen.
+                    </p>
+                    <p>
+                      En resumen, el clasificador de imágenes en las redes neuronales es una técnica que utiliza las redes neuronales convolucionales para clasificar imágenes en diferentes categorías o etiquetas. Se basa en el uso de un
+                      conjunto de datos etiquetados para entrenar la red neuronal y en la extracción de características importantes de las imágenes para predecir a qué clase pertenece una nueva imagen de entrada.
+                    </p>
+                  </Accordion.Body>
+                </Accordion.Item>
                 <Accordion.Item eventKey={"layers"}>
                   <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
                   <Accordion.Body>

@@ -54,6 +54,12 @@ export const MODEL_CAR = {
         <li><b>VGOOD</b> - Muy bien</li>
       </ol>
     </details>
+    <details>
+      <summary>Referencias</summary>
+      <ol>
+        <li><a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+      </ol>
+    </details>
   </>,
   HTML_EXAMPLE    : <>
     <p>

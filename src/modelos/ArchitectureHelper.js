@@ -1,6 +1,7 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { getClassesFromDataSet, trainTestSplit } from "./ClassificationHelper";
+import { isProduction } from "../utils/utils";
 
 
 /*
@@ -89,9 +90,9 @@ export async function createClassicClassificationCustomDataSet(params) {
   const [DATA, ARRAY_TARGETS, DATA_SET_CLASSES] = getClassesFromDataSet(dataset_JSON)
   const [xTrain, yTrain, xTest, yTest] = trainTestSplit(DATA, ARRAY_TARGETS, testSize)
   // Modo secuencial
-  console.debug("createClassicClassificationCustomDataSet", params)
-  console.debug("getClassesFromDataSet", { DATA, ARRAY_TARGETS, DATA_SET_CLASSES })
-  console.debug("trainTestSplit", { xTrain, yTrain, xTest, yTest })
+  if (!isProduction()) console.debug("createClassicClassificationCustomDataSet", params)
+  if (!isProduction()) console.debug("getClassesFromDataSet", { DATA, ARRAY_TARGETS, DATA_SET_CLASSES })
+  if (!isProduction()) console.debug("trainTestSplit", { xTrain, yTrain, xTest, yTest })
 
 
   const model = tf.sequential()
@@ -108,8 +109,8 @@ export async function createClassicClassificationCustomDataSet(params) {
   }
 
   const optimizer = createOptimizer(idOptimizer, { learningRate })
-  const loss = createLoss(idLoss)
-  const metrics = createMetrics(idMetrics)
+  const loss = createLoss(idLoss, {})
+  const metrics = createMetrics(idMetrics, {})
 
   // Compilamos el modelo
   model.compile({
@@ -123,9 +124,7 @@ export async function createClassicClassificationCustomDataSet(params) {
   const fit_callbacks_container = {
     name  : 'Historial del entrenamiento',
     tab   : 'Entrenamiento',
-    styles: {
-      height: '1000px'
-    }
+    styles: { height: '1000px' }
   }
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
     callbacks: [
@@ -133,7 +132,8 @@ export async function createClassicClassificationCustomDataSet(params) {
       'onEpochEnd'
     ],
   })
-  console.log("Me quiero morir ", { xTrain, yTrain })
+
+  if (!isProduction()) console.log("En este punto perdí la poca cordura que me quedaba", { xTrain, yTrain })
   await model.fit(xTrain, yTrain, {
     epochs        : numberOfEpoch,
     validationData: [xTest, yTest],
@@ -158,7 +158,7 @@ export async function createClassicClassificationCustomDataSet(params) {
  * @returns {Optimizer}
  */
 export function createOptimizer(idOptimizer, params) {
-  console.debug({ idOptimizer, params })
+  if (!isProduction()) console.debug(">> createOptimizer", { idOptimizer, params })
 
   let { learningRate = 0.01 } = params
   switch (idOptimizer) {
@@ -167,7 +167,7 @@ export function createOptimizer(idOptimizer, params) {
     case 'momentum':
       let { momentum = 0.99 } = params
       return tf.train.momentum(learningRate, momentum)
-    case 'adagrag':
+    case 'adagrad':
       return tf.train.adagrad(learningRate)
     case 'adadelta':
       return tf.train.adadelta(learningRate)
@@ -198,10 +198,11 @@ export function createOptimizer(idOptimizer, params) {
  * softmaxCrossEntropy
  *
  * @param idLoss
+ * @param params
  * @returns {string}
  */
 export function createLoss(idLoss, params) {
-  console.debug({ idLoss, params })
+  if (!isProduction()) console.debug(">> createLoss", { idLoss, params })
   //
   // https://github.com/tensorflow/tfjs/issues/1315
   switch (idLoss) {
@@ -248,10 +249,11 @@ export function createLoss(idLoss, params) {
  * 11 => accuracy
  *
  * @param idMetrics
+ * @param params
  * @returns {string[]}
  */
 export function createMetrics(idMetrics, params) {
-  console.debug({ idMetrics, params })
+  if (!isProduction()) console.debug(">> createMetrics",{ idMetrics, params })
 
   switch (idMetrics) {
     case 'binaryAccuracy':

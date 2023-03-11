@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
-import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Accordion, Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import {
   getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification,
   LIST_MODEL_OPTIONS,
@@ -30,10 +30,16 @@ import * as dfd from "danfojs"
 import { transform_datasetJSON_To_DataFrame } from "../../../modelos/ClassificationHelper";
 
 
-const LearningRate_default = 1
-const NumberEpochs_default = 20
-const TestSize_default = 10
-const DEFAULT_LAYERS = [{ units: 10, activation: 'sigmoid' }, { units: 3, activation: 'softmaax' }]
+const DEFAULT_LEARNING_RATE = 1
+const DEFAULT_NUMBER_EPOCHS = 20
+const DEFAULT_TEST_SIZE = 10
+const DEFAULT_LAYER_ID_OPTIMIZATION = 'adam'
+const DEFAULT_LAYER_ID_LOSS = 'categoricalCrossentropy'
+const DEFAULT_LAYER_ID_METRICS = 'accuracy'
+
+const DEFAULT_LAYER_ACTIVATION = 'sigmoid'
+const DEFAULT_LAYER_UNITS = 10
+const DEFAULT_LAYERS = [{ units: 10, activation: 'sigmoid' }, { units: 3, activation: 'softmax' }]
 
 export default function CustomDataSetClassicClassification(props) {
   const { dataSet } = props
@@ -44,28 +50,22 @@ export default function CustomDataSetClassicClassification(props) {
   const [generatedModels, setGeneratedModels] = useState([])
 
   const [layers, setLayers] = useState(DEFAULT_LAYERS)
+  const [learningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE)
+  const [numberEpochs, setNumberEpochs] = useState(DEFAULT_NUMBER_EPOCHS)
+  const [testSize, setTestSize] = useState(DEFAULT_TEST_SIZE)
+  const [idOptimizer, setIdOptimizer] = useState(DEFAULT_LAYER_ID_OPTIMIZATION) // OPTIMIZER_TYPE
+  const [idLoss, setIdLoss] = useState(DEFAULT_LAYER_ID_LOSS) // LOSS_TYPE
+  const [idMetrics, setIdMetrics] = useState(DEFAULT_LAYER_ID_METRICS) // METRICS_TYPE
 
-  // OPTIMIZER
-  const [idOptimizerValue, setIdOptimizerValue] = useState('adam')
-  // LOSS_TYPE
-  const [idLossValue, setIdLossValue] = useState('categoricalCrossentropy')
-  // METRICS_TYPE
-  const [idMetricsValue, setIdMetricsValue] = useState('accuracy')
-
+  const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
   const [Model, setModel] = useState(null)
   const [stringToPredict, setStringToPredict] = useState("")
 
-  const [LearningRate, setLearningRate] = useState(LearningRate_default)
-  const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
-  const [TestSize, setTestSize] = useState(TestSize_default)
-
-  const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
   const [DataSetClasses, setDataSetClasses] = useState([])
-
   const [TargetSetClasses, setTargetSetClasses] = useState([])
 
   const [isTraining, setIsTraining] = useState(false)
-  const [DisabledDownloadModel, setDisabledDownloadModel] = useState(true)
+  const [isDisabledDownloadModel, setIsDisabledDownloadModel] = useState(true)
 
   const debug = async (dataset_JSON) => {
     if (!dataset_JSON) {
@@ -172,7 +172,7 @@ export default function CustomDataSetClassicClassification(props) {
       case MODEL_LYMPHOGRAPHY.KEY: {
         setCustomDataSet_JSON(json_lymphatcs)
         setLayers([
-          { units: 12, activation: 'sigmoid' },
+          { units: 18, activation: 'sigmoid' },
           { units: 10, activation: 'relu' },
           { units: 4, activation: 'softmax' }
         ])
@@ -210,15 +210,15 @@ export default function CustomDataSetClassicClassification(props) {
 
     try {
       setIsTraining(true)
-      let _learningRate = LearningRate / 100
-      let _numberOfEpoch = parseInt(NumberEpochs)
-      let _testSize = TestSize / 100
+      let _learningRate = learningRate / 100
+      let _numberOfEpoch = parseInt(numberEpochs)
+      let _testSize = testSize / 100
       let _layerList = layers
 
       let _customDataset_JSON = customDataSet_JSON
-      let _idOptimizer = idOptimizerValue
-      let _idLoss = idLossValue
-      let _idMetrics = idMetricsValue
+      let _idOptimizer = idOptimizer
+      let _idLoss = idLoss
+      let _idMetrics = idMetrics
 
       const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet({
         learningRate : _learningRate,
@@ -250,7 +250,7 @@ export default function CustomDataSetClassicClassification(props) {
         }]
       )
       setIsTraining(false)
-      setDisabledDownloadModel(false)
+      setIsDisabledDownloadModel(false)
       setDataSetClasses(DATA_SET_CLASSES)
       setTargetSetClasses(TARGET_SET_CLASSES)
 
@@ -373,12 +373,11 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   const handlerClick_AddLayer_Start = async () => {
-    let aux_layers = layers
-    if (aux_layers === undefined) {
-      await alertHelper.alertWarning("Error handlerAddLayer")
+    if (layers === undefined) {
+      await alertHelper.alertWarning("Error handlerClick_AddLayer_Start")
       return
     }
-    if (aux_layers.length < 10) {
+    if (layers.length < 10) {
       setLayers(oldLayers => [{
         units     : 10,
         activation: 'sigmoid'
@@ -389,12 +388,11 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   const handlerClick_AddLayer_End = async () => {
-    let aux_layers = layers
-    if (aux_layers === undefined) {
-      await alertHelper.alertWarning("Error handlerAddLayer")
+    if (layers === undefined) {
+      await alertHelper.alertWarning("Error handlerClick_AddLayer_End")
       return
     }
-    if (aux_layers.length < 10) {
+    if (layers.length < 10) {
       setLayers(oldLayers => [...oldLayers, {
         units     : customDataSet_JSON?.classes?.length ?? 10,
         activation: 'softmax'
@@ -404,34 +402,25 @@ export default function CustomDataSetClassicClassification(props) {
     }
   }
 
-  const handlerClick_RemoveLayer = async (idLayer) => {
-    let aux = layers
-    if (aux === undefined) {
+  const handlerClick_RemoveLayer = async (_idLayer) => {
+    if (layers === undefined) {
       await alertHelper.alertWarning(`Error handlerRemoveLayer`)
       return
     }
-    let new_layer = []
-    for (let i = 0; i < idLayer; i++) {
-      new_layer.push(aux[i])
-    }
-    for (let i = idLayer + 1; i < aux.length; i++) {
-      document.getElementById(`formUnitsLayer${i - 1}`).value =
-        document.getElementById(`formUnitsLayer${i}`).value
-      document.getElementById(`formActivationLayer${i - 1}`).value =
-        document.getElementById(`formActivationLayer${i}`).value
-      new_layer.push(aux[i])
-    }
-    setLayers(new_layer)
+    const newArray = layers.filter((item, index) => (index !== _idLayer))
+    setLayers(newArray)
   }
 
-  const handleChange_Units = async (index) => {
-    let aux_layer = layers
-    if (aux_layer === undefined) {
+  const handleChange_Layer = async (_idLayer, _updateLayer) => {
+    if (layers === undefined) {
       await alertHelper.alertWarning(`Error handleChangeUnits`)
       return
     }
-    aux_layer[index].units = parseInt(document.getElementById(`formUnitsLayer${index}`).value)
-    setLayers(aux_layer)
+    const newLayers = layers.map((item, index) => {
+      if (_idLayer === index) return { units: _updateLayer.units, activation: _updateLayer.activation }
+      return { units: item.units, activation: item.activation }
+    })
+    setLayers(newLayers)
   }
 
   const handleChange_TestInput = async () => {
@@ -441,16 +430,6 @@ export default function CustomDataSetClassicClassification(props) {
       return
     }
     setStringToPredict(aux)
-  }
-
-  const handleChange_Activation = async (index) => {
-    let aux_layer = layers
-    if (aux_layer === undefined) {
-      await alertHelper.alertWarning(`Error handleChangeActivation`)
-      return
-    }
-    aux_layer[index].activation = document.getElementById(`formActivationLayer${index}`).value
-    setLayers(aux_layer)
   }
 
   const handleChange_LearningRate = async (e) => {
@@ -486,7 +465,7 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Loss`)
       return
     }
-    setIdLossValue(aux)
+    setIdLoss(aux)
   }
 
   const handleChange_Optimization = async () => {
@@ -495,7 +474,7 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Optimization`)
       return
     }
-    setIdOptimizerValue(aux)
+    setIdOptimizer(aux)
   }
 
   const handleChange_Metrics = async () => {
@@ -504,7 +483,7 @@ export default function CustomDataSetClassicClassification(props) {
       await alertHelper.alertWarning(`Error handleChange_Metrics`)
       return
     }
-    setIdMetricsValue(aux)
+    setIdMetrics(aux)
   }
 
   const handleClick_LoadGeneratedModel = ({ model, idMODEL }) => {
@@ -552,68 +531,131 @@ export default function CustomDataSetClassicClassification(props) {
             onSubmit={handleClickPlay}>
         <Container className={"mb-3"}>
           <Row>
-
             <Col xl={12} className={"mt-3"}>
               <Accordion>
                 <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                   <Accordion.Header><h3>Manual del generador de modelos</h3></Accordion.Header>
                   <Accordion.Body>
-                    <p>Ahora vamos a ver la interfaz de edición de arquitectura. </p>
-                    <ul>
-                      <li>
-                        <b>A la izquierda </b><br/>
-                        Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                        capa". <br/>
-                        Puedes modificar dos parámetros:
-                      </li>
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Editor de las capas</summary>
+                      <p>
+                        Se pueden editar las capas de la red neuronal, puedes agregar tantas como desees pulsando el botón "Añadir capa" al inicio o al final.
+                      </p>
                       <ul>
-                        <li><b>Unidades de la capa:</b><br/>Cuantas unidades deseas que tenga esa capa</li>
-                        <li><b>Función de activación:</b><br/>Función de activación para esa capa</li>
+                        <li>
+                          <b>Unidades de la capa</b>:<br/>
+                          Cada unidad en una capa está conectada a todas las unidades de la capa anterior y de la capa siguiente. <br/>
+                          Cada unidad en una capa tiene un conjunto de pesos asociados que determinan la fuerza y dirección de la señal que se transmite entre las unidades. <br/>
+                          Podemos editar el número de entradas y salidas de la capa.
+                        </li>
+                        <li>
+                          <b>Función de activación</b>:<br/>
+                          La función de activación en una capa de una red neuronal se refiere a la función matemática que se aplica a la salida de cada unidad en la capa, antes de pasar la señal a la capa siguiente, podemos editar cada una
+                          de las funciones de activación de todas las capas.
+                        </li>
                       </ul>
-                      <li>
-                        <b>A la derecha </b><br/>
-                        Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                    </details>
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Editor de hiperparámetros</summary>
+                      <p>
+                        Se pueden editar los parámetros generales necesarios para la creación del modelo. <br/>
                         Estos parámetros son:
-                      </li>
+                      </p>
                       <ul>
                         <li>
-                          <b>Tasa de aprendizaje:</b><br/>
+                          <b>Tasa de aprendizaje</b>:<br/>
                           Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el
-                          entrenamiento y reglas para el test
+                          entrenamiento y reglas para las pruebas.
                         </li>
                         <li>
-                          <b>Nº de iteraciones:</b><br/>
-                          Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
+                          <b>Nº de iteraciones</b>:<br/>
+                          Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
                         </li>
                         <li>
-                          <b>Optimizador:</b><br/>
+                          <b>Tamaño del banco de pruebas</b>:<br/>
+                          Porcentaje del conjunto de datos que se va a usar para el entrenamiento y la evaluación.
+                        </li>
+                        <li>
+                          <b>Optimizador</b>:<br/>
                           Es una función que como su propio nombre indica se usa para optimizar los modelos. <br/>
                           Esto es frecuentemente usado para evitar estancarse en un máximo local.
                         </li>
                         <li>
-                          <b>Función de pérdida:</b><br/>
-                          Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
+                          <b>Función de pérdida</b>:<br/>
+                          Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados.
                         </li>
                         <li>
-                          <b>Métrica:</b><br/>
-                          Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
+                          <b>Función de métrica</b>:<br/>
+                          Es la evaluación para valorar el rendimiento de un modelo de aprendizaje automático.
                         </li>
                       </ul>
-                      <li>
-                        <b>Crear y entrenar modelo.</b><br/>
-                        Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
-                      </li>
-                      <li>
-                        <b>Exportar modelo.</b><br/>
-                        Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo
-                        y guardarlo localmente.
-                      </li>
-                      <li>
-                        <b>Resultado.</b><br/>
-                        Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
-                        introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
-                      </li>
-                    </ul>
+                    </details>
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Información de hiperparámetros</summary>
+                      <ul>
+                        <li>
+                          <b>Tasa de aprendizaje</b>:<br/>
+                          La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.
+                        </li>
+                        <li>
+                          <b>Número de iteraciones</b>:<br/>
+                          El número de iteraciones se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la
+                          red en función del error calculado.
+                        </li>
+                        <li>
+                          <b>Tamaño del banco de pruebas</b>:<br/>
+                          El tamaño del banco de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la
+                          red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.
+                        </li>
+                        <li>
+                          <b>Optimizador</b>:<br/>
+                          El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente
+                          Estocástico (SGD), el Adam y el Adagrad.
+                        </li>
+                        <li>
+                          <b>Función de pérdida</b>:<br/>
+                          La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de
+                          pérdida, como la Entropía Cruzada y el Error Cuadrático Medio.
+                        </li>
+                      </ul>
+                    </details>
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Crear y entrenar modelo</summary>
+                      <p>
+                        Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón
+                        "Crear y entrenar modelo".
+                      </p>
+                      <p>
+                        Si todo ha sido correcto se añadirá una nueva entrada a la lista de modelos generados con el conjunto de datos
+                        seleccionado, se nos permitirá cargar en memoria modelos entrenados anteriormente.
+                      </p>
+                    </details>
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Exportar modelo</summary>
+                      <p>
+                        Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados,
+                        se nos permite exportar los modelos generados y guardarlos localmente.
+                      </p>
+                    </details>
+
+
+                    <details>
+                      <summary style={{ fontSize: "1.5em" }}>Predicción</summary>
+                      <p>
+                        El formulario final nos permite seleccionar las características principales que se usan para determinar
+                        la clase.
+                      </p>
+                      <p>
+                        El valor de salida será un índice de la lista de clases, para realizar la predicción de la
+                        clase en función de las características debemos pulsar el botón "Ver resultado".
+                      </p>
+                    </details>
+
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item key={"1"} eventKey={"description_dataset"}>
@@ -666,7 +708,7 @@ export default function CustomDataSetClassicClassification(props) {
                       <hr/>
 
                       <details>
-                        <summary>Atributos</summary>
+                        <summary style={{ fontSize: "1.5em" }}>Atributos</summary>
                         <main>
                           <Row>
                             {customDataSet_JSON.attributes.map((item, i1) => {
@@ -681,7 +723,7 @@ export default function CustomDataSetClassicClassification(props) {
                         </main>
                       </details>
                       <details>
-                        <summary>Clases</summary>
+                        <summary style={{ fontSize: "1.5em" }}>Clases</summary>
                         <main>
                           <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
                         </main>
@@ -711,72 +753,86 @@ export default function CustomDataSetClassicClassification(props) {
             {/* SPECIFIC PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
               {/* ADD LAYER */}
-              <div className="d-grid gap-2">
-                <Button onClick={handlerClick_AddLayer_Start}
-                        size={"lg"}
-                        variant="primary">
-                  Añadir capa al principio
-                </Button>
-                <Button onClick={handlerClick_AddLayer_End}
-                        size={"lg"}
-                        variant="primary">
-                  Añadir capa al final
-                </Button>
-              </div>
 
-              <Accordion className={"mt-3"}
-                         defaultActiveKey={["0"]}
-                         alwaysOpen>
-                {layers.map((item, index) => {
-                  return (
-                    <Accordion.Item key={index} eventKey={index.toString()}>
-                      <Accordion.Header>
-                        Capa {index + 1}
-                      </Accordion.Header>
+              <Card>
+                <Card.Header className={"d-flex align-items-center justify-content-between"}>
+                  <h3>Editor de capas</h3>
+                  <div>
+                    <Button onClick={handlerClick_AddLayer_Start}
+                            size={"sm"}
+                            variant="outline-primary">
+                      Añadir capa al principio
+                    </Button>
+                    <Button onClick={handlerClick_AddLayer_End}
+                            size={"sm"}
+                            variant="outline-primary"
+                            className={"ms-3"}>
+                      Añadir capa al final
+                    </Button>
+                  </div>
+                </Card.Header>
+                <Card.Body>
+                  <Accordion>
+                    {layers.map((item, index) => {
+                      return (
+                        <Accordion.Item key={index} eventKey={index.toString()}>
+                          <Accordion.Header>
+                            Capa {index + 1}
+                          </Accordion.Header>
 
-                      <Accordion.Body>
-                        <div className="d-grid gap-2">
-                          <Button onClick={() => handlerClick_RemoveLayer(index)}
-                                  variant={"outline-danger"}>
-                            Eliminar capa {index + 1}
-                          </Button>
-                        </div>
-                        {/* UNITS */}
-                        <Form.Group className="mt-3"
-                                    controlId={'formUnitsLayer' + index}>
-                          <Form.Label>Unidades de la capa</Form.Label>
-                          <Form.Control type="number"
-                                        min={0} max={100}
-                                        placeholder="Introduce el número de unidades de la capa"
-                                        defaultValue={item.units}
-                                        onChange={() => handleChange_Units(index)}/>
-                        </Form.Group>
-                        {/* ACTIVATION FUNCTION */}
-                        <Form.Group className="m3-3"
-                                    controlId={'formActivationLayer' + index}>
-                          <Form.Label>Selecciona la función de activación</Form.Label>
-                          <Form.Select aria-label={"Default select example: " + item.activation}
-                                       defaultValue={item.activation}
-                                       onChange={() => handleChange_Activation(index)}>
-                            {TYPE_ACTIVATION.map(({ key, label }, index) => {
-                              return (<option key={index} value={key}>{label}</option>)
-                            })
-                            }
-                          </Form.Select>
-                          <Form.Text className="text-muted">
-                            Será el optimizador que se usará para activar la función
-                          </Form.Text>
-                        </Form.Group>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  )
-                })}
-              </Accordion>
+                          <Accordion.Body>
+                            <div className="d-grid gap-2">
+                              <Button onClick={() => handlerClick_RemoveLayer(index)}
+                                      variant={"outline-danger"}>
+                                Eliminar capa {index + 1}
+                              </Button>
+                            </div>
+                            {/* UNITS */}
+                            <Form.Group className="mt-3"
+                                        controlId={'formUnitsLayer' + index}>
+                              <Form.Label>Unidades de la capa</Form.Label>
+                              <Form.Control type="number"
+                                            min={0} max={100}
+                                            placeholder="Introduce el número de unidades de la capa"
+                                            value={item.units}
+                                            onChange={(e) => handleChange_Layer(index, {
+                                              units     : parseInt(e.target.value),
+                                              activation: item.activation
+                                            })}/>
+                            </Form.Group>
+                            {/* ACTIVATION FUNCTION */}
+                            <Form.Group className="m3-3"
+                                        controlId={'formActivationLayer' + index}>
+                              <Form.Label>Selecciona la función de activación</Form.Label>
+                              <Form.Select aria-label={"Default select example: " + item.activation}
+                                           value={item.activation}
+                                           onChange={(e) => handleChange_Layer(index, {
+                                             units     : item.units,
+                                             activation: e.target.value
+                                           })}>
+                                {TYPE_ACTIVATION.map(({ key, label }, index) => {
+                                  return (<option key={index} value={key}>{label}</option>)
+                                })}
+                              </Form.Select>
+                              <Form.Text className="text-muted">
+                                Será el optimizador que se usará para activar la función
+                              </Form.Text>
+                            </Form.Group>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      )
+                    })}
+                  </Accordion>
+                </Card.Body>
+              </Card>
+
+
             </Col>
 
             {/* GENERAL PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
               <Card className={"sticky-top"} style={{ zIndex: 10 }}>
+                <Card.Header><h3>Editor de hiperparámetros</h3></Card.Header>
                 <Card.Body>
                   {/* LEARNING RATE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
@@ -785,7 +841,7 @@ export default function CustomDataSetClassicClassification(props) {
                                   min={1}
                                   max={100}
                                   placeholder="Introduce la tasa de aprendizaje"
-                                  defaultValue={LearningRate_default}
+                                  value={learningRate}
                                   onChange={handleChange_LearningRate}/>
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
@@ -799,7 +855,7 @@ export default function CustomDataSetClassicClassification(props) {
                                   min={1}
                                   max={100}
                                   placeholder="Introduce el número de iteraciones"
-                                  defaultValue={NumberEpochs_default}
+                                  value={numberEpochs}
                                   onChange={handleChange_NumberEpochs}/>
                     <Form.Text className="text-muted">
                       *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
@@ -813,7 +869,7 @@ export default function CustomDataSetClassicClassification(props) {
                                   min={1}
                                   max={100}
                                   placeholder="Introduce el tamaño del banco de pruebas"
-                                  defaultValue={TestSize_default}
+                                  value={testSize}
                                   onChange={handleChange_TestSize}/>
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
@@ -824,7 +880,7 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormOptimizer">
                     <Form.Label>Selecciona el optimizador</Form.Label>
                     <Form.Select aria-label="Default select example"
-                                 defaultValue={idOptimizerValue}
+                                 value={idOptimizer}
                                  onChange={handleChange_Optimization}>
                       {TYPE_OPTIMIZER.map(({ key, label }, index) => {
                         return (<option key={index} value={key}>{label}</option>)
@@ -839,7 +895,7 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormLoss">
                     <Form.Label>Selecciona la función de pérdida</Form.Label>
                     <Form.Select aria-label="Selecciona la función de pérdida"
-                                 defaultValue={idLossValue}
+                                 value={idLoss}
                                  onChange={handleChange_Loss}>
                       {TYPE_LOSSES.map(({ key, label }, index) => {
                         return (<option key={index} value={key}>{label}</option>)
@@ -854,7 +910,7 @@ export default function CustomDataSetClassicClassification(props) {
                   <Form.Group className="mb-3" controlId="FormMetrics">
                     <Form.Label>Selecciona la métrica</Form.Label>
                     <Form.Select aria-label="Selecciona la métrica"
-                                 defaultValue={idMetricsValue}
+                                 value={idMetrics}
                                  onChange={handleChange_Metrics}>
                       {TYPE_METRICS.map(({ key, label }, index) => {
                         return (<option key={index} value={key}>{label}</option>)
@@ -908,7 +964,7 @@ export default function CustomDataSetClassicClassification(props) {
                     </Button>
                     {(Model !== undefined) &&
                       <Button className={"ms-1"}
-                              disabled={DisabledDownloadModel}
+                              disabled={isDisabledDownloadModel}
                               onClick={handleClick_DownloadModel}
                               size={"sm"}
                               variant="outline-primary">
@@ -917,8 +973,8 @@ export default function CustomDataSetClassicClassification(props) {
                     }
                   </div>
                 </Card.Header>
-                <Card.Body>
-                  <table className={"table table-sm"}>
+                <Card.Body className={"overflow-x-scroll"}>
+                  <Table size={"sm"}>
                     <thead>
                     <tr>
                       <th>ID</th>
@@ -972,7 +1028,7 @@ export default function CustomDataSetClassicClassification(props) {
                       )
                     })}
                     </tbody>
-                  </table>
+                  </Table>
 
                   {isTraining ? <p className="placeholder-glow"><span className="placeholder col-12"></span></p> : <></>}
 

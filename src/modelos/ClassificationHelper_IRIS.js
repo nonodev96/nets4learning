@@ -25,6 +25,12 @@ export const MODEL_IRIS = {
         <li>Iris Virginica</li>
       </ol>
     </details>
+    <details>
+      <summary>Referencias</summary>
+      <ol>
+        <li><a href="https://archive.ics.uci.edu/ml/datasets/Iris" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+      </ol>
+    </details>
   </>,
   HTML_EXAMPLE     : <>
     <p>

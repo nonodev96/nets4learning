@@ -49,7 +49,7 @@ export default function DynamicFormDataset(props) {
     })
   }
 
-  console.debug("Render DynamicFormDataset", { dataset_JSON })
+  console.debug("Render DynamicFormDataset")
   return <>
     <Container>
       <Row className={"mt-3"}>

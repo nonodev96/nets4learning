@@ -7,10 +7,7 @@ export const MODEL_LYMPHOGRAPHY = {
   URL_DATASET      : "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/",
   DESCRIPTION      : <>
     <p>El conjunto de datos de <i>lymphographya</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.</p>
-    <ul>
-      <li><a target="_blank" rel="noreferrer" href="https://archive.ics.uci.edu/ml/datasets/Lymphography">Repositorio</a></li>
-      <li><a target="_blank" rel="noreferrer" href="https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/">Conjunto de datos</a></li>
-    </ul>
+
     <details>
       <summary>Datos de entrada</summary>
       <ol>
@@ -43,6 +40,12 @@ export const MODEL_LYMPHOGRAPHY = {
         <li><b>fibrosis</b>: fibrosis</li>
       </ol>
     </details>
+    <details>
+      <summary>Referencias</summary>
+      <ol>
+        <li><a href="https://archive.ics.uci.edu/ml/datasets/Lymphography" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+      </ol>
+    </details>
   </>,
   HTML_EXAMPLE     : <>
     <p>
@@ -56,17 +59,56 @@ export const MODEL_LYMPHOGRAPHY = {
     <p>Ejemplos:</p>
   </>,
   loadModel        : async () => {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/lymphography/lymphography-model.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/lymphography/my-model-lymphography.json")
   },
-  function_v_input : async (element, index, param = "") => {
-    return "TODO"
+  function_v_input : async function (element, index, param = "") {
+    return parseInt(element)
   },
   CONFIGURATION    : <></>,
   EXAMPLES         : [],
   CLASSES          : ["normal find", "metastases", "malign lymph", "fibrosis"],
   NUM_CLASSES      : 4,
-  DATA_OBJECT      : {},
-  DATA_DEFAULT     : {},
+  DATA_OBJECT      : {
+    "lymphatics"     : ["1", "2", "3", "4"],
+    "block of affere": ["1", "2"],
+    "bl. of lymph. c": ["1", "2"],
+    "bl. of lymph. s": ["1", "2"],
+    "by pass"        : ["1", "2"],
+    "extravasates"   : ["1", "2"],
+    "regeneration"   : ["1", "2"],
+    "early uptake in": ["1", "2"],
+    "lym.nodes dimin": ["1", "2", "3"],
+    "lym.nodes enlar": ["1", "2", "3", "4"],
+    "changes in lym" : ["1", "2", "3"],
+    "defect in node" : ["1", "2", "3", "4"],
+    "changes in node": ["1", "2", "3", "4"],
+    "changes in stru": ["1", "2", "3", "4", "5", "6", "7"],
+    "special forms"  : ["1", "2", "3"],
+    "dislocation of" : ["1", "2"],
+    "exclusion of"   : ["1", "2"],
+    "no. of nodes in": ["1", "2", "3", "4", "5", "6", "7", "8"]
+  },
+  DATA_DEFAULT     : {
+    // 4 -> fibrosis
+    "lymphatics"     : "3",
+    "block of affere": "1",
+    "bl. of lymph. c": "1",
+    "bl. of lymph. s": "1",
+    "by pass"        : "1",
+    "extravasates"   : "2",
+    "regeneration"   : "2",
+    "early uptake in": "1",
+    "lym.nodes dimin": "3",
+    "lym.nodes enlar": "1",
+    "changes in lym" : "1",
+    "defect in node" : "2",
+    "changes in node": "1",
+    "changes in stru": "4",
+    "special forms"  : "2",
+    "dislocation of" : "1",
+    "exclusion of"   : "1",
+    "no. of nodes in": "7"
+  },
   DATA_OBJECT_KEYS : [
     "lymphatics",
     "block of affere",
@@ -87,12 +129,117 @@ export const MODEL_LYMPHOGRAPHY = {
     "exclusion of",
     "no. of nodes in"
   ],
+  DATA_CLASSES     : [
+    ["normal", "arched", "deformed", "displaced"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["1", "2", "3"],
+    ["1", "2", "3", "4"],
+    ["bean", "oval", "round"],
+    ["No", "lacunar", "lac. marginal", "lac. central"],
+    ["No", "lacunar", "lac. marginal", "lac. central"],
+    ["grainy", "drop-like", "coarse", "diluted", "reticular", "stripped", "faint"],
+    ["No", "chalices", "vesicles"],
+    ["No", "Sí"],
+    ["No", "Sí"],
+    ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "=>70"]
+  ],
   DATA_CLASSES_KEYS: [],
-  LIST_EXAMPLES    : [],
+  LIST_EXAMPLES    : [
+    // Normal
+    {
+      "lymphatics"     : "1",
+      "block of affere": "1",
+      "bl. of lymph. c": "1",
+      "bl. of lymph. s": "1",
+      "by pass"        : "1",
+      "extravasates"   : "2",
+      "regeneration"   : "1",
+      "early uptake in": "2",
+      "lym.nodes dimin": "1",
+      "lym.nodes enlar": "2",
+      "changes in lym" : "2",
+      "defect in node" : "1",
+      "changes in node": "1",
+      "changes in stru": "1",
+      "special forms"  : "1",
+      "dislocation of" : "1",
+      "exclusion of"   : "1",
+      "no. of nodes in": "2"
+    },
+    // metastasis
+    {
+      "lymphatics"     : "1",
+      "block of affere": "1",
+      "bl. of lymph. c": "1",
+      "bl. of lymph. s": "1",
+      "by pass"        : "1",
+      "extravasates"   : "1",
+      "regeneration"   : "1",
+      "early uptake in": "1",
+      "lym.nodes dimin": "1",
+      "lym.nodes enlar": "1",
+      "changes in lym" : "1",
+      "defect in node" : "1",
+      "changes in node": "1",
+      "changes in stru": "1",
+      "special forms"  : "1",
+      "dislocation of" : "1",
+      "exclusion of"   : "1",
+      "no. of nodes in": "1"
+    },
+    // malign lymph
+    {
+      "lymphatics"     : "2",
+      "block of affere": "1",
+      "bl. of lymph. c": "1",
+      "bl. of lymph. s": "1",
+      "by pass"        : "1",
+      "extravasates"   : "2",
+      "regeneration"   : "1",
+      "early uptake in": "2",
+      "lym.nodes dimin": "1",
+      "lym.nodes enlar": "3",
+      "changes in lym" : "3",
+      "defect in node" : "4",
+      "changes in node": "2",
+      "changes in stru": "7",
+      "special forms"  : "3",
+      "dislocation of" : "2",
+      "exclusion of"   : "2",
+      "no. of nodes in": "3"
+    },
+    // fibrosis
+    {
+      "lymphatics"     : "3",
+      "block of affere": "1",
+      "bl. of lymph. c": "1",
+      "bl. of lymph. s": "1",
+      "by pass"        : "1",
+      "extravasates"   : "2",
+      "regeneration"   : "2",
+      "early uptake in": "1",
+      "lym.nodes dimin": "3",
+      "lym.nodes enlar": "1",
+      "changes in lym" : "1",
+      "defect in node" : "2",
+      "changes in node": "1",
+      "changes in stru": "4",
+      "special forms"  : "2",
+      "dislocation of" : "1",
+      "exclusion of"   : "1",
+      "no. of nodes in": "7"
+    },
+  ],
   // @formatter:off
   FORM             : [
     { type: "select", name: "lymphatics",       options: [{ value: "1", text: "normal" }, { value: "2", text: "arched" },    { value: "3", text: "deformed" },     { value: "4", text: "displaced" }]},
-    { type: "select", name: "block of affere",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
+    { type: "select", name: "block of affere",  options: [{ value: "1", text: "No" },     { value: "2", text: "2" }]},
     { type: "select", name: "bl. of lymph. c",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "bl. of lymph. s",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "by pass",          options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},

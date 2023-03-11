@@ -48,9 +48,10 @@ export default function UploadModelMenu(props) {
                     <Form.Select aria-label="Default select example"
                                  onChange={handleChangeModel}>
                       <option>Selecciona un Modelo</option>
-                      {LIST_MODEL_OPTIONS[id].map((item, id) => {
-                        if (id === 0) return <option key={id} value={id} disabled>{item}</option>
-                        return <option key={id} value={id}>{item}</option>
+                      {LIST_MODEL_OPTIONS[id].map((item, index) => {
+                        if (index === 0) return <option key={index} value={id} disabled>{item}</option>
+                        if (id === '0' && index === 3) return <option key={index} value={index} disabled>{item}</option>
+                        return <option key={index} value={index}>{item}</option>
                       })}
                     </Form.Select>
                   </Form.Group>

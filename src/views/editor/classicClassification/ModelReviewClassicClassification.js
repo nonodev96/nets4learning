@@ -368,6 +368,7 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   handleChangeParameter(key_parameter, value) {
+    console.log({key_parameter, value})
     this.setState((prevState) => ({
       dataToTest: { ...prevState.dataToTest, [key_parameter]: value },
       textToTest: Object.values({ ...prevState.dataToTest, [key_parameter]: value }).join(";")
@@ -448,7 +449,7 @@ export default class ModelReviewClassicClassification extends React.Component {
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
               <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
                 <Card className={"mt-3"}>
-                  <Card.Header><h3>Configuración</h3></Card.Header>
+                  <Card.Header><h3>Descripción de la entrada de datos</h3></Card.Header>
                   <Card.Body>
                     {this.Print_HTML_InfoDataset()}
                     {this.Print_HTML_EXAMPLES()}
@@ -458,7 +459,7 @@ export default class ModelReviewClassicClassification extends React.Component {
 
               <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
                 <Card className={"mt-3"}>
-                  <Card.Header><h3>Prueba</h3></Card.Header>
+                  <Card.Header><h3>Formulario de edición de las características</h3></Card.Header>
                   <Card.Body>
                     <div>
                       {(this.dataset_key === MODEL_CAR.KEY) &&
@@ -469,8 +470,8 @@ export default class ModelReviewClassicClassification extends React.Component {
                                 <Form.Group controlId={key_parameter}>
                                   <Form.Label>Selecciona el parámetro</Form.Label>
                                   <Form.Select aria-label="Default select example"
+                                               size={"sm"}
                                                value={this.state.dataToTest[key_parameter]}
-                                               defaultValue={this.state.dataToTest[key_parameter] ?? values[0]}
                                                onChange={($event) => this.handleChangeParameter(key_parameter, $event.target.value)}>
                                     {values.map((itemAct, indexAct) => {
                                       return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
@@ -492,6 +493,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                   <Form.Label>Selecciona el parámetro</Form.Label>
                                   <Form.Control type="number"
                                                 min={0}
+                                                size={"sm"}
                                                 placeholder={"Enter parameter"}
                                                 step={0.1}
                                                 value={this.state.dataToTest[key_parameter] ?? value}
@@ -519,6 +521,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
+                                                    size={"sm"}
                                                     placeholder={"Introduce el entero"}
                                                     step={1}
                                                     value={this.state.dataToTest[value.name] ?? 0}
@@ -535,6 +538,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
+                                                    size={"sm"}
                                                     placeholder={"Introduce el decimal"}
                                                     step={0.1}
                                                     value={this.state.dataToTest[value.name] ?? 0.0}
@@ -550,6 +554,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                       <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
                                       <Form.Select aria-label="Default select example"
                                                    value={this.state.dataToTest[value.name] ?? 0}
+                                                   size={"sm"}
                                                    onChange={($event) => this.handleChangeParameter(value.name, $event.target.value)}>
                                         {value.options.map((option_value, option_index) => {
                                           return <option key={value.name + "_option_" + option_index}
@@ -593,16 +598,12 @@ export default class ModelReviewClassicClassification extends React.Component {
                                     disabled={this.state.isButtonDisabled}
                                     size={"lg"}
                                     variant="primary">
-                              {this.state.isButtonDisabled ? (
-                                <>
-                                  <span className="spinner-border spinner-border-sm"
-                                        role="status"
-                                        aria-hidden="true"></span>
-                                  <span className="visually-hidden">Cargando...</span>
-                                </>
-                              ) : (
-                                <>Comprobar resultado</>
-                              )}
+                              {this.state.isButtonDisabled ? <>
+                                <span className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"></span>
+                                <span className="visually-hidden">Cargando...</span>
+                              </> : <>Comprobar resultado</>}
                             </Button>
                           </div>
                         </Col>
