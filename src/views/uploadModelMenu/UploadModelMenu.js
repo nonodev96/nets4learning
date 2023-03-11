@@ -11,41 +11,17 @@ export default function UploadModelMenu(props) {
   const [ModelID, setModelID] = useState(-1)
   const history = useHistory()
 
+  const handleChangeModel = () => {
+    let aux = document.getElementById('FormModel').value
+    if (aux !== undefined) setModelID(aux)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (ModelID === -1 || ModelID === 'Selecciona un Modelo') {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
       history.push('/edit-architecture/' + id + '/' + 0 + '/' + ModelID)
-    }
-  }
-
-  const PrintHTML_OPTIONS = (_id) => {
-    switch (_id) {
-      case '0': {
-        // Clasificación
-        return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[0][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[0][2]}</option>
-          {/*<option value={3} disabled>{LIST_MODEL_OPTIONS[0][3]}</option>*/}
-        </>
-      }
-      case '2': {
-        // Identificación
-        return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[2][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[2][2]}</option>
-          <option value={3}>{LIST_MODEL_OPTIONS[2][3]}</option>
-          <option value={4}>{LIST_MODEL_OPTIONS[2][4]}</option>
-        </>
-      }
-      case '3': {
-        // Clasificación imágenes
-        return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[3][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
-        </>
-      }
     }
   }
 
@@ -69,13 +45,14 @@ export default function UploadModelMenu(props) {
                 <Form onSubmit={handleSubmit}>
                   <Form.Group controlId="FormModel">
                     <Form.Label>Selecciona un Modelo</Form.Label>
-                    <Form.Select aria-label="Selecciona un modelo"
-                                 defaultValue={-1}
-                                 onChange={(e) => setModelID(e.target.value)}>
-                      <option value={-1} disabled>Selecciona un modelo</option>
-
-                      {PrintHTML_OPTIONS(id)}
-
+                    <Form.Select aria-label="Default select example"
+                                 onChange={handleChangeModel}>
+                      <option>Selecciona un Modelo</option>
+                      {LIST_MODEL_OPTIONS[id].map((item, index) => {
+                        if (index === 0) return <option key={index} value={id} disabled>{item}</option>
+                        if (id === '0' && index === 3) return <option key={index} value={index} disabled>{item}</option>
+                        return <option key={index} value={index}>{item}</option>
+                      })}
                     </Form.Select>
                   </Form.Group>
 

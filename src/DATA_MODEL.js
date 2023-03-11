@@ -203,7 +203,7 @@ export const DATASET_DESCRIPTION = [
         identificar múltiples objetos en una sola imagen.
       </p>
       <p>
-        Para más información sobre la API de detección de objetos de Tensorflow, consulta el siguiente documento en <a
+        Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <a
         href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd"
         target={"_blank"}>tensorflow/object_detection</a>.
       </p>
