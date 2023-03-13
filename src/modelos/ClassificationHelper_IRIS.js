@@ -61,7 +61,8 @@ export const MODEL_IRIS = {
     "Longitud sépalo",
     "Anchura sépalo",
     "Longitud petalo",
-    "Anchura petalo"
+    "Anchura petalo",
+    "Tipo"
   ],
   LIST_EXAMPLES    : [
     { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },

@@ -45,6 +45,35 @@ export default function UploadArchitectureMenu(props) {
     }
   }
 
+  const PrintHTML_OPTIONS = (_id) => {
+    switch (_id) {
+      case '0': {
+        // Clasificación
+        return <>
+          <option value={1}>{LIST_MODEL_OPTIONS[0][1]}</option>
+          <option value={2}>{LIST_MODEL_OPTIONS[0][2]}</option>
+          <option value={3}>{LIST_MODEL_OPTIONS[0][3]}</option>
+        </>
+      }
+      case '2': {
+        // Identificación
+        return <>
+          <option value={1}>{LIST_MODEL_OPTIONS[2][1]}</option>
+          <option value={2}>{LIST_MODEL_OPTIONS[2][2]}</option>
+          <option value={3}>{LIST_MODEL_OPTIONS[2][3]}</option>
+          <option value={4}>{LIST_MODEL_OPTIONS[2][4]}</option>
+        </>
+      }
+      case '3': {
+        // Clasificación imágenes
+        return <>
+          <option value={1}>{LIST_MODEL_OPTIONS[3][1]}</option>
+          <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
+        </>
+      }
+    }
+  }
+
   return (
     <>
       <N4LNavBar/>
@@ -63,12 +92,10 @@ export default function UploadArchitectureMenu(props) {
                   <Form.Group className="mb-3" controlId="FormDataSet">
                     <Form.Label>Selecciona un conjunto de datos</Form.Label>
                     <Form.Select aria-label="Selecciona un conjunto de datos"
-                                 onChange={handleChange_DataSet}>
-                      <option>Selecciona un conjunto de datos</option>
-                      {LIST_MODEL_OPTIONS[id].map((item, id) => {
-                        if (id === 0) return (<option key={id} value={id} disabled>{item}</option>)
-                        return (<option key={id} value={id}>{item}</option>)
-                      })}
+                                 defaultValue={-1}
+                                 onChange={(e) => setDataSet(e.target.value)}>
+                      <option value={-1} disabled>Selecciona un conjunto de datos</option>
+                      {PrintHTML_OPTIONS(id)}
                     </Form.Select>
                   </Form.Group>
 

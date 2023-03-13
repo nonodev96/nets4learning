@@ -10,32 +10,17 @@ export const MODEL_CAR = {
     <details>
       <summary>Información</summary>
       <ol>
-        <li><b>CAR</b> Aceptación del vehículo</li>
-        <li>
-          <b>PRICE:</b> Precio en general
-          <ol>
-            <li><b>BUTING:</b> Precio de compra</li>
-            <li><b>MAINT:</b> Costo del mantenimiento</li>
-          </ol>
-        </li>
-        <li>
-          <b>TECH:</b> Características técnicas
-          <ol>
-            <li>
-              <b>COMFORT:</b> Comfort
-              <ol>
-                <li><b>DOORS:</b> Nº de puertas</li>
-                <li><b>PERSONS:</b> Nº de plazas</li>
-                <li><b>LUG_BOOT:</b> Tamaño del maletero</li>
-              </ol>
-            </li>
-            <li><b>SAFETY:</b> Seguridad estimada del vehículo</li>
-          </ol>
-        </li>
+        <li><b>buying:</b> Precio de compra.</li>
+        <li><b>maint:</b> Costo del mantenimiento.</li>
+        <li><b>doors:</b> Número de puertas.</li>
+        <li><b>persons:</b> Número de plazas.</li>
+        <li><b>lug_boot:</b> Tamaño del maletero.</li>
+        <li><b>safety:</b> Seguridad estimada del vehículo.</li>
       </ol>
     </details>
     <details>
       <summary>Datos de entrada</summary>
+      <p>Características del coche: precio, confort</p>
       <ol>
         <li><b>buying:</b> vhigh, high, med, low.</li>
         <li><b>maint:</b> vhigh, high, med, low.</li>
@@ -47,11 +32,12 @@ export const MODEL_CAR = {
     </details>
     <details>
       <summary>Datos de salida</summary>
+      <p>Aceptación del vehículo</p>
       <ol>
-        <li><b>UNACC</b> - Inaccesible</li>
-        <li><b>ACC</b> - Accesible</li>
-        <li><b>GOOD</b> - Bien</li>
-        <li><b>VGOOD</b> - Muy bien</li>
+        <li><b>UNACC</b>: Inaccesible</li>
+        <li><b>ACC</b>: Accesible</li>
+        <li><b>GOOD</b>: Bien</li>
+        <li><b>VGOOD</b>: Muy bien</li>
       </ol>
     </details>
     <details>
@@ -116,7 +102,7 @@ export const MODEL_CAR = {
     { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "small", safety: "low" },
     { buying: "low",   maint: "vhigh", doors: "4",     persons: "2",    lug_boot: "small", safety: "low" },
     { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" },
-    { buying: "med",   maint: "med",   doors: "2",     persons: "4",    lug_boot: "med",   safety: "high" }
+    { buying: "med",   maint: "med",   doors: "2",     persons: "4",    lug_boot: "big",   safety: "high" }
   ],
   FORM             : [
     { type: "select", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },

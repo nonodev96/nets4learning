@@ -659,29 +659,6 @@ export default class ModelReviewImageClassification extends React.Component {
                 <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
                   {this.Print_HTML_Examples()}
                 </Col>
-
-                {
-                  this.isMNIST() &&
-                  <>
-                    <Col className={"d-grid"}
-                         xs={12} sm={12} md={6} xl={6} xxl={6}>
-                      <Card className={"mt-3"}>
-                        <Card.Header><h3>Procesamiento del dibujo</h3></Card.Header>
-                        <Card.Body>
-                          <CustomCanvasDrawer
-                            submitFunction={async (canvas, canvas_ctx) => {
-                              await this.handleCanvasDraw_Clear()
-                              await this.handleCanvasDraw_Submit(canvas, canvas_ctx)
-                            }}
-                            clearFunction={async () => {
-                              await this.handleCanvasDraw_Clear()
-                            }
-                            }/>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </>
-                }
                 <Col className={"d-grid"}
                      xs={this.isMNIST() ? 12 : 12}
                      sm={this.isMNIST() ? 12 : 12}
@@ -710,6 +687,28 @@ export default class ModelReviewImageClassification extends React.Component {
                     </Card.Body>
                   </Card>
                 </Col>
+                {
+                  this.isMNIST() &&
+                  <>
+                    <Col className={"d-grid"}
+                         xs={12} sm={12} md={6} xl={6} xxl={6}>
+                      <Card className={"mt-3"}>
+                        <Card.Header><h3>Dibujo</h3></Card.Header>
+                        <Card.Body>
+                          <CustomCanvasDrawer
+                            submitFunction={async (canvas, canvas_ctx) => {
+                              await this.handleCanvasDraw_Clear()
+                              await this.handleCanvasDraw_Submit(canvas, canvas_ctx)
+                            }}
+                            clearFunction={async () => {
+                              await this.handleCanvasDraw_Clear()
+                            }
+                            }/>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </>
+                }
               </Row>
 
 

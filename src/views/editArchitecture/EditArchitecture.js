@@ -6,17 +6,17 @@ import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
 import './EdtiArchitecture.css'
 
-import ModelReviewClassicClassification from '../editor/classicClassification/ModelReviewClassicClassification'
-import CustomDataSetClassicClassification from '../editor/classicClassification/CustomDataSetClassicClassification'
+import ModelReviewClassicClassification from '../editor/0_TabularClassification/ModelReviewClassicClassification'
+import CustomDataSetClassicClassification from '../editor/0_TabularClassification/CustomDataSetClassicClassification'
 
-import ModelReviewLinearRegression from "../editor/linearRegression/ModelReviewLinearRegression";
-import LinearRegression from "../editor/linearRegression/LinearRegression";
+import ModelReviewLinearRegression from "../editor/1_LinearRegression/ModelReviewLinearRegression";
+import LinearRegression from "../editor/1_LinearRegression/LinearRegression";
 
-import ModelReviewObjectDetection from '../editor/objectDetection/ModelReviewObjectDetection'
-import ObjectDetection from '../editor/objectDetection/ObjectDetection'
+import ModelReviewObjectDetection from '../editor/2_ObjectDetection/ModelReviewObjectDetection'
+import ObjectDetection from '../editor/2_ObjectDetection/ObjectDetection'
 
-import ModelReviewImageClassification from '../editor/imageClassification/ModelReviewImageClassification'
-import ImageClassification from '../editor/imageClassification/ImageClassification'
+import ModelReviewImageClassification from '../editor/3_ImageClassification/ModelReviewImageClassification'
+import ImageClassification from '../editor/3_ImageClassification/ImageClassification'
 
 
 import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
@@ -36,7 +36,7 @@ export default function EditArchitecture() {
       case '1':
         // TODO
         if (tipo === '0') {
-          return <ModelReviewLinearRegression  dataSet={ejemplo}/>
+          return <ModelReviewLinearRegression dataSet={ejemplo}/>
         } else {
           return <LinearRegression dataSet={ejemplo}/>
         }
