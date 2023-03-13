@@ -20,7 +20,7 @@ export const MODEL_CAR = {
     </details>
     <details>
       <summary>Datos de entrada</summary>
-      <p>Características del coche: precio, confort</p>
+      <p>Características del coche</p>
       <ol>
         <li><b>buying:</b> vhigh, high, med, low.</li>
         <li><b>maint:</b> vhigh, high, med, low.</li>

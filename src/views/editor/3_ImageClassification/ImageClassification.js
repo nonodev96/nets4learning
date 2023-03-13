@@ -22,14 +22,14 @@ export default function ImageClassification(props) {
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
   const [Contador, setContador] = useState(0)
-  const [UploadedArchitecture, setUploadedArchitecture] = useState(false)
+  // const [UploadedArchitecture, setUploadedArchitecture] = useState(false)
   const NumberEpochs = 15
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
-  const [string, setString] = useState('0.1;4.3;2.1;0.2')
+  // const [string, setString] = useState('0.1;4.3;2.1;0.2')
   const [NoEpochs, setNoEpochs] = useState(15)
   const [Recarga, setRecarga] = useState(false)
   const [ImageUploaded, setImageUploaded] = useState(false)
@@ -436,7 +436,7 @@ export default function ImageClassification(props) {
                         y reglas para el test.
                       </li>
                       <li>
-                        <b>Nº de iteraciones:</b><br/>
+                        <b>Número de iteraciones:</b><br/>
                         Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
                       </li>
                       <li>
@@ -545,7 +545,7 @@ export default function ImageClassification(props) {
 
                     {/* Nº OF ITERATIONS */}
                     <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                      <Form.Label>Nº de iteraciones</Form.Label>
+                      <Form.Label>Número de iteraciones</Form.Label>
                       <Form.Control type="number"
                                     placeholder="Introduce el número de iteraciones"
                                     defaultValue={NumberEpochs}

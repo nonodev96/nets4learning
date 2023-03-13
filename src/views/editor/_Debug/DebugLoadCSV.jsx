@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row } from "react-bootstrap";
 import * as tfVis from "@tensorflow/tfjs-vis";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MODEL_CAR } from "../../../DATA_MODEL";
 import * as tf from "@tensorflow/tfjs";
 

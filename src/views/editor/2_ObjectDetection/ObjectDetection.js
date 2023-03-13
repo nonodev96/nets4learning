@@ -415,7 +415,7 @@ export default function ObjectDetection(props) {
                         reglas para el test
                       </li>
                       <li>
-                        <b>Nº de iteraciones:</b><br/>
+                        <b>Número de iteraciones:</b><br/>
                         Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
                       </li>
                       <li>
@@ -428,7 +428,7 @@ export default function ObjectDetection(props) {
                         Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
                       </li>
                       <li>
-                        <b>Métrica:</b><br/>
+                        <b>Función de métrica:</b><br/>
                         Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
                       </li>
                     </ul>
@@ -526,7 +526,7 @@ export default function ObjectDetection(props) {
 
                   {/* Nº OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                    <Form.Label>Nº de iteraciones</Form.Label>
+                    <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={NumberEpochs}

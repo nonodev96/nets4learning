@@ -1,5 +1,5 @@
 import N4LNavBar from "../../components/navBar/N4LNavBar";
-import { Accordion, Button, Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Accordion, Button, Card, Col, Container, Row } from "react-bootstrap";
 import N4LFooter from "../../components/footer/N4LFooter";
 import React from "react";
 import { FILE_TEMPLATE, FILE_TEMPLATE_IRIS, FILE_TEMPLATE_LYMPHATCS, FILE_TOPOLOGY } from "../../constants/files_examples";

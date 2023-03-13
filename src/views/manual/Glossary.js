@@ -1,5 +1,5 @@
 import N4LNavBar from "../../components/navBar/N4LNavBar";
-import { Accordion, Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Accordion, Col, Container, Row, Table } from "react-bootstrap";
 import N4LFooter from "../../components/footer/N4LFooter";
 import React from "react";
 

@@ -13,11 +13,6 @@ export default function UploadArchitectureMenu(props) {
   const [isUploadedArchitecture, setIsUploadedArchitecture] = useState(false)
   const history = useHistory()
 
-  const handleChange_DataSet = () => {
-    let aux = document.getElementById('FormDataSet').value
-    if (aux !== undefined) setDataSet(aux)
-  }
-
   const handleSubmit = async () => {
     if (DataSet === -1 || DataSet === 'Selecciona un conjunto de datos') {
       await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
@@ -70,6 +65,9 @@ export default function UploadArchitectureMenu(props) {
           <option value={1}>{LIST_MODEL_OPTIONS[3][1]}</option>
           <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
         </>
+      }
+      default: {
+        console.error("Opción no disponible")
       }
     }
   }

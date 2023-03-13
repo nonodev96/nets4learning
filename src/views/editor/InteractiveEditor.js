@@ -13,7 +13,7 @@ import './InteractiveEditor.css'
 
 // TODO: Pendiente de borrar
 export default function InteractiveEditor(props) {
-  const { tipo } = props
+  const {} = props
 
   //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
@@ -223,7 +223,7 @@ export default function InteractiveEditor(props) {
 
                   {/* Nº OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                    <Form.Label>Nº de iteraciones</Form.Label>
+                    <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={NumberEpochs}/>

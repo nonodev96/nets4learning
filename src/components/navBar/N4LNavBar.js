@@ -1,5 +1,5 @@
 import React from "react"
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
+import { Container, Nav, Navbar } from "react-bootstrap"
 import { useHistory } from "react-router-dom";
 
 export default function N4LNavBar() {
@@ -21,7 +21,17 @@ export default function N4LNavBar() {
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand onClick={handleClick_GoHomePage}>Nets4learning</Navbar.Brand>
+          <Navbar.Brand onClick={handleClick_GoHomePage}>
+            <img
+              src={process.env.REACT_APP_PUBLIC_URL + "/without_background.png"}
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+              alt="N4L"
+            />
+            Nets4learning
+          </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">

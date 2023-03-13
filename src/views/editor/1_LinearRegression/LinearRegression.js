@@ -226,7 +226,7 @@ export default function LinearRegression(props) {
 
                 {/* Nº OT ITERATIONS */}
                 <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                  <Form.Label>Nº de iteraciones</Form.Label>
+                  <Form.Label>Número de iteraciones</Form.Label>
                   <Form.Control type="number"
                                 placeholder="Introduce el número de iteraciones"
                                 defaultValue={NumberEpochs}/>

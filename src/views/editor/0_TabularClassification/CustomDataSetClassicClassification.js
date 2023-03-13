@@ -518,7 +518,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                           entrenamiento y reglas para las pruebas.
                         </li>
                         <li>
-                          <b>Nº de iteraciones</b>:<br/>
+                          <b>Número de iteraciones</b>:<br/>
                           Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
                         </li>
                         <li>
@@ -889,9 +889,9 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header className={"d-flex"}>
+                <Card.Header className={"d-flex align-items-center justify-content-between"}>
                   <h3>Modelos</h3>
-                  <div className={"mt-1"}>
+                  <div className={"d-flex"}>
                     <Button variant={"outline-primary"}
                             className={"ms-3"}
                             size={"sm"}
@@ -1002,14 +1002,16 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
           <Row>
             <Col>
               <Card className={"mt-3"}>
-                <Card.Header className={"d-flex align-items-center"}>
+                <Card.Header className={"d-flex align-items-center justify-content-between"}>
                   <h3>Debug</h3>
-                  <Button onClick={() => debug(customDataSet_JSON)}
-                          className={"ms-3"}
-                          size={"sm"}
-                          variant={"outline-primary"}>
-                    Debug
-                  </Button>
+                  <div className="d-flex">
+                    <Button onClick={() => debug(customDataSet_JSON)}
+                            className={"ms-3"}
+                            size={"sm"}
+                            variant={"outline-primary"}>
+                      Debug
+                    </Button>
+                  </div>
                 </Card.Header>
                 <Card.Body>
                   <div id="plot_div"></div>
