@@ -13,7 +13,7 @@ export default function Home() {
         <Container>
           <Row>
             <Col>
-              <h1 className="mt-3">Bienvenido a Nets4learning</h1>
+              <h1 className="mt-3">Bienvenido a Nets4Learning</h1>
               <h2 className="mt-3">Para continuar selecciona una de estas disciplinas</h2>
             </Col>
           </Row>

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { withRouter, BrowserRouter, Switch } from "react-router-dom";
-import { Redirect, Route, Router } from "react-router";
+import { Redirect, Route } from "react-router";
+import ReactGA from 'react-ga4';
+
 
 import Home from "./components/Home";
 import NotFoundPage from "./views/notFound/NotFoundPage";
@@ -8,14 +10,19 @@ import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
 import EditArchitecture from "./views/editArchitecture/EditArchitecture";
 import UploadArchitectureMenu from "./views/uploadArchitectureMenu/UploadArchitectureMenu";
 import InteractiveEditor from "./views/editor/InteractiveEditor";
-import Glossary from "./views/manual/Glossary";
+import Glossary from "./views/glossary/Glossary";
 import Manual from "./views/manual/Manual";
+import TermsAndConditions from "./views/terms/TermsAndConditions";
 
 import "./App.css";
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
   // console.log(process.env)
+  useEffect(()=>{
+    ReactGA.initialize('G-3644EFBXMG')
+  }, [])
+
   return (
     <div className="body">
       <BrowserRouter basename={REACT_APP_PATH}>
@@ -26,6 +33,7 @@ function App() {
           <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
           <Route exact path={"/manual/"} component={Manual}></Route>
           <Route exact path={"/glossary/"} component={Glossary}></Route>
+          <Route exact path={"/terms-and-conditions/"} component={TermsAndConditions}></Route>
           {/* <Route exact path={"/starting/"} component={Starting}></Route> */}
           {/* <Route exact path={"/secondary/:id"} component={SecondMenu}></Route> */}
           {/* <Route exact path={"/editor/:id"} component={Editor}></Route> */}

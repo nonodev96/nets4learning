@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as tfVis from '@tensorflow/tfjs-vis'
 import * as alertHelper from '../../../utils/alertHelper'
 import {
   getHTML_DATASET_DESCRIPTION,
@@ -16,13 +15,16 @@ import { isProduction } from "../../../utils/utils";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import DebugLoadCSV from "../_Debug/DebugLoadCSV";
+import ReactGA from "react-ga4";
 
-export default class ModelReviewClassicClassification extends React.Component {
+export default class ModelReviewTabularClassification extends React.Component {
   constructor(props) {
     super(props);
-    this.dataSet = props.dataSet
-    this.dataset_ID = parseInt(props.dataSet ?? "0")
+    this.dataset = props.dataset
+    this.dataset_ID = parseInt(props.dataset ?? "0")
     this.dataset_key = getNameDatasetByID_ClassicClassification(this.dataset_ID)
+    ReactGA.send({ hitType: "pageview", page: "/ModelReviewTabularClassification/" + this.dataset_key, title: this.dataset_key });
+
     this.state = {
       loading         :
         <>
@@ -48,8 +50,6 @@ export default class ModelReviewClassicClassification extends React.Component {
       json  : null,
       csv   : null
     }
-    this._isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
-
 
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
@@ -87,7 +87,6 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
     this.handleFileUpload_CSV = this.handleFileUpload_CSV.bind(this)
 
-    // Debug
   }
 
   componentDidMount() {
@@ -370,7 +369,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                       </Row>
                     </>
                   ) : (
-                    <> {getHTML_DATASET_DESCRIPTION(0, this.dataSet)}</>
+                    <> {getHTML_DATASET_DESCRIPTION(0, this.dataset)}</>
                   )}
                 </Card.Body>
               </Card>

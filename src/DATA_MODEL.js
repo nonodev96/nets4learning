@@ -205,7 +205,7 @@ export const DATASET_DESCRIPTION = [
       <p>
         Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <a
         href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd"
-        target={"_blank"}>tensorflow/object_detection</a>.
+        target={"_blank"} rel={"noreferrer"}>tensorflow/object_detection</a>.
       </p>
       <p>
         Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección,
@@ -234,7 +234,7 @@ export const DATASET_DESCRIPTION = [
       <details>
         <summary>Referencias</summary>
         <ol>
-          <li>Puede encontrar más información <a href="http://cocodataset.org/" target={"_blank"}>Coco dataset</a></li>
+          <li>Puede encontrar más información <a href="http://cocodataset.org/" target={"_blank"} rel={"noreferrer"}>Coco dataset</a></li>
         </ol>
       </details>
     </>
@@ -345,8 +345,8 @@ export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
   return DATASET_DESCRIPTION[row][dataset];
 }
 
-const getNameDatasetByID_ClassicClassification = (dataSet) => {
-  switch (dataSet.toString()) {
+const getNameDatasetByID_ClassicClassification = (dataset) => {
+  switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -361,8 +361,8 @@ const getNameDatasetByID_ClassicClassification = (dataSet) => {
 }
 
 
-const getNameDatasetByID_ObjectDetection = (dataSet) => {
-  switch (dataSet.toString()) {
+const getNameDatasetByID_ObjectDetection = (dataset) => {
+  switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -378,8 +378,8 @@ const getNameDatasetByID_ObjectDetection = (dataSet) => {
   }
 }
 // TODO
-const getNameDatasetByID_ImageClassification = (dataSet) => {
-  switch (dataSet.toString()) {
+const getNameDatasetByID_ImageClassification = (dataset) => {
+  switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
+import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import {
   getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification,
@@ -38,13 +39,17 @@ const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'categoricalCrossentropy'
 const DEFAULT_ID_METRICS = 'accuracy'
 
-const DEFAULT_LAYER_ACTIVATION = 'sigmoid'
-const DEFAULT_LAYER_UNITS = 10
-const DEFAULT_LAYERS = [{ units: 10, activation: 'sigmoid' }, { units: 3, activation: 'softmax' }]
+const DEFAULT_START_LAYER_UNITS = 10
+const DEFAULT_START_LAYER_ACTIVATION = 'sigmoid'
+const DEFAULT_END_LAYER_UNITS = 3
+const DEFAULT_END_LAYER_ACTIVATION = 'softmax'
+const DEFAULT_LAYERS = [
+  { units: DEFAULT_START_LAYER_UNITS, activation: DEFAULT_START_LAYER_ACTIVATION },
+  { units: DEFAULT_END_LAYER_UNITS, activation: DEFAULT_END_LAYER_ACTIVATION }
+]
 
-export default function CustomDataSetClassicClassification(props) {
-  const { dataSet } = props
-  const dataset_key = getNameDatasetByID_ClassicClassification(dataSet)
+export default function CustomDatasetTabularClassification(props) {
+  const { dataset } = props
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
@@ -133,6 +138,8 @@ export default function CustomDataSetClassicClassification(props) {
   }
 
   useEffect(() => {
+    const dataset_key = getNameDatasetByID_ClassicClassification(dataset)
+    ReactGA.send({ hitType: "pageview", page: "/CustomDataSetClassicClassification/" + dataset_key, title: dataset_key });
     switch (dataset_key) {
       case MODEL_UPLOAD: {
         const uploadedArchitecture = localStorage.getItem('custom-architecture')
@@ -185,11 +192,11 @@ export default function CustomDataSetClassicClassification(props) {
     return () => {
       tfvis.visor().close()
     };
-  }, [dataSet])
+  }, [])
 
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
-    console.debug('ID Conjunto de datos: ', { dataSet })
+    console.debug('ID Conjunto de datos: ', { dataset })
     if (customDataSet_JSON === null) {
       await alertHelper.alertError('Primero debes de cargar los datos')
       return
@@ -206,7 +213,8 @@ export default function CustomDataSetClassicClassification(props) {
           html: `
 La capa de salida tiene la forma (* ,${last_layer_units}).
 <br> Debe tener la forma (*, ${classes_length})
-` }
+`
+        }
       )
       return
     }
@@ -267,9 +275,9 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
   }
 
   const handleClick_TestVector = async () => {
-    if (getNameDatasetByID_ClassicClassification(dataSet) === MODEL_UPLOAD) {
+    if (getNameDatasetByID_ClassicClassification(dataset) === MODEL_UPLOAD) {
       if (customDataSet_JSON === null) {
-        await alertHelper.alertError('Primero debes de cargar un dataSet')
+        await alertHelper.alertError('Primero debes de cargar un dataset')
         return
       }
     }
@@ -280,7 +288,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
     let dataset_JSON = null
     let input = [[], [1, stringToPredict.split(';').length]]
     try {
-      switch (getNameDatasetByID_ClassicClassification(dataSet)) {
+      switch (getNameDatasetByID_ClassicClassification(dataset)) {
         case MODEL_UPLOAD: {
           dataset_JSON = customDataSet_JSON
           break
@@ -515,10 +523,10 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                         <li>
                           <b>Tasa de aprendizaje</b>:<br/>
                           Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el
-                          entrenamiento y reglas para las pruebas.
+                          entrenamiento.
                         </li>
                         <li>
-                          <b>Nº de iteraciones</b>:<br/>
+                          <b>Número de iteraciones</b>:<br/>
                           Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).
                         </li>
                         <li>
@@ -574,20 +582,32 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                     <details>
                       <summary style={{ fontSize: "1.5em" }}>Crear y entrenar modelo</summary>
                       <p>
-                        Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón
-                        "Crear y entrenar modelo".
+                        Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón "Crear y entrenar modelo".
                       </p>
                       <p>
-                        Si todo ha sido correcto se añadirá una nueva entrada a la lista de modelos generados con el conjunto de datos
-                        seleccionado, se nos permitirá cargar en memoria modelos entrenados anteriormente.
+                        Si hemos entrenado el modelo con la función de métrica <i>Accuracy</i> nos aparecerá dos graficas en el visor.
+                        La más relevante para nosotros seá la de abajo, ya que en TensorFlow.js, <i>acc</i> y <i>val_acc</i> son métricas de evaluación comúnmente utilizadas en el entrenamiento de modelos de redes neuronales. <br/>
+                        <i>acc</i> representa la precisión (accuracy) del modelo en el conjunto de datos de entrenamiento. La precisión se define como el número de predicciones correctas dividido por el número total de predicciones. <br/>
+                        <i>val_acc</i> representa la precisión del modelo en el conjunto de datos de validación. La validación se utiliza para evaluar la capacidad del modelo para generalizar a nuevos datos que no han sido vistos durante el
+                        entrenamiento. <br/>
+                      </p>
+                      <p>
+                        La precisión de validación es importante para detectar el sobreajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos
+                        datos.
+                      </p>
+                      <p>
+                        En resumen, <b>acc</b> se refiere a la precisión en el conjunto de datos de entrenamiento y <b>val_acc</b> se refiere a la precisión en el conjunto de datos de validación. Ambas métricas son importantes para evaluar
+                        la capacidad del modelo para generalizar a nuevos datos.
+                      </p>
+                      <p>
+                        Si todo ha sido correcto se añadirá una nueva entrada a la lista de modelos generados con el conjunto de datos seleccionado, se nos permitirá cargar en memoria modelos entrenados anteriormente.
                       </p>
                     </details>
 
                     <details>
                       <summary style={{ fontSize: "1.5em" }}>Exportar modelo</summary>
                       <p>
-                        Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados,
-                        se nos permite exportar los modelos generados y guardarlos localmente.
+                        Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados, se nos permite exportar los modelos generados y guardarlos localmente.
                       </p>
                     </details>
 
@@ -595,19 +615,17 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                     <details>
                       <summary style={{ fontSize: "1.5em" }}>Predicción</summary>
                       <p>
-                        El formulario final nos permite seleccionar las características principales que se usan para determinar
-                        la clase.
+                        El formulario final nos permite seleccionar las características principales que se usan para determinar la clase.
                       </p>
                       <p>
-                        El valor de salida será un índice de la lista de clases, para realizar la predicción de la
-                        clase en función de las características debemos pulsar el botón "Ver resultado".
+                        El valor de salida será un índice de la lista de clases, para realizar la predicción de la clase en función de las características debemos pulsar el botón "Ver resultado".
                       </p>
                     </details>
 
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item key={"1"} eventKey={"description_dataset"}>
-                  <Accordion.Header><h3>1. {dataSet === '0' ? "Subir conjunto de datos" : LIST_MODEL_OPTIONS[0][dataSet]}</h3></Accordion.Header>
+                  <Accordion.Header><h3>1. {dataset === '0' ? "Subir conjunto de datos" : LIST_MODEL_OPTIONS[0][dataset]}</h3></Accordion.Header>
                   <Accordion.Body>
                     {{
                       '0': <>
@@ -617,10 +635,10 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                      labelFiles={"Fichero:"}
                                      function_DropAccepted={handleChange_FileUpload_TemplateDataset}/>
                       </>
-                    }[dataSet]}
-                    {dataSet !== '0' ? (
+                    }[dataset]}
+                    {dataset !== '0' ? (
                       // DEFAULT
-                      getHTML_DATASET_DESCRIPTION(0, dataSet)
+                      getHTML_DATASET_DESCRIPTION(0, dataset)
                     ) : ("")}
                   </Accordion.Body>
                 </Accordion.Item>
@@ -699,7 +717,6 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
             {/* SPECIFIC PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
               {/* ADD LAYER */}
-
               <Card>
                 <Card.Header className={"d-flex align-items-center justify-content-between"}>
                   <h3>Editor de capas</h3>
@@ -771,8 +788,6 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                   </Accordion>
                 </Card.Body>
               </Card>
-
-
             </Col>
 
             {/* GENERAL PARAMETERS */}
@@ -794,9 +809,9 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                     </Form.Text>
                   </Form.Group>
 
-                  {/* Nº OT ITERATIONS */}
+                  {/* Número OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                    <Form.Label>Nº de iteraciones</Form.Label>
+                    <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
@@ -889,9 +904,9 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header className={"d-flex"}>
+                <Card.Header className={"d-flex align-items-center"}>
                   <h3>Modelos</h3>
-                  <div className={"mt-1"}>
+                  <div className={"d-flex"}>
                     <Button variant={"outline-primary"}
                             className={"ms-3"}
                             size={"sm"}
@@ -926,7 +941,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                       <th>ID</th>
                       <th>Cargar</th>
                       <th>Aprendizaje</th>
-                      <th>Nº de iteraciones</th>
+                      <th>Número de iteraciones</th>
                       <th>Pruebas</th>
                       <th>Capas</th>
                       <th>Optimizador</th>
@@ -990,7 +1005,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
       {/* BLOCK 2 */}
       {(customDataSet_JSON && Model) &&
         (<DynamicFormDataset dataset_JSON={customDataSet_JSON}
-                             dataSet={dataSet}
+                             dataset={dataset}
                              stringToPredict={stringToPredict}
                              setStringToPredict={setStringToPredict}
                              handleChange_TestInput={handleChange_TestInput}
@@ -1002,14 +1017,16 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
           <Row>
             <Col>
               <Card className={"mt-3"}>
-                <Card.Header className={"d-flex align-items-center"}>
+                <Card.Header className={"d-flex align-items-center justify-content-between"}>
                   <h3>Debug</h3>
-                  <Button onClick={() => debug(customDataSet_JSON)}
-                          className={"ms-3"}
-                          size={"sm"}
-                          variant={"outline-primary"}>
-                    Debug
-                  </Button>
+                  <div className="d-flex">
+                    <Button onClick={() => debug(customDataSet_JSON)}
+                            className={"ms-3"}
+                            size={"sm"}
+                            variant={"outline-primary"}>
+                      Debug
+                    </Button>
+                  </div>
                 </Card.Header>
                 <Card.Body>
                   <div id="plot_div"></div>

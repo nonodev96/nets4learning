@@ -1,5 +1,8 @@
 import React from "react"
 import { Button, Card, Col, Container, Modal, Row } from "react-bootstrap"
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
+import { Bar } from "react-chartjs-2"
+import ReactGA from "react-ga4";
 import * as tf from "@tensorflow/tfjs"
 import * as tf_mobilenet from "@tensorflow-models/mobilenet"
 import * as alertHelper from "../../../utils/alertHelper"
@@ -17,11 +20,9 @@ import {
 import CustomCanvasDrawer from "../../../utils/customCanvasDrawer"
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 
-import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from "chart.js"
-import { Bar } from "react-chartjs-2"
 import { isMobile } from "../../../utils/utils";
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
 export default class ModelReviewImageClassification extends React.Component {
   bar_options = {
     responsive: true,
@@ -38,6 +39,11 @@ export default class ModelReviewImageClassification extends React.Component {
 
   constructor(props) {
     super(props)
+    this.dataset = props.dataset ?? "0"
+    this.dataset_ID = parseInt(props.dataset ?? "0")
+    this.dataset_key = getNameDatasetByID_ImageClassification(this.dataset_ID)
+    ReactGA.send({ hitType: "pageview", page: "/ModelReviewImageClassification/" + this.dataset_key, title: this.dataset_key });
+
     this.model = null
     this.files = {
       json: null,
@@ -69,8 +75,6 @@ export default class ModelReviewImageClassification extends React.Component {
         borderWidth: 1
       }],
     }
-    this.dataSet = props.dataSet ?? "0"
-    this.dataset_ID = parseInt(props.dataSet ?? "0")
     this.state = {
       modelLoaded: false,
       // mobilenet
@@ -104,7 +108,6 @@ export default class ModelReviewImageClassification extends React.Component {
     this.handleModal_Entered = this.handleModal_Entered.bind(this)
     this.handleModal_Exited = this.handleModal_Exited.bind(this)
 
-    // this.handleClick_btn_MNIST_PRUEBAS = this.handleClick_btn_MNIST_PRUEBAS.bind(this)
     this.handleClick_ImageUploaded_Predict = this.handleClick_ImageUploaded_Predict.bind(this)
     this.handleClick_ImageByExamples_OpenDrawAndPredict = this.handleClick_ImageByExamples_OpenDrawAndPredict.bind(this)
     this.handleCanvasDraw_Submit = this.handleCanvasDraw_Submit.bind(this)

@@ -12,7 +12,7 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 import {
-  getHTML_DATASET_DESCRIPTION,
+  getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification,
   getNameDatasetByID_ObjectDetection,
   LIST_MODEL_OPTIONS,
   LIST_MODELS_OBJECT_DETECTION,
@@ -22,18 +22,24 @@ import {
   MODEL_MOVE_NET_POSE_NET,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
+import ReactGA from "react-ga4";
 
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
 
-class ModelReviewObjectDetection extends React.Component {
+export default class ModelReviewObjectDetection extends React.Component {
 
   constructor(props) {
     super(props);
+    this.dataset = props.dataset
+    this.dataset_ID = parseInt(props.dataset ?? "0")
+    this.dataset_key = getNameDatasetByID_ObjectDetection(this.dataset_ID)
+    ReactGA.send({ hitType: "pageview", page: "/ModelReviewObjectDetection/" + this.dataset_key, title: this.dataset_key });
+
     this.state = {
       isCameraEnable: false,
       isProcessedImage: false,
-      dataset: parseInt(props.dataSet ?? "0"),
+      dataset: parseInt(props.dataset ?? "0"),
       isShowedAlert: false,
       modelDetector: null,
       loading:
@@ -72,7 +78,7 @@ class ModelReviewObjectDetection extends React.Component {
   async init() {
     const datasetName = getNameDatasetByID_ObjectDetection(this.state.dataset)
     const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === datasetName)
-    // console.log("ModelReviewObjectDetection -> INIT", { dataSet, datasetName, isValid })
+    // console.log("ModelReviewObjectDetection -> INIT", { dataset, datasetName, isValid })
 
     if (!isValid) {
       await alertHelper.alertError("Error en la selección del modelo")
@@ -275,16 +281,16 @@ class ModelReviewObjectDetection extends React.Component {
     await this.processData(model, ctx, img_or_video)
   }
 
-  async processImage(model) {
-    const originalImageCanvas = document.getElementById('originalImageCanvas')
-    const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
-
-    const processImageCanvas = document.getElementById('processImageCanvas')
-    const processImageCanvas_ctx = processImageCanvas.getContext('2d')
-
-    const resultCanvas = document.getElementById('resultCanvas')
-    const resultCanvas_ctx = resultCanvas.getContext('2d')
-  }
+  // async processImage(model) {
+  //   const originalImageCanvas = document.getElementById('originalImageCanvas')
+  //   const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
+  //
+  //   const processImageCanvas = document.getElementById('processImageCanvas')
+  //   const processImageCanvas_ctx = processImageCanvas.getContext('2d')
+  //
+  //   const resultCanvas = document.getElementById('resultCanvas')
+  //   const resultCanvas_ctx = resultCanvas.getContext('2d')
+  // }
 
   async processData(model, ctx, img_or_video) {
     switch (getNameDatasetByID_ObjectDetection(this.state.dataset)) {
@@ -539,5 +545,3 @@ class ModelReviewObjectDetection extends React.Component {
     )
   }
 }
-
-export default ModelReviewObjectDetection

@@ -29,7 +29,7 @@ export default function N4LNavBar() {
               className="d-inline-block align-top"
               alt="N4L"
             />
-            Nets4learning
+            Nets4Learning
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>

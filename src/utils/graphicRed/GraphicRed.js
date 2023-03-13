@@ -12,30 +12,25 @@ export default function GraphicRed(props) {
 
   for (let [index, element] of Object.entries(layer)) {
     index = parseInt(index)
-    switch (tipo) {
-      case 0: {
-        nodes.push({
-          id   : index,
-          label: `Capa ${index + 1} \n ${element.units} - ${element.activation}`,
-          title: 'Capa ' + (index + 1)
-        })
-        break
-      }
-      case 1: {
-        nodes.push({
-          id   : index,
-          label: element.class,
-          title: 'Capa ' + (index + 1)
-        })
-        break
-      }
+    if (tipo === 0) {
+      nodes.push({
+        id   : index,
+        label: `Capa ${index + 1} \n ${element.units} - ${element.activation}`,
+        title: 'Capa ' + (index + 1)
+      })
+    } else if (tipo === 1) {
+      nodes.push({
+        id   : index,
+        label: element.class,
+        title: 'Capa ' + (index + 1)
+      })
     }
   }
 
   for (let index = 1; index < layer.length; index++) {
     edges.push({
       from: index - 1,
-      to: index
+      to  : index
     })
   }
 

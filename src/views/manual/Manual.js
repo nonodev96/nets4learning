@@ -39,29 +39,31 @@ export default function Manual(props) {
                 <Card.Header><h3>Objetivos de la herramienta</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    Este proyecto se muestra como un ejemplo de las aplicaciones que se le puede dar a una en el aprendizaje automático, es por ello que vamos a abordar desde tres enfoques (Clasificación, Identificar objetos, clasificar
-                    imágenes), cada uno de estos enfoques se explican a continuación en las siguientes entradas con una breve descripción de la técnica y como usar la herramienta con esa técnica.
+                    Este proyecto muestra distintas tareas que pueden realizar las Redes Neuronales cuando se entrenan mediante aprendizaje automático, es por ello que vamos a abordar desde tres enfoques
+                    (Clasificación, Identificar objetos, clasificar imágenes), cada uno de estos enfoques se explican a continuación en las siguientes entradas con una breve descripción de la técnica y como usar la herramienta con esa
+                    técnica.
                   </Card.Text>
                   <Card.Text>
                     Algunos de los motivos por los que aprender redes neuronales es importante son los siguientes:
                   </Card.Text>
                   <ol>
                     <li>
-                      <b>Aplicaciones prácticas</b>: Las redes neuronales se utilizan en una amplia variedad de aplicaciones, desde reconocimiento de voz y visión por computadora hasta análisis de datos y predicción de resultados. Aprender
-                      sobre redes neuronales puede ayudar a los profesionales a desarrollar habilidades que pueden aplicarse en campos como la medicina, la ingeniería, la ciencia de datos, el marketing y muchos otros.
+                      <b>Aplicaciones prácticas</b>: Las redes neuronales se utilizan en una amplia variedad de aplicaciones, desde reconocimiento de voz y visión por computadora hasta análisis de datos y predicción de resultados.
+                      Aprender sobre redes neuronales puede ayudar a los profesionales a desarrollar habilidades que pueden aplicarse en campos como la medicina, la ingeniería, la ciencia de datos, el marketing y muchos otros.
                     </li>
                     <li>
-                      <b>Solución de problemas complejos</b>: Las redes neuronales son útiles para resolver problemas complejos que tienen múltiples variables y relaciones no lineales. Al aprender redes neuronales, los profesionales pueden
-                      desarrollar soluciones más efectivas para estos tipos de problemas y mejorar la precisión y la eficiencia de sus análisis.
+                      <b>Solución de problemas complejos</b>: Las redes neuronales son útiles para resolver problemas complejos que tienen múltiples variables y relaciones no lineales.
+                      Al aprender redes neuronales, los profesionales pueden desarrollar soluciones más efectivas para estos tipos de problemas y mejorar la precisión y la eficiencia de sus análisis.
                     </li>
                     <li>
-                      <b>Innovación tecnológica</b>: Las redes neuronales son una tecnología innovadora que sigue evolucionando y mejorando. Aprender sobre redes neuronales puede ayudar a los profesionales a mantenerse actualizados en las
-                      últimas tendencias y desarrollos en el campo del aprendizaje automático y la inteligencia artificial.
+                      <b>Innovación tecnológica</b>: Las redes neuronales son una tecnología innovadora que sigue evolucionando y mejorando.
+                      Aprender sobre redes neuronales puede ayudar a los profesionales a mantenerse actualizados en las últimas tendencias y desarrollos en el campo del aprendizaje automático y la inteligencia artificial.
                     </li>
                   </ol>
                   <Card.Text>
-                    Las redes neuronales son una forma de aprendizaje automático que imita la forma en que funciona el cerebro humano. Estas redes están diseñadas para aprender y mejorar continuamente a partir de datos y experiencias
-                    pasadas, permitiendo a las máquinas realizar tareas complejas que antes eran imposibles o muy difíciles para los sistemas programados tradicionales.
+                    Las redes neuronales son una forma de aprendizaje automático que imita la forma en que funciona el cerebro humano.
+                    Estas redes están diseñadas para aprender y mejorar continuamente a partir de datos y experiencias pasadas, permitiendo a las máquinas realizar tareas complejas que antes eran imposibles o muy difíciles para los sistemas
+                    programados tradicionales.
                   </Card.Text>
                   <Card.Text>
                     En resumen, aprender redes neuronales es importante porque puede ayudar a los profesionales a desarrollar habilidades que son valiosas en una amplia variedad de campos, resolver problemas complejos de manera más efectiva
@@ -99,8 +101,8 @@ export default function Manual(props) {
                       Se debe dejar que la ultima capa de la red tenga el mismo numero de unidades que clases a predecir.
                     </p>
                     <p>
-                      A la derecha contamos con un editor de las distintos tipos de datos de para el entrenamiento, tasa de aprendizaje, numero de iteraciones, tamaño del banco de pruebas, función del optimizador, función de pérdida, funcion
-                      de la métrica.
+                      A la derecha contamos con un editor de las distintos tipos de datos de para el entrenamiento, tasa de aprendizaje, numero de iteraciones, tamaño del banco de pruebas, función del optimizador, función de pérdida,
+                      función de la métrica.
                     </p>
                     <p>
                       Debemos pulsar el botón de "Crear y entrenar modelo" para que se inicie el proceso de entrenamiento de la red neuronal.
@@ -169,7 +171,6 @@ export default function Manual(props) {
                       <li>Entrenamos la red neuronal.</li>
                       <li>Predecir en función de los tipos de datos seleccionados (categóricos, reales, numéricos, etc...).</li>
                     </ol>
-
                     <p>Debes tener en cuenta la forma de los datos, puedes jugar con las capas de la red y descubrir diferentes comportamientos de la red.</p>
                     <p>Se recomienda para tareas de clasificación usar en las capas iniciales funciones de activación sigmoid, y en las capas finales funciones de activación softmax.</p>
                     <p>Debes tener el número de unidades de la última capa que coincida con el número de categorías que tu red puede predecir.</p>

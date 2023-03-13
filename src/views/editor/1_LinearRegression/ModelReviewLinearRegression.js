@@ -1,16 +1,16 @@
 import { Form } from 'react-bootstrap'
 
 export default function ModelReviewLinearRegression(props) {
-  const { dataSet } = props
 
   // TODO
-  const handleClickPlay = async (event) => {
+  const handleSubmit_Play = async (event) => {
+    event.preventDefault()
 
   }
 
   return (
     <>
-      <Form onSubmit={handleClickPlay} id={"ModelReviewLinearRegression"}>
+      <Form onSubmit={handleSubmit_Play} id={"ModelReviewLinearRegression"}>
 
       </Form>
     </>

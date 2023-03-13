@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from '../../../modelos/ClassificationHelper_MNIST'
+import ReactGA from "react-ga4";
+import * as classificationHelper_MNIST from '../../../modelos/ClassificationHelper_MNIST'
 import * as alertHelper from "../../../utils/alertHelper"
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
-import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
+import { DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
 import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
@@ -13,16 +14,14 @@ import {
   TYPE_METRICS
 } from "../../../modelos/ArchitectureTypesHelper";
 
-
 export default function ObjectDetection(props) {
-  const { dataSet } = props
+  const { dataset } = props
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
-  const [nLayer, setNLayer] = useState()
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
   const [Contador, setContador] = useState(0)
-  const [UploadedArchitecture, setUploadedArchitecture] = useState(false)
+
   const NumberEpochs = 10
   const learningValue = 1
   const [Optimizer, setOptimizer] = useState('Adam')
@@ -31,16 +30,19 @@ export default function ObjectDetection(props) {
   const [Model, setModel] = useState()
   const [NoEpochs, setNoEpochs] = useState(2)
   const [Recarga, setRecarga] = useState(false)
-  const [ImageUploaded, setImageUploaded] = useState(false)
-
 
   useEffect(() => {
+    const dataset_ID = parseInt(dataset)
+    const dataset_key = getNameDatasetByID_ClassicClassification(dataset_ID)
+    ReactGA.send({ hitType: "pageview", page: "/ObjectDetection/" + dataset_key, title: dataset_key });
+  }, [])
+
+  useEffect(() => {
+
     if (Recarga) {
       console.log(Layer)
     } else {
-      const uploadedArchitecture = localStorage.getItem(
-        'custom-architecture-IMG',
-      )
+      const uploadedArchitecture = localStorage.getItem('custom-architecture-IMG')
       if (uploadedArchitecture !== '{}') {
         setLayer([
           {
@@ -52,7 +54,6 @@ export default function ObjectDetection(props) {
             kernelInitializer: 'varianceScaling',
           },
         ])
-        setNLayer(1)
         setActiveLayer(0)
       } else {
         setLayer([
@@ -79,7 +80,6 @@ export default function ObjectDetection(props) {
           },
           { class: 'MaxPooling2D', poolSize: [2, 2], strides2: [2, 2] },
         ])
-        setNLayer(4)
         setRecarga(true)
         setActiveLayer(0)
       }
@@ -90,7 +90,7 @@ export default function ObjectDetection(props) {
   const handleClickPlay = async (event) => {
     event.preventDefault()
     if (Layer[0].class === 'Conv2D') {
-      const model = await numberClass.MNIST_run(
+      const model = await classificationHelper_MNIST.MNIST_run(
         parseInt(NoEpochs),
         document.getElementById('FormOptimizer').value,
         Layer,
@@ -112,7 +112,7 @@ export default function ObjectDetection(props) {
 
       const small_canvas = document.getElementById('small_canvas')
       const ctx2 = small_canvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, small_canvas)
+      classificationHelper_MNIST.resample_single(canvas, 28, 28, small_canvas)
 
       const imgData = ctx2.getImageData(0, 0, 28, 28)
       // El arreglo completo
@@ -150,7 +150,7 @@ export default function ObjectDetection(props) {
     const canvas = document.getElementById('imageCanvas')
     const small_canvas = document.getElementById('smallcanvas')
     const ctx2 = small_canvas.getContext('2d')
-    numberClass.resample_single(canvas, 28, 28, small_canvas)
+    classificationHelper_MNIST.resample_single(canvas, 28, 28, small_canvas)
 
     const imgData = ctx2.getImageData(0, 0, 28, 28)
     //El arreglo completo
@@ -197,7 +197,6 @@ export default function ObjectDetection(props) {
       kernelInitializer: 'varianceScaling',
     })
     setLayer(array)
-    setNLayer(nLayer + 1)
   }
 
   const handleClick_RemoveLayer = async (idLayer) => {
@@ -211,64 +210,63 @@ export default function ObjectDetection(props) {
       }
       if (ActiveLayer === idLayer && idLayer > 0) setActiveLayer(idLayer - 1)
       setLayer(array2)
-      setNLayer(nLayer - 1)
     }
   }
 
   //PARÁMETROS DE LAS CAPAS
-  const handleChangeKernel = (index) => {
-    let array = Layer
-    array[index].kernelSize = parseInt(document.getElementById(`formKernelLayer${index}`).value)
-    setLayer(array)
-  }
-
-  const handleChangeFilters = (index) => {
-    let array = Layer
-    array[index].filters = parseInt(document.getElementById(`formFiltersLayer${index}`).value)
-    setLayer(array)
-  }
-
-  const handleChangeStrides = (index) => {
-    let array = Layer
-    array[index].strides = parseInt(
-      document.getElementById(`formStridesLayer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChangePoolSize = (index, id) => {
-    let array = Layer
-    array[index].poolSize[id] = parseInt(
-      document.getElementById(`formPoolSize${id}Layer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChangeStridesMax = (index, id) => {
-    let array = Layer
-    array[index].strides[id] = parseInt(
-      document.getElementById(`formStrides${id}Layer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChangeClass = (index) => {
-    let array = Layer
-    array[index].class = document.getElementById(`formClass${index}`).value
-    if (array[index].class === 'Conv2D') {
-      array[index].kernelSize = 5
-      array[index].filters = 10
-      array[index].strides = 1
-      array[index].activation = 'Sigmoid'
-      array[index].kernelInitializer = 'varianceScaling'
-    } else {
-      array[index].poolSize = [2, 2]
-      array[index].strides = [2, 2]
-    }
-    setLayer(array)
-    let aux = Contador
-    setContador(aux++)
-  }
+  // const handleChangeKernel = (index) => {
+  //   let array = Layer
+  //   array[index].kernelSize = parseInt(document.getElementById(`formKernelLayer${index}`).value)
+  //   setLayer(array)
+  // }
+  //
+  // const handleChangeFilters = (index) => {
+  //   let array = Layer
+  //   array[index].filters = parseInt(document.getElementById(`formFiltersLayer${index}`).value)
+  //   setLayer(array)
+  // }
+  //
+  // const handleChangeStrides = (index) => {
+  //   let array = Layer
+  //   array[index].strides = parseInt(
+  //     document.getElementById(`formStridesLayer${index}`).value,
+  //   )
+  //   setLayer(array)
+  // }
+  //
+  // const handleChangePoolSize = (index, id) => {
+  //   let array = Layer
+  //   array[index].poolSize[id] = parseInt(
+  //     document.getElementById(`formPoolSize${id}Layer${index}`).value,
+  //   )
+  //   setLayer(array)
+  // }
+  //
+  // const handleChangeStridesMax = (index, id) => {
+  //   let array = Layer
+  //   array[index].strides[id] = parseInt(
+  //     document.getElementById(`formStrides${id}Layer${index}`).value,
+  //   )
+  //   setLayer(array)
+  // }
+  //
+  // const handleChangeClass = (index) => {
+  //   let array = Layer
+  //   array[index].class = document.getElementById(`formClass${index}`).value
+  //   if (array[index].class === 'Conv2D') {
+  //     array[index].kernelSize = 5
+  //     array[index].filters = 10
+  //     array[index].strides = 1
+  //     array[index].activation = 'Sigmoid'
+  //     array[index].kernelInitializer = 'varianceScaling'
+  //   } else {
+  //     array[index].poolSize = [2, 2]
+  //     array[index].strides = [2, 2]
+  //   }
+  //   setLayer(array)
+  //   let aux = Contador
+  //   setContador(aux++)
+  // }
 
   const handleChange_Class = (e) => {
     const option = e.target.value
@@ -296,40 +294,40 @@ export default function ObjectDetection(props) {
     setLayer(array)
   }
 
-  const handleChangeActivation = (index) => {
-    let array = Layer
-    array[index].activation = document.getElementById(`formActivationLayer${index}`).value
-    setLayer(array)
-  }
+  // const handleChangeActivation = (index) => {
+  //   let array = Layer
+  //   array[index].activation = document.getElementById(`formActivationLayer${index}`).value
+  //   setLayer(array)
+  // }
 
   // PARÁMETROS GENERALES
-  const handleChangeNoEpochs = () => {
+  const handleChange_NumberEpochs = () => {
     let aux = document.getElementById('FormNumberOfEpochs').value
     setNoEpochs(aux)
   }
 
-  const handleChangeLoss = () => {
-    let aux = document.getElementById('FormLoss').value
-    if (aux !== undefined) {
-      setLossValue(aux)
-    }
-  }
-
-  const handleChangeOptimization = () => {
+  const handleChange_IdOptimization = () => {
     let aux = document.getElementById('FormOptimizer').value
     if (aux !== undefined) {
       setOptimizer(aux)
     }
   }
 
-  const handleChangeMetrics = () => {
+  const handleChange_IdLoss = () => {
+    let aux = document.getElementById('FormLoss').value
+    if (aux !== undefined) {
+      setLossValue(aux)
+    }
+  }
+
+  const handleChange_IdMetrics = () => {
     let aux = document.getElementById('FormMetrics').value
     if (aux !== undefined) {
       setMetricsValue(aux)
     }
   }
 
-  const handleChangeFileUpload = async (e) => {
+  const handleChange_FileUpload = async (e) => {
     const tgt = e.target || window.event.srcElement
     const files = tgt.files
 
@@ -340,7 +338,6 @@ export default function ObjectDetection(props) {
       canvas.width = 200
       canvas.height = 200
       ctx.drawImage(this, 0, 0)
-      setImageUploaded(true)
     }
 
     function failed() {
@@ -374,10 +371,10 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    {DATASET_DESCRIPTION[3][dataSet]}
+                    {DATASET_DESCRIPTION[3][dataset]}
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -387,7 +384,7 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
                 <Card.Body>
                   <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
                   <ul>
@@ -524,13 +521,13 @@ export default function ObjectDetection(props) {
                     </Form.Text>
                   </Form.Group>
 
-                  {/* Nº OT ITERATIONS */}
+                  {/* Número OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                     <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={NumberEpochs}
-                                  onChange={handleChangeNoEpochs}/>
+                                  onChange={handleChange_NumberEpochs}/>
                     <Form.Text className="text-muted">
                       *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                     </Form.Text>
@@ -541,7 +538,7 @@ export default function ObjectDetection(props) {
                     <Form.Label>Selecciona el optimizador</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={Optimizer}
-                                 onChange={handleChangeOptimization}>
+                                 onChange={handleChange_IdOptimization}>
                       <option>Selecciona el optimizador</option>
                       {TYPE_OPTIMIZER.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -556,7 +553,7 @@ export default function ObjectDetection(props) {
                     <Form.Label>Selecciona la función de pérdida</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={LossValue}
-                                 onChange={handleChangeLoss}>
+                                 onChange={handleChange_IdLoss}>
                       <option>Selecciona la función de pérdida</option>
                       {TYPE_LOSSES.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -572,7 +569,7 @@ export default function ObjectDetection(props) {
                     <Form.Label>Selecciona la métrica</Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={MetricsValue}
-                                 onChange={handleChangeMetrics}>
+                                 onChange={handleChange_IdMetrics}>
                       <option>Selecciona la métrica</option>
                       {TYPE_METRICS.map((item, id) => {
                         return (<option key={id} value={item}>{item}</option>)
@@ -686,7 +683,7 @@ export default function ObjectDetection(props) {
                     <input style={{ marginBottom: '2rem' }}
                            type="file"
                            name="doc"
-                           onChange={handleChangeFileUpload}></input>
+                           onChange={handleChange_FileUpload}></input>
                     <canvas height="200" width="200" id="imageCanvas"></canvas>
                     <button type="button"
                             onClick={handleVectorTestImageUpload}

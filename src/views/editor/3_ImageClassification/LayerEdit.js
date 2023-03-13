@@ -4,7 +4,6 @@ export default function LayerEdit(props) {
   const {
     index,
     item,
-    handle_RemoveLayer,
     handleChange_Kernel,
     handleChange_Activation,
     handleChange_Filters,

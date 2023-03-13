@@ -1,5 +1,5 @@
 import N4LNavBar from "../../components/navBar/N4LNavBar";
-import { Accordion, Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Accordion, Col, Container, Row, Table } from "react-bootstrap";
 import N4LFooter from "../../components/footer/N4LFooter";
 import React from "react";
 
@@ -15,8 +15,8 @@ export default function Glossary(props) {
               <h1>Glosario</h1>
             </Col>
             <Col xl={12} className={"mt-3"}>
-              <Accordion alwaysOpen defaultValue={"layers"}>
-                <Accordion.Item eventKey={"tabular"}>
+              <Accordion alwaysOpen defaultValue={"classification-tabular"}>
+                <Accordion.Item eventKey={"classification-tabular"}>
                   <Accordion.Header><h3>Descripción clasificación tabular</h3></Accordion.Header>
                   <Accordion.Body>
                     <p>
@@ -38,7 +38,7 @@ export default function Glossary(props) {
                     </p>
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"objects"}>
+                <Accordion.Item eventKey={"objects-detection"}>
                   <Accordion.Header><h3>Descripción identificación de objetos</h3></Accordion.Header>
                   <Accordion.Body>
                     <p>
@@ -62,7 +62,7 @@ export default function Glossary(props) {
                     </p>
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"imagen"}>
+                <Accordion.Item eventKey={"classification-imagen"}>
                   <Accordion.Header><h3>Descripción clasificador de imágenes</h3></Accordion.Header>
                   <Accordion.Body>
                     <p>
@@ -89,41 +89,17 @@ export default function Glossary(props) {
                     </p>
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"layers"}>
-                  <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
-                  <Accordion.Body>
-                    <Table striped bordered hover>
-                      <thead>
-                      <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <th>Dense</th>
-                        <td>Esta función se utiliza para crear capas completamente conectadas, en las que cada salida depende de cada entrada.</td>
-                      </tr>
-                      <tr>
-                        <th>Convolutional</th>
-                        <td>Existen tres tipos de capas Convolutional, 1d, 2d y 3d. Estas capas nos permiten crear un núcleo de convolución que se transforma con los datos de entrada sobre el número de dimensiones elegido según la capa.
-                        </td>
-                      </tr>
-                      <tr>
-                        <th>Merge</th>
-                        <td>Se trata de un conjunto de funciones que definen diferentes operaciones como añadir o concatenar tensores a una capa.</td>
-                      </tr>
-                      <tr>
-                        <th>Normalization</th>
-                        <td>Nos permite normalizar la activación de la capa anterior es decir mantiene la activación media cerca de 0 y la desviación estándar de activación cerca de 1.</td>
-                      </tr>
-                      </tbody>
-                    </Table>
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey={"0"}>
+              </Accordion>
+              <hr/>
+              <Accordion>
+                <Accordion.Item eventKey={"functions-activations"}>
                   <Accordion.Header><h3>Funciones de activación</h3></Accordion.Header>
                   <Accordion.Body>
+                    <p>
+                      Una función de activación es una función matemática utilizada en una red neuronal artificial para determinar la salida de una neurona o de un conjunto de neuronas en función de la entrada recibida.
+                      La función de activación introduce no linealidad en la red neuronal, lo que permite a la red aprender patrones más complejos en los datos de entrada.
+                      Ejemplos comunes de funciones de activación son la función sigmoidea, la función ReLU y la función tangente hiperbólica.
+                    </p>
                     <Table striped bordered hover>
                       <thead>
                       <tr>
@@ -169,9 +145,17 @@ export default function Glossary(props) {
                     </Table>
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"1"}>
+                <Accordion.Item eventKey={"functions-optimizers"}>
                   <Accordion.Header><h3>Funciones de optimización</h3></Accordion.Header>
                   <Accordion.Body>
+                    <p>
+                      Una función de optimización es una técnica matemática utilizada para minimizar o maximizar una función objetivo.
+                      En el contexto del aprendizaje automático, las funciones objetivo suelen ser funciones de error que miden la discrepancia entre la salida de la red neuronal y los valores de salida deseados para un conjunto de datos de
+                      entrenamiento dado.
+                      La función de optimización ajusta los parámetros de la red neuronal para minimizar la función objetivo y, por lo tanto, mejorar su capacidad para hacer predicciones precisas en nuevos datos de entrada.
+                      Ejemplos comunes de funciones de optimización son el descenso del gradiente estocástico y el algoritmo de Adam.
+                    </p>
+
                     <Table striped bordered hover>
                       <thead>
                       <tr>
@@ -223,12 +207,25 @@ export default function Glossary(props) {
                     </Table>
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"2"}>
+                <Accordion.Item eventKey={"functions-losses"}>
                   <Accordion.Header><h3>Funciones de pérdida</h3></Accordion.Header>
                   <Accordion.Body>
-                    <p>Una función de pérdida, es una función que evalúa la desviación entre los diferentes valores obtenidos de predicciones del modelo con el valor real que corresponde. El objetivo es que el valor <i>loss</i> sea muy
-                      bajo lo que implica que la red neuronal es muy eficiente.</p>
-                    <p>En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar.</p>
+                    <p>
+                      En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada.
+                      En otras palabras, la función de pérdida mide qué tan bien el modelo se ajusta a los datos de entrenamiento.
+                    </p>
+                    <p>
+                      El objetivo de un algoritmo de aprendizaje automático es minimizar la función de pérdida, lo que significa encontrar el conjunto de parámetros del modelo que mejor se ajuste a los datos de entrenamiento.
+                      Por lo tanto, la elección de la función de pérdida es muy importante, ya que puede afectar la capacidad del modelo para aprender correctamente los patrones en los datos y hacer predicciones precisas en nuevos datos.
+                    </p>
+                    <p>
+                      Existen diferentes funciones de pérdida para diferentes tipos de problemas de aprendizaje automático, como la regresión, la clasificación binaria y la clasificación multiclase.
+                      Ejemplos comunes de funciones de pérdida incluyen el error cuadrático medio (MSE) para la regresión, la entropía cruzada binaria para la clasificación binaria y la entropía cruzada categórica para la clasificación
+                      multiclase.
+                    </p>
+                    <p>
+                      En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar.
+                    </p>
                     <Table striped bordered hover>
                       <thead>
                       <tr>
@@ -290,23 +287,9 @@ export default function Glossary(props) {
                       </tr>
                       </tbody>
                     </Table>
-                    {/*
-                  <ol>
-                    <li><b>AbsoluteDifference (Acervolima, s.f.) (Diferencia absoluta)</b>: calcula en valor absoluto la distancia al objetivo. Esta función es utilizada en problemas de regresión.</li>
-                    <li><b>ComputeWeightedLoss (Acervolima, s.f.) (Media ponderada)</b>: calcula la pérdida ponderada entre dos tensores dados.</li>
-                    <li><b>CosineDistance (Acervolima, s.f.) (Distancia del coseno)</b>: calcula la pérdida aplicando el coseno de la distancia entre dos tensores.</li>
-                    <li><b>HingeLoss (Rennie & Srebro, 2005) (Pérdida de bisagra)</b>: calcula la pérdida de bisagra entre dos tensores. Se aplica en problemas de clasificación.</li>
-                    <li><b>HuberLoss (Pérdida Huber)</b>: es usada en problemas de regresión, esta calcula la pérdida provocada por el procedimiento de estimación.</li>
-                    <li><b>LogLoss (Shen, 2005) (Pérdida logarítmica)</b>: "LogLoss" o "Logistic Loss" es una función convexa que crece linealmente para números negativos y la hace poco sensible a valores atípicos. Calcula la pérdida logarítmica entre dos tensores.</li>
-                    <li><b>MeanSquaredError (Acervolima, s.f.)(Error cuadrático medio)</b>: calcula de forma geométrica la distancia al cuadrado al objetivo, esta función es utilizada en problemas de regresión.</li>
-                    <li><b>CategoricalCrossEntropy (Acervolima, s.f.)</b>: mide la distancia entre distribuciones de probabilidad. Es aplicada en redes cuya capa de salida es una probabilidad.</li>
-                    <li><b>SigmoidCrossEntropy (Acervolima, s.f.)</b>: se trata de una variante de la función “CategoricalCrossEntropy”, en este caso calcula la pérdida en un valor entre 0 y 1.</li>
-                    <li><b>SoftmaxCrossEntropy (Bendersky, 2016)</b>: se aplica una combinación de las funciones softmax y CrossEntropy calculando la pérdida de la red.</li>
-                  </ol>
-                  */}
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"3"}>
+                <Accordion.Item eventKey={"functions-metrics"}>
                   <Accordion.Header><h3>Funciones de métrica</h3></Accordion.Header>
                   <Accordion.Body>
                     <Table striped bordered hover>
@@ -360,24 +343,41 @@ export default function Glossary(props) {
                       </tr>
                       </tbody>
                     </Table>
-                    {/*
-                    <ol>
-                    <li><b>BinaryAccuracy (Acervolima, s.f.) (Precisión binaria)</b>: calcula la frecuencia con la que las predicciones coinciden con las etiquetas binarias.</li>
-                    <li><b>BinaryCrossentropy (Saxena, 2021) (Entropía cruzada binaria)</b>: es el promedio negativo del logaritmo de las probabilidades predichas que se han corregido.</li>
-                    <li><b>CategoricalAccuracy (Exactitud categórica)</b>: calcula la frecuencia con la que las predicciones coinciden con las etiquetas one-hot.</li>
-                    <li><b>CategoricalCrossentropy (Entropía cruzada categórica)</b>: calcula la métrica de entropía cruzada entre las etiquetas y las predicciones.</li>
-                    <li><b>CosineProximity (Proximidad del coseno)</b>: calcula entre las etiquetas y las predicciones el coseno de la proximidad. Normalmente se obtienen valores negativos.</li>
-                    <li><b>MeanAbsoluteError (Error absoluto medio)</b>: en estadística, es una medida de la diferencia entre dos variables continuas, aplicada a los modelos de aprendizaje automático estas variables son las etiquetas y las predicciones.</li>
-                    <li><b>MeanAbsolutePercentageError (Porcentaje de error absoluto medio)</b>: de igual forma que “MeanAbsoluteError” calcula la diferencia entre las etiquetas y las predicciones, pero en este caso con un porcentaje.</li>
-                    <li><b>MeanSquaredError (Error cuadrático medio)</b>: determina el error cuadrático medio entre las etiquetas y las predicciones.</li>
-                    <li><b>Precisión</b>:</li>
-                    <li><b>Recall</b>:</li>
-                    <li><b>SparseCategoricalAccuracy</b>:</li>
-                    </ol>
-                    */}
                   </Accordion.Body>
                 </Accordion.Item>
-                <Accordion.Item eventKey={"Descripción normalización"}>
+                <Accordion.Item eventKey={"layers"} style={{ display: 'none' }}>
+                  <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
+                  <Accordion.Body>
+                    <Table striped bordered hover>
+                      <thead>
+                      <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <th>Dense</th>
+                        <td>Esta función se utiliza para crear capas completamente conectadas, en las que cada salida depende de cada entrada.</td>
+                      </tr>
+                      <tr>
+                        <th>Convolutional</th>
+                        <td>Existen tres tipos de capas Convolutional, 1d, 2d y 3d. Estas capas nos permiten crear un núcleo de convolución que se transforma con los datos de entrada sobre el número de dimensiones elegido según la capa.
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Merge</th>
+                        <td>Se trata de un conjunto de funciones que definen diferentes operaciones como añadir o concatenar tensores a una capa.</td>
+                      </tr>
+                      <tr>
+                        <th>Normalization</th>
+                        <td>Nos permite normalizar la activación de la capa anterior es decir mantiene la activación media cerca de 0 y la desviación estándar de activación cerca de 1.</td>
+                      </tr>
+                      </tbody>
+                    </Table>
+                  </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey={"normalization"} style={{ display: 'none' }}>
                   <Accordion.Header><h3>Normalización</h3></Accordion.Header>
                   <Accordion.Body>
                     <p>La normalización de datos es un paso importante en el procesamiento de datos para redes neuronales. La normalización se refiere a la transformación de los datos de entrada para que tengan una escala

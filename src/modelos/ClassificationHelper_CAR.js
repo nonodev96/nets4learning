@@ -6,7 +6,7 @@ export const MODEL_CAR = {
   URL             : 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation',
   DESCRIPTION     : <>
     <p>El conjunto de datos <i>Car Evaluation</i> permite evaluar vehículos a través de la siguiente estructura</p>
-    <p>Para obtener más información acerca de este conjunto de datos visita el repositorio <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noopener">ics.uci.edu</a>.</p>
+    <p>Para obtener más información acerca de este conjunto de datos visita el repositorio <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">ics.uci.edu</a>.</p>
     <details>
       <summary>Información</summary>
       <ol>
@@ -92,7 +92,7 @@ export const MODEL_CAR = {
   DATA_CLASSES_KEYS: [
     "Precio de compra",
     "Precio del mantenimiento",
-    "Nº de puertas",
+    "Número de puertas",
     "Capacidad de personas",
     "Tamaño del maletero",
     "Seguridad estimada"

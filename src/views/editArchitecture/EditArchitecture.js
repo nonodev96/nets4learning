@@ -6,8 +6,8 @@ import N4LFooter from '../../components/footer/N4LFooter'
 import N4LNavBar from '../../components/navBar/N4LNavBar'
 import './EdtiArchitecture.css'
 
-import ModelReviewClassicClassification from '../editor/0_TabularClassification/ModelReviewClassicClassification'
-import CustomDataSetClassicClassification from '../editor/0_TabularClassification/CustomDataSetClassicClassification'
+import ModelReviewTabularClassification from '../editor/0_TabularClassification/ModelReviewTabularClassification'
+import CustomDatasetTabularClassification from '../editor/0_TabularClassification/CustomDatasetTabularClassification'
 
 import ModelReviewLinearRegression from "../editor/1_LinearRegression/ModelReviewLinearRegression";
 import LinearRegression from "../editor/1_LinearRegression/LinearRegression";
@@ -29,29 +29,29 @@ export default function EditArchitecture() {
     switch (id.toString()) {
       case '0':
         if (tipo === '0') {
-          return <ModelReviewClassicClassification dataSet={ejemplo}/>
+          return <ModelReviewTabularClassification dataset={ejemplo}/>
         } else {
-          return <CustomDataSetClassicClassification dataSet={ejemplo}/>
+          return <CustomDatasetTabularClassification dataset={ejemplo}/>
         }
       case '1':
         // TODO
         if (tipo === '0') {
-          return <ModelReviewLinearRegression dataSet={ejemplo}/>
+          return <ModelReviewLinearRegression dataset={ejemplo}/>
         } else {
-          return <LinearRegression dataSet={ejemplo}/>
+          return <LinearRegression dataset={ejemplo}/>
         }
       case '2':
         if (tipo === '0') {
-          return <ModelReviewObjectDetection dataSet={ejemplo}/>
+          return <ModelReviewObjectDetection dataset={ejemplo}/>
         } else {
-          return <ObjectDetection dataSet={ejemplo}/>
+          return <ObjectDetection dataset={ejemplo}/>
         }
       case '3':
         // TODO
         if (tipo === '0') {
-          return <ModelReviewImageClassification dataSet={ejemplo}/>
+          return <ModelReviewImageClassification dataset={ejemplo}/>
         } else {
-          return <ImageClassification dataSet={ejemplo}/>
+          return <ImageClassification dataset={ejemplo}/>
         }
       default:
         return <NotFoundPage/>

@@ -11,7 +11,6 @@ import { getIrisDataType } from "../../../modelos/ClassificationHelper_IRIS"
 import *  as alertHelper from "../../../utils/alertHelper"
 
 export default function LinearRegression(props) {
-  const { dataSet } = props
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
@@ -27,23 +26,13 @@ export default function LinearRegression(props) {
   const [Model, setModel] = useState()
   const [string, setString] = useState()
 
-  const handleClickPlay = async (event) => {
+  const handleSubmit_Play = async (event) => {
     event.preventDefault()
-    console.log('Comenzamos a crear el modelo')
 
     try {
-      console.log('Estas son las métricas', Layer)
-      // const model = await createClassicClassification(
-      //   parseInt(document.getElementById('formTrainRate').value) / 100,
-      //   0.1,
-      //   parseInt(document.getElementById('FormNumberOfEpochs').key),
-      //   document.getElementById('FormOptimizer').key,
-      //   Layer,
-      //   LossValue,
-      //   MetricsValue,
-      // )
-      // console.log(model)
-      // setModel(model)
+      // TODO
+      const model = {}
+      setModel(model)
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } catch (error) {
       console.log(error)
@@ -64,15 +53,10 @@ export default function LinearRegression(props) {
     const prediction = Model.predict(tensor)
     const predictionWithArgMax = Model.predict(tensor).argMax(-1).dataSync()
     console.log('Probamos el modelo con [0.1, 4.3, 2.1, 0.2],0.1;4.3;2.1;0.2 [1, 4]')
-
     console.log('La solución es:', predictionWithArgMax)
 
-    document.getElementById('demo').innerHTML =
-      prediction + 'tipo: ' + getIrisDataType(predictionWithArgMax)
-    await alertHelper.alertInfo(
-      'Tipo: ' + getIrisDataType(predictionWithArgMax),
-      getIrisDataType(predictionWithArgMax),
-    )
+    document.getElementById('demo').innerHTML = prediction + 'tipo: ' + getIrisDataType(predictionWithArgMax)
+    await alertHelper.alertInfo('Tipo: ' + getIrisDataType(predictionWithArgMax), getIrisDataType(predictionWithArgMax),)
   }
 
   const handlerAddLayer = async () => {
@@ -141,7 +125,7 @@ export default function LinearRegression(props) {
 
   return (
     <>
-      <Form onSubmit={handleClickPlay} id={"LinearRegression"}>
+      <Form onSubmit={handleSubmit_Play} id={"LinearRegression"}>
         <Container>
           <Row className={"mt-3"}>
             <Col>
@@ -224,7 +208,7 @@ export default function LinearRegression(props) {
                   </Form.Text>
                 </Form.Group>
 
-                {/* Nº OT ITERATIONS */}
+                {/* Número OT ITERATIONS */}
                 <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                   <Form.Label>Número de iteraciones</Form.Label>
                   <Form.Control type="number"

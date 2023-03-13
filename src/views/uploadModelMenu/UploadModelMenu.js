@@ -46,6 +46,9 @@ export default function UploadModelMenu(props) {
           <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
         </>
       }
+      default: {
+        console.error("Opción no disponible")
+      }
     }
   }
 

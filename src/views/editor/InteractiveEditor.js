@@ -13,7 +13,6 @@ import './InteractiveEditor.css'
 
 // TODO: Pendiente de borrar
 export default function InteractiveEditor(props) {
-  const {} = props
 
   //TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(2)
@@ -25,7 +24,7 @@ export default function InteractiveEditor(props) {
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
-  const [string, setString] = useState()
+  const [string, setString] = useState("")
 
   const NumberEpochs = 50
   const learningValue = 1
@@ -44,7 +43,9 @@ export default function InteractiveEditor(props) {
       //   LossValue,
       //   MetricsValue,
       // )
-      // setModel(model)
+      // TODO
+      const newModel = {}
+      setModel(newModel)
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } catch (error) {
       console.log(error)
@@ -55,8 +56,8 @@ export default function InteractiveEditor(props) {
     console.log(string)
     let input = [[], [1, string.split(';').length]]
 
-    string.split(';').forEach((element) => {
-      input[0].push(parseFloat(element))
+    input[0] = string.split(';').map((element) => {
+      return parseFloat(element)
     })
 
     const tensor = tf.tensor2d(input[0], input[1])
@@ -221,7 +222,7 @@ export default function InteractiveEditor(props) {
                     </Form.Text>
                   </Form.Group>
 
-                  {/* Nº OT ITERATIONS */}
+                  {/* Número OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                     <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"

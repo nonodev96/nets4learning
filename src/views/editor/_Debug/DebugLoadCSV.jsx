@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as tfVis from "@tensorflow/tfjs-vis";
 import { Button, Card, Col, Row } from "react-bootstrap";

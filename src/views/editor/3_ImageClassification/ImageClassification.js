@@ -6,33 +6,39 @@ import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
-import { DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
+import { DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
 import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
   TYPE_METRICS, TYPE_ACTIVATION
 } from "../../../modelos/ArchitectureTypesHelper";
+import ReactGA from "react-ga4";
+
+const NumberEpochs = 15
+const learningValue = 1
 
 export default function ImageClassification(props) {
-  const { dataSet } = props
+  const { dataset } = props
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [nLayer, setNLayer] = useState(0)
   const [Layer, setLayer] = useState([])
   const [ActiveLayer, setActiveLayer] = useState()
   const [Contador, setContador] = useState(0)
-  // const [UploadedArchitecture, setUploadedArchitecture] = useState(false)
-  const NumberEpochs = 15
-  const learningValue = 1
+
   const [Optimizer, setOptimizer] = useState('Adam')
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
   const [Model, setModel] = useState()
-  // const [string, setString] = useState('0.1;4.3;2.1;0.2')
   const [NoEpochs, setNoEpochs] = useState(15)
   const [Recarga, setRecarga] = useState(false)
-  const [ImageUploaded, setImageUploaded] = useState(false)
+
+  useEffect(() => {
+    const dataset_ID = parseInt(dataset ?? "0")
+    const dataset_key = getNameDatasetByID_ClassicClassification(dataset_ID)
+    ReactGA.send({ hitType: "pageview", page: "/ImageClassification/" + dataset_key, title: dataset_key });
+  }, [])
 
   useEffect(() => {
     if (Recarga) {
@@ -108,7 +114,7 @@ export default function ImageClassification(props) {
   }, [Contador])
 
   // CREACIÓN DEL MODELO Y TESTEO
-  const handleClickPlay = async (event) => {
+  const handleSubmit_Play = async (event) => {
     event.preventDefault()
     if (Layer[0].class === 'Conv2D') {
       const model = await numberClass.MNIST_run(
@@ -218,7 +224,7 @@ export default function ImageClassification(props) {
     }
   }
 
-  const handle_RemoveLayer = async (idLayer) => {
+  const handleClick_RemoveLayer = async (idLayer) => {
     let array = Layer
     let array2 = []
     if (array.length === 1) {
@@ -272,24 +278,6 @@ export default function ImageClassification(props) {
       document.getElementById(`formStrides${id}Layer${index}`).value,
     )
     setLayer(array)
-  }
-
-  const handleChangeClass = (index) => {
-    let array = Layer
-    array[index].class = document.getElementById(`formClass${index}`).value
-    if (array[index].class === 'Conv2D') {
-      array[index].kernelSize = 5
-      array[index].filters = 10
-      array[index].strides = 1
-      array[index].activation = 'Sigmoid'
-      array[index].kernelInitializer = 'varianceScaling'
-    } else {
-      array[index].poolSize = [2, 2]
-      array[index].strides = [2, 2]
-    }
-    setLayer(array)
-    let aux = Contador
-    setContador(aux++)
   }
 
   const handleChange_Class = (e) => {
@@ -351,7 +339,7 @@ export default function ImageClassification(props) {
     }
   }
 
-  const handleChangeFileUpload = async (e) => {
+  const handleChange_FileUpload = async (e) => {
     const tgt = e.target || window.event.srcElement
     const files = tgt.files
 
@@ -362,7 +350,6 @@ export default function ImageClassification(props) {
       canvas.width = 200
       canvas.height = 200
       ctx.drawImage(this, 0, 0)
-      setImageUploaded(true)
     }
 
     function failed() {
@@ -375,13 +362,9 @@ export default function ImageClassification(props) {
     img.src = URL.createObjectURL(files[0])
   }
 
-  // const handleChangeTestInput = () => {
-  //   setstring(document.getElementById(`formTestInput`).value)
-  // }
-
   return (
     <>
-      <Form onSubmit={handleClickPlay} id={"MnistImageClassification"}>
+      <Form onSubmit={handleSubmit_Play} id={"ImageClassification"}>
         <Container>
           <Row>
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -401,9 +384,9 @@ export default function ImageClassification(props) {
 
             <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
               <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataSet]}</h3></Card.Header>
+                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
                 <Card.Body>
-                  {DATASET_DESCRIPTION[3][dataSet]}
+                  {DATASET_DESCRIPTION[3][dataset]}
                 </Card.Body>
               </Card>
 
@@ -488,7 +471,7 @@ export default function ImageClassification(props) {
                         <div className="container pane-imgc borde">
                           <div className="title-pane">
                             Capa {ActiveLayer + 1}
-                            <CloseButton onClick={() => handle_RemoveLayer(ActiveLayer)}/>
+                            <CloseButton onClick={() => handleClick_RemoveLayer(ActiveLayer)}/>
                           </div>
                           {/* UNITS */}
                           <Form.Group className="mb-3"
@@ -504,7 +487,7 @@ export default function ImageClassification(props) {
                           </Form.Group>
                           <LayerEdit index={ActiveLayer}
                                      item={Layer[ActiveLayer]}
-                                     handler_RemoveLayer={handle_RemoveLayer}
+                                     handler_RemoveLayer={handleClick_RemoveLayer}
                                      handleChange_Kernel={handleChange_Kernel}
                                      handleChange_Activation={handleChange_Activation}
                                      handleChange_Filters={handleChange_Filters}
@@ -543,7 +526,7 @@ export default function ImageClassification(props) {
                       </Form.Text>
                     </Form.Group>
 
-                    {/* Nº OF ITERATIONS */}
+                    {/* Número OF ITERATIONS */}
                     <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                       <Form.Label>Número de iteraciones</Form.Label>
                       <Form.Control type="number"
@@ -561,8 +544,8 @@ export default function ImageClassification(props) {
                       <Form.Select aria-label="Selecciona el optimizador"
                                    defaultValue={Optimizer}
                                    onChange={handleChange_Optimization}>
-                        {TYPE_OPTIMIZER.map((item, id) => {
-                          return (<option key={id} value={item}>{item}</option>)
+                        {TYPE_OPTIMIZER.map(({ key, label }, _index) => {
+                          return (<option key={_index} value={key}>{label}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">
@@ -575,8 +558,8 @@ export default function ImageClassification(props) {
                       <Form.Select aria-label="Selecciona la función de pérdida"
                                    defaultValue={LossValue}
                                    onChange={handleChange_Loss}>
-                        {TYPE_LOSSES.map((item, id) => {
-                          return (<option key={id} value={item}>{item}</option>)
+                        {TYPE_LOSSES.map(({ key, label }, _index) => {
+                          return (<option key={_index} value={key}>{label}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">
@@ -587,11 +570,11 @@ export default function ImageClassification(props) {
                     {/* METRICS FUNCTION */}
                     <Form.Group className="mb-3" controlId="FormMetrics">
                       <Form.Label>Selecciona la métrica</Form.Label>
-                      <Form.Select aria-label="Selecciona la métrica"
+                      <Form.Select aria-label="Selecciona la función de métrica"
                                    defaultValue={MetricsValue}
                                    onChange={handleChange_Metrics}>
-                        {TYPE_METRICS.map((item, id) => {
-                          return (<option key={id} value={item}>{item}</option>)
+                        {TYPE_METRICS.map(({ key, label }, _index) => {
+                          return (<option key={_index} value={key}>{label}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">
@@ -608,14 +591,12 @@ export default function ImageClassification(props) {
                 <Card.Header><h3>Información adicional capas</h3></Card.Header>
                 <Card.Body>
                   <p>
-                    Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas
-                    en la clasificación de imágenes
+                    Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en la clasificación de imágenes
                   </p>
                   <ul>
                     <li>
                       <b>flatten_Flatten:</b><br/>
-                      Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la
-                      última capa.
+                      Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la última capa.
                     </li>
                     <li>
                       <b>dense_Dense1:</b><br/>
@@ -635,14 +616,13 @@ export default function ImageClassification(props) {
                 </Button>
               </div>
 
-              <div className="header-model-editor mt-3">
+              <div className="mt-3">
                 <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
               </div>
 
-              <div className="header-model-editor mt-3">
+              <div className="mt-3">
                 <p>
-                  Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu
-                  equipo.
+                  Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu equipo.
                 </p>
               </div>
 
@@ -659,9 +639,9 @@ export default function ImageClassification(props) {
 
             {/* BLOCK 2 */}
             <Container>
-              <div className="container-fluid container-fluid-w1900">
-                <div className="container borde">
-                  <div className="title-pane">Resultado</div>
+              <Card className="mt-3">
+                <Card.Header><h3>Resultado</h3></Card.Header>
+                <Card.Body>
                   {/* VECTOR TEST */}
                   <Row>
                     <Col className={"mt-3 d-flex justify-content-center flex-column"}>
@@ -671,12 +651,11 @@ export default function ImageClassification(props) {
                       <input style={{ marginBottom: '2rem' }}
                              type="file"
                              name="doc"
-                             onChange={handleChangeFileUpload}></input>
+                             onChange={handleChange_FileUpload}></input>
 
                       <canvas height="200" width="200" id="imageCanvas"></canvas>
                       <button type="button"
-                              onClick={handleVectorTestImageUpload}
-                              className="btn-custom-canvas green">
+                              onClick={handleVectorTestImageUpload}>
                         Validar
                       </button>
                     </Col>
@@ -688,8 +667,8 @@ export default function ImageClassification(props) {
                           style={{ display: 'none' }}></canvas>
                   <div id="resultado"></div>
                   {/* SUBMIT BUTTON */}
-                </div>
-              </div>
+                </Card.Body>
+              </Card>
               <div className="header-model-editor mt-3">
                 <p>
                   Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
