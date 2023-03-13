@@ -15,6 +15,7 @@ import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import { isProduction } from "../../../utils/utils";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
+import DebugLoadCSV from "../_Debug/DebugLoadCSV";
 
 export default class ModelReviewClassicClassification extends React.Component {
   constructor(props) {
@@ -77,7 +78,7 @@ export default class ModelReviewClassicClassification extends React.Component {
     }
 
     this.handleChange_TestInput = this.handleChange_TestInput.bind(this)
-    this.handleChangeParameter = this.handleChangeParameter.bind(this)
+    this.handleChange_Parameter = this.handleChange_Parameter.bind(this)
     this.handleClick_TestVector = this.handleClick_TestVector.bind(this)
     this.handleClick_ChangePage = this.handleClick_ChangePage.bind(this)
     this.handleClick_LoadModel = this.handleClick_LoadModel.bind(this)
@@ -87,11 +88,6 @@ export default class ModelReviewClassicClassification extends React.Component {
     this.handleFileUpload_CSV = this.handleFileUpload_CSV.bind(this)
 
     // Debug
-    this.handleClick_Layers = this.handleClick_Layers.bind(this)
-    this.handleClick_Compile = this.handleClick_Compile.bind(this)
-    this.handleClick_Fit = this.handleClick_Fit.bind(this)
-    this.handleClick_Download = this.handleClick_Download.bind(this)
-
   }
 
   componentDidMount() {
@@ -149,52 +145,6 @@ export default class ModelReviewClassicClassification extends React.Component {
     }
   }
 
-  async handleClick_Layers() {
-    // https://stackoverflow.com/questions/44747343/keras-input-explanation-input-shape-units-batch-size-dim-etc
-    this.___model = tf.sequential()
-    this.___model.add(tf.layers.dense({ name: 'layer1', activation: 'relu', units: 10, inputDim: 12 }))
-    this.___model.add(tf.layers.dense({ name: 'layer2', activation: 'relu', units: 10 }))
-    this.___model.add(tf.layers.dense({ name: 'layer3', activation: 'relu', units: 10 }))
-    this.___model.add(tf.layers.dense({ name: 'layer4', activation: 'relu', units: 10 }))
-    this.___model.add(tf.layers.dense({ name: 'layer5', activation: 'relu', units: 10 }))
-    this.___model.add(tf.layers.dense({ name: 'layer6', activation: 'softmax', units: 5 }))
-
-    const surface = { name: 'Model Summary', tab: 'Model Inspection' };
-    await tfVis.show.modelSummary(surface, this.___model);
-
-    for (let i = 1; i < 6; i++) {
-      const surface1 = { name: 'Layer Summary' + i, tab: 'Layer ' + i };
-      await tfVis.show.layer(surface1, this.___model.getLayer('layer' + 1));
-    }
-  }
-
-  async handleClick_Compile() {
-    // Prepare the model for training: Specify the loss and the optimizer.
-    this.___model.compile({
-      optimizer: 'adam',
-      loss     : 'categoricalCrossentropy',
-      metrics  : ['acc']
-    })
-  }
-
-  async handleClick_Fit() {
-    // const data = MODEL_HEPATITIS_C._CLEAR_DATA
-    // Generate some synthetic data for training.
-    const xs = tf.tensor1d([32, 1, 38.5, 52.5, 7.7, 22.1, 7.5, 6.93, 3.23, 106, 12.1, 69])
-    const ys = tf.tensor1d([32, 1, 38.5, 70.3, 18, 24.7, 3.9, 11.17, 4.8, 74, 15.6, 76.5])
-    // Train the model using the data.
-
-    this.___model.fit(xs, ys, { batchSize: 128, epochs: 200 }).then(() => {
-      // Use the model to do inference on a data point the model hasn't seen before:
-      let d = this.___model.predict(tf.tensor1d([32, 1, 38.5, 70.3, 18, 24.7, 3.9, 11.17, 4.8, 74, 15.6, 76.5]))
-      console.log(d)
-    })
-  }
-
-  handleClick_Download() {
-    this.___model.save('downloads://my-model')
-  }
-
   async handleClick_TestVector() {
     this.setState({ isButtonDisabled: true })
     if (this.state.textToTest === undefined || this.state.textToTest.length < 1) {
@@ -218,7 +168,7 @@ export default class ModelReviewClassicClassification extends React.Component {
             input[0].push(await this._model.function_v_input(array[index], index, this._model.DATA_OBJECT_KEYS[index]))
           }
           const tensor = tf.tensor2d(input[0], input[1])
-          console.log({ input_0: input[0], tensor })
+          if (!isProduction()) console.log({ input_0: input[0], tensor })
           const prediction = this.model.predict(tensor)
           const predictionWithArgMax = prediction.argMax(-1).dataSync()
           await alertHelper.alertInfo(`La solución es el tipo: ${predictionWithArgMax}`, this._model.CLASSES[predictionWithArgMax], prediction)
@@ -316,37 +266,17 @@ export default class ModelReviewClassicClassification extends React.Component {
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
         if (this.files.csv !== null) {
-          return <>
-            <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-              <Card className={"mt-3"}>
-                <Card.Header><h3>Conjunto de datos</h3></Card.Header>
-                <Card.Body>
-
-                  <N4LTablePagination data_head={this.state.header}
-                                      data_body={this.state.body}/>
-
-                </Card.Body>
-              </Card>
-            </Col>
-          </>
+          head = this.state.header
+          body = this.state.body
         }
         break
       }
-      case MODEL_CAR.KEY: {
+      case MODEL_CAR.KEY:
+      case MODEL_IRIS.KEY:
+      case MODEL_LYMPHOGRAPHY.KEY:
         head = this._model.TABLE_HEADER
         body = this._model.DATA
         break
-      }
-      case MODEL_IRIS.KEY: {
-        head = this._model.TABLE_HEADER
-        body = this._model.DATA
-        break
-      }
-      case MODEL_LYMPHOGRAPHY.KEY: {
-        head = this._model.TABLE_HEADER
-        body = this._model.DATA
-        break
-      }
       default: {
         console.error("Opción no válida")
         return <></>
@@ -356,8 +286,8 @@ export default class ModelReviewClassicClassification extends React.Component {
     return <>
       <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
         <Card className={"mt-3"}>
-          <Card.Header><h3>Dataset</h3></Card.Header>
-          <Card.Body>
+          <Card.Header><h3>Conjunto de datos</h3></Card.Header>
+          <Card.Body className={"overflow-x-scroll"}>
 
             <N4LTablePagination data_head={head}
                                 data_body={body}/>
@@ -367,8 +297,8 @@ export default class ModelReviewClassicClassification extends React.Component {
     </>
   }
 
-  handleChangeParameter(key_parameter, value) {
-    console.log({key_parameter, value})
+  handleChange_Parameter(key_parameter, value) {
+    if (!isProduction()) console.log({ key_parameter, value })
     this.setState((prevState) => ({
       dataToTest: { ...prevState.dataToTest, [key_parameter]: value },
       textToTest: Object.values({ ...prevState.dataToTest, [key_parameter]: value }).join(";")
@@ -376,7 +306,7 @@ export default class ModelReviewClassicClassification extends React.Component {
   }
 
   setExample(example) {
-    console.log(example)
+    if (!isProduction()) console.log(example)
     this.setState({
       dataToTest: example,
       textToTest: Object.values(example).join(";")
@@ -472,7 +402,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                   <Form.Select aria-label="Default select example"
                                                size={"sm"}
                                                value={this.state.dataToTest[key_parameter]}
-                                               onChange={($event) => this.handleChangeParameter(key_parameter, $event.target.value)}>
+                                               onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)}>
                                     {values.map((itemAct, indexAct) => {
                                       return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                                     })}
@@ -497,7 +427,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                                 placeholder={"Enter parameter"}
                                                 step={0.1}
                                                 value={this.state.dataToTest[key_parameter] ?? value}
-                                                onChange={($event) => this.handleChangeParameter(key_parameter, $event.target.value)}/>
+                                                onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)}/>
                                   <Form.Text className="text-muted">Parámetro: {key_parameter}</Form.Text>
                                 </Form.Group>
                               </Col>
@@ -525,7 +455,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                                     placeholder={"Introduce el entero"}
                                                     step={1}
                                                     value={this.state.dataToTest[value.name] ?? 0}
-                                                    onChange={($event) => this.handleChangeParameter(value.name, $event.target.value)}/>
+                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}/>
                                       <Form.Text className="text-muted">Parámetro entero: {value.name}</Form.Text>
                                     </Form.Group>
                                   </Col>
@@ -542,7 +472,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                                     placeholder={"Introduce el decimal"}
                                                     step={0.1}
                                                     value={this.state.dataToTest[value.name] ?? 0.0}
-                                                    onChange={($event) => this.handleChangeParameter(value.name, $event.target.value)}/>
+                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}/>
                                       <Form.Text className="text-muted">Parámetro decimal: {value.name}</Form.Text>
                                     </Form.Group>
                                   </Col>
@@ -555,7 +485,7 @@ export default class ModelReviewClassicClassification extends React.Component {
                                       <Form.Select aria-label="Default select example"
                                                    value={this.state.dataToTest[value.name] ?? 0}
                                                    size={"sm"}
-                                                   onChange={($event) => this.handleChangeParameter(value.name, $event.target.value)}>
+                                                   onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}>
                                         {value.options.map((option_value, option_index) => {
                                           return <option key={value.name + "_option_" + option_index}
                                                          value={option_value.value}>
@@ -617,64 +547,7 @@ export default class ModelReviewClassicClassification extends React.Component {
             </Col>
           </Row>
 
-          {
-            (this._isDebug) &&
-            <Row className={"mt-3"}>
-              <Col>
-                <Card>
-                  <Card.Header><h3>Debug</h3></Card.Header>
-                  <Card.Body>
-                    <Card.Title>Pruebas modelo</Card.Title>
-
-
-                    <div className="d-grid gap-2 mt-3">
-                      <Button type="button"
-                              onClick={async () => {
-                                let m = await MODEL_CAR.loadModel()
-                                m.summary()
-                              }}
-                              size={"small"}
-                              variant="primary">
-                        CLEAR DATA
-                      </Button>
-                      <hr/>
-
-                      <Button type="button"
-                              onClick={() => tfVis.visor().toggle()}
-                              size={"small"}
-                              variant="outline-primary">
-                        Conmutar visor
-                      </Button>
-                      <Button type="button"
-                              onClick={this.handleClick_Layers}
-                              size={"small"}
-                              variant="outline-secondary">
-                        Definir capas
-                      </Button>
-                      <Button type="button"
-                              onClick={this.handleClick_Compile}
-                              size={"small"}
-                              variant="outline-warning">
-                        Compilar
-                      </Button>
-                      <Button type="button"
-                              onClick={this.handleClick_Fit}
-                              size={"small"}
-                              variant="outline-danger">
-                        Entrenar
-                      </Button>
-                      <Button type="button"
-                              onClick={this.handleClick_Download}
-                              size={"small"}
-                              variant="outline-success">
-                        Descargar
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-          }
+          <DebugLoadCSV/>
 
         </Container>
       </>

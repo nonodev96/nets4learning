@@ -1,8 +1,8 @@
-import { Button, Card, Col, Row } from "react-bootstrap";
-import * as tfVis from "@tensorflow/tfjs-vis";
-import React, { useEffect } from "react";
-import { MODEL_CAR } from "../../../DATA_MODEL";
+import React, { useEffect, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
+import * as tfVis from "@tensorflow/tfjs-vis";
+import { Button, Card, Col, Row } from "react-bootstrap";
+import { MODEL_CAR } from "../../../DATA_MODEL";
 
 export default function DebugLoadCSV(props) {
   const _isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
