@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import N4LNavBar from "../../components/navBar/N4LNavBar";
+import N4LNavbar from "../../components/header/N4LNavbar";
 import N4LFooter from "../../components/footer/N4LFooter";
 
 export default function TermsAndConditions(props) {
@@ -9,7 +9,8 @@ export default function TermsAndConditions(props) {
   console.log("render")
   return (
     <>
-      <N4LNavBar/>
+      <N4LNavbar/>
+
       <main className={"mb-3"} data-title={"TermsAndConditions"}>
         <Container>
           <Row className={"mt-2"}>
@@ -45,6 +46,7 @@ export default function TermsAndConditions(props) {
           </Row>
         </Container>
       </main>
+
       <N4LFooter/>
     </>
   )

@@ -1,46 +1,4 @@
-import json_iris from "./template_iris.json";
-import json_lymphatcs from "./template_lymphatcs.json";
-
-export const FILE_TEMPLATE = {
-  title  : 'plantilla.json',
-  content: `{
-  "missing_values"   : false,
-  "missing_value_key": "?",
-  "classes"          : [ 
-   { "key": "resultado_1", "name": "Clase 1" },
-   { "key": "resultado_2", "name": "Clase 2" },
-   { "key": "resultado_3", "name": "Clase 3" },
-   { "key": "resultado_4", "name": "Clase 4" },
-   { "key": "resultado_5", "name": "Clase 5" },
-   { "key": "resultado_6", "name": "Clase 6" }
-  ],
-  "attributes"       : [
-    { "name": "Atributo 1", "index_column": 0, "type": "number" },
-    { "name": "Atributo 2", "index_column": 1, "type": "float"  },
-    { "name": "Atributo 3", "index_column": 2, "type": "float"  },
-    { 
-      "name"        : "Atributo m", 
-      "index_column": 3,
-      "type"        : "select", 
-      "options"     : [ 
-        { "value": "option_1", "text": "Opción 1" }, 
-        { "value": "option_2", "text": "Opción 2" } 
-      ]
-    }
-  ],
-  "data"             : [
-    ["dato_entero_01", "dato_decimal_02", "dato_decimal_04", "option_1", "resultado_1"],
-    ["dato_entero_11", "dato_decimal_12", "dato_decimal_14", "option_1", "resultado_2"],
-    ["dato_entero_21", "dato_decimal_22", "dato_decimal_24", "option_1", "resultado_3"],
-    ["dato_entero_31", "dato_decimal_32", "dato_decimal_34", "option_2", "resultado_4"],
-    ["dato_entero_41", "dato_decimal_42", "dato_decimal_44", "option_2", "resultado_5"],
-    ["dato_entero_51", "dato_decimal_52", "dato_decimal_54", "option_2", "resultado_6"]
-  ]
-}`
-}
-export const FILE_TOPOLOGY = {
-  title  : 'my-model.json',
-  content: `{
+{
   "modelTopology": {
     "class_name": "Sequential",
     "config": {
@@ -108,7 +66,7 @@ export const FILE_TOPOLOGY = {
   "convertedBy": null,
   "weightsManifest": [
     {
-      "paths": ["./my-model.weights.bin"],
+      "paths": ["./mymodelIris.weights.bin"],
       "weights": [
         { "name": "dense_Dense1/kernel", "shape": [4, 10], "dtype": "float32" },
         { "name": "dense_Dense1/bias", "shape": [10], "dtype": "float32" },
@@ -117,14 +75,4 @@ export const FILE_TOPOLOGY = {
       ]
     }
   ]
-}`
-}
-
-export const FILE_TEMPLATE_IRIS = {
-  title  : 'plantilla_iris.json',
-  content: JSON.stringify(json_iris)
-}
-export const FILE_TEMPLATE_LYMPHATCS = {
-  title  : 'plantilla_lymphatcs.json',
-  content: JSON.stringify(json_lymphatcs)
 }

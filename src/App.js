@@ -1,52 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { withRouter, BrowserRouter, Switch } from "react-router-dom";
 import { Redirect, Route } from "react-router";
 import ReactGA from 'react-ga4';
 
-
-import Home from "./components/Home";
-import NotFoundPage from "./views/notFound/NotFoundPage";
-import UploadModelMenu from "./views/uploadModelMenu/UploadModelMenu";
-import EditArchitecture from "./views/editArchitecture/EditArchitecture";
-import UploadArchitectureMenu from "./views/uploadArchitectureMenu/UploadArchitectureMenu";
-import InteractiveEditor from "./views/editor/InteractiveEditor";
-import Glossary from "./views/glossary/Glossary";
-import Manual from "./views/manual/Manual";
-import TermsAndConditions from "./views/terms/TermsAndConditions";
-
 import "./App.css";
+import Loading from "./views/Loading";
+
+const Home = lazy(() => import( "./views/_home/Home.jsx"));
+
+const MenuSelectModel = lazy(() => import( "./views/menu/MenuSelectModel"));
+const MenuSelectDataset = lazy(() => import( "./views/menu/MenuSelectDataset"));
+const Playground = lazy(() => import( "./views/playground/Playground"));
+const Manual = lazy(() => import( "./views/manual/Manual"));
+const Glossary = lazy(() => import( "./views/glossary/Glossary"));
+const TermsAndConditions = lazy(() => import( "./views/terms/TermsAndConditions"));
+const NotFoundPage = lazy(() => import( "./views/notFound/NotFoundPage"));
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
-  // console.log(process.env)
-  useEffect(()=>{
-    ReactGA.initialize('G-3644EFBXMG')
+
+  useEffect(() => {
+    ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID)
   }, [])
 
   return (
     <div className="body">
       <BrowserRouter basename={REACT_APP_PATH}>
-        <Switch>
-          <Route exact path={"/"} component={Home}></Route>
-          <Route exact path={"/edit-architecture/:id/:tipo/:ejemplo"} component={EditArchitecture}></Route>
-          <Route exact path={"/select-dataset/:id"} component={UploadArchitectureMenu}></Route>
-          <Route exact path={"/select-model/:id"} component={UploadModelMenu}></Route>
-          <Route exact path={"/manual/"} component={Manual}></Route>
-          <Route exact path={"/glossary/"} component={Glossary}></Route>
-          <Route exact path={"/terms-and-conditions/"} component={TermsAndConditions}></Route>
-          {/* <Route exact path={"/starting/"} component={Starting}></Route> */}
-          {/* <Route exact path={"/secondary/:id"} component={SecondMenu}></Route> */}
-          {/* <Route exact path={"/editor/:id"} component={Editor}></Route> */}
-          {/* <Route exact path={"/training"} component={Training}></Route> */}
-          {/* <Route exact path={"/test"} component={Test}></Route> */}
-          {/* <Route exact path="/upload-training-custom/" component={}></Route> */}
-          {/* <Route exact path="/edit-training/" component={}></Route> */}
-          {/* <Route exact path="/upload-model-custom/" component={}></Route> */}
-          {/* <Route exact path="/edit-model/" component={}></Route> */}
-          <Route exact path={"/test"} component={InteractiveEditor}></Route>
-          <Route path="/404" component={NotFoundPage}/>
-          <Redirect to="/404"></Redirect>
-        </Switch>
+        <Suspense fallback={<Loading/>}>
+          <Switch>
+            <Route exact path={"/"} component={Home}></Route>
+            <Route exact path={"/select-dataset/:id"} component={MenuSelectDataset}></Route>
+            <Route exact path={"/select-model/:id"} component={MenuSelectModel}></Route>
+            <Route exact path={"/playground/:id/:option/:example"} component={Playground}></Route>
+            <Route exact path={"/manual/"} component={Manual}></Route>
+            <Route exact path={"/glossary/"} component={Glossary}></Route>
+            <Route exact path={"/terms-and-conditions/"} component={TermsAndConditions}></Route>
+            <Route path="/404" component={NotFoundPage}/>
+            <Redirect to="/404"></Redirect>
+          </Switch>
+        </Suspense>
       </BrowserRouter>
     </div>
   );

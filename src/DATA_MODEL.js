@@ -1,7 +1,7 @@
 import React from "react";
-import { MODEL_CAR } from "./modelos/ClassificationHelper_CAR";
-import { MODEL_IRIS } from "./modelos/ClassificationHelper_IRIS";
-import { MODEL_LYMPHOGRAPHY } from "./modelos/ClassificationHelper_LYMPHATCS";
+import { MODEL_CAR } from "./review-models/ClassificationHelper_CAR";
+import { MODEL_IRIS } from "./review-models/ClassificationHelper_IRIS";
+import { MODEL_LYMPHOGRAPHY } from "./review-models/ClassificationHelper_LYMPHATCS";
 
 const MODEL_UPLOAD = "UPLOAD"
 
