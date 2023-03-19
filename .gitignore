@@ -22,9 +22,11 @@ yarn-error.log*
 
 package-lock.json
 
+.env
 .env.development
 .env.production
-.env.simidat
+.env.simidats
 
 deploy.zip
 deploy.sh
+build.zip

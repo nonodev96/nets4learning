@@ -1,9 +1,14 @@
 import React from "react"
-import { Container, Nav, Navbar } from "react-bootstrap"
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
 import { useHistory } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import { ReactComponent as IconMenuES } from "../../assets/es.svg"
+import { ReactComponent as IconMenuGB } from "../../assets/gb.svg"
 
 export default function N4LNavbar() {
   const history = useHistory();
+
+  const { t, i18n } = useTranslation();
 
   const handleClick_GoHomePage = () => {
     history.push("/");
@@ -39,6 +44,16 @@ export default function N4LNavbar() {
               <Nav.Link onClick={handleClick_GoManualPage}>Manual</Nav.Link>
               <Nav.Link onClick={handleClick_GoGlossaryPage}>Glosario</Nav.Link>
             </Nav>
+            <NavDropdown title={t('header.language')} id="change-language-nav-dropdown">
+              <NavDropdown.Item onClick={() => i18n.changeLanguage('en')}>
+                <IconMenuGB width={"1rem"} className={"me-2"} style={{ verticalAlign: "unset" }}/>
+                Ingles
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={() => i18n.changeLanguage('sp')}>
+                <IconMenuES width={"1rem"} className={"me-2"} style={{ verticalAlign: "unset" }}/>
+                Español
+              </NavDropdown.Item>
+            </NavDropdown>
           </Navbar.Collapse>
         </Container>
       </Navbar>

@@ -1,7 +1,4 @@
-import React from "react";
-import { MODEL_CAR } from "./review-models/ClassificationHelper_CAR";
-import { MODEL_IRIS } from "./review-models/ClassificationHelper_IRIS";
-import { MODEL_LYMPHOGRAPHY } from "./review-models/ClassificationHelper_LYMPHATCS";
+import { MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY } from "./core/nn-review-models";
 
 const MODEL_UPLOAD = "UPLOAD"
 
@@ -234,7 +231,7 @@ export const DATASET_DESCRIPTION = [
       <details>
         <summary>Referencias</summary>
         <ol>
-          <li>Puede encontrar más información <a href="http://cocodataset.org/" target={"_blank"} rel={"noreferrer"}>Coco dataset</a></li>
+          <li>Puede encontrar más información <a href="https://cocodataset.org/" target={"_blank"} rel={"noreferrer"}>Coco dataset</a></li>
         </ol>
       </details>
     </>

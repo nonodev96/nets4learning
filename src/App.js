@@ -2,19 +2,18 @@ import React, { useEffect, lazy, Suspense } from "react";
 import { withRouter, BrowserRouter, Switch } from "react-router-dom";
 import { Redirect, Route } from "react-router";
 import ReactGA from 'react-ga4';
-
+import './i18n';
 import "./App.css";
-import Loading from "./views/Loading";
+import Loading from "./pages/Loading";
 
-const Home = lazy(() => import( "./views/_home/Home.jsx"));
-
-const MenuSelectModel = lazy(() => import( "./views/menu/MenuSelectModel"));
-const MenuSelectDataset = lazy(() => import( "./views/menu/MenuSelectDataset"));
-const Playground = lazy(() => import( "./views/playground/Playground"));
-const Manual = lazy(() => import( "./views/manual/Manual"));
-const Glossary = lazy(() => import( "./views/glossary/Glossary"));
-const TermsAndConditions = lazy(() => import( "./views/terms/TermsAndConditions"));
-const NotFoundPage = lazy(() => import( "./views/notFound/NotFoundPage"));
+const Home = lazy(() => import( "./pages/_home/Home.jsx"));
+const MenuSelectModel = lazy(() => import( "./pages/menu/MenuSelectModel"));
+const MenuSelectDataset = lazy(() => import( "./pages/menu/MenuSelectDataset"));
+const Playground = lazy(() => import( "./pages/playground/Playground"));
+const Manual = lazy(() => import( "./pages/manual/Manual"));
+const Glossary = lazy(() => import( "./pages/glossary/Glossary"));
+const TermsAndConditions = lazy(() => import( "./pages/terms/TermsAndConditions"));
+const NotFoundPage = lazy(() => import( "./pages/notFound/NotFoundPage"));
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
