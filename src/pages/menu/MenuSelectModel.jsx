@@ -4,7 +4,7 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
 import * as alertHelper from "../../utils/alertHelper"
-import { LIST_MODEL_OPTIONS, LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import { LIST_MODEL_OPTIONS, LIST_TYPE_MODALITY } from "../../DATA_MODEL";
 
 export default function MenuSelectModel(props) {
   const { id } = useParams()
@@ -61,7 +61,7 @@ export default function MenuSelectModel(props) {
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
-              <Card.Header><h3>{LIST_TYPE_MODELS[id]}</h3></Card.Header>
+              <Card.Header><h3>{LIST_TYPE_MODALITY[id]}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   Selecciona a continuación el modelo entrenado sobre el que se va a trabajar.

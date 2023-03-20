@@ -2,10 +2,12 @@ import './InitialMenu.css'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
-import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
+import { useTranslation } from "react-i18next";
 
 export default function InitialMenu() {
   const history = useHistory()
+  const { t } = useTranslation()
 
   const [buttonActive, setButtonActive] = useState(0)
 
@@ -27,50 +29,53 @@ export default function InitialMenu() {
         return (
           <>
             <Card className={"border-primary"}>
-              <Card.Header><h3>Clasificación tabular</h3></Card.Header>
+              <Card.Header><h3>{t("pages.index.tabular-classification.1-title")}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una
-                  o más variables independientes.
+                  {t("pages.index.tabular-classification.1-description-1")}
                 </Card.Text>
-                <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
+                <Card.Text>
+                  {t("pages.index.tabular-classification.1-description-2")}
+                </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelos entrenados
+                    {t("pages.index.tabular-classification.1-button")}
                   </Button>
                 </div>
               </Card.Body>
             </Card>
 
             <Card className={"border-primary mt-3"}>
-              <Card.Header><h3>Diseñar, crear y editar una arquitectura para clasificar</h3></Card.Header>
+              <Card.Header><h3>{t("pages.index.tabular-classification.2-title")}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  A través de esta herramienta podemos crear una red neuronal para clasificar datos multi-etiqueta.
+                  {t("pages.index.tabular-classification.2-description-1")}
                 </Card.Text>
                 <Card.Text>
-                  Diseñando, creando, entrenando y evaluando una arquitectura personalizada.
+                  {t("pages.index.tabular-classification.2-description-2")}
                 </Card.Text>
                 <Row>
                   <Col>
                     <ul>
-                      <li>Definir el número de capas, sus funciones de activación.</li>
-                      <li>Definir la tasa de entrenamiento.</li>
-                      <li>Definir el número de iteraciones.</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.1")}</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.2")}</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.3")}</li>
                     </ul>
                   </Col>
                   <Col>
                     <ul>
-                      <li>Definir el optimizador.</li>
-                      <li>Definir la función de perdida.</li>
-                      <li>Definir la métrica para la evaluación.</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.4")}</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.5")}</li>
+                      <li>{t("pages.index.tabular-classification.2-description-list.6")}</li>
                     </ul>
                   </Col>
                 </Row>
-                <Card.Text>La clasificación se utiliza para predecir respuestas discretas.</Card.Text>
+                <Card.Text>
+                  {t("pages.index.tabular-classification.2-description-footer")}
+                </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
-                    Entrenar un modelo
+                    {t("pages.index.tabular-classification.2-button")}
                   </Button>
                 </div>
               </Card.Body>
@@ -110,19 +115,17 @@ export default function InitialMenu() {
         return (
           <>
             <Card className={"border-warning"}>
-              <Card.Header><h3>Identificación de objetos</h3></Card.Header>
+              <Card.Header><h3>{t("pages.index.object-detection.1-title")}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y
-                  semejanzas.
+                  {t("pages.index.object-detection.1-description-1")}
                 </Card.Text>
                 <Card.Text>
-                  Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a
-                  poco qué caracteriza a cada objeto.
+                  {t("pages.index.object-detection.1-description-2")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelos entrenados
+                    {t("pages.index.object-detection.1-button")}
                   </Button>
                 </div>
               </Card.Body>
@@ -133,22 +136,17 @@ export default function InitialMenu() {
         return (
           <>
             <Card className={"border-info"}>
-              <Card.Header><h3>Clasificador de imágenes</h3></Card.Header>
+              <Card.Header><h3>{t("pages.index.image-classification.1-title")}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar
-                  la clase a la que pertenece el dependiente según una o más variables independientes.
+                  {t("pages.index.image-classification.1-description-1")}
                 </Card.Text>
                 <Card.Text>
-                  En este caso la variable de entrada será una imagen.
+                  {t("pages.index.image-classification.1-description-2")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
-                    Modelos entrenados
-                  </Button>
-                  <Button style={{ display: "none " }}
-                          onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
-                    Crear y edita arquitectura
+                    {t("pages.index.image-classification.1-button")}
                   </Button>
                 </div>
               </Card.Body>
@@ -170,7 +168,7 @@ export default function InitialMenu() {
               <Button onClick={() => handleClick_OpenCardModel(0)}
                       variant={colors[0]}
                       size={"lg"}>
-                {LIST_TYPE_MODELS[0]}
+                {t("pages.index.tabular-classification.1-title")}
               </Button>
             </div>
           </Col>
@@ -179,7 +177,7 @@ export default function InitialMenu() {
               <Button onClick={() => handleClick_OpenCardModel(2)}
                       variant={colors[2]}
                       size={"lg"}>
-                {LIST_TYPE_MODELS[2]}
+                {t("pages.index.object-detection.1-title")}
               </Button>
             </div>
           </Col>
@@ -188,7 +186,7 @@ export default function InitialMenu() {
               <Button onClick={() => handleClick_OpenCardModel(3)}
                       variant={colors[3]}
                       size={"lg"}>
-                {LIST_TYPE_MODELS[3]}
+                {t("pages.index.image-classification.1-title")}
               </Button>
             </div>
           </Col>

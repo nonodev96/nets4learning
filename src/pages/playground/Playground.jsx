@@ -17,7 +17,7 @@ import ImageClassificationModelReview from './/3_ImageClassification/ModelReview
 import ImageClassification from './/3_ImageClassification/ImageClassification'
 import NotFoundPage from "../notFound/NotFoundPage";
 
-import { LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
 
 export default function Playground() {
   const { id, option, example } = useParams()
@@ -63,7 +63,7 @@ export default function Playground() {
         <Container>
           <Row className={"mt-2"}>
             <Col xl={12}>
-              <h1>{LIST_TYPE_MODELS[id]}</h1>
+              <h1>{LIST_TYPE_MODALITY[id]}</h1>
             </Col>
           </Row>
         </Container>

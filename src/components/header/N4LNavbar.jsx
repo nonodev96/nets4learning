@@ -40,9 +40,15 @@ export default function N4LNavbar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav"/>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link onClick={handleClick_GoHomePage}>Inicio</Nav.Link>
-              <Nav.Link onClick={handleClick_GoManualPage}>Manual</Nav.Link>
-              <Nav.Link onClick={handleClick_GoGlossaryPage}>Glosario</Nav.Link>
+              <Nav.Link onClick={handleClick_GoHomePage}>
+                {t("header.init")}
+              </Nav.Link>
+              <Nav.Link onClick={handleClick_GoManualPage}>
+                {t("header.manual")}
+              </Nav.Link>
+              <Nav.Link onClick={handleClick_GoGlossaryPage}>
+                {t("header.glossary")}
+              </Nav.Link>
             </Nav>
             <NavDropdown title={t('header.language')} id="change-language-nav-dropdown">
               <NavDropdown.Item onClick={() => i18n.changeLanguage('en')}>

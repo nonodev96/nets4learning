@@ -33,7 +33,7 @@ const LIST_MODELS_IMAGE_CLASSIFICATION = [
   MODEL_IMAGE_RESNET
 ]
 
-const LIST_TYPE_MODELS = [
+const LIST_TYPE_MODALITY = [
   'Clasificación tabular',
   'Regresión lineal',
   'Identificación de objetos',
@@ -420,7 +420,7 @@ export {
   getNameDatasetByID_ObjectDetection,
   getNameDatasetByID_ImageClassification,
   LIST_MODEL_OPTIONS,
-  LIST_TYPE_MODELS,
+  LIST_TYPE_MODALITY,
   LIST_TYPE_MODELS_DESCRIPTION,
   // Genérico para todos
   MODEL_UPLOAD,

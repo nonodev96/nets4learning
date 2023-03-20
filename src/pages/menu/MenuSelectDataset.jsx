@@ -5,13 +5,15 @@ import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../utils/alertHelper'
-import { LIST_MODEL_OPTIONS, LIST_TYPE_MODELS } from "../../DATA_MODEL";
+import { LIST_MODEL_OPTIONS, LIST_TYPE_MODALITY } from "../../DATA_MODEL";
+import { useTranslation } from "react-i18next";
 
 export default function MenuSelectDataset(props) {
   const { id } = useParams()
   const [dataset_id, setDatasetId] = useState(-1)
   const [isUploadedArchitecture, setIsUploadedArchitecture] = useState(false)
   const history = useHistory()
+  const { t } = useTranslation()
 
   const handleSubmit = async () => {
     if (dataset_id === -1 || dataset_id === 'Selecciona un conjunto de datos') {
@@ -45,9 +47,9 @@ export default function MenuSelectDataset(props) {
       case '0': {
         // Clasificación
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[0][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[0][2]}</option>
-          <option value={3}>{LIST_MODEL_OPTIONS[0][3]}</option>
+          <option value={1}>{t("datasets.0-option-1")}</option>
+          <option value={2}>{t("datasets.0-option-2")}</option>
+          <option value={3}>{t("datasets.0-option-3")}</option>
         </>
       }
       case '1': {
@@ -58,17 +60,17 @@ export default function MenuSelectDataset(props) {
       case '2': {
         // Identificación
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[2][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[2][2]}</option>
-          <option value={3}>{LIST_MODEL_OPTIONS[2][3]}</option>
-          <option value={4}>{LIST_MODEL_OPTIONS[2][4]}</option>
+          <option value={1}>{t("datasets.2-option-1")}</option>
+          <option value={2}>{t("datasets.2-option-2")}</option>
+          <option value={3}>{t("datasets.2-option-3")}</option>
+          <option value={4}>{t("datasets.2-option-4")}</option>
         </>
       }
       case '3': {
         // Clasificación imágenes
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[3][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
+          <option value={1}>{t("datasets.3-option-1")}</option>
+          <option value={2}>{t("datasets.3-option-2")}</option>
         </>
       }
       default: {
@@ -85,19 +87,18 @@ export default function MenuSelectDataset(props) {
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
-              <Card.Header><h3>{LIST_TYPE_MODELS[id]}</h3></Card.Header>
+              <Card.Header><h3>{LIST_TYPE_MODALITY[id]}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  Selecciona a continuación el conjunto de datos sobre se va a trabajar o carga tu propio conjunto de
-                  datos.
+                  {t("pages.menu-selection-dataset.form-description-1")}
                 </Card.Text>
                 <Form>
                   <Form.Group className="mb-3" controlId="FormDataSet">
-                    <Form.Label>Selecciona un conjunto de datos</Form.Label>
-                    <Form.Select aria-label="Selecciona un conjunto de datos"
+                    <Form.Label>{t("pages.menu-selection-dataset.form-label")}</Form.Label>
+                    <Form.Select aria-label={t("pages.menu-selection-dataset.form-label")}
                                  defaultValue={-1}
                                  onChange={(e) => setDatasetId(e.target.value)}>
-                      <option value={-1} disabled>Selecciona un conjunto de datos</option>
+                      <option value={-1} disabled>{t("pages.menu-selection-dataset.form-option-_-1")}</option>
                       {PrintHTML_OPTIONS(id)}
                     </Form.Select>
                   </Form.Group>
@@ -119,7 +120,7 @@ export default function MenuSelectDataset(props) {
 
 
                   <Button onClick={() => handleSubmit()}>
-                    Continuar
+                    {t("pages.menu-selection-dataset.form-submit")}
                   </Button>
                 </Form>
               </Card.Body>
