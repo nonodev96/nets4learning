@@ -5,7 +5,7 @@ import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../utils/alertHelper'
-import { LIST_MODEL_OPTIONS, LIST_TYPE_MODALITY } from "../../DATA_MODEL";
+import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
 import { useTranslation } from "react-i18next";
 
 export default function MenuSelectDataset(props) {
@@ -16,7 +16,7 @@ export default function MenuSelectDataset(props) {
   const { t } = useTranslation()
 
   const handleSubmit = async () => {
-    if (dataset_id === -1 || dataset_id === 'Selecciona un conjunto de datos') {
+    if (dataset_id === -1) {
       await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
     } else {
       if (!isUploadedArchitecture) {
@@ -58,19 +58,21 @@ export default function MenuSelectDataset(props) {
         </>
       }
       case '2': {
-        // Identificación
+        // Identificación  no debe entrar aquí
         return <>
-          <option value={1}>{t("datasets.2-option-1")}</option>
-          <option value={2}>{t("datasets.2-option-2")}</option>
-          <option value={3}>{t("datasets.2-option-3")}</option>
-          <option value={4}>{t("datasets.2-option-4")}</option>
+          <option value={1}>{t("models.2-option-1")}</option>
+          <option value={2}>{t("models.2-option-2")}</option>
+          <option value={3}>{t("models.2-option-3")}</option>
+          <option value={4}>{t("models.2-option-4")}</option>
         </>
       }
       case '3': {
-        // Clasificación imágenes
+        // Clasificación imágenes no debe entrar aquí
         return <>
-          <option value={1}>{t("datasets.3-option-1")}</option>
-          <option value={2}>{t("datasets.3-option-2")}</option>
+          <option value={1}>{t("models.2-option-1")}</option>
+          <option value={2}>{t("models.2-option-2")}</option>
+          <option value={3}>{t("models.2-option-3")}</option>
+          <option value={4}>{t("models.2-option-4")}</option>
         </>
       }
       default: {
@@ -81,7 +83,7 @@ export default function MenuSelectDataset(props) {
 
   return (
     <>
-      <N4LNavbar/>
+      <N4LNavbar />
 
       <Container id={"UploadArchitectureMenu"}>
         <Row className="mt-3 mb-3">
@@ -97,13 +99,13 @@ export default function MenuSelectDataset(props) {
                     <Form.Label>{t("pages.menu-selection-dataset.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-dataset.form-label")}
                                  defaultValue={-1}
-                                 onChange={(e) => setDatasetId(e.target.value)}>
+                                 onChange={(e) => setDatasetId(parseInt(e.target.value))}>
                       <option value={-1} disabled>{t("pages.menu-selection-dataset.form-option-_-1")}</option>
                       {PrintHTML_OPTIONS(id)}
                     </Form.Select>
                   </Form.Group>
 
-                  {dataset_id === '0' &&
+                  {dataset_id === 0 &&
                     <>
                       <Card.Text>
                         Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y
@@ -113,8 +115,9 @@ export default function MenuSelectDataset(props) {
                       <DragAndDrop name={"doc"}
                                    id={"UploadArchitectureMenu"}
                                    accept={{ 'application/json': ['.json'] }}
-                                   text={"Añada el fichero JSON"}
-                                   function_DropAccepted={handleChange_ArchitectureUpload}/>
+                                   text={t("drag-and-drop.json")}
+                                   labelFiles={t("drag-and-drop.label-files-one")}
+                                   function_DropAccepted={handleChange_ArchitectureUpload} />
                     </>
                   }
 
@@ -129,7 +132,7 @@ export default function MenuSelectDataset(props) {
         </Row>
       </Container>
 
-      <N4LFooter/>
+      <N4LFooter />
     </>
   )
 }

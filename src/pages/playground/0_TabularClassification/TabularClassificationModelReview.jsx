@@ -16,14 +16,20 @@ import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import DebugLoadCSV from "../_Debug/DebugLoadCSV";
 import ReactGA from "react-ga4";
+import { withTranslation } from "react-i18next";
 
-export default class TabularClassificationModelReview extends React.Component {
+class TabularClassificationModelReview extends React.Component {
   constructor(props) {
     super(props);
+    this.translate = props.t;
     this.dataset = props.dataset
     this.dataset_ID = parseInt(props.dataset ?? "0")
     this.dataset_key = getNameDatasetByID_ClassicClassification(this.dataset_ID)
-    ReactGA.send({ hitType: "pageview", page: "/ModelReviewTabularClassification/" + this.dataset_key, title: this.dataset_key });
+    ReactGA.send({
+      hitType: "pageview",
+      page   : "/ModelReviewTabularClassification/" + this.dataset_key,
+      title  : this.dataset_key
+    });
 
     this.state = {
       loading         :
@@ -226,7 +232,7 @@ export default class TabularClassificationModelReview extends React.Component {
         return <>
           <p>
             Introduce separado por punto y coma los valores.
-            <br/>
+            <br />
             <b>(parámetro-1; parámetro-2; parámetro-3; ... ;parámetro-n).</b>
           </p>
         </>
@@ -289,7 +295,7 @@ export default class TabularClassificationModelReview extends React.Component {
           <Card.Body className={"overflow-x-scroll"}>
 
             <N4LTablePagination data_head={head}
-                                data_body={body}/>
+                                data_body={body} />
           </Card.Body>
         </Card>
       </Col>
@@ -335,17 +341,17 @@ export default class TabularClassificationModelReview extends React.Component {
                           <DragAndDrop name={"json"}
                                        id={"json-upload"}
                                        accept={{ 'application/json': ['.json'] }}
-                                       text={"Añada el fichero JSON"}
-                                       labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handleFileUpload_JSON}/>
+                                       text={this.translate("drag-and-drop.json")}
+                                       labelFiles={this.translate("drag-and-drop.label-files-one")}
+                                       function_DropAccepted={this.handleFileUpload_JSON} />
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <DragAndDrop name={"bin"}
                                        id={"weights-upload"}
                                        accept={{ 'application/octet-stream': ['.bin'] }}
-                                       text={"Añada el fichero binario"}
-                                       labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handleFileUpload_Binary}/>
+                                       text={this.translate("drag-and-drop.binary")}
+                                       labelFiles={this.translate("drag-and-drop.label-files-one")}
+                                       function_DropAccepted={this.handleFileUpload_Binary} />
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <div className="d-grid gap-2">
@@ -362,9 +368,9 @@ export default class TabularClassificationModelReview extends React.Component {
                           <DragAndDrop name={"csv"}
                                        id={"dataset-upload"}
                                        accept={{ 'text/csv': ['.csv'] }}
-                                       text={"Añada el fichero csv"}
-                                       labelFiles={"Fichero:"}
-                                       function_DropAccepted={this.handleFileUpload_CSV}/>
+                                       text={this.translate("drag-and-drop.csv")}
+                                       labelFiles={this.translate("drag-and-drop.label-files-one")}
+                                       function_DropAccepted={this.handleFileUpload_CSV} />
                         </Col>
                       </Row>
                     </>
@@ -426,7 +432,7 @@ export default class TabularClassificationModelReview extends React.Component {
                                                 placeholder={"Enter parameter"}
                                                 step={0.1}
                                                 value={this.state.dataToTest[key_parameter] ?? value}
-                                                onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)}/>
+                                                onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)} />
                                   <Form.Text className="text-muted">Parámetro: {key_parameter}</Form.Text>
                                 </Form.Group>
                               </Col>
@@ -454,7 +460,7 @@ export default class TabularClassificationModelReview extends React.Component {
                                                     placeholder={"Introduce el entero"}
                                                     step={1}
                                                     value={this.state.dataToTest[value.name] ?? 0}
-                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}/>
+                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
                                       <Form.Text className="text-muted">Parámetro entero: {value.name}</Form.Text>
                                     </Form.Group>
                                   </Col>
@@ -471,7 +477,7 @@ export default class TabularClassificationModelReview extends React.Component {
                                                     placeholder={"Introduce el decimal"}
                                                     step={0.1}
                                                     value={this.state.dataToTest[value.name] ?? 0.0}
-                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}/>
+                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
                                       <Form.Text className="text-muted">Parámetro decimal: {value.name}</Form.Text>
                                     </Form.Group>
                                   </Col>
@@ -513,7 +519,7 @@ export default class TabularClassificationModelReview extends React.Component {
                                           autoComplete="off"
                                           disabled={this.dataset_key !== MODEL_UPLOAD}
                                           value={this.state.textToTest}
-                                          onChange={this.handleChange_TestInput}/>
+                                          onChange={this.handleChange_TestInput} />
                           </Form.Group>
                         </Col>
                       </Row>
@@ -546,10 +552,12 @@ export default class TabularClassificationModelReview extends React.Component {
             </Col>
           </Row>
 
-          <DebugLoadCSV/>
+          <DebugLoadCSV />
 
         </Container>
       </>
     )
   }
 }
+
+export default withTranslation()(TabularClassificationModelReview);

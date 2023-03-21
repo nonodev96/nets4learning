@@ -7,63 +7,62 @@ import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
 
 
-import TabularClassificationModelReview from './/0_TabularClassification/TabularClassificationModelReview'
-import TabularClassificationCustomDataset from './/0_TabularClassification/TabularClassificationCustomDataset'
-import LinearRegressionModelReview from ".//1_LinearRegression/ModelReviewLinearRegression";
-import LinearRegression from ".//1_LinearRegression/LinearRegression";
-import ObjectDetectionModelReview from './/2_ObjectDetection/ModelReviewObjectDetection'
-import ObjectDetection from './/2_ObjectDetection/ObjectDetection'
-import ImageClassificationModelReview from './/3_ImageClassification/ModelReviewImageClassification'
-import ImageClassification from './/3_ImageClassification/ImageClassification'
+import TabularClassificationModelReview from './0_TabularClassification/TabularClassificationModelReview'
+import TabularClassificationCustomDataset from './0_TabularClassification/TabularClassificationCustomDataset'
+import LinearRegressionModelReview from "./1_LinearRegression/ModelReviewLinearRegression";
+import LinearRegression from "./1_LinearRegression/LinearRegression";
+import ObjectDetectionModelReview from './2_ObjectDetection/ModelReviewObjectDetection'
+import ObjectDetection from './2_ObjectDetection/ObjectDetection'
+import ImageClassificationModelReview from './3_ImageClassification/ModelReviewImageClassification'
+import ImageClassification from './3_ImageClassification/ImageClassification'
 import NotFoundPage from "../notFound/NotFoundPage";
-
-import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
+import { useTranslation } from "react-i18next";
 
 export default function Playground() {
   const { id, option, example } = useParams()
-
+  const { t } = useTranslation()
   const Print_HTML_Model_View = () => {
     switch (id.toString()) {
       case '0':
         if (option === '0') {
-          return <TabularClassificationModelReview dataset={example}/>
+          return <TabularClassificationModelReview dataset={example} />
         } else {
-          return <TabularClassificationCustomDataset dataset={example}/>
+          return <TabularClassificationCustomDataset dataset={example} />
         }
       case '1':
         // TODO
         if (option === '0') {
-          return <LinearRegressionModelReview dataset={example}/>
+          return <LinearRegressionModelReview dataset={example} />
         } else {
-          return <LinearRegression dataset={example}/>
+          return <LinearRegression dataset={example} />
         }
       case '2':
         if (option === '0') {
-          return <ObjectDetectionModelReview dataset={example}/>
+          return <ObjectDetectionModelReview dataset={example} />
         } else {
-          return <ObjectDetection dataset={example}/>
+          return <ObjectDetection dataset={example} />
         }
       case '3':
         // TODO
         if (option === '0') {
-          return <ImageClassificationModelReview dataset={example}/>
+          return <ImageClassificationModelReview dataset={example} />
         } else {
-          return <ImageClassification dataset={example}/>
+          return <ImageClassification dataset={example} />
         }
       default:
-        return <NotFoundPage/>
+        return <NotFoundPage />
     }
   }
 
   return (
     <>
-      <N4LNavbar/>
+      <N4LNavbar />
 
       <main className={"mb-3"} data-title={"EditArchitecture"}>
         <Container>
           <Row className={"mt-2"}>
             <Col xl={12}>
-              <h1>{LIST_TYPE_MODALITY[id]}</h1>
+              <h1>{t("modality." + id)}</h1>
             </Col>
           </Row>
         </Container>
@@ -72,7 +71,7 @@ export default function Playground() {
         {Print_HTML_Model_View()}
       </main>
 
-      <N4LFooter/>
+      <N4LFooter />
     </>
   )
 }

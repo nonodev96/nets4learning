@@ -1,0 +1,300 @@
+{
+  "welcome": "Bienvenido a Nets4Learning",
+  "welcome-2": "Para continuar selecciona una de estas disciplinas",
+  "loading": "Cargando",
+  "header": {
+    "language": "Idioma",
+    "manual": "Manual",
+    "glossary": "Glosario",
+    "init": "Inicio"
+  },
+  "footer": {
+    "description-app": "Esta aplicación web forma parte de un Trabajo de Fin de Grado de Ingeniería Informática de la Universidad de Jaén \"Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo\"",
+    "about-us": "Sobre nosotros",
+    "author": "Autor",
+    "directors": "Directores",
+    "maintainers": "Mantenimiento y mejoras"
+  },
+  "drag-and-drop": {
+    "label-files-one": "Fichero:",
+    "label-files-more": "Ficheros:",
+    "binary": "Añada el fichero binario",
+    "json": "Añada el fichero JSON",
+    "csv": "Añada el fichero CSV"
+  },
+  "modality": {
+    "0": "Clasificación tabular",
+    "1": "Regresión lineal",
+    "2": "Identificación de objetos",
+    "3": "Clasificador de imágenes",
+    "tabular-classification": "Clasificación tabular",
+    "linear-regression": "Regresión lineal",
+    "object-detection": "Identificación de objetos",
+    "image-classification": "Clasificador de imágenes"
+  },
+  "datasets": {
+    "0-option-1": "Clasificación de coches",
+    "0-option-2": "Clasificación de flor iris",
+    "0-option-3": "Clasificación de linfomas"
+  },
+  "models": {
+    "2-option-1": "FACE DETECTOR - Geometría facial",
+    "2-option-2": "FACE MESH - Malla facial",
+    "2-option-3": "MOVE NET - Detector de articulaciones",
+    "2-option-4": "COCO SSD - Detector de objetos",
+    "3-option-1": "MNIST - Clasificación de números",
+    "3-option-2": "MOBILENET - Clasificador de imágenes"
+  },
+  "pages": {
+    "index": {
+      "tabular-classification": {
+        "1-title": "Clasificación tabular",
+        "1-description-1": "La clasificación es una técnica para determinar la clase a la que pertenece el dependiente según una o más variables independientes.",
+        "1-description-2": "La clasificación se utiliza para predecir respuestas discretas.",
+        "1-button": "Modelos entrenados",
+        "2-title": "Diseñar, crear y editar una arquitectura para clasificar",
+        "2-description-1": "A través de esta herramienta podemos crear una red neuronal para clasificar datos multi-etiqueta.",
+        "2-description-2": "Diseñando, creando, entrenando y evaluando una arquitectura personalizada.",
+        "2-description-list": {
+          "1": "Definir el número de capas, sus funciones de activación.",
+          "2": "Definir la tasa de entrenamiento.",
+          "3": "Definir el número de iteraciones.",
+          "4": "Definir el optimizador.",
+          "5": "Definir la función de perdida.",
+          "6": "Definir la métrica para la evaluación."
+        },
+        "2-description-footer": "La clasificación se utiliza para predecir respuestas discretas.",
+        "2-button": "Entrenar un modelo"
+      },
+      "linear-regression": {
+      },
+      "object-detection": {
+        "1-title": "Identificación de objetos",
+        "1-description-1": "La clasificación de objetos consiste en organizar los elementos de acuerdo a sus diferencias y semejanzas.",
+        "1-description-2": "Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a poco qué caracteriza a cada objeto.",
+        "1-button": "Modelos entrenados",
+        "2-title": "Identificación de objetos"
+      },
+      "image-classification": {
+        "1-title": "Clasificador de imágenes",
+        "1-description-1": "La clasificación de imágenes de igual forma que la clasificación clásica nos sirve para determinar la clase a la que pertenece el dependiente según una o más variables independientes.",
+        "1-description-2": "En este caso la variable de entrada será una imagen.",
+        "1-button": "Modelos entrenados"
+      }
+    },
+    "menu-selection-dataset": {
+      "form-description-1": "Selecciona a continuación el conjunto de datos sobre se va a trabajar o carga tu propio conjunto de datos.",
+      "form-label": "Selecciona un conjunto de datos",
+      "form-option-_-1": "Selecciona un conjunto de datos",
+      "form-upload-description": "Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y se cargará una arquitectura por defecto de ejemplo.",
+      "form-submit": "Continuar"
+    },
+    "menu-selection-model": {
+      "form-description-1": " Selecciona a continuación el modelo entrenado sobre el que se va a trabajar.",
+      "form-description-2": "Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente vista.",
+      "form-label": "Selecciona un modelo entrenado",
+      "form-option-_-1": "Selecciona un modelo entrenado",
+      "form-submit": "Continuar"
+    },
+    "playground": {
+      "tabular-classification": {
+      },
+      "linear-regression": {
+      },
+      "object-detection": {
+      },
+      "image-classification": {
+      }
+    },
+    "manual": {
+    },
+    "glossary": {
+      "title": "Glosario",
+      "table-head": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "references": "Referencias",
+        "characteristics": "Características",
+        "function": "Función"
+      },
+      "tabular-classification": {
+        "title": "Descripción clasificación tabular",
+        "text-1": "La clasificación tabular es un tipo de aprendizaje supervisado en el que se utiliza un conjunto de datos etiquetados para entrenar un modelo de aprendizaje automático que pueda predecir la clase de un nuevo conjunto de datos. En la clasificación tabular, los datos de entrada y salida se representan en forma de una tabla con filas y columnas, donde cada fila representa una instancia o ejemplo de los datos, y cada columna representa una característica o atributo de los datos.",
+        "text-2": "Por ejemplo, si se quiere predecir si un cliente de un banco es solvente o no, las características o atributos que se pueden utilizar son: ingresos, deudas, historial crediticio, edad, etc. En la clasificación tabular, cada instancia o ejemplo del conjunto de datos tendrá valores para cada una de estas características y una etiqueta que indica si el cliente es solvente o no.",
+        "text-3": "Una vez que se tiene un conjunto de datos etiquetados, se utiliza un algoritmo de aprendizaje automático para entrenar un modelo que pueda predecir la etiqueta de nuevos conjuntos de datos. Este modelo puede ser utilizado para realizar predicciones precisas y rápidas sobre nuevas instancias de datos.",
+        "text-4": "La clasificación tabular es una técnica muy útil para resolver problemas de clasificación en una amplia variedad de campos, como la medicina, el comercio electrónico, la banca, la seguridad y muchos otros."
+      },
+      "object-identification": {
+        "title": "Descripción identificación de objetos",
+        "text-1": "La identificación de objetos en redes neuronales es una técnica utilizada en el campo del aprendizaje automático y la visión por computadora para detectar y reconocer objetos en imágenes o videos. Es una tarea importante en el análisis de imágenes y es utilizada en aplicaciones como el reconocimiento de rostros, el seguimiento de objetos en tiempo real, la clasificación de objetos en imágenes médicas y la detección de objetos en vehículos autónomos.",
+        "text-2": "Las redes neuronales utilizadas para la identificación de objetos son modelos de aprendizaje profundo que se entrenan en conjuntos de datos etiquetados. El proceso de entrenamiento implica proporcionar a la red neuronas una gran cantidad de imágenes etiquetadas, y ajustar los pesos de las conexiones entre las neuronas para que la red pueda identificar objetos en nuevas imágenes con alta precisión.",
+        "text-3": "Una vez que la red neuronal ha sido entrenada, se utiliza para identificar objetos en nuevas imágenes. La red examina la imagen y, mediante el procesamiento de múltiples capas, extrae características importantes que se utilizan para identificar los objetos de interés. Luego, la red utiliza estas características para asignar una etiqueta a cada objeto detectado en la imagen.",
+        "text-4": "En resumen, la identificación de objetos en redes neuronales es una técnica importante en la visión por computadora y el aprendizaje automático que se utiliza para detectar y reconocer objetos en imágenes y videos. Se basa en el uso de redes neuronales profundas entrenadas en conjuntos de datos etiquetados para identificar y clasificar objetos en nuevas imágenes con alta precisión."
+      },
+      "image-classification": {
+        "title": "Descripción clasificador de imágenes",
+        "text-1": "El clasificador de imágenes es una técnica utilizada en las redes neuronales para clasificar imágenes en diferentes categorías o etiquetas. El objetivo de un clasificador de imágenes es tomar una imagen de entrada y predecir a qué clase pertenece, basándose en un conjunto de categorías o etiquetas predefinidas.",
+        "text-2": "En el aprendizaje profundo, los clasificadores de imágenes se basan en las redes neuronales convolucionales (CNN, por sus siglas en inglés), que son una arquitectura especializada para procesar imágenes. Estas redes neuronales tienen múltiples capas y operaciones de convolución que les permiten extraer características importantes de las imágenes, como bordes, formas y texturas.",
+        "text-3": "Para entrenar un clasificador de imágenes, se utiliza un conjunto de datos etiquetados que contiene imágenes y sus respectivas etiquetas de clase. Luego, se entrena la red neuronal utilizando este conjunto de datos para que aprenda a identificar patrones en las imágenes y asociarlos con las etiquetas de clase correspondientes.",
+        "text-4": "Una vez que la red neuronal ha sido entrenada, se puede utilizar para clasificar nuevas imágenes en diferentes categorías. El clasificador de imágenes examina la imagen de entrada y la procesa a través de la red neuronal para extraer características importantes y predecir a qué clase pertenece la imagen.",
+        "text-5": "En resumen, el clasificador de imágenes en las redes neuronales es una técnica que utiliza las redes neuronales convolucionales para clasificar imágenes en diferentes categorías o etiquetas. Se basa en el uso de un conjunto de datos etiquetados para entrenar la red neuronal y en la extracción de características importantes de las imágenes para predecir a qué clase pertenece una nueva imagen de entrada."
+      },
+      "activation-functions": {
+        "title": "Funciones de activación",
+        "text-1": "Una función de activación es una función matemática utilizada en una red neuronal artificial para determinar la salida de una neurona o de un conjunto de neuronas en función de la entrada recibida. La función de activación introduce no linealidad en la red neuronal, lo que permite a la red aprender patrones más complejos en los datos de entrada. Ejemplos comunes de funciones de activación son la función sigmoidea, la función ReLU y la función tangente hiperbólica.",
+        "table": {
+          "softmax": {
+            "description": "Transforma las salidas a una representación en forma de probabilidades, de forma que la suma de todas las probabilidades da 1",
+            "characteristics": [
+              "Acotada entre 0 y 1",
+              "Buena en capas finales",
+              "Utilizada para normalizar tipo multiclase"
+            ]
+          },
+          "sigmoid": {
+            "description": "Transforma, los valores de entrada donde los más altos tienden a 1 y los valores más bajos tienden a 0",
+            "characteristics": [
+              "Acotada entre 0 y 1",
+              "Lenta convergencia",
+              "Buena en capas finales"
+            ]
+          },
+          "relu": {
+            "description": "Transforma los valores de entrada dejando a cero los valores negativos y dejando tal como estaban los datos positivos-",
+            "characteristics": [
+              "No está acotada",
+              "Buen desempeño con redes convolucionales"
+            ]
+          }
+        }
+      },
+      "optimization-functions": {
+        "title": "Funciones de optimización",
+        "text-1": "Una función de optimización es una técnica matemática utilizada para minimizar o maximizar una función objetivo. En el contexto del aprendizaje automático, las funciones objetivo suelen ser funciones de error que miden la discrepancia entre la salida de la red neuronal y los valores de salida deseados para un conjunto de datos de entrenamiento dado.",
+        "text-2": "La función de optimización ajusta los parámetros de la red neuronal para minimizar la función objetivo y, por lo tanto, mejorar su capacidad para hacer predicciones precisas en nuevos datos de entrada. Ejemplos comunes de funciones de optimización son el descenso del gradiente estocástico y el algoritmo de Adam.",
+        "table": {
+          "sgd": {
+            "references": "Descenso del gradiente estocástico \n (Instituto Tecnológico Autónomo de México, 2017)",
+            "description": "El descenso del gradiente es un algoritmo que estima dónde una función genera sus valores más bajos. En el caso de que el modelo de aprendizaje automático sea de gran escala este cálculo puede ser muy costoso.\n                          Debido a esto surge el descenso del gradiente estocástico que usa una constante y por consiguiente el número de gradientes a calcular es fijo."
+          },
+          "momentum": {
+            "references": "",
+            "description": "Es una variación de la función anterior. Define un valor que acelera el descenso del gradiente si el signo del gradiente es el mismo durante diferentes épocas."
+          },
+          "adagrad": {
+            "references": "(Velasco, 2020)",
+            "description": "Introduce una variación en el concepto de tasa de entrenamiento. Esta función escala y adapta este valor para cada peso respecto del gradiente acumulado en cada iteración."
+          },
+          "adadelta": {
+            "references": "(Velasco, 2020)",
+            "description": "Es una variación de AdaGrad en la que se restringe el cálculo de la tasa de entrenamiento de cada peso a una ventana de tamaño fijo de los últimos n gradientes en vez de hacerlo con el gradiente acumulado de cada iteración."
+          },
+          "rmsprop": {
+            "references": "Propagación de raíz cuadrática media \n (Root Mean Square Propagation) \n (Velasco, 2020)",
+            "description": "Este algoritmo mantiene un factor de entrenamiento diferente para cada dimensión, pero el escalado del factor del entrenamiento se realiza dividiéndolo por la media del declive exponencial del cuadrado de los gradientes."
+          },
+          "adam": {
+            "references": "Estimación adaptativa del mo \n (Adaptive moment estimation) \n (Velasco, 2020)",
+            "description": "Es una combinación de <i>AdaGrad</i> y <i>RMSProp</i>. Se mantiene un factor de entrenamiento por parámetro y se calcula <i>RMSProp</i>, además cada factor de entrenamiento se ve afectado por el <i>momentum</i> del gradiente."
+          }
+        }
+      },
+      "loss-functions": {
+        "title": "Funciones de pérdida",
+        "text-1": "En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada. En otras palabras, la función de pérdida mide qué tan bien el modelo se ajusta a los datos de entrenamiento.",
+        "text-2": "El objetivo de un algoritmo de aprendizaje automático es minimizar la función de pérdida, lo que significa encontrar el conjunto de parámetros del modelo que mejor se ajuste a los datos de entrenamiento. Por lo tanto, la elección de la función de pérdida es muy importante, ya que puede afectar la capacidad del modelo para aprender correctamente los patrones en los datos y hacer predicciones precisas en nuevos datos.",
+        "text-3": "Existen diferentes funciones de pérdida para diferentes tipos de problemas de aprendizaje automático, como la regresión, la clasificación binaria y la clasificación multiclase. Ejemplos comunes de funciones de pérdida incluyen el error cuadrático medio (MSE) para la regresión, la entropía cruzada binaria para la clasificación binaria y la entropía cruzada categórica para la clasificación multiclase.",
+        "text-4": "En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar.",
+        "table": {
+          "AbsoluteDifference": {
+            "references": "Diferencia absoluta \n (Acervolima, s.f.)",
+            "description": "Calcula en valor absoluto la distancia al objetivo. Esta función es utilizada en problemas de regresión."
+          },
+          "ComputeWeightedLoss": {
+            "references": "Media ponderada \n (Acervolima, s.f.)",
+            "description": "Calcula la pérdida ponderada entre dos tensores dados."
+          },
+          "CosineDistance": {
+            "references": "Distancia del coseno \n (Acervolima, s.f.)",
+            "description": "Calcula la pérdida aplicando el coseno de la distancia entre dos tensores."
+          },
+          "HingeLoss": {
+            "references": "Pérdida de bisagra \n (Rennie & Srebro, 2005)",
+            "description": "Calcula la pérdida de bisagra entre dos tensores. Se aplica en problemas de clasificación."
+          },
+          "HuberLoss": {
+            "references": "(Pérdida Huber)",
+            "description": "Es usada en problemas de regresión, esta calcula la pérdida provocada por el procedimiento de estimación."
+          },
+          "LogLoss": {
+            "references": "Pérdida logarítmica \n (Shen, 2005)",
+            "description": "<i>LogLoss</i> o <i>Logistic Loss</i> es una función convexa que crece linealmente para números negativos y la hace poco sensible a valores atípicos. Calcula la pérdida logarítmica entre dos tensores."
+          },
+          "MeanSquaredError": {
+            "references": "Error cuadrático medio \n (Acervolima, s.f.)",
+            "description": "Calcula de forma geométrica la distancia al cuadrado al objetivo, esta función es utilizada en problemas de regresión."
+          },
+          "CategoricalCrossEntropy": {
+            "references": "(Acervolima, s.f.)",
+            "description": "Mide la distancia entre distribuciones de probabilidad. Es aplicada en redes cuya capa de salida es una probabilidad."
+          },
+          "SigmoidCrossEntropy": {
+            "references": "(Acervolima, s.f.)",
+            "description": "Se trata de una variante de la función <i>CategoricalCrossEntropy</i>, en este caso calcula la pérdida en un valor entre 0 y 1."
+          },
+          "SoftmaxCrossEntropy": {
+            "references": "(Bendersky, 2016)",
+            "description": "Se aplica una combinación de las funciones <i>softmax</i> y <i>CrossEntropy</i> calculando la pérdida de la red."
+          }
+        }
+      },
+      "metric-functions": {
+        "title": "Funciones de métrica",
+        "text-1": "Se utilizan para evaluar el rendimiento del modelo de la red neuronal en un conjunto de datos de prueba. La función de métrica toma las predicciones realizadas por el modelo y las compara con los valores reales de los datos de prueba para determinar la precisión del modelo.",
+        "text-2": "Existen diferentes tipos de funciones de métrica que se pueden utilizar en una red neuronal, dependiendo del tipo de problema que se esté abordando. Por ejemplo, para un problema de clasificación binaria, se podría utilizar la precisión (accuracy) como métrica, mientras que para un problema de regresión se podría utilizar el error cuadrático medio (mean squared error).",
+        "text-3": "En resumen, una función de métrica es una herramienta importante para evaluar la capacidad de una red neuronal para realizar predicciones precisas en un conjunto de datos de prueba y para ayudar a ajustar los parámetros del modelo para mejorar su rendimiento.",
+        "table": {
+          "BinaryAccuracy": {
+            "references": "Precisión binaria <br />(Acervolima, s.f.)",
+            "description": "Calcula la frecuencia con la que las predicciones coinciden con las etiquetas binarias."
+          },
+          "BinaryCrossentropy": {
+            "references": "Entropía cruzada binaria <br />(Saxena, 2021)",
+            "description": "Es el promedio negativo del logaritmo de las probabilidades predichas que se han corregido."
+          },
+          "CategoricalAccuracy": {
+            "references": "Exactitud categórica",
+            "description": "Calcula la frecuencia con la que las predicciones coinciden con las etiquetas one-hot."
+          },
+          "CategoricalCrossentropy": {
+            "references": "Entropía cruzada categórica",
+            "description": "Calcula la métrica de entropía cruzada entre las etiquetas y las predicciones."
+          },
+          "CosineProximity": {
+            "references": "Proximidad del coseno",
+            "description": "Calcula entre las etiquetas y las predicciones el coseno de la proximidad. Normalmente se obtienen valores negativos."
+          },
+          "MeanAbsoluteError": {
+            "references": "Error absoluto medio",
+            "description": "En estadística, es una medida de la diferencia entre dos variables continuas, aplicada a los modelos de aprendizaje automático estas variables son las etiquetas y las predicciones."
+          },
+          "MeanAbsolutePercentageError": {
+            "references": "Porcentaje de error absoluto medio",
+            "description": "De igual forma que <i>MeanAbsoluteError</i> calcula la diferencia entre las etiquetas y las predicciones, pero en este caso con un porcentaje."
+          },
+          "MeanSquaredError": {
+            "references": "Error cuadrático medio",
+            "description": "Determina el error cuadrático medio entre las etiquetas y las predicciones."
+          }
+        }
+      }
+    },
+    "terms": {
+      "title": "Políticas de privacidad y cookies",
+      "privacy-title": "Políticas de privacidad",
+      "privacy-text": "En nuestro sitio web, solo recopilamos información estadística sobre las visitas con el fin de mejorar el rendimiento y la funcionalidad del sitio. No recopilamos ni almacenamos ninguna información personal de nuestros usuarios. Utilizamos cookies para contabilizar el número de visitantes y mejorar la experiencia de navegación. Si tienes alguna pregunta o duda sobre nuestra política de privacidad, no dudes en ponerte en contacto con nosotros a través de nuestra página de contacto.",
+      "cookies-title": "Cookies",
+      "cookies-text": "Nuestra página web utiliza cookies de Google Analytics para contabilizar el número de visitantes que recibimos. Estas cookies nos permiten recopilar información estadística anónima sobre el uso de nuestro sitio web y nos ayudan a mejorar su rendimiento y funcionalidad. Las cookies de Google Analytics no recopilan información personal de los usuarios. Al navegar por nuestra web, aceptas el uso de estas cookies. Si deseas obtener más información acerca de cómo utilizamos las cookies, por favor consulta nuestra política de privacidad."
+    }
+  }
+}

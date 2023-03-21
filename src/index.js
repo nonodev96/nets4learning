@@ -7,15 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
-const app = (
-  //<StrictMode>
-  // <ThemeProvider theme={tema}>
-  <BrowserRouter>
-    <App/>
-  </BrowserRouter>
-  // </ThemeProvider>
-  //</StrictMode>
-);
+const app = (<BrowserRouter><App/></BrowserRouter>);
 
 
 ReactDOM.render(app, document.getElementById("root"));

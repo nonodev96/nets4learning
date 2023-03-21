@@ -4,46 +4,46 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
 import * as alertHelper from "../../utils/alertHelper"
-import { LIST_MODEL_OPTIONS, LIST_TYPE_MODALITY } from "../../DATA_MODEL";
+import { useTranslation } from "react-i18next";
 
 export default function MenuSelectModel(props) {
   const { id } = useParams()
-  const [ModelID, setModelID] = useState(-1)
+  const [model_id, setModelId] = useState(-1)
   const history = useHistory()
+  const { t } = useTranslation()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (ModelID === -1 || ModelID === 'Selecciona un Modelo') {
+    if (model_id === -1) {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
-      history.push('/playground/' + id + '/' + 0 + '/' + ModelID)
+      history.push('/playground/' + id + '/' + 0 + '/' + model_id)
     }
   }
 
   const PrintHTML_OPTIONS = (_id) => {
     switch (_id) {
       case '0': {
-        // Clasificación
+        // Clasificación no debe entrar aquí
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[0][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[0][2]}</option>
-          {/*<option value={3} disabled>{LIST_MODEL_OPTIONS[0][3]}</option>*/}
+          <option value={1}>{t("datasets.0-option-1")}</option>
+          <option value={2}>{t("datasets.0-option-2")}</option>
         </>
       }
       case '2': {
         // Identificación
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[2][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[2][2]}</option>
-          <option value={3}>{LIST_MODEL_OPTIONS[2][3]}</option>
-          <option value={4}>{LIST_MODEL_OPTIONS[2][4]}</option>
+          <option value={1}>{t("models.2-option-1")}</option>
+          <option value={2}>{t("models.2-option-2")}</option>
+          <option value={3}>{t("models.2-option-3")}</option>
+          <option value={4}>{t("models.2-option-4")}</option>
         </>
       }
       case '3': {
         // Clasificación imágenes
         return <>
-          <option value={1}>{LIST_MODEL_OPTIONS[3][1]}</option>
-          <option value={2}>{LIST_MODEL_OPTIONS[3][2]}</option>
+          <option value={1}>{t("models.3-option-1")}</option>
+          <option value={2}>{t("models.3-option-2")}</option>
         </>
       }
       default: {
@@ -61,22 +61,21 @@ export default function MenuSelectModel(props) {
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
-              <Card.Header><h3>{LIST_TYPE_MODALITY[id]}</h3></Card.Header>
+              <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  Selecciona a continuación el modelo entrenado sobre el que se va a trabajar.
+                  {t("pages.menu-selection-model.form-description-1")}
                 </Card.Text>
                 <Card.Text>
-                  Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente
-                  vista.
+                  {t("pages.menu-selection-model.form-description-2")}
                 </Card.Text>
                 <Form onSubmit={handleSubmit}>
                   <Form.Group controlId="FormModel">
-                    <Form.Label>Selecciona un Modelo</Form.Label>
-                    <Form.Select aria-label="Selecciona un modelo"
+                    <Form.Label>{t("pages.menu-selection-model.form-label")}</Form.Label>
+                    <Form.Select aria-label={t("pages.menu-selection-model.form-label")}
                                  defaultValue={-1}
-                                 onChange={(e) => setModelID(e.target.value)}>
-                      <option value={-1} disabled>Selecciona un modelo</option>
+                                 onChange={(e) => setModelId(parseInt(e.target.value))}>
+                      <option value={-1} disabled>{t("pages.menu-selection-model.form-option-_-1")}</option>
 
                       {PrintHTML_OPTIONS(id)}
 
@@ -94,7 +93,7 @@ export default function MenuSelectModel(props) {
         </Row>
       </Container>
 
-      <N4LFooter/>
+      <N4LFooter />
     </>
   )
 }

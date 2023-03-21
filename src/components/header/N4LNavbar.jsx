@@ -55,7 +55,7 @@ export default function N4LNavbar() {
                 <IconMenuGB width={"1rem"} className={"me-2"} style={{ verticalAlign: "unset" }}/>
                 Ingles
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={() => i18n.changeLanguage('sp')}>
+              <NavDropdown.Item onClick={() => i18n.changeLanguage('es')}>
                 <IconMenuES width={"1rem"} className={"me-2"} style={{ verticalAlign: "unset" }}/>
                 Español
               </NavDropdown.Item>
