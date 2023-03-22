@@ -66,7 +66,7 @@
   "convertedBy": null,
   "weightsManifest": [
     {
-      "paths": ["./mymodelIris.weights.bin"],
+      "paths": ["./my-model-iris.weights.bin"],
       "weights": [
         { "name": "dense_Dense1/kernel", "shape": [4, 10], "dtype": "float32" },
         { "name": "dense_Dense1/bias", "shape": [10], "dtype": "float32" },

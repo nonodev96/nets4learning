@@ -68,7 +68,7 @@
   "convertedBy": null,
   "weightsManifest": [
     {
-      "paths": ["/mymodelCar.weights.bin"],
+      "paths": ["/my-model-car.weights.bin"],
       "weights": [
         { "name": "dense_Dense1/kernel", "shape": [6, 10], "dtype": "float32" },
         { "name": "dense_Dense1/bias", "shape": [10], "dtype": "float32" },

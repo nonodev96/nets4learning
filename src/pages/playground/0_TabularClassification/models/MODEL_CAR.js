@@ -1,9 +1,13 @@
 import * as tf from "@tensorflow/tfjs";
 
+/**
+ * @type {TYPE_MODEL_TABULAR_CLASSIFICATION}
+ */
 export const MODEL_CAR = {
   KEY             : "CAR",
   TITLE           : "CAR - Clasificación de coches",
   URL             : 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation',
+  URL_MODEL       : "/public/models/classification/car/my-model-car.json",
   DESCRIPTION     : <>
     <p>El conjunto de datos <i>Car Evaluation</i> permite evaluar vehículos a través de la siguiente estructura</p>
     <p>Para obtener más información acerca de este conjunto de datos visita el repositorio <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">ics.uci.edu</a>.</p>
@@ -50,13 +54,14 @@ export const MODEL_CAR = {
   HTML_EXAMPLE    : <>
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a el coche que se va a evaluar:
-      <br/>
+      <br />
       <b>(buying; maint; doors; persons; lug_boot; safety).</b>
     </p>
     <p>Ejemplos:</p>
   </>,
+  TABLE_HEADER    : ["Buying", "Maint", "Doors", "Persons", "Lug boot", "Safety", "Results"],
   loadModel       : async function () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/car/mymodelCar.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/car/my-model-car.json")
   },
   function_v_input: async function (element, index, param = "") {
     return this.DATA_CLASSES[index].findIndex((data_class) => data_class === element)
@@ -113,8 +118,7 @@ export const MODEL_CAR = {
     { type: "select", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
   ],
   // @formatter:on
-  TABLE_HEADER: ["Buying", "Maint", "Doors", "Persons", "Lug boot", "Safety", "Results"],
-  DATA        : [
+  DATA: [
     ["vhigh", "vhigh", "2", "2", "small", "low", "unacc"],
     ["vhigh", "vhigh", "2", "2", "small", "med", "unacc"],
     ["vhigh", "vhigh", "2", "2", "small", "high", "unacc"],

@@ -1,9 +1,13 @@
-import { MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY } from "./core/nn-review-models";
+import {
+  MODEL_CAR,
+  MODEL_IRIS,
+  MODEL_LYMPHOGRAPHY
+} from "./pages/playground/0_TabularClassification/models";
 
 const MODEL_UPLOAD = "UPLOAD"
 
 const MODEL_FACE_MESH = "FACE-MESH"
-const MODEL_FACE_DETECTION = "FACE-DETECTION"
+const MODEL_FACE_DETECTOR = "FACE-DETECTOR"
 const MODEL_MOVE_NET_POSE_NET = "MOVE-NET-POSE-NET"
 const MODEL_COCO_SSD = "COCO-SSD"
 
@@ -20,7 +24,7 @@ const LIST_MODELS_CLASSIC_CLASSIFICATION = [
 
 const LIST_MODELS_OBJECT_DETECTION = [
   MODEL_UPLOAD,
-  MODEL_FACE_DETECTION,
+  MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD
@@ -363,7 +367,7 @@ const getNameDatasetByID_ObjectDetection = (dataset) => {
     case '0':
       return MODEL_UPLOAD
     case '1':
-      return MODEL_FACE_DETECTION
+      return MODEL_FACE_DETECTOR
     case '2':
       return MODEL_FACE_MESH
     case '3':
@@ -431,7 +435,7 @@ export {
   MODEL_LYMPHOGRAPHY,
   // Identificación de objetos
   LIST_MODELS_OBJECT_DETECTION,
-  MODEL_FACE_DETECTION,
+  MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD,

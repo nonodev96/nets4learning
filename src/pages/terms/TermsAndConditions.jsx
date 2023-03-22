@@ -3,7 +3,6 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import N4LNavbar from "../../components/header/N4LNavbar";
 import N4LFooter from "../../components/footer/N4LFooter";
 import { useTranslation } from "react-i18next";
-import * as es_ES from "./es_ES.json"
 
 export default function TermsAndConditions() {
   const { t } = useTranslation()
@@ -16,7 +15,7 @@ export default function TermsAndConditions() {
         "Accept"      : "application/json",
         "Content-Type": "application/json;charset=UTF-8",
       },
-      body   : JSON.stringify(es_ES),
+      body   : JSON.stringify({  }),
     };
     fetch(url, options)
       .then((response) => response.json())

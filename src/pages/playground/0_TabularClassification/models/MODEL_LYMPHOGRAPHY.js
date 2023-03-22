@@ -1,13 +1,17 @@
 import * as tf from "@tensorflow/tfjs";
 
+/**
+ *
+ * @type {TYPE_MODEL_TABULAR_CLASSIFICATION}
+ */
 export const MODEL_LYMPHOGRAPHY = {
   KEY              : "LYMPHOGRAPHY",
   TITLE            : "Clasificación por datos de linfomas",
   URL              : "https://archive.ics.uci.edu/ml/datasets/Lymphography",
+  URL_MODEL        : "/public/models/classification/car/my-model-lymphography.json",
   URL_DATASET      : "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/",
   DESCRIPTION      : <>
     <p>El conjunto de datos de <i>lymphographya</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.</p>
-
     <details>
       <summary>Datos de entrada</summary>
       <ol>
@@ -50,7 +54,7 @@ export const MODEL_LYMPHOGRAPHY = {
   HTML_EXAMPLE     : <>
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-      <br/>
+      <br />
       <b>(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates,
         regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym.,
         defect in node, changes in node, changes in stru, special forms, dislocation of,
@@ -58,6 +62,10 @@ export const MODEL_LYMPHOGRAPHY = {
     </p>
     <p>Ejemplos:</p>
   </>,
+  TABLE_HEADER     : [
+    "lymphatics", "block of affere", "bl. of lymph. c", "bl. of lymph. s", "by pass", "extravasates", "regeneration", "early uptake in", "lym.nodes dimin", "lym.nodes enlar", "changes in lym", "defect in node", "changes in node",
+    "changes in stru", "special forms", "dislocation of", "exclusion of", "no. of nodes in", "Category"
+  ],
   loadModel        : async () => {
     return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/lymphography/my-model-lymphography.json")
   },
@@ -150,6 +158,7 @@ export const MODEL_LYMPHOGRAPHY = {
     ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "=>70"]
   ],
   DATA_CLASSES_KEYS: [],
+  // @formatter:off
   LIST_EXAMPLES    : [
     // Normal
     {
@@ -236,7 +245,6 @@ export const MODEL_LYMPHOGRAPHY = {
       "no. of nodes in": "7"
     },
   ],
-  // @formatter:off
   FORM             : [
     { type: "select", name: "lymphatics",       options: [{ value: "1", text: "normal" }, { value: "2", text: "arched" },    { value: "3", text: "deformed" },     { value: "4", text: "displaced" }]},
     { type: "select", name: "block of affere",  options: [{ value: "1", text: "No" },     { value: "2", text: "2" }]},
@@ -256,27 +264,6 @@ export const MODEL_LYMPHOGRAPHY = {
     { type: "select", name: "dislocation of",   options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "exclusion of",     options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "no. of nodes in",  options: [{ value: "1", text: "0-9" },    { value: "2", text: "10-19" },     { value: "3", text: "20-29" },          { value: "4", text: "30-39" },  { value: "5", text: "40-49" },  { value: "6", text: "50-59" },      { value: "7", text: "60-69" },    { value: "8", text: "=>70" }]}
-  ],
-  TABLE_HEADER: [
-    "lymphatics",
-    "block of affere",
-    "bl. of lymph. c",
-    "bl. of lymph. s",
-    "by pass",
-    "extravasates",
-    "regeneration",
-    "early uptake in",
-    "lym.nodes dimin",
-    "lym.nodes enlar",
-    "changes in lym",
-    "defect in node",
-    "changes in node",
-    "changes in stru",
-    "special forms",
-    "dislocation of",
-    "exclusion of",
-    "no. of nodes in",
-    "Category"
   ],
   DATA        : [
     [4,2,1,1,1,1,1,2,1,2,2,2,4,8,1,1,2,2,3],

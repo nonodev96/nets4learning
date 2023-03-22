@@ -2,7 +2,6 @@ import './InitialMenu.css'
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
-import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
 import { useTranslation } from "react-i18next";
 
 export default function InitialMenu() {

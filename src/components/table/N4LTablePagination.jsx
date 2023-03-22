@@ -27,16 +27,16 @@ export default function N4LTablePagination({ data_head, data_body }) {
         <thead>
         <tr>
           <th>ID</th>
-          {
-            data_head.map((v, i) => {
-              return <th key={"thead_" + i}>{v}</th>
-            })
-          }
+          {data_head.map((v, i) => {
+            return <th key={"thead_" + i}>{v}</th>
+          })}
         </tr>
         </thead>
         <tbody>
-        {
-          Array.from(data_body).slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage).map((r_v, r_i) => {
+        {Array
+          .from(data_body)
+          .slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage)
+          .map((r_v, r_i) => {
             return <tr key={"tbody_" + r_i}>
               <th key={"tbody_id_" + r_i}>{(activePage * rowsPerPage) + r_i}</th>
               {
@@ -45,8 +45,7 @@ export default function N4LTablePagination({ data_head, data_body }) {
                 })
               }
             </tr>
-          })
-        }
+          })}
         </tbody>
       </Table>
     </div>
@@ -54,11 +53,11 @@ export default function N4LTablePagination({ data_head, data_body }) {
     <Pagination size="sm" className={"n4l-pagination justify-content-center mt-3"}>
       {(activePage > 0) && <></>}
       <Pagination.First disabled={!(activePage > 0)}
-                        onClick={() => handleClick_ChangePage(0)}/>
+                        onClick={() => handleClick_ChangePage(0)} />
 
       {(activePage - 1 >= startPage) && <></>}
       <Pagination.Prev disabled={!(activePage - 1 >= startPage)}
-                       onClick={() => handleClick_ChangePage(activePage - 1)}/>
+                       onClick={() => handleClick_ChangePage(activePage - 1)} />
 
       {(activePage - 3 >= startPage) && <></>}
       <Pagination.Item disabled={!(activePage - 3 >= startPage)}
@@ -101,10 +100,10 @@ export default function N4LTablePagination({ data_head, data_body }) {
 
       {(activePage + 1 < pageCount) && <></>}
       <Pagination.Next disabled={!(activePage + 1 < pageCount)}
-                       onClick={() => handleClick_ChangePage(activePage + 1)}/>
+                       onClick={() => handleClick_ChangePage(activePage + 1)} />
       {(activePage + 1 <= pageCount - 1) && <></>}
       <Pagination.Last disabled={!(activePage + 1 <= pageCount - 1)}
-                       onClick={() => handleClick_ChangePage(pageCount - 1)}/>
+                       onClick={() => handleClick_ChangePage(pageCount - 1)} />
     </Pagination>
   </>
 }

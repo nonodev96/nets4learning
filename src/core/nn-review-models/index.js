@@ -1,6 +1,6 @@
-import { MODEL_CAR } from "./ClassificationHelper_CAR";
-import { MODEL_IRIS } from "./ClassificationHelper_IRIS";
-import { MODEL_LYMPHOGRAPHY } from "./ClassificationHelper_LYMPHATCS";
+import { MODEL_CAR } from "../../pages/playground/0_TabularClassification/models/MODEL_CAR";
+import { MODEL_IRIS } from "../../pages/playground/0_TabularClassification/models/MODEL_IRIS";
+import { MODEL_LYMPHOGRAPHY } from "../../pages/playground/0_TabularClassification/models/MODEL_LYMPHOGRAPHY";
 
 export {
   MODEL_CAR,

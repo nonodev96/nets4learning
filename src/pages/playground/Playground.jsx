@@ -11,9 +11,9 @@ import TabularClassificationModelReview from './0_TabularClassification/TabularC
 import TabularClassificationCustomDataset from './0_TabularClassification/TabularClassificationCustomDataset'
 import LinearRegressionModelReview from "./1_LinearRegression/ModelReviewLinearRegression";
 import LinearRegression from "./1_LinearRegression/LinearRegression";
-import ObjectDetectionModelReview from './2_ObjectDetection/ModelReviewObjectDetection'
+import ObjectDetectionModelReview from './2_ObjectDetection/ObjectDetectionModelReview'
 import ObjectDetection from './2_ObjectDetection/ObjectDetection'
-import ImageClassificationModelReview from './3_ImageClassification/ModelReviewImageClassification'
+import ImageClassificationModelReview from './3_ImageClassification/ImageClassificationModelReview'
 import ImageClassification from './3_ImageClassification/ImageClassification'
 import NotFoundPage from "../notFound/NotFoundPage";
 import { useTranslation } from "react-i18next";

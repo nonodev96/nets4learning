@@ -16,7 +16,7 @@ import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import DebugLoadCSV from "../_Debug/DebugLoadCSV";
 import ReactGA from "react-ga4";
-import { withTranslation } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 
 class TabularClassificationModelReview extends React.Component {
   constructor(props) {
@@ -291,7 +291,7 @@ class TabularClassificationModelReview extends React.Component {
     return <>
       <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
         <Card className={"mt-3"}>
-          <Card.Header><h3>Conjunto de datos</h3></Card.Header>
+          <Card.Header><h3>{this.translate("table.dataset")}</h3></Card.Header>
           <Card.Body className={"overflow-x-scroll"}>
 
             <N4LTablePagination data_head={head}
@@ -326,15 +326,21 @@ class TabularClassificationModelReview extends React.Component {
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={"sticky-top mt-3 border-info"} style={{ "zIndex": 0 }}>
-                <Card.Header><h3>Modelo</h3></Card.Header>
+                <Card.Header>
+                  <h3>
+                    <Trans i18nKey={"pages.playground.0-tabular-classification.general.model"} />
+                  </h3>
+                </Card.Header>
                 <Card.Body>
                   <Card.Title>{this._model?.TITLE ?? "Subir"} {this.state.loading}</Card.Title>
 
                   {this.dataset_key === MODEL_UPLOAD ? (
                     <>
-                      <Card.Subtitle className="mb-3 text-muted">Carga tu propio modelo.</Card.Subtitle>
+                      <Card.Subtitle className="mb-3 text-muted">
+                        <Trans i18nKey={"pages.playground.0-tabular-classification.0_upload.upload-your-model"} />
+                      </Card.Subtitle>
                       <Card.Text>
-                        Ten en cuenta que tienes que subir el archivo <b>.json</b> y el fichero <b>.bin</b> para luego cargar el modelo
+                        <Trans i18nKey={"pages.playground.0-tabular-classification.0_upload.upload-your-model-description"} />
                       </Card.Text>
                       <Row>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -360,7 +366,7 @@ class TabularClassificationModelReview extends React.Component {
                                     size={"lg"}
                                     disabled={this.state.filesUpload}
                                     variant="primary">
-                              Cargar modelo
+                              <Trans i18nKey={""} />
                             </Button>
                           </div>
                         </Col>
@@ -384,7 +390,7 @@ class TabularClassificationModelReview extends React.Component {
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
               <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
                 <Card className={"mt-3"}>
-                  <Card.Header><h3>Descripción de la entrada de datos</h3></Card.Header>
+                  <Card.Header><h3>{this.translate("pages.playground.0-tabular-classification.general.description-input")}</h3></Card.Header>
                   <Card.Body>
                     {this.Print_HTML_InfoDataset()}
                     {this.Print_HTML_EXAMPLES()}
@@ -394,7 +400,11 @@ class TabularClassificationModelReview extends React.Component {
 
               <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
                 <Card className={"mt-3"}>
-                  <Card.Header><h3>Formulario de edición de las características</h3></Card.Header>
+                  <Card.Header>
+                    <h3>
+                      <Trans i18nKey={"pages.playground.0-tabular-classification.general.description-features"} />
+                    </h3>
+                  </Card.Header>
                   <Card.Body>
                     <div>
                       {(this.dataset_key === MODEL_CAR.KEY) &&
@@ -403,7 +413,7 @@ class TabularClassificationModelReview extends React.Component {
                             {Object.entries(MODEL_CAR.DATA_OBJECT).map(([key_parameter, values]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={4} xxl={4}>
                                 <Form.Group controlId={key_parameter}>
-                                  <Form.Label>Selecciona el parámetro</Form.Label>
+                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>
                                   <Form.Select aria-label="Default select example"
                                                size={"sm"}
                                                value={this.state.dataToTest[key_parameter]}
@@ -412,7 +422,9 @@ class TabularClassificationModelReview extends React.Component {
                                       return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
                                     })}
                                   </Form.Select>
-                                  <Form.Text className="text-muted">Parámetro: {key_parameter}</Form.Text>
+                                  <Form.Text className="text-muted">
+                                    {this.translate("pages.playground.form.parameter")}: {key_parameter}
+                                  </Form.Text>
                                 </Form.Group>
                               </Col>
                             })}
@@ -425,7 +437,7 @@ class TabularClassificationModelReview extends React.Component {
                             {Object.entries(MODEL_IRIS.DATA_OBJECT).map(([key_parameter, value]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={6} xxl={6}>
                                 <Form.Group controlId={key_parameter}>
-                                  <Form.Label>Selecciona el parámetro</Form.Label>
+                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>
                                   <Form.Control type="number"
                                                 min={0}
                                                 size={"sm"}
@@ -433,7 +445,9 @@ class TabularClassificationModelReview extends React.Component {
                                                 step={0.1}
                                                 value={this.state.dataToTest[key_parameter] ?? value}
                                                 onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)} />
-                                  <Form.Text className="text-muted">Parámetro: {key_parameter}</Form.Text>
+                                  <Form.Text className="text-muted">
+                                    {this.translate("pages.playground.form.parameter")}: {key_parameter}
+                                  </Form.Text>
                                 </Form.Group>
                               </Col>
                             })}
@@ -453,15 +467,17 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group>
-                                      <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
                                                     size={"sm"}
-                                                    placeholder={"Introduce el entero"}
+                                                    placeholder={this.translate("pages.playground.form.parameter-integer")}
                                                     step={1}
                                                     value={this.state.dataToTest[value.name] ?? 0}
                                                     onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
-                                      <Form.Text className="text-muted">Parámetro entero: {value.name}</Form.Text>
+                                      <Form.Text className="text-muted">
+                                        {this.translate("pages.playground.form.parameter-integer")}: {value.name}
+                                      </Form.Text>
                                     </Form.Group>
                                   </Col>
                                 }
@@ -470,15 +486,17 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
-                                      <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
                                                     size={"sm"}
-                                                    placeholder={"Introduce el decimal"}
+                                                    placeholder={this.translate("pages.playground.form.parameter-decimal")}
                                                     step={0.1}
                                                     value={this.state.dataToTest[value.name] ?? 0.0}
                                                     onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
-                                      <Form.Text className="text-muted">Parámetro decimal: {value.name}</Form.Text>
+                                      <Form.Text className="text-muted">
+                                        {this.translate("pages.playground.form.parameter-decimal")}: {value.name}
+                                      </Form.Text>
                                     </Form.Group>
                                   </Col>
                                 }
@@ -486,8 +504,8 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
-                                      <Form.Label>Selecciona el parámetro <b>{value.name}</b></Form.Label>
-                                      <Form.Select aria-label="Default select example"
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
+                                      <Form.Select aria-label={this.translate("pages.playground.form.select-parameter")}
                                                    value={this.state.dataToTest[value.name] ?? 0}
                                                    size={"sm"}
                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}>
@@ -498,7 +516,9 @@ class TabularClassificationModelReview extends React.Component {
                                           </option>
                                         })}
                                       </Form.Select>
-                                      <Form.Text className="text-muted">Parámetro decimal: {value.name}</Form.Text>
+                                      <Form.Text className="text-muted">
+                                        {this.translate("pages.playground.form.parameter-decimal")}: {value.name}
+                                      </Form.Text>
                                     </Form.Group>
                                   </Col>
                                 }
@@ -514,8 +534,8 @@ class TabularClassificationModelReview extends React.Component {
                         <Col>
                           {/* VECTOR TEST */}
                           <Form.Group controlId={'formTestInput'}>
-                            <Form.Label>Vector a probar</Form.Label>
-                            <Form.Control placeholder="Vector a probar"
+                            <Form.Label>{this.translate("pages.playground.form.vector-to-check")}</Form.Label>
+                            <Form.Control placeholder={this.translate("pages.playground.form.vector-to-check")}
                                           autoComplete="off"
                                           disabled={this.dataset_key !== MODEL_UPLOAD}
                                           value={this.state.textToTest}
@@ -533,12 +553,19 @@ class TabularClassificationModelReview extends React.Component {
                                     disabled={this.state.isButtonDisabled}
                                     size={"lg"}
                                     variant="primary">
-                              {this.state.isButtonDisabled ? <>
-                                <span className="spinner-border spinner-border-sm"
-                                      role="status"
-                                      aria-hidden="true"></span>
-                                <span className="visually-hidden">Cargando...</span>
-                              </> : <>Comprobar resultado</>}
+                              {
+                                this.state.isButtonDisabled ?
+                                  <>
+                                    <span className="spinner-border spinner-border-sm"
+                                          role="status"
+                                          aria-hidden="true"></span>
+                                    <span className="visually-hidden">Loading...</span>
+                                  </>
+                                  :
+                                  <>
+                                    {this.translate("pages.playground.form.button-check-result")}
+                                  </>
+                              }
                             </Button>
                           </div>
                         </Col>

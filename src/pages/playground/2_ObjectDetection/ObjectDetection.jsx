@@ -3,7 +3,7 @@ import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 
 import ReactGA from "react-ga4";
 
 import * as tf from '@tensorflow/tfjs'
-import * as classificationHelper_MNIST from '../../../core/nn-review-models/ClassificationHelper_MNIST'
+import * as classificationHelper_MNIST from '../3_ImageClassification/models/MODEL_MNIST'
 import * as alertHelper from "../../../utils/alertHelper"
 
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'

@@ -8,7 +8,7 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS,
 } from '../../../core/nn-utils/ArchitectureTypesHelper'
-import { getIrisDataType } from "../../../core/nn-review-models/ClassificationHelper_IRIS"
+import { getIrisDataType } from "../0_TabularClassification/models/MODEL_IRIS"
 
 export default function LinearRegression(props) {
 

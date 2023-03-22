@@ -44,6 +44,7 @@ export default function MenuSelectModel(props) {
         return <>
           <option value={1}>{t("models.3-option-1")}</option>
           <option value={2}>{t("models.3-option-2")}</option>
+          {/*<option value={3}>{t("models.3-option-3")}</option>*/}
         </>
       }
       default: {
@@ -52,12 +53,12 @@ export default function MenuSelectModel(props) {
     }
   }
 
-  console.debug("render UploadModelMenu")
+  console.debug("render MenuSelectModel")
   return (
     <>
       <N4LNavbar />
 
-      <Container>
+      <Container id={"MenuSelectModel"}>
         <Row className="mt-3 mb-3">
           <Col>
             <Card>

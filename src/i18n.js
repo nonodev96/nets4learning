@@ -21,7 +21,9 @@ i18n
       loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json'
     },
     react        : {
-      useSuspense: false
+      useSuspense               : false,
+      transSupportBasicHtmlNodes: true,
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b']
     },
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default

@@ -81,11 +81,12 @@ export default function MenuSelectDataset(props) {
     }
   }
 
+  console.debug("render MenuSelectDataset")
   return (
     <>
       <N4LNavbar />
 
-      <Container id={"UploadArchitectureMenu"}>
+      <Container id={"MenuSelectDataset"}>
         <Row className="mt-3 mb-3">
           <Col>
             <Card>

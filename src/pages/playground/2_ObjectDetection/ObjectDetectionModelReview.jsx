@@ -16,7 +16,7 @@ import {
   LIST_MODEL_OPTIONS,
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_COCO_SSD,
-  MODEL_FACE_DETECTION,
+  MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_UPLOAD
@@ -26,7 +26,7 @@ import ReactGA from "react-ga4";
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
 
-export default class ModelReviewObjectDetection extends React.Component {
+export default class ObjectDetectionModelReview extends React.Component {
 
   constructor(props) {
     super(props);
@@ -36,19 +36,19 @@ export default class ModelReviewObjectDetection extends React.Component {
     ReactGA.send({ hitType: "pageview", page: "/ModelReviewObjectDetection/" + this.dataset_key, title: this.dataset_key });
 
     this.state = {
-      isCameraEnable: false,
+      isCameraEnable  : false,
       isProcessedImage: false,
-      dataset: parseInt(props.dataset ?? "0"),
-      isShowedAlert: false,
-      modelDetector: null,
-      loading:
+      dataset         : parseInt(props.dataset ?? "0"),
+      isShowedAlert   : false,
+      modelDetector   : null,
+      loading         :
         <>
           <div className="spinner-border"
                role="status"
                style={{
                  fontSize: "0.5em",
-                 height: "1rem",
-                 width: "1rem"
+                 height  : "1rem",
+                 width   : "1rem"
                }}>
             <span className="sr-only"></span>
           </div>
@@ -89,7 +89,7 @@ export default class ModelReviewObjectDetection extends React.Component {
         // TODO
         break
       }
-      case MODEL_FACE_DETECTION: {
+      case MODEL_FACE_DETECTOR: {
         await this.enable_Model_FaceDetector()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
@@ -128,10 +128,10 @@ export default class ModelReviewObjectDetection extends React.Component {
   async enable_Model_FaceDetector() {
     const model = faceDetection.SupportedModels.MediaPipeFaceDetector
     const mediaPipeFaceDetectorMediaPipeModelConfig = {
-      runtime: 'mediapipe',
+      runtime     : 'mediapipe',
       solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
-      modelType: 'short',
-      maxFaces: 4
+      modelType   : 'short',
+      maxFaces    : 4
     }
     this.setState({
       modelDetector: await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
@@ -159,10 +159,10 @@ export default class ModelReviewObjectDetection extends React.Component {
   async enable_Model_FaceMesh() {
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
     const mediaPipeFaceMeshMediaPipeModelConfig = {
-      runtime: 'mediapipe',
+      runtime        : 'mediapipe',
       refineLandmarks: true,
-      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
-      maxFaces: 4
+      solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
+      maxFaces       : 4
     }
     this.setState({
       modelDetector: await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
@@ -297,7 +297,7 @@ export default class ModelReviewObjectDetection extends React.Component {
         // TODO
         break
       }
-      case MODEL_FACE_DETECTION: {
+      case MODEL_FACE_DETECTOR: {
         const faces = await model.estimateFaces(img_or_video)
         this.renderFaceDetector(ctx, faces)
         break
@@ -408,32 +408,35 @@ export default class ModelReviewObjectDetection extends React.Component {
             <Card className={"sticky-top mt-3 mb-3 border-info"}>
               <Card.Body>
                 <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]} {this.state.loading}</Card.Title>
-                {getNameDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ? (
-                    <>
-                      <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
-                      <Card.Text>
-                        Ten en cuenta que tienes que subir primero el archivo .json y después el fichero .bin
-                      </Card.Text>
-                      <Container fluid={true}>
-                        <Row>
-                          <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                            {/*TODO*/}
-                            <DragAndDrop name={"bin"}
-                                         accept={{ 'application/octet-stream': ['.bin'] }}
-                                         text={"Añada el fichero binario"}
-                                         labelFiles={"Fichero:"}/>
-                          </Col>
-                          <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                            <DragAndDrop name={"json"}
-                                         accept={{ 'application/json': ['.json'] }}
-                                         text={"Añada el fichero JSON"}
-                                         labelFiles={"Fichero:"}/>
-                          </Col>
-                        </Row>
-                      </Container>
-                    </>
-                  ) :
-                  (<>{getHTML_DATASET_DESCRIPTION(2, this.state.dataset)}</>)}
+                {getNameDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ?
+                  <>
+                    <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
+                    <Card.Text>
+                      Ten en cuenta que tienes que subir primero el archivo .json y después el fichero .bin
+                    </Card.Text>
+                    <Container fluid={true}>
+                      <Row>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                          {/*TODO*/}
+                          <DragAndDrop name={"bin"}
+                                       accept={{ 'application/octet-stream': ['.bin'] }}
+                                       text={"Añada el fichero binario"}
+                                       labelFiles={"Fichero:"} />
+                        </Col>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                          <DragAndDrop name={"json"}
+                                       accept={{ 'application/json': ['.json'] }}
+                                       text={"Añada el fichero JSON"}
+                                       labelFiles={"Fichero:"} />
+                        </Col>
+                      </Row>
+                    </Container>
+                  </>
+                  :
+                  <>
+                    {getHTML_DATASET_DESCRIPTION(2, this.state.dataset)}
+                  </>
+                }
               </Card.Body>
             </Card>
           </Col>
@@ -455,11 +458,11 @@ export default class ModelReviewObjectDetection extends React.Component {
                                       id={'default-checkbox'}
                                       label={`Usar webcam`}
                                       value={this.state.isCameraEnable ? "true" : "false"}
-                                      onChange={this.handleChangeCamera}/>
+                                      onChange={this.handleChangeCamera} />
                         </div>
                       </Form>
                     </Row>
-                    <hr/>
+                    <hr />
                     <Row className={"mt-3"}>
                       <Col className={"d-flex justify-content-center"}>
                         {this.state.isCameraEnable &&
@@ -475,16 +478,16 @@ export default class ModelReviewObjectDetection extends React.Component {
                                     width={250} height={250}
                                     style={{
                                       position: 'relative',
-                                      display: 'block',
-                                    }}/>
+                                      display : 'block',
+                                    }} />
                             <canvas ref={this.canvasRef}
                                     width={250} height={250}
                                     style={{
                                       position: 'absolute',
-                                      display: 'block',
-                                      left: 0,
-                                      top: 0,
-                                      zIndex: 10,
+                                      display : 'block',
+                                      left    : 0,
+                                      top     : 0,
+                                      zIndex  : 10,
                                     }}></canvas>
                           </div>
                         }
@@ -510,10 +513,10 @@ export default class ModelReviewObjectDetection extends React.Component {
                                        'image/png': ['.png'],
                                        'image/jpg': ['.jpg'],
                                      }}
-                                     function_DropAccepted={this.handleChangeFileUpload}/>
+                                     function_DropAccepted={this.handleChangeFileUpload} />
                       </Col>
                     </Row>
-                    <hr/>
+                    <hr />
                     <Row className={"mt-3"}
                          style={this.state.isProcessedImage ? {} : { display: "none" }}>
                       <Col className={"col-12 d-flex justify-content-center"}>

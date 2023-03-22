@@ -23,7 +23,7 @@ import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 import { isMobile } from "../../../utils/utils";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default class ModelReviewImageClassification extends React.Component {
+export default class ImageClassificationModelReview extends React.Component {
   bar_options = {
     responsive: true,
     plugins: {

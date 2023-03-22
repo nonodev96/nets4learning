@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
-import { MnistData } from './ClassificationHelper_MNIST_Data'
-import { createLoss, createMetrics, createOptimizer } from '../nn-utils/ArchitectureHelper'
+import { MnistData } from './MODEL_MNIST_Data'
+import { createLoss, createMetrics, createOptimizer } from '../../../../core/nn-utils/ArchitectureHelper'
 
 const classNames = [
   'Zero',
@@ -224,15 +224,6 @@ async function showConfusion(model, data) {
   labels.dispose()
 }
 
-/**
- * Hermite resize - fast image resize/resample using Hermite filter. 1 cpu version!
- *
- * @param {HtmlElement} canvas
- * @param {int} width
- * @param {int} height
- * @param {string} resize_canvas if true, canvas will be resized. Optional.
- * Cambiado por RT, resize canvas ahora es donde se pone el chiqitillllllo
- */
 export function resample_single(canvas, width, height, resize_canvas) {
   let width_source = canvas.width
   let height_source = canvas.height
@@ -315,4 +306,15 @@ export function resample_single(canvas, width, height, resize_canvas) {
   }
 
   ctx2.putImageData(img2, 0, 0)
+}
+
+/**
+ * @type {TYPE_MODEL_IMAGE_CLASSIFIER}
+ */
+export const MODEL_MNIST = {
+  KEY        : "",
+  TITLE      : "",
+  URL        : "",
+  URL_MODEL  : "",
+  DESCRIPTION: <></>
 }

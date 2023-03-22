@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from '../../../core/nn-review-models/ClassificationHelper_MNIST'
+import * as numberClass from './models/MODEL_MNIST'
 import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
-import { DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
+import {
+  DATASET_DESCRIPTION,
+  getNameDatasetByID_ClassicClassification,
+  LIST_MODEL_OPTIONS
+} from "../../../DATA_MODEL";
 import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
