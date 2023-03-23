@@ -3,7 +3,6 @@ import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as alertHelper from '../../../utils/alertHelper'
 import {
-  getHTML_DATASET_DESCRIPTION,
   getNameDatasetByID_ClassicClassification,
   MODEL_UPLOAD,
   MODEL_CAR,
@@ -56,6 +55,7 @@ class TabularClassificationModelReview extends React.Component {
       json  : null,
       csv   : null
     }
+    this._model = null
 
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
@@ -63,17 +63,17 @@ class TabularClassificationModelReview extends React.Component {
         break
       }
       case MODEL_CAR.KEY: {
-        this._model = MODEL_CAR
+        this._model = new MODEL_CAR(props.t)
         if (!isProduction) console.log('%cCargando modelo coches', CONSOLE_LOG_h3)
         break;
       }
       case MODEL_IRIS.KEY: {
-        this._model = MODEL_IRIS
+        this._model = new MODEL_IRIS(props.t)
         if (!isProduction) console.log('%cCargando modelo petalos', CONSOLE_LOG_h3)
         break;
       }
       case MODEL_LYMPHOGRAPHY.KEY: {
-        this._model = MODEL_LYMPHOGRAPHY
+        this._model = new MODEL_LYMPHOGRAPHY(props.t)
         if (!isProduction) console.log('%cCargando modelo linfomas', CONSOLE_LOG_h3)
         break;
       }
@@ -381,7 +381,12 @@ class TabularClassificationModelReview extends React.Component {
                       </Row>
                     </>
                   ) : (
-                    <> {getHTML_DATASET_DESCRIPTION(0, this.dataset)}</>
+                    <>
+                      {this.translate("welcome")}
+                      <br/>
+                      {this._model.DESCRIPTION()}
+                    </>
+                    // <> {getHTML_DATASET_DESCRIPTION(0, this.dataset)}</>
                   )}
                 </Card.Body>
               </Card>
@@ -410,7 +415,7 @@ class TabularClassificationModelReview extends React.Component {
                       {(this.dataset_key === MODEL_CAR.KEY) &&
                         <>
                           <Row className={"mt-3"}>
-                            {Object.entries(MODEL_CAR.DATA_OBJECT).map(([key_parameter, values]) => {
+                            {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, values]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={4} xxl={4}>
                                 <Form.Group controlId={key_parameter}>
                                   <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>
@@ -434,7 +439,7 @@ class TabularClassificationModelReview extends React.Component {
                       {(this.dataset_key === MODEL_IRIS.KEY) &&
                         <>
                           <Row className={"mt-3"}>
-                            {Object.entries(MODEL_IRIS.DATA_OBJECT).map(([key_parameter, value]) => {
+                            {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, value]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={6} xxl={6}>
                                 <Form.Group controlId={key_parameter}>
                                   <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>

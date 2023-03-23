@@ -1,5 +1,5 @@
 {
-  "welcome": "Bienvenido a Nets4Learning",
+  "welcome": "dkasjfhkljshdk a Nets4Learning",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
   "loading": "Cargando",
   "header": {
@@ -26,11 +26,11 @@
     "dataset": "Conjunto de datos"
   },
   "modality": {
-    "0": "Clasificación tabular",
+    "0": "Tabular Classification",
     "1": "Regresión lineal",
     "2": "Identificación de objetos",
     "3": "Clasificador de imágenes",
-    "tabular-classification": "Clasificación tabular",
+    "tabular-classification": "Tabular Classification",
     "linear-regression": "Regresión lineal",
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"

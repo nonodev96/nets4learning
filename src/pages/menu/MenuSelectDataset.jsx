@@ -45,34 +45,29 @@ export default function MenuSelectDataset(props) {
   const PrintHTML_OPTIONS = (_id) => {
     switch (_id) {
       case '0': {
-        // Clasificación
+        // tabular-classification
         return <>
-          <option value={1}>{t("datasets.0-option-1")}</option>
-          <option value={2}>{t("datasets.0-option-2")}</option>
-          <option value={3}>{t("datasets.0-option-3")}</option>
+          <option value={1}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-1")}</option>
+          <option value={2}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-2")}</option>
+          <option value={3}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-3")}</option>
         </>
       }
       case '1': {
-        // Regresión lineal
+        // linear-regression
+        console.warn("TODO")
         return <>
         </>
       }
       case '2': {
-        // Identificación  no debe entrar aquí
+        // object-detection
+        console.warn("TODO")
         return <>
-          <option value={1}>{t("models.2-option-1")}</option>
-          <option value={2}>{t("models.2-option-2")}</option>
-          <option value={3}>{t("models.2-option-3")}</option>
-          <option value={4}>{t("models.2-option-4")}</option>
         </>
       }
       case '3': {
-        // Clasificación imágenes no debe entrar aquí
+        // image-classifier
+        console.warn("TODO")
         return <>
-          <option value={1}>{t("models.2-option-1")}</option>
-          <option value={2}>{t("models.2-option-2")}</option>
-          <option value={3}>{t("models.2-option-3")}</option>
-          <option value={4}>{t("models.2-option-4")}</option>
         </>
       }
       default: {

@@ -1,82 +1,101 @@
 import * as tf from "@tensorflow/tfjs";
+import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
 
-/**
- *
- * @type {TYPE_MODEL_TABULAR_CLASSIFICATION}
- */
-export const MODEL_LYMPHOGRAPHY = {
-  KEY              : "LYMPHOGRAPHY",
-  TITLE            : "Clasificación por datos de linfomas",
-  URL              : "https://archive.ics.uci.edu/ml/datasets/Lymphography",
-  URL_MODEL        : "/public/models/classification/car/my-model-lymphography.json",
-  URL_DATASET      : "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/",
-  DESCRIPTION      : <>
-    <p>El conjunto de datos de <i>lymphographya</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.</p>
-    <details>
-      <summary>Datos de entrada</summary>
-      <ol>
-        <li><b>lymphatics</b>: normal, arched, deformed, displaced</li>
-        <li><b>block of affere</b>: no, yes</li>
-        <li><b>bl. of lymph. c</b>: no, yes</li>
-        <li><b>bl. of lymph. s</b>: no, yes</li>
-        <li><b>by pass</b>: no, yes</li>
-        <li><b>extravasates</b>: no, yes</li>
-        <li><b>regeneration of</b>: no, yes</li>
-        <li><b>early uptake in</b>: no, yes</li>
-        <li><b>lym.nodes dimin</b>: 0-3</li>
-        <li><b>lym.nodes enlar</b>: 1-4</li>
-        <li><b>changes in lym.</b>: bean, oval, round</li>
-        <li><b>defect in node</b>: no, lacunar, lac. marginal, lac. central</li>
-        <li><b>changes in node</b>: no, lacunar, lac. margin, lac. central</li>
-        <li><b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,</li>
-        <li><b>special forms</b>: no, chalices, vesicles</li>
-        <li><b>dislocation of</b>: no, yes</li>
-        <li><b>exclusion of no</b>: no, yes</li>
-        <li><b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70</li>
-      </ol>
-    </details>
-    <details>
-      <summary>Datos de salida</summary>
-      <ol>
-        <li><b>normal find</b>: normal</li>
-        <li><b>metastases</b>: metastasis</li>
-        <li><b>malign lymph</b>: linfoma maligno</li>
-        <li><b>fibrosis</b>: fibrosis</li>
-      </ol>
-    </details>
-    <details>
-      <summary>Referencias</summary>
-      <ol>
-        <li><a href="https://archive.ics.uci.edu/ml/datasets/Lymphography" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
-      </ol>
-    </details>
-  </>,
-  HTML_EXAMPLE     : <>
-    <p>
-      Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-      <br />
-      <b>(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates,
-        regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym.,
-        defect in node, changes in node, changes in stru, special forms, dislocation of,
-        exclusion of no, no. of nodes in).</b>
-    </p>
-    <p>Ejemplos:</p>
-  </>,
-  TABLE_HEADER     : [
-    "lymphatics", "block of affere", "bl. of lymph. c", "bl. of lymph. s", "by pass", "extravasates", "regeneration", "early uptake in", "lym.nodes dimin", "lym.nodes enlar", "changes in lym", "defect in node", "changes in node",
-    "changes in stru", "special forms", "dislocation of", "exclusion of", "no. of nodes in", "Category"
-  ],
-  loadModel        : async () => {
+export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
+  KEY = "LYMPHOGRAPHY"
+  TITLE = "Clasificación por datos de linfomas"
+  URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
+  URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"
+  URL_DATASET = "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/"
+
+  DESCRIPTION() {
+    return <>
+      <p>El conjunto de datos de <i>lymphographya</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.</p>
+      <details>
+        <summary>Datos de entrada</summary>
+        <ol>
+          <li><b>lymphatics</b>: normal, arched, deformed, displaced</li>
+          <li><b>block of affere</b>: no, yes</li>
+          <li><b>bl. of lymph. c</b>: no, yes</li>
+          <li><b>bl. of lymph. s</b>: no, yes</li>
+          <li><b>by pass</b>: no, yes</li>
+          <li><b>extravasates</b>: no, yes</li>
+          <li><b>regeneration of</b>: no, yes</li>
+          <li><b>early uptake in</b>: no, yes</li>
+          <li><b>lym.nodes dimin</b>: 0-3</li>
+          <li><b>lym.nodes enlar</b>: 1-4</li>
+          <li><b>changes in lym.</b>: bean, oval, round</li>
+          <li><b>defect in node</b>: no, lacunar, lac. marginal, lac. central</li>
+          <li><b>changes in node</b>: no, lacunar, lac. margin, lac. central</li>
+          <li><b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,</li>
+          <li><b>special forms</b>: no, chalices, vesicles</li>
+          <li><b>dislocation of</b>: no, yes</li>
+          <li><b>exclusion of no</b>: no, yes</li>
+          <li><b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70</li>
+        </ol>
+      </details>
+      <details>
+        <summary>Datos de salida</summary>
+        <ol>
+          <li><b>normal find</b>: normal</li>
+          <li><b>metastases</b>: metastasis</li>
+          <li><b>malign lymph</b>: linfoma maligno</li>
+          <li><b>fibrosis</b>: fibrosis</li>
+        </ol>
+      </details>
+      <details>
+        <summary>Referencias</summary>
+        <ol>
+          <li><a href="https://archive.ics.uci.edu/ml/datasets/Lymphography" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+        </ol>
+      </details>
+    </>
+  }
+
+  HTML_EXAMPLE() {
+    return <>
+      <p>
+        Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
+        <br />
+        <b>(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special
+          forms, dislocation of, exclusion of no, no. of nodes in).</b>
+      </p>
+      <p>Ejemplos:</p>
+    </>
+  }
+
+  TABLE_HEADER = [
+    "lymphatics",
+    "block of affere",
+    "bl. of lymph. c",
+    "bl. of lymph. s",
+    "by pass",
+    "extravasates",
+    "regeneration",
+    "early uptake in",
+    "lym.nodes dimin",
+    "lym.nodes enlar",
+    "changes in lym",
+    "defect in node",
+    "changes in node",
+    "changes in stru",
+    "special forms",
+    "dislocation of",
+    "exclusion of",
+    "no. of nodes in",
+    "Category"
+  ]
+  loadModel = async () => {
     return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/lymphography/my-model-lymphography.json")
-  },
-  function_v_input : async function (element, index, param = "") {
+  }
+  function_v_input = async function (element, index, param = "") {
     return parseInt(element)
-  },
-  CONFIGURATION    : <></>,
-  EXAMPLES         : [],
-  CLASSES          : ["normal find", "metastases", "malign lymph", "fibrosis"],
-  NUM_CLASSES      : 4,
-  DATA_OBJECT      : {
+  }
+  CONFIGURATION = <></>
+  EXAMPLES = []
+  CLASSES = ["normal find", "metastases", "malign lymph", "fibrosis"]
+  NUM_CLASSES = 4
+  DATA_OBJECT = {
     "lymphatics"     : ["1", "2", "3", "4"],
     "block of affere": ["1", "2"],
     "bl. of lymph. c": ["1", "2"],
@@ -95,8 +114,8 @@ export const MODEL_LYMPHOGRAPHY = {
     "dislocation of" : ["1", "2"],
     "exclusion of"   : ["1", "2"],
     "no. of nodes in": ["1", "2", "3", "4", "5", "6", "7", "8"]
-  },
-  DATA_DEFAULT     : {
+  }
+  DATA_DEFAULT = {
     // 4 -> fibrosis
     "lymphatics"     : "3",
     "block of affere": "1",
@@ -116,8 +135,8 @@ export const MODEL_LYMPHOGRAPHY = {
     "dislocation of" : "1",
     "exclusion of"   : "1",
     "no. of nodes in": "7"
-  },
-  DATA_OBJECT_KEYS : [
+  }
+  DATA_OBJECT_KEYS = [
     "lymphatics",
     "block of affere",
     "bl. of lymph. c",
@@ -136,8 +155,8 @@ export const MODEL_LYMPHOGRAPHY = {
     "dislocation of",
     "exclusion of",
     "no. of nodes in"
-  ],
-  DATA_CLASSES     : [
+  ]
+  DATA_CLASSES = [
     ["normal", "arched", "deformed", "displaced"],
     ["No", "Sí"],
     ["No", "Sí"],
@@ -156,10 +175,10 @@ export const MODEL_LYMPHOGRAPHY = {
     ["No", "Sí"],
     ["No", "Sí"],
     ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "=>70"]
-  ],
-  DATA_CLASSES_KEYS: [],
+  ]
+  DATA_CLASSES_KEYS = []
   // @formatter:off
-  LIST_EXAMPLES    : [
+  LIST_EXAMPLES    = [
     // Normal
     {
       "lymphatics"     : "1",
@@ -244,8 +263,8 @@ export const MODEL_LYMPHOGRAPHY = {
       "exclusion of"   : "1",
       "no. of nodes in": "7"
     },
-  ],
-  FORM             : [
+  ]
+  FORM             = [
     { type: "select", name: "lymphatics",       options: [{ value: "1", text: "normal" }, { value: "2", text: "arched" },    { value: "3", text: "deformed" },     { value: "4", text: "displaced" }]},
     { type: "select", name: "block of affere",  options: [{ value: "1", text: "No" },     { value: "2", text: "2" }]},
     { type: "select", name: "bl. of lymph. c",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
@@ -264,8 +283,8 @@ export const MODEL_LYMPHOGRAPHY = {
     { type: "select", name: "dislocation of",   options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "exclusion of",     options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
     { type: "select", name: "no. of nodes in",  options: [{ value: "1", text: "0-9" },    { value: "2", text: "10-19" },     { value: "3", text: "20-29" },          { value: "4", text: "30-39" },  { value: "5", text: "40-49" },  { value: "6", text: "50-59" },      { value: "7", text: "60-69" },    { value: "8", text: "=>70" }]}
-  ],
-  DATA        : [
+  ]
+  DATA             = [
     [4,2,1,1,1,1,1,2,1,2,2,2,4,8,1,1,2,2,3],
     [3,2,1,1,2,2,1,2,1,3,3,2,3,4,2,2,2,2,2],
     [3,2,2,2,2,2,2,2,1,4,3,3,4,8,3,2,2,7,3],
@@ -415,6 +434,5 @@ export const MODEL_LYMPHOGRAPHY = {
     [2,1,1,1,1,1,1,2,1,2,2,4,2,2,1,2,2,1,2],
     [2,2,2,1,2,2,1,2,1,3,3,4,3,4,3,2,2,6,2]
   ]
-
   // @formatter:on
 }

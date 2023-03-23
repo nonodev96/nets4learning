@@ -24,26 +24,32 @@ export default function MenuSelectModel(props) {
   const PrintHTML_OPTIONS = (_id) => {
     switch (_id) {
       case '0': {
-        // Clasificación no debe entrar aquí
+        // tabular-classification
         return <>
-          <option value={1}>{t("datasets.0-option-1")}</option>
-          <option value={2}>{t("datasets.0-option-2")}</option>
+          <option value={1}>{t("datasets-models.0-tabular-classification.list-models.0-option-1")}</option>
+          <option value={2}>{t("datasets-models.0-tabular-classification.list-models.0-option-2")}</option>
+        </>
+      }
+      case '1': {
+        // linear-regression
+        console.warn("TODO")
+        return <>
         </>
       }
       case '2': {
-        // Identificación
+        // object-detection
         return <>
-          <option value={1}>{t("models.2-option-1")}</option>
-          <option value={2}>{t("models.2-option-2")}</option>
-          <option value={3}>{t("models.2-option-3")}</option>
-          <option value={4}>{t("models.2-option-4")}</option>
+          <option value={1}>{t("datasets-models.2-object-detection.list-models.2-option-1")}</option>
+          <option value={2}>{t("datasets-models.2-object-detection.list-models.2-option-2")}</option>
+          <option value={3}>{t("datasets-models.2-object-detection.list-models.2-option-3")}</option>
+          <option value={4}>{t("datasets-models.2-object-detection.list-models.2-option-4")}</option>
         </>
       }
       case '3': {
         // Clasificación imágenes
         return <>
-          <option value={1}>{t("models.3-option-1")}</option>
-          <option value={2}>{t("models.3-option-2")}</option>
+          <option value={1}>{t("datasets-models.3-image-classifier.list-models.3-option-1")}</option>
+          <option value={2}>{t("datasets-models.3-image-classifier.list-models.3-option-2")}</option>
           {/*<option value={3}>{t("models.3-option-3")}</option>*/}
         </>
       }
@@ -85,7 +91,7 @@ export default function MenuSelectModel(props) {
 
                   <Button className="mt-3"
                           type={"submit"}>
-                    Continuar
+                    {t("pages.menu-selection-model.form-submit")}
                   </Button>
                 </Form>
               </Card.Body>
