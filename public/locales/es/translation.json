@@ -1,7 +1,11 @@
 {
-  "welcome": "Bienvenido a Nets4Learning",
+  "welcome": "Bienvenido a Nets4Learning <strong>asñdoifosa</strong>",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
+  "list_map": "<1></1>",
+  "map_item": "<0></0>",
   "loading": "Cargando",
+  "upload": "Subir",
+  "example-i": "Ejemplo {{i}}",
   "header": {
     "language": "Idioma",
     "manual": "Manual",
@@ -37,6 +41,97 @@
   },
   "datasets-models": {
     "0-tabular-classification": {
+      "upload": {
+        "html-example": {
+          "text": "Introduce separado por punto y coma los valores.",
+          "items": "(parámetro-1; parámetro-2; parámetro-3; ... ;parámetro-n)."
+        }
+      },
+      "car": {
+        "title": "CAR - Clasificación de coches",
+        "description": {
+          "text-1": "El conjunto de datos <i>Car Evaluation</i> permite evaluar vehículos a través de la siguiente estructura",
+          "text-2": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>ics.uci.edu</link1>.",
+          "details-1": {
+            "title": "Información",
+            "list": {
+              "1": "<b>buying:</b> Precio de compra.",
+              "2": "<b>maint:</b> Costo del mantenimiento.",
+              "3": "<b>doors:</b> Número de puertas.",
+              "4": "<b>persons:</b> Número de plazas.",
+              "5": "<b>lug_boot:</b> Tamaño del maletero.",
+              "6": "<b>safety:</b> Seguridad estimada del vehículo."
+            }
+          },
+          "details-2": {
+            "title": "Datos de entrada",
+            "text-1": "Características del coche",
+            "list": {
+              "1": "<b>buying:</b> vhigh, high, med, low.",
+              "2": "<b>maint:</b> vhigh, high, med, low.",
+              "3": "<b>doors:</b> 2, 3, 4, 5more.",
+              "4": "<b>persons:</b> 2, 4, more.",
+              "5": "<b>lug_boot:</b> small, med, big.",
+              "6": "<b>safety:</b> low, med, high."
+            }
+          },
+          "details-3": {
+            "title": "Datos de salida",
+            "text-1": "Aceptación del vehículo",
+            "list": {
+              "1": "<b>UNACC</b>: Inaccesible",
+              "2": "<b>ACC</b>: Accesible",
+              "3": "<b>GOOD</b>: Bien",
+              "4": "<b>VGOOD</b>: Muy bien"
+            }
+          },
+          "details-4": {
+            "title": "Referencias",
+            "list": {
+              "1": "Conjunto de datos"
+            }
+          }
+        },
+        "html-example": {
+          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a el coche que se va a evaluar:",
+          "items": "(buying; maint; doors; persons; lug_boot; safety)",
+          "examples": "Ejemplos:"
+        }
+      },
+      "iris": {
+        "title": "IRIS - Clasificación de flor iris",
+        "description": {
+          "text-1": "El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo y sépalo.",
+          "details-1": {
+            "title": "Datos de entrada",
+            "list": {
+              "1": "Longitud del sépalo en cm",
+              "2": "Anchura del sépalo en cm",
+              "3": "Longitud del pétalo en cm",
+              "4": "Anchura del pétalo en cm"
+            }
+          },
+          "details-2": {
+            "title": "Datos de salida",
+            "list": {
+              "1": "Iris Setosa",
+              "2": "Iris Versicolor",
+              "3": "Iris Virginica"
+            }
+          },
+          "details-3": {
+            "title": "Referencias",
+            "list": {
+              "1": "Conjunto de datos"
+            }
+          }
+        },
+        "html-example": {
+          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:",
+          "items": "(longitud sépalo; anchura sépalo; longitud petalo; anchura petalo).",
+          "examples": "Ejemplos:"
+        }
+      },
       "list-datasets": {
         "0-option-1": "Conjunto de datos - Clasificación de coches",
         "0-option-2": "Conjunto de datos - Clasificación de flor iris",
@@ -73,7 +168,6 @@
       }
     }
   },
-  "list_map": "<1></1>",
   "op": [
     "op 1",
     "op 2"
@@ -148,6 +242,7 @@
           "description-features": "Formulario de edición de las características"
         },
         "0_upload": {
+          "upload": "Subir",
           "upload-your-model": "Carga tu propio modelo.",
           "upload-your-model-description": "Ten en cuenta que tienes que subir el archivo <strong>.json</strong> y el fichero <strong>.bin</strong> para luego cargar el modelo",
           "button-upload-your-model": "Cargar modelo"
@@ -173,20 +268,20 @@
         "title": "Objetivos de la herramienta",
         "description-1": "Este proyecto muestra distintas tareas que pueden realizar las Redes Neuronales cuando se entrenan mediante aprendizaje automático, es por ello que vamos a abordar desde tres enfoques (Clasificación, Identificar objetos, clasificar imágenes), cada uno de estos enfoques se explican a continuación en las siguientes entradas con una breve descripción de la técnica y como usar la herramienta con esa técnica.",
         "description-2": "Algunos de los motivos por los que aprender redes neuronales es importante son los siguientes:",
-        "list-1": [
-          {
+        "list": {
+          "0": {
             "title": "Aplicaciones prácticas",
             "description": "Las redes neuronales se utilizan en una amplia variedad de aplicaciones, desde reconocimiento de voz y visión por computadora hasta análisis de datos y predicción de resultados. Aprender sobre redes neuronales puede ayudar a los profesionales a desarrollar habilidades que pueden aplicarse en campos como la medicina, la ingeniería, la ciencia de datos, el marketing y muchos otros."
           },
-          {
+          "1": {
             "title": "Solución de problemas complejos",
             "description": "Las redes neuronales son útiles para resolver problemas complejos que tienen múltiples variables y relaciones no lineales. Al aprender redes neuronales, los profesionales pueden desarrollar soluciones más efectivas para estos tipos de problemas y mejorar la precisión y la eficiencia de sus análisis."
           },
-          {
+          "2": {
             "title": "Innovación tecnológica",
             "description": "Las redes neuronales son una tecnología innovadora que sigue evolucionando y mejorando. Aprender sobre redes neuronales puede ayudar a los profesionales a mantenerse actualizados en las últimas tendencias y desarrollos en el campo del aprendizaje automático y la inteligencia artificial."
           }
-        ],
+        },
         "description-3": "Las redes neuronales son una forma de aprendizaje automático que imita la forma en que funciona el cerebro humano. Estas redes están diseñadas para aprender y mejorar continuamente a partir de datos y experiencias pasadas, permitiendo a las máquinas realizar tareas complejas que antes eran imposibles o muy difíciles para los sistemas programados tradicionales.",
         "description-4": "En resumen, aprender redes neuronales es importante porque puede ayudar a los profesionales a desarrollar habilidades que son valiosas en una amplia variedad de campos, resolver problemas complejos de manera más efectiva y mantenerse actualizados en la tecnología y la innovación."
       },
@@ -194,10 +289,10 @@
         "title": "Clasificación tabular",
         "1-title": "Modelos entrenados",
         "1-description-1": "Debemos acceder a la sección de modelos entrenados y seleccionar uno de los dos disponibles.",
-        "1-list-options": [
-          "Clasificación de la evaluación por características del coche",
-          "Clasificación del tipo de flor por características de las flores"
-        ],
+        "1-list-options": {
+          "0": "Clasificación de la evaluación por características del coche",
+          "1": "Clasificación del tipo de flor por características de las flores"
+        },
         "1-description-2": "La herramienta cuenta con una lista de ejemplos representativos que permiten alterar el formulario de características.",
         "1-description-3": "Al acceder a la sección de la herramienta en ambos modelos podremos editar las características de los elemento a predecir. La herramienta cuenta con formulario dinámico que permite cambiar los tipos de datos de entrada de la red neuronal.",
         "2-title": "Entrenar modelos",
@@ -212,22 +307,22 @@
         "1-title": "Modelos entrenados",
         "1-description-1": "Dentro de la identificación de objetos contamos con cuatro modelos, para usar esta herramienta es tan sencillo como activar la opción de usar webcam o subir una imagen.",
         "1-description-2": "La sección de la herramienta cuenta con cuatro modelos de identificación de objetos, dichos modelos han sido optimizados para ser funcionales en dispositivos mobiles.",
-        "1-list": [
-          "Identificación de la geometría facial.",
-          "Identificación de una malla facial completa.",
-          "Identificación de las articulaciones.",
-          "Identificación de objetos (también es un clasificador)."
-        ],
+        "1-list": {
+          "0": "Identificación de la geometría facial.",
+          "1": "Identificación de una malla facial completa.",
+          "2": "Identificación de las articulaciones.",
+          "3": "Identificación de objetos (también es un clasificador)."
+        },
         "1-description-3": "La herramienta en caso de activar la identificación por webcam se activara el filtro de forma que se pueda ver en tiempo real sobre la image de entrada los puntos que se están detectando. En caso de usar la opción de subir imágenes podemos adjuntar un fichero en formato png o jpg, dicho fichero se cargarán en la misma sección en tres secciones, imagen original, filtro aplicado, imagen con el filtro detectado."
       },
       "3-image-classification": {
         "title": "Clasificador de imágenes",
         "1-title": "Modelos entrenados",
         "1-description-1": "En la sección del clasificador de imágenes podemos seleccionar entre dos ejemplos muy representativos de las redes neuronales. Estos son el conjunto de imágenes mnist y el conjunto de imágenes.",
-        "1-list": [
-          "MNIST, clasificador de imágenes que detecta números.",
-          "Mobilenet, clasificador de imágenes que puede detectar 1001 categorías."
-        ],
+        "1-list": {
+          "0": "MNIST, clasificador de imágenes que detecta números.",
+          "1": "Mobilenet, clasificador de imágenes que puede detectar 1001 categorías."
+        },
         "1-description-2": "En el modelo de MNIST se permite seleccionar entre una lista de imágenes que contienen un número, dibujar en un canvas el número a predecir o subir una imagen de un número.",
         "1-description-3": "En el modelo de Mobilenet se han incluido una lista de imágenes de ejemplo que pueden ser seleccionadas o podemos subir una imagen que la red neuronal analizará para poder clasificar.",
         "1-description-4": "Para ambos modelos el sistema hará una predicción que indicará el porcentaje de precisión que ha detectado."
@@ -270,26 +365,26 @@
         "table": {
           "softmax": {
             "description": "Transforma las salidas a una representación en forma de probabilidades, de forma que la suma de todas las probabilidades da 1",
-            "characteristics": [
-              "Acotada entre 0 y 1",
-              "Buena en capas finales",
-              "Utilizada para normalizar tipo multiclase"
-            ]
+            "characteristics": {
+              "0": "Acotada entre 0 y 1",
+              "1": "Buena en capas finales",
+              "2": "Utilizada para normalizar tipo multiclase"
+            }
           },
           "sigmoid": {
             "description": "Transforma, los valores de entrada donde los más altos tienden a 1 y los valores más bajos tienden a 0",
-            "characteristics": [
-              "Acotada entre 0 y 1",
-              "Lenta convergencia",
-              "Buena en capas finales"
-            ]
+            "characteristics": {
+              "0": "Acotada entre 0 y 1",
+              "1": "Lenta convergencia",
+              "2": "Buena en capas finales"
+            }
           },
           "relu": {
             "description": "Transforma los valores de entrada dejando a cero los valores negativos y dejando tal como estaban los datos positivos-",
-            "characteristics": [
-              "No está acotada",
-              "Buen desempeño con redes convolucionales"
-            ]
+            "characteristics": {
+              "0": "No está acotada",
+              "1": "Buen desempeño con redes convolucionales"
+            }
           }
         }
       },

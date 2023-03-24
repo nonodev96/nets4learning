@@ -231,15 +231,15 @@ class TabularClassificationModelReview extends React.Component {
       case MODEL_UPLOAD:
         return <>
           <p>
-            Introduce separado por punto y coma los valores.
+            <Trans i18nKey={"datasets-models.0-tabular-classification.upload.html-example.text"} />
             <br />
-            <b>(parámetro-1; parámetro-2; parámetro-3; ... ;parámetro-n).</b>
+            <b><Trans i18nKey={"datasets-models.0-tabular-classification.upload.html-example.items"} /></b>
           </p>
         </>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
       case MODEL_LYMPHOGRAPHY.KEY:
-        return this._model.HTML_EXAMPLE
+        return this._model.HTML_EXAMPLE()
       default:
         return <>DEFAULT</>
     }
@@ -256,7 +256,9 @@ class TabularClassificationModelReview extends React.Component {
           <div className="d-flex gap-2">
             {this._model.LIST_EXAMPLES.map((example, index) => {
               return <Button key={"example_" + index}
-                             onClick={() => this.setExample(example)}>Ejemplo {index + 1}</Button>
+                             onClick={() => this.setExample(example)}>
+                <Trans i18nKey={"example-i"} values={{ i: index + 1 }} />
+              </Button>
             })}
           </div>
         </>
@@ -319,7 +321,7 @@ class TabularClassificationModelReview extends React.Component {
   }
 
   render() {
-    console.log("render")
+    console.debug("render")
     return (
       <>
         <Container id={"ModelReviewClassicClassification"}>
@@ -332,7 +334,10 @@ class TabularClassificationModelReview extends React.Component {
                   </h3>
                 </Card.Header>
                 <Card.Body>
-                  <Card.Title>{this._model?.TITLE ?? "Subir"} {this.state.loading}</Card.Title>
+                  <Card.Title>
+                    <Trans i18nKey={this._model?.TITLE ?? "pages.playground.0-tabular-classification.0_upload.upload"} />
+                    {this.state.loading}
+                  </Card.Title>
 
                   {this.dataset_key === MODEL_UPLOAD ? (
                     <>
@@ -382,8 +387,6 @@ class TabularClassificationModelReview extends React.Component {
                     </>
                   ) : (
                     <>
-                      {this.translate("welcome")}
-                      <br/>
                       {this._model.DESCRIPTION()}
                     </>
                     // <> {getHTML_DATASET_DESCRIPTION(0, this.dataset)}</>
@@ -558,18 +561,17 @@ class TabularClassificationModelReview extends React.Component {
                                     disabled={this.state.isButtonDisabled}
                                     size={"lg"}
                                     variant="primary">
-                              {
-                                this.state.isButtonDisabled ?
-                                  <>
-                                    <span className="spinner-border spinner-border-sm"
-                                          role="status"
-                                          aria-hidden="true"></span>
-                                    <span className="visually-hidden">Loading...</span>
-                                  </>
-                                  :
-                                  <>
-                                    {this.translate("pages.playground.form.button-check-result")}
-                                  </>
+                              {(this.state.isButtonDisabled) ?
+                                <>
+                                  <span className="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"></span>
+                                  <span className="visually-hidden">Loading...</span>
+                                </>
+                                :
+                                <>
+                                  {this.translate("pages.playground.form.button-check-result")}
+                                </>
                               }
                             </Button>
                           </div>
@@ -592,4 +594,5 @@ class TabularClassificationModelReview extends React.Component {
   }
 }
 
-export default withTranslation()(TabularClassificationModelReview);
+
+export default withTranslation()(TabularClassificationModelReview)

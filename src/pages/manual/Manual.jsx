@@ -42,9 +42,18 @@ export default function Manual() {
                   <Card.Text>{t("pages.manual.app.description-1")}</Card.Text>
                   <Card.Text>{t("pages.manual.app.description-2")}</Card.Text>
                   <ol>
-                    {Array
-                      .from(t("pages.manual.app.list-1", { returnObjects: true }))
-                      .map((v, index) => (<li key={index}><b>{v.title}</b>: {v.description}</li>))}
+                    <li>
+                      <b>{t("pages.manual.app.list.0.title")}: </b>
+                      {t("pages.manual.app.list.0.description")}
+                    </li>
+                    <li>
+                      <b>{t("pages.manual.app.list.1.title")}: </b>
+                      {t("pages.manual.app.list.1.description")}
+                    </li>
+                    <li>
+                      <b>{t("pages.manual.app.list.2.title")}: </b>
+                      {t("pages.manual.app.list.2.description")}
+                    </li>
                   </ol>
                   <Card.Text>{t("pages.manual.app.description-3")}</Card.Text>
                   <Card.Text>{t("pages.manual.app.description-4")}</Card.Text>
@@ -58,13 +67,12 @@ export default function Manual() {
                     <h4>{t("pages.manual.0-tabular-classification.1-title")}</h4>
                     <p>{t("pages.manual.0-tabular-classification.1-description-1")}</p>
                     <ol>
-                      {Array
-                        .from(t("pages.manual.0-tabular-classification.1-list-options", { returnObjects: true }))
-                        .map((v, index) => <li key={index}>{v}</li>)}
+                      <li>{t("pages.manual.0-tabular-classification.1-list-options.0")}</li>
+                      <li>{t("pages.manual.0-tabular-classification.1-list-options.1")}</li>
                     </ol>
                     <p>{t("pages.manual.0-tabular-classification.1-description-2")}</p>
                     <p>{t("pages.manual.0-tabular-classification.1-description-3")}</p>
-                    <hr/>
+                    <hr />
                     <h4>{t("pages.manual.0-tabular-classification.2-title")}</h4>
                     <p>{t("pages.manual.0-tabular-classification.2-description-1")}</p>
                     <p>{t("pages.manual.0-tabular-classification.2-description-2")}</p>
@@ -80,9 +88,10 @@ export default function Manual() {
                     <p>{t("pages.manual.2-object-identification.1-description-1")}</p>
                     <p>{t("pages.manual.2-object-identification.1-description-2")}</p>
                     <ol>
-                      {Array
-                        .from(t("pages.manual.2-object-identification.1-list", { returnObjects: true }))
-                        .map((v, index) => <li key={index}>{v}</li>)}
+                      <li>{t("pages.manual.2-object-identification.1-list.0")}</li>
+                      <li>{t("pages.manual.2-object-identification.1-list.1")}</li>
+                      <li>{t("pages.manual.2-object-identification.1-list.2")}</li>
+                      <li>{t("pages.manual.2-object-identification.1-list.3")}</li>
                     </ol>
                     <p>{t("pages.manual.2-object-identification.1-description-3")}</p>
                   </Accordion.Body>
@@ -93,9 +102,8 @@ export default function Manual() {
                     <h4>{t("pages.manual.3-image-classification.1-title")}</h4>
                     <p>{t("pages.manual.3-image-classification.1-description-1")}</p>
                     <ol>
-                      {Array
-                        .from(t("pages.manual.3-image-classification.1-list", { returnObjects: true }))
-                        .map((v, index) => <li key={index}>{v}</li>)}
+                      <li>{t("pages.manual.3-image-classification.1-list.0")}</li>
+                      <li>{t("pages.manual.3-image-classification.1-list.1")}</li>
                     </ol>
                     <p>{t("pages.manual.3-image-classification.1-description-2")}</p>
                     <p>{t("pages.manual.3-image-classification.1-description-3")}</p>

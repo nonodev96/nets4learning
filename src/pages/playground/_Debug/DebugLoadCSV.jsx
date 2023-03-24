@@ -4,18 +4,8 @@ import * as tfVis from "@tensorflow/tfjs-vis";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { MODEL_CAR } from "../../../DATA_MODEL";
 
-export default function DebugLoadCSV(props) {
+export default function DebugLoadCSV() {
   const _isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
-
-
-  useEffect(() => {
-    console.log("Mount DebugLoadCSV")
-
-
-    return () => {
-      console.log("UnMount DebugLoadCSV")
-    }
-  }, [])
 
 
   const handleClick_Layers = async () => {
@@ -75,7 +65,7 @@ export default function DebugLoadCSV(props) {
 
   }
 
-  console.log("DebugLoadCSV")
+  console.debug("DebugLoadCSV")
   return <>
     {
       (_isDebug) &&

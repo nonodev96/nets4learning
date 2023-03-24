@@ -2,11 +2,11 @@ import * as tf from "@tensorflow/tfjs";
 import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
 
 export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
-  KEY = "LYMPHOGRAPHY"
+  static KEY = "LYMPHOGRAPHY"
+  static URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
+  static URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"
+  static URL_DATASET = "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/"
   TITLE = "Clasificación por datos de linfomas"
-  URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
-  URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"
-  URL_DATASET = "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/"
 
   DESCRIPTION() {
     return <>

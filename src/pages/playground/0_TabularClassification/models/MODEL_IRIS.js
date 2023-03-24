@@ -1,57 +1,59 @@
 import * as tf from "@tensorflow/tfjs";
 import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
+import { Trans } from "react-i18next";
 
 export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
 
-  constructor(_t) {
-    super(_t);
-  }
-
-  KEY = "IRIS"
-  TITLE = "IRIS - Clasificación de flor iris"
-  URL = "https://archive.ics.uci.edu/ml/datasets/iris"
-  URL_MODEL = "/public/models/classification/iris/my-model-iris.json"
+  static  KEY = "IRIS"
+  static URL = "https://archive.ics.uci.edu/ml/datasets/iris"
+  static URL_MODEL = "/public/models/classification/iris/my-model-iris.json"
+  TITLE = "datasets-models.0-tabular-classification.iris.title"
 
   DESCRIPTION() {
+    const prefix = "datasets-models.0-tabular-classification.iris.description."
     return <>
-      <p>{this.t("welcome")}</p>
       <p>
-        El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo y sépalo.
+        <Trans i18nKey={prefix + "text-1"} />
       </p>
       <details>
-        <summary>Datos de entrada</summary>
+        <summary><Trans i18nKey={prefix + "details-1.title"} /></summary>
         <ol>
-          <li>Longitud del sépalo en cm</li>
-          <li>Anchura del sépalo en cm</li>
-          <li>Longitud del pétalo en cm</li>
-          <li>Anchura del pétalo en cm</li>
+          <li><Trans i18nKey={prefix + "details-1.list.1"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.2"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.3"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.4"} /></li>
         </ol>
       </details>
       <details>
-        <summary>Datos de salida</summary>
+        <summary><Trans i18nKey={prefix + "details-2.title"} /></summary>
         <ol>
-          <li>Iris Setosa</li>
-          <li>Iris Versicolor</li>
-          <li>Iris Virginica</li>
+          <li><Trans i18nKey={prefix + "details-2.list.1"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.2"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.3"} /></li>
         </ol>
       </details>
       <details>
-        <summary>Referencias</summary>
+        <summary><Trans i18nKey={prefix + "details-3.title"} /></summary>
         <ol>
-          <li><a href="https://archive.ics.uci.edu/ml/datasets/Iris" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+          <li>
+            <a href="https://archive.ics.uci.edu/ml/datasets/Iris" target="_blank" rel="noreferrer">
+              <Trans i18nKey={prefix + "details-3.list.1"} />
+            </a>
+          </li>
         </ol>
       </details>
     </>
   }
 
   HTML_EXAMPLE() {
+    const prefix = "datasets-models.0-tabular-classification.iris.html-example."
     return <>
       <p>
-        Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
+        <Trans i18nKey={prefix + "text"} />
         <br />
-        <b>(longitud sépalo;anchura sépalo;longitud petalo;anchura petalo).</b>
+        <b><Trans i18nKey={prefix + "items"} /></b>
       </p>
-      <p>Ejemplos:</p>
+      <p><Trans i18nKey={prefix + "examples"} /></p>
     </>
   }
 

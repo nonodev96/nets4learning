@@ -1,7 +1,34 @@
 export class MODEL_TABULAR_CLASSIFICATION {
+  TITLE = ""
+  LIST_EXAMPLES = []
+  DATA_OBJECT = {}
+  TABLE_HEADER = []
+  CLASSES = []
+  FORM = []
+  DATA_DEFAULT = {}
+  DATA_OBJECT_KEYS = {}
+  DATA = [[]]
+
   constructor(_t) {
     this.t = _t
   }
+
+  loadModel() {
+    throw new Error("Error")
+  }
+
+  function_v_input(element, index, param) {
+    throw new Error("Error")
+  }
+
+  DESCRIPTION() {
+    return <></>
+  }
+
+  HTML_EXAMPLE() {
+    return <></>
+  }
+
 }
 
 /**

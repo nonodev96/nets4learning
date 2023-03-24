@@ -67,11 +67,9 @@ export default function Glossary() {
                         <td><Trans i18nKey={"pages.glossary.activation-functions.table.softmax.description"} /></td>
                         <td>
                           <ol>
-                            {Array
-                              .from(t("pages.glossary.activation-functions.table.softmax.characteristics", { returnObjects: true }))
-                              .map((v, index) => {
-                                return <li key={index}>{v}</li>
-                              })}
+                            <li>{t("pages.glossary.activation-functions.table.softmax.characteristics.0")}</li>
+                            <li>{t("pages.glossary.activation-functions.table.softmax.characteristics.1")}</li>
+                            <li>{t("pages.glossary.activation-functions.table.softmax.characteristics.2")}</li>
                           </ol>
                         </td>
                       </tr>
@@ -80,11 +78,9 @@ export default function Glossary() {
                         <td><Trans i18nKey={"pages.glossary.activation-functions.table.sigmoid.description"} /></td>
                         <td>
                           <ol>
-                            {Array
-                              .from(t("pages.glossary.activation-functions.table.sigmoid.characteristics", { returnObjects: true }))
-                              .map((v, index) => {
-                                return <li key={index}>{v}</li>
-                              })}
+                            <li>{t("pages.glossary.activation-functions.table.sigmoid.characteristics.0")}</li>
+                            <li>{t("pages.glossary.activation-functions.table.sigmoid.characteristics.1")}</li>
+                            <li>{t("pages.glossary.activation-functions.table.sigmoid.characteristics.2")}</li>
                           </ol>
                         </td>
                       </tr>
@@ -93,11 +89,8 @@ export default function Glossary() {
                         <td><Trans i18nKey={"pages.glossary.activation-functions.table.relu.description"} /></td>
                         <td>
                           <ol>
-                            {Array
-                              .from(t("pages.glossary.activation-functions.table.relu.characteristics", { returnObjects: true }))
-                              .map((v, index) => {
-                                return <li key={index}>{v}</li>
-                              })}
+                            <li>{t("pages.glossary.activation-functions.table.relu.characteristics.0")}</li>
+                            <li>{t("pages.glossary.activation-functions.table.relu.characteristics.1")}</li>
                           </ol>
                         </td>
                       </tr>

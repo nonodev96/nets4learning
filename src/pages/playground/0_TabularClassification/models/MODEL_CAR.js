@@ -1,73 +1,80 @@
 import * as tf from "@tensorflow/tfjs";
 import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
+import { Trans } from "react-i18next";
 
 export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
 
-  constructor(_t) {
-    super(_t);
-  }
-
   static KEY = "CAR"
-  static TITLE = "CAR - Clasificación de coches"
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
   static URL_MODEL = "/public/models/classification/car/my-model-car.json"
+  TITLE = "datasets-models.0-tabular-classification.car.title"
 
   DESCRIPTION() {
+    const prefix = "datasets-models.0-tabular-classification.car.description."
     return <>
-      <p>{this.t("welcome")}</p>
-
-      <p>El conjunto de datos <i>Car Evaluation</i> permite evaluar vehículos a través de la siguiente estructura</p>
-      <p>Para obtener más información acerca de este conjunto de datos visita el repositorio <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">ics.uci.edu</a>.</p>
+      <p><Trans i18nKey={prefix + "text-1"} /></p>
+      <p>
+        <Trans i18nKey={prefix + "text-2"}
+               components={{
+                 link1: <a href={"https://archive.ics.uci.edu/ml/datasets/Car+Evaluation"} target={"_blank"} rel="noreferrer">link</a>,
+               }} />
+      </p>
       <details>
-        <summary>Información</summary>
+        <summary><Trans i18nKey={prefix + "details-1.title"} /></summary>
         <ol>
-          <li><b>buying:</b> Precio de compra.</li>
-          <li><b>maint:</b> Costo del mantenimiento.</li>
-          <li><b>doors:</b> Número de puertas.</li>
-          <li><b>persons:</b> Número de plazas.</li>
-          <li><b>lug_boot:</b> Tamaño del maletero.</li>
-          <li><b>safety:</b> Seguridad estimada del vehículo.</li>
+          <li><Trans i18nKey={prefix + "details-1.list.1"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.2"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.3"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.4"} /></li>
+          <li><Trans i18nKey={prefix + "details-1.list.5"} /></li>
         </ol>
       </details>
       <details>
-        <summary>Datos de entrada</summary>
-        <p>Características del coche</p>
+        <summary><Trans i18nKey={prefix + "details-2.title"} /></summary>
+        <p><Trans i18nKey={prefix + "details-2.text-1"} /></p>
         <ol>
-          <li><b>buying:</b> vhigh, high, med, low.</li>
-          <li><b>maint:</b> vhigh, high, med, low.</li>
-          <li><b>doors:</b> 2, 3, 4, 5more.</li>
-          <li><b>persons:</b> 2, 4, more.</li>
-          <li><b>lug_boot:</b> small, med, big.</li>
-          <li><b>safety:</b> low, med, high.</li>
+          <li><Trans i18nKey={prefix + "details-2.list.1"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.2"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.3"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.4"} /></li>
+          <li><Trans i18nKey={prefix + "details-2.list.5"} /></li>
         </ol>
       </details>
       <details>
-        <summary>Datos de salida</summary>
-        <p>Aceptación del vehículo</p>
+        <summary><Trans i18nKey={prefix + "details-3.title"} /></summary>
+        <p><Trans i18nKey={prefix + "details-3.text-1"} /></p>
         <ol>
-          <li><b>UNACC</b>: Inaccesible</li>
-          <li><b>ACC</b>: Accesible</li>
-          <li><b>GOOD</b>: Bien</li>
-          <li><b>VGOOD</b>: Muy bien</li>
+          <li><Trans i18nKey={prefix + "details-3.list.1"} /></li>
+          <li><Trans i18nKey={prefix + "details-3.list.2"} /></li>
+          <li><Trans i18nKey={prefix + "details-3.list.3"} /></li>
+          <li><Trans i18nKey={prefix + "details-3.list.4"} /></li>
         </ol>
       </details>
       <details>
-        <summary>Referencias</summary>
+        <summary><Trans i18nKey={prefix + "details-4.list.1"} /></summary>
         <ol>
-          <li><a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+          <li>
+            <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">
+              <Trans i18nKey={prefix + "details-4.list.1"} />
+            </a>
+          </li>
         </ol>
       </details>
     </>
   }
 
-  HTML_EXAMPLE = <>
-    <p>
-      Introduce separado por punto y coma los siguientes valores correspondientes a el coche que se va a evaluar:
-      <br />
-      <b>(buying; maint; doors; persons; lug_boot; safety).</b>
-    </p>
-    <p>Ejemplos:</p>
-  </>
+  HTML_EXAMPLE() {
+    const prefix = "datasets-models.0-tabular-classification.car.html-example."
+    return <>
+      <p>
+        <Trans i18nKey={prefix + "text"} />
+        <br />
+        <b><Trans i18nKey={prefix + "items"} /></b>
+      </p>
+      <p><Trans i18nKey={prefix + "examples"} /></p>
+    </>
+  }
+
   TABLE_HEADER = ["Buying", "Maint", "Doors", "Persons", "Lug boot", "Safety", "Results"]
 
   async loadModel() {
