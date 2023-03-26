@@ -1,52 +1,46 @@
 import * as tf from "@tensorflow/tfjs";
 import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
+import { Trans } from "react-i18next";
 
 export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   static KEY = "LYMPHOGRAPHY"
   static URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
   static URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"
   static URL_DATASET = "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/"
-  TITLE = "Clasificación por datos de linfomas"
+  TITLE = "datasets-models.0-tabular-classification.lymphography.title"
 
   DESCRIPTION() {
+    const prefix = "datasets-models.0-tabular-classification.lymphography.description."
     return <>
-      <p>El conjunto de datos de <i>lymphographya</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.</p>
+      <p><Trans i18nKey={prefix + "text-1"}/></p>
       <details>
-        <summary>Datos de entrada</summary>
+        <summary><Trans i18nKey={prefix + "details-input.title"}/></summary>
         <ol>
-          <li><b>lymphatics</b>: normal, arched, deformed, displaced</li>
-          <li><b>block of affere</b>: no, yes</li>
-          <li><b>bl. of lymph. c</b>: no, yes</li>
-          <li><b>bl. of lymph. s</b>: no, yes</li>
-          <li><b>by pass</b>: no, yes</li>
-          <li><b>extravasates</b>: no, yes</li>
-          <li><b>regeneration of</b>: no, yes</li>
-          <li><b>early uptake in</b>: no, yes</li>
-          <li><b>lym.nodes dimin</b>: 0-3</li>
-          <li><b>lym.nodes enlar</b>: 1-4</li>
-          <li><b>changes in lym.</b>: bean, oval, round</li>
-          <li><b>defect in node</b>: no, lacunar, lac. marginal, lac. central</li>
-          <li><b>changes in node</b>: no, lacunar, lac. margin, lac. central</li>
-          <li><b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,</li>
-          <li><b>special forms</b>: no, chalices, vesicles</li>
-          <li><b>dislocation of</b>: no, yes</li>
-          <li><b>exclusion of no</b>: no, yes</li>
-          <li><b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70</li>
+          {Array
+            .from({ length: 17 })
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-input.list." + i}/></li>)}
         </ol>
       </details>
       <details>
-        <summary>Datos de salida</summary>
+        <summary><Trans i18nKey={prefix + "details-output.title"}/></summary>
         <ol>
-          <li><b>normal find</b>: normal</li>
-          <li><b>metastases</b>: metastasis</li>
-          <li><b>malign lymph</b>: linfoma maligno</li>
-          <li><b>fibrosis</b>: fibrosis</li>
+          {Array
+            .from({ length: 4 })
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-output.list." + i}/></li>)}
         </ol>
       </details>
       <details>
-        <summary>Referencias</summary>
+        <summary>
+          <Trans i18nKey={prefix + "details-references.title"}/>
+        </summary>
         <ol>
-          <li><a href="https://archive.ics.uci.edu/ml/datasets/Lymphography" target="_blank" rel="noreferrer">Conjunto de datos</a></li>
+          <li>
+            <a href="https://archive.ics.uci.edu/ml/datasets/Lymphography"
+               target="_blank"
+               rel="noreferrer">
+              <Trans i18nKey={prefix + "details-references.list.0"}/>
+            </a>
+          </li>
         </ol>
       </details>
     </>
@@ -56,7 +50,7 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
     return <>
       <p>
         Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-        <br />
+        <br/>
         <b>(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special
           forms, dislocation of, exclusion of no, no. of nodes in).</b>
       </p>

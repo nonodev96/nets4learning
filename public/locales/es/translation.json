@@ -6,6 +6,10 @@
   "loading": "Cargando",
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
+  "op": [
+    "op 1",
+    "op 2"
+  ],
   "header": {
     "language": "Idioma",
     "manual": "Manual",
@@ -132,6 +136,50 @@
           "examples": "Ejemplos:"
         }
       },
+      "lymphography": {
+        "title": "Clasificación por datos de linfomas",
+        "description": {
+          "text-1": "El conjunto de datos de <i>lymphography</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0":"<b>lymphatics</b>: normal, arched, deformed, displaced",
+              "1":"<b>block of affere</b>: no, yes",
+              "2":"<b>bl. of lymph. c</b>: no, yes",
+              "3":"<b>bl. of lymph. s</b>: no, yes",
+              "4":"<b>by pass</b>: no, yes",
+              "5":"<b>extravasates</b>: no, yes",
+              "6":"<b>regeneration of</b>: no, yes",
+              "7":"<b>early uptake in</b>: no, yes",
+              "8":"<b>lym.nodes dimin</b>: 0-3",
+              "9":"<b>lym.nodes enlar</b>: 1-4",
+              "10":"<b>changes in lym.</b>: bean, oval, round",
+              "11":"<b>defect in node</b>: no, lacunar, lac. marginal, lac. central",
+              "12":"<b>changes in node</b>: no, lacunar, lac. margin, lac. central",
+              "13":"<b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,",
+              "14":"<b>special forms</b>: no, chalices, vesicles",
+              "15":"<b>dislocation of</b>: no, yes",
+              "16":"<b>exclusion of no</b>: no, yes",
+              "17":"<b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70"
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "<b>normal find</b>: normal",
+              "1": "<b>metastases</b>: metastasis",
+              "2": "<b>malign lymph</b>: linfoma maligno",
+              "3": "<b>fibrosis</b>: fibrosis"
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "Conjunto de datos"
+            }
+          }
+        }
+      },
       "list-datasets": {
         "0-option-1": "Conjunto de datos - Clasificación de coches",
         "0-option-2": "Conjunto de datos - Clasificación de flor iris",
@@ -168,10 +216,6 @@
       }
     }
   },
-  "op": [
-    "op 1",
-    "op 2"
-  ],
   "pages": {
     "index": {
       "tabular-classification": {
