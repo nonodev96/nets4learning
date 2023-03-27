@@ -51,7 +51,7 @@ export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-4.list.1"} /></summary>
+        <summary><Trans i18nKey={prefix + "details-4.title"} /></summary>
         <ol>
           <li>
             <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation" target="_blank" rel="noreferrer">

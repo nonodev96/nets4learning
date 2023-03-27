@@ -9,11 +9,14 @@ import {
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD
 } from "./pages/playground/2_ObjectDetection/models";
+import {
+  MODEL_IMAGE_MNIST,
+  MODEL_IMAGE_MOBILENET,
+  MODEL_IMAGE_RESNET
+} from "./pages/playground/3_ImageClassification/models";
 
 const MODEL_UPLOAD = "UPLOAD"
-const MODEL_IMAGE_MNIST = "MNIST"
-const MODEL_IMAGE_MOBILENET = "MOBILE-NET"
-const MODEL_IMAGE_RESNET = "RES-NET"
+
 
 const LIST_MODELS_TABULAR_CLASSIFICATION = [
   MODEL_UPLOAD,
@@ -32,9 +35,9 @@ const LIST_MODELS_OBJECT_DETECTION = [
 
 const LIST_MODELS_IMAGE_CLASSIFICATION = [
   MODEL_UPLOAD,
-  MODEL_IMAGE_MNIST,
-  MODEL_IMAGE_MOBILENET,
-  MODEL_IMAGE_RESNET
+  MODEL_IMAGE_MNIST.KEY,
+  MODEL_IMAGE_MOBILENET.KEY,
+  MODEL_IMAGE_RESNET.KEY
 ]
 
 const LIST_TYPE_MODALITY = [
@@ -43,13 +46,6 @@ const LIST_TYPE_MODALITY = [
   'Identificación de objetos',
   'Clasificador de imágenes',
 ]
-
-const LIST_TYPE_MODELS_DESCRIPTION = [
-  "Empieza de cero y crea tu propia arquitectura",
-  "Edita una arquitectura hecho por tí o facilitado por nosotros",
-  "Entrena un modelo hecho por tí o  si no tienes, no te preocupes te prestamos uno :)",
-  "Ejecutar un modelo hecho por tí o facilitado por nosotros"
-];
 
 const LIST_MODEL_OPTIONS = [
   [
@@ -98,9 +94,9 @@ export const LIST_MODEL_OPTIONS_IDS = {
   IMAGE_CLASSIFICATION  : {
     // 3
     0: MODEL_UPLOAD,
-    1: MODEL_IMAGE_MNIST,
-    2: MODEL_IMAGE_MOBILENET,
-    3: MODEL_IMAGE_RESNET
+    1: MODEL_IMAGE_MNIST.KEY,
+    2: MODEL_IMAGE_MOBILENET.KEY,
+    3: MODEL_IMAGE_RESNET.KEY
   }
 }
 
@@ -121,103 +117,9 @@ export const DATASET_DESCRIPTION = [
   ],
   [
     'DATASET PROPIO',
-    <>
-      <p>
-        La base de datos <b>MNIST</b> es una gran base de datos de dígitos escritos a mano.
-        La base de datos se usa ampliamente para capacitación y pruebas en el campo del aprendizaje automático.
-      </p>
-      <p>
-        Fue creado "re-mezclando" las muestras de los conjuntos de datos originales del NIST.
-      </p>
-      <p>
-        El conjunto de datos de capacitación del NIST se tomó de la Oficina del Censo de los Estados Unidos.
-        Además, las imágenes en blanco y negro del NIST se normalizaron para encajar en un cuadro delimitador de
-        <b> 28 x 28 </b>píxeles y se suavizaron, lo que introdujo niveles de escala de grises.
-      </p>
-
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen en escala de grises y con un tamaño de <b>28 x 28</b> píxeles</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>Un número entre 0 y 9</li>
-        </ol>
-      </details>
-    </>,
-    <>
-      <p>
-        MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas similares.
-      </p>
-      <p>
-        Este modelo es capaz de diferenciar entre 1001 categorías, identificando el contexto principal de la imagen.
-      </p>
-
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen con valores de color entre [0,1] de <b> 224 x 224</b> píxeles.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>
-            Un número de 0 a 1001 que son cada una de las categorías de esta{" "}
-            <a rel="noreferrer" target="_blank"
-               href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
-          </li>
-        </ol>
-      </details>
-      <details>
-        <summary>Referencias</summary>
-        <p>
-          Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:
-        </p>
-        <ol>
-          <li>
-            <a href="https://arxiv.org/abs/1801.04381" target="_blank" rel="noreferrer">"Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation"</a>, 2018.
-          </li>
-        </ol>
-      </details>
-    </>,
-    <>
-      <p>
-        ResNet V2 es una familiar de redes de arquitecturas para la clasificación de imágenes con un número variable de capas.
-      </p>
-      <p>
-        Están basadas en la arquitectura ResNet original publicada por Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun:
-        <a href="https://arxiv.org/abs/1512.03385" target={'_blank'} rel="noreferrer">"Deep Residual Learning for Image Recognition"</a>, 2015.
-      </p>
-      <p>
-        La variación "V2" utilizada en el modelo que vamos a usar fue realizada por Kaiming He, Xiangyu Zhang,
-        Shaoqing Ren, Jian Sun:{' '}
-        <a href="https://arxiv.org/abs/1603.05027" target={'_blank'} rel="noreferrer">"Identity Mappings in Deep Residual Networks"</a>, 2016.
-      </p>
-      <p>
-        La diferencia con ResNet V1 es el uso de la normalización por lotes antes de cada capa de peso. El modelo
-        cargado usa un total de 50 capas.
-      </p>
-
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen con valores de color entre [0,1] de <b> 224 x 224</b> píxeles.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>Un número de 0 a 1001 que son cada una de las categorías de esta{" "}
-            <a rel="noreferrer" target="_blank"
-               href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
-          </li>
-        </ol>
-      </details>
-    </>,
+    <>TEXT DESCRIPTION MNIST</>,
+    <>TEXT DESCRIPTION MOBILENET</>,
+    <>TEXT DESCRIPTION RESNET</>,
   ],
 ]
 
@@ -225,8 +127,8 @@ export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
   return DATASET_DESCRIPTION[row][dataset];
 }
 
-const getKeyDatasetByID_TabularClassification = (dataset) => {
-  switch (dataset.toString()) {
+const getKeyDatasetByID_TabularClassification = (id) => {
+  switch (id.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -241,8 +143,8 @@ const getKeyDatasetByID_TabularClassification = (dataset) => {
 }
 
 
-const getKeyDatasetByID_ObjectDetection = (dataset) => {
-  switch (dataset.toString()) {
+const getKeyDatasetByID_ObjectDetection = (id) => {
+  switch (id.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
@@ -258,16 +160,16 @@ const getKeyDatasetByID_ObjectDetection = (dataset) => {
   }
 }
 // TODO
-const getKeyDatasetByID_ImageClassification = (dataset) => {
-  switch (dataset.toString()) {
+const getKeyDatasetByID_ImageClassification = (id) => {
+  switch (id.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
-      return MODEL_IMAGE_MNIST
+      return MODEL_IMAGE_MNIST.KEY
     case '2':
-      return MODEL_IMAGE_MOBILENET
+      return MODEL_IMAGE_MOBILENET.KEY
     case '3':
-      return MODEL_IMAGE_RESNET
+      return MODEL_IMAGE_RESNET.KEY
     default:
       console.error("Error, opción no disponible")
   }
@@ -304,10 +206,9 @@ export {
   getKeyDatasetByID_ImageClassification,
   LIST_MODEL_OPTIONS,
   LIST_TYPE_MODALITY,
-  LIST_TYPE_MODELS_DESCRIPTION,
   // Genérico para todos
   MODEL_UPLOAD,
-  // Clasificación clásica
+  // Clasificación tabular
   LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
@@ -323,7 +224,6 @@ export {
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET,
-
   LIST_OF_IMAGES_MNIST,
   LIST_OF_IMAGES_MOBILENET,
 }

@@ -2,6 +2,8 @@ import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import { MnistData } from './MODEL_MNIST_Data'
 import { createLoss, createMetrics, createOptimizer } from '../../../../core/nn-utils/ArchitectureHelper'
+import { MODEL_IMAGE_CLASSIFICATION } from "./_model";
+import { Trans } from "react-i18next";
 
 const classNames = [
   'Zero',
@@ -308,13 +310,30 @@ export function resample_single(canvas, width, height, resize_canvas) {
   ctx2.putImageData(img2, 0, 0)
 }
 
-/**
- * @type {TYPE_MODEL_IMAGE_CLASSIFIER}
- */
-export const MODEL_MNIST = {
-  KEY        : "",
-  TITLE      : "",
-  URL        : "",
-  URL_MODEL  : "",
-  DESCRIPTION: <></>
+
+export class MODEL_IMAGE_MNIST extends MODEL_IMAGE_CLASSIFICATION {
+  static KEY = "IMAGE-MNIST"
+  TITLE = "datasets-models.3-image-classifier.mnist.title"
+
+  DESCRIPTION() {
+    const prefix = "datasets-models.3-image-classifier.mnist.description."
+    return <>
+      <p><Trans i18nKey={prefix + "text-0"} /></p>
+      <p><Trans i18nKey={prefix + "text-1"} /></p>
+      <p><Trans i18nKey={prefix + "text-2"} />      </p>
+
+      <details>
+        <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + "details-input.list.0"} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + "details-output.title"} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + "details-output.list.0"} /></li>
+        </ol>
+      </details>
+    </>
+  }
 }

@@ -6,10 +6,15 @@
   "loading": "Cargando",
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
+  "AYUDA": "AYUDA!!",
   "op": [
     "op 1",
     "op 2"
   ],
+  "error": {
+    "need-to-upload-image": "Primero debes de subir una imagen",
+    "model-selected": "Error en la selección del modelo"
+  },
   "header": {
     "language": "Idioma",
     "manual": "Manual",
@@ -31,6 +36,14 @@
     "json": "Añada el fichero JSON",
     "csv": "Añada el fichero CSV"
   },
+  "custom-canvas-drawer": {
+    "validate": "Validar",
+    "clear": "Limpiar"
+  },
+  "alert": {
+    "model-load-success": "Modelo cargado",
+    "prediction": "La predicción es: {{index}}"
+  },
   "table": {
     "dataset": "Conjunto de datos"
   },
@@ -44,8 +57,6 @@
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"
   },
-  "AYUDA":"kssdafsdfsadfdjlkj",
-
   "datasets-models": {
     "0-tabular-classification": {
       "upload": {
@@ -205,7 +216,7 @@
       }
     },
     "2-object-detection": {
-      "interface":{
+      "interface": {
         "process-webcam": {
           "title": "Reconocimiento en tiempo real",
           "sub-title": "WebCam",
@@ -326,6 +337,78 @@
       }
     },
     "3-image-classifier": {
+      "interface": {
+        "0-upload": {
+          "title": "Carga tu propio Modelo.",
+          "sub-title": "Primero el archivo .json y después el fichero .bin"
+        },
+        "process-examples": {
+          "title": "Procesamiento con ejemplos"
+        },
+        "process-draw": {
+          "title": "Dibujo"
+        },
+        "process-image": {
+          "title": "Procesamiento de imágenes",
+          "sub-title": "",
+          "validate": "Validar"
+        },
+        "result": "Resultado",
+        "button-accept": "Aceptar",
+        "modal": {
+          "title": "Predicción"
+        }
+      },
+      "mnist": {
+        "title": "MNIST - Clasificador de números",
+        "description": {
+          "text-0": "La base de datos <strong>MNIST</strong> es una gran base de datos de dígitos escritos a mano. La base de datos se usa ampliamente para capacitación y pruebas en el campo del aprendizaje automático.",
+          "text-1": "Fue creado \"re-mezclando\" las muestras de los conjuntos de datos originales del NIST.",
+          "text-2": "El conjunto de datos de capacitación del NIST se tomó de la Oficina del Censo de los Estados Unidos. Además, las imágenes en blanco y negro del NIST se normalizaron para encajar en un cuadro delimitador de <strong>28 x 28</strong> píxeles y se suavizaron, lo que introdujo niveles de escala de grises.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen en escala de grises y con un tamaño de <strong>28 x 28</strong> píxeles"
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Un número entre 0 y 9"
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {}
+          }
+        }
+      },
+      "mobilenet": {
+        "title": "MOBILENET - Clasificador de imágenes",
+        "description": {
+          "text-0": "MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas similares.",
+          "text-1": "Este modelo es capaz de diferenciar entre 1001 categorías, identificando el contexto principal de la imagen.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen con valores de color entre [0, 1] de <strong> 224 x 224</strong> píxeles."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Un número de 0 a 1001 que son cada una de las categorías de esta <link1>lista</link1>"
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "text-0": "Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:",
+            "list": {
+              "0": "<link1>Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation</link1> 2018"
+            }
+          }
+        }
+      },
       "face-mesh": {
         "title": "",
         "description": {}
@@ -421,6 +504,78 @@
         "3_lymphography": {
         },
         "4_titanic": {
+        },
+        "generator": {
+          "dataset": {
+            "upload-dataset": "Subir conjunto de datos.",
+            "attributes": {
+              "title": "Atributos",
+              "number": "Numérico",
+              "float": "Real",
+              "select": "Categórico",
+              "classes": "Clases"
+            }
+          },
+          "layers": {
+            "title": "Diseño de capas",
+            "page-info": "Puedes visitar la web <link1>netron.app</link1> para visualizar la topología al completo"
+          },
+          "editor-layers": {
+            "title": "Editor de capas",
+            "add-layer-start": "Añadir capa al principio",
+            "add-layer-end": "Añadir capa al final"
+          },
+
+          "manual": {
+            "title": "Manual del generador de modelos",
+            "details-edit-layers": {
+              "title": "Editor de las capas",
+              "text-0": "Se pueden editar las capas de la red neuronal, puedes agregar tantas como desees pulsando el botón \"Añadir capa\" al inicio o al final.",
+              "list": {
+                "0": "<b>Unidades de la capa</b>:<br /> Cada unidad en una capa está conectada a todas las unidades de la capa anterior y de la capa siguiente. <br /> Cada unidad en una capa tiene un conjunto de pesos asociados que determinan la fuerza y dirección de la señal que se transmite entre las unidades. <br /> Podemos editar el número de entradas y salidas de la capa.",
+                "1": "<b>Función de activación</b>:<br />La función de activación en una capa de una red neuronal se refiere a la función matemática que se aplica a la salida de cada unidad en la capa, antes de pasar la señal a la capa siguiente, podemos editar cada una de las funciones de activación de todas las capas."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Editor de hiperparámetros",
+              "text-0": "Se pueden editar los parámetros generales necesarios para la creación del modelo. <br />Estos parámetros son:",
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br />Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el entrenamiento.",
+                "1": "<b>Número de iteraciones</b>:<br />Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar).",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se va a usar para el entrenamiento y la evaluación.",
+                "3": "<b>Optimizador</b>:<br />Es una función que como su propio nombre indica se usa para optimizar los modelos. <br />Esto es frecuentemente usado para evitar estancarse en un máximo local.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados.",
+                "5": "<b>Función de métrica</b>:<br />Es la evaluación para valorar el rendimiento de un modelo de aprendizaje automático."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Información de hiperparámetros",
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br /> La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.",
+                "1": "<b>Número de iteraciones</b>:<br /> El número de iteraciones se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br /> El tamaño del conjunto de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.",
+                "3": "<b>Optimizador</b>:<br /> El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente Estocástico (SGD), el Adam y el Adagrad.",
+                "4": "<b>Función de pérdida</b>:<br /> La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de pérdida, como la Entropía Cruzada y el Error Cuadrático Medio."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Crear y entrenar modelo",
+              "text-0": "Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón \"Crear y entrenar modelo\".",
+              "text-1": "Si hemos entrenado el modelo con la función de métrica <i>Accuracy</i> nos aparecerá dos graficas en el visor. La más relevante para nosotros seá la de abajo, ya que en TensorFlow.js, <i>acc</i> y <i>val_acc</i> son métricas de evaluación comúnmente utilizadas en el entrenamiento de modelos de redes neuronales. <br /><i>acc</i> representa la precisión (accuracy) del modelo en el conjunto de datos de entrenamiento. La precisión se define como el número de predicciones correctas dividido por el número total de predicciones. <br /><i>val_acc</i> representa la precisión del modelo en el conjunto de datos de validación. La validación se utiliza para evaluar la capacidad del modelo para generalizar a nuevos datos que no han sido vistos durante el entrenamiento.",
+              "text-2": "La precisión de validación es importante para detectar el sobreajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos.",
+              "text-3": "En resumen, <b>acc</b> se refiere a la precisión en el conjunto de datos de entrenamiento y <b>val_acc</b> se refiere a la precisión en el conjunto de datos de validación. Ambas métricas son importantes para evaluar la capacidad del modelo para generalizar a nuevos datos.",
+              "text-4": "Si todo ha sido correcto se añadirá una nueva entrada a la lista de modelos generados con el conjunto de datos seleccionado, se nos permitirá cargar en memoria modelos entrenados anteriormente. "
+            },
+            "details-export-models": {
+              "title": "Exportar modelo",
+              "text-0": "Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados, se nos permite exportar los modelos generados y guardarlos localmente."
+            },
+            "details-prediction": {
+              "title": "Predicción",
+              "text-0": "El formulario final nos permite seleccionar las características principales que se usan para determinar la clase.",
+              "text-1": "El valor de salida será un índice de la lista de clases, para realizar la predicción de la clase en función de las características debemos pulsar el botón \"Ver resultado\"."
+            }
+          }
         }
       },
       "1-linear-regression": {

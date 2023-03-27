@@ -97,7 +97,6 @@ class ObjectDetectionModelReview extends React.Component {
   async init() {
     const key = getKeyDatasetByID_ObjectDetection(this.props.dataset)
     const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === key)
-    // console.log("ModelReviewObjectDetection -> INIT", { dataset, key, isValid })
 
     if (!isValid) {
       await alertHelper.alertError("Error en la selección del modelo")

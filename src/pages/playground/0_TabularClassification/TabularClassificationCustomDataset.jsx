@@ -1,12 +1,11 @@
-import './TabularClassification.css'
+import './TabularClassificationCustomDataset.css'
 import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import {
-  getHTML_DATASET_DESCRIPTION, getKeyDatasetByID_TabularClassification,
-  LIST_MODEL_OPTIONS,
+  getKeyDatasetByID_TabularClassification,
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY,
@@ -36,7 +35,8 @@ import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import * as dfd from "danfojs"
 import { isProduction } from "../../../utils/utils";
 import TabularClassificationCustomDatasetManual from "./TabularClassificationCustomDatasetManual";
-
+import { Trans, useTranslation } from "react-i18next";
+import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 
 const DEFAULT_LEARNING_RATE = 1
 const DEFAULT_NUMBER_EPOCHS = 20
@@ -56,6 +56,8 @@ const DEFAULT_LAYERS = [
 
 export default function TabularClassificationCustomDataset(props) {
   const { dataset } = props
+  const { t } = useTranslation()
+  const prefix = "pages.playground.0-tabular-classification.generator."
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
@@ -70,6 +72,7 @@ export default function TabularClassificationCustomDataset(props) {
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS) // METRICS_TYPE
 
   const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
+  const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t))
   const [Model, setModel] = useState(null)
   const [stringToPredict, setStringToPredict] = useState("")
 
@@ -167,6 +170,8 @@ export default function TabularClassificationCustomDataset(props) {
         break
       }
       case MODEL_CAR.KEY: {
+        const _model = new MODEL_CAR(t)
+        set_ModelInfo(_model)
         setCustomDataSet_JSON(json_cars)
         setLayers([
           { units: 10, activation: 'sigmoid' },
@@ -175,6 +180,8 @@ export default function TabularClassificationCustomDataset(props) {
         break
       }
       case MODEL_IRIS.KEY: {
+        const _model = new MODEL_IRIS(t)
+        set_ModelInfo(_model)
         setCustomDataSet_JSON(json_iris)
         setLayers([
           { units: 10, activation: 'sigmoid' },
@@ -183,6 +190,8 @@ export default function TabularClassificationCustomDataset(props) {
         break
       }
       case MODEL_LYMPHOGRAPHY.KEY: {
+        const _model = new MODEL_LYMPHOGRAPHY(t)
+        set_ModelInfo(_model)
         setCustomDataSet_JSON(json_lymphatcs)
         setLayers([
           { units: 18, activation: 'sigmoid' },
@@ -198,7 +207,7 @@ export default function TabularClassificationCustomDataset(props) {
     return () => {
       tfvis.visor().close()
     };
-  }, [dataset])
+  }, [dataset, t])
 
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
@@ -216,10 +225,7 @@ export default function TabularClassificationCustomDataset(props) {
       await alertHelper.alertWarning(
         "Forma del tensor incorrecta",
         {
-          html: `
-La capa de salida tiene la forma (* ,${last_layer_units}).
-<br> Debe tener la forma (*, ${classes_length})
-`
+          html: `La capa de salida tiene la forma (* ,${last_layer_units}). <br> Debe tener la forma (*, ${classes_length})`
         }
       )
       return
@@ -496,15 +502,21 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
             <Col xl={12} className={"mt-3"}>
               <Accordion>
                 <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
-                  <Accordion.Header><h3>Manual del generador de modelos</h3></Accordion.Header>
+                  <Accordion.Header>
+                    <h3><Trans i18nKey={"pages.playground.0-tabular-classification.generator.manual.title"} /></h3>
+                  </Accordion.Header>
                   <Accordion.Body>
 
-                    <TabularClassificationCustomDatasetManual/>
+                    <TabularClassificationCustomDatasetManual />
 
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item key={"1"} eventKey={"description_dataset"}>
-                  <Accordion.Header><h3>1. {dataset === '0' ? "Subir conjunto de datos" : LIST_MODEL_OPTIONS[0][dataset]}</h3></Accordion.Header>
+                  <Accordion.Header>
+                    <h3>
+                      <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : "pages.playground.0-tabular-classification.generator.dataset.upload-dataset"} />
+                    </h3>
+                  </Accordion.Header>
                   <Accordion.Body>
                     {{
                       '0': <>
@@ -512,12 +524,11 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                      accept={{ 'application/json': ['.json'] }}
                                      text={"Introduce el fichero de datos plantilla.json"}
                                      labelFiles={"Fichero:"}
-                                     function_DropAccepted={handleChange_FileUpload_TemplateDataset}/>
+                                     function_DropAccepted={handleChange_FileUpload_TemplateDataset} />
                       </>
                     }[dataset]}
                     {dataset !== '0' ? (
-                      // DEFAULT
-                      getHTML_DATASET_DESCRIPTION(0, dataset)
+                      modelInfo.DESCRIPTION()
                     ) : ("")}
                   </Accordion.Body>
                 </Accordion.Item>
@@ -548,19 +559,19 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                   {customDataSet_JSON &&
                     <>
                       <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
-                                          data_body={customDataSet_JSON.data}/>
+                                          data_body={customDataSet_JSON.data} />
 
-                      <hr/>
+                      <hr />
 
                       <details>
-                        <summary style={{ fontSize: "1.5em" }}>Atributos</summary>
+                        <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.title"} /></summary>
                         <main>
                           <Row>
                             {customDataSet_JSON.attributes.map((item, i1) => {
                               return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
                                 <p><b>{item.name}</b></p>
-                                {item.type === "number" && <p>Numérico</p>}
-                                {item.type === "float" && <p>Real</p>}
+                                {item.type === "number" && <p><Trans i18nKey={prefix + "dataset.attributes.number"} /></p>}
+                                {item.type === "float" && <p><Trans i18nKey={prefix + "dataset.attributes.float"} /></p>}
                                 {item.type === "select" && <ol>{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
                               </Col>
                             })}
@@ -568,7 +579,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                         </main>
                       </details>
                       <details>
-                        <summary style={{ fontSize: "1.5em" }}>Clases</summary>
+                        <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
                         <main>
                           <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
                         </main>
@@ -584,11 +595,18 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
-                <Card.Header><h3>Diseño de capas</h3></Card.Header>
+                <Card.Header>
+                  <h3><Trans i18nKey={prefix + "layers.title"} /></h3>
+                </Card.Header>
                 <Card.Body>
                   <GraphicRed layer={layers}
-                              tipo={0}/>
-                  <Card.Text className={"text-muted text-center"}>Puedes visitar la web <a href="https://netron.app/">netron.app</a> para visualizar la topología al completo</Card.Text>
+                              tipo={0} />
+                  <Card.Text className={"text-muted text-center"}>
+                    <Trans i18nKey={prefix + "layers.page-info"}
+                           components={{
+                             link1: <a href="https://netron.app/">Text</a>
+                           }} />
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -598,18 +616,18 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
               {/* ADD LAYER */}
               <Card>
                 <Card.Header className={"d-flex align-items-center justify-content-between"}>
-                  <h3>Editor de capas</h3>
+                  <h3><Trans i18nKey={prefix + "editor-layers.title"} /></h3>
                   <div className={"d-flex"}>
                     <Button onClick={handlerClick_AddLayer_Start}
                             size={"sm"}
                             variant="outline-primary">
-                      Añadir capa al principio
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-start"} />
                     </Button>
                     <Button onClick={handlerClick_AddLayer_End}
                             size={"sm"}
                             variant="outline-primary"
                             className={"ms-3"}>
-                      Añadir capa al final
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-end"} />
                     </Button>
                   </div>
                 </Card.Header>
@@ -640,7 +658,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                             onChange={(e) => handleChange_Layer(index, {
                                               units     : parseInt(e.target.value),
                                               activation: item.activation
-                                            })}/>
+                                            })} />
                             </Form.Group>
                             {/* ACTIVATION FUNCTION */}
                             <Form.Group className="m3-3"
@@ -682,7 +700,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                   max={100}
                                   placeholder="Introduce la tasa de aprendizaje"
                                   defaultValue={DEFAULT_LEARNING_RATE}
-                                  onChange={(e) => setLearningRate(parseInt(e.target.value))}/>
+                                  onChange={(e) => setLearningRate(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                     </Form.Text>
@@ -696,7 +714,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                   max={100}
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={DEFAULT_NUMBER_EPOCHS}
-                                  onChange={(e) => setNumberEpochs(parseInt(e.target.value))}/>
+                                  onChange={(e) => setNumberEpochs(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
                       Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                     </Form.Text>
@@ -710,7 +728,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                                   max={100}
                                   placeholder="Introduce el tamaño del banco de pruebas"
                                   defaultValue={DEFAULT_TEST_SIZE}
-                                  onChange={(e) => setTestSize(parseInt(e.target.value))}/>
+                                  onChange={(e) => setTestSize(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                     </Form.Text>
@@ -849,7 +867,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                             {value.layerList.map((value, index) => {
                               return (
                                 <span key={index} style={{ fontFamily: "monospace" }}>
-                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br/>
+                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br />
                                 </span>
                               )
                             })}
@@ -888,7 +906,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
                              stringToPredict={stringToPredict}
                              setStringToPredict={setStringToPredict}
                              handleChange_TestInput={handleChange_TestInput}
-                             handleClick_TestVector={handleClick_TestVector}/>)
+                             handleClick_TestVector={handleClick_TestVector} />)
       }
 
       {isDebug &&

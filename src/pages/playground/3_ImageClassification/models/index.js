@@ -1,15 +1,9 @@
-/**
- * @typedef {Object} TYPE_MODEL_IMAGE_CLASSIFIER
- * @property {string} KEY
- * @property {string} TITLE
- * @property {string} URL
- * @property {string} URL_MODEL
- * @property {JSX.Element} DESCRIPTION
- */
-import { MODEL_MOBILENET } from "./MODEL_MOBILENET";
-import { MODEL_RESNET } from "./MODEL_RESNET";
+import { MODEL_IMAGE_MNIST } from "./MODEL_MNIST";
+import { MODEL_IMAGE_MOBILENET } from "./MODEL_MOBILENET";
+import { MODEL_IMAGE_RESNET } from "./MODEL_RESNET";
 
 export {
-  MODEL_MOBILENET,
-  MODEL_RESNET
+  MODEL_IMAGE_MNIST,
+  MODEL_IMAGE_MOBILENET,
+  MODEL_IMAGE_RESNET
 }

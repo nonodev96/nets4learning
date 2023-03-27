@@ -7,9 +7,8 @@ import * as tf from "@tensorflow/tfjs"
 import * as tf_mobilenet from "@tensorflow-models/mobilenet"
 import * as alertHelper from "../../../utils/alertHelper"
 import {
-  getHTML_DATASET_DESCRIPTION,
   getKeyDatasetByID_ImageClassification,
-  LIST_MODEL_OPTIONS,
+  LIST_MODELS_IMAGE_CLASSIFICATION,
   LIST_OF_IMAGES_MNIST,
   LIST_OF_IMAGES_MOBILENET,
   MODEL_IMAGE_MNIST,
@@ -17,28 +16,32 @@ import {
   MODEL_IMAGE_RESNET,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
-import CustomCanvasDrawer from "../../../utils/customCanvasDrawer"
+import CustomCanvasDrawer from "./components/customCanvasDrawer"
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 
 import { isMobile } from "../../../utils/utils";
+import { MODEL_IMAGE_CLASSIFICATION } from "./models/_model";
+import { Trans, withTranslation } from "react-i18next";
+
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-export default class ImageClassificationModelReview extends React.Component {
+class ImageClassificationModelReview extends React.Component {
   bar_options = {
     responsive: true,
-    plugins: {
+    plugins   : {
       legend: {
         position: "top",
       },
-      title: {
+      title : {
         display: true,
-        text: "Predicción",
+        text   : "Predicción",
       },
     },
   }
 
   constructor(props) {
     super(props)
+    this.t = props.t
     this.dataset = props.dataset ?? "0"
     this.dataset_ID = parseInt(props.dataset ?? "0")
     this.dataset_key = getKeyDatasetByID_ImageClassification(this.dataset_ID)
@@ -46,14 +49,14 @@ export default class ImageClassificationModelReview extends React.Component {
 
     this.model = null
     this.files = {
-      json: null,
+      json  : null,
       binary: null
     }
     this.bar_data_default = {
-      labels: [],
+      labels  : [],
       datasets: [{
-        label: "",
-        data: [],
+        label          : "",
+        data           : [],
         backgroundColor: [
           'rgba(255, 99, 132, 0.4)',
           'rgba(255, 159, 64, 0.4)',
@@ -63,7 +66,7 @@ export default class ImageClassificationModelReview extends React.Component {
           'rgba(153, 102, 255, 0.4)',
           'rgba(175, 175, 175, 0.4)'
         ],
-        borderColor: [
+        borderColor    : [
           'rgb(255, 99, 132)',
           'rgb(255, 159, 64)',
           'rgb(255, 205, 86)',
@@ -72,7 +75,7 @@ export default class ImageClassificationModelReview extends React.Component {
           'rgb(153, 102, 255)',
           'rgb(175, 175, 175)'
         ],
-        borderWidth: 1
+        borderWidth    : 1
       }],
     }
     this.state = {
@@ -80,24 +83,24 @@ export default class ImageClassificationModelReview extends React.Component {
       // mobilenet
       isImageUploaded: false,
       // variables de [mobilenet]
-      isModalShow: false,
+      isModalShow   : false,
       bar_data_image: this.bar_data_default,
       bar_data_modal: this.bar_data_default,
-      loading:
+      loading       :
         <>
           <div className="spinner-border"
                role="status"
                style={{
                  fontSize: "0.5em",
-                 height: "1rem",
-                 width: "1rem"
+                 height  : "1rem",
+                 width   : "1rem"
                }}>
             <span className="sr-only"></span>
           </div>
         </>
     }
     this.info = {
-      modal_image: null,
+      modal_image : null,
       image_upload: null
     }
 
@@ -116,6 +119,24 @@ export default class ImageClassificationModelReview extends React.Component {
     this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
     this.handleFileUpload_Image = this.handleFileUpload_Image.bind(this)
 
+    this._model = new MODEL_IMAGE_CLASSIFICATION(props.t)
+    switch (this.dataset_key) {
+      case MODEL_IMAGE_MNIST.KEY: {
+        this._model = new MODEL_IMAGE_MNIST(props.t)
+        break
+      }
+      case MODEL_IMAGE_MOBILENET.KEY: {
+        this._model = new MODEL_IMAGE_MOBILENET(props.t)
+        break
+      }
+      case MODEL_IMAGE_RESNET.KEY: {
+        this._model = new MODEL_IMAGE_RESNET(props.t)
+        break
+      }
+      default: {
+        console.error("Error, opción no disponible")
+      }
+    }
   }
 
   componentDidMount() {
@@ -125,6 +146,14 @@ export default class ImageClassificationModelReview extends React.Component {
 
   async loadModel() {
     try {
+      const key = getKeyDatasetByID_ImageClassification(this.props.dataset)
+      const isValid = LIST_MODELS_IMAGE_CLASSIFICATION.some((e) => e === key)
+
+      if (!isValid) {
+        await alertHelper.alertError(this.t("error.model-selected"))
+        return
+      }
+
       switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
         case MODEL_UPLOAD: {
           this.model = await tf.loadLayersModel(
@@ -132,16 +161,16 @@ export default class ImageClassificationModelReview extends React.Component {
           )
           break
         }
-        case MODEL_IMAGE_MNIST: {
+        case MODEL_IMAGE_MNIST.KEY: {
           this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/keras-mnist/model.json");
           //this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification-image/mnist/mymodel.json")
           break
         }
-        case MODEL_IMAGE_MOBILENET: {
+        case MODEL_IMAGE_MOBILENET.KEY: {
           this.model = await tf_mobilenet.load()
           break
         }
-        case MODEL_IMAGE_RESNET: {
+        case MODEL_IMAGE_RESNET.KEY: {
           this.model = await tf.loadGraphModel(
             "https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1",
             { fromTFHub: true }
@@ -155,7 +184,7 @@ export default class ImageClassificationModelReview extends React.Component {
       }
       this.setState({ modelLoaded: true })
       this.setState({ loading: "" })
-      await alertHelper.alertSuccess("Modelo cargado con éxito")
+      await alertHelper.alertSuccess(this.t("alert.model-load-success"))
     } catch (e) {
       console.error(e)
     }
@@ -200,27 +229,17 @@ export default class ImageClassificationModelReview extends React.Component {
   }
 
 
-  async handleCanvasDraw_Submit(draw_canvas, draw_canvas_ctx) {
-    // Copia el 'drawCanvas' en originalImage
-    const canvas = document.getElementById("originalImage")
-    const canvas_ctx = canvas.getContext("2d")
-    canvas_ctx.drawImage(draw_canvas, 0, 0, canvas.width, canvas.height)
-    // copiamos con la imagen de 28x28
-    canvas_ctx.drawImage(draw_canvas, 10, 10, 28, 28)
-    // procesamos con la imagen de 28x28
-    let imageData = canvas_ctx.getImageData(10, 10, 28, 28)
-    const { predictions } = await this.PredictMNIST(imageData)
-
+  updatePredictionMNIST(predictions) {
     this.setState({
       bar_data_image: {
-        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        labels  : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         datasets: [
           {
-            label: "Predicción MNIST",
-            data: predictions,
+            label          : "MNIST",
+            data           : predictions,
             backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
-            borderColor: this.bar_data_default.datasets[0].borderColor,
-            borderWidth: this.bar_data_default.datasets[0].borderWidth
+            borderColor    : this.bar_data_default.datasets[0].borderColor,
+            borderWidth    : this.bar_data_default.datasets[0].borderWidth
           }
         ]
       }
@@ -229,16 +248,32 @@ export default class ImageClassificationModelReview extends React.Component {
     })
   }
 
+
+  async handleCanvasDraw_Submit(draw_canvas, _draw_canvas_ctx) {
+    // Copia el 'drawCanvas' en originalImage
+    const canvas = document.getElementById("originalImage")
+    const canvas_ctx = canvas.getContext("2d", { willReadFrequently: true })
+    canvas_ctx.drawImage(draw_canvas, 0, 0, canvas.width, canvas.height)
+    // copiamos con la imagen de 28x28
+    canvas_ctx.drawImage(draw_canvas, 10, 10, 28, 28)
+    // procesamos con la imagen de 28x28
+    let imageData = canvas_ctx.getImageData(10, 10, 28, 28)
+    const { predictions } = await this.PredictMNIST(imageData)
+
+    this.updatePredictionMNIST(predictions)
+  }
+
+
   // Limpiamos el canvas
   async handleCanvasDraw_Clear() {
     const originalImage_canvas = document.getElementById("originalImage")
-    const originalImage_canvas_ctx = originalImage_canvas.getContext("2d")
+    const originalImage_canvas_ctx = originalImage_canvas.getContext("2d", { willReadFrequently: true })
     originalImage_canvas_ctx.clearRect(0, 0, originalImage_canvas.width, originalImage_canvas.height)
   }
 
   async handleClick_ImageUploaded_Predict() {
     if (!this.state.isImageUploaded) {
-      await alertHelper.alertError("Primero debes de subir una imagen")
+      await alertHelper.alertError(this.t("error.need-to-upload-image"))
       return
     }
 
@@ -246,76 +281,47 @@ export default class ImageClassificationModelReview extends React.Component {
     image.src = URL.createObjectURL(this.info.image_upload)
     image.onerror = this.UTILS_image.failed
 
+    const canvas = document.getElementById("originalImage")
+    if (!(canvas instanceof HTMLImageElement)) {
+      throw new Error("HTMLImageElement")
+    }
+    // Limpiamos canvas
+    const canvas_ctx = canvas.getContext("2d", { willReadFrequently: true })
+    canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
+    // Pegamos la imagen
+    this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
+
+
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
-        // FIXME
-        image.onload = async () => {// Limpiamos canvas
-          const canvas = document.getElementById("originalImage")
-          const canvas_ctx = canvas.getContext("2d")
-          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
-          // Pegamos la imagen
-          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
+        // TODO
 
-          const tensor4 = tf.browser.fromPixels(canvas)
-          const results = this.model.predict(tensor4).dataSync()
-          const index = results.indexOf(Math.max.apply(null, results))
-          await alertHelper.alertInfo("La predicción es: " + index, index)
-        }
         break
       }
-      case MODEL_IMAGE_MNIST: {
+      case MODEL_IMAGE_MNIST.KEY: {
         image.onload = async () => {
-          // Limpiamos canvas
-          const canvas = document.getElementById("originalImage")
-          const canvas_ctx = canvas.getContext("2d")
-          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
-          // Pegamos la imagen
-          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
-
           // Transformamos a un canvas de 28x28
           canvas_ctx.drawImage(canvas, 10, 10, 28, 28)
           const imageData = canvas_ctx.getImageData(10, 10, 28, 28)
-
+          // Predicción
           const { predictions } = await this.PredictMNIST_Image(imageData)
-          this.setState({
-            bar_data_image: {
-              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-              datasets: [
-                {
-                  label: "Predicción MNIST",
-                  data: predictions,
-                  backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
-                  borderColor: this.bar_data_default.datasets[0].borderColor,
-                  borderWidth: this.bar_data_default.datasets[0].borderWidth
-                }
-              ]
-            }
-          }, () => {
-            this.chartRef_image.current.update()
-          })
+          this.updatePredictionMNIST(predictions)
         }
         break
       }
-      case MODEL_IMAGE_MOBILENET: {
+      case MODEL_IMAGE_MOBILENET.KEY: {
         image.onload = async () => {
-          // Limpiamos canvas
-          const canvas = document.getElementById("originalImage")
-          const canvas_ctx = canvas.getContext("2d")
-          canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
-          // Pegamos la imagen
-          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
-
           const predictions = await this.model.classify(canvas)
           this.setState({
             bar_data_image: {
-              labels: [""],
+              labels  : [""],
               datasets: predictions.map((v, i) => {
                 return {
-                  label: v.className,
-                  data: [v.probability],
+                  label          : v.className,
+                  data           : [v.probability],
                   backgroundColor: this.bar_data_default.datasets[0].backgroundColor[i % 7],
-                  borderColor: this.bar_data_default.datasets[0].borderColor[i % 7],
-                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                  borderColor    : this.bar_data_default.datasets[0].borderColor[i % 7],
+                  borderWidth    : this.bar_data_default.datasets[0].borderWidth
                 }
               })
             }
@@ -323,7 +329,7 @@ export default class ImageClassificationModelReview extends React.Component {
         }
         break
       }
-      case MODEL_IMAGE_RESNET: {
+      case MODEL_IMAGE_RESNET.KEY: {
         // TODO
         //const originalImage = document.getElementById("originalImage")
         //const originalImage_ctx = originalImage.getContext("2d")
@@ -373,15 +379,16 @@ export default class ImageClassificationModelReview extends React.Component {
       case MODEL_UPLOAD: {
         break
       }
-      case MODEL_IMAGE_MNIST: {
+      case MODEL_IMAGE_MNIST.KEY: {
         this.info.modal_image = image_src
         break
       }
-      case MODEL_IMAGE_MOBILENET: {
+      case MODEL_IMAGE_MOBILENET.KEY: {
         this.info.modal_image = image_src
         break
       }
-      case MODEL_IMAGE_RESNET: {
+      case MODEL_IMAGE_RESNET.KEY: {
+        // TODO
         break
       }
       default: {
@@ -398,41 +405,38 @@ export default class ImageClassificationModelReview extends React.Component {
       case MODEL_UPLOAD: {
         return <></>
       }
-      case MODEL_IMAGE_MNIST: {
+      case MODEL_IMAGE_MNIST.KEY: {
         examples = LIST_OF_IMAGES_MNIST.map((image, index) => {
           return <Col className={"border bg-light"} key={index}>
             <img className={"img-fluid w-100 h-100 object-fit-cover"}
                  src={process.env.REACT_APP_PATH + "/assets/" + image}
                  alt={image}
-                 onClick={
-                   () => {
-                     this.handleClick_ImageByExamples_OpenDrawAndPredict(
-                       process.env.REACT_APP_PATH + "/assets/" + image
-                     ).then(r => undefined)
-                   }
-                 }></img>
+                 onClick={() => {
+                   this.handleClick_ImageByExamples_OpenDrawAndPredict(
+                     process.env.REACT_APP_PATH + "/assets/" + image
+                   ).then((_) => undefined)
+                 }} />
           </Col>
         })
         break;
       }
-      case MODEL_IMAGE_MOBILENET: {
+      case MODEL_IMAGE_MOBILENET.KEY: {
         examples = LIST_OF_IMAGES_MOBILENET.map((image, index) => {
           return <Col className={"border bg-light"} key={index}>
             <img className={"img-fluid w-100 h-100 object-fit-cover"}
                  src={process.env.REACT_APP_PATH + "/assets/" + image}
                  alt={image}
-                 onClick={
-                   () => {
-                     this.handleClick_ImageByExamples_OpenDrawAndPredict(
-                       process.env.REACT_APP_PATH + "/assets/" + image
-                     ).then(r => undefined)
-                   }
-                 }></img>
+                 onClick={() => {
+                   this.handleClick_ImageByExamples_OpenDrawAndPredict(
+                     process.env.REACT_APP_PATH + "/assets/" + image
+                   ).then((_) => undefined)
+                 }} />
           </Col>
         })
         break
       }
-      case MODEL_IMAGE_RESNET: {
+      case MODEL_IMAGE_RESNET.KEY: {
+        // TODO
         break
       }
       default: {
@@ -443,7 +447,11 @@ export default class ImageClassificationModelReview extends React.Component {
 
     return <>
       <Card className={"mt-3"}>
-        <Card.Header><h3>Procesamiento con ejemplos</h3></Card.Header>
+        <Card.Header>
+          <h3>
+            <Trans i18nKey={"datasets-models.3-image-classifier.interface.process-examples.title"} />
+          </h3>
+        </Card.Header>
         <Card.Body>
           <Container fluid={true}>
             <Row className={(this.isMNIST() ? "" : "row-cols-3") + " justify-content-center g-2"}>
@@ -460,43 +468,39 @@ export default class ImageClassificationModelReview extends React.Component {
       case MODEL_UPLOAD: {
         return <>
           <div>
-            <Card.Text>Carga tu propio Modelo.</Card.Text>
-            <Card.Text>Primero el archivo .json y después el fichero .bin</Card.Text>
+            <Card.Text><Trans i18nKey={"datasets-models.3-image-classifier.interface.0-upload.title"} /></Card.Text>
+            <Card.Text><Trans i18nKey={"datasets-models.3-image-classifier.interface.0-upload.sub-title"} /></Card.Text>
             <Row>
               <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                 <DragAndDrop name={"json"}
                              id={"json-upload"}
                              accept={{ 'application/json': ['.json'] }}
-                             text={"Añada el fichero JSON"}
-                             labelFiles={"Fichero:"}
-                             function_DropAccepted={this.handleFileUpload_JSON}/>
+                             text={this.t("drag-and-drop.json")}
+                             labelFiles={this.t("drag-and-drop.label-files-one")}
+                             function_DropAccepted={this.handleFileUpload_JSON} />
               </Col>
               <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                 <DragAndDrop name={"bin"}
                              id={"weights-upload"}
                              accept={{ 'application/octet-stream': ['.bin'] }}
-                             text={"Añada el fichero binario"}
-                             labelFiles={"Fichero:"}
-                             function_DropAccepted={this.handleFileUpload_Binary}/>
+                             text={this.t("drag-and-drop.binary")}
+                             labelFiles={this.t("drag-and-drop.label-files-one")}
+                             function_DropAccepted={this.handleFileUpload_Binary} />
               </Col>
             </Row>
           </div>
         </>
       }
-      case MODEL_IMAGE_MNIST:
-      case MODEL_IMAGE_RESNET:
-      case MODEL_IMAGE_MOBILENET: {
-        return getHTML_DATASET_DESCRIPTION(3, this.dataset_ID)
+      case MODEL_IMAGE_MNIST.KEY:
+      case MODEL_IMAGE_RESNET.KEY:
+      case MODEL_IMAGE_MOBILENET.KEY: {
+        return this._model.DESCRIPTION()
       }
       default: {
         console.error("Error, opción no disponible")
         break
       }
     }
-  }
-
-  Print_HTML_TextOptions() {
-    return LIST_MODEL_OPTIONS[3][this.dataset_ID]
   }
 
   handleFileUpload_Image(files) {
@@ -524,13 +528,13 @@ export default class ImageClassificationModelReview extends React.Component {
   async handleModal_Entered() {
     const canvas = document.getElementById("modal_canvas_image")
     const canvas_ctx = canvas.getContext("2d")
-    canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
+    canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         break
       }
-      case MODEL_IMAGE_MNIST: {
+      case MODEL_IMAGE_MNIST.KEY: {
         // Dibujar en el canvas del modal
         let image = new Image()
         image.src = this.info.modal_image
@@ -549,14 +553,14 @@ export default class ImageClassificationModelReview extends React.Component {
           // SHOW Results
           this.setState({
             bar_data_modal: {
-              labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              labels  : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
               datasets: [
                 {
-                  label: "Predicción MNIST",
-                  data: predictions,
+                  label          : "Predicción MNIST",
+                  data           : predictions,
                   backgroundColor: this.bar_data_default.datasets[0].backgroundColor,
-                  borderColor: this.bar_data_default.datasets[0].borderColor,
-                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                  borderColor    : this.bar_data_default.datasets[0].borderColor,
+                  borderWidth    : this.bar_data_default.datasets[0].borderWidth
                 }
               ]
             }
@@ -566,7 +570,7 @@ export default class ImageClassificationModelReview extends React.Component {
         }
         break
       }
-      case MODEL_IMAGE_MOBILENET: {
+      case MODEL_IMAGE_MOBILENET.KEY: {
         // DRAW
         let image = new Image()
         image.src = this.info.modal_image
@@ -581,14 +585,14 @@ export default class ImageClassificationModelReview extends React.Component {
           // SHOW Results
           this.setState({
             bar_data_modal: {
-              labels: [""],
+              labels  : [""],
               datasets: predictions.map((v, i) => {
                 return {
-                  label: v.className,
-                  data: [v.probability],
+                  label          : v.className,
+                  data           : [v.probability],
                   backgroundColor: this.bar_data_default.datasets[0].backgroundColor[i % 7],
-                  borderColor: this.bar_data_default.datasets[0].borderColor[i % 7],
-                  borderWidth: this.bar_data_default.datasets[0].borderWidth
+                  borderColor    : this.bar_data_default.datasets[0].borderColor[i % 7],
+                  borderWidth    : this.bar_data_default.datasets[0].borderWidth
                 }
               })
             }
@@ -598,7 +602,8 @@ export default class ImageClassificationModelReview extends React.Component {
         }
         break
       }
-      case MODEL_IMAGE_RESNET: {
+      case MODEL_IMAGE_RESNET.KEY: {
+        // TODO
         break
       }
       default: {
@@ -613,11 +618,11 @@ export default class ImageClassificationModelReview extends React.Component {
   }
 
   isMNIST() {
-    return getKeyDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST
+    return getKeyDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST.KEY
   }
 
   UTILS_image = {
-    drawImageInCanvasWithContainer: (image, canvas_id, container_canvas_id) => {
+    drawImageInCanvasWithContainer: (image, canvas_id, _container_canvas_id) => {
       const canvas = document.getElementById(canvas_id)
       const canvas_ctx = canvas.getContext("2d")
       // const container_w = document.getElementById(container_canvas_id).getBoundingClientRect().width
@@ -637,7 +642,7 @@ export default class ImageClassificationModelReview extends React.Component {
       canvas.height = image.height
       canvas_ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
     },
-    failed: (event) => {
+    failed                        : (event) => {
       console.error(event)
     }
   }
@@ -651,7 +656,9 @@ export default class ImageClassificationModelReview extends React.Component {
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={"sticky-top mt-3 border-info"}>
                 <Card.Body>
-                  <Card.Title>{this.Print_HTML_TextOptions()} {this.state.loading}</Card.Title>
+                  <Card.Title>
+                    <Trans i18nKey={this._model.TITLE} /> {this.state.loading}
+                  </Card.Title>
                   {this.Print_HTML_Section()}
                 </Card.Body>
               </Card>
@@ -669,22 +676,24 @@ export default class ImageClassificationModelReview extends React.Component {
                      xl={this.isMNIST() ? 6 : 12}
                      xxl={this.isMNIST() ? 6 : 12}>
                   <Card className={"mt-3"}>
-                    <Card.Header><h3>Procesamiento de imágenes</h3></Card.Header>
+                    <Card.Header>
+                      <h3><Trans i18nKey={"datasets-models.3-image-classifier.interface.process-image.title"} /></h3>
+                    </Card.Header>
                     <Card.Body className={"d-grid"} style={{ alignContent: "space-between" }}>
                       <DragAndDrop name={"doc"}
-                                   text={"Añada una imagen de ejemplo"}
-                                   labelFiles={"Fichero:"}
+                                   text={this.t("drag-and-drop.image")}
+                                   labelFiles={this.t("drag-and-drop.label-files-one")}
                                    accept={{
                                      "image/png": [".png"],
                                      "image/jpg": [".jpg"]
                                    }}
-                                   function_DropAccepted={this.handleFileUpload_Image}/>
+                                   function_DropAccepted={this.handleFileUpload_Image} />
 
                       <div className="d-grid gap-2 col-6 mx-auto">
                         <Button type="button"
                                 onClick={this.handleClick_ImageUploaded_Predict}
                                 variant={"primary"}>
-                          Validar
+                          <Trans i18nKey={"datasets-models.3-image-classifier.interface.process-image.validate"} />
                         </Button>
                       </div>
                     </Card.Body>
@@ -696,7 +705,9 @@ export default class ImageClassificationModelReview extends React.Component {
                     <Col className={"d-grid"}
                          xs={12} sm={12} md={6} xl={6} xxl={6}>
                       <Card className={"mt-3"}>
-                        <Card.Header><h3>Dibujo</h3></Card.Header>
+                        <Card.Header>
+                          <h3><Trans i18nKey={"datasets-models.3-image-classifier.interface.process-draw.title"} /></h3>
+                        </Card.Header>
                         <Card.Body>
                           <CustomCanvasDrawer
                             submitFunction={async (canvas, canvas_ctx) => {
@@ -705,8 +716,7 @@ export default class ImageClassificationModelReview extends React.Component {
                             }}
                             clearFunction={async () => {
                               await this.handleCanvasDraw_Clear()
-                            }
-                            }/>
+                            }} />
                         </Card.Body>
                       </Card>
                     </Col>
@@ -716,7 +726,8 @@ export default class ImageClassificationModelReview extends React.Component {
 
 
               <Card className={"mt-3"}>
-                <Card.Header><h3>Resultado</h3></Card.Header>
+                <Card.Header>
+                  <h3><Trans i18nKey={"datasets-models.3-image-classifier.interface.result"} /></h3></Card.Header>
                 <Card.Body>
                   <Container fluid={true}>
                     <Row>
@@ -745,7 +756,7 @@ export default class ImageClassificationModelReview extends React.Component {
                       <Col className={"d-flex align-items-center justify-content-center"}>
                         <Bar ref={this.chartRef_image}
                              options={this.bar_options}
-                             data={this.state.bar_data_image}/>
+                             data={this.state.bar_data_image} />
                       </Col>
                     </Row>
                   </Container>
@@ -765,7 +776,7 @@ export default class ImageClassificationModelReview extends React.Component {
                centered>
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Predicción
+              <Trans i18nKey={"datasets-models.3-image-classifier.interface.modal.title"} />
             </Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ display: "flex", alignItems: "center" }}>
@@ -783,14 +794,16 @@ export default class ImageClassificationModelReview extends React.Component {
                   <div className={"d-flex align-items-center justify-content-center"}>
                     <Bar ref={this.chartRef_modal}
                          options={this.state.bar_options}
-                         data={this.state.bar_data_modal}/>
+                         data={this.state.bar_data_modal} />
                   </div>
                 </Col>
               </Row>
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleModal_Close}>Aceptar</Button>
+            <Button onClick={this.handleModal_Close}>
+              <Trans i18nKey={"datasets-models.3-image-classifier.interface.button-accept"} />
+            </Button>
           </Modal.Footer>
         </Modal>
 
@@ -798,3 +811,5 @@ export default class ImageClassificationModelReview extends React.Component {
     )
   }
 }
+
+export default withTranslation()(ImageClassificationModelReview)

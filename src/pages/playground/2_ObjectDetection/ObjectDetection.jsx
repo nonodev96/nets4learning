@@ -6,7 +6,7 @@ import * as tf from '@tensorflow/tfjs'
 import * as classificationHelper_MNIST from '../3_ImageClassification/models/MODEL_MNIST'
 import * as alertHelper from "../../../utils/alertHelper"
 
-import CustomCanvasDrawer from '../../../utils/customCanvasDrawer'
+import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import {
   TYPE_CLASS,
@@ -392,60 +392,60 @@ export default function ObjectDetection(props) {
                   <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
                   <ul>
                     <li>
-                      <b>A la izquierda:</b><br/>
+                      <b>A la izquierda:</b><br />
                       Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                      capa".<br/>
+                      capa".<br />
                       Puedes modificar dos parámetros:
                     </li>
                     <ul>
-                      <li><b>Unidades de la capa:</b><br/> Cuantas unidades deseas que tenga esa capa</li>
-                      <li><b>Función de activación:</b><br/> Función de activación para esa capa</li>
+                      <li><b>Unidades de la capa:</b><br /> Cuantas unidades deseas que tenga esa capa</li>
+                      <li><b>Función de activación:</b><br /> Función de activación para esa capa</li>
                     </ul>
 
                     <li>
-                      <b>A la derecha:</b><br/>
-                      Se pueden ver parámetros generales necesarios para la creación del modelo. <br/>
+                      <b>A la derecha:</b><br />
+                      Se pueden ver parámetros generales necesarios para la creación del modelo. <br />
                       Estos parámetros son:
                     </li>
                     <ul>
                       <li>
-                        <b>Tasa de entrenamiento:</b><br/>
+                        <b>Tasa de entrenamiento:</b><br />
                         Valor entre 0 y 100 el cual indica a la red qué cantidad de datos debe usar para el
                         entrenamiento y
                         reglas para el test
                       </li>
                       <li>
-                        <b>Número de iteraciones:</b><br/>
+                        <b>Número de iteraciones:</b><br />
                         Cantidad de ciclos que va a realizar la red (a mayor número, más tiempo tarda en entrenar)
                       </li>
                       <li>
-                        <b>Optimizador:</b><br/>
+                        <b>Optimizador:</b><br />
                         Es una función que como su propio nombre indica se usa para optimizar los modelos.
                         Esto es frecuentemente usado para evitar estancarse en un máximo local.
                       </li>
                       <li>
-                        <b>Función de pérdida:</b><br/>
+                        <b>Función de pérdida:</b><br />
                         Es un método para evaluar qué tan bien un algoritmo específico modela los datos otorgados
                       </li>
                       <li>
-                        <b>Función de métrica:</b><br/>
+                        <b>Función de métrica:</b><br />
                         Es evaluación para valorar el rendimiento de un modelo de aprendizaje automático
                       </li>
                     </ul>
 
                     <li>
-                      <b>Crear y entrenar modelo.</b><br/>
+                      <b>Crear y entrenar modelo.</b><br />
                       Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón.
                     </li>
 
                     <li>
-                      <b>Exportar modelo.</b><br/>
+                      <b>Exportar modelo.</b><br />
                       Si hemos creado el modelo correctamente nos aparece este botón que nos permite exportar el modelo
                       y guardarlo localmente.
                     </li>
 
                     <li>
-                      <b>Resultado.</b><br/>
+                      <b>Resultado.</b><br />
                       Un formulario que nos permite predecir el valor de salida a partir de los valores de entrada que
                       introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
                     </li>
@@ -462,7 +462,7 @@ export default function ObjectDetection(props) {
               <Card>
                 <Card.Header><h3>Diseño de capas</h3></Card.Header>
                 <Card.Body>
-                  <GraphicRed layer={Layer} setActiveLayer={setActiveLayer}/>
+                  <GraphicRed layer={Layer} setActiveLayer={setActiveLayer} />
                 </Card.Body>
               </Card>
             </Col>
@@ -489,7 +489,7 @@ export default function ObjectDetection(props) {
 
                     {/* UNITS */}
                     <Accordion.Body>
-                      <CloseButton onClick={() => handleClick_RemoveLayer(ActiveLayer)}/>
+                      <CloseButton onClick={() => handleClick_RemoveLayer(ActiveLayer)} />
 
                       <Form.Group className="mb-3"
                                   controlId={'formClass' + ActiveLayer}>
@@ -518,7 +518,7 @@ export default function ObjectDetection(props) {
                     <Form.Label>Tasa de entrenamiento</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce la tasa de entrenamiento"
-                                  defaultValue={learningValue}/>
+                                  defaultValue={learningValue} />
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                     </Form.Text>
@@ -530,7 +530,7 @@ export default function ObjectDetection(props) {
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
                                   defaultValue={NumberEpochs}
-                                  onChange={handleChange_NumberEpochs}/>
+                                  onChange={handleChange_NumberEpochs} />
                     <Form.Text className="text-muted">
                       *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                     </Form.Text>
@@ -543,8 +543,8 @@ export default function ObjectDetection(props) {
                                  defaultValue={Optimizer}
                                  onChange={handleChange_IdOptimization}>
                       <option>Selecciona el optimizador</option>
-                      {TYPE_OPTIMIZER.map((item, id) => {
-                        return (<option key={id} value={item}>{item}</option>)
+                      {TYPE_OPTIMIZER.map(({ key, label }, id) => {
+                        return (<option key={id} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -558,8 +558,8 @@ export default function ObjectDetection(props) {
                                  defaultValue={LossValue}
                                  onChange={handleChange_IdLoss}>
                       <option>Selecciona la función de pérdida</option>
-                      {TYPE_LOSSES.map((item, id) => {
-                        return (<option key={id} value={item}>{item}</option>)
+                      {TYPE_LOSSES.map(({ key, label }, id) => {
+                        return (<option key={id} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -574,8 +574,8 @@ export default function ObjectDetection(props) {
                                  defaultValue={MetricsValue}
                                  onChange={handleChange_IdMetrics}>
                       <option>Selecciona la métrica</option>
-                      {TYPE_METRICS.map((item, id) => {
-                        return (<option key={id} value={item}>{item}</option>)
+                      {TYPE_METRICS.map(({ key, label }, id) => {
+                        return (<option key={id} value={key}>{label}</option>)
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
@@ -598,11 +598,11 @@ export default function ObjectDetection(props) {
                   </Card.Text>
                   <ul>
                     <li>
-                      <b>flatten_Flatten:</b><br/>
+                      <b>flatten_Flatten:</b><br />
                       Esta capa aplana la salida 2D en un vector 1D preparando el modelo para entrar en la última capa.
                     </li>
                     <li>
-                      <b>dense_Dense1:</b><br/>
+                      <b>dense_Dense1:</b><br />
                       Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
                     </li>
                   </ul>
@@ -675,7 +675,7 @@ export default function ObjectDetection(props) {
                     flexDirection : 'column',
                     justifyContent: 'center',
                   }}>
-                    <CustomCanvasDrawer submitFunction={handleVectorTest}/>
+                    <CustomCanvasDrawer submitFunction={handleVectorTest} />
                   </Col>
                   <Col style={{
                     display      : 'flex',

@@ -15,14 +15,14 @@ export default function GraphicRed(props) {
     if (tipo === 0) {
       nodes.push({
         id   : index,
-        label: `Capa ${index + 1} \n ${element.units} - ${element.activation}`,
-        title: 'Capa ' + (index + 1)
+        label: `${index + 1} \n ${element.units} - ${element.activation}`,
+        title: '' + (index + 1)
       })
     } else if (tipo === 1) {
       nodes.push({
         id   : index,
         label: element.class,
-        title: 'Capa ' + (index + 1)
+        title: '' + (index + 1)
       })
     }
   }
@@ -77,7 +77,7 @@ export default function GraphicRed(props) {
              }}>
           <div className="col-md-6"
                style={{ writingMode: 'vertical-rl' }}>
-            ENTRADA
+            INPUT
           </div>
           <div className="col-md-6"
                style={{ textAlign: "center" }}>
@@ -101,7 +101,7 @@ export default function GraphicRed(props) {
           </div>
           <div className="col-md-6"
                style={{ writingMode: 'vertical-lr', textAlign: 'left' }}>
-            SALIDA
+            OUTPUT
           </div>
         </Col>
       </Row>
