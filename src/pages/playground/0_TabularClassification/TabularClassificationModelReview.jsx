@@ -3,8 +3,9 @@ import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import * as tf from '@tensorflow/tfjs'
 import * as alertHelper from '../../../utils/alertHelper'
 import {
-  getNameDatasetByID_ClassicClassification,
+  getKeyDatasetByID_TabularClassification,
   MODEL_UPLOAD,
+  LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY
@@ -16,6 +17,7 @@ import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import DebugLoadCSV from "../_Debug/DebugLoadCSV";
 import ReactGA from "react-ga4";
 import { Trans, withTranslation } from "react-i18next";
+import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 
 class TabularClassificationModelReview extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class TabularClassificationModelReview extends React.Component {
     this.translate = props.t;
     this.dataset = props.dataset
     this.dataset_ID = parseInt(props.dataset ?? "0")
-    this.dataset_key = getNameDatasetByID_ClassicClassification(this.dataset_ID)
+    this.dataset_key = getKeyDatasetByID_TabularClassification(this.dataset_ID)
     ReactGA.send({
       hitType: "pageview",
       page   : "/ModelReviewTabularClassification/" + this.dataset_key,
@@ -55,7 +57,7 @@ class TabularClassificationModelReview extends React.Component {
       json  : null,
       csv   : null
     }
-    this._model = null
+    this._model = new MODEL_TABULAR_CLASSIFICATION(props.t)
 
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
@@ -102,6 +104,14 @@ class TabularClassificationModelReview extends React.Component {
   }
 
   async init() {
+    console.log("e", this.props.dataset)
+    const key = getKeyDatasetByID_TabularClassification(this.props.dataset)
+    const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === key)
+    if (!isValid) {
+      await alertHelper.alertError("Error en la selección del modelo")
+      return
+    }
+
     switch (this.dataset_key) {
       case MODEL_UPLOAD: {
         break
@@ -241,7 +251,7 @@ class TabularClassificationModelReview extends React.Component {
       case MODEL_LYMPHOGRAPHY.KEY:
         return this._model.HTML_EXAMPLE()
       default:
-        return <>DEFAULT</>
+        return <><p>DEFAULT</p></>
     }
   }
 
@@ -263,7 +273,7 @@ class TabularClassificationModelReview extends React.Component {
           </div>
         </>
       default:
-        return <>DEFAULT</>
+        return <><p>DEFAULT</p></>
     }
   }
 
@@ -324,7 +334,7 @@ class TabularClassificationModelReview extends React.Component {
     console.debug("render")
     return (
       <>
-        <Container id={"ModelReviewClassicClassification"}>
+        <Container id={"TabularClassificationModelReview"}>
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={"sticky-top mt-3 border-info"} style={{ "zIndex": 0 }}>

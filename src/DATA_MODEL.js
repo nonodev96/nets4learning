@@ -3,19 +3,19 @@ import {
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY
 } from "./pages/playground/0_TabularClassification/models";
+import {
+  MODEL_FACE_DETECTOR,
+  MODEL_FACE_MESH,
+  MODEL_MOVE_NET_POSE_NET,
+  MODEL_COCO_SSD
+} from "./pages/playground/2_ObjectDetection/models";
 
 const MODEL_UPLOAD = "UPLOAD"
-
-const MODEL_FACE_MESH = "FACE-MESH"
-const MODEL_FACE_DETECTOR = "FACE-DETECTOR"
-const MODEL_MOVE_NET_POSE_NET = "MOVE-NET-POSE-NET"
-const MODEL_COCO_SSD = "COCO-SSD"
-
 const MODEL_IMAGE_MNIST = "MNIST"
 const MODEL_IMAGE_MOBILENET = "MOBILE-NET"
 const MODEL_IMAGE_RESNET = "RES-NET"
 
-const LIST_MODELS_CLASSIC_CLASSIFICATION = [
+const LIST_MODELS_TABULAR_CLASSIFICATION = [
   MODEL_UPLOAD,
   MODEL_CAR.KEY,
   MODEL_IRIS.KEY,
@@ -24,10 +24,10 @@ const LIST_MODELS_CLASSIC_CLASSIFICATION = [
 
 const LIST_MODELS_OBJECT_DETECTION = [
   MODEL_UPLOAD,
-  MODEL_FACE_DETECTOR,
-  MODEL_FACE_MESH,
-  MODEL_MOVE_NET_POSE_NET,
-  MODEL_COCO_SSD
+  MODEL_FACE_DETECTOR.KEY,
+  MODEL_FACE_MESH.KEY,
+  MODEL_MOVE_NET_POSE_NET.KEY,
+  MODEL_COCO_SSD.KEY
 ]
 
 const LIST_MODELS_IMAGE_CLASSIFICATION = [
@@ -77,7 +77,7 @@ const LIST_MODEL_OPTIONS = [
 
 
 export const LIST_MODEL_OPTIONS_IDS = {
-  CLASSIC_CLASSIFICATION: {
+  TABULAR_CLASSIFICATION: {
     // 0
     0: MODEL_UPLOAD,
     1: MODEL_CAR.KEY,
@@ -90,10 +90,10 @@ export const LIST_MODEL_OPTIONS_IDS = {
   OBJECT_DETECTION      : {
     // 2
     0: MODEL_UPLOAD,
-    1: MODEL_FACE_MESH,
-    2: MODEL_FACE_MESH,
-    3: MODEL_MOVE_NET_POSE_NET,
-    4: MODEL_COCO_SSD
+    1: MODEL_FACE_DETECTOR.KEY,
+    2: MODEL_FACE_MESH.KEY,
+    3: MODEL_MOVE_NET_POSE_NET.KEY,
+    4: MODEL_COCO_SSD.KEY
   },
   IMAGE_CLASSIFICATION  : {
     // 3
@@ -107,138 +107,17 @@ export const LIST_MODEL_OPTIONS_IDS = {
 export const DATASET_DESCRIPTION = [
   [
     'DATASET PROPIO',
-    <>{MODEL_CAR.DESCRIPTION}</>,
-    <>{MODEL_IRIS.DESCRIPTION}</>,
-    <>{new MODEL_LYMPHOGRAPHY().DESCRIPTION()}</>
+    <>TEXT DESCRIPTION CAR</>,
+    <>TEXT DESCRIPTION IRIS</>,
+    <>TEXT DESCRIPTION LYMPHOGRAPHY</>
   ],
   [],
   [
     'DATASET PROPIO',
-    <>
-      <p>
-        Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos
-        de la cara para finalmente hacer una malla de la misma.
-      </p>
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen o vídeo de entrada.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>Mismo elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Referencias</summary>
-        <ol>
-          <li>
-            <a href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1" target="_blank" rel="noreferrer">Entrada del modelo en el repositorio de tensorflow</a>
-          </li>
-        </ol>
-      </details>
-    </>,
-    <>
-      <p>
-        Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como
-        los ojos, orejas, nariz y boca.
-      </p>
-
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen o vídeo.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Referencias</summary>
-        <ol>
-          <li>
-            <a href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1" target="_blank" rel="noreferrer">Entrada del modelo en el repositorio de tensorflow</a>
-          </li>
-        </ol>
-      </details>
-    </>,
-    <>
-      <p>
-        PoseNet es un modelo de aprendizaje automático capaz de reconocer la posición del cuerpo en tiempo real.
-        Se puede usar para estimar una sola pose o varias a la vez.
-      </p>
-      <p>
-        En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.
-      </p>
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen o vídeo (webcam) a color.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>
-            Mismo elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara
-            ademas de hombros, codos, manos, pies, rodillas y cadera.
-          </li>
-        </ol>
-      </details>
-      <details>
-        <summary>Referencias</summary>
-        <ol>
-          <li>
-            <a href="https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1" target="_blank" rel="noreferrer">Paper</a></li>
-        </ol>
-      </details>
-    </>,
-    <>
-      <p>
-        El modelo SSD (Single Shot MultiBox Detection) de detección de objetos pretende localizar e
-        identificar múltiples objetos en una sola imagen.
-      </p>
-      <p>
-        Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <a
-        href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd"
-        target={"_blank"} rel={"noreferrer"}>tensorflow/object_detection</a>.
-      </p>
-      <p>
-        Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección,
-        segmentación y subtitulado de objetos a gran escala.
-        El modelo es capaz de detectar <a
-        href="https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts">80 clases de objetos</a>.
-      </p>
-      <p>
-        Este ejemplo es una adaptación a TensorFlow.js del modelo COCO-SSD.
-      </p>
-      <details>
-        <summary>Datos de entrada</summary>
-        <ol>
-          <li>Imagen o vídeo (webcam) a color.</li>
-        </ol>
-      </details>
-      <details>
-        <summary>Datos de salida</summary>
-        <ol>
-          <li>
-            Mismo elemento de entrada con una serie de puntos que delimitan los diferentes puntos de los objetos,
-            ademas de el nombre del objeto.
-          </li>
-        </ol>
-      </details>
-      <details>
-        <summary>Referencias</summary>
-        <ol>
-          <li>Puede encontrar más información <a href="https://cocodataset.org/" target={"_blank"} rel={"noreferrer"}>Coco dataset</a></li>
-        </ol>
-      </details>
-    </>
+    <>TEXT DESCRIPTION FACE-DETECTION</>,
+    <>TEXT DESCRIPTION FACE-MESH</>,
+    <>TEXT DESCRIPTION POSE-NET</>,
+    <>TEXT DESCRIPTION COCO-SSD</>
   ],
   [
     'DATASET PROPIO',
@@ -346,7 +225,7 @@ export const getHTML_DATASET_DESCRIPTION = (row, dataset) => {
   return DATASET_DESCRIPTION[row][dataset];
 }
 
-const getNameDatasetByID_ClassicClassification = (dataset) => {
+const getKeyDatasetByID_TabularClassification = (dataset) => {
   switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
@@ -362,24 +241,24 @@ const getNameDatasetByID_ClassicClassification = (dataset) => {
 }
 
 
-const getNameDatasetByID_ObjectDetection = (dataset) => {
+const getKeyDatasetByID_ObjectDetection = (dataset) => {
   switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
     case '1':
-      return MODEL_FACE_DETECTOR
+      return MODEL_FACE_DETECTOR.KEY
     case '2':
-      return MODEL_FACE_MESH
+      return MODEL_FACE_MESH.KEY
     case '3':
-      return MODEL_MOVE_NET_POSE_NET
+      return MODEL_MOVE_NET_POSE_NET.KEY
     case '4':
-      return MODEL_COCO_SSD
+      return MODEL_COCO_SSD.KEY
     default:
       console.error("Error, opción no disponible")
   }
 }
 // TODO
-const getNameDatasetByID_ImageClassification = (dataset) => {
+const getKeyDatasetByID_ImageClassification = (dataset) => {
   switch (dataset.toString()) {
     case '0':
       return MODEL_UPLOAD
@@ -420,16 +299,16 @@ const LIST_OF_IMAGES_MOBILENET = [
 ]
 
 export {
-  getNameDatasetByID_ClassicClassification,
-  getNameDatasetByID_ObjectDetection,
-  getNameDatasetByID_ImageClassification,
+  getKeyDatasetByID_TabularClassification,
+  getKeyDatasetByID_ObjectDetection,
+  getKeyDatasetByID_ImageClassification,
   LIST_MODEL_OPTIONS,
   LIST_TYPE_MODALITY,
   LIST_TYPE_MODELS_DESCRIPTION,
   // Genérico para todos
   MODEL_UPLOAD,
   // Clasificación clásica
-  LIST_MODELS_CLASSIC_CLASSIFICATION,
+  LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY,

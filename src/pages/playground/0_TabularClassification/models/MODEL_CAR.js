@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
+import { MODEL_TABULAR_CLASSIFICATION } from "./_model";
 import { Trans } from "react-i18next";
 
 export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {

@@ -8,7 +8,7 @@ import * as tf_mobilenet from "@tensorflow-models/mobilenet"
 import * as alertHelper from "../../../utils/alertHelper"
 import {
   getHTML_DATASET_DESCRIPTION,
-  getNameDatasetByID_ImageClassification,
+  getKeyDatasetByID_ImageClassification,
   LIST_MODEL_OPTIONS,
   LIST_OF_IMAGES_MNIST,
   LIST_OF_IMAGES_MOBILENET,
@@ -41,7 +41,7 @@ export default class ImageClassificationModelReview extends React.Component {
     super(props)
     this.dataset = props.dataset ?? "0"
     this.dataset_ID = parseInt(props.dataset ?? "0")
-    this.dataset_key = getNameDatasetByID_ImageClassification(this.dataset_ID)
+    this.dataset_key = getKeyDatasetByID_ImageClassification(this.dataset_ID)
     ReactGA.send({ hitType: "pageview", page: "/ModelReviewImageClassification/" + this.dataset_key, title: this.dataset_key });
 
     this.model = null
@@ -125,7 +125,7 @@ export default class ImageClassificationModelReview extends React.Component {
 
   async loadModel() {
     try {
-      switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+      switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
         case MODEL_UPLOAD: {
           this.model = await tf.loadLayersModel(
             tf.io.browserFiles([this.files.json, this.files.binary]),
@@ -246,7 +246,7 @@ export default class ImageClassificationModelReview extends React.Component {
     image.src = URL.createObjectURL(this.info.image_upload)
     image.onerror = this.UTILS_image.failed
 
-    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         // FIXME
         image.onload = async () => {// Limpiamos canvas
@@ -369,7 +369,7 @@ export default class ImageClassificationModelReview extends React.Component {
   }
 
   async handleClick_ImageByExamples_OpenDrawAndPredict(image_src) {
-    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         break
       }
@@ -394,7 +394,7 @@ export default class ImageClassificationModelReview extends React.Component {
 
   Print_HTML_Examples() {
     let examples;
-    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         return <></>
       }
@@ -456,7 +456,7 @@ export default class ImageClassificationModelReview extends React.Component {
   }
 
   Print_HTML_Section() {
-    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         return <>
           <div>
@@ -526,7 +526,7 @@ export default class ImageClassificationModelReview extends React.Component {
     const canvas_ctx = canvas.getContext("2d")
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.hidden)
 
-    switch (getNameDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
       case MODEL_UPLOAD: {
         break
       }
@@ -613,7 +613,7 @@ export default class ImageClassificationModelReview extends React.Component {
   }
 
   isMNIST() {
-    return getNameDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST
+    return getKeyDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST
   }
 
   UTILS_image = {

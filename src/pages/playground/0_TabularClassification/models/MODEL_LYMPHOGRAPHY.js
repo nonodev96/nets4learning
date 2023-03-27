@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { MODEL_TABULAR_CLASSIFICATION } from "./_abstract";
+import { MODEL_TABULAR_CLASSIFICATION } from "./_model";
 import { Trans } from "react-i18next";
 
 export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
@@ -12,33 +12,33 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   DESCRIPTION() {
     const prefix = "datasets-models.0-tabular-classification.lymphography.description."
     return <>
-      <p><Trans i18nKey={prefix + "text-1"}/></p>
+      <p><Trans i18nKey={prefix + "text-1"} /></p>
       <details>
-        <summary><Trans i18nKey={prefix + "details-input.title"}/></summary>
+        <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>
         <ol>
           {Array
             .from({ length: 17 })
-            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-input.list." + i}/></li>)}
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-input.list." + i} /></li>)}
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-output.title"}/></summary>
+        <summary><Trans i18nKey={prefix + "details-output.title"} /></summary>
         <ol>
           {Array
             .from({ length: 4 })
-            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-output.list." + i}/></li>)}
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-output.list." + i} /></li>)}
         </ol>
       </details>
       <details>
         <summary>
-          <Trans i18nKey={prefix + "details-references.title"}/>
+          <Trans i18nKey={prefix + "details-references.title"} />
         </summary>
         <ol>
           <li>
             <a href="https://archive.ics.uci.edu/ml/datasets/Lymphography"
                target="_blank"
                rel="noreferrer">
-              <Trans i18nKey={prefix + "details-references.list.0"}/>
+              <Trans i18nKey={prefix + "details-references.list.0"} />
             </a>
           </li>
         </ol>
@@ -47,14 +47,14 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   }
 
   HTML_EXAMPLE() {
+    const prefix = "datasets-models.0-tabular-classification.lymphography.html-example."
     return <>
       <p>
-        Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-        <br/>
-        <b>(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special
-          forms, dislocation of, exclusion of no, no. of nodes in).</b>
+        <Trans i18nKey={prefix + "text"} />
+        <br />
+        <b><Trans i18nKey={prefix + "items"} /></b>
       </p>
-      <p>Ejemplos:</p>
+      <p><Trans i18nKey={prefix + "examples"} /></p>
     </>
   }
 

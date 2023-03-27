@@ -11,28 +11,28 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 import {
-  getHTML_DATASET_DESCRIPTION,
-  getNameDatasetByID_ObjectDetection,
-  LIST_MODEL_OPTIONS,
+  getKeyDatasetByID_ObjectDetection,
   LIST_MODELS_OBJECT_DETECTION,
-  MODEL_COCO_SSD,
-  MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
+  MODEL_FACE_DETECTOR,
   MODEL_MOVE_NET_POSE_NET,
+  MODEL_COCO_SSD,
   MODEL_UPLOAD
 } from "../../../DATA_MODEL"
 import ReactGA from "react-ga4";
+import { Trans, withTranslation } from "react-i18next";
+import { MODEL_OBJECT_DETECTION } from "./models/_model";
 
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
 
-export default class ObjectDetectionModelReview extends React.Component {
+class ObjectDetectionModelReview extends React.Component {
 
   constructor(props) {
     super(props);
     this.dataset = props.dataset
     this.dataset_ID = parseInt(props.dataset ?? "0")
-    this.dataset_key = getNameDatasetByID_ObjectDetection(this.dataset_ID)
+    this.dataset_key = getKeyDatasetByID_ObjectDetection(this.dataset_ID)
     ReactGA.send({ hitType: "pageview", page: "/ModelReviewObjectDetection/" + this.dataset_key, title: this.dataset_key });
 
     this.state = {
@@ -61,6 +61,26 @@ export default class ObjectDetectionModelReview extends React.Component {
     this.onUserMediaEvent = this.onUserMediaEvent.bind(this);
     this.onUserMediaErrorEvent = this.onUserMediaErrorEvent.bind(this);
     this.animation_id = 0
+
+    this._model = new MODEL_OBJECT_DETECTION(props.t)
+    switch (this.dataset_key) {
+      case MODEL_FACE_MESH.KEY: {
+        this._model = new MODEL_FACE_MESH(props.t)
+        break
+      }
+      case MODEL_FACE_DETECTOR.KEY: {
+        this._model = new MODEL_FACE_DETECTOR(props.t)
+        break
+      }
+      case MODEL_MOVE_NET_POSE_NET.KEY: {
+        this._model = new MODEL_MOVE_NET_POSE_NET(props.t)
+        break
+      }
+      case MODEL_COCO_SSD.KEY: {
+        this._model = new MODEL_COCO_SSD(props.t)
+        break
+      }
+    }
   }
 
   componentDidMount() {
@@ -75,42 +95,42 @@ export default class ObjectDetectionModelReview extends React.Component {
   }
 
   async init() {
-    const datasetName = getNameDatasetByID_ObjectDetection(this.state.dataset)
-    const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === datasetName)
-    // console.log("ModelReviewObjectDetection -> INIT", { dataset, datasetName, isValid })
+    const key = getKeyDatasetByID_ObjectDetection(this.props.dataset)
+    const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === key)
+    // console.log("ModelReviewObjectDetection -> INIT", { dataset, key, isValid })
 
     if (!isValid) {
       await alertHelper.alertError("Error en la selección del modelo")
       return
     }
 
-    switch (datasetName) {
+    switch (key) {
       case MODEL_UPLOAD: {
         // TODO
         break
       }
-      case MODEL_FACE_DETECTOR: {
+      case MODEL_FACE_DETECTOR.KEY: {
         await this.enable_Model_FaceDetector()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
         this.setState({ loading: "" })
         break
       }
-      case MODEL_FACE_MESH: {
+      case MODEL_FACE_MESH.KEY: {
         await this.enable_Model_FaceMesh()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
         this.setState({ loading: "" })
         break
       }
-      case MODEL_MOVE_NET_POSE_NET: {
+      case MODEL_MOVE_NET_POSE_NET.KEY: {
         await this.enable_Model_MoveNet()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
         this.setState({ loading: "" })
         break
       }
-      case MODEL_COCO_SSD: {
+      case MODEL_COCO_SSD.KEY: {
         await this.enable_Model_CoCoSsd()
         await alertHelper.alertSuccess("Modelo cargado con éxito")
         this.setState({ isShowedAlert: true })
@@ -280,39 +300,28 @@ export default class ObjectDetectionModelReview extends React.Component {
     await this.processData(model, ctx, img_or_video)
   }
 
-  // async processImage(model) {
-  //   const originalImageCanvas = document.getElementById('originalImageCanvas')
-  //   const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
-  //
-  //   const processImageCanvas = document.getElementById('processImageCanvas')
-  //   const processImageCanvas_ctx = processImageCanvas.getContext('2d')
-  //
-  //   const resultCanvas = document.getElementById('resultCanvas')
-  //   const resultCanvas_ctx = resultCanvas.getContext('2d')
-  // }
-
   async processData(model, ctx, img_or_video) {
-    switch (getNameDatasetByID_ObjectDetection(this.state.dataset)) {
+    switch (getKeyDatasetByID_ObjectDetection(this.state.dataset)) {
       case MODEL_UPLOAD: {
         // TODO
         break
       }
-      case MODEL_FACE_DETECTOR: {
+      case MODEL_FACE_DETECTOR.KEY: {
         const faces = await model.estimateFaces(img_or_video)
         this.renderFaceDetector(ctx, faces)
         break
       }
-      case MODEL_FACE_MESH: {
+      case MODEL_FACE_MESH.KEY: {
         const faces = await model.estimateFaces(img_or_video)
         this.renderFaceMeshDetector(ctx, faces)
         break
       }
-      case MODEL_MOVE_NET_POSE_NET: {
+      case MODEL_MOVE_NET_POSE_NET.KEY: {
         const poses = await model.estimatePoses(img_or_video)
         this.renderMoveNetDetector(ctx, poses)
         break
       }
-      case MODEL_COCO_SSD: {
+      case MODEL_COCO_SSD.KEY: {
         const predictions = await model.detect(img_or_video)
         this.renderCoCoSsd(ctx, predictions)
         break
@@ -407,8 +416,10 @@ export default class ObjectDetectionModelReview extends React.Component {
           <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
             <Card className={"sticky-top mt-3 mb-3 border-info"}>
               <Card.Body>
-                <Card.Title>{LIST_MODEL_OPTIONS[2][this.state.dataset]} {this.state.loading}</Card.Title>
-                {getNameDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ?
+                <Card.Title>
+                  <Trans i18nKey={this._model.TITLE} /> {this.state.loading}
+                </Card.Title>
+                {getKeyDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ?
                   <>
                     <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                     <Card.Text>
@@ -434,7 +445,9 @@ export default class ObjectDetectionModelReview extends React.Component {
                   </>
                   :
                   <>
-                    {getHTML_DATASET_DESCRIPTION(2, this.state.dataset)}
+                    {this._model.DESCRIPTION()}
+
+                    {/*{getHTML_DATASET_DESCRIPTION(2, this.state.dataset)}*/}
                   </>
                 }
               </Card.Body>
@@ -445,9 +458,11 @@ export default class ObjectDetectionModelReview extends React.Component {
             {/*Es necesario un "Col" 9 y otro dentro*/}
             <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
               <Card className={"mt-3"}>
-                <Card.Header><h3>Reconocimiento en tiempo real</h3></Card.Header>
+                <Card.Header>
+                  <h3><Trans i18nKey={"datasets-models.2-object-detection.interface.process-webcam.title"} /></h3>
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title>WebCam</Card.Title>
+                  <Card.Title><Trans i18nKey={"datasets-models.2-object-detection.interface.process-webcam.sub-title"} /></Card.Title>
 
                   <Container fluid={true}>
                     <Row className={"mt-3"}>
@@ -456,7 +471,7 @@ export default class ObjectDetectionModelReview extends React.Component {
                              className="mb-3">
                           <Form.Check type="checkbox"
                                       id={'default-checkbox'}
-                                      label={`Usar webcam`}
+                                      label={this.props.t("datasets-models.2-object-detection.interface.process-webcam.button")}
                                       value={this.state.isCameraEnable ? "true" : "false"}
                                       onChange={this.handleChangeCamera} />
                         </div>
@@ -500,15 +515,19 @@ export default class ObjectDetectionModelReview extends React.Component {
 
             <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
               <Card className={"mt-3"}>
-                <Card.Header><h3>Procesamiento de images</h3></Card.Header>
+                <Card.Header>
+                  <h3><Trans i18nKey={"datasets-models.2-object-detection.interface.process-image.title"} /></h3>
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title>Subida de imágenes</Card.Title>
+                  <Card.Title>
+                    <Trans i18nKey={"datasets-models.2-object-detection.interface.process-image.sub-title"} />
+                  </Card.Title>
                   <Container fluid={true} id={"container-canvas"}>
                     <Row className={"mt-3"}>
                       <Col>
                         <DragAndDrop name={"doc"}
-                                     text={"Añada una imagen de ejemplo"}
-                                     labelFiles={"Fichero:"}
+                                     text={this.props.t("drag-and-drop.image")}
+                                     labelFiles={this.props.t("drag-and-drop.label-files-one")}
                                      accept={{
                                        'image/png': ['.png'],
                                        'image/jpg': ['.jpg'],
@@ -547,3 +566,5 @@ export default class ObjectDetectionModelReview extends React.Component {
     )
   }
 }
+
+export default withTranslation()(ObjectDetectionModelReview)

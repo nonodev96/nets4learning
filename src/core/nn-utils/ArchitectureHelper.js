@@ -76,7 +76,7 @@ export async function createClassicClassification(learningRate, unknownRate, num
 }
 */
 
-export async function createClassicClassificationCustomDataSet(params) {
+export async function createTabularClassificationCustomDataSet(params) {
   const {
     learningRate,
     testSize,
@@ -90,7 +90,7 @@ export async function createClassicClassificationCustomDataSet(params) {
   const [DATA, ARRAY_TARGETS, DATA_SET_CLASSES] = getClassesFromDataSet(dataset_JSON)
   const [xTrain, yTrain, xTest, yTest] = trainTestSplit(DATA, ARRAY_TARGETS, testSize)
   // Modo secuencial
-  if (!isProduction()) console.debug("createClassicClassificationCustomDataSet", params)
+  if (!isProduction()) console.debug("createTabularClassificationCustomDataSet", params)
   if (!isProduction()) console.debug("getClassesFromDataSet", { DATA, ARRAY_TARGETS, DATA_SET_CLASSES })
   if (!isProduction()) console.debug("trainTestSplit", { xTrain, yTrain, xTest, yTest })
 

@@ -1,11 +1,11 @@
-import './ClassicClassification.css'
+import './TabularClassification.css'
 import React, { useEffect, useState } from 'react'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import {
-  getHTML_DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification,
+  getHTML_DATASET_DESCRIPTION, getKeyDatasetByID_TabularClassification,
   LIST_MODEL_OPTIONS,
   MODEL_CAR,
   MODEL_IRIS,
@@ -13,7 +13,7 @@ import {
   MODEL_UPLOAD
 } from "../../../DATA_MODEL";
 import {
-  createClassicClassificationCustomDataSet
+  createTabularClassificationCustomDataSet
 } from '../../../core/nn-utils/ArchitectureHelper'
 import {
   transform_datasetJSON_To_DataFrame
@@ -144,7 +144,7 @@ export default function TabularClassificationCustomDataset(props) {
   }
 
   useEffect(() => {
-    const dataset_key = getNameDatasetByID_ClassicClassification(dataset)
+    const dataset_key = getKeyDatasetByID_TabularClassification(dataset)
     ReactGA.send({ hitType: "pageview", page: "/CustomDataSetClassicClassification/" + dataset_key, title: dataset_key });
     switch (dataset_key) {
       case MODEL_UPLOAD: {
@@ -237,7 +237,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
       let _idLoss = idLoss
       let _idMetrics = idMetrics
 
-      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createClassicClassificationCustomDataSet({
+      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createTabularClassificationCustomDataSet({
         learningRate : _learningRate,
         numberOfEpoch: _numberOfEpoch,
         testSize     : _testSize,
@@ -281,7 +281,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
   }
 
   const handleClick_TestVector = async () => {
-    if (getNameDatasetByID_ClassicClassification(dataset) === MODEL_UPLOAD) {
+    if (getKeyDatasetByID_TabularClassification(dataset) === MODEL_UPLOAD) {
       if (customDataSet_JSON === null) {
         await alertHelper.alertError('Primero debes de cargar un dataset')
         return
@@ -294,7 +294,7 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
     let dataset_JSON = null
     let input = [[], [1, stringToPredict.split(';').length]]
     try {
-      switch (getNameDatasetByID_ClassicClassification(dataset)) {
+      switch (getKeyDatasetByID_TabularClassification(dataset)) {
         case MODEL_UPLOAD: {
           dataset_JSON = customDataSet_JSON
           break
@@ -486,10 +486,10 @@ La capa de salida tiene la forma (* ,${last_layer_units}).
     }
   }
 
-  console.debug("render CustomDataSetClassicClassification")
+  console.debug("render TabularClassificationCustomDataset")
   return (
     <>
-      <Form id={"CustomDataSetClassicClassification"}
+      <Form id={"TabularClassificationCustomDataset"}
             onSubmit={handleSubmit_Play}>
         <Container className={"mb-3"}>
           <Row>

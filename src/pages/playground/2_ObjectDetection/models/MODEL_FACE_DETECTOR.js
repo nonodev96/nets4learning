@@ -1,35 +1,37 @@
-/**
- * @type {TYPE_MODEL_OBJECT_DETECTION}
- */
-export const MODEL_FACE_DETECTOR = {
-  KEY         : "FACE-DETECTOR",
-  TITLE       : "",
-  URL         : "",
-  URL_MODEL   : "",
-  DESCRIPTION: <>
-    <p>
-      Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para finalmente hacer una malla de la misma.
-    </p>
-    <details>
-      <summary>Datos de entrada</summary>
-      <ol>
-        <li>Imagen o vídeo de entrada.</li>
-      </ol>
-    </details>
-    <details>
-      <summary>Datos de salida</summary>
-      <ol>
-        <li>Mismo elemento de entrada con una serie de puntos que delimitan la malla de la cara.</li>
-      </ol>
-    </details>
-    <details>
-      <summary>Referencias</summary>
-      <ol>
-        <li>
-          <a href="https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1" target="_blank" rel="noreferrer">Entrada del modelo en el repositorio de tensorflow</a>
-        </li>
-      </ol>
-    </details>
-  </>,
-  HTML_EXAMPLE: <></>
+import { MODEL_OBJECT_DETECTION } from "./_model";
+import { Trans } from "react-i18next";
+
+export class MODEL_FACE_DETECTOR extends MODEL_OBJECT_DETECTION {
+  TITLE = "datasets-models.2-object-detection.face-detection.title"
+  static KEY = "FACE-DETECTOR"
+
+  DESCRIPTION() {
+    const prefix = "datasets-models.2-object-detection.face-detection.description."
+    return <>
+      <p><Trans i18nKey={prefix + "text-0"} /></p>
+      <details>
+        <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + "details-input.list.0"} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + "details-output.title"} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + "details-output.list.0"} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + "details-references.title"} /></summary>
+        <ol>
+          <li>
+            <Trans i18nKey={prefix + "details-references.list.0"}
+                   components={{
+                     link1: <a href={"https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1"} target={"_blank"} rel="noreferrer">link</a>,
+                   }} />
+          </li>
+        </ol>
+      </details>
+    </>
+  }
 }

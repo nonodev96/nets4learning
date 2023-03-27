@@ -26,6 +26,7 @@
   "drag-and-drop": {
     "label-files-one": "Fichero:",
     "label-files-more": "Ficheros:",
+    "image": "Añada una imagen de ejemplo",
     "binary": "Añada el fichero binario",
     "json": "Añada el fichero JSON",
     "csv": "Añada el fichero CSV"
@@ -43,6 +44,8 @@
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"
   },
+  "AYUDA":"kssdafsdfsadfdjlkj",
+
   "datasets-models": {
     "0-tabular-classification": {
       "upload": {
@@ -143,24 +146,24 @@
           "details-input": {
             "title": "Datos de entrada",
             "list": {
-              "0":"<b>lymphatics</b>: normal, arched, deformed, displaced",
-              "1":"<b>block of affere</b>: no, yes",
-              "2":"<b>bl. of lymph. c</b>: no, yes",
-              "3":"<b>bl. of lymph. s</b>: no, yes",
-              "4":"<b>by pass</b>: no, yes",
-              "5":"<b>extravasates</b>: no, yes",
-              "6":"<b>regeneration of</b>: no, yes",
-              "7":"<b>early uptake in</b>: no, yes",
-              "8":"<b>lym.nodes dimin</b>: 0-3",
-              "9":"<b>lym.nodes enlar</b>: 1-4",
-              "10":"<b>changes in lym.</b>: bean, oval, round",
-              "11":"<b>defect in node</b>: no, lacunar, lac. marginal, lac. central",
-              "12":"<b>changes in node</b>: no, lacunar, lac. margin, lac. central",
-              "13":"<b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,",
-              "14":"<b>special forms</b>: no, chalices, vesicles",
-              "15":"<b>dislocation of</b>: no, yes",
-              "16":"<b>exclusion of no</b>: no, yes",
-              "17":"<b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70"
+              "0": "<b>lymphatics</b>: normal, arched, deformed, displaced",
+              "1": "<b>block of affere</b>: no, yes",
+              "2": "<b>bl. of lymph. c</b>: no, yes",
+              "3": "<b>bl. of lymph. s</b>: no, yes",
+              "4": "<b>by pass</b>: no, yes",
+              "5": "<b>extravasates</b>: no, yes",
+              "6": "<b>regeneration of</b>: no, yes",
+              "7": "<b>early uptake in</b>: no, yes",
+              "8": "<b>lym.nodes dimin</b>: 0-3",
+              "9": "<b>lym.nodes enlar</b>: 1-4",
+              "10": "<b>changes in lym.</b>: bean, oval, round",
+              "11": "<b>defect in node</b>: no, lacunar, lac. marginal, lac. central",
+              "12": "<b>changes in node</b>: no, lacunar, lac. margin, lac. central",
+              "13": "<b>changes in stru</b>: no, grainy, drop-like, coarse, diluted, reticular, stripped, faint,",
+              "14": "<b>special forms</b>: no, chalices, vesicles",
+              "15": "<b>dislocation of</b>: no, yes",
+              "16": "<b>exclusion of no</b>: no, yes",
+              "17": "<b>no. of nodes in</b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69, >=70"
             }
           },
           "details-output": {
@@ -178,6 +181,11 @@
               "0": "Conjunto de datos"
             }
           }
+        },
+        "html-example": {
+          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:",
+          "items": "(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special forms, dislocation of, exclusion of no, no. of nodes in).",
+          "examples": "Ejemplos:"
         }
       },
       "list-datasets": {
@@ -197,6 +205,117 @@
       }
     },
     "2-object-detection": {
+      "interface":{
+        "process-webcam": {
+          "title": "Reconocimiento en tiempo real",
+          "sub-title": "WebCam",
+          "button": "usar webcam"
+        },
+        "process-image": {
+          "title": "Procesamiento de images",
+          "sub-title": "Subida de imágenes"
+        }
+      },
+      "face-detection": {
+        "title": "FACE DETECTOR - Geometría facial",
+        "description": {
+          "text-0": "Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como los ojos, orejas, nariz y boca.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara."
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Entrada del modelo en el repositorio de tensorflow</link1>"
+            }
+          }
+        }
+      },
+      "face-mesh": {
+        "title": "FACE MESH - Malla facial",
+        "description": {
+          "text-0": "Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para finalmente hacer una malla de la misma.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Mismo elemento de entrada con una serie de puntos que delimitan las diferentes partes de la cara."
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Entrada del modelo en el repositorio de tensorflow</link1>"
+            }
+          }
+        }
+      },
+      "move-net--pose-net": {
+        "title": "MOVE NET - Detector de articulaciones",
+        "description": {
+          "text-0": "PoseNet es un modelo de aprendizaje automático capaz de reconocer la posición del cuerpo en tiempo real. Se puede usar para estimar una sola pose o varias a la vez.",
+          "text-1": "En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo (webcam) a color."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Mismo elemento de entrada con una serie de puntos y líneas que delimitan diferentes puntos de la cara además de hombros, codos, manos, pies, rodillas y cadera."
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Paper</link1>"
+            }
+          }
+        }
+      },
+      "coco-ssd": {
+        "title": "COCO SSD - Detector de objetos",
+        "description": {
+          "text-0": "El modelo SSD (Single Shot MultiBox Detection) de detección de objetos pretende localizar e identificar múltiples objetos en una sola imagen.",
+          "text-1": "Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <link1>tensorflow/object_detection</link1>",
+          "text-2": "Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección, segmentación y subtitulado de objetos a gran escala. El modelo es capaz de detectar <link1>80 clases de objetos</link1>",
+          "text-3": "Este ejemplo es una adaptación a TensorFlow.js del modelo COCO-SSD.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo (webcam) a color."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Mismo elemento de entrada con una serie de puntos que delimitan los diferentes puntos de los objetos, además del nombre del objeto."
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "Puede encontrar más información <link1>Coco dataset</link1>"
+            }
+          }
+        }
+      },
       "list-datasets": {
       },
       "list-models": {
@@ -207,6 +326,10 @@
       }
     },
     "3-image-classifier": {
+      "face-mesh": {
+        "title": "",
+        "description": {}
+      },
       "list-datasets": {
       },
       "list-models": {

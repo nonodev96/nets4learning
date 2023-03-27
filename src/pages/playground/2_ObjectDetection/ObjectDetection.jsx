@@ -14,7 +14,7 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS
 } from "../../../core/nn-utils/ArchitectureTypesHelper";
-import { DATASET_DESCRIPTION, getNameDatasetByID_ClassicClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
+import { DATASET_DESCRIPTION, getKeyDatasetByID_TabularClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
 
 export default function ObjectDetection(props) {
   const { dataset } = props
@@ -35,7 +35,7 @@ export default function ObjectDetection(props) {
 
   useEffect(() => {
     const dataset_ID = parseInt(dataset)
-    const dataset_key = getNameDatasetByID_ClassicClassification(dataset_ID)
+    const dataset_key = getKeyDatasetByID_TabularClassification(dataset_ID)
     ReactGA.send({ hitType: "pageview", page: "/ObjectDetection/" + dataset_key, title: dataset_key });
   }, [dataset])
 

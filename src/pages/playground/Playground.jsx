@@ -23,32 +23,38 @@ export default function Playground() {
   const { t } = useTranslation()
   const Print_HTML_Model_View = () => {
     switch (id.toString()) {
-      case '0':
+      case '0': {
         if (option === '0') {
           return <TabularClassificationModelReview dataset={example} />
         } else {
           return <TabularClassificationCustomDataset dataset={example} />
         }
-      case '1':
+      }
+      case '1': {
         // TODO
-        if (option === '0') {
-          return <LinearRegressionModelReview dataset={example} />
-        } else {
-          return <LinearRegression dataset={example} />
-        }
-      case '2':
-        if (option === '0') {
-          return <ObjectDetectionModelReview dataset={example} />
-        } else {
-          return <ObjectDetection dataset={example} />
-        }
-      case '3':
-        // TODO
+        // if (option === '0') {
+        //   return <LinearRegressionModelReview dataset={example} />
+        // } else {
+        //   return <LinearRegression dataset={example} />
+        // }
+      }
+      case '2': {
+        return <ObjectDetectionModelReview dataset={example} />
+        // if (option === '0') {
+        //   return <ObjectDetectionModelReview dataset={example} />
+        // } else {
+        //   return <ObjectDetection dataset={example} />
+        // }
+      }
+      case '3': {
+        return <ImageClassificationModelReview dataset={example} />
         if (option === '0') {
           return <ImageClassificationModelReview dataset={example} />
         } else {
+          // TODO
           return <ImageClassification dataset={example} />
         }
+      }
       default:
         return <NotFoundPage />
     }

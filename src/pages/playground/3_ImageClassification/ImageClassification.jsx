@@ -8,7 +8,7 @@ import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
 import {
   DATASET_DESCRIPTION,
-  getNameDatasetByID_ClassicClassification,
+  getKeyDatasetByID_TabularClassification,
   LIST_MODEL_OPTIONS
 } from "../../../DATA_MODEL";
 import {
@@ -40,7 +40,7 @@ export default function ImageClassification(props) {
 
   useEffect(() => {
     const dataset_ID = parseInt(dataset)
-    const dataset_key = getNameDatasetByID_ClassicClassification(dataset_ID)
+    const dataset_key = getKeyDatasetByID_TabularClassification(dataset_ID)
     ReactGA.send({ hitType: "pageview", page: "/ImageClassification/" + dataset_key, title: dataset_key });
   }, [dataset])
 

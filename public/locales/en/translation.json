@@ -39,6 +39,7 @@
     "object-detection": "Object identification",
     "image-classification": "Image classifier"
   },
+  "AYUDA":"ksdjlkj",
   "datasets-models": {
     "0-tabular-classification": {
       "upload": {
@@ -143,6 +144,33 @@
       }
     },
     "2-object-detection": {
+      "coco-ssd": {
+        "title": "COCO SSD - Detector de objetos",
+        "description": {
+          "text-0": "El askdjfhksjdahflkjsdhflk SSD (Single Shot MultiBox Detection) de detección de objetos pretende localizar e identificar múltiples objetos en una sola imagen.",
+          "text-1": "Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <link1>tensorflow/object_detection</link1>",
+          "text-2": "Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección, segmentación y subtitulado de objetos a gran escala. El modelo es capaz de detectar <link1>80 clases de objetos</link1>",
+          "text-3": "Este ejemplo es una adaptación a TensorFlow.js del modelo COCO-SSD.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo (webcam) a color."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Mismo elemento de entrada con una serie de puntos que delimitan los diferentes puntos de los objetos, además del nombre del objeto."
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "Puede encontrar más información <link1>Coco dataset</link1>"
+            }
+          }
+        }
+      },
       "list-models": {
         "2-option-1": "Model - FACE Detector - Facial Geometry",
         "2-option-2": "Model - Face Mesh - Facial Mesh",
