@@ -59,6 +59,7 @@ export default function TabularClassificationCustomDataset(props) {
   const { t } = useTranslation()
   const prefix = "pages.playground.0-tabular-classification.generator."
 
+
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
   const [generatedModels, setGeneratedModels] = useState([])
@@ -503,7 +504,7 @@ export default function TabularClassificationCustomDataset(props) {
               <Accordion>
                 <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                   <Accordion.Header>
-                    <h3><Trans i18nKey={"pages.playground.0-tabular-classification.generator.manual.title"} /></h3>
+                    <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
                   </Accordion.Header>
                   <Accordion.Body>
 
@@ -514,7 +515,7 @@ export default function TabularClassificationCustomDataset(props) {
                 <Accordion.Item key={"1"} eventKey={"description_dataset"}>
                   <Accordion.Header>
                     <h3>
-                      <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : "pages.playground.0-tabular-classification.generator.dataset.upload-dataset"} />
+                      <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + "dataset.upload-dataset"} />
                     </h3>
                   </Accordion.Header>
                   <Accordion.Body>
@@ -539,7 +540,7 @@ export default function TabularClassificationCustomDataset(props) {
               <Card>
                 <Card.Header>
                   <h3 className={"d-flex align-items-baseline"}>
-                    Conjunto de datos
+                    <Trans i18nKey={prefix + "dataset.title"} />
                     {!customDataSet_JSON && <>
                       <div className="ms-4 spinner-border"
                            role="status"
@@ -637,23 +638,25 @@ export default function TabularClassificationCustomDataset(props) {
                       return (
                         <Accordion.Item key={index} eventKey={index.toString()}>
                           <Accordion.Header>
-                            Capa {index + 1}
+                            <Trans i18nKey={prefix + "editor-layers.layer-id"} values={{ value: index + 1 }} />
                           </Accordion.Header>
 
                           <Accordion.Body>
                             <div className="d-grid gap-2">
                               <Button onClick={() => handlerClick_RemoveLayer(index)}
                                       variant={"outline-danger"}>
-                                Eliminar capa {index + 1}
+                                <Trans i18nKey={prefix + "editor-layers.delete-layer"} values={{ value: index + 1 }} />
                               </Button>
                             </div>
                             {/* UNITS */}
                             <Form.Group className="mt-3"
                                         controlId={'formUnitsLayer' + index}>
-                              <Form.Label>Unidades de la capa</Form.Label>
+                              <Form.Label>
+                                <Trans i18nKey={prefix + "editor-layers.units"} />
+                              </Form.Label>
                               <Form.Control type="number"
                                             min={1} max={100}
-                                            placeholder="Introduce el número de unidades de la capa"
+                                            placeholder={t(prefix + "editor-layers.units-placeholder")}
                                             value={item.units}
                                             onChange={(e) => handleChange_Layer(index, {
                                               units     : parseInt(e.target.value),
@@ -663,7 +666,9 @@ export default function TabularClassificationCustomDataset(props) {
                             {/* ACTIVATION FUNCTION */}
                             <Form.Group className="m3-3"
                                         controlId={'formActivationLayer' + index}>
-                              <Form.Label>Selecciona la función de activación</Form.Label>
+                              <Form.Label>
+                                <Trans i18nKey={prefix + "editor-layers.activation-function-select"} />
+                              </Form.Label>
                               <Form.Select aria-label={"Default select example: " + item.activation}
                                            value={item.activation}
                                            onChange={(e) => handleChange_Layer(index, {
@@ -675,7 +680,7 @@ export default function TabularClassificationCustomDataset(props) {
                                 })}
                               </Form.Select>
                               <Form.Text className="text-muted">
-                                Será el optimizador que se usará para activar la función
+                                <Trans i18nKey={prefix + "editor-layers.activation-function-info"} />
                               </Form.Text>
                             </Form.Group>
                           </Accordion.Body>
@@ -690,53 +695,61 @@ export default function TabularClassificationCustomDataset(props) {
             {/* GENERAL PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
               <Card className={"sticky-top"} style={{ zIndex: 10 }}>
-                <Card.Header><h3>Editor de hiperparámetros</h3></Card.Header>
+                <Card.Header><h3><Trans i18nKey={prefix + "general-parameters.title"} /></h3></Card.Header>
                 <Card.Body>
                   {/* LEARNING RATE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
-                    <Form.Label>Tasa de aprendizaje</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.learning-rate"} />
+                    </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder="Introduce la tasa de aprendizaje"
+                                  placeholder={t(prefix + "editor-layers.learning-rate-placeholder")}
                                   defaultValue={DEFAULT_LEARNING_RATE}
                                   onChange={(e) => setLearningRate(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
-                      Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
+                      <Trans i18nKey={prefix + "general-parameters.learning-rate-info"} />
                     </Form.Text>
                   </Form.Group>
 
                   {/* Número OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                    <Form.Label>Número de iteraciones</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs"} />
+                    </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder="Introduce el número de iteraciones"
+                                  placeholder={t(prefix + "editor-layers.number-of-epochs")}
                                   defaultValue={DEFAULT_NUMBER_EPOCHS}
                                   onChange={(e) => setNumberEpochs(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
-                      Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
+                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs-info"} />
                     </Form.Text>
                   </Form.Group>
 
                   {/* TEST SIZE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
-                    <Form.Label>Tamaño del conjunto de pruebas</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.train-rate"} />
+                    </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder="Introduce el tamaño del banco de pruebas"
+                                  placeholder={t(prefix + "editor-layers.train-rate-placeholder")}
                                   defaultValue={DEFAULT_TEST_SIZE}
                                   onChange={(e) => setTestSize(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
-                      Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
+                      <Trans i18nKey={prefix + "general-parameters.train-rate-info"} />
                     </Form.Text>
                   </Form.Group>
 
                   {/* OPTIMIZATION FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormOptimizer">
-                    <Form.Label>Selecciona el optimizador</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.optimizer-id"} />
+                    </Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={DEFAULT_ID_OPTIMIZATION}
                                  onChange={(e) => setIdOptimizer(e.target.value)}>
@@ -745,13 +758,15 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      Será el optimizador que se usará para corregir el error.
+                      <Trans i18nKey={prefix + "general-parameters.optimizer-id-info"} />
                     </Form.Text>
                   </Form.Group>
 
                   {/* LOSS FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormLoss">
-                    <Form.Label>Selecciona la función de pérdida</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.loss-id"} />
+                    </Form.Label>
                     <Form.Select aria-label="Selecciona la función de pérdida"
                                  defaultValue={DEFAULT_ID_LOSS}
                                  onChange={(e) => setIdLoss(e.target.value)}>
@@ -760,13 +775,15 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      Será la función que se usará para evaluar el error de las neuronas.
+                      <Trans i18nKey={prefix + "general-parameters.loss-id-info"} />
                     </Form.Text>
                   </Form.Group>
 
                   {/* METRICS FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormMetrics">
-                    <Form.Label>Selecciona la métrica</Form.Label>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + "general-parameters.metrics-id"} />
+                    </Form.Label>
                     <Form.Select aria-label="Selecciona la métrica"
                                  defaultValue={DEFAULT_ID_METRICS}
                                  onChange={(e) => setIdMetrics(e.target.value)}>
@@ -775,7 +792,7 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      Será el tipo de métrica que se usará para la evaluación del entrenamiento,
+                      <Trans i18nKey={prefix + "general-parameters.metrics-id-info"} />
                     </Form.Text>
                   </Form.Group>
                 </Card.Body>
@@ -791,7 +808,7 @@ export default function TabularClassificationCustomDataset(props) {
                         disabled={isTraining || !customDataSet_JSON}
                         size={"lg"}
                         variant="primary">
-                  Crear y entrenar modelo
+                  <Trans i18nKey={prefix + "models.button-submit"} />
                 </Button>
               </div>
             </Col>
@@ -802,7 +819,7 @@ export default function TabularClassificationCustomDataset(props) {
             <Col xl={12}>
               <Card>
                 <Card.Header className={"d-flex align-items-center"}>
-                  <h3>Modelos</h3>
+                  <h3><Trans i18nKey={prefix + "models.title"} /></h3>
                   <div className={"d-flex"}>
                     <Button variant={"outline-primary"}
                             className={"ms-3"}
@@ -810,7 +827,7 @@ export default function TabularClassificationCustomDataset(props) {
                             onClick={() => {
                               tfvis.visor().open()
                             }}>
-                      Abrir visor
+                      <Trans i18nKey={prefix + "models.open-visor"} />
                     </Button>
                     <Button variant={"outline-primary"}
                             className={"ms-1"}
@@ -818,7 +835,7 @@ export default function TabularClassificationCustomDataset(props) {
                             onClick={() => {
                               tfvis.visor().close()
                             }}>
-                      Cerrar visor
+                      <Trans i18nKey={prefix + "models.close-visor"} />
                     </Button>
                     {(Model !== undefined) &&
                       <Button className={"ms-1"}
@@ -826,7 +843,7 @@ export default function TabularClassificationCustomDataset(props) {
                               onClick={handleClick_DownloadModel}
                               size={"sm"}
                               variant="outline-primary">
-                        Exportar modelo actual
+                        <Trans i18nKey={prefix + "models.export-current-model"} />
                       </Button>
                     }
                   </div>
@@ -835,16 +852,16 @@ export default function TabularClassificationCustomDataset(props) {
                   <Table size={"sm"}>
                     <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Cargar</th>
-                      <th>Aprendizaje</th>
-                      <th>Número de iteraciones</th>
-                      <th>Pruebas</th>
-                      <th>Capas</th>
-                      <th>Optimizador</th>
-                      <th>Perdida</th>
-                      <th>Métrica</th>
-                      <th>Descargar</th>
+                      <th><Trans i18nKey={prefix + "table.id"} /></th>
+                      <th><Trans i18nKey={prefix + "table.load"} /></th>
+                      <th><Trans i18nKey={prefix + "table.learning-rate"} /></th>
+                      <th><Trans i18nKey={prefix + "table.number-of-epochs"} /></th>
+                      <th><Trans i18nKey={prefix + "table.train-rate"} /></th>
+                      <th><Trans i18nKey={prefix + "table.layers"} /></th>
+                      <th><Trans i18nKey={prefix + "table.optimizer-id"} /></th>
+                      <th><Trans i18nKey={prefix + "table.loss-id"} /></th>
+                      <th><Trans i18nKey={prefix + "table.metric-id"} /></th>
+                      <th><Trans i18nKey={prefix + "table.download"} /></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -879,7 +896,7 @@ export default function TabularClassificationCustomDataset(props) {
                             <Button variant={"outline-primary"}
                                     size={"sm"}
                                     onClick={() => handleClick_DownloadGeneratedModel(value)}>
-                              Descargar
+                              <Trans i18nKey={prefix + "table.download"} />
                             </Button>
                           </td>
                         </tr>
@@ -888,7 +905,13 @@ export default function TabularClassificationCustomDataset(props) {
                     </tbody>
                   </Table>
 
-                  {isTraining ? <p className="placeholder-glow"><span className="placeholder col-12"></span></p> : <></>}
+                  {isTraining ?
+                    <p className="placeholder-glow">
+                      <span className="placeholder col-12"></span>
+                    </p>
+                    :
+                    <></>
+                  }
 
                   <div id="salida"></div>
                 </Card.Body>

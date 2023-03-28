@@ -1,5 +1,5 @@
 {
-  "welcome": "Bienvenido a Nets4Learning <strong>asñdoifosa</strong>",
+  "welcome": "Bienvenido a Nets4Learning",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
   "list_map": "<1></1>",
   "map_item": "<0></0>",
@@ -56,6 +56,10 @@
     "linear-regression": "Regresión lineal",
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"
+  },
+  "graphic-red": {
+    "input": "Entrada",
+    "output": "Salida"
   },
   "datasets-models": {
     "0-tabular-classification": {
@@ -507,6 +511,7 @@
         },
         "generator": {
           "dataset": {
+            "title": "Conjunto de datos",
             "upload-dataset": "Subir conjunto de datos.",
             "attributes": {
               "title": "Atributos",
@@ -523,9 +528,51 @@
           "editor-layers": {
             "title": "Editor de capas",
             "add-layer-start": "Añadir capa al principio",
-            "add-layer-end": "Añadir capa al final"
+            "add-layer-end": "Añadir capa al final",
+            "delete-layer": "Eliminar capa {{value}}",
+            "layer-id": "Capa {{value}}",
+            "units": "Unidades de la capa",
+            "units-placeholder": "Introduce el número de unidades de la capa",
+            "activation-function-select": "Selecciona la función de activación",
+            "activation-function-info": "Será el optimizador que se usará para activar la función"
           },
-
+          "general-parameters": {
+            "title": "Editor de hiperparámetros",
+            "learning-rate": "Tasa de aprendizaje",
+            "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
+            "learning-rate-info": "Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)",
+            "number-of-epochs": "Número de iteraciones",
+            "number-of-epochs-placeholder": "Número de iteraciones",
+            "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
+            "train-rate": "Tamaño del conjunto de pruebas",
+            "train-rate-placeholder": "Introduce el tamaño del banco de pruebas",
+            "train-rate-info": "Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)",
+            "optimizer-id": "Selecciona el optimizado",
+            "optimizer-id-info": "Será el optimizador que se usará para corregir el error.",
+            "loss-id": "Selecciona la función de pérdida",
+            "loss-id-info": "Será la función que se usará para evaluar el error de las neuronas.",
+            "metrics-id": "Selecciona la métrica",
+            "metrics-id-info": "Será el tipo de métrica que se usará para la evaluación del entrenamiento."
+          },
+          "models": {
+            "title": "Modelos",
+            "button-submit": "Crear y entrenar modelo",
+            "open-visor": "Abrir visor",
+            "close-visor": "Cerrar visor",
+            "export-current-model": "Exportar modelo actual"
+          },
+          "table": {
+            "id": "ID",
+            "load": "Cargar",
+            "learning-rate": "Aprendizaje",
+            "number-of-epochs": "Número de iteraciones",
+            "train-rate": "Pruebas",
+            "layers": "Capas",
+            "optimizer-id": "Optimizador",
+            "loss-id": "Perdida",
+            "metric-id": "Métrica",
+            "download": "Descargar"
+          },
           "manual": {
             "title": "Manual del generador de modelos",
             "details-edit-layers": {
