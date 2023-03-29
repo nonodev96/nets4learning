@@ -282,14 +282,13 @@ class ImageClassificationModelReview extends React.Component {
     image.onerror = this.UTILS_image.failed
 
     const canvas = document.getElementById("originalImage")
-    if (!(canvas instanceof HTMLImageElement)) {
-      throw new Error("HTMLImageElement")
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      throw new Error("HTMLCanvasElement")
     }
+
     // Limpiamos canvas
-    const canvas_ctx = canvas.getContext("2d", { willReadFrequently: true })
+    const canvas_ctx = canvas.getContext("2d")
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
-    // Pegamos la imagen
-    this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
 
 
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
@@ -300,10 +299,12 @@ class ImageClassificationModelReview extends React.Component {
       }
       case MODEL_IMAGE_MNIST.KEY: {
         image.onload = async () => {
+          // Pegamos la imagen
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
           // Transformamos a un canvas de 28x28
           canvas_ctx.drawImage(canvas, 10, 10, 28, 28)
           const imageData = canvas_ctx.getImageData(10, 10, 28, 28)
-          // Predicción
+          // Ejecutamos la predicción usando el canvas de 28x28
           const { predictions } = await this.PredictMNIST_Image(imageData)
           this.updatePredictionMNIST(predictions)
         }
@@ -311,6 +312,9 @@ class ImageClassificationModelReview extends React.Component {
       }
       case MODEL_IMAGE_MOBILENET.KEY: {
         image.onload = async () => {
+          // Pegamos la imagen
+          this.UTILS_image.drawImageInCanvasWithContainer(image, "originalImage", "container_canvas")
+          // Ejecutamos la clasificación usando el canvas
           const predictions = await this.model.classify(canvas)
           this.setState({
             bar_data_image: {
@@ -689,7 +693,7 @@ class ImageClassificationModelReview extends React.Component {
                                    }}
                                    function_DropAccepted={this.handleFileUpload_Image} />
 
-                      <div className="d-grid gap-2 col-6 mx-auto">
+                      <div className="d-flex gap-2 justify-content-center mx-auto">
                         <Button type="button"
                                 onClick={this.handleClick_ImageUploaded_Predict}
                                 variant={"primary"}>

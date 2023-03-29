@@ -34,7 +34,7 @@ export async function alertInfo(text, title, footer = "") {
   })
 }
 
-export async function alertWarning(title, params = { text: "", footer: "", htm: <></> }) {
+export async function alertWarning(title, params = { text: "", footer: "", html: <></> }) {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()

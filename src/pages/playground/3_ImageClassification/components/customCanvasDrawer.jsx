@@ -88,8 +88,7 @@ export default function CustomCanvasDrawer(props) {
                 onChange={(event) => startDrawing(event)}></canvas>
 
       </div>
-      <div className="d-grid gap-2 col-md-6 mx-auto mt-3"
-           style={{ "gridTemplateColumns": "repeat(2, 1fr)" }}>
+      <div className="d-flex gap-2 justify-content-center mx-auto mt-3">
         <Button variant={"primary"}
                 onClick={() => {
                   submitFunction(canvasRef.current, canvasRef.current.getContext("2d"))

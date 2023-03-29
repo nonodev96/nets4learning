@@ -28,7 +28,7 @@ class TabularClassificationModelReview extends React.Component {
     this.dataset_key = getKeyDatasetByID_TabularClassification(this.dataset_ID)
     ReactGA.send({
       hitType: "pageview",
-      page   : "/ModelReviewTabularClassification/" + this.dataset_key,
+      page   : "/TabularClassificationModelReview/" + this.dataset_key,
       title  : this.dataset_key
     });
 
@@ -477,11 +477,11 @@ class TabularClassificationModelReview extends React.Component {
                           <Row className={"mt-3"}>
                             {this._model.FORM.map((value, index) => {
                               // VALUES:
-                              // {name: "type1", type: "number" },
-                              // {name: "type2", type: "float" },
+                              // {name: "type1", type: "int32" },
+                              // {name: "type2", type: "float32" },
                               // {name: "type3", type: "select", options: [{value: "", text: ""] },
                               switch (value.type) {
-                                case "number": {
+                                case "int32": {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group>
@@ -500,7 +500,7 @@ class TabularClassificationModelReview extends React.Component {
                                   </Col>
                                 }
 
-                                case "float": {
+                                case "float32": {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>

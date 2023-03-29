@@ -12,8 +12,12 @@
     "op 2"
   ],
   "error": {
+    "load-json-csv": "Error, no se ha podido cargar el fichero",
     "need-to-upload-image": "Primero debes de subir una imagen",
-    "model-selected": "Error en la selección del modelo"
+    "need-dataset": "Primero debes de cargar los datos",
+    "model-selected": "Error en la selección del modelo",
+    "tensor-shape": "Forma del tensor incorrecta",
+    "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})"
   },
   "header": {
     "language": "Idioma",
@@ -34,15 +38,21 @@
     "image": "Añada una imagen de ejemplo",
     "binary": "Añada el fichero binario",
     "json": "Añada el fichero JSON",
-    "csv": "Añada el fichero CSV"
+    "csv": "Añada el fichero CSV",
+    "csv-json": "Introduce el fichero de datos plantilla.json"
   },
   "custom-canvas-drawer": {
     "validate": "Validar",
     "clear": "Limpiar"
   },
   "alert": {
+    "warning": {
+      "need-select-dataset":"Debes de seleccionar un conjunto de datos",
+      "not-more-layers": "No se pueden añadir más capas"
+    },
     "model-load-success": "Modelo cargado",
-    "prediction": "La predicción es: {{index}}"
+    "prediction": "La predicción es: {{index}}",
+    "file-upload-success": "Fichero cargado con éxito"
   },
   "table": {
     "dataset": "Conjunto de datos"
@@ -464,6 +474,10 @@
       }
     },
     "menu-selection-dataset": {
+      "0-tabular-classification": {
+        "csv": "Subir conjunto de datos - CSV",
+        "csv-text": "Sube un fichero con un conjunto de datos tratado en formato <code>.csv</code>"
+      },
       "form-description-1": "Selecciona a continuación el conjunto de datos sobre se va a trabajar o carga tu propio conjunto de datos.",
       "form-label": "Selecciona un conjunto de datos",
       "form-option-_-1": "Selecciona un conjunto de datos",
@@ -510,6 +524,7 @@
         "4_titanic": {
         },
         "generator": {
+          "form-dataframe-submit": "Procesar dataframe",
           "dataset": {
             "title": "Conjunto de datos",
             "upload-dataset": "Subir conjunto de datos.",

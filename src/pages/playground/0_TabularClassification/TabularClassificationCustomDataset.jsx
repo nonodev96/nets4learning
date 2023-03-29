@@ -25,18 +25,20 @@ import {
 } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import json_cars from "../../../core/constants/template_car.json";
 import json_iris from "../../../core/constants/template_iris.json";
-import json_lymphatcs from '../../../core/constants/template_lymphatcs.json'
+import json_lymphatics from '../../../core/constants/template_lymphatcs.json'
 import * as alertHelper from '../../../utils/alertHelper'
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import DynamicFormDataset from "./DynamicFormDataset";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 
-import * as dfd from "danfojs"
 import { isProduction } from "../../../utils/utils";
 import TabularClassificationCustomDatasetManual from "./TabularClassificationCustomDatasetManual";
 import { Trans, useTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
+import * as dfd from "danfojs"
+import { Parser } from "./dataset/Parser";
+import TabularClassificationCustomDatasetForm from "./TabularClassificationCustomDatasetForm";
 
 const DEFAULT_LEARNING_RATE = 1
 const DEFAULT_NUMBER_EPOCHS = 20
@@ -72,6 +74,7 @@ export default function TabularClassificationCustomDataset(props) {
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS) // LOSS_TYPE
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS) // METRICS_TYPE
 
+  const [dataframe, setDataframe] = useState(null)
   const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
   const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t))
   const [Model, setModel] = useState(null)
@@ -85,7 +88,7 @@ export default function TabularClassificationCustomDataset(props) {
 
   const debug = async (dataset_JSON) => {
     if (!dataset_JSON) {
-      await alertHelper.alertError("Error, dataset no cargado", "Error")
+      await alertHelper.alertError("Error, dataset no cargado", { title: "Error" })
       return
     }
 
@@ -149,25 +152,27 @@ export default function TabularClassificationCustomDataset(props) {
 
   useEffect(() => {
     const dataset_key = getKeyDatasetByID_TabularClassification(dataset)
-    ReactGA.send({ hitType: "pageview", page: "/CustomDataSetClassicClassification/" + dataset_key, title: dataset_key });
+    ReactGA.send({ hitType: "pageview", page: "/TabularClassificationCustomDataset/" + dataset_key, title: dataset_key });
+
     switch (dataset_key) {
       case MODEL_UPLOAD: {
-        const uploadedArchitecture = localStorage.getItem('custom-architecture')
-        if (uploadedArchitecture !== "{}") {
-          if (!isProduction()) console.log(uploadedArchitecture)
-          const uploadedJSON = JSON.parse(uploadedArchitecture)
-          const auxLayer = uploadedJSON?.modelTopology?.config?.layers ?? []
-          let _layerArray = []
-          for (let i = 0; i < auxLayer.length; i++) {
-            _layerArray.push({
-              units     : auxLayer[i].config.units,
-              activation: auxLayer[i].config.activation,
-            })
-          }
-          setLayers(_layerArray)
-        } else {
-          setLayers(DEFAULT_LAYERS)
-        }
+        // TODO
+        // const uploadedArchitecture = localStorage.getItem('custom-architecture')
+        // if (uploadedArchitecture !== "{}") {
+        //   if (!isProduction()) console.log(uploadedArchitecture)
+        //   const uploadedJSON = JSON.parse(uploadedArchitecture)
+        //   const auxLayer = uploadedJSON?.modelTopology?.config?.layers ?? []
+        //   let _layerArray = []
+        //   for (let i = 0; i < auxLayer.length; i++) {
+        //     _layerArray.push({
+        //       units     : auxLayer[i].config.units,
+        //       activation: auxLayer[i].config.activation,
+        //     })
+        //   }
+        //   setLayers(_layerArray)
+        // } else {
+        setLayers(DEFAULT_LAYERS)
+        // }
         break
       }
       case MODEL_CAR.KEY: {
@@ -193,7 +198,7 @@ export default function TabularClassificationCustomDataset(props) {
       case MODEL_LYMPHOGRAPHY.KEY: {
         const _model = new MODEL_LYMPHOGRAPHY(t)
         set_ModelInfo(_model)
-        setCustomDataSet_JSON(json_lymphatcs)
+        setCustomDataSet_JSON(json_lymphatics)
         setLayers([
           { units: 18, activation: 'sigmoid' },
           { units: 10, activation: 'relu' },
@@ -214,7 +219,7 @@ export default function TabularClassificationCustomDataset(props) {
     event.preventDefault()
     console.debug('ID Conjunto de datos: ', { dataset })
     if (customDataSet_JSON === null) {
-      await alertHelper.alertError('Primero debes de cargar los datos')
+      await alertHelper.alertError(t("error.need-dataset"))
       return
     }
 
@@ -223,19 +228,29 @@ export default function TabularClassificationCustomDataset(props) {
     console.log({ last_layer_units, classes_length })
 
     if (last_layer_units !== classes_length) {
-      await alertHelper.alertWarning(
-        "Forma del tensor incorrecta",
+      await alertHelper.alertWarning(t("error.tensor-shape"),
         {
-          html: `La capa de salida tiene la forma (* ,${last_layer_units}). <br> Debe tener la forma (*, ${classes_length})`
+          footer: "",
+          text  : "",
+          html  : <Trans i18nKey={"error.tensor-shape-change"}
+                         values={{
+                           last_layer_units: last_layer_units,
+                           classes_length  : classes_length
+                         }} />
         }
       )
       return
     }
+    //
+    //
+    //
+    //
+    //
 
     try {
       setIsTraining(true)
       let _learningRate = learningRate / 100
-      let _numberOfEpoch = parseInt(numberEpochs)
+      let _numberOfEpoch = numberEpochs
       let _testSize = testSize / 100
       let _layerList = layers
 
@@ -315,7 +330,7 @@ export default function TabularClassificationCustomDataset(props) {
           break
         }
         case MODEL_LYMPHOGRAPHY.KEY: {
-          dataset_JSON = json_lymphatcs
+          dataset_JSON = json_lymphatics
           break
         }
         default: {
@@ -336,11 +351,11 @@ export default function TabularClassificationCustomDataset(props) {
         let input_float = undefined
         let input_select = undefined
         switch (type) {
-          case "number": {
+          case "int32": {
             input_number = DataSetClasses[i].get(parseInt(element))
             break
           }
-          case "float": {
+          case "float32": {
             input_float = parseFloat(element);//DataSetClasses[i].get(parseFloat(element))
             break
           }
@@ -406,7 +421,7 @@ export default function TabularClassificationCustomDataset(props) {
         activation: 'sigmoid'
       }, ...oldLayers])
     } else {
-      await alertHelper.alertWarning("No se pueden añadir más capas")
+      await alertHelper.alertWarning(t("alert.warning.not-more-layers"))
     }
   }
 
@@ -493,105 +508,128 @@ export default function TabularClassificationCustomDataset(props) {
     }
   }
 
+  const handleChange_FileUpload_CSV = (files) => {
+    if (files.length !== 1) {
+      console.error(t("error.load-json-csv"))
+      return;
+    }
+    try {
+      const file_csv = new File([files[0]], files[0].name, { type: files[0].type });
+      dfd.readCSV(file_csv).then((_dataframe) => {
+        setDataframe(_dataframe)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   console.debug("render TabularClassificationCustomDataset")
   return (
     <>
+      <Container className={"mb-3"}>
+        <Row>
+          <Col xl={12} className={"mt-3"}>
+            <Accordion>
+              <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
+                <Accordion.Header>
+                  <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
+                </Accordion.Header>
+                <Accordion.Body>
+
+                  <TabularClassificationCustomDatasetManual />
+
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item key={"1"} eventKey={"description_dataset"}>
+                <Accordion.Header>
+                  <h3>
+                    <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + "dataset.upload-dataset"} />
+                  </h3>
+                </Accordion.Header>
+                <Accordion.Body>
+                  {{
+                    '0': <>
+                      <DragAndDrop name={"csv"}
+                                   accept={{ 'text/csv': ['.csv'] }}
+                                   text={t("drag-and-drop.csv")}
+                                   labelFiles={t("drag-and-drop.label-files-one")}
+                                   function_DropAccepted={handleChange_FileUpload_CSV} />
+
+                      {dataframe && <>
+                        <TabularClassificationCustomDatasetForm dataframe={dataframe}
+                                                                setDataframe={setDataframe} />
+                      </>}
+
+                    </>
+                  }[dataset]}
+                  {dataset !== '0' ? (
+                    modelInfo.DESCRIPTION()
+                  ) : ("")}
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Col>
+
+          <Col xl={12} className={"mt-3"}>
+            <Card>
+              <Card.Header>
+                <h3 className={"d-flex align-items-baseline"}>
+                  <Trans i18nKey={prefix + "dataset.title"} />
+                  {!customDataSet_JSON && <>
+                    <div className="ms-4 spinner-border"
+                         role="status"
+                         style={{
+                           fontSize                      : "0.5em",
+                           height                        : "1rem",
+                           width                         : "1rem",
+                           "--bs-spinner-animation-speed": "1.5s"
+                         }}>
+                      <span className="sr-only"></span>
+                    </div>
+                  </>}
+                </h3>
+              </Card.Header>
+              <Card.Body className={"overflow-x-scroll"}>
+
+                {customDataSet_JSON &&
+                  <>
+                    <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
+                                        data_body={customDataSet_JSON.data} />
+
+                    <hr />
+
+                    <details>
+                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.title"} /></summary>
+                      <main>
+                        <Row>
+                          {customDataSet_JSON.attributes.map((item, i1) => {
+                            return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
+                              <p><b>{item.name}</b></p>
+                              {item.type === "int32" && <p><Trans i18nKey={prefix + "dataset.attributes.number"} /></p>}
+                              {item.type === "float32" && <p><Trans i18nKey={prefix + "dataset.attributes.float"} /></p>}
+                              {item.type === "select" && <ol>{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
+                            </Col>
+                          })}
+                        </Row>
+                      </main>
+                    </details>
+                    <details>
+                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
+                      <main>
+                        <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
+                      </main>
+                    </details>
+                  </>
+                }
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
       <Form id={"TabularClassificationCustomDataset"}
             onSubmit={handleSubmit_Play}>
-        <Container className={"mb-3"}>
-          <Row>
-            <Col xl={12} className={"mt-3"}>
-              <Accordion>
-                <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
-                  <Accordion.Header>
-                    <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
-                  </Accordion.Header>
-                  <Accordion.Body>
-
-                    <TabularClassificationCustomDatasetManual />
-
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item key={"1"} eventKey={"description_dataset"}>
-                  <Accordion.Header>
-                    <h3>
-                      <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + "dataset.upload-dataset"} />
-                    </h3>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    {{
-                      '0': <>
-                        <DragAndDrop name={"json"}
-                                     accept={{ 'application/json': ['.json'] }}
-                                     text={"Introduce el fichero de datos plantilla.json"}
-                                     labelFiles={"Fichero:"}
-                                     function_DropAccepted={handleChange_FileUpload_TemplateDataset} />
-                      </>
-                    }[dataset]}
-                    {dataset !== '0' ? (
-                      modelInfo.DESCRIPTION()
-                    ) : ("")}
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-            </Col>
-
-            <Col xl={12} className={"mt-3"}>
-              <Card>
-                <Card.Header>
-                  <h3 className={"d-flex align-items-baseline"}>
-                    <Trans i18nKey={prefix + "dataset.title"} />
-                    {!customDataSet_JSON && <>
-                      <div className="ms-4 spinner-border"
-                           role="status"
-                           style={{
-                             fontSize                      : "0.5em",
-                             height                        : "1rem",
-                             width                         : "1rem",
-                             "--bs-spinner-animation-speed": "1.5s"
-                           }}>
-                        <span className="sr-only"></span>
-                      </div>
-                    </>}
-                  </h3>
-                </Card.Header>
-                <Card.Body className={"overflow-x-scroll"}>
-
-                  {customDataSet_JSON &&
-                    <>
-                      <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
-                                          data_body={customDataSet_JSON.data} />
-
-                      <hr />
-
-                      <details>
-                        <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.title"} /></summary>
-                        <main>
-                          <Row>
-                            {customDataSet_JSON.attributes.map((item, i1) => {
-                              return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
-                                <p><b>{item.name}</b></p>
-                                {item.type === "number" && <p><Trans i18nKey={prefix + "dataset.attributes.number"} /></p>}
-                                {item.type === "float" && <p><Trans i18nKey={prefix + "dataset.attributes.float"} /></p>}
-                                {item.type === "select" && <ol>{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
-                              </Col>
-                            })}
-                          </Row>
-                        </main>
-                      </details>
-                      <details>
-                        <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
-                        <main>
-                          <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
-                        </main>
-                      </details>
-                    </>
-                  }
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-
+        <Container>
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
             <Col xl={12}>
@@ -705,7 +743,7 @@ export default function TabularClassificationCustomDataset(props) {
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder={t(prefix + "editor-layers.learning-rate-placeholder")}
+                                  placeholder={t(prefix + "general-parameters.learning-rate-placeholder")}
                                   defaultValue={DEFAULT_LEARNING_RATE}
                                   onChange={(e) => setLearningRate(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
@@ -721,7 +759,7 @@ export default function TabularClassificationCustomDataset(props) {
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder={t(prefix + "editor-layers.number-of-epochs")}
+                                  placeholder={t(prefix + "general-parameters.number-of-epochs")}
                                   defaultValue={DEFAULT_NUMBER_EPOCHS}
                                   onChange={(e) => setNumberEpochs(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">
@@ -737,7 +775,7 @@ export default function TabularClassificationCustomDataset(props) {
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
-                                  placeholder={t(prefix + "editor-layers.train-rate-placeholder")}
+                                  placeholder={t(prefix + "general-parameters.train-rate-placeholder")}
                                   defaultValue={DEFAULT_TEST_SIZE}
                                   onChange={(e) => setTestSize(parseInt(e.target.value))} />
                     <Form.Text className="text-muted">

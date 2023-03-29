@@ -6,7 +6,7 @@ import N4LFooter from '../../components/footer/N4LFooter'
 import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../utils/alertHelper'
 import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 export default function MenuSelectDataset(props) {
   const { id } = useParams()
@@ -17,7 +17,7 @@ export default function MenuSelectDataset(props) {
 
   const handleSubmit = async () => {
     if (dataset_id === -1) {
-      await alertHelper.alertWarning('Debes de seleccionar un conjunto de datos')
+      await alertHelper.alertWarning(t("alert.warning.need-select-dataset"))
     } else {
       if (!isUploadedArchitecture) {
         localStorage.setItem('custom-architecture', '{}')
@@ -26,27 +26,47 @@ export default function MenuSelectDataset(props) {
     }
   }
 
-  const handleChange_ArchitectureUpload = async (files) => {
-    try {
-      let reader = new FileReader()
-      reader.readAsText(files[0])
-      reader.onload = (e) => {
-        localStorage.setItem('custom-architecture', e.target.result.toString())
-        setIsUploadedArchitecture(true)
-      }
-      reader.onloadend = async () => {
-        await alertHelper.alertSuccess('Fichero cargado con éxito')
-      }
-    } catch (error) {
-      await alertHelper.alertError(error)
-    }
-  }
+  // TODO
+  //
+  // const handleChange_ArchitectureUpload = async (files) => {
+  //   try {
+  //     let reader = new FileReader()
+  //     reader.readAsText(files[0])
+  //     reader.onload = (e) => {
+  //       localStorage.setItem('custom-architecture', e.target.result.toString())
+  //       setIsUploadedArchitecture(true)
+  //     }
+  //     reader.onloadend = async () => {
+  //       await alertHelper.alertSuccess(t("alert.file-upload-success"))
+  //     }
+  //   } catch (error) {
+  //     await alertHelper.alertError(error)
+  //   }
+  // }
+  //
+  // const handleChange_CSVUpload = async (files) => {
+  //   try {
+  //     let reader = new FileReader()
+  //     reader.readAsText(files[0])
+  //     reader.onload = (e) => {
+  //       localStorage.setItem('custom-csv', e.target.result.toString())
+  //       setIsUploadedArchitecture(true)
+  //     }
+  //     reader.onloadend = async () => {
+  //       await alertHelper.alertSuccess(t("alert.file-upload-success"))
+  //     }
+  //   } catch (error) {
+  //     await alertHelper.alertError(error)
+  //   }
+  // }
+
 
   const PrintHTML_OPTIONS = (_id) => {
     switch (_id) {
       case '0': {
         // tabular-classification
         return <>
+          <option value={0}>{t("pages.menu-selection-dataset.0-tabular-classification.csv")}</option>
           <option value={1}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-1")}</option>
           <option value={2}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-2")}</option>
           <option value={3}>{t("datasets-models.0-tabular-classification.list-datasets.0-option-3")}</option>
@@ -85,12 +105,12 @@ export default function MenuSelectDataset(props) {
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
-              <Card.Header><h3>{LIST_TYPE_MODALITY[id]}</h3></Card.Header>
+              <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
               <Card.Body>
                 <Card.Text>
                   {t("pages.menu-selection-dataset.form-description-1")}
                 </Card.Text>
-                <Form>
+                <Form onSubmit={() => handleSubmit()}>
                   <Form.Group className="mb-3" controlId="FormDataSet">
                     <Form.Label>{t("pages.menu-selection-dataset.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-dataset.form-label")}
@@ -101,24 +121,25 @@ export default function MenuSelectDataset(props) {
                     </Form.Select>
                   </Form.Group>
 
-                  {dataset_id === 0 &&
-                    <>
-                      <Card.Text>
-                        Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y
-                        se cargará una arquitectura por defecto de ejemplo.
-                      </Card.Text>
-                      <Card.Text>Carga tu propia arquitectura en formato .json</Card.Text>
-                      <DragAndDrop name={"doc"}
-                                   id={"UploadArchitectureMenu"}
-                                   accept={{ 'application/json': ['.json'] }}
-                                   text={t("drag-and-drop.json")}
-                                   labelFiles={t("drag-and-drop.label-files-one")}
-                                   function_DropAccepted={handleChange_ArchitectureUpload} />
-                    </>
-                  }
+                  {/*{dataset_id === 0 &&*/}
+                  {/*  <>*/}
+                  {/*    <Card.Text>*/}
+                  {/*      <Trans i18nKey={"pages.menu-selection-dataset.0-tabular-classification.csv-text"}*/}
+                  {/*             components={{*/}
+                  {/*               code: <code>code</code>*/}
+                  {/*             }} />*/}
+                  {/*    </Card.Text>*/}
+                  {/*    <DragAndDrop name={"doc"}*/}
+                  {/*                 id={"UploadArchitectureMenu"}*/}
+                  {/*                 accept={{ 'text/csv': ['.csv'] }}*/}
+                  {/*                 text={t("drag-and-drop.csv")}*/}
+                  {/*                 labelFiles={t("drag-and-drop.label-files-one")}*/}
+                  {/*                 function_DropAccepted={handleChange_CSVUpload} />*/}
+                  {/*  </>*/}
+                  {/*}*/}
 
 
-                  <Button onClick={() => handleSubmit()}>
+                  <Button type="submit">
                     {t("pages.menu-selection-dataset.form-submit")}
                   </Button>
                 </Form>

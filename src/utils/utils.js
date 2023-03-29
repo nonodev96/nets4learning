@@ -19,3 +19,14 @@ export function random_min_max(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function processJson(str) {
+  let isJson = true;
+  let json = null;
+  try {
+    json = JSON.parse(str);
+  } catch (e) {
+    return { isJson: false, json };
+  }
+  return { isJson, json };
+}

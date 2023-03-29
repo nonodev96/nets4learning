@@ -10,10 +10,10 @@ export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
     })
   })
   const columns_number = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "number";
+    return type === "int32";
   })
   const columns_float = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "float";
+    return type === "float32";
   })
   const columns_select = dataset_JSON.attributes.filter(({ type }) => {
     return type === "select";

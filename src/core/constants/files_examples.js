@@ -15,9 +15,9 @@ export const FILE_TEMPLATE = {
    { "key": "resultado_6", "name": "Clase 6" }
   ],
   "attributes"       : [
-    { "name": "Atributo 1", "index_column": 0, "type": "number" },
-    { "name": "Atributo 2", "index_column": 1, "type": "float"  },
-    { "name": "Atributo 3", "index_column": 2, "type": "float"  },
+    { "name": "Atributo 1", "index_column": 0, "type": "int32" },
+    { "name": "Atributo 2", "index_column": 1, "type": "float32"  },
+    { "name": "Atributo 3", "index_column": 2, "type": "float32"  },
     { 
       "name"        : "Atributo m", 
       "index_column": 3,

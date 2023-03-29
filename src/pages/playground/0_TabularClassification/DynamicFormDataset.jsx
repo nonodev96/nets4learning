@@ -52,43 +52,43 @@ export default function DynamicFormDataset(props) {
 
   console.debug("Render DynamicFormDataset")
   return <>
-    <Container>
-      <Row className={"mt-3"}>
-        <Col xl={12}>
-          <Card>
-            <Card.Header className={"d-flex align-items-center"}>
-              <h3>Predicción</h3>
-              <div className={"ms-3"}>
-                <Form.Group controlId={"DATOS"}>
-                  {/*<Form.Label>Carga una fila del dataset</Form.Label>*/}
-                  <Form.Select aria-label="Selecciona una opción"
-                               size={"sm"}
-                               onChange={(e) => handleChange_ROW(e)}>
-                    {dataset_JSON.data.map((row, index) => {
-                      return <option key={"option_" + index} value={index}>{index} - {row.slice(-1)}</option>
-                    })}
-                  </Form.Select>
-                </Form.Group>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                Introduce separado por punto y coma los siguientes valores correspondientes al conjunto de datos:
-                <br/>
-                <b>({dataset_JSON.attributes.map(att => att.name).join(", ")}).</b>
-              </Card.Text>
+    <Form onSubmit={(event) => event.preventDefault()}>
+      <Container>
+        <Row className={"mt-3"}>
+          <Col xl={12}>
+            <Card>
+              <Card.Header className={"d-flex align-items-center"}>
+                <h3>Predicción</h3>
+                <div className={"ms-3"}>
+                  <Form.Group controlId={"DATOS"}>
+                    {/*<Form.Label>Carga una fila del dataset</Form.Label>*/}
+                    <Form.Select aria-label="Selecciona una opción"
+                                 size={"sm"}
+                                 onChange={(e) => handleChange_ROW(e)}>
+                      {dataset_JSON.data.map((row, index) => {
+                        return <option key={"option_" + index} value={index}>{index} - {row.slice(-1)}</option>
+                      })}
+                    </Form.Select>
+                  </Form.Group>
+                </div>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  Introduce separado por punto y coma los siguientes valores correspondientes al conjunto de datos:
+                  <br />
+                  <b>({dataset_JSON.attributes.map(att => att.name).join(", ")}).</b>
+                </Card.Text>
 
-              <Form onSubmit={(event) => event.preventDefault()}>
 
                 <Row>
                   {dataset_JSON.attributes.map((attribute, index, array) => {
                     // VALUES:
-                    // { name: "type1", type: "number" },
-                    // { name: "type2", type: "float"  },
+                    // { name: "type1", type: "int32" },
+                    // { name: "type2", type: "float32"  },
                     // { name: "type3", type: "select", options: [{value: "", text: ""] },
 
                     switch (attribute.type) {
-                      case "number": {
+                      case "int32": {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>
@@ -99,12 +99,12 @@ export default function DynamicFormDataset(props) {
                                           min={0}
                                           step={1}
                                           defaultValue={parseInt(dataset_JSON.data[0][attribute?.index_column])}
-                                          onChange={(e) => handleChange_Number(e, attribute?.index_column)}/>
+                                          onChange={(e) => handleChange_Number(e, attribute?.index_column)} />
                             <Form.Text className="text-muted">Parámetro entero: {attribute.name}</Form.Text>
                           </Form.Group>
                         </Col>
                       }
-                      case "float": {
+                      case "float32": {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>
@@ -115,7 +115,7 @@ export default function DynamicFormDataset(props) {
                                           min={0}
                                           step={0.1}
                                           defaultValue={parseFloat(dataset_JSON.data[0][attribute?.index_column])}
-                                          onChange={(e) => handleChange_Float(e, attribute?.index_column)}/>
+                                          onChange={(e) => handleChange_Float(e, attribute?.index_column)} />
                             <Form.Text className="text-muted">Parámetro decimal: {attribute.name}</Form.Text>
                           </Form.Group>
                         </Col>
@@ -152,7 +152,7 @@ export default function DynamicFormDataset(props) {
                   <Form.Control placeholder="Introduce el vector a probar"
                                 disabled={true}
                                 value={stringToPredict}
-                                onChange={handleChange_TestInput}/>
+                                onChange={handleChange_TestInput} />
                 </Form.Group>
 
                 {/* SUBMIT BUTTON */}
@@ -164,11 +164,12 @@ export default function DynamicFormDataset(props) {
                     Predecir
                   </Button>
                 </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Form>
+
   </>
 }

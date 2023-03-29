@@ -7,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
-const app = (<BrowserRouter><App/></BrowserRouter>);
+const app = (<BrowserRouter><App /></BrowserRouter>);
 
 
 ReactDOM.render(app, document.getElementById("root"));
@@ -18,3 +18,12 @@ ReactDOM.render(app, document.getElementById("root"));
 if (process.env.REACT_APP_ENVIRONMENT === "production") {
   // reportWebVitals()
 }
+
+window.addEventListener('error', event => {
+  console.log(event.message)
+  if (event.message.includes('ResizeObserver loop limit exceeded')) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  }
+});
