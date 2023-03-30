@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
-import * as dfd from "danfojs"
 import { Parser } from "./dataset/Parser";
+import * as dfd from "danfojs"
 
 const headerStyle = {
   align: "center",
@@ -16,23 +16,49 @@ const cellStyle = {
   font : { family: "Arial", size: 11, color: ["black"] }
 };
 
+/**
+ *
+ * @param {{
+ *   dataframeOriginal    : dfd.DataFrame,
+ *   dataframeProcessed   : dfd.DataFrame,
+ *   setDataframeProcessed: Function,
+ *   setCustomDataSet_JSON: any
+ * }} props
+ * @return {JSX.Element}
+ * @constructor
+ */
 export default function TabularClassificationCustomDatasetForm(props) {
-  const { dataframe, setDataframe } = props
-  const list = dataframe.columns.map((c, i) => ({ column_name: c, column_dtype: dataframe.dtypes[i] }))
-  const [listCtypesProcessed, setListCtypesProcessed] = useState(list)
+  const {
+    dataframeOriginal,
+    dataframeProcessed,
+    setDataframeProcessed,
+    setCustomDataSet_JSON
+  } = props
+
+  const [listColumnTypeProcessed, setListColumnTypeProcessed] = useState([])
+  const [listClasses, setListClasses] = useState([])
 
   const { t } = useTranslation()
+  const prefix = "form-dataframe."
 
   const options = [
-    { value: "int32", text: "int32" },
-    { value: "float32", text: "float32" },
-    { value: "string", text: "string" },
-    { value: "categorical", text: "categorical" },
-    { value: "ignored", text: "ignored" },
+    { value: "int32", i18n: "int32" },
+    { value: "float32", i18n: "float32" },
+    { value: "string", i18n: "string" },
+    { value: "ignored", i18n: "ignored" },
   ]
 
   useEffect(() => {
-    dataframe.plot("plot_original").table({
+    console.log("ayuda dataframeOriginal")
+    if (dataframeOriginal === null) return;
+    const list = dataframeOriginal.columns.map((column_name, i) => {
+      return {
+        column_name: column_name,
+        column_type: dataframeOriginal.dtypes[i]
+      }
+    })
+    setListColumnTypeProcessed(list)
+    dataframeOriginal.plot("plot_original").table({
       config: {
         tableHeaderStyle: headerStyle,
         tableCellStyle  : cellStyle,
@@ -41,28 +67,48 @@ export default function TabularClassificationCustomDatasetForm(props) {
         title: "Table displaying the Titanic dataset",
       },
     })
-  }, [])
+  }, [dataframeOriginal])
+
+  useEffect(() => {
+    console.log("ayuda dataframeProcessed")
+    if (dataframeProcessed === null) return;
+    dataframeProcessed.plot("plot_processed").table({
+      config: {
+        tableHeaderStyle: headerStyle,
+        tableCellStyle  : cellStyle,
+      },
+      layout: {
+        title: t("Table displaying the dataset processed"),
+      },
+    })
+  }, [dataframeProcessed])
 
   const handleSubmit_dataframe = (event) => {
     event.preventDefault()
 
-    const newDataframe = Parser.transfrom(dataframe, listCtypesProcessed)
-    newDataframe.plot("plot_processed").table({
-      config: {
-        tableHeaderStyle: headerStyle,
-        tableCellStyle  : cellStyle,
-      },
-      layout: {
-        title: "Table displaying the Titanic dataset",
-      },
+    const {
+      dataframe,
+      attributes,
+      classes,
+      data
+    } = Parser.transform(dataframeOriginal, listColumnTypeProcessed)
+
+    console.log({ dataframe, attributes, classes, data })
+    setDataframeProcessed(dataframe)
+    setCustomDataSet_JSON({
+      missing_values   : false,
+      missing_value_key: "",
+      attributes       : attributes,
+      classes          : classes,
+      data             : data,
     })
   }
 
   const handleChange_cType = (e, column_name) => {
-    setListCtypesProcessed([
-      ...listCtypesProcessed.map((old_column) => {
+    setListColumnTypeProcessed([
+      ...listColumnTypeProcessed.map((old_column) => {
         return (old_column.column_name === column_name) ?
-          { ...old_column, column_dtype: e.target.value } :
+          { ...old_column, column_type: e.target.value } :
           { ...old_column }
       })
     ])
@@ -70,22 +116,22 @@ export default function TabularClassificationCustomDatasetForm(props) {
   }
 
   const Print_HTML_FORM_DataFrame = () => {
-    return listCtypesProcessed.map(({ column_name, column_dtype }, index) => {
+    return listColumnTypeProcessed.map(({ column_name, column_type }, index) => {
         return <Col xxl={2} key={index}>
           <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
             <Form.Label><b>{column_name}</b></Form.Label>
             <Form.Select aria-label="Selecciona una opción"
                          size={"sm"}
-                         defaultValue={column_dtype}
+                         defaultValue={column_type}
                          onChange={(e) => handleChange_cType(e, column_name)}>
               {options.map((option_value, option_index) => {
                 return <option key={column_name + "_option_" + option_index}
                                value={option_value.value}>
-                  {option_value.text}
+                  {t(prefix + option_value.i18n)}
                 </option>
               })}
             </Form.Select>
-            <Form.Text className="text-muted">Parámetro: {column_dtype}</Form.Text>
+            <Form.Text className="text-muted">Parámetro: {column_type}</Form.Text>
           </Form.Group>
         </Col>
       }
@@ -115,12 +161,15 @@ export default function TabularClassificationCustomDatasetForm(props) {
           <details>
             <summary className={"n4l-summary"}>Processed</summary>
             <div id={"plot_processed"}></div>
+            <ol>
+              {listClasses.map((value, index) => <li key={index}>{value}</li>)}
+            </ol>
           </details>
         </Col>
       </Row>
 
       <Button type="submit" className={"mt-3"}>
-        <Trans i18nKey={"pages.playground.0-tabular-classification.generator.form-dataframe-submit"} />
+        <Trans i18nKey={prefix + "submit"} />
       </Button>
     </Form>
   </>

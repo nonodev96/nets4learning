@@ -37,7 +37,6 @@ import TabularClassificationCustomDatasetManual from "./TabularClassificationCus
 import { Trans, useTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 import * as dfd from "danfojs"
-import { Parser } from "./dataset/Parser";
 import TabularClassificationCustomDatasetForm from "./TabularClassificationCustomDatasetForm";
 
 const DEFAULT_LEARNING_RATE = 1
@@ -58,9 +57,10 @@ const DEFAULT_LAYERS = [
 
 export default function TabularClassificationCustomDataset(props) {
   const { dataset } = props
+  const dataset_key = getKeyDatasetByID_TabularClassification(dataset)
+
   const { t } = useTranslation()
   const prefix = "pages.playground.0-tabular-classification.generator."
-
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
 
@@ -74,7 +74,8 @@ export default function TabularClassificationCustomDataset(props) {
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS) // LOSS_TYPE
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS) // METRICS_TYPE
 
-  const [dataframe, setDataframe] = useState(null)
+  const [dataframeOriginal, setDataframeOriginal] = useState(null)
+  const [dataframeProcessed, setDataframeProcessed] = useState(null)
   const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null)
   const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t))
   const [Model, setModel] = useState(null)
@@ -151,7 +152,6 @@ export default function TabularClassificationCustomDataset(props) {
   }
 
   useEffect(() => {
-    const dataset_key = getKeyDatasetByID_TabularClassification(dataset)
     ReactGA.send({ hitType: "pageview", page: "/TabularClassificationCustomDataset/" + dataset_key, title: dataset_key });
 
     switch (dataset_key) {
@@ -241,11 +241,6 @@ export default function TabularClassificationCustomDataset(props) {
       )
       return
     }
-    //
-    //
-    //
-    //
-    //
 
     try {
       setIsTraining(true)
@@ -294,7 +289,7 @@ export default function TabularClassificationCustomDataset(props) {
       setTargetSetClasses(TARGET_SET_CLASSES)
 
       setModel(model)
-      await alertHelper.alertSuccess('Modelo entrenado con éxito')
+      await alertHelper.alertSuccess(t("alert.model-train-success"))
     } catch (error) {
       console.error(error)
     } finally {
@@ -302,8 +297,22 @@ export default function TabularClassificationCustomDataset(props) {
     }
   }
 
+  // TODO
+  const handleClick_TestVector_refactor = async () => {
+    let input = [[], [1, stringToPredict.split(';').length]]
+
+    let Xtrain, ytrain;
+    Xtrain = dataframeOriginal.iloc({ columns: [`1:`] })
+    ytrain = dataframeOriginal['Survived']
+
+    let scaler = new dfd.MinMaxScaler()
+    scaler.fit(Xtrain)
+    Xtrain = scaler.transform(Xtrain)
+    return [Xtrain.tensor, ytrain.tensor]
+  }
+
   const handleClick_TestVector = async () => {
-    if (getKeyDatasetByID_TabularClassification(dataset) === MODEL_UPLOAD) {
+    if (dataset_key === MODEL_UPLOAD) {
       if (customDataSet_JSON === null) {
         await alertHelper.alertError('Primero debes de cargar un dataset')
         return
@@ -316,7 +325,7 @@ export default function TabularClassificationCustomDataset(props) {
     let dataset_JSON = null
     let input = [[], [1, stringToPredict.split(';').length]]
     try {
-      switch (getKeyDatasetByID_TabularClassification(dataset)) {
+      switch (dataset_key) {
         case MODEL_UPLOAD: {
           dataset_JSON = customDataSet_JSON
           break
@@ -359,7 +368,7 @@ export default function TabularClassificationCustomDataset(props) {
             input_float = parseFloat(element);//DataSetClasses[i].get(parseFloat(element))
             break
           }
-          case "select": {
+          case "string": {
             input_select = DataSetClasses[i].get(element)
             input_select = input_select ?? DataSetClasses[i].get(parseInt(element))
             break
@@ -508,7 +517,8 @@ export default function TabularClassificationCustomDataset(props) {
     }
   }
 
-  const handleChange_FileUpload_CSV = (files) => {
+  const handleChange_FileUpload_CSV = async (files, event) => {
+    console.log({ files, event })
     if (files.length !== 1) {
       console.error(t("error.load-json-csv"))
       return;
@@ -516,11 +526,17 @@ export default function TabularClassificationCustomDataset(props) {
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type });
       dfd.readCSV(file_csv).then((_dataframe) => {
-        setDataframe(_dataframe)
+        console.log(_dataframe)
+        setDataframeOriginal(_dataframe)
       })
+      await alertHelper.alertSuccess(t("alert.file-upload-success"))
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const handleChange_FileUpload_CSV_reject = async (files, event) => {
+    await alertHelper.alertError(t("alert.file-upload-error-incorrect-format"))
   }
 
   console.debug("render TabularClassificationCustomDataset")
@@ -535,11 +551,12 @@ export default function TabularClassificationCustomDataset(props) {
                   <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
                 </Accordion.Header>
                 <Accordion.Body>
-
+                  {/* TabularClassificationCustomDatasetManual */}
                   <TabularClassificationCustomDatasetManual />
 
                 </Accordion.Body>
               </Accordion.Item>
+
               <Accordion.Item key={"1"} eventKey={"description_dataset"}>
                 <Accordion.Header>
                   <h3>
@@ -553,11 +570,14 @@ export default function TabularClassificationCustomDataset(props) {
                                    accept={{ 'text/csv': ['.csv'] }}
                                    text={t("drag-and-drop.csv")}
                                    labelFiles={t("drag-and-drop.label-files-one")}
-                                   function_DropAccepted={handleChange_FileUpload_CSV} />
+                                   function_DropAccepted={handleChange_FileUpload_CSV}
+                                   function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
-                      {dataframe && <>
-                        <TabularClassificationCustomDatasetForm dataframe={dataframe}
-                                                                setDataframe={setDataframe} />
+                      {dataframeOriginal && <>
+                        <TabularClassificationCustomDatasetForm dataframeOriginal={dataframeOriginal}
+                                                                dataframeProcessed={dataframeProcessed}
+                                                                setDataframeProcessed={setDataframeProcessed}
+                                                                setCustomDataSet_JSON={setCustomDataSet_JSON} />
                       </>}
 
                     </>
@@ -605,9 +625,9 @@ export default function TabularClassificationCustomDataset(props) {
                           {customDataSet_JSON.attributes.map((item, i1) => {
                             return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
                               <p><b>{item.name}</b></p>
-                              {item.type === "int32" && <p><Trans i18nKey={prefix + "dataset.attributes.number"} /></p>}
-                              {item.type === "float32" && <p><Trans i18nKey={prefix + "dataset.attributes.float"} /></p>}
-                              {item.type === "select" && <ol>{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
+                              {item.type === "int32" && <p><Trans i18nKey={prefix + "dataset.attributes.int32"} /></p>}
+                              {item.type === "float32" && <p><Trans i18nKey={prefix + "dataset.attributes.float32"} /></p>}
+                              {item.type === "string" && <ol start="0">{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
                             </Col>
                           })}
                         </Row>
@@ -616,7 +636,7 @@ export default function TabularClassificationCustomDataset(props) {
                     <details>
                       <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
                       <main>
-                        <ol>{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
+                        <ol start="0">{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
                       </main>
                     </details>
                   </>
@@ -627,8 +647,7 @@ export default function TabularClassificationCustomDataset(props) {
         </Row>
       </Container>
 
-      <Form id={"TabularClassificationCustomDataset"}
-            onSubmit={handleSubmit_Play}>
+      <Form id={"TabularClassificationCustomDataset"} onSubmit={handleSubmit_Play}>
         <Container>
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
@@ -838,12 +857,12 @@ export default function TabularClassificationCustomDataset(props) {
             </Col>
           </Row>
 
-          {/* BLOCK  BUTTON */}
+          {/* BLOCK  BUTTON SUBMIT */}
           <Row className={"mt-3"}>
             <Col xl={12}>
               <div className="d-grid gap-2">
                 <Button type="submit"
-                        disabled={isTraining || !customDataSet_JSON}
+                        disabled={isTraining}
                         size={"lg"}
                         variant="primary">
                   <Trans i18nKey={prefix + "models.button-submit"} />
@@ -851,8 +870,12 @@ export default function TabularClassificationCustomDataset(props) {
               </div>
             </Col>
           </Row>
+        </Container>
+      </Form>
 
-          {/* SALIDA */}
+      {/* SALIDA */}
+      <Container>
+        <Row>
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
@@ -956,12 +979,21 @@ export default function TabularClassificationCustomDataset(props) {
               </Card>
             </Col>
           </Row>
-        </Container>
-      </Form>
+        </Row>
+      </Container>
 
-
-      {/* BLOCK 2 */}
-      {(customDataSet_JSON && Model) &&
+      {/* Prediction */}
+      {/* UPLOAD */}
+      {(dataset_key === MODEL_UPLOAD && (customDataSet_JSON || dataframeProcessed) && Model) &&
+        (<DynamicFormDataset dataset_JSON={customDataSet_JSON}
+                             dataset={dataset}
+                             stringToPredict={stringToPredict}
+                             setStringToPredict={setStringToPredict}
+                             handleChange_TestInput={handleChange_TestInput}
+                             handleClick_TestVector={handleClick_TestVector_refactor} />)
+      }
+      {/* OTHERS */}
+      {(dataset_key !== MODEL_UPLOAD && (customDataSet_JSON) && Model) &&
         (<DynamicFormDataset dataset_JSON={customDataSet_JSON}
                              dataset={dataset}
                              stringToPredict={stringToPredict}

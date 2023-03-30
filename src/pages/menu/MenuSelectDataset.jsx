@@ -15,7 +15,8 @@ export default function MenuSelectDataset(props) {
   const history = useHistory()
   const { t } = useTranslation()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     if (dataset_id === -1) {
       await alertHelper.alertWarning(t("alert.warning.need-select-dataset"))
     } else {
@@ -101,16 +102,16 @@ export default function MenuSelectDataset(props) {
     <>
       <N4LNavbar />
 
-      <Container id={"MenuSelectDataset"}>
-        <Row className="mt-3 mb-3">
-          <Col>
-            <Card>
-              <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
-              <Card.Body>
-                <Card.Text>
-                  {t("pages.menu-selection-dataset.form-description-1")}
-                </Card.Text>
-                <Form onSubmit={() => handleSubmit()}>
+      <Form onSubmit={($event) => handleSubmit($event)}>
+        <Container id={"MenuSelectDataset"}>
+          <Row className="mt-3 mb-3">
+            <Col>
+              <Card>
+                <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    {t("pages.menu-selection-dataset.form-description-1")}
+                  </Card.Text>
                   <Form.Group className="mb-3" controlId="FormDataSet">
                     <Form.Label>{t("pages.menu-selection-dataset.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-dataset.form-label")}
@@ -142,12 +143,12 @@ export default function MenuSelectDataset(props) {
                   <Button type="submit">
                     {t("pages.menu-selection-dataset.form-submit")}
                   </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </Form>
 
       <N4LFooter />
     </>

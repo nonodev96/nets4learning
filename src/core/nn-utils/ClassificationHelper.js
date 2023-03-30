@@ -16,7 +16,7 @@ export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
     return type === "float32";
   })
   const columns_select = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "select";
+    return type === "string";
   })
   let df = new dfd.DataFrame(data_parsed)
 

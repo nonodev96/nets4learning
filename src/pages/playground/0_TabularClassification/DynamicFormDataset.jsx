@@ -85,7 +85,7 @@ export default function DynamicFormDataset(props) {
                     // VALUES:
                     // { name: "type1", type: "int32" },
                     // { name: "type2", type: "float32"  },
-                    // { name: "type3", type: "select", options: [{value: "", text: ""] },
+                    // { name: "type3", type: "string", options: [{value: "", text: ""] },
 
                     switch (attribute.type) {
                       case "int32": {
@@ -120,7 +120,7 @@ export default function DynamicFormDataset(props) {
                           </Form.Group>
                         </Col>
                       }
-                      case "select": {
+                      case "string": {
                         return <Col key={"form" + index} className={"mb-3"}
                                     xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                           <Form.Group controlId={"FormControl_" + attribute.index_column}>

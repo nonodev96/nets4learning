@@ -12,8 +12,8 @@ export default function MenuSelectModel(props) {
   const history = useHistory()
   const { t } = useTranslation()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const handleSubmit = async ($event) => {
+    $event.preventDefault()
     if (model_id === -1) {
       await alertHelper.alertWarning('Debes de seleccionar un modelo')
     } else {
@@ -63,20 +63,20 @@ export default function MenuSelectModel(props) {
   return (
     <>
       <N4LNavbar />
+      <Form onSubmit={($event) => handleSubmit($event)}>
 
-      <Container id={"MenuSelectModel"}>
-        <Row className="mt-3 mb-3">
-          <Col>
-            <Card>
-              <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
-              <Card.Body>
-                <Card.Text>
-                  {t("pages.menu-selection-model.form-description-1")}
-                </Card.Text>
-                <Card.Text>
-                  {t("pages.menu-selection-model.form-description-2")}
-                </Card.Text>
-                <Form onSubmit={handleSubmit}>
+        <Container id={"MenuSelectModel"}>
+          <Row className="mt-3 mb-3">
+            <Col>
+              <Card>
+                <Card.Header><h3>{t("modality." + id)}</h3></Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    {t("pages.menu-selection-model.form-description-1")}
+                  </Card.Text>
+                  <Card.Text>
+                    {t("pages.menu-selection-model.form-description-2")}
+                  </Card.Text>
                   <Form.Group controlId="FormModel">
                     <Form.Label>{t("pages.menu-selection-model.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-model.form-label")}
@@ -93,12 +93,12 @@ export default function MenuSelectModel(props) {
                           type={"submit"}>
                     {t("pages.menu-selection-model.form-submit")}
                   </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </Form>
 
       <N4LFooter />
     </>

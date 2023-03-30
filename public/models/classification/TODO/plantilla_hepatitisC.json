@@ -10,7 +10,7 @@
   ],
   "attributes"       : [
     { "type": "float32",  "index_column": 0, "name": "age" },
-    { "type": "select", "index_column": 1, "name": "sex",
+    { "type": "string", "index_column": 1, "name": "sex",
       "options": [
         { "value": "m", "text": "Male" },
         { "value": "f", "text": "Female" }

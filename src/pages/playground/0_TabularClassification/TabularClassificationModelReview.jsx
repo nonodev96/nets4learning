@@ -479,7 +479,7 @@ class TabularClassificationModelReview extends React.Component {
                               // VALUES:
                               // {name: "type1", type: "int32" },
                               // {name: "type2", type: "float32" },
-                              // {name: "type3", type: "select", options: [{value: "", text: ""] },
+                              // {name: "type3", type: "string", options: [{value: "", text: ""] },
                               switch (value.type) {
                                 case "int32": {
                                   return <Col key={"form" + index} className={"mb-3"}
@@ -518,7 +518,7 @@ class TabularClassificationModelReview extends React.Component {
                                     </Form.Group>
                                   </Col>
                                 }
-                                case "select": {
+                                case "string": {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>

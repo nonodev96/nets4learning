@@ -129,12 +129,12 @@ export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
     { buying: "med",   maint: "med",   doors: "2",     persons: "4",    lug_boot: "big",   safety: "high" }
   ]
   FORM = [
-    { type: "select", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "select", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "select", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
-    { type: "select", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
-    { type: "select", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
-    { type: "select", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
+    { type: "string", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "string", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "string", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
+    { type: "string", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
+    { type: "string", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
+    { type: "string", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
   ]
   // @formatter:on
   DATA = [
@@ -1978,11 +1978,11 @@ export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
 //     { buying: "med",   maint: "med",   doors: "2",     persons: "4",    lug_boot: "big",   safety: "high" }
 //   ],
 //   FORM             : [
-//     { type: "select", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-//     { type: "select", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-//     { type: "select", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
-//     { type: "select", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
-//     { type: "select", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
+//     { type: "string", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+//     { type: "string", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+//     { type: "string", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
+//     { type: "string", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
+//     { type: "string", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
 //     { type: "select", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
 //   ],
 //   // @formatter:on

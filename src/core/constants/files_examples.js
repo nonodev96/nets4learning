@@ -21,7 +21,7 @@ export const FILE_TEMPLATE = {
     { 
       "name"        : "Atributo m", 
       "index_column": 3,
-      "type"        : "select", 
+      "type"        : "string", 
       "options"     : [ 
         { "value": "option_1", "text": "Opción 1" }, 
         { "value": "option_2", "text": "Opción 2" } 

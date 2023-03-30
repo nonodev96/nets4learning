@@ -3,8 +3,8 @@ import { Trans } from "react-i18next";
 import "./TabularClassificationCustomDatasetManual.css"
 
 export default function TabularClassificationCustomDatasetManual() {
-  console.log("TabularClassificationCustomDatasetManual")
   const prefix = "pages.playground.0-tabular-classification.generator.manual."
+  console.debug("TabularClassificationCustomDatasetManual")
   return <>
     <details>
       <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-edit-layers.title"} /></summary>

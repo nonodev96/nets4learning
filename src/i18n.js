@@ -15,9 +15,9 @@ i18n
   // init i18next
   // for all options read: https://www.i18next.com/overview/configuration-options
   .init({
-    preload: ['en', 'es'],
+    preload      : ['en', 'es'],
     fallbackLng  : 'en',
-    debug        : true,
+    debug        : false,
     backend      : {
       loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json'
     },

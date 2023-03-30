@@ -7,6 +7,9 @@
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
   "AYUDA": "AYUDA!!",
+  "Files": "Ficheros",
+  "Table displaying the dataset": "Table displaying the dataset",
+  "Table displaying the dataset processed": "Table displaying the dataset processed",
   "op": [
     "op 1",
     "op 2"
@@ -47,12 +50,14 @@
   },
   "alert": {
     "warning": {
-      "need-select-dataset":"Debes de seleccionar un conjunto de datos",
+      "need-select-dataset": "Debes de seleccionar un conjunto de datos",
       "not-more-layers": "No se pueden añadir más capas"
     },
     "model-load-success": "Modelo cargado",
+    "model-train-success": "Modelo entrenado con éxito",
     "prediction": "La predicción es: {{index}}",
-    "file-upload-success": "Fichero cargado con éxito"
+    "file-upload-success": "Fichero cargado con éxito",
+    "file-upload-error-incorrect-format": "El fichero no se ha podido cargar, no es el formato correcto"
   },
   "table": {
     "dataset": "Conjunto de datos"
@@ -524,15 +529,14 @@
         "4_titanic": {
         },
         "generator": {
-          "form-dataframe-submit": "Procesar dataframe",
           "dataset": {
             "title": "Conjunto de datos",
             "upload-dataset": "Subir conjunto de datos.",
             "attributes": {
               "title": "Atributos",
-              "number": "Numérico",
-              "float": "Real",
-              "select": "Categórico",
+              "int32": "Numérico",
+              "float32": "Real",
+              "string": "Categórico",
               "classes": "Clases"
             }
           },
@@ -900,5 +904,12 @@
       "cookies-title": "Cookies",
       "cookies-text": "Nuestra página web utiliza cookies de Google Analytics para contabilizar el número de visitantes que recibimos. Estas cookies nos permiten recopilar información estadística anónima sobre el uso de nuestro sitio web y nos ayudan a mejorar su rendimiento y funcionalidad. Las cookies de Google Analytics no recopilan información personal de los usuarios. Al navegar por nuestra web, aceptas el uso de estas cookies. Si deseas obtener más información acerca de cómo utilizamos las cookies, por favor consulta nuestra política de privacidad."
     }
+  },
+  "form-dataframe": {
+    "int32": "Entero",
+    "float32": "Flotante",
+    "string": "Categórico",
+    "ignored": "Ignorar",
+    "submit": "Procesar dataframe"
   }
 }

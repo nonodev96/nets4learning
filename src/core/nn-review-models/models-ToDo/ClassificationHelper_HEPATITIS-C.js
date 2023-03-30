@@ -308,7 +308,7 @@ export const MODEL_HEPATITIS_C = {
   // @formatter:off
   FORM             : [
     { type: "int32", name: "age"  },
-    { type: "select", name: "sex", options: [{ value: "m", text: "male" }, { value: "f", text: "female" }] },
+    { type: "string", name: "sex", options: [{ value: "m", text: "male" }, { value: "f", text: "female" }] },
     { type: "float32",  name: "alb"  },
     { type: "float32",  name: "alp"  },
     { type: "float32",  name: "alt"  },
