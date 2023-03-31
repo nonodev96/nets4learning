@@ -20,9 +20,13 @@ const cellStyle = {
  *
  * @param {{
  *   dataframeOriginal    : dfd.DataFrame,
- *   dataframeProcessed   : dfd.DataFrame,
+ *   dataProcessed        : {
+ *                            dataframeProcessed: dfd.DataFrame,
+ *                            xTrain: dfd.DataFrame,
+ *                            yTrain: dfd.Series
+ *                          },
  *   setDataframeProcessed: Function,
- *   setCustomDataSet_JSON: any
+ *   setCustomDataSet_JSON: Function
  * }} props
  * @return {JSX.Element}
  * @constructor
@@ -30,8 +34,8 @@ const cellStyle = {
 export default function TabularClassificationCustomDatasetForm(props) {
   const {
     dataframeOriginal,
-    dataframeProcessed,
-    setDataframeProcessed,
+    dataProcessed,
+    setDataProcessed,
     setCustomDataSet_JSON
   } = props
 
@@ -49,7 +53,6 @@ export default function TabularClassificationCustomDatasetForm(props) {
   ]
 
   useEffect(() => {
-    console.log("ayuda dataframeOriginal")
     if (dataframeOriginal === null) return;
     const list = dataframeOriginal.columns.map((column_name, i) => {
       return {
@@ -64,37 +67,40 @@ export default function TabularClassificationCustomDatasetForm(props) {
         tableCellStyle  : cellStyle,
       },
       layout: {
-        title: "Table displaying the Titanic dataset",
+        title: t("dataframe-original"),
       },
     })
   }, [dataframeOriginal])
 
   useEffect(() => {
-    console.log("ayuda dataframeProcessed")
-    if (dataframeProcessed === null) return;
-    dataframeProcessed.plot("plot_processed").table({
+    if (dataProcessed === null) return;
+    dataProcessed.dataframeProcessed.plot("plot_processed").table({
       config: {
         tableHeaderStyle: headerStyle,
         tableCellStyle  : cellStyle,
       },
       layout: {
-        title: t("Table displaying the dataset processed"),
+        title: t("dataframe-processed"),
       },
     })
-  }, [dataframeProcessed])
+  }, [dataProcessed])
 
   const handleSubmit_ProcessDataFrame = (event) => {
     event.preventDefault()
 
     const {
-      dataframe,
+      dataframeProcessed,
+      xTrain,
+      yTrain,
       attributes,
       classes,
       data
     } = Parser.transform(dataframeOriginal, listColumnTypeProcessed)
 
-    console.log({ dataframe, attributes, classes, data })
-    setDataframeProcessed(dataframe)
+
+    console.log({ dataframeProcessed, attributes, classes, data })
+    setDataProcessed({ dataframeProcessed, xTrain, yTrain })
+
     setCustomDataSet_JSON({
       missing_values   : false,
       missing_value_key: "",
@@ -115,62 +121,74 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
   }
 
-  const Print_HTML_FORM_DataFrame = () => {
-    return listColumnTypeProcessed.map(({ column_name, column_type }, index) => {
-        return <Col xxl={2} xl={2} lg={2} md={3} xs={4} xs={6} key={index}>
-          <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
-            <Form.Label><b>{column_name}</b></Form.Label>
-            <Form.Select aria-label="Selecciona una opción"
-                         size={"sm"}
-                         defaultValue={column_type}
-                         onChange={(e) => handleChange_cType(e, column_name)}>
-              {options.map((option_value, option_index) => {
-                return <option key={column_name + "_option_" + option_index}
-                               value={option_value.value}>
-                  {t(prefix + option_value.i18n)}
-                </option>
-              })}
-            </Form.Select>
-            <Form.Text className="text-muted">Parámetro: {column_type}</Form.Text>
-          </Form.Group>
-        </Col>
-      }
-    )
-  }
-
   console.debug("TabularClassificationCustomDatasetForm")
   return <>
     <Form onSubmit={handleSubmit_ProcessDataFrame}>
 
       <Row>
         <Col xxl={12}>
-          <details>
-            <summary className={"n4l-summary"}>Original</summary>
-            <div id={"plot_original"}></div>
-          </details>
-        </Col>
-        <Col xxl={12}>
-          <details>
-            <summary className={"n4l-summary"}>Formulario</summary>
+          <details open={true}>
+            <summary className={"n4l-summary"}>Formulario procesamiento dataframe</summary>
             <Row>
-              {Print_HTML_FORM_DataFrame()}
+              {listColumnTypeProcessed.map(({ column_name, column_type }, index) => {
+                  return <Col xxl={2} xl={2} lg={2} md={3} xs={4} sm={6} key={index}>
+                    <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
+                      <Form.Label><b>{column_name}</b></Form.Label>
+                      <Form.Select aria-label="Selecciona una opción"
+                                   size={"sm"}
+                                   defaultValue={column_type}
+                                   onChange={(e) => handleChange_cType(e, column_name)}>
+                        {options.map((option_value, option_index) => {
+                          return <option key={column_name + "_option_" + option_index}
+                                         value={option_value.value}>
+                            {t(prefix + option_value.i18n)}
+                          </option>
+                        })}
+                      </Form.Select>
+                      <Form.Text className="text-muted">Parámetro: {column_type}</Form.Text>
+                    </Form.Group>
+                  </Col>
+                }
+              )}
+            </Row>
+            <Row>
+              <Col>
+                <div className="d-grid gap-2">
+                  <Button type="submit" className={"mt-3"}>
+                    <Trans i18nKey={prefix + "submit"} />
+                  </Button>
+                </div>
+              </Col>
             </Row>
           </details>
         </Col>
-        <Col xxl={12}>
+      </Row>
+      <hr />
+      <Row>
+        <Col xxl={6}>
+          <details>
+            <summary className={"n4l-summary"}>Original</summary>
+            <Row>
+              <Col>
+                <div id={"plot_original"}></div>
+              </Col>
+            </Row>
+          </details>
+        </Col>
+        <Col xxl={6}>
           <details>
             <summary className={"n4l-summary"}>Processed</summary>
-            <div id={"plot_processed"}></div>
+            <Row>
+              <Col>
+                <div id={"plot_processed"}></div>
+              </Col>
+            </Row>
             <ol>
               {listClasses.map((value, index) => <li key={index}>{value}</li>)}
             </ol>
           </details>
         </Col>
       </Row>
-
-      <Button type="submit" className={"mt-3"}>
-        <Trans i18nKey={prefix + "submit"} />
-      </Button>
     </Form>
   </>
 }

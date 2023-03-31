@@ -71,14 +71,15 @@ export class Parser {
    *   column_type: "int32"|"float32"|"string"|"categorical"|"ignored"
    * }>} list_column_type_to_transform
    * @return {
-   *   dataframe : dfd.DataFrame,
+   *   dataframeProcessed : dfd.DataFrame,
+   *   xTrain : dfd.DataFrame,
+   *   yTrain : dfd.DataFrame,
    *   attributes: Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>,
    *   classes   : Array<TYPE_CLASSES>,
-   *   data      : Array
+   *   data      : any[]
    * }
    */
   static transform(dataframe, list_column_type_to_transform) {
-    console.log(list_column_type_to_transform)
     // Creamos las listas de atributos y de clases objetivos
     const list_attributes = []
     const list_classes = []
@@ -87,13 +88,13 @@ export class Parser {
     const dataframe_copy = dataframe.copy()
     // Definimos los rangos
     const list_attributes_to_transform = list_column_type_to_transform.slice(0, -1)
-    const list_classes_to_transform = list_column_type_to_transform.slice(-1)
+    const column_target_to_transform = list_column_type_to_transform.slice(-1)[0]
 
     // Eliminamos las columnas que no son necesarias del dataframe
     const list_columns_to_drop = list_attributes_to_transform
       .filter(({ column_name, column_type }) => column_type === "ignored")
       .map(({ column_name }) => column_name)
-
+    // console.debug({ list_columns_to_drop })
     const newDataframe = dataframe_copy.drop({ columns: list_columns_to_drop })
 
     //  Procesamos
@@ -143,15 +144,12 @@ export class Parser {
     const {
       column_name: column_target_name,
       column_type: column_target_type
-    } = list_classes_to_transform[0]
-    console.log({ column_target_name, column_target_type })
+    } = column_target_to_transform
     switch (column_target_type) {
       case "int32": {
-        console.log("TODO")
         break;
       }
       case "float32": {
-        console.log("TODO")
         break;
       }
       case "string": {
@@ -169,14 +167,29 @@ export class Parser {
       }
     }
 
-    const data = Array.from([...newDataframe.values])
+
+    const index_of_last_column = newDataframe.columns.indexOf(column_target_name)
+    let xTrain = newDataframe.iloc({ columns: [`:${index_of_last_column}`] })
+    let yTrain = newDataframe[column_target_name]
+
+    const scaler = new dfd.MinMaxScaler()
+    scaler.fit(xTrain)
+    xTrain = scaler.transform(xTrain)
+
+    for (const column of xTrain.columns) {
+      newDataframe.addColumn(column, xTrain[column].values, { inplace: true })
+    }
+
+    const data = [...newDataframe.values]
 
 
     return {
-      dataframe : newDataframe,
-      attributes: list_attributes,
-      classes   : list_classes,
-      data      : data
+      dataframeProcessed: newDataframe,
+      xTrain            : xTrain,
+      yTrain            : yTrain,
+      attributes        : list_attributes,
+      classes           : list_classes,
+      data              : data
     }
   }
 }

@@ -8,12 +8,8 @@
   "example-i": "Ejemplo {{i}}",
   "AYUDA": "AYUDA!!",
   "Files": "Ficheros",
-  "Table displaying the dataset": "Table displaying the dataset",
-  "Table displaying the dataset processed": "Table displaying the dataset processed",
-  "op": [
-    "op 1",
-    "op 2"
-  ],
+  "dataframe-original": "DataFrame original",
+  "dataframe-processed": "DataFrame procesado",
   "error": {
     "load-json-csv": "Error, no se ha podido cargar el fichero",
     "need-to-upload-image": "Primero debes de subir una imagen",

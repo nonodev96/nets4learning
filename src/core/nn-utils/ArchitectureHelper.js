@@ -87,10 +87,10 @@ export async function createTabularClassificationCustomDataSet_upload(params) {
     idLoss,
     idMetrics,
 
-    Xtrain,
-    ytrain
+    xTrain,
+    yTrain
   } = params
-  console.log({ Xtrain_shape: Xtrain.shape })
+  console.log({ Xtrain_shape: xTrain.shape })
 
   const model = tf.sequential()
   for (const layer of layerList) {
@@ -99,7 +99,7 @@ export async function createTabularClassificationCustomDataSet_upload(params) {
       units     : layer.units,
       activation: layer.activation.toLowerCase(),
       ...(index === 0) && {
-        inputShape: [Xtrain.shape[1]]
+        inputShape: [xTrain.shape[1]]
       },
     }))
   }
@@ -130,8 +130,7 @@ export async function createTabularClassificationCustomDataSet_upload(params) {
     ],
   })
 
-  if (!isProduction()) console.log("En este punto perdí la poca cordura que me quedaba", { Xtrain, ytrain })
-  await model.fit(Xtrain, ytrain, {
+  await model.fit(xTrain, yTrain, {
     validationSplit: testSize,
     epochs         : numberOfEpoch,
     callbacks      : fitCallbacks
@@ -197,7 +196,6 @@ export async function createTabularClassificationCustomDataSet(params) {
     ],
   })
 
-  if (!isProduction()) console.log("En este punto perdí la poca cordura que me quedaba", { xTrain, yTrain })
   await model.fit(xTrain, yTrain, {
     epochs        : numberOfEpoch,
     validationData: [xTest, yTest],
