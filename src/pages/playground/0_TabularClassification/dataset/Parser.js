@@ -69,7 +69,7 @@ export class Parser {
    * @param {Array<{
    *   column_name: string,
    *   column_type: "int32"|"float32"|"string"|"categorical"|"ignored"
-   * }>} new_ctypes_list
+   * }>} list_column_type_to_transform
    * @return {
    *   dataframe : dfd.DataFrame,
    *   attributes: Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>,
@@ -77,39 +77,41 @@ export class Parser {
    *   data      : Array
    * }
    */
-  static transform(dataframe, new_ctypes_list) {
-    console.log(new_ctypes_list)
+  static transform(dataframe, list_column_type_to_transform) {
+    console.log(list_column_type_to_transform)
     // Creamos las listas de atributos y de clases objetivos
     const list_attributes = []
     const list_classes = []
 
     // Copiamos el dataframe
     const dataframe_copy = dataframe.copy()
+    // Definimos los rangos
+    const list_attributes_to_transform = list_column_type_to_transform.slice(0, -1)
+    const list_classes_to_transform = list_column_type_to_transform.slice(-1)
 
-
-    // Eliminamos las columnas que no son necesarias
-    const list_columns_to_drop = new_ctypes_list
-      .filter(({ column_name, column_dtype }) => column_dtype === "ignored")
+    // Eliminamos las columnas que no son necesarias del dataframe
+    const list_columns_to_drop = list_attributes_to_transform
+      .filter(({ column_name, column_type }) => column_type === "ignored")
       .map(({ column_name }) => column_name)
 
     const newDataframe = dataframe_copy.drop({ columns: list_columns_to_drop })
 
     //  Procesamos
-    for (const { column_name, column_type } of new_ctypes_list) {
+    for (const { column_name, column_type } of list_attributes_to_transform) {
       switch (column_type) {
         case "int32": {
           list_attributes.push({
-            type        : column_type,
             index_column: newDataframe.columns.indexOf(column_name),
             name        : column_name,
+            type        : column_type,
           })
           break
         }
         case "float32": {
           list_attributes.push({
-            type        : column_type,
             index_column: newDataframe.columns.indexOf(column_name),
             name        : column_name,
+            type        : column_type,
           })
           break
         }
@@ -127,22 +129,21 @@ export class Parser {
             })
           }
           list_attributes.push({
-            type        : column_type,
             index_column: newDataframe.columns.indexOf(column_name),
             name        : column_name,
+            type        : column_type,
             options     : list_options
           })
           break
         }
       }
     }
-    console.log({ list_attributes })
 
     // TARGET
     const {
       column_name: column_target_name,
       column_type: column_target_type
-    } = new_ctypes_list[newDataframe.columns.length - 1]
+    } = list_classes_to_transform[0]
     console.log({ column_target_name, column_target_type })
     switch (column_target_type) {
       case "int32": {
@@ -170,13 +171,6 @@ export class Parser {
 
     const data = Array.from([...newDataframe.values])
 
-    // TODO
-    // Entrenamos el escalador
-    // const scaler = new dfd.MinMaxScaler()
-    // scaler.fit(newDataframe)
-
-    // Escalamos
-    // const newDataframe_scaled = scaler.transform(newDataframe)
 
     return {
       dataframe : newDataframe,

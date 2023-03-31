@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Row } from "react-bootstrap";
 import N4LNavbar from "../../components/header/N4LNavbar";
 import N4LFooter from "../../components/footer/N4LFooter";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function TermsAndConditions() {
   const { t } = useTranslation()

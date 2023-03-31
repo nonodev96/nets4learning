@@ -154,7 +154,8 @@ export default function ImageClassification(props) {
         }
       }
 
-      arr = [arr] // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+      arr = [arr]
+      // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
       // Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
       const tensor4 = tf.tensor4d(arr)
       const resultados = Model.predict(tensor4).dataSync()

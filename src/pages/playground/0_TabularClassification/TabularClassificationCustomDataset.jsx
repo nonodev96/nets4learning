@@ -12,7 +12,8 @@ import {
   MODEL_UPLOAD
 } from "../../../DATA_MODEL";
 import {
-  createTabularClassificationCustomDataSet
+  createTabularClassificationCustomDataSet,
+  createTabularClassificationCustomDataSet_upload,
 } from '../../../core/nn-utils/ArchitectureHelper'
 import {
   transform_datasetJSON_To_DataFrame
@@ -215,7 +216,71 @@ export default function TabularClassificationCustomDataset(props) {
     };
   }, [dataset, t])
 
-  const handleSubmit_Play = async (event) => {
+  // TODO
+  // Create model Upload
+  const handleSubmit_CreateModel_upload = async (event) => {
+    event.preventDefault()
+    try {
+      console.debug('ID Conjunto de datos: ', { dataframeProcessed })
+      setIsTraining(true)
+
+      let Xtrain, ytrain;
+      Xtrain = dataframeProcessed.iloc({ columns: [`1:`] })
+      const name_last_column = dataframeProcessed.iloc({ columns: [`:1`] }).columns[0]
+      ytrain = dataframeProcessed[name_last_column]
+
+      let scaler = new dfd.MinMaxScaler()
+      scaler.fit(Xtrain)
+      Xtrain = scaler.transform(Xtrain)
+      const info = [Xtrain.tensor, ytrain.tensor]
+      const _Xtrain = Xtrain.tensor
+      const _ytrain = ytrain.tensor
+
+      let _learningRate = learningRate / 100
+      let _testSize = testSize / 100
+      let _numberOfEpoch = numberEpochs
+      let _layerList = layers
+      let _idOptimizer = idOptimizer
+      let _idLoss = idLoss
+      let _idMetrics = idMetrics
+      const model = createTabularClassificationCustomDataSet_upload({
+        learningRate : _learningRate,
+        testSize     : _testSize,
+        numberOfEpoch: _numberOfEpoch,
+        layerList    : JSON.parse(JSON.stringify(_layerList)),
+        idOptimizer  : _idOptimizer,
+        idLoss       : _idLoss,
+        idMetrics    : _idMetrics,
+        Xtrain       : _Xtrain,
+        ytrain       : _ytrain
+      })
+
+
+      setGeneratedModels(oldArray => [
+        ...oldArray.map((oldModel) => {
+          return { ...oldModel, isLoad: false }
+        }), {
+          idMODEL      : oldArray.length + 1,
+          isLoad       : true,
+          model        : model,
+          learningRate : _learningRate,
+          testSize     : _testSize,
+          numberOfEpoch: _numberOfEpoch,
+          layerList    : JSON.parse(JSON.stringify(_layerList)),
+          idOptimizer  : _idOptimizer,
+          idLoss       : _idLoss,
+          idMetrics    : _idMetrics
+        }]
+      )
+
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsTraining(false)
+    }
+  }
+
+  const handleSubmit_CreateModel = async (event) => {
     event.preventDefault()
     console.debug('ID Conjunto de datos: ', { dataset })
     if (customDataSet_JSON === null) {
@@ -236,7 +301,7 @@ export default function TabularClassificationCustomDataset(props) {
                          values={{
                            last_layer_units: last_layer_units,
                            classes_length  : classes_length
-                         }} />
+                         }}/>
         }
       )
       return
@@ -298,17 +363,11 @@ export default function TabularClassificationCustomDataset(props) {
   }
 
   // TODO
-  const handleClick_TestVector_refactor = async () => {
+  // PREDICT Upload
+  const handleClick_TestVector_upload = async () => {
     let input = [[], [1, stringToPredict.split(';').length]]
 
-    let Xtrain, ytrain;
-    Xtrain = dataframeOriginal.iloc({ columns: [`1:`] })
-    ytrain = dataframeOriginal['Survived']
 
-    let scaler = new dfd.MinMaxScaler()
-    scaler.fit(Xtrain)
-    Xtrain = scaler.transform(Xtrain)
-    return [Xtrain.tensor, ytrain.tensor]
   }
 
   const handleClick_TestVector = async () => {
@@ -498,25 +557,6 @@ export default function TabularClassificationCustomDataset(props) {
     Model.save('downloads://my-model')
   }
 
-  const handleChange_FileUpload_TemplateDataset = (files) => {
-    if (files.length !== 1) {
-      console.error("Error, no se ha podido cargar el fichero")
-      return;
-    }
-    try {
-      const file_json = new File([files[0]], files[0].name, { type: files[0].type });
-      let reader = new FileReader()
-      reader.readAsText(file_json)
-      reader.onload = (e) => {
-        // TODO
-        // COMPROBAR: ¿Es un json con el formato de la plantilla?
-        setCustomDataSet_JSON(JSON.parse(e.target.result.toString()))
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   const handleChange_FileUpload_CSV = async (files, event) => {
     console.log({ files, event })
     if (files.length !== 1) {
@@ -548,11 +588,11 @@ export default function TabularClassificationCustomDataset(props) {
             <Accordion>
               <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
+                  <h3><Trans i18nKey={prefix + "manual.title"}/></h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   {/* TabularClassificationCustomDatasetManual */}
-                  <TabularClassificationCustomDatasetManual />
+                  <TabularClassificationCustomDatasetManual/>
 
                 </Accordion.Body>
               </Accordion.Item>
@@ -560,7 +600,7 @@ export default function TabularClassificationCustomDataset(props) {
               <Accordion.Item key={"1"} eventKey={"description_dataset"}>
                 <Accordion.Header>
                   <h3>
-                    <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + "dataset.upload-dataset"} />
+                    <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + "dataset.upload-dataset"}/>
                   </h3>
                 </Accordion.Header>
                 <Accordion.Body>
@@ -571,13 +611,13 @@ export default function TabularClassificationCustomDataset(props) {
                                    text={t("drag-and-drop.csv")}
                                    labelFiles={t("drag-and-drop.label-files-one")}
                                    function_DropAccepted={handleChange_FileUpload_CSV}
-                                   function_DropRejected={handleChange_FileUpload_CSV_reject} />
+                                   function_DropRejected={handleChange_FileUpload_CSV_reject}/>
 
                       {dataframeOriginal && <>
                         <TabularClassificationCustomDatasetForm dataframeOriginal={dataframeOriginal}
                                                                 dataframeProcessed={dataframeProcessed}
                                                                 setDataframeProcessed={setDataframeProcessed}
-                                                                setCustomDataSet_JSON={setCustomDataSet_JSON} />
+                                                                setCustomDataSet_JSON={setCustomDataSet_JSON}/>
                       </>}
 
                     </>
@@ -594,7 +634,7 @@ export default function TabularClassificationCustomDataset(props) {
             <Card>
               <Card.Header>
                 <h3 className={"d-flex align-items-baseline"}>
-                  <Trans i18nKey={prefix + "dataset.title"} />
+                  <Trans i18nKey={prefix + "dataset.title"}/>
                   {!customDataSet_JSON && <>
                     <div className="ms-4 spinner-border"
                          role="status"
@@ -613,20 +653,20 @@ export default function TabularClassificationCustomDataset(props) {
 
                 {customDataSet_JSON &&
                   <>
-                    <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name), "Resultados"]}
-                                        data_body={customDataSet_JSON.data} />
+                    <N4LTablePagination data_head={[...customDataSet_JSON.attributes.map((i) => i.name)]}
+                                        data_body={customDataSet_JSON.data}/>
 
-                    <hr />
+                    <hr/>
 
                     <details>
-                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.title"} /></summary>
+                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.title"}/></summary>
                       <main>
                         <Row>
                           {customDataSet_JSON.attributes.map((item, i1) => {
                             return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
                               <p><b>{item.name}</b></p>
-                              {item.type === "int32" && <p><Trans i18nKey={prefix + "dataset.attributes.int32"} /></p>}
-                              {item.type === "float32" && <p><Trans i18nKey={prefix + "dataset.attributes.float32"} /></p>}
+                              {item.type === "int32" && <p><Trans i18nKey={prefix + "dataset.attributes.int32"}/></p>}
+                              {item.type === "float32" && <p><Trans i18nKey={prefix + "dataset.attributes.float32"}/></p>}
                               {item.type === "string" && <ol start="0">{item.options.map((option, i2) => <li key={i1 + "_" + i2}>{option.text}</li>)}</ol>}
                             </Col>
                           })}
@@ -634,7 +674,7 @@ export default function TabularClassificationCustomDataset(props) {
                       </main>
                     </details>
                     <details>
-                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
+                      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"}/></summary>
                       <main>
                         <ol start="0">{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
                       </main>
@@ -647,23 +687,23 @@ export default function TabularClassificationCustomDataset(props) {
         </Row>
       </Container>
 
-      <Form id={"TabularClassificationCustomDataset"} onSubmit={handleSubmit_Play}>
+      <Form id={"TabularClassificationCustomDataset"} onSubmit={dataset_key === MODEL_UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
         <Container>
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
             <Col xl={12}>
               <Card>
                 <Card.Header>
-                  <h3><Trans i18nKey={prefix + "layers.title"} /></h3>
+                  <h3><Trans i18nKey={prefix + "layers.title"}/></h3>
                 </Card.Header>
                 <Card.Body>
                   <GraphicRed layer={layers}
-                              tipo={0} />
+                              tipo={0}/>
                   <Card.Text className={"text-muted text-center"}>
                     <Trans i18nKey={prefix + "layers.page-info"}
                            components={{
                              link1: <a href="https://netron.app/">Text</a>
-                           }} />
+                           }}/>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -674,18 +714,18 @@ export default function TabularClassificationCustomDataset(props) {
               {/* ADD LAYER */}
               <Card>
                 <Card.Header className={"d-flex align-items-center justify-content-between"}>
-                  <h3><Trans i18nKey={prefix + "editor-layers.title"} /></h3>
+                  <h3><Trans i18nKey={prefix + "editor-layers.title"}/></h3>
                   <div className={"d-flex"}>
                     <Button onClick={handlerClick_AddLayer_Start}
                             size={"sm"}
                             variant="outline-primary">
-                      <Trans i18nKey={prefix + "editor-layers.add-layer-start"} />
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-start"}/>
                     </Button>
                     <Button onClick={handlerClick_AddLayer_End}
                             size={"sm"}
                             variant="outline-primary"
                             className={"ms-3"}>
-                      <Trans i18nKey={prefix + "editor-layers.add-layer-end"} />
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-end"}/>
                     </Button>
                   </div>
                 </Card.Header>
@@ -695,21 +735,21 @@ export default function TabularClassificationCustomDataset(props) {
                       return (
                         <Accordion.Item key={index} eventKey={index.toString()}>
                           <Accordion.Header>
-                            <Trans i18nKey={prefix + "editor-layers.layer-id"} values={{ value: index + 1 }} />
+                            <Trans i18nKey={prefix + "editor-layers.layer-id"} values={{ value: index + 1 }}/>
                           </Accordion.Header>
 
                           <Accordion.Body>
                             <div className="d-grid gap-2">
                               <Button onClick={() => handlerClick_RemoveLayer(index)}
                                       variant={"outline-danger"}>
-                                <Trans i18nKey={prefix + "editor-layers.delete-layer"} values={{ value: index + 1 }} />
+                                <Trans i18nKey={prefix + "editor-layers.delete-layer"} values={{ value: index + 1 }}/>
                               </Button>
                             </div>
                             {/* UNITS */}
                             <Form.Group className="mt-3"
                                         controlId={'formUnitsLayer' + index}>
                               <Form.Label>
-                                <Trans i18nKey={prefix + "editor-layers.units"} />
+                                <Trans i18nKey={prefix + "editor-layers.units"}/>
                               </Form.Label>
                               <Form.Control type="number"
                                             min={1} max={100}
@@ -718,13 +758,13 @@ export default function TabularClassificationCustomDataset(props) {
                                             onChange={(e) => handleChange_Layer(index, {
                                               units     : parseInt(e.target.value),
                                               activation: item.activation
-                                            })} />
+                                            })}/>
                             </Form.Group>
                             {/* ACTIVATION FUNCTION */}
                             <Form.Group className="m3-3"
                                         controlId={'formActivationLayer' + index}>
                               <Form.Label>
-                                <Trans i18nKey={prefix + "editor-layers.activation-function-select"} />
+                                <Trans i18nKey={prefix + "editor-layers.activation-function-select"}/>
                               </Form.Label>
                               <Form.Select aria-label={"Default select example: " + item.activation}
                                            value={item.activation}
@@ -737,7 +777,7 @@ export default function TabularClassificationCustomDataset(props) {
                                 })}
                               </Form.Select>
                               <Form.Text className="text-muted">
-                                <Trans i18nKey={prefix + "editor-layers.activation-function-info"} />
+                                <Trans i18nKey={prefix + "editor-layers.activation-function-info"}/>
                               </Form.Text>
                             </Form.Group>
                           </Accordion.Body>
@@ -752,60 +792,60 @@ export default function TabularClassificationCustomDataset(props) {
             {/* GENERAL PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
               <Card className={"sticky-top"} style={{ zIndex: 10 }}>
-                <Card.Header><h3><Trans i18nKey={prefix + "general-parameters.title"} /></h3></Card.Header>
+                <Card.Header><h3><Trans i18nKey={prefix + "general-parameters.title"}/></h3></Card.Header>
                 <Card.Body>
                   {/* LEARNING RATE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.learning-rate"} />
+                      <Trans i18nKey={prefix + "general-parameters.learning-rate"}/>
                     </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
                                   placeholder={t(prefix + "general-parameters.learning-rate-placeholder")}
                                   defaultValue={DEFAULT_LEARNING_RATE}
-                                  onChange={(e) => setLearningRate(parseInt(e.target.value))} />
+                                  onChange={(e) => setLearningRate(parseInt(e.target.value))}/>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.learning-rate-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.learning-rate-info"}/>
                     </Form.Text>
                   </Form.Group>
 
                   {/* Número OT ITERATIONS */}
                   <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs"} />
+                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs"}/>
                     </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
                                   placeholder={t(prefix + "general-parameters.number-of-epochs")}
                                   defaultValue={DEFAULT_NUMBER_EPOCHS}
-                                  onChange={(e) => setNumberEpochs(parseInt(e.target.value))} />
+                                  onChange={(e) => setNumberEpochs(parseInt(e.target.value))}/>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.number-of-epochs-info"}/>
                     </Form.Text>
                   </Form.Group>
 
                   {/* TEST SIZE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.train-rate"} />
+                      <Trans i18nKey={prefix + "general-parameters.train-rate"}/>
                     </Form.Label>
                     <Form.Control type="number"
                                   min={1}
                                   max={100}
                                   placeholder={t(prefix + "general-parameters.train-rate-placeholder")}
                                   defaultValue={DEFAULT_TEST_SIZE}
-                                  onChange={(e) => setTestSize(parseInt(e.target.value))} />
+                                  onChange={(e) => setTestSize(parseInt(e.target.value))}/>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.train-rate-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.train-rate-info"}/>
                     </Form.Text>
                   </Form.Group>
 
                   {/* OPTIMIZATION FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormOptimizer">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.optimizer-id"} />
+                      <Trans i18nKey={prefix + "general-parameters.optimizer-id"}/>
                     </Form.Label>
                     <Form.Select aria-label="Default select example"
                                  defaultValue={DEFAULT_ID_OPTIMIZATION}
@@ -815,14 +855,14 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.optimizer-id-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.optimizer-id-info"}/>
                     </Form.Text>
                   </Form.Group>
 
                   {/* LOSS FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormLoss">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.loss-id"} />
+                      <Trans i18nKey={prefix + "general-parameters.loss-id"}/>
                     </Form.Label>
                     <Form.Select aria-label="Selecciona la función de pérdida"
                                  defaultValue={DEFAULT_ID_LOSS}
@@ -832,14 +872,14 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.loss-id-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.loss-id-info"}/>
                     </Form.Text>
                   </Form.Group>
 
                   {/* METRICS FUNCTION */}
                   <Form.Group className="mb-3" controlId="FormMetrics">
                     <Form.Label>
-                      <Trans i18nKey={prefix + "general-parameters.metrics-id"} />
+                      <Trans i18nKey={prefix + "general-parameters.metrics-id"}/>
                     </Form.Label>
                     <Form.Select aria-label="Selecciona la métrica"
                                  defaultValue={DEFAULT_ID_METRICS}
@@ -849,7 +889,7 @@ export default function TabularClassificationCustomDataset(props) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + "general-parameters.metrics-id-info"} />
+                      <Trans i18nKey={prefix + "general-parameters.metrics-id-info"}/>
                     </Form.Text>
                   </Form.Group>
                 </Card.Body>
@@ -865,7 +905,7 @@ export default function TabularClassificationCustomDataset(props) {
                         disabled={isTraining}
                         size={"lg"}
                         variant="primary">
-                  <Trans i18nKey={prefix + "models.button-submit"} />
+                  <Trans i18nKey={prefix + "models.button-submit"}/>
                 </Button>
               </div>
             </Col>
@@ -880,7 +920,7 @@ export default function TabularClassificationCustomDataset(props) {
             <Col xl={12}>
               <Card>
                 <Card.Header className={"d-flex align-items-center"}>
-                  <h3><Trans i18nKey={prefix + "models.title"} /></h3>
+                  <h3><Trans i18nKey={prefix + "models.title"}/></h3>
                   <div className={"d-flex"}>
                     <Button variant={"outline-primary"}
                             className={"ms-3"}
@@ -888,7 +928,7 @@ export default function TabularClassificationCustomDataset(props) {
                             onClick={() => {
                               tfvis.visor().open()
                             }}>
-                      <Trans i18nKey={prefix + "models.open-visor"} />
+                      <Trans i18nKey={prefix + "models.open-visor"}/>
                     </Button>
                     <Button variant={"outline-primary"}
                             className={"ms-1"}
@@ -896,7 +936,7 @@ export default function TabularClassificationCustomDataset(props) {
                             onClick={() => {
                               tfvis.visor().close()
                             }}>
-                      <Trans i18nKey={prefix + "models.close-visor"} />
+                      <Trans i18nKey={prefix + "models.close-visor"}/>
                     </Button>
                     {(Model !== undefined) &&
                       <Button className={"ms-1"}
@@ -904,7 +944,7 @@ export default function TabularClassificationCustomDataset(props) {
                               onClick={handleClick_DownloadModel}
                               size={"sm"}
                               variant="outline-primary">
-                        <Trans i18nKey={prefix + "models.export-current-model"} />
+                        <Trans i18nKey={prefix + "models.export-current-model"}/>
                       </Button>
                     }
                   </div>
@@ -913,16 +953,16 @@ export default function TabularClassificationCustomDataset(props) {
                   <Table size={"sm"}>
                     <thead>
                     <tr>
-                      <th><Trans i18nKey={prefix + "table.id"} /></th>
-                      <th><Trans i18nKey={prefix + "table.load"} /></th>
-                      <th><Trans i18nKey={prefix + "table.learning-rate"} /></th>
-                      <th><Trans i18nKey={prefix + "table.number-of-epochs"} /></th>
-                      <th><Trans i18nKey={prefix + "table.train-rate"} /></th>
-                      <th><Trans i18nKey={prefix + "table.layers"} /></th>
-                      <th><Trans i18nKey={prefix + "table.optimizer-id"} /></th>
-                      <th><Trans i18nKey={prefix + "table.loss-id"} /></th>
-                      <th><Trans i18nKey={prefix + "table.metric-id"} /></th>
-                      <th><Trans i18nKey={prefix + "table.download"} /></th>
+                      <th><Trans i18nKey={prefix + "table.id"}/></th>
+                      <th><Trans i18nKey={prefix + "table.load"}/></th>
+                      <th><Trans i18nKey={prefix + "table.learning-rate"}/></th>
+                      <th><Trans i18nKey={prefix + "table.number-of-epochs"}/></th>
+                      <th><Trans i18nKey={prefix + "table.train-rate"}/></th>
+                      <th><Trans i18nKey={prefix + "table.layers"}/></th>
+                      <th><Trans i18nKey={prefix + "table.optimizer-id"}/></th>
+                      <th><Trans i18nKey={prefix + "table.loss-id"}/></th>
+                      <th><Trans i18nKey={prefix + "table.metric-id"}/></th>
+                      <th><Trans i18nKey={prefix + "table.download"}/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -945,7 +985,7 @@ export default function TabularClassificationCustomDataset(props) {
                             {value.layerList.map((value, index) => {
                               return (
                                 <span key={index} style={{ fontFamily: "monospace" }}>
-                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br />
+                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br/>
                                 </span>
                               )
                             })}
@@ -957,7 +997,7 @@ export default function TabularClassificationCustomDataset(props) {
                             <Button variant={"outline-primary"}
                                     size={"sm"}
                                     onClick={() => handleClick_DownloadGeneratedModel(value)}>
-                              <Trans i18nKey={prefix + "table.download"} />
+                              <Trans i18nKey={prefix + "table.download"}/>
                             </Button>
                           </td>
                         </tr>
@@ -990,7 +1030,7 @@ export default function TabularClassificationCustomDataset(props) {
                              stringToPredict={stringToPredict}
                              setStringToPredict={setStringToPredict}
                              handleChange_TestInput={handleChange_TestInput}
-                             handleClick_TestVector={handleClick_TestVector_refactor} />)
+                             handleClick_TestVector={handleClick_TestVector_upload}/>)
       }
       {/* OTHERS */}
       {(dataset_key !== MODEL_UPLOAD && (customDataSet_JSON) && Model) &&
@@ -999,7 +1039,7 @@ export default function TabularClassificationCustomDataset(props) {
                              stringToPredict={stringToPredict}
                              setStringToPredict={setStringToPredict}
                              handleChange_TestInput={handleChange_TestInput}
-                             handleClick_TestVector={handleClick_TestVector} />)
+                             handleClick_TestVector={handleClick_TestVector}/>)
       }
 
       {isDebug &&

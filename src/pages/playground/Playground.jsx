@@ -9,12 +9,12 @@ import N4LFooter from '../../components/footer/N4LFooter'
 
 import TabularClassificationModelReview from './0_TabularClassification/TabularClassificationModelReview'
 import TabularClassificationCustomDataset from './0_TabularClassification/TabularClassificationCustomDataset'
-import LinearRegressionModelReview from "./1_LinearRegression/ModelReviewLinearRegression";
-import LinearRegression from "./1_LinearRegression/LinearRegression";
+// import LinearRegressionModelReview from "./1_LinearRegression/ModelReviewLinearRegression";
+// import LinearRegression from "./1_LinearRegression/LinearRegression";
 import ObjectDetectionModelReview from './2_ObjectDetection/ObjectDetectionModelReview'
-import ObjectDetection from './2_ObjectDetection/ObjectDetection'
+// import ObjectDetection from './2_ObjectDetection/ObjectDetection'
 import ImageClassificationModelReview from './3_ImageClassification/ImageClassificationModelReview'
-import ImageClassification from './3_ImageClassification/ImageClassification'
+// import ImageClassification from './3_ImageClassification/ImageClassification'
 import NotFoundPage from "../notFound/NotFoundPage";
 import { useTranslation } from "react-i18next";
 
@@ -32,28 +32,14 @@ export default function Playground() {
       }
       case '1': {
         // TODO
-        // if (option === '0') {
-        //   return <LinearRegressionModelReview dataset={example} />
-        // } else {
-        //   return <LinearRegression dataset={example} />
-        // }
+        // return <LinearRegression dataset={example}/>
+        break
       }
       case '2': {
         return <ObjectDetectionModelReview dataset={example} />
-        // if (option === '0') {
-        //   return <ObjectDetectionModelReview dataset={example} />
-        // } else {
-        //   return <ObjectDetection dataset={example} />
-        // }
       }
       case '3': {
         return <ImageClassificationModelReview dataset={example} />
-        if (option === '0') {
-          return <ImageClassificationModelReview dataset={example} />
-        } else {
-          // TODO
-          return <ImageClassification dataset={example} />
-        }
       }
       default:
         return <NotFoundPage />

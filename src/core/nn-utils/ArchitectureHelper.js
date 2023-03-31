@@ -76,6 +76,70 @@ export async function createClassicClassification(learningRate, unknownRate, num
 }
 */
 
+export async function createTabularClassificationCustomDataSet_upload(params) {
+  console.log(params)
+  const {
+    learningRate,
+    testSize,
+    numberOfEpoch,
+    layerList,
+    idOptimizer,
+    idLoss,
+    idMetrics,
+
+    Xtrain,
+    ytrain
+  } = params
+  console.log({ Xtrain_shape: Xtrain.shape })
+
+  const model = tf.sequential()
+  for (const layer of layerList) {
+    const index = layerList.indexOf(layer);
+    model.add(tf.layers.dense({
+      units     : layer.units,
+      activation: layer.activation.toLowerCase(),
+      ...(index === 0) && {
+        inputShape: [Xtrain.shape[1]]
+      },
+    }))
+  }
+
+
+  const optimizer = createOptimizer(idOptimizer, { learningRate })
+  const loss = createLoss(idLoss, {})
+  const metrics = createMetrics(idMetrics, {})
+
+  // Compilamos el modelo
+  model.compile({
+    optimizer: optimizer,
+    loss     : loss,
+    metrics  : metrics
+  })
+
+  // Creamos las métricas que van a aparecer en los gráficos
+  const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+  const fit_callbacks_container = {
+    name  : 'Historial del entrenamiento',
+    tab   : 'Entrenamiento',
+    styles: { height: '1000px' }
+  }
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
+    callbacks: [
+      // 'onBatchEnd',
+      'onEpochEnd'
+    ],
+  })
+
+  if (!isProduction()) console.log("En este punto perdí la poca cordura que me quedaba", { Xtrain, ytrain })
+  await model.fit(Xtrain, ytrain, {
+    validationSplit: testSize,
+    epochs         : numberOfEpoch,
+    callbacks      : fitCallbacks
+  })
+
+  return model
+}
+
 export async function createTabularClassificationCustomDataSet(params) {
   const {
     learningRate,
@@ -253,7 +317,7 @@ export function createLoss(idLoss, params) {
  * @returns {string[]}
  */
 export function createMetrics(idMetrics, params) {
-  if (!isProduction()) console.debug(">> createMetrics",{ idMetrics, params })
+  if (!isProduction()) console.debug(">> createMetrics", { idMetrics, params })
 
   switch (idMetrics) {
     case 'binaryAccuracy':

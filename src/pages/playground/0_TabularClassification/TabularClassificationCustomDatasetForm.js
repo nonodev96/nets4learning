@@ -83,7 +83,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
     })
   }, [dataframeProcessed])
 
-  const handleSubmit_dataframe = (event) => {
+  const handleSubmit_ProcessDataFrame = (event) => {
     event.preventDefault()
 
     const {
@@ -117,7 +117,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
   const Print_HTML_FORM_DataFrame = () => {
     return listColumnTypeProcessed.map(({ column_name, column_type }, index) => {
-        return <Col xxl={2} key={index}>
+        return <Col xxl={2} xl={2} lg={2} md={3} xs={4} xs={6} key={index}>
           <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
             <Form.Label><b>{column_name}</b></Form.Label>
             <Form.Select aria-label="Selecciona una opción"
@@ -140,7 +140,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
   console.debug("TabularClassificationCustomDatasetForm")
   return <>
-    <Form onSubmit={handleSubmit_dataframe}>
+    <Form onSubmit={handleSubmit_ProcessDataFrame}>
 
       <Row>
         <Col xxl={12}>
