@@ -8,8 +8,12 @@
   "example-i": "Ejemplo {{i}}",
   "AYUDA": "AYUDA!!",
   "Files": "Ficheros",
+  "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
   "dataframe-processed": "DataFrame procesado",
+  "preprocessing": "Preprocesamiento",
+  "prediction": "Predicción",
+  "predict": "Predecir",
   "error": {
     "load-json-csv": "Error, no se ha podido cargar el fichero",
     "need-to-upload-image": "Primero debes de subir una imagen",
@@ -50,6 +54,9 @@
       "not-more-layers": "No se pueden añadir más capas"
     },
     "model-load-success": "Modelo cargado",
+    "error": "Error",
+    "waring": "Advertencia",
+    "success": "Correcto",
     "model-train-success": "Modelo entrenado con éxito",
     "prediction": "La predicción es: {{index}}",
     "file-upload-success": "Fichero cargado con éxito",
@@ -531,8 +538,10 @@
             "attributes": {
               "title": "Atributos",
               "int32": "Numérico",
-              "float32": "Real",
-              "string": "Categórico",
+              "float32": "Decimal",
+              "string": "Texto",
+              "label-encoder": "Label encoder",
+              "one-hot-encoder": "OneHot encoder",
               "classes": "Clases"
             }
           },
@@ -571,6 +580,8 @@
           },
           "models": {
             "title": "Modelos",
+            "history-train": "Historial del entrenamiento",
+            "train": "Entrenamiento",
             "button-submit": "Crear y entrenar modelo",
             "open-visor": "Abrir visor",
             "close-visor": "Cerrar visor",
@@ -580,13 +591,20 @@
             "id": "ID",
             "load": "Cargar",
             "learning-rate": "Aprendizaje",
-            "number-of-epochs": "Número de iteraciones",
+            "number-of-epochs": "Nª de iteraciones",
             "train-rate": "Pruebas",
             "layers": "Capas",
             "optimizer-id": "Optimizador",
             "loss-id": "Perdida",
             "metric-id": "Métrica",
             "download": "Descargar"
+          },
+          "dynamic-form-dataset": {
+            "title": "Predicción",
+            "text-0": "Introduce separado por punto y coma los valores correspondientes para predecir",
+            "select-option": "Selecciona una opción",
+            "input-vector": "Introduce el vector a probar",
+            "test-vector": "Vector a probar"
           },
           "manual": {
             "title": "Manual del generador de modelos",
@@ -904,7 +922,10 @@
   "form-dataframe": {
     "int32": "Entero",
     "float32": "Flotante",
-    "string": "Categórico",
+    "string": "Texto",
+    "label-encoder": "Label encoder",
+    "one-hot-encoder": "OneHot encoder",
+    "drop": "Descartar",
     "ignored": "Ignorar",
     "submit": "Procesar dataframe"
   }

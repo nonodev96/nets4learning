@@ -1,10 +1,11 @@
 import React from "react";
 import { Trans } from "react-i18next";
-import "./TabularClassificationCustomDatasetManual.css"
+import "./TabularClassificationCustomDatasetManual.css";
 
 export default function TabularClassificationCustomDatasetManual() {
-  const prefix = "pages.playground.0-tabular-classification.generator.manual."
-  console.debug("TabularClassificationCustomDatasetManual")
+  const prefix = "pages.playground.0-tabular-classification.generator.manual.";
+
+  console.debug("render TabularClassificationCustomDatasetManual");
   return <>
     <details>
       <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-edit-layers.title"} /></summary>
@@ -58,5 +59,5 @@ export default function TabularClassificationCustomDatasetManual() {
       <p><Trans i18nKey={prefix + "details-prediction.text-0"} /></p>
       <p><Trans i18nKey={prefix + "details-prediction.text-1"} /></p>
     </details>
-  </>
+  </>;
 }
