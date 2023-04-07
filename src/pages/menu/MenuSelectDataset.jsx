@@ -3,10 +3,8 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import N4LNavbar from '../../components/header/N4LNavbar'
 import N4LFooter from '../../components/footer/N4LFooter'
-import DragAndDrop from "../../components/dragAndDrop/DragAndDrop";
 import * as alertHelper from '../../utils/alertHelper'
-import { LIST_TYPE_MODALITY } from "../../DATA_MODEL";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function MenuSelectDataset(props) {
   const { id } = useParams()

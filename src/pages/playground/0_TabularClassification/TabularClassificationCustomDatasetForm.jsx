@@ -4,6 +4,7 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import * as dfd from "danfojs";
 import * as alertHelper from "../../../utils/alertHelper";
+import * as sk from "scikitjs";
 
 export class Parser {
   /**
@@ -60,21 +61,23 @@ export class Parser {
 
 
   /**
+   * @typedef {Object} Parser_transform_t
+   *
+   * @property {dfd.DataFrame} dataframeProcessed
+   * @property {Object.<string, dfd.LabelEncoder>} obj_encoder
+   * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
+   * @property {dfd.DataFrame} X
+   * @property {dfd.DataFrame} y
+   * @property {Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>} attributes
+   * @property {Array<TYPE_CLASSES>} classes
+   * @property {Array<any>} data
+   */
+  /**
    * @param {dfd.DataFrame} dataframeOriginal
    * @param {Array<Parser_list_column_type_to_transform_t>} list_column_type_to_transform
    * @param {Parser_params_t} params
    *
-   * @return {
-   *   dataframeProcessed: dfd.DataFrame,
-   *   obj_encoder       : Object.<string, dfd.LabelEncoder>,
-   *   xTrain_scaler     : dfd.MinMaxScaler|dfd.StandardScaler,
-   *   xTrain            : dfd.DataFrame,
-   *   yTrain            : dfd.DataFrame,
-   *
-   *   attributes        : Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>,
-   *   classes           : Array<TYPE_CLASSES>,
-   *   data              : any[]
-   * }
+   * @return {Parser_transform_t}
    */
   static transform(dataframeOriginal,
                    list_column_type_to_transform,
@@ -147,7 +150,7 @@ export class Parser {
           break;
         }
         case "one-hot-encoder": {
-          // Codificamos las columnas de tipo string
+          // No se usa en el preprocesamiento
           const encode = new dfd.OneHotEncoder();
           encode.fit(newDataframe[column_name]);
           const new_serie = encode.transform(newDataframe[column_name].values);
@@ -201,9 +204,7 @@ export class Parser {
       case "float32": {
         break;
       }
-      case "string": {
-        break;
-      }
+      case "string": // Por defecto se va a label encoder
       case "label-encoder": {
         const encode_target = new dfd.LabelEncoder();
         encode_target.fit(newDataframe[column_target_name]);
@@ -221,6 +222,7 @@ export class Parser {
         break;
       }
       case "one-hot-encoder": {
+        // No se usa en el preprocesamiento
         const encode_target = new dfd.OneHotEncoder();
         encode_target.fit(newDataframe[column_target_name]);
         const new_serie_target = encode_target.transform(newDataframe[column_target_name].values);
@@ -244,17 +246,17 @@ export class Parser {
 
 
     const index_of_last_column = newDataframe.columns.indexOf(column_target_name);
-    let xTrain = newDataframe.iloc({ columns: [`:${index_of_last_column}`] });
-    let yTrain = newDataframe[column_target_name];
+    const dataframe_X = newDataframe.iloc({ columns: [`:${index_of_last_column}`] });
+    const dataframe_y = newDataframe[column_target_name];
 
-    let xTrain_scaler;
+    let scaler;
     switch (params.type_scaler) {
       case "min-max-scaler": {
-        xTrain_scaler = new dfd.MinMaxScaler();
+        scaler = new dfd.MinMaxScaler();
         break;
       }
       case "standard-scaler": {
-        xTrain_scaler = new dfd.StandardScaler();
+        scaler = new dfd.StandardScaler();
         break;
       }
       default: {
@@ -262,21 +264,14 @@ export class Parser {
       }
     }
 
-    xTrain_scaler.fit(xTrain);
-    xTrain = xTrain_scaler.transform(xTrain);
-
-    for (const column of xTrain.columns) {
-      newDataframe.addColumn(column, xTrain[column].values, { inplace: true });
-    }
-
     console.log({ newDataframe });
 
     return {
       dataframeProcessed: newDataframe,
       obj_encoder       : obj_encoder,
-      xTrain_scaler     : xTrain_scaler,
-      xTrain            : xTrain,
-      yTrain            : yTrain,
+      scaler            : scaler,
+      X                 : dataframe_X,
+      y                 : dataframe_y,
       attributes        : list_attributes,
       classes           : list_classes,
       data              : data,
@@ -400,9 +395,10 @@ export default function TabularClassificationCustomDatasetForm(props) {
     const {
       dataframeProcessed,
       obj_encoder,
-      xTrain_scaler,
-      xTrain,
-      yTrain,
+      scaler,
+      X,
+      y,
+
       attributes,
       classes,
       data,
@@ -410,11 +406,12 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
     setDataProcessed({
       dataframeProcessed,
-      xTrain,
-      yTrain,
       obj_encoder,
       typeScaler,
-      xTrain_scaler,
+      scaler,
+      X,
+      y,
+
       attributes,
       classes,
     });

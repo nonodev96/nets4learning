@@ -1,50 +1,47 @@
-import './Playground.css'
-import React from 'react'
-import { useParams } from 'react-router'
+import "./Playground.css";
+import React from "react";
+import { useParams } from "react-router";
 import { Col, Container, Row } from "react-bootstrap";
 
-import N4LNavbar from '../../components/header/N4LNavbar'
-import N4LFooter from '../../components/footer/N4LFooter'
+import N4LNavbar from "../../components/header/N4LNavbar";
+import N4LFooter from "../../components/footer/N4LFooter";
 
-
-import TabularClassificationModelReview from './0_TabularClassification/TabularClassificationModelReview'
-import TabularClassificationCustomDataset from './0_TabularClassification/TabularClassificationCustomDataset'
-// import LinearRegressionModelReview from "./1_LinearRegression/ModelReviewLinearRegression";
-// import LinearRegression from "./1_LinearRegression/LinearRegression";
-import ObjectDetectionModelReview from './2_ObjectDetection/ObjectDetectionModelReview'
-// import ObjectDetection from './2_ObjectDetection/ObjectDetection'
-import ImageClassificationModelReview from './3_ImageClassification/ImageClassificationModelReview'
-// import ImageClassification from './3_ImageClassification/ImageClassification'
 import NotFoundPage from "../notFound/NotFoundPage";
+
+import TabularClassificationModelReview from "./0_TabularClassification/TabularClassificationModelReview";
+import TabularClassificationCustomDataset from "./0_TabularClassification/TabularClassificationCustomDataset";
+import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
+import ImageClassificationModelReview from "./3_ImageClassification/ImageClassificationModelReview";
+
 import { useTranslation } from "react-i18next";
 
 export default function Playground() {
-  const { id, option, example } = useParams()
-  const { t } = useTranslation()
+  const { id, option, example } = useParams();
+  const { t } = useTranslation();
   const Print_HTML_Model_View = () => {
     switch (id.toString()) {
-      case '0': {
-        if (option === '0') {
-          return <TabularClassificationModelReview dataset={example} />
+      case "0": {
+        if (option === "0") {
+          return <TabularClassificationModelReview dataset={example} />;
         } else {
-          return <TabularClassificationCustomDataset dataset={example} />
+          return <TabularClassificationCustomDataset dataset={example} />;
         }
       }
-      case '1': {
+      case "1": {
         // TODO
         // return <LinearRegression dataset={example}/>
-        break
+        break;
       }
-      case '2': {
-        return <ObjectDetectionModelReview dataset={example} />
+      case "2": {
+        return <ObjectDetectionModelReview dataset={example} />;
       }
-      case '3': {
-        return <ImageClassificationModelReview dataset={example} />
+      case "3": {
+        return <ImageClassificationModelReview dataset={example} />;
       }
       default:
-        return <NotFoundPage />
+        return <NotFoundPage />;
     }
-  }
+  };
 
   return (
     <>
@@ -65,6 +62,6 @@ export default function Playground() {
 
       <N4LFooter />
     </>
-  )
+  );
 }
 

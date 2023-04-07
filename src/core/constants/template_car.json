@@ -15,6 +15,7 @@
     { "type": "label-encoder", "index_column": 4, "name": "lug_boot", "options": [{ "value": "small", "text": "small" }, { "value": "med", "text": "med"   }, { "value": "big",  "text": "big"  } ] },
     { "type": "label-encoder", "index_column": 5, "name": "safety",   "options": [{ "value": "low",   "text": "low"   }, { "value": "med", "text": "med"   }, { "value": "high", "text": "high" } ] }
   ],
+  "headers": ["buying", "maint", "doors", "persons", "lug_boot", "result"],
   "data"             : [
     ["vhigh", "vhigh", "2", "2", "small", "low", "unacc"],
     ["vhigh", "vhigh", "2", "2", "small", "med", "unacc"],

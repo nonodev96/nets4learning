@@ -28,6 +28,7 @@ export const FILE_TEMPLATE = {
       ]
     }
   ],
+  "header"           : ["Atributo 1", "Atributo 2", "Atributo m", "clase"],
   "data"             : [
     ["dato_entero_01", "dato_decimal_02", "dato_decimal_04", "option_1", "resultado_1"],
     ["dato_entero_11", "dato_decimal_12", "dato_decimal_14", "option_1", "resultado_2"],

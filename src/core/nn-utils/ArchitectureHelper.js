@@ -2,79 +2,10 @@ import * as tf from "@tensorflow/tfjs";
 import * as tfvis from "@tensorflow/tfjs-vis";
 import { getClassesFromDataSet, trainTestSplit } from "./ClassificationHelper";
 import { isProduction } from "../../utils/utils";
+import * as dfd from "danfojs";
+import * as sk from "scikitjs";
 
-
-/*
-export async function createClassicClassification(learningRate, unknownRate, numberOfEpoch, sLOptimizer, layerList, idLoss, idMetrics) {
-  const [xTrain, yTrain, xTest, yTest] = getData(unknownRate, IRIS_CLASSES, IRIS_DATA)
-
-  // modo secuencial
-  const model = tf.sequential()
-  const optimizer = createOptimizer(sLOptimizer, { learningRate })
-  const loss = createLoss(idLoss)
-  const metrics = createMetrics(idMetrics)
-
-  const text = `
-<p>MODELO CREADO A PARTIR DE:
-<b>learningRate:</b> ${learningRate}
-<b>unknownRate:</b> ${unknownRate}
-<b>numberOfEpoch:</b> ${numberOfEpoch}
-<b>sLOptimizer:</b> ${sLOptimizer}
-<b>idLoss:</b> ${idLoss}
-<b>idMetrics:</b> ${idMetrics}
-</p>`
-  document.getElementById('salida').innerHTML += text
-
-  // Agregamos las capas
-  layerList.forEach((layer, index) => {
-    const newLayer = tf.layers.dense({
-      units     : layer.units,
-      activation: layer.activation.toLowerCase(),
-      ...(index === 0) && { inputShape: [xTrain.shape[1]] },
-    })
-    model.add(newLayer)
-  })
-
-  // Compilamos el modelo
-  model.compile({
-    optimizer: optimizer, loss: loss, metrics: metrics,
-  })
-
-  // Mostramos la información del modelo en el panel lateral
-  const containerSummary = {
-    name: 'Arquitectura del modelo', tab: 'Modelo', styles: {}
-  }
-  await tfvis.show.modelSummary(containerSummary, model)
-
-  // Creamos las métricas que van a aparecer en los gráficos
-  const metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
-  const containerFitCallbacks = {
-    name  : 'Entrenamiento del modelo',
-    tab   : 'Entrenamiento',
-    styles: {
-     // height: '1000px'
-    },
-  }
-
-  const fitCallbacks = tfvis.show.fitCallbacks(containerFitCallbacks, metrics_labels, {
-    callbacks: ['onEpochEnd'],
-  })
-
-  const history = await model.fit(xTrain, yTrain, {
-    epochs        : numberOfEpoch,
-    validationData: [xTest, yTest],
-    callbacks     : fitCallbacks,
-  })
-
-  console.log('Layer list', { layerList })
-  console.log('Tensor sequential compile', { model })
-  console.log('xTRAIN', { xTrain })
-  console.log('History', { history })
-  console.log('Configuration model', { config: model.getConfig() })
-
-  return model
-}
-*/
+sk.setBackend(dfd.tensorflow);
 
 export async function createTabularClassificationCustomDataSet_upload(params, t) {
   console.log(params);
@@ -90,26 +21,14 @@ export async function createTabularClassificationCustomDataSet_upload(params, t)
     dataProcessed,
   } = params;
 
-  dataProcessed.xTrain.print();
-  const xTrain_tensor = dataProcessed.xTrain.tensor;
-  const yTrain_tensor = dataProcessed.yTrain.tensor;
-  console.log({
-    Xtrain_shape       : dataProcessed.xTrain.shape,
-    Xtrain_tensor_shape: xTrain_tensor.shape,
-    Ytrain_shape       : dataProcessed.yTrain.shape,
-    Ytrain_tensor_shape: yTrain_tensor.shape,
-  });
-
   const model = tf.sequential();
-  // model.add(tf.layers.dense({ inputShape: [7], units: 10, activation: "relu", kernelInitializer: "leCunNormal" }));
-
   for (const layer_data of layerList) {
     const index = layerList.indexOf(layer_data);
     const layer = {
       units     : layer_data.units,
       activation: layer_data.activation,
       ...(index === 0) && {
-        inputShape: [dataProcessed.xTrain.shape[1]],
+        inputShape: [dataProcessed.X.shape[1]],
       },
     };
     model.add(tf.layers.dense(layer));
@@ -143,14 +62,28 @@ export async function createTabularClassificationCustomDataSet_upload(params, t)
     ],
   });
 
-  console.log({ xTrain_tensor, yTrain_tensor, testSize, numberOfEpoch });
-  yTrain_tensor.shape[1] = 3
-  await model.fit(xTrain_tensor, yTrain_tensor, {
+  const X = dataProcessed.X;
+  let y = dataProcessed.y;
+  const oneHotEncoder = new dfd.OneHotEncoder();
+  oneHotEncoder.fit(y.values);
+  let y_onehot_values = oneHotEncoder.transform(y.values);
+  const scaler = dataProcessed.scaler;
+
+  let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y_onehot_values, testSize);
+  scaler.fit(XTrain);
+  XTrain = scaler.transform(XTrain);
+  XTest = scaler.transform(XTest);
+
+  const Xtrain_tensor = tf.tensor(XTrain);
+  const XTest_tensor = tf.tensor(XTest);
+  const yTrain_tensor = tf.tensor(yTrain);
+  const yTest_tensor = tf.tensor(yTest);
+  await model.fit(Xtrain_tensor, yTrain_tensor, {
     // batchSize      : 32,
-    shuffle        : true,
-    validationSplit: testSize,
-    epochs         : numberOfEpoch,
-    callbacks      : fitCallbacks,
+    // shuffle        : true,
+    validationData: [XTest_tensor, yTest_tensor],
+    epochs        : numberOfEpoch,
+    callbacks     : fitCallbacks,
   });
 
   return model;

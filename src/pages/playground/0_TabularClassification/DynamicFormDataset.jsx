@@ -1,8 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import { isProduction } from "../../../utils/utils";
+import { Bar } from "react-chartjs-2";
 
+const backgroundColorDefault = [
+  "rgba(255, 99, 132, 0.4)",
+  "rgba(255, 159, 64, 0.4)",
+  "rgba(255, 205, 86, 0.4)",
+  "rgba(75, 192, 192, 0.4)",
+  "rgba(54, 162, 235, 0.4)",
+  "rgba(153, 102, 255, 0.4)",
+  "rgba(175, 175, 175, 0.4)",
+];
+const borderColorDefault = [
+  "rgb(255, 99, 132)",
+  "rgb(255, 159, 64)",
+  "rgb(255, 205, 86)",
+  "rgb(75, 192, 192)",
+  "rgb(54, 162, 235)",
+  "rgb(153, 102, 255)",
+  "rgb(175, 175, 175)",
+];
 export default function DynamicFormDataset(props) {
   const {
     dataset_JSON,
@@ -10,11 +29,26 @@ export default function DynamicFormDataset(props) {
     setStringToPredict,
     objectToPredict = {},
     setObjectToPredict,
+    predictionBar,
 
     handleClick_TestVector,
   } = props;
+  console.log({ data: JSON.stringify(props.predictionBar) });
   const { t } = useTranslation();
   const prefix = "pages.playground.0-tabular-classification.generator.dynamic-form-dataset.";
+  const ref_bar = useRef(0);
+  const bar_options = {
+    responsive: true,
+    plugins   : {
+      legend: {
+        position: "top",
+      },
+      title : {
+        display: true,
+        text   : t("prediction"),
+      },
+    },
+  };
 
   useEffect(() => {
     const rowDefault = dataset_JSON.data[0];
@@ -194,12 +228,12 @@ export default function DynamicFormDataset(props) {
                   })}
                 </Row>
 
-                {!isProduction() && <ol>
-                  {Object.entries(objectToPredict).map(([key, value], index) => {
-                    return <li key={index}>{key} | {value}</li>;
-                  })}
-                </ol>
-                }
+                {/*{!isProduction() && <ol>*/}
+                {/*  {Object.entries(objectToPredict).map(([key, value], index) => {*/}
+                {/*    return <li key={index}>{key} | {value}</li>;*/}
+                {/*  })}*/}
+                {/*</ol>*/}
+                {/*}*/}
 
                 <Form.Group className="mb-3" controlId={"formTestInput"}>
                   <Form.Label><Trans i18nKey={prefix + "test-vector"} /></Form.Label>
@@ -217,6 +251,34 @@ export default function DynamicFormDataset(props) {
                     {t("predict")}
                   </Button>
                 </div>
+
+                <hr />
+
+                <Row>
+                  <Col>
+                    <ul start="0">
+                      {props
+                        .predictionBar
+                        .labels
+                        .map((item, index) => <li key={index}>{item}</li>)
+                      }
+                    </ul>
+                    <Bar ref={ref_bar}
+                         options={bar_options}
+                         data={{
+                           labels  : [...props.predictionBar.labels],
+                           datasets: [
+                             {
+                               label          : t("prediction"),
+                               data           : [...props.predictionBar.data],
+                               backgroundColor: backgroundColorDefault,
+                               borderColor    : borderColorDefault,
+                               borderWidth    : 1,
+                             },
+                           ],
+                         }} />
+                  </Col>
+                </Row>
               </Card.Body>
             </Card>
           </Col>

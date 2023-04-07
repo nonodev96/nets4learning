@@ -57,7 +57,7 @@ const DEFAULT_LAYERS_UPLOAD = [
   { units: 124, activation: "relu" },
   { units: 64, activation: "relu" },
   { units: 32, activation: "relu" },
-  { units: 1, activation: "sigmoid" },
+  { units: 2, activation: "sigmoid" },
 ];
 
 
@@ -127,10 +127,10 @@ export default function TabularClassificationCustomDataset(props) {
   /**
    * @typedef {Object | null} DataProcessedState_t
    * @property {dfd.DataFrame} dataframeProcessed
-   * @property {dfd.DataFrame} xTrain
-   * @property {dfd.DataFrame} yTrain
+   * @property {dfd.DataFrame} X
+   * @property {dfd.DataFrame} y
+   * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
    * @property {Object.<string, dfd.LabelEncoder>} obj_encoder
-   * @property {dfd.MinMaxScaler} xTrain_scaler
    * @property {Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>} attributes
    * @property {Array<TYPE_CLASSES>} classes
    */
@@ -160,7 +160,7 @@ export default function TabularClassificationCustomDataset(props) {
    * @property {number} learningRate
    * @property {number} testSize
    * @property {number} numberOfEpoch
-   * @property {Array<>} layerList
+   * @property {Array<{units: number, activation: string}>} layerList
    * @property {string} idOptimizer
    * @property {string} idLoss
    * @property {string} idMetrics
@@ -179,6 +179,10 @@ export default function TabularClassificationCustomDataset(props) {
   const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t));
 
   // Prediction
+  const [predictionBar, setPredictionBar] = useState({
+    labels: [],
+    data  : [],
+  });
   const [objectToPredict, setObjectToPredict] = useState({});
   const [stringToPredict, setStringToPredict] = useState("");
 
@@ -486,7 +490,7 @@ export default function TabularClassificationCustomDataset(props) {
     const currentDataProcessed = generatedModels[generatedModelsIndex].dataProcessed;
     const currentObjEncoder = currentDataProcessed.obj_encoder;
     // Seleccionamos el escalador MinMaxScaler o StandardScaler
-    const currentScaler = currentDataProcessed.xTrain_scaler;
+    const currentScaler = currentDataProcessed.scaler;
     // Seleccionamos el modelo cargado
     const currentModel = generatedModels[generatedModelsIndex].model;
 
@@ -503,13 +507,23 @@ export default function TabularClassificationCustomDataset(props) {
     // Realizamos la predicción
     const tensor_input = tf.tensor2d([scaledData]);
     const prediction = currentModel.predict(tensor_input);
-    const predictionWithArgMax = prediction.argMax(-1).dataSync();
-    const predictionArraySync = prediction.arraySync();
+    // const predictionWithArgMax = prediction.argMax(-1).dataSync();
+    const predictionArraySync = prediction.arraySync()[0];
 
-    if (!isProduction()) console.debug({ currentModel, currentDataProcessed, currentObjEncoder, currentScaler });
-    if (!isProduction()) console.debug("Predicción", { prediction, predictionWithArgMax, predictionArraySync });
+    const labels = currentDataProcessed.classes.map(({name}) => name);
+    setPredictionBar((old) => {
+      return {
+        labels: [...labels],
+        data  : [...predictionArraySync],
+      };
+    });
 
-    await alertHelper.alertSuccess(predictionArraySync, t("prediction"));
+    if (!isProduction()) console.debug("Predicción", { prediction, predictionArraySync });
+    const text = predictionArraySync.map(item => {
+      const float = parseFloat(item * 100);
+      return float.toFixed(2);
+    }).join(", ");
+    await alertHelper.alertSuccess(t("prediction"), { text });
   };
 
   const handleClick_TestVector = async () => {
@@ -1086,6 +1100,7 @@ export default function TabularClassificationCustomDataset(props) {
                              setStringToPredict={setStringToPredict}
                              objectToPredict={objectToPredict}
                              setObjectToPredict={setObjectToPredict}
+                             predictionBar={predictionBar}
                              handleClick_TestVector={dataset_key === MODEL_UPLOAD ? handleClick_TestVector_upload : handleClick_TestVector} />)
       }
 
