@@ -6,11 +6,51 @@
   "loading": "Charging",
   "upload": "Increase",
   "example-i": "Example {{i}}",
+  "Files": "Files",
+  "download": "Download",
+  "datasets": {
+    "title": "Datasets",
+    "text-0": "Download datasets for tabular classification",
+    "dataset-name": "Data set name",
+    "dataset-size": "Number of samples",
+    "dataset-web": "Original website",
+    "download-dataset-car": "Download car evaluation data set",
+    "download-dataset-hepatitis-c": "Download Hepatitis C data set",
+    "download-dataset-iris": "Download Iris data set",
+    "download-dataset-titanic": "Download titanic survival data set"
+  },
+  "dataframe-form": "Dataframe form",
+  "dataframe-original": "Original dataframe",
+  "dataframe-processed": "Processed dataframe",
+  "preprocessing": {
+    "title": "Preprocessing",
+    "transformations-columns": "Column transformations",
+    "transformations-set-X": "Transformations to set x",
+    "transformations-set-Y": "Transformations to the whole and"
+  },
+  "prediction": "Prediction",
+  "predict": "Predict",
+  "cookies-policies": {
+    "title": "Cookie Policy",
+    "text-0": "This website uses cookies to improve the user experience and analyze the use of the application. Cookies are small text files that are stored on your device when you visit our website. These cookies help us understand how users interact with our website, which pages are most visited and how we can improve the user experience.",
+    "text-1": "It is important to note that we do not process user data for advertising purposes. We use cookies only for analytical purposes and to improve the functionality of the website. If you continue to use our website, we understand that you agree to the use of cookies as described in our privacy policy.",
+    "accept": "Accept"
+  },
+  "error": {
+    "load-json-csv": "Error, the file could not be loaded",
+    "need-to-upload-image": "You must first upload an image",
+    "need-dataset": "You must load the data first",
+    "model-selected": "Model selection error",
+    "tensor-shape": "Incorrect tensioner shape",
+    "tensor-shape-description": "Wrong tensor shape, you expected the shape [{{target_tensor_shape_0}},{{target_tensor_shape_1}}}], but you received a tensor with shape [{{tensor_shape_0}},{{tensor_shape_1}}}], possibly you should modify the last layer.",
+    "tensor-shape-change": "The output layer has the shape (*, {{last_layer_units}}). <br> must have the form (*, {{class_length}})"
+  },
   "header": {
     "language": "Language",
     "manual": "Manual",
     "glossary": "Glossary",
-    "init": "Start"
+    "home": "Home",
+    "datasets": "Datasets"
   },
   "footer": {
     "description-app": "This web application is part of an end of the degree of computer engineering from the University of Jaén \"Web platform for the design and execution of deep learning models\"",
@@ -22,12 +62,35 @@
   "drag-and-drop": {
     "label-files-one": "File:",
     "label-files-more": "Files:",
+    "image": "Add an example image",
     "binary": "Add the binary file",
     "json": "Add the JSON file",
-    "csv": "Add the CSV file"
+    "csv": "Add the CSV file",
+    "csv-json": "Enter the template data file.json"
+  },
+  "custom-canvas-drawer": {
+    "validate": "Validate",
+    "clear": "Clean"
+  },
+  "alert": {
+    "menu": {
+      "need-select-dataset": "You must select a data set",
+      "need-select-model": "You must select a model"
+    },
+    "0-tabular-classification": {
+      "not-more-layers": "No more layers can be added"
+    },
+    "model-load-success": "Loaded model",
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "model-train-success": "model trained successfully",
+    "prediction": "The prediction is: {{index}}",
+    "file-upload-success": "Successfully loaded file",
+    "file-upload-error-incorrect-format": "The file could not be loaded, it is not the correct format"
   },
   "table": {
-    "dataset": "Data set"
+    "dataset": "Dataset"
   },
   "modality": {
     "0": "Tabular classification",
@@ -39,7 +102,10 @@
     "object-detection": "Object identification",
     "image-classification": "Image classifier"
   },
-  "AYUDA":"ksdjlkj",
+  "graphic-red": {
+    "input": "Input",
+    "output": "Output"
+  },
   "datasets-models": {
     "0-tabular-classification": {
       "upload": {
@@ -51,16 +117,16 @@
       "car": {
         "title": "CAR - Car Classification",
         "description": {
-          "text-1": "The data set <i> car evaluation </i> allows to evaluate vehicles through the following structure",
-          "text-2": "For more information about this data set, visit the <link1> ICS.UCI.edu repository.",
+          "text-1": "The dataset <i> car evaluation </i> allows to evaluate vehicles through the following structure",
+          "text-2": "For more information about this dataset, visit the <link1>ICS.UCI.edu repository.</link1>",
           "details-1": {
             "title": "Information",
             "list": {
               "1": "<b> Buying: </b> Purchase price.",
-              "2": "<b> Maint: </b> maintenance cost.",
-              "3": "<b> doors: </b> number of doors.",
-              "4": "<b> Persians: </b> number of places.",
-              "5": "<b> lug_boot: </b> trunk size.",
+              "2": "<b> Maint: </b> Maintenance cost.",
+              "3": "<b> doors: </b> Number of doors.",
+              "4": "<b> Persians: </b> Number of places.",
+              "5": "<b> lug_boot: </b> Trunk size.",
               "6": "<b> Safety: </b> Estimated vehicle security."
             }
           },
@@ -68,11 +134,11 @@
             "title": "Input data",
             "text-1": "Characteristics of the car",
             "list": {
-              "1": "<b> Buying: </b> VHIGH, HIGH, MED, LOW.",
-              "2": "<b> Maint: </b> Vhigh, high, med, low.",
+              "1": "<b> Buying: </b> vhigh, high, med, low.",
+              "2": "<b> Maint: </b> vhigh, high, med, low.",
               "3": "<b> doors: </b> 2, 3, 4, 5more.",
               "4": "<b> Persians: </b> 2, 4, more.",
-              "5": "<b> Lug_Boot: </b> Small, Med, Big.",
+              "5": "<b> Lug_Boot: </b> small, med, big.",
               "6": "<b> Safety: </b> low, med, high."
             }
           },
@@ -80,10 +146,10 @@
             "title": "Output data",
             "text-1": "Vehicle acceptance",
             "list": {
-              "1": "<b> unacc </b>: inaccessible",
-              "2": "<b> acc </b>: accessible",
-              "3": "<b> Good </b>: Good",
-              "4": "<b> vgood </b>: very good"
+              "1": "<b> unacc </b>: Inaccessible",
+              "2": "<b> acc </b>: Accessible",
+              "3": "<b> good </b>: Good",
+              "4": "<b> vgood </b>: Very good"
             }
           },
           "details-4": {
@@ -94,7 +160,7 @@
           }
         },
         "html-example": {
-          "text": "Enter separate by point and eat the following values ​​corresponding to the car to be evaluated:",
+          "text": "Enter separate by point and eat the following values corresponding to the car to be evaluated:",
           "items": "(Buying; Maint; Doors; Persons; Lug_boot; Safety)",
           "examples": "Examples:"
         }
@@ -102,12 +168,12 @@
       "iris": {
         "title": "Iris - Flor Iris classification",
         "description": {
-          "text-1": "The Iris-Data data set allows to detect what type of iris plant is from the altitude and length of its petal and sepalo.",
+          "text-1": "The Iris-Data dataset allows to detect what type of iris plant is from the altitude and length of its petal and sepalo.",
           "details-1": {
             "title": "Input data",
             "list": {
               "1": "Sepal length in cm",
-              "2": "Sepaal width in cm",
+              "2": "Sepal width in cm",
               "3": "Petal length in cm",
               "4": "Petal width in cm"
             }
@@ -115,9 +181,9 @@
           "details-2": {
             "title": "Output data",
             "list": {
-              "1": "Hedgeal iris",
-              "2": "Versicolor iris",
-              "3": "Virginic iris"
+              "1": "Setosa",
+              "2": "Versicolor",
+              "3": "Virginica"
             }
           },
           "details-3": {
@@ -128,8 +194,57 @@
           }
         },
         "html-example": {
-          "text": "Enter separate by point and eat the following values ​​corresponding to the plant to be evaluated:",
+          "text": "Enter separate by point and eat the following values corresponding to the plant to be evaluated:",
           "items": "(sepal length; sepalo width; petal length; petal width).",
+          "examples": "Examples:"
+        }
+      },
+      "lymphography": {
+        "title": "Lymphoma data classification",
+        "description": {
+          "text-1": "The dataset of <i> Lymphography </i> allows to detect that possible phases of a lymphoma and in what state it is.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "<b> Lympphats",
+              "1": "<b> Block of affection </b>: No, Yes",
+              "2": "<b> bl. OF LYMPH. C </b>: No, Yes",
+              "3": "<b> bl. OF LYMPH. S </b>: No, Yes",
+              "4": "<b> by pass </b>: no, yes",
+              "5": "<b> extravasates </b>: No, Yes",
+              "6": "<b> regeneration of </b>: no, yes",
+              "7": "<b> Early Uptake In </b>: No, Yes",
+              "8": "<b> lym.nodes dimin </b>: 0-3",
+              "9": "<b> Lym.Nodes enlar </b>: 1-4",
+              "10": "<b> Changes in Lym. </b>: Bean, Oval, Round",
+              "11": "<b> defect in node </b>: no, Lacunar, Lac. Marginal, Lac. central",
+              "12": "<b> Changes in node </b>: No, Lacunar, Lac. Margin, Lac. central",
+              "13": "<b> changes in strong",
+              "14": "<b> Special Forms </b>: No, chalices, vesicles",
+              "15": "<b> Dislocation of </b>: No, Yes",
+              "16": "<b> exclusion of no </b>: no, yes",
+              "17": "<b> no. of nodes in </b>: 0-9, 10-19, 20-29, 30-39, 40-49, 50-59, 60-69,> = 70"
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "Normal Find </b>: Normal",
+              "1": "<b> Metastases </b>: Metastasis",
+              "2": "<b> Malign Lymph </b>: Malignant lymphoma",
+              "3": "<b> fibrosis </b>: fibrosis"
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "list": {
+              "0": "Data set"
+            }
+          }
+        },
+        "html-example": {
+          "text": "Enter separate by point and eat the following values corresponding to the plant to be evaluated:",
+          "items": "(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special forms, dislocation of, exclusion of no, no. of nodes in).",
           "examples": "Examples:"
         }
       },
@@ -144,51 +259,205 @@
       }
     },
     "2-object-detection": {
-      "coco-ssd": {
-        "title": "COCO SSD - Detector de objetos",
+      "interface": {
+        "process-webcam": {
+          "title": "Realtime recognition",
+          "sub-title": "Webcam",
+          "button": "Use Webcam"
+        },
+        "process-image": {
+          "title": "Images processing",
+          "sub-title": "Upload Image"
+        }
+      },
+      "face-detection": {
+        "title": "Face Detector - Facial Geometry",
         "description": {
-          "text-0": "El askdjfhksjdahflkjsdhflk SSD (Single Shot MultiBox Detection) de detección de objetos pretende localizar e identificar múltiples objetos en una sola imagen.",
-          "text-1": "Para más información sobre la API de detección de objetos de Tensorflow, consulta este readme en <link1>tensorflow/object_detection</link1>",
-          "text-2": "Este modelo detecta objetos definidos en el conjunto de datos COCO, que es un conjunto de datos de detección, segmentación y subtitulado de objetos a gran escala. El modelo es capaz de detectar <link1>80 clases de objetos</link1>",
-          "text-3": "Este ejemplo es una adaptación a TensorFlow.js del modelo COCO-SSD.",
+          "text-0": "This model is able to recognize from an entry image or video different parts of the face, such as eyes, ears, nose and mouth.",
           "details-input": {
-            "title": "Datos de entrada",
+            "title": "Input data",
             "list": {
-              "0": "Imagen o vídeo (webcam) a color."
+              "0": "Image or video."
             }
           },
           "details-output": {
-            "title": "Datos de salida",
+            "title": "Output data",
             "list": {
-              "0": "Mismo elemento de entrada con una serie de puntos que delimitan los diferentes puntos de los objetos, además del nombre del objeto."
+              "0": "Same input element with a series of points that delimit the different parts of the face."
             }
           },
           "details-references": {
-            "title": "Referencias",
+            "title": "References",
             "list": {
-              "0": "Puede encontrar más información <link1>Coco dataset</link1>"
+              "0": "<link1> Model entry into the tensorflow repository </link1>"
+            }
+          }
+        }
+      },
+      "face-mesh": {
+        "title": "Face Mesh - Facial Mesh",
+        "description": {
+          "text-0": "This model from an input image or video is able to recognize different points of the face to finally make a mesh of it.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "Image or video."
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "Same input element with a series of points that delimit the different parts of the face."
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1> Model entry into the tensorflow repository </link1>"
+            }
+          }
+        }
+      },
+      "move-net--pose-net": {
+        "title": "Move Net - joint detector",
+        "description": {
+          "text-0": "PoseNet is an automatic learning model capable of recognizing the body's position in real time. It can be used to estimate only one pose or several at the same time.",
+          "text-1": "In the following example, so that its impact on performance is less only detects one pose at the same time.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "Color image or video (webcam)."
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "Same input element with a series of points and lines that delimit different points of the face in addition to shoulders, elbows, hands, feet, knees and hip."
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1> Paper </link1>"
+            }
+          }
+        }
+      },
+      "coco-ssd": {
+        "title": "Coco SSD - Object detector",
+        "description": {
+          "text-0": "The SSD model (Single Shot Multibox Detection) of object detection aims to locate and identify multiple objects in a single image.",
+          "text-1": "For more information about the tensorflow object detection API, consult this read in <link1> Tensorflow/Object_detection </link1>",
+          "text-2": "This model detects objects defined in the COCO dataset, which is a set of detection, segmentation and subtitling of large -scale objects. The model is capable of detect",
+          "text-3": "This example is an adaptation to tensorflow.js of the coconut model.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "Color image or video (webcam)."
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "Same input element with a series of points that delimit the different points of the objects, in addition to the name of the object."
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "list": {
+              "0": "You can find more information <link1> Coco Dataset </link1>"
             }
           }
         }
       },
       "list-models": {
-        "2-option-1": "Model - FACE Detector - Facial Geometry",
+        "2-option-1": "Model - Face Detector - Facial Geometry",
         "2-option-2": "Model - Face Mesh - Facial Mesh",
         "2-option-3": "Model - Move Net - joint detector",
         "2-option-4": "Model - Coco SSD - Object detector"
       }
     },
     "3-image-classifier": {
+      "interface": {
+        "0-upload": {
+          "title": "Load your own model.",
+          "sub-title": "First the .json file and then the .bin file"
+        },
+        "process-examples": {
+          "title": "Processing with examples"
+        },
+        "process-draw": {
+          "title": "Drawing"
+        },
+        "process-image": {
+          "title": "Image processing",
+          "sub-title": "-",
+          "validate": "Validate"
+        },
+        "result": "Result",
+        "button-accept": "Accept",
+        "modal": {
+          "title": "Prediction"
+        }
+      },
+      "mnist": {
+        "title": "MNIST - Number classifier",
+        "description": {
+          "text-0": "The <strong> mnist database </strong> is a large database of handwritten digits. The database is widely used for training and tests in the field of automatic learning.",
+          "text-1": "The samples of the original NIST datasets were created \"re-mixing\".",
+          "text-2": "The NIST training dataset was taken from the United States Census Office. In addition, NIST's black and white images were normalized to fit into a <strong> 28 x 28 </strong> pixels and softened, which introduced gray scale levels.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "Gray scale image and with a <strong> 28 x 28 </strong> pixels size"
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "A number between 0 and 9"
+            }
+          },
+          "details-references": {
+            "title": "References"
+          }
+        }
+      },
+      "mobilenet": {
+        "title": "Mobilenet - Image classifier",
+        "description": {
+          "text-0": "Mobilenet V2 is a family of neural networks for the classification of similar images and tasks.",
+          "text-1": "This model is able to differentiate between 1001 categories, identifying the main context of the image.",
+          "details-input": {
+            "title": "Input data",
+            "list": {
+              "0": "Image with color values between [0, 1] of <strong> 224 x 224 </strong> pixels."
+            }
+          },
+          "details-output": {
+            "title": "Output data",
+            "list": {
+              "0": "A number of 0 to 1001 that are each of the categories of this <link1> list </link1>"
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "text-0": "Originally it was published by Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:",
+            "list": {
+              "0": "<link1>Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation</link1> 2018"
+            }
+          }
+        }
+      },
+      "face-mesh": {
+        "title": "-"
+      },
       "list-models": {
-        "3-option-1": "MODEL - MNIST - NUMBER CLASSIFICATION",
+        "3-option-1": "Model - MNIST - Number Classification",
         "3-option-2": "Model - Mobilenet - Image Classifier",
         "3-option-3": "Model - Resnet - Image classifier"
       }
     }
-  },
-  "op": {
-    "0": "op 1",
-    "1": "op 2"
   },
   "pages": {
     "index": {
@@ -226,9 +495,13 @@
       }
     },
     "menu-selection-dataset": {
-      "form-description-1": "Then select the data set on you will work or load your own data set.",
-      "form-label": "Select a data set",
-      "form-option-_-1": "Select a data set",
+      "0-tabular-classification": {
+        "csv": "Upload dataset - CSV",
+        "csv-text": "Upload a file with a dataset treated in <Oce> .CSV format </code>"
+      },
+      "form-description-1": "Then select the dataset on you will work or load your own dataset.",
+      "form-label": "Select a dataset",
+      "form-option-_-1": "Select a dataset",
       "form-upload-description": "Now if you wish you can load your own architecture, otherwise click on continuing and an architecture will be loaded by example default.",
       "form-submit": "Continue"
     },
@@ -243,33 +516,162 @@
       "form": {
         "select-parameter": "Select the parameter",
         "parameter": "Parameter",
-        "parameter-integer": "Whole parameter",
+        "parameter-integer": "Integer parameter",
         "parameter-decimal": "Decimal parameter",
         "parameter-float": "Simple precision floating parameter",
         "parameter-double": "Double precision floating parameter",
         "parameter-categorical": "Categorical parameter",
         "vector-to-check": "Vector to try",
-        "button-check-result": "Check out"
+        "button-check-result": "Predict"
       },
       "0-tabular-classification": {
         "general": {
           "model": "Model",
           "description-input": "Data entry description",
-          "description-features": "EDITION FORM FOR THE CHARACTERISTICS"
+          "description-features": "Feature editor"
         },
         "0_upload": {
-          "upload": "Increase",
-          "upload-your-model": "Load your own model.",
+          "upload": "Upload",
+          "upload-your-model": "Load your model.",
           "upload-your-model-description": "Keep in mind that you have to upload the <strong> .json </strong> file and the <strong> .bin </strong> file and then load the model",
           "button-upload-your-model": "Load model"
+        },
+        "generator": {
+          "dataset": {
+            "title": "Data set",
+            "upload-dataset": "Upload dataset.",
+            "attributes": {
+              "title": "Attributes",
+              "int32": "Numeric",
+              "float32": "Decimal",
+              "string": "Text",
+              "label-encoder": "Label Encoder",
+              "one-hot-encoder": "ONE HOT Encoder",
+              "classes": "Classes"
+            }
+          },
+          "layers": {
+            "title": "Layer design",
+            "page-info": "You can visit the <link1> Netron.app"
+          },
+          "editor-layers": {
+            "title": "Layer editor",
+            "add-layer-start": "Add a layer to the beginning",
+            "add-layer-end": "Add a layer to the end",
+            "delete-layer": "Delete layer {{value}}",
+            "layer-id": "Layer {{value}}",
+            "units": "Layer units",
+            "units-placeholder": "Enter the number of units in the layer",
+            "activation-function-select": "Select the activation function",
+            "activation-function-info": "It will be the optimizer that will be used to activate the function"
+          },
+          "general-parameters": {
+            "title": "Hyper parameter editor",
+            "learning-rate": "Learning rate",
+            "learning-rate-placeholder": "Enter the learning rate",
+            "learning-rate-info": "Remember to be a value between 0 and 100 (it is a percentage)",
+            "number-of-epochs": "Number of iterations",
+            "number-of-epochs-placeholder": "Number of iterations",
+            "number-of-epochs-info": "The higher it, the more training will be executed",
+            "train-rate": "Test set size",
+            "train-rate-placeholder": "Enter the size of the test bank",
+            "train-rate-info": "Remember to be a value between 0 and 100 (it is a percentage)",
+            "optimizer-id": "Select the optimized",
+            "optimizer-id-info": "It will be the optimizer that will be used to correct the error.",
+            "loss-id": "Select the loss function",
+            "loss-id-info": "It will be the function that will be used to evaluate the error of the neurons.",
+            "metrics-id": "Select the metric",
+            "metrics-id-info": "It will be the type of metric that will be used for training evaluation."
+          },
+          "models": {
+            "title": "Models",
+            "history-train": "Training history",
+            "train": "Training",
+            "button-submit": "Create and train model",
+            "open-visor": "Open viewfinder",
+            "close-visor": "Close viewfinder",
+            "export-current-model": "Export current model"
+          },
+          "table": {
+            "id": "Id",
+            "load": "Load",
+            "learning-rate": "Learning",
+            "number-of-epochs": "Iterations",
+            "train-rate": "Evidence",
+            "layers": "Layers",
+            "optimizer-id": "Optimizer",
+            "loss-id": "Loss",
+            "metric-id": "Metrics",
+            "download": "Discharge"
+          },
+          "dynamic-form-dataset": {
+            "title": "Prediction",
+            "text-0": "Introduces separately by point and coma the corresponding values to predict",
+            "select-option": "Select an option",
+            "input-vector": "Enter the vector to try",
+            "test-vector": "Vector to try"
+          },
+          "manual": {
+            "title": "Manual",
+            "details-edit-layers": {
+              "title": "Editor of the Layers",
+              "text-0": "You can edit the layers of the neuronal network, you can add as many as you want by pressing the \"Add layer\" button at the beginning or at the end.",
+              "list": {
+                "0": "<b> Cap units </b>: <br /> Each unit in a layer is connected to all units of the anterior layer and the following layer. <br /> Each unit in a layer has a set of associated weights that determine the force and direction of the signal that is transmitted between the units. <br /> We can edit the number of inputs and outputs of the layer.",
+                "1": "<b> Activation function </b>: <br /> The activation function in a layer of a neuronal network refers to the mathematical function that is applied to the output of each unit in the layer, before passing the signal To the following layer, we can edit each of the activation functions of all layers."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Hyper parameter editor",
+              "text-0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:",
+              "list": {
+                "0": "<b> Learning rate </b>: <br /> Value between 0 and 100 which indicates to the network what amount of data you should use for training.",
+                "1": "<b> Number of iterations </b>: <br /> Amount of cycles that the network is going to make (the greatest number, it takes longer to train).",
+                "2": "<b> Test set size </b>: <br /> Percentage of the dataset to be used for training and evaluation.",
+                "3": "<b> Optimizer </b>: <br /> It is a function that as its name indicates is used to optimize the models. <br /> This is frequently used to avoid stagnating in a local maximum.",
+                "4": "<b> loss function </b>: <br /> It is a method to assess how well a specific algorithm models the data granted.",
+                "5": "<b> Metric function </b>: <br /> It is the evaluation to assess the performance of an automatic learning model."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Hyper parameters information",
+              "list": {
+                "0": "<b> Learning rate </b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
+                "1": "<b> Number of iterations </b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
+                "2": "<b> Test set size </b>: <br /> The size of the test set refers to the amount of data used to evaluate the performance of the neuronal network after training. This dataset is not used in the training of the neuronal network and is used to measure the network capacity to generalize new data.",
+                "3": "<b> Optimizer </b>: <br /> The optimizer is an algorithm used to update the weights of the neuronal network depending on the error calculated during training. Some examples of optimizers are the descent of the stochastic gradient (SGD), the ADAM and the ADAM.",
+                "4": "<b> loss function </b>: <br /> The loss function is a measure of the error between the neuronal network predictions and the real outputs. It is used to optimize the neuronal network during training and there are different loss functions, such as cross entropy and middle quadratic error."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Create and train model",
+              "text-0": "Once all previous fields have been filled we can create the model by pressing the \"Create and train model\" button.",
+              "text-1": "If we have trained the model with the metric function <i> Accuracy </i> two graphs will appear in the viewfinder. The most relevant to us is that below, since at tensorflow.js, <i> ac </i> and <i> Val_acc </i> are evaluation metrics commonly used in training models of neural networks. <br /> <i> Acc </i> represents the precision (Accuracy) of the model in the training dataset. The precision is defined as the number of correct predictions divided by the total number of predictions. <br /> <i> Val_acc </i> represents the precision of the model in the validation dataset. Validation is used to evaluate the model capacity to generalize new data that has not been seen during training.",
+              "text-2": "The validation precision is important to detect the over juste (<i> over fitting </i>) of the model, which occurs when the model fits too much to training data and does not generalize well to new data.",
+              "text-3": "In summary, <b> ACC </b> refers to precision in the training set and <b> Val_acc </b> refers to precision in the validation dataset. Both metrics are important to evaluate the model capacity to generalize new data.",
+              "text-4": "If everything has been correct a new entry will be added to the list of models generated with the selected dataset, we will be allowed to load in memory previously trained models."
+            },
+            "details-export-models": {
+              "title": "Export model",
+              "text-0": "If we have created the model correctly an entry will be added to the table of models generated, we are allowed to export the models generated and save them locally."
+            },
+            "details-prediction": {
+              "title": "Prediction",
+              "text-0": "The final form allows us to select the main characteristics used to determine the class.",
+              "text-1": "The output value will be an index of the class list, to perform the class prediction based on the features we must press the \"See Result\" button."
+            }
+          },
+          "prediction": {
+            "class_id_name": "The id <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
+          }
         }
       }
     },
     "manual": {
       "app": {
-        "title": "TOOL OBJECTIVES",
+        "title": "Objectives",
         "description-1": "This project shows different tasks that can perform neuronal networks when they are trained by automatic learning, which is why we are going to address from three approaches (classification, identify objects, classify images), each of these approaches are explained below in the following Tickets with a brief description of the technique and how to use the tool with that technique.",
-        "description-2": "Some of the reasons why learning neural networks are important are the following:",
+        "description-2": "Some of the reasons why learning neural networks are the following:",
         "list": {
           "0": {
             "title": "Practical applications",
@@ -298,11 +700,11 @@
         "1-description-2": "The tool has a list of representative examples that allow to alter the characteristics form.",
         "1-description-3": "By accessing the tool section on both models we can edit the characteristics of the element to predict. The tool has a dynamic form that allows changing the types of neuronal network input data.",
         "2-title": "Train models",
-        "2-description-1": "The tool has a data display that allows you to show the classes and attributes of the data set. As well as a manager to create, design, train and export a data model.",
+        "2-description-1": "The tool has a data display that allows you to show the classes and attributes of the dataset. As well as a manager to create, design, train and export a data model.",
         "2-description-2": "On the left we have an editor of the different layers that the neuronal network has. It should be allowed the last network layer to have the same number of units as classes to predict.",
         "2-description-3": "On the right we have an editor of the different types of data for training, learning rate, iterations number, test bank size, optimizing function, loss function, metric function.",
         "2-description-4": "We must press the \"Create and train model\" button to start the training process of the neuronal network. If all the configuration and selection of the functions are correct then an entry with the different trained models will be added in the table below.",
-        "2-description-5": "Once trained data model we can make predictions, for this a dynamic form is included with the characteristics of the data set. Depending on training and selected options, our model will predicted different target classes with greater or lesser precision."
+        "2-description-5": "Once trained data model we can make predictions, for this a dynamic form is included with the characteristics of the dataset. Depending on training and selected options, our model will predicted different target classes with greater or lesser precision."
       },
       "2-object-identification": {
         "title": "Object identification",
@@ -340,26 +742,26 @@
         "function": "Function"
       },
       "tabular-classification": {
-        "title": "DESCRIPTION Tabular classification",
-        "text-1": "Tabular classification is a supervised type of learning in which a set of data labeled to train an automatic learning model that can predict the class of a new data set can be used. In the tabular classification, the input and output data is represented in the form of a table with rows and columns, where each row represents an instance or example of the data, and each column represents a characteristic or attribute of the data.",
-        "text-2": "For example, if you want to predict whether a bank of a bank is solvent or not, the characteristics or attributes that can be used are: income, debts, credit history, age, etc. In the tabular classification, each instance or example of the data set will have values ​​for each of these characteristics and a label that indicates whether the client is solvent or not.",
-        "text-3": "Once you have a set of data labeled, an automatic learning algorithm is used to train a model that can predict the label of new data sets. This model can be used to perform precise and fast predictions on new data instances.",
+        "title": "Description Tabular classification",
+        "text-1": "Tabular classification is a supervised type of learning in which a set of data labeled to train an automatic learning model that can predict the class of a new dataset can be used. In the tabular classification, the input and output data is represented in the form of a table with rows and columns, where each row represents an instance or example of the data, and each column represents a characteristic or attribute of the data.",
+        "text-2": "For example, if you want to predict whether a bank of a bank is solvent or not, the characteristics or attributes that can be used are: income, debts, credit history, age, etc. In the tabular classification, each instance or example of the dataset will have values for each of these characteristics and a label that indicates whether the client is solvent or not.",
+        "text-3": "Once you have a set of data labeled, an automatic learning algorithm is used to train a model that can predict the label of new datasets. This model can be used to perform precise and fast predictions on new data instances.",
         "text-4": "Tabular classification is a very useful technique to solve classification problems in a wide variety of fields, such as medicine, electronic commerce, banking, safety and many others."
       },
       "object-identification": {
         "title": "Description Object Identification",
         "text-1": "The identification of objects in neuronal networks is a technique used in the field of automatic learning and computer vision to detect and recognize objects in images or videos. It is an important task in image analysis and is used in applications such as faces recognition, real -time objects, the classification of objects in medical images and the detection of objects in autonomous vehicles.",
-        "text-2": "The neural networks used for the identification of objects are deep learning models that are trained in data sets labeled. The training process implies providing the neurons network for a large number of images tagged, and adjusting the weights of connections between neurons so that the network can identify objects in new images with high precision.",
+        "text-2": "The neural networks used for the identification of objects are deep learning models that are trained in datasets labeled. The training process implies providing the neurons network for a large number of images tagged, and adjusting the weights of connections between neurons so that the network can identify objects in new images with high precision.",
         "text-3": "Once the neuronal network has been trained, it is used to identify objects in new images. The network examines the image and, by processing multiple layers, extracts important characteristics that are used to identify objects of interest. Then, the network uses these characteristics to assign a label to each object detected in the image.",
-        "text-4": "In summary, the identification of objects in neuronal networks is an important technique in computer vision and automatic learning used to detect and recognize objects in images and videos. It is based on the use of deep neural networks trained in data sets labeled to identify and classify objects in new images with high precision."
+        "text-4": "In summary, the identification of objects in neuronal networks is an important technique in computer vision and automatic learning used to detect and recognize objects in images and videos. It is based on the use of deep neural networks trained in datasets labeled to identify and classify objects in new images with high precision."
       },
       "image-classification": {
-        "title": "Image classifier description",
+        "title": "Description Image classifier",
         "text-1": "The image classifier is a technique used in neural networks to classify images into different categories or labels. The objective of an image classifier is to take an input image and predict what class it belongs, based on a set of predefined categories or labels.",
         "text-2": "In deep learning, image classifiers are based on convolutional neural networks (CNN), which are a specialized architecture to process images. These neuronal networks have multiple layers and convolution operations that allow them to extract important characteristics from the images, such as edges, shapes and textures.",
-        "text-3": "To train an image classifier, a set of labeled data is used that contains images and their respective class labels. Then, the neuronal network is trained using this data set to learn to identify patterns in the images and associate them with the corresponding class labels.",
+        "text-3": "To train an image classifier, a set of labeled data is used that contains images and their respective class labels. Then, the neuronal network is trained using this dataset to learn to identify patterns in the images and associate them with the corresponding class labels.",
         "text-4": "Once the neuronal network has been trained, it can be used to classify new images in different categories. The image classifier examines the input image and processes it through the neuronal network to extract important characteristics and predict what class the image belongs.",
-        "text-5": "In summary, the image classifier in neuronal networks is a technique that uses convolutional neural networks to classify images into different categories or labels. It is based on the use of a data set labeled to train the neuronal network and the extraction of important characteristics of the images to predict which class a new entrance image belongs."
+        "text-5": "In summary, the image classifier in neuronal networks is a technique that uses convolutional neural networks to classify images into different categories or labels. It is based on the use of a dataset labeled to train the neuronal network and the extraction of important characteristics of the images to predict which class a new entrance image belongs."
       },
       "activation-functions": {
         "title": "Activation functions",
@@ -370,11 +772,11 @@
             "characteristics": {
               "0": "Bounded between 0 and 1",
               "1": "Good in final layers",
-              "2": "Used to normalize multiclase type"
+              "2": "Used to normalize multiclass type"
             }
           },
           "sigmoid": {
-            "description": "Transforma, the input values ​​where the highest tend to 1 and the lowest values ​​tend to 0",
+            "description": "Transforma, the input values where the highest tend to 1 and the lowest values tend to 0",
             "characteristics": {
               "0": "Bounded between 0 and 1",
               "1": "Slow convergence",
@@ -382,7 +784,7 @@
             }
           },
           "relu": {
-            "description": "Transforms the input values ​​by zeroing the negative values ​​and leaving as the positive data were-",
+            "description": "Transforms the input values by zeroing the negative values and leaving as the positive data were-",
             "characteristics": {
               "0": "It is not limited",
               "1": "Good performance with convolutional networks"
@@ -392,7 +794,7 @@
       },
       "optimization-functions": {
         "title": "Optimization functions",
-        "text-1": "An optimization function is a mathematical technique used to minimize or maximize an objective function. In the context of automatic learning, the target functions are usually error functions that measure the discrepancy between the neuronal network output and the desired output values ​​for a given training data set.",
+        "text-1": "An optimization function is a mathematical technique used to minimize or maximize an objective function. In the context of automatic learning, the target functions are usually error functions that measure the discrepancy between the neuronal network output and the desired output values for a given training dataset.",
         "text-2": "The optimization function adjusts the parameters of the neuronal network to minimize the objective function and, therefore, improve its ability to make precise predictions in new entry data. Common examples of optimization functions are the descent of the stochastic gradient and the Adam algorithm.",
         "table": {
           "sgd": {
@@ -409,15 +811,15 @@
           },
           "adadelta": {
             "references": "(Velasco, 2020)",
-            "description": "It is a variation of Adjagra in which the calculation of the training rate of each weight is restricted to a fixed size window of the last n gradients instead of doing so with the accumulated gradient of each iteration."
+            "description": "It is a variation of AdaGrad in which the calculation of the training rate of each weight is restricted to a fixed size window of the last n gradients instead of doing so with the accumulated gradient of each iteration."
           },
           "rmsprop": {
             "references": "Middle quadratic root propagation\n (Root Mean Square Propagation)\n (Velasco, 2020)",
             "description": "This algorithm maintains a different training factor for each dimension, but the scaling of the training factor is done by dividing it by the average of the exponential decline of the square of the gradients."
           },
           "adam": {
-            "references": "Adaptive estimation of the MO\n (Adaptive Moment Estimation)\n (Velasco, 2020)",
-            "description": "It is a combination of <i> Adjradra </i> and <i> RMSprop </i>. A parameter training factor is maintained and <i> RMSPROP </i> is calculated, in addition each training factor is affected by the <i> momentum </i> of the gradient."
+            "references": "Adaptive estimation of the mo\n (Adaptive Moment Estimation)\n (Velasco, 2020)",
+            "description": "It is a combination of <i> AdaGrad </i> and <i> RMSProp </i>. A parameter training factor is maintained and <i> RMSProp </i> is calculated, in addition each training factor is affected by the <i> momentum </i> of the gradient."
           }
         }
       },
@@ -472,9 +874,9 @@
       },
       "metric-functions": {
         "title": "Metric functions",
-        "text-1": "They are used to evaluate the performance of the neuronal network model in a test data set. The metric function takes the predictions made by the model and compare them with the real values ​​of the test data to determine the precision of the model.",
+        "text-1": "They are used to evaluate the performance of the neuronal network model in a test dataset. The metric function takes the predictions made by the model and compare them with the real values of the test data to determine the precision of the model.",
         "text-2": "There are different types of metric functions that can be used in a neuronal network, depending on the type of problem that is being addressed. For example, for a problem of binary classification, precision (Accuracy) could be used as metric, while for a regression problem the average quadratic error could be used (Mean Squared Error).",
-        "text-3": "In summary, a metric function is an important tool to assess the ability of a neuronal network to perform precise predictions in a test data set and to help adjust the model parameters to improve its performance.",
+        "text-3": "In summary, a metric function is an important tool to assess the ability of a neuronal network to perform precise predictions in a test dataset and to help adjust the model parameters to improve its performance.",
         "table": {
           "BinaryAccuracy": {
             "references": "Binary precision <br /> (Aumervolima, s.f.)",
@@ -494,7 +896,7 @@
           },
           "CosineProximity": {
             "references": "Proximity of the cosine",
-            "description": "Calculate between labels and predictions the proximity cosine. Normally negative values ​​are obtained."
+            "description": "Calculate between labels and predictions the proximity cosine. Normally negative values are obtained."
           },
           "MeanAbsoluteError": {
             "references": "Absolute half error",
@@ -502,7 +904,7 @@
           },
           "MeanAbsolutePercentageError": {
             "references": "Average absolute error percentage",
-            "description": "In the same way that <i> Meanabsoluteror </i> calculates the difference between labels and predictions, but in this case with a percentage."
+            "description": "In the same way that <i> Mean absolute error </i> calculates the difference between labels and predictions, but in this case with a percentage."
           },
           "MeanSquaredError": {
             "references": "Middle quadratic error",
@@ -518,5 +920,15 @@
       "cookies-title": "cookies",
       "cookies-text": "Our website uses Google Analytics cookies to account for the number of visitors we receive. These cookies allow us to collect anonymous statistical information about the use of our website and help us improve their performance and functionality. Google Analytics cookies do not collect personal information from users. When navigating our website, you accept the use of these cookies. If you want to get more information about how we use cookies, please consult our privacy policy."
     }
+  },
+  "form-dataframe": {
+    "int32": "Integer",
+    "float32": "Floating",
+    "string": "Text",
+    "label-encoder": "Label Encoder",
+    "one-hot-encoder": "ONE HOT Encoder",
+    "drop": "Drop",
+    "ignored": "Ignore",
+    "submit": "Process dataframe"
   }
 }

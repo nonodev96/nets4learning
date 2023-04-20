@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "start:development": "sh -ac '. ./.env.development; npm run start'",
     "start:production": "sh -ac '. ./.env.production; npm run start'",
@@ -70,6 +70,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
+    "jest": "^27.5.1",
     "react-scripts": "^5.0.1",
     "webpack": "^5.76.2"
   },

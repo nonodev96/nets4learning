@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
-import { isProduction } from "../../../utils/utils";
 import { Bar } from "react-chartjs-2";
 
 const backgroundColorDefault = [
@@ -22,7 +21,8 @@ const borderColorDefault = [
   "rgb(153, 102, 255)",
   "rgb(175, 175, 175)",
 ];
-export default function DynamicFormDataset(props) {
+
+export default function TabularClassificationDynamicFormPrediction(props) {
   const {
     dataset_JSON,
     stringToPredict = "",
@@ -33,7 +33,7 @@ export default function DynamicFormDataset(props) {
 
     handleClick_TestVector,
   } = props;
-  console.log({ data: JSON.stringify(props.predictionBar) });
+
   const { t } = useTranslation();
   const prefix = "pages.playground.0-tabular-classification.generator.dynamic-form-dataset.";
   const ref_bar = useRef(0);
@@ -114,7 +114,7 @@ export default function DynamicFormDataset(props) {
     });
   };
 
-  console.debug("Render DynamicFormDataset");
+  console.debug("Render TabularClassificationDynamicFormPrediction");
   return <>
     <Form onSubmit={(event) => event.preventDefault()}>
       <Container>
@@ -130,7 +130,7 @@ export default function DynamicFormDataset(props) {
                                  size={"sm"}
                                  onChange={(e) => handleChange_ROW(e)}>
                       {dataset_JSON.data.map((row, index) => {
-                        return <option key={"option_" + index} value={index}>{index} - {row.slice(-1)}</option>;
+                        return <option key={"option_" + index} value={index}>Id: {index} - Target: {row.slice(-1)}</option>;
                       })}
                     </Form.Select>
                   </Form.Group>
@@ -257,20 +257,20 @@ export default function DynamicFormDataset(props) {
                 <Row>
                   <Col>
                     <ul start="0">
-                      {props
-                        .predictionBar
-                        .labels
-                        .map((item, index) => <li key={index}>{item}</li>)
+                      {
+                        predictionBar
+                          .labels
+                          .map((item, index) => <li key={index}>{item}</li>)
                       }
                     </ul>
                     <Bar ref={ref_bar}
                          options={bar_options}
                          data={{
-                           labels  : [...props.predictionBar.labels],
+                           labels  : [...predictionBar.labels],
                            datasets: [
                              {
                                label          : t("prediction"),
-                               data           : [...props.predictionBar.data],
+                               data           : [...predictionBar.data],
                                backgroundColor: backgroundColorDefault,
                                borderColor    : borderColorDefault,
                                borderWidth    : 1,

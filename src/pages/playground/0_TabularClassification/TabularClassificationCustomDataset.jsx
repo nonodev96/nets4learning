@@ -4,30 +4,16 @@ import * as tf from "@tensorflow/tfjs";
 import * as tfvis from "@tensorflow/tfjs-vis";
 import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
-import {
-  getKeyDatasetByID_TabularClassification,
-  MODEL_CAR,
-  MODEL_IRIS,
-  MODEL_LYMPHOGRAPHY,
-  MODEL_UPLOAD,
-} from "../../../DATA_MODEL";
-import {
-  createTabularClassificationCustomDataSet,
-  createTabularClassificationCustomDataSet_upload,
-} from "../../../core/nn-utils/ArchitectureHelper";
-import {
-  TYPE_ACTIVATION,
-  TYPE_OPTIMIZER,
-  TYPE_LOSSES,
-  TYPE_METRICS,
-} from "../../../core/nn-utils/ArchitectureTypesHelper";
+import { getKeyDatasetByID_TabularClassification, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, MODEL_UPLOAD, } from "../../../DATA_MODEL";
+import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload, } from "../../../core/nn-utils/ArchitectureHelper";
+import { TYPE_ACTIVATION, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER, } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import json_cars from "../../../core/constants/template_car.json";
 import json_iris from "../../../core/constants/template_iris.json";
 import json_lymphatics from "../../../core/constants/template_lymphatcs.json";
 import * as alertHelper from "../../../utils/alertHelper";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import GraphicRed from "../../../utils/graphicRed/GraphicRed";
-import DynamicFormDataset from "./DynamicFormDataset";
+import TabularClassificationDynamicFormPrediction from "./TabularClassificationDynamicFormPrediction";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 
 import { isProduction } from "../../../utils/utils";
@@ -36,6 +22,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 import * as dfd from "danfojs";
 import TabularClassificationCustomDatasetForm from "./TabularClassificationCustomDatasetForm";
+import * as errorUtils from "../../../core/error-utils";
 
 const DEFAULT_LEARNING_RATE = 1;
 const DEFAULT_NUMBER_EPOCHS = 20;
@@ -57,7 +44,7 @@ const DEFAULT_LAYERS_UPLOAD = [
   { units: 124, activation: "relu" },
   { units: 64, activation: "relu" },
   { units: 32, activation: "relu" },
-  { units: 2, activation: "sigmoid" },
+  { units: 2, activation: "softmax" },
 ];
 
 
@@ -81,7 +68,7 @@ const DEFAULT_LAYERS_UPLOAD = [
  * handleSubmit_CreateModel_upload()            <-------------|
  *                                                            |
  * 3. Predecir con el modelo:                                 |
- * $ <DynamicFormDataset />                                   |
+ * $ <TabularClassificationDynamicFormPrediction />           |
  *                                                            |
  * Case 1. -- Cambiar datos de todas las columnas             |
  * > handleChange_ROW()                                       |
@@ -127,6 +114,7 @@ export default function TabularClassificationCustomDataset(props) {
   /**
    * @typedef {Object | null} DataProcessedState_t
    * @property {dfd.DataFrame} dataframeProcessed
+   * @property {string} column_name_target
    * @property {dfd.DataFrame} X
    * @property {dfd.DataFrame} y
    * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
@@ -173,7 +161,16 @@ export default function TabularClassificationCustomDataset(props) {
   const [DataSetClasses, setDataSetClasses] = useState([]);
   const [TargetSetClasses, setTargetSetClasses] = useState([]);
   // Utils
-  const [customDataSet_JSON, setCustomDataSet_JSON] = useState(null);
+
+  /**
+   * @typedef {Object | null} CustomDataset_t
+   * @property {boolean} missing_values
+   * @property {string} missing_value_key
+   * @property {Array<any>} attributes
+   * @property {Array<any>} classes
+   * @property {Array<Array<any>>} data
+   */
+  const [customDataSet_JSON, setCustomDataSet_JSON] = useState(/** @type CustomDataset_t */   null);
 
   // Class && Controllers
   const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t));
@@ -266,8 +263,8 @@ export default function TabularClassificationCustomDataset(props) {
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type });
       dfd.readCSV(file_csv).then((_dataframe) => {
-        console.log(_dataframe);
         setDataframeOriginal(_dataframe);
+        setObjectToPredict({});
       });
       await alertHelper.alertSuccess(t("alert.file-upload-success"));
     } catch (error) {
@@ -288,7 +285,7 @@ export default function TabularClassificationCustomDataset(props) {
         activation: "sigmoid",
       }, ...oldLayers]);
     } else {
-      await alertHelper.alertWarning(t("alert.warning.not-more-layers"));
+      await alertHelper.alertWarning(t("alert.0-tabular-classification.not-more-layers"));
     }
   };
 
@@ -457,7 +454,19 @@ export default function TabularClassificationCustomDataset(props) {
 
     } catch (error) {
       console.error(error);
-      await alertHelper.alertError(error.message, { title: "Error" });
+      if (errorUtils.isErrorTargetExpected(error.message)) {
+        const match = errorUtils.matchErrorTargetExpected(error.message);
+        const error_params = {
+          tensor_shape_0       : match.tensor_shape_0,
+          tensor_shape_1       : match.tensor_shape_1,
+          target_tensor_shape_0: match.target_tensor_shape_0,
+          target_tensor_shape_1: match.target_tensor_shape_1,
+        };
+        const error_message = t("error.tensor-shape-description", error_params);
+        await alertHelper.alertError(error_message, { title: "Error" });
+      } else {
+        await alertHelper.alertError(error.message, { title: "Error" });
+      }
     } finally {
       setIsTraining(false);
     }
@@ -486,9 +495,10 @@ export default function TabularClassificationCustomDataset(props) {
 
   // region Prediction
   // TODO Prediction Upload
-  const handleClick_TestVector_upload = async () => {
+  const handleClick_PredictVector_upload = async () => {
     const currentDataProcessed = generatedModels[generatedModelsIndex].dataProcessed;
     const currentObjEncoder = currentDataProcessed.obj_encoder;
+    const columnNameTarget = currentDataProcessed.column_name_target;
     // Seleccionamos el escalador MinMaxScaler o StandardScaler
     const currentScaler = currentDataProcessed.scaler;
     // Seleccionamos el modelo cargado
@@ -509,8 +519,13 @@ export default function TabularClassificationCustomDataset(props) {
     const prediction = currentModel.predict(tensor_input);
     // const predictionWithArgMax = prediction.argMax(-1).dataSync();
     const predictionArraySync = prediction.arraySync()[0];
+    const labels = currentDataProcessed.classes.map(({ name }, index) => {
+      const class_target_id = currentObjEncoder[columnNameTarget].$labels[name].toString()
+      return <Trans key={index}
+                    i18nKey="pages.playground.0-tabular-classification.generator.prediction.class_id_name"
+                    values={{ name, class_target_id }} />
+    });
 
-    const labels = currentDataProcessed.classes.map(({name}) => name);
     setPredictionBar((old) => {
       return {
         labels: [...labels],
@@ -518,7 +533,7 @@ export default function TabularClassificationCustomDataset(props) {
       };
     });
 
-    if (!isProduction()) console.debug("Predicción", { prediction, predictionArraySync });
+    if (!isProduction()) console.debug("Predicción", { prediction, predictionArraySync, wtf: prediction.arraySync() });
     const text = predictionArraySync.map(item => {
       const float = parseFloat(item * 100);
       return float.toFixed(2);
@@ -526,7 +541,7 @@ export default function TabularClassificationCustomDataset(props) {
     await alertHelper.alertSuccess(t("prediction"), { text });
   };
 
-  const handleClick_TestVector = async () => {
+  const handleClick_PredictVector = async () => {
     if (dataset_key === MODEL_UPLOAD) {
       if (customDataSet_JSON === null) {
         await alertHelper.alertError("Primero debes de cargar un dataset");
@@ -784,12 +799,12 @@ export default function TabularClassificationCustomDataset(props) {
                 <Card.Header className={"d-flex align-items-center justify-content-between"}>
                   <h3><Trans i18nKey={prefix + "editor-layers.title"} /></h3>
                   <div className={"d-flex"}>
-                    <Button onClick={handlerClick_AddLayer_Start}
+                    <Button onClick={() => handlerClick_AddLayer_Start()}
                             size={"sm"}
                             variant="outline-primary">
                       <Trans i18nKey={prefix + "editor-layers.add-layer-start"} />
                     </Button>
-                    <Button onClick={handlerClick_AddLayer_End}
+                    <Button onClick={() => handlerClick_AddLayer_End()}
                             size={"sm"}
                             variant="outline-primary"
                             className={"ms-3"}>
@@ -1012,7 +1027,7 @@ export default function TabularClassificationCustomDataset(props) {
                   {(Model !== undefined) &&
                     <Button className={"ms-1"}
                             disabled={isDisabledDownloadModel}
-                            onClick={handleClick_DownloadLastModel}
+                            onClick={() => handleClick_DownloadLastModel()}
                             size={"sm"}
                             variant="outline-primary">
                       <Trans i18nKey={prefix + "models.export-current-model"} />
@@ -1094,14 +1109,14 @@ export default function TabularClassificationCustomDataset(props) {
 
       {/* Prediction */}
       {canRender_DynamicFormDataset() &&
-        (<DynamicFormDataset dataset_JSON={customDataSet_JSON}
-                             dataset={dataset}
-                             stringToPredict={stringToPredict}
-                             setStringToPredict={setStringToPredict}
-                             objectToPredict={objectToPredict}
-                             setObjectToPredict={setObjectToPredict}
-                             predictionBar={predictionBar}
-                             handleClick_TestVector={dataset_key === MODEL_UPLOAD ? handleClick_TestVector_upload : handleClick_TestVector} />)
+        (<TabularClassificationDynamicFormPrediction dataset_JSON={customDataSet_JSON}
+                                                     dataset={dataset}
+                                                     stringToPredict={stringToPredict}
+                                                     setStringToPredict={setStringToPredict}
+                                                     objectToPredict={objectToPredict}
+                                                     setObjectToPredict={setObjectToPredict}
+                                                     predictionBar={predictionBar}
+                                                     handleClick_TestVector={dataset_key === MODEL_UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
       }
 
       {isDebug &&
@@ -1121,7 +1136,7 @@ export default function TabularClassificationCustomDataset(props) {
                   </div>
                 </Card.Header>
                 <Card.Body>
-                  <Button onClick={() => handleClick_TestVector_upload()}
+                  <Button onClick={() => handleClick_PredictVector_upload()}
                           className={"ms-3"}
                           size={"sm"}
                           variant={"outline-primary"}>

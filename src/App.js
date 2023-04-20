@@ -5,6 +5,7 @@ import ReactGA from 'react-ga4';
 import './i18n';
 import "./App.css";
 import Loading from "./pages/Loading";
+import datasets from "./pages/datasets/Datasets";
 
 const Home = lazy(() => import( "./pages/_home/Home.jsx"));
 const MenuSelectModel = lazy(() => import( "./pages/menu/MenuSelectModel"));
@@ -12,6 +13,7 @@ const MenuSelectDataset = lazy(() => import( "./pages/menu/MenuSelectDataset"));
 const Playground = lazy(() => import( "./pages/playground/Playground"));
 const Manual = lazy(() => import( "./pages/manual/Manual"));
 const Glossary = lazy(() => import( "./pages/glossary/Glossary"));
+const Datasets = lazy(() => import( "./pages/datasets/Datasets"));
 const TermsAndConditions = lazy(() => import( "./pages/terms/TermsAndConditions"));
 const NotFoundPage = lazy(() => import( "./pages/notFound/NotFoundPage"));
 
@@ -33,6 +35,7 @@ function App() {
             <Route exact path={"/playground/:id/:option/:example"} component={Playground}></Route>
             <Route exact path={"/manual/"} component={Manual}></Route>
             <Route exact path={"/glossary/"} component={Glossary}></Route>
+            <Route exact path={"/datasets/"} component={Datasets}></Route>
             <Route exact path={"/terms-and-conditions/"} component={TermsAndConditions}></Route>
             <Route path="/404" component={NotFoundPage}/>
             <Redirect to="/404"></Redirect>

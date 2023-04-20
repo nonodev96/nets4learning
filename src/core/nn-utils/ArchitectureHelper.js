@@ -8,7 +8,7 @@ import * as sk from "scikitjs";
 sk.setBackend(dfd.tensorflow);
 
 export async function createTabularClassificationCustomDataSet_upload(params, t) {
-  console.log(params);
+
   const {
     learningRate,
     testSize,
@@ -39,7 +39,7 @@ export async function createTabularClassificationCustomDataSet_upload(params, t)
   const loss = createLoss(idLoss, {});
   const metrics = createMetrics(idMetrics, {});
 
-  console.log({ optimizer, loss, metrics });
+
 
   // Compilamos el modelo
   model.compile({

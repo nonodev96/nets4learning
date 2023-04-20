@@ -6,23 +6,6 @@ import { useTranslation } from "react-i18next";
 
 export default function Manual() {
 
-  // const _download = (filename, textInput) => {
-  //   const link = document.createElement('a')
-  //   link.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(textInput))
-  //   link.setAttribute('download', filename)
-  //   document.body.appendChild(link)
-  //   link.click()
-  //   link.parentNode.removeChild(link);
-  // }
-  //
-  // const handleClick_DownloadFile_TemplateDataset = (FILE) => {
-  //   _download(FILE.title, FILE.content)
-  // }
-  //
-  // const handleClick_DownloadFile_CustomTopology = () => {
-  //   _download(FILE_TOPOLOGY.title, FILE_TOPOLOGY.content)
-  // }
-
   const { t } = useTranslation()
 
   console.log("render")

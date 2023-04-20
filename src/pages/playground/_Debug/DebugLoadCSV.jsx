@@ -88,12 +88,12 @@ export default function DebugLoadCSV() {
                   Debug
                 </Button>
                 <Button type="button"
-                        onClick={handleClick_debug_ALL}
+                        onClick={() => handleClick_debug_ALL}
                         size={"small"}
                         variant="primary">
                   CLEAR DATA
                 </Button>
-                <hr/>
+                <hr />
 
                 <Button type="button"
                         onClick={() => tfVis.visor().toggle()}
@@ -102,25 +102,25 @@ export default function DebugLoadCSV() {
                   Conmutar visor
                 </Button>
                 <Button type="button"
-                        onClick={handleClick_Layers}
+                        onClick={() => handleClick_Layers}
                         size={"small"}
                         variant="outline-secondary">
                   Definir capas
                 </Button>
                 <Button type="button"
-                        onClick={handleClick_Compile}
+                        onClick={() => handleClick_Compile}
                         size={"small"}
                         variant="outline-warning">
                   Compilar
                 </Button>
                 <Button type="button"
-                        onClick={handleClick_Fit}
+                        onClick={() => handleClick_Fit}
                         size={"small"}
                         variant="outline-danger">
                   Entrenar
                 </Button>
                 <Button type="button"
-                        onClick={handleClick_Download}
+                        onClick={() => handleClick_Download}
                         size={"small"}
                         variant="outline-success">
                   Descargar

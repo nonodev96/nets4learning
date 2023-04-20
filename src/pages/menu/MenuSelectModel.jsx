@@ -15,7 +15,7 @@ export default function MenuSelectModel(props) {
   const handleSubmit = async ($event) => {
     $event.preventDefault()
     if (model_id === -1) {
-      await alertHelper.alertWarning('Debes de seleccionar un modelo')
+      await alertHelper.alertWarning(t("alert.menu.need-select-model"))
     } else {
       history.push('/playground/' + id + '/' + 0 + '/' + model_id)
     }

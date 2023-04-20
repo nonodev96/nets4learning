@@ -5,6 +5,7 @@ import InitialMenu from "../_initialMenu/InitialMenu";
 import N4LNavbar from "../../components/header/N4LNavbar";
 import N4LFooter from "../../components/footer/N4LFooter";
 import { Trans, useTranslation } from "react-i18next";
+import { CookiesModal } from "../../components/cookiesModal/CookiesModal";
 
 
 export default function Home() {
@@ -21,6 +22,8 @@ export default function Home() {
             </Col>
           </Row>
         </Container>
+
+        <CookiesModal />
 
         <InitialMenu />
       </main>

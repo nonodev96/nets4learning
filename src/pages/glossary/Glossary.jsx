@@ -17,7 +17,7 @@ export default function Glossary() {
               <h1>Glosario</h1>
             </Col>
             <Col xl={12} className={"mt-3"}>
-              <Accordion alwaysOpen defaultValue={"classification-tabular"}>
+              <Accordion defaultValue={"classification-tabular"}>
                 <Accordion.Item eventKey={"classification-tabular"}>
                   <Accordion.Header><h3>{t("pages.glossary.tabular-classification.title")}</h3></Accordion.Header>
                   <Accordion.Body>

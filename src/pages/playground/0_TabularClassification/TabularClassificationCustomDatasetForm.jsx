@@ -77,7 +77,16 @@ export class Parser {
    * @param {Array<Parser_list_column_type_to_transform_t>} list_column_type_to_transform
    * @param {Parser_params_t} params
    *
-   * @return {Parser_transform_t}
+   * @return {{
+   * dataframeProcessed: dfd.DataFrame,
+   * scaler: dfd.MinMaxScaler | dfd.StandardScaler,
+   * X: dfd.DataFrame,
+   * y: dfd.DataFrame,
+   * obj_encoder: {},
+   * attributes: *[],
+   * classes: *[],
+   * data: any
+   * }}
    */
   static transform(dataframeOriginal,
                    list_column_type_to_transform,
@@ -116,15 +125,16 @@ export class Parser {
           newDataframe.asType(column_name, "float32", { inplace: true });
           break;
         }
-        case "string": {
-          list_attributes.push({
-            index_column: newDataframe.columns.indexOf(column_name),
-            name        : column_name,
-            type        : "string",
-          });
-          newDataframe.asType(column_name, "string", { inplace: true });
-          break;
-        }
+        case "string":
+        // {
+        //   list_attributes.push({
+        //     index_column: newDataframe.columns.indexOf(column_name),
+        //     name        : column_name,
+        //     type        : "string",
+        //   });
+        //   newDataframe.asType(column_name, "string", { inplace: true });
+        //   break;
+        // }
         case "label-encoder": {
           // Codificamos las columnas de tipo string
           const encode = new dfd.LabelEncoder();
@@ -194,7 +204,7 @@ export class Parser {
 
     // TARGET
     const {
-      column_name: column_target_name,
+      column_name: column_name_target,
       column_type: column_target_type,
     } = column_target_to_transform;
     switch (column_target_type) {
@@ -207,12 +217,12 @@ export class Parser {
       case "string": // Por defecto se va a label encoder
       case "label-encoder": {
         const encode_target = new dfd.LabelEncoder();
-        encode_target.fit(newDataframe[column_target_name]);
-        const new_serie_target = encode_target.transform(newDataframe[column_target_name].values);
-        obj_encoder[column_target_name] = encode_target;
+        encode_target.fit(newDataframe[column_name_target]);
+        const new_serie_target = encode_target.transform(newDataframe[column_name_target].values);
+        obj_encoder[column_name_target] = encode_target;
 
-        newDataframe.asType(column_target_name, "string", { inplace: true });
-        newDataframe.addColumn(column_target_name, new_serie_target, { inplace: true });
+        newDataframe.asType(column_name_target, "string", { inplace: true });
+        newDataframe.addColumn(column_name_target, new_serie_target, { inplace: true });
         for (const [key, value] of Object.entries(encode_target.$labels)) {
           list_classes.push({
             key : value,
@@ -224,11 +234,11 @@ export class Parser {
       case "one-hot-encoder": {
         // No se usa en el preprocesamiento
         const encode_target = new dfd.OneHotEncoder();
-        encode_target.fit(newDataframe[column_target_name]);
-        const new_serie_target = encode_target.transform(newDataframe[column_target_name].values);
+        encode_target.fit(newDataframe[column_name_target]);
+        const new_serie_target = encode_target.transform(newDataframe[column_name_target].values);
 
-        newDataframe.asType(column_target_name, "string", { inplace: true });
-        newDataframe.addColumn(column_target_name, new_serie_target, { inplace: true });
+        newDataframe.asType(column_name_target, "string", { inplace: true });
+        newDataframe.addColumn(column_name_target, new_serie_target, { inplace: true });
         for (const [key, value] of Object.entries(encode_target.$labels)) {
           list_classes.push({
             key : value,
@@ -245,9 +255,9 @@ export class Parser {
     const data = JSON.parse(JSON.stringify([...newDataframe.values]));
 
 
-    const index_of_last_column = newDataframe.columns.indexOf(column_target_name);
+    const index_of_last_column = newDataframe.columns.indexOf(column_name_target);
     const dataframe_X = newDataframe.iloc({ columns: [`:${index_of_last_column}`] });
-    const dataframe_y = newDataframe[column_target_name];
+    const dataframe_y = newDataframe[column_name_target];
 
     let scaler;
     switch (params.type_scaler) {
@@ -264,10 +274,9 @@ export class Parser {
       }
     }
 
-    console.log({ newDataframe });
-
     return {
       dataframeProcessed: newDataframe,
+      column_name_target: column_name_target,
       obj_encoder       : obj_encoder,
       scaler            : scaler,
       X                 : dataframe_X,
@@ -295,11 +304,7 @@ const cellStyle = {
  *
  * @param {{
  *   dataframeOriginal    : dfd.DataFrame,
- *   dataProcessed        : {
- *                            dataframeProcessed: dfd.DataFrame,
- *                            xTrain: dfd.DataFrame,
- *                            yTrain: dfd.Series
- *                          },
+ *   dataProcessed        : DataProcessedState_t,
  *   setDataProcessed     : Function,
  *   setCustomDataSet_JSON: Function
  * }} props
@@ -316,8 +321,8 @@ export default function TabularClassificationCustomDatasetForm(props) {
     setCustomDataSet_JSON,
   } = props;
 
-  const [listColumnTypeProcessed_xTrain, setListColumnTypeProcessed_xTrain] = useState([]);
-  const [listColumnTypeProcessed_yTrain, setListColumnTypeProcessed_yTrain] = useState([]);
+  const [listColumnTypeProcessed_X, setListColumnTypeProcessed_X] = useState([]);
+  const [listColumnTypeProcessed_y, setListColumnTypeProcessed_y] = useState([]);
   const [typeScaler, setTypeScaler] = useState("min-max-scaler");
 
   const { t } = useTranslation();
@@ -336,20 +341,23 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
   useEffect(() => {
     if (dataframeOriginal === null) return;
-    const list_xTrain = dataframeOriginal.columns.slice(0, -1).map((column_name, i) => {
+    const list_X = dataframeOriginal.columns.slice(0, -1).map((column_name, i) => {
+      const dtype = dataframeOriginal.dtypes[i]
       return {
         column_name: column_name,
-        column_type: dataframeOriginal.dtypes[i],
+        column_type: (dtype === "string") ? "label-encoder" : dtype,
       };
     });
-    setListColumnTypeProcessed_xTrain(list_xTrain);
-    const list_yTrain = dataframeOriginal.columns.slice(-1).map((column_name, i) => {
+    setListColumnTypeProcessed_X(list_X);
+    const list_y = dataframeOriginal.columns.slice(-1).map((column_name, i) => {
       return {
         column_name: column_name,
-        column_type: dataframeOriginal.dtypes[i],
+        column_type: dataframeOriginal.dtypes[i]
       };
     });
-    setListColumnTypeProcessed_yTrain(list_yTrain);
+    list_y[list_y.length - 1].column_type = "label-encoder";
+    setListColumnTypeProcessed_y(list_y);
+
   }, [dataframeOriginal]);
 
   useEffect(() => {
@@ -389,16 +397,15 @@ export default function TabularClassificationCustomDatasetForm(props) {
 
   const handleSubmit_ProcessDataFrame = async (event) => {
     event.preventDefault();
+    const list = [...listColumnTypeProcessed_X, ...listColumnTypeProcessed_y];
 
-    const list = [...listColumnTypeProcessed_xTrain, ...listColumnTypeProcessed_yTrain];
-    console.log({ list });
     const {
       dataframeProcessed,
       obj_encoder,
       scaler,
+      column_name_target,
       X,
       y,
-
       attributes,
       classes,
       data,
@@ -409,13 +416,13 @@ export default function TabularClassificationCustomDatasetForm(props) {
       obj_encoder,
       typeScaler,
       scaler,
+      column_name_target,
       X,
       y,
 
       attributes,
       classes,
     });
-
     setIsDatasetProcessed(true);
     setCustomDataSet_JSON({
       missing_values   : false,
@@ -424,30 +431,9 @@ export default function TabularClassificationCustomDatasetForm(props) {
       classes          : classes,
       data             : data,
     });
-    await alertHelper.alertSuccess(t("preprocessing"), { text: t("alert.success") });
+    await alertHelper.alertSuccess(t("preprocessing.title"), { text: t("alert.success") });
   };
 
-  const render_list = (list, set_list) => {
-    return list.map(({ column_name, column_type }, index) => {
-      return <Col key={index}>
-        <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
-          <Form.Label><b>{column_name}</b></Form.Label>
-          <Form.Select aria-label={"select"}
-                       size={"sm"}
-                       defaultValue={column_type}
-                       onChange={(e) => handleChange_cType(e, column_name, set_list)}>
-            {options.map((option_value, option_index) => {
-              return <option key={column_name + "_option_" + option_index}
-                             value={option_value.value}>
-                {t(prefix + option_value.i18n)}
-              </option>;
-            })}
-          </Form.Select>
-          <Form.Text className="text-muted">{column_type}</Form.Text>
-        </Form.Group>
-      </Col>;
-    });
-  };
 
   console.debug("render TabularClassificationCustomDatasetForm");
   return <>
@@ -459,25 +445,65 @@ export default function TabularClassificationCustomDatasetForm(props) {
             <summary className={"n4l-summary"}>{t("dataframe-form")}</summary>
             <hr />
             <Row>
-              <h4>Transformaciones por columnas</h4>
+              <h4>{t("preprocessing.transformations-columns")}</h4>
             </Row>
             <Row>
               <Col xl={10}>
-                <div className={"n4l-hr-container"}><span className={"n4l-hr-title"}>xTrain</span></div>
+                <div className={"n4l-hr-container"}><span className={"n4l-hr-title"}>X</span></div>
                 <Row className={"mt-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-6"}>
-                  {render_list(listColumnTypeProcessed_xTrain, setListColumnTypeProcessed_xTrain)}
+                  {
+                    listColumnTypeProcessed_X.map(({ column_name, column_type }, index) => {
+                      return <Col key={index}>
+                        <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
+                          <Form.Label><b>{column_name}</b></Form.Label>
+                          <Form.Select aria-label={"select"}
+                                       size={"sm"}
+                                       value={column_type}
+                                       onChange={(e) => handleChange_cType(e, column_name, setListColumnTypeProcessed_X)}>
+                            {options.map((option_value, option_index) => {
+                              return <option key={column_name + "_option_" + option_index}
+                                             value={option_value.value}>
+                                {t(prefix + option_value.i18n)}
+                              </option>;
+                            })}
+                          </Form.Select>
+                          <Form.Text className="text-muted">{column_type}</Form.Text>
+                        </Form.Group>
+                      </Col>;
+                    })
+                  }
                 </Row>
               </Col>
               <Col xl={2}>
-                <div className={"n4l-hr-container"}><span className={"n4l-hr-title"}>yTrain</span></div>
+                <div className={"n4l-hr-container"}><span className={"n4l-hr-title"}>y</span></div>
                 <Row className={"mt-3 row-cols-12 row-cols-md-12 row-cols-lg-12 row-cols-xl-12 row-cols-xxl-12"}>
-                  {render_list(listColumnTypeProcessed_yTrain, setListColumnTypeProcessed_yTrain)}
+                  {
+                    listColumnTypeProcessed_y.map(({ column_name, column_type }, index) => {
+                      return <Col key={index}>
+                        <Form.Group controlId={"FormControl_" + column_name} className={"mt-2"}>
+                          <Form.Label><b>{column_name}</b></Form.Label>
+                          <Form.Select aria-label={"select"}
+                                       size={"sm"}
+                                       value={column_type}
+                                       onChange={(e) => handleChange_cType(e, column_name, setListColumnTypeProcessed_y)}>
+                            {options.map((option_value, option_index) => {
+                              return <option key={column_name + "_option_" + option_index}
+                                             value={option_value.value}>
+                                {t(prefix + option_value.i18n)}
+                              </option>;
+                            })}
+                          </Form.Select>
+                          <Form.Text className="text-muted">{column_type}</Form.Text>
+                        </Form.Group>
+                      </Col>;
+                    })
+                  }
                 </Row>
               </Col>
             </Row>
             <hr />
             <Row>
-              <h4>Transformaciones al conjunto xTrain</h4>
+              <h4>{t("preprocessing.transformations-set-X")}</h4>
             </Row>
             <Row className={"row-cols-12 row-cols-md-12 row-cols-lg-6 row-cols-xl-3 row-cols-xxl-2"}>
               {/*Scaler*/}

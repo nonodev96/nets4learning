@@ -153,7 +153,7 @@ export default function LinearRegression(props) {
                         <div className="title-pane">
                           Capa {index + 1}
                           {/* <div className="spacer"></div> */}
-                          <CloseButton onClick={() => handlerRemoveLayer(index)}/>
+                          <CloseButton onClick={() => handlerRemoveLayer(index)} />
                         </div>
                         {/* UNITS */}
                         <Form.Group className="mb-3"
@@ -162,7 +162,7 @@ export default function LinearRegression(props) {
                           <Form.Control type="number"
                                         placeholder="Introduce el número de unidades de la capa"
                                         defaultValue={item.units}
-                                        onChange={() => handleChangeUnits(index)}/>
+                                        onChange={() => handleChangeUnits(index)} />
                         </Form.Group>
 
                         {/* ACTIVATION FUNCTION */}
@@ -202,7 +202,7 @@ export default function LinearRegression(props) {
                   <Form.Label>Tasa de entrenamiento</Form.Label>
                   <Form.Control type="number"
                                 placeholder="Introduce la tasa de entrenamiento"
-                                defaultValue={learningValue}/>
+                                defaultValue={learningValue} />
                   <Form.Text className="text-muted">
                     Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
                   </Form.Text>
@@ -213,7 +213,7 @@ export default function LinearRegression(props) {
                   <Form.Label>Número de iteraciones</Form.Label>
                   <Form.Control type="number"
                                 placeholder="Introduce el número de iteraciones"
-                                defaultValue={NumberEpochs}/>
+                                defaultValue={NumberEpochs} />
                   <Form.Text className="text-muted">
                     *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                   </Form.Text>
@@ -291,12 +291,12 @@ export default function LinearRegression(props) {
                     <Form.Label>Introduce el vector a probar</Form.Label>
                     <Form.Control placeholder="Introduce el vector a probar"
                                   defaultValue="0.1;4.3;2.1;0.2"
-                                  onChange={() => handleChangeTestInput()}/>
+                                  onChange={() => handleChangeTestInput()} />
                   </Form.Group>
                   {/* SUBMIT BUTTON */}
                   <div className="d-grid gap-2">
                     <Button type="button"
-                            onClick={handleVectorTest}
+                            onClick={() => handleVectorTest}
                             variant="primary"
                             size={"lg"}>
                       Ver resultado

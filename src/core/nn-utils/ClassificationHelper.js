@@ -58,7 +58,7 @@ export function convertToTensorsDataFrame(df, dataset_JSON) {
 
 export function getClassesFromDataSet(dataset_JSON) {
   try {
-    console.log({ dataset_JSON })
+
     let data = []
     const num_attributes = dataset_JSON.attributes.length
     for (let i = 0; i <= num_attributes; i++) {
@@ -146,7 +146,7 @@ function convertToTensors(data, targets, testSize, numClasses) {
 }
 
 export function trainTestSplit(data, classes, testSize) {
-  console.log({ data, classes, testSize })
+
   return tf.tidy(() => {
     const dataByClass = [];
     const targetByClass = [];

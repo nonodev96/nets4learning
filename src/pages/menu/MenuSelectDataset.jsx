@@ -6,58 +6,20 @@ import N4LFooter from '../../components/footer/N4LFooter'
 import * as alertHelper from '../../utils/alertHelper'
 import { useTranslation } from "react-i18next";
 
-export default function MenuSelectDataset(props) {
+export default function MenuSelectDataset() {
   const { id } = useParams()
   const [dataset_id, setDatasetId] = useState(-1)
-  const [isUploadedArchitecture, setIsUploadedArchitecture] = useState(false)
   const history = useHistory()
   const { t } = useTranslation()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (dataset_id === -1) {
-      await alertHelper.alertWarning(t("alert.warning.need-select-dataset"))
+      await alertHelper.alertWarning(t("alert.menu.need-select-dataset"))
     } else {
-      if (!isUploadedArchitecture) {
-        localStorage.setItem('custom-architecture', '{}')
-      }
       history.push('/playground/' + id + '/' + 1 + '/' + dataset_id)
     }
   }
-
-  // TODO
-  //
-  // const handleChange_ArchitectureUpload = async (files) => {
-  //   try {
-  //     let reader = new FileReader()
-  //     reader.readAsText(files[0])
-  //     reader.onload = (e) => {
-  //       localStorage.setItem('custom-architecture', e.target.result.toString())
-  //       setIsUploadedArchitecture(true)
-  //     }
-  //     reader.onloadend = async () => {
-  //       await alertHelper.alertSuccess(t("alert.file-upload-success"))
-  //     }
-  //   } catch (error) {
-  //     await alertHelper.alertError(error)
-  //   }
-  // }
-  //
-  // const handleChange_CSVUpload = async (files) => {
-  //   try {
-  //     let reader = new FileReader()
-  //     reader.readAsText(files[0])
-  //     reader.onload = (e) => {
-  //       localStorage.setItem('custom-csv', e.target.result.toString())
-  //       setIsUploadedArchitecture(true)
-  //     }
-  //     reader.onloadend = async () => {
-  //       await alertHelper.alertSuccess(t("alert.file-upload-success"))
-  //     }
-  //   } catch (error) {
-  //     await alertHelper.alertError(error)
-  //   }
-  // }
 
 
   const PrintHTML_OPTIONS = (_id) => {
@@ -119,24 +81,6 @@ export default function MenuSelectDataset(props) {
                       {PrintHTML_OPTIONS(id)}
                     </Form.Select>
                   </Form.Group>
-
-                  {/*{dataset_id === 0 &&*/}
-                  {/*  <>*/}
-                  {/*    <Card.Text>*/}
-                  {/*      <Trans i18nKey={"pages.menu-selection-dataset.0-tabular-classification.csv-text"}*/}
-                  {/*             components={{*/}
-                  {/*               code: <code>code</code>*/}
-                  {/*             }} />*/}
-                  {/*    </Card.Text>*/}
-                  {/*    <DragAndDrop name={"doc"}*/}
-                  {/*                 id={"UploadArchitectureMenu"}*/}
-                  {/*                 accept={{ 'text/csv': ['.csv'] }}*/}
-                  {/*                 text={t("drag-and-drop.csv")}*/}
-                  {/*                 labelFiles={t("drag-and-drop.label-files-one")}*/}
-                  {/*                 function_DropAccepted={handleChange_CSVUpload} />*/}
-                  {/*  </>*/}
-                  {/*}*/}
-
 
                   <Button type="submit">
                     {t("pages.menu-selection-dataset.form-submit")}

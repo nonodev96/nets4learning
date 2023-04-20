@@ -6,27 +6,51 @@
   "loading": "Cargando",
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
-  "AYUDA": "AYUDA!!",
   "Files": "Ficheros",
+  "download": "Descargar",
+  "datasets": {
+    "title": "Conjuntos de datos",
+    "text-0": "Descargar conjuntos de datos para la clasificación tabular",
+    "dataset-name": "Nombre del conjunto de datos",
+    "dataset-size": "Número de muestras",
+    "dataset-web": "Web original",
+    "download-dataset-car": "Descargar conjunto de datos de evaluación de coches",
+    "download-dataset-hepatitis-c": "Descargar conjunto de datos de hepatitis C",
+    "download-dataset-iris": "Descargar conjunto de datos de iris",
+    "download-dataset-titanic": "Descargar conjunto de datos de supervivencia del titanic"
+  },
   "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
   "dataframe-processed": "DataFrame procesado",
-  "preprocessing": "Preprocesamiento",
+  "preprocessing": {
+    "title": "Preprocesamiento",
+    "transformations-columns": "Transformaciones por columnas",
+    "transformations-set-X": "Transformaciones al conjunto X",
+    "transformations-set-Y": "Transformaciones al conjunto y"
+  },
   "prediction": "Predicción",
   "predict": "Predecir",
+  "cookies-policies": {
+    "title": "Política de cookies",
+    "text-0": "Este sitio web utiliza cookies para mejorar la experiencia del usuario y analizar el uso de la aplicación. Las cookies son pequeños archivos de texto que se almacenan en su dispositivo cuando visita nuestro sitio web. Estas cookies nos ayudan a entender cómo los usuarios interactúan con nuestro sitio web, qué páginas son las más visitadas y cómo podemos mejorar la experiencia del usuario.",
+    "text-1": "No realizamos ningún tratamiento de los datos del usuario con fines publicitarios. Utilizamos las cookies únicamente para fines analíticos y para mejorar la funcionalidad del sitio web. Si continúa utilizando nuestro sitio web, entendemos que está de acuerdo con el uso de cookies tal como se describe en nuestra política de privacidad.",
+    "accept": "Aceptar"
+  },
   "error": {
     "load-json-csv": "Error, no se ha podido cargar el fichero",
     "need-to-upload-image": "Primero debes de subir una imagen",
     "need-dataset": "Primero debes de cargar los datos",
     "model-selected": "Error en la selección del modelo",
     "tensor-shape": "Forma del tensor incorrecta",
+    "tensor-shape-description": "Forma del tensor incorrecta, se esperaba la forma [{{target_tensor_shape_0}},{{target_tensor_shape_1}}], pero se recibió un tensor con forma [{{tensor_shape_0}},{{tensor_shape_1}}], posiblemente debas modificar la última capa.",
     "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})"
   },
   "header": {
     "language": "Idioma",
     "manual": "Manual",
     "glossary": "Glosario",
-    "init": "Inicio"
+    "Home": "Inicio",
+    "datasets": "Conjuntos de datos"
   },
   "footer": {
     "description-app": "Esta aplicación web forma parte de un Trabajo de Fin de Grado de Ingeniería Informática de la Universidad de Jaén \"Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo\"",
@@ -49,13 +73,16 @@
     "clear": "Limpiar"
   },
   "alert": {
-    "warning": {
+    "menu": {
       "need-select-dataset": "Debes de seleccionar un conjunto de datos",
+      "need-select-model": "Debes de seleccionar un modelo"
+    },
+    "0-tabular-classification": {
       "not-more-layers": "No se pueden añadir más capas"
     },
     "model-load-success": "Modelo cargado",
     "error": "Error",
-    "waring": "Advertencia",
+    "warning": "Advertencia",
     "success": "Correcto",
     "model-train-success": "Modelo entrenado con éxito",
     "prediction": "La predicción es: {{index}}",
@@ -642,7 +669,7 @@
               "title": "Crear y entrenar modelo",
               "text-0": "Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón \"Crear y entrenar modelo\".",
               "text-1": "Si hemos entrenado el modelo con la función de métrica <i>Accuracy</i> nos aparecerá dos graficas en el visor. La más relevante para nosotros seá la de abajo, ya que en TensorFlow.js, <i>acc</i> y <i>val_acc</i> son métricas de evaluación comúnmente utilizadas en el entrenamiento de modelos de redes neuronales. <br /><i>acc</i> representa la precisión (accuracy) del modelo en el conjunto de datos de entrenamiento. La precisión se define como el número de predicciones correctas dividido por el número total de predicciones. <br /><i>val_acc</i> representa la precisión del modelo en el conjunto de datos de validación. La validación se utiliza para evaluar la capacidad del modelo para generalizar a nuevos datos que no han sido vistos durante el entrenamiento.",
-              "text-2": "La precisión de validación es importante para detectar el sobreajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos.",
+              "text-2": "La precisión de validación es importante para detectar el sobre ajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos.",
               "text-3": "En resumen, <b>acc</b> se refiere a la precisión en el conjunto de datos de entrenamiento y <b>val_acc</b> se refiere a la precisión en el conjunto de datos de validación. Ambas métricas son importantes para evaluar la capacidad del modelo para generalizar a nuevos datos.",
               "text-4": "Si todo ha sido correcto se añadirá una nueva entrada a la lista de modelos generados con el conjunto de datos seleccionado, se nos permitirá cargar en memoria modelos entrenados anteriormente. "
             },
@@ -655,6 +682,9 @@
               "text-0": "El formulario final nos permite seleccionar las características principales que se usan para determinar la clase.",
               "text-1": "El valor de salida será un índice de la lista de clases, para realizar la predicción de la clase en función de las características debemos pulsar el botón \"Ver resultado\"."
             }
+          },
+          "prediction": {
+            "class_id_name": "El identificador <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
           }
         }
       },
@@ -669,7 +699,7 @@
       "app": {
         "title": "Objetivos de la herramienta",
         "description-1": "Este proyecto muestra distintas tareas que pueden realizar las Redes Neuronales cuando se entrenan mediante aprendizaje automático, es por ello que vamos a abordar desde tres enfoques (Clasificación, Identificar objetos, clasificar imágenes), cada uno de estos enfoques se explican a continuación en las siguientes entradas con una breve descripción de la técnica y como usar la herramienta con esa técnica.",
-        "description-2": "Algunos de los motivos por los que aprender redes neuronales es importante son los siguientes:",
+        "description-2": "Algunos de los motivos por los que aprender redes neuronales son los siguientes:",
         "list": {
           "0": {
             "title": "Aplicaciones prácticas",
@@ -770,7 +800,7 @@
             "characteristics": {
               "0": "Acotada entre 0 y 1",
               "1": "Buena en capas finales",
-              "2": "Utilizada para normalizar tipo multiclase"
+              "2": "Utilizada para normalizar tipo multi clase"
             }
           },
           "sigmoid": {
