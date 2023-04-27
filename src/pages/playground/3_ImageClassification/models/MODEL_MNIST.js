@@ -50,11 +50,11 @@ async function showExamples(data) {
   }
 }
 
-export async function MNIST_run(numberOfEpoch, sLOptimizer, layerList, idLoss, idMetrics) {
+export async function MNIST_run(numberOfEpoch, idOptimizer, layerList, idLoss, idMetrics, params) {
   document.getElementById('salida').innerHTML += `
 <p>MODELO CREADO A PARTIR DE: 
-<b>numberOfEpoch:</b> ${numberOfEpoch} 
-<b>sLOptimizer:</b> ${sLOptimizer} 
+<b>numberOfEpoch:</b> ${numberOfEpoch.toString()} 
+<b>idOptimizer:</b> ${idOptimizer} 
 <b>idLoss:</b> ${idLoss} 
 <b>idMetrics:</b> ${idMetrics}</p>
 `
@@ -63,11 +63,8 @@ export async function MNIST_run(numberOfEpoch, sLOptimizer, layerList, idLoss, i
   await data.load()
   await showExamples(data)
 
-  const model = getModel(sLOptimizer, layerList, idLoss, idMetrics)
-  await tfvis.show.modelSummary(
-    { name: 'Arquitectura del modelo', tab: 'Modelo' },
-    model,
-  )
+  const model = getModel(idOptimizer, layerList, idLoss, idMetrics, params)
+  await tfvis.show.modelSummary({ name: 'Arquitectura del modelo', tab: 'Modelo' }, model)
 
   await train(model, data, numberOfEpoch)
 
@@ -76,14 +73,18 @@ export async function MNIST_run(numberOfEpoch, sLOptimizer, layerList, idLoss, i
   return model
 }
 
-function getModel(idOptimizer, layerList, idLoss, idMetrics) {
+function getModel(idOptimizer, layerList, idLoss, idMetrics, params) {
+  const { LearningRate } = params
   const model = tf.sequential()
   const IMAGE_WIDTH = 28
   const IMAGE_HEIGHT = 28
   const IMAGE_CHANNELS = 1
-  const optimizer = createOptimizer(idOptimizer, { learningRate: 0.01, momentum: 0.99 })
-  const loss = createLoss(idLoss, {})
-  const metrics = createMetrics(idMetrics, {})
+  const optimizer =
+    createOptimizer(idOptimizer, { learningRate: (LearningRate / 100), momentum: 0.99 })
+  const loss
+    = createLoss(idLoss, {})
+  const metrics =
+    createMetrics(idMetrics, {})
 
   layerList.forEach((element, index) => {
     if (index === 0) {
@@ -320,7 +321,7 @@ export class MODEL_IMAGE_MNIST extends MODEL_IMAGE_CLASSIFICATION {
     return <>
       <p><Trans i18nKey={prefix + "text-0"} /></p>
       <p><Trans i18nKey={prefix + "text-1"} /></p>
-      <p><Trans i18nKey={prefix + "text-2"} />      </p>
+      <p><Trans i18nKey={prefix + "text-2"} /></p>
 
       <details>
         <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>

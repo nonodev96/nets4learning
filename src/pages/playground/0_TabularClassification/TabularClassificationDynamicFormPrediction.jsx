@@ -30,6 +30,7 @@ export default function TabularClassificationDynamicFormPrediction(props) {
     objectToPredict = {},
     setObjectToPredict,
     predictionBar,
+    list_encoded_classes = [],
 
     handleClick_TestVector,
   } = props;
@@ -130,7 +131,7 @@ export default function TabularClassificationDynamicFormPrediction(props) {
                                  size={"sm"}
                                  onChange={(e) => handleChange_ROW(e)}>
                       {dataset_JSON.data.map((row, index) => {
-                        return <option key={"option_" + index} value={index}>Id: {index} - Target: {row.slice(-1)}</option>;
+                        return <option key={"option_" + index} value={index}>Id row: {index.toString().padStart(3, "0")} - Target: {row.slice(-1)}</option>;
                       })}
                     </Form.Select>
                   </Form.Group>
@@ -259,7 +260,7 @@ export default function TabularClassificationDynamicFormPrediction(props) {
                     <ul start="0">
                       {
                         predictionBar
-                          .labels
+                          .list_encoded_classes
                           .map((item, index) => <li key={index}>{item}</li>)
                       }
                     </ul>

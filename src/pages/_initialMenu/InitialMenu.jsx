@@ -147,6 +147,9 @@ export default function InitialMenu() {
                   <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
                     {t("pages.index.image-classification.1-button")}
                   </Button>
+                  {/*<Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>*/}
+                  {/*  {t("pages.index.image-classification.2-button")}*/}
+                  {/*</Button>*/}
                 </div>
               </Card.Body>
             </Card>
@@ -173,19 +176,19 @@ export default function InitialMenu() {
           </Col>
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
-              <Button onClick={() => handleClick_OpenCardModel(2)}
-                      variant={colors[2]}
+              <Button onClick={() => handleClick_OpenCardModel(3)}
+                      variant={colors[3]}
                       size={"lg"}>
-                {t("pages.index.object-detection.1-title")}
+                {t("pages.index.image-classification.1-title")}
               </Button>
             </div>
           </Col>
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
-              <Button onClick={() => handleClick_OpenCardModel(3)}
-                      variant={colors[3]}
+              <Button onClick={() => handleClick_OpenCardModel(2)}
+                      variant={colors[2]}
                       size={"lg"}>
-                {t("pages.index.image-classification.1-title")}
+                {t("pages.index.object-detection.1-title")}
               </Button>
             </div>
           </Col>

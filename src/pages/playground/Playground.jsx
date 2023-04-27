@@ -10,8 +10,11 @@ import NotFoundPage from "../notFound/NotFoundPage";
 
 import TabularClassificationModelReview from "./0_TabularClassification/TabularClassificationModelReview";
 import TabularClassificationCustomDataset from "./0_TabularClassification/TabularClassificationCustomDataset";
+
 import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
+
 import ImageClassificationModelReview from "./3_ImageClassification/ImageClassificationModelReview";
+import ImageClassification from "./3_ImageClassification/ImageClassification";
 
 import { useTranslation } from "react-i18next";
 
@@ -36,7 +39,11 @@ export default function Playground() {
         return <ObjectDetectionModelReview dataset={example} />;
       }
       case "3": {
-        return <ImageClassificationModelReview dataset={example} />;
+        if (option === "0") {
+          return <ImageClassificationModelReview dataset={example} />;
+        } else {
+          return <ImageClassification dataset={example} />;
+        }
       }
       default:
         return <NotFoundPage />;

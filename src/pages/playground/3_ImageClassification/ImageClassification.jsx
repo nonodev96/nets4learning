@@ -1,42 +1,58 @@
-import { useState, useEffect } from 'react'
-import { Col, Row, Form, CloseButton, Button, Container, Card } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Trans } from "react-i18next";
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from './models/MODEL_MNIST'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
-import {
-  DATASET_DESCRIPTION,
-  getKeyDatasetByID_TabularClassification,
-  LIST_MODEL_OPTIONS
-} from "../../../DATA_MODEL";
-import {
-  TYPE_CLASS,
-  TYPE_OPTIMIZER,
-  TYPE_LOSSES,
-  TYPE_METRICS,
-  TYPE_ACTIVATION
-} from "../../../core/nn-utils/ArchitectureTypesHelper";
+import { getKeyDatasetByID_TabularClassification, DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
+import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import ReactGA from "react-ga4";
+import * as tfvis from "@tensorflow/tfjs-vis";
 
-const NumberEpochs = 15
-const learningValue = 1
+const NumberEpochs_default = 5
+const LearningRate_default = 1
+
+const DEFAULT_ID_OPTIMIZATION = "adam";
+const DEFAULT_ID_LOSS = "metrics-categoricalCrossentropy";
+const DEFAULT_ID_METRICS = "accuracy";
+
 
 export default function ImageClassification(props) {
   const { dataset } = props
+  const prefix = "pages.playground.0-tabular-classification.generator.";
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
-  const [Layer, setLayer] = useState([])
+
+  /**
+   * @typedef {Object} Layer_t
+   * @property {string} class
+   * @property {string} activation
+   * @property {string} kernelInitializer
+   * @property {[number, number]} poolSize
+   * @property {[number, number]} strides2
+   * @property {number} kernelSize
+   * @property {number} filters
+   * @property {number} strides
+   */
+  const [Layers, setLayers] = useState(/**@type Array<Layer_t>*/[])
   const [ActiveLayer, setActiveLayer] = useState()
   const [Contador, setContador] = useState(0)
 
-  const [Optimizer, setOptimizer] = useState('Adam')
-  const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
-  const [MetricsValue, setMetricsValue] = useState('Accuracy')
-  const [Model, setModel] = useState()
-  const [NoEpochs, setNoEpochs] = useState(15)
+  const [idOptimizer, setIdOptimizer] = useState(DEFAULT_ID_OPTIMIZATION)
+  const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS)
+  const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS)
+  const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
+  const [LearningRate, setLearningRate] = useState(LearningRate_default)
+  /**
+   * @typedef {tf.Sequential} Model_t
+   */
+  const [Model, setModel] = useState(/**@type {Model_t|null}*/)
+
   const [Recarga, setRecarga] = useState(false)
+  const [GeneratedModels, setGeneratedModels] = useState([])
 
   useEffect(() => {
     const dataset_ID = parseInt(dataset)
@@ -48,7 +64,7 @@ export default function ImageClassification(props) {
     if (!Recarga) {
       const uploadedArchitecture = localStorage.getItem('custom-architecture-IMG')
       if (uploadedArchitecture !== '{}') {
-        setLayer([
+        setLayers([
           {
             class            : 'Conv2D',
             kernelSize       : 5,
@@ -79,7 +95,7 @@ export default function ImageClassification(props) {
         setRecarga(true)
         setActiveLayer(0)
       } else {
-        setLayer([
+        setLayers([
           {
             class            : 'Conv2D',
             kernelSize       : 5,
@@ -116,15 +132,19 @@ export default function ImageClassification(props) {
   // CREACIÓN DEL MODELO Y TESTEO
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
-    if (Layer[0].class === 'Conv2D') {
+    const params = {
+      LearningRate
+    };
+    if (Layers[0].class === 'Conv2D') {
       const model = await numberClass.MNIST_run(
-        parseInt(NoEpochs),
-        document.getElementById('FormOptimizer').value,
-        Layer,
-        LossValue,
-        MetricsValue,
-      )
-      setModel(model)
+        NumberEpochs,
+        idOptimizer,
+        Layers,
+        idLoss,
+        idMetrics,
+        params
+      );
+      setModel(model);
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } else {
       await alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D',)
@@ -135,12 +155,10 @@ export default function ImageClassification(props) {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
-      // var canvas
-      // canvas = document.getElementById('drawCanvas')
-
+      const canvas = document.getElementById('drawCanvas')
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')
-      // numberClass.resample_single(canvas, 28, 28, smallcanvas)
+      numberClass.resample_single(canvas, 28, 28, smallcanvas)
 
       const imgData = ctx2.getImageData(0, 0, 28, 28)
       let arr = [] // El arreglo completo
@@ -207,25 +225,37 @@ export default function ImageClassification(props) {
   }
 
   // CONTROL DE LAS CAPAS
-  const handlerAddLayer = async () => {
-    let array = Layer
-    if (array.length < 10) {
-      array.push({
+  const handleClick_AddLayer_Start = async () => {
+    if (Layers.length < 10) {
+      setLayers(oldLayers => [{
         class            : 'Conv2D',
         kernelSize       : 0,
         filters          : 0,
         strides          : 0,
         activation       : 'sigmoid',
         kernelInitializer: 'varianceScaling',
-      })
-      setLayer(array)
+      }, ...oldLayers]);
+    } else {
+      await alertHelper.alertWarning("No se pueden añadir más capas")
+    }
+  }
+  const handleClick_AddLayer_End = async () => {
+    if (Layers.length < 10) {
+      setLayers(oldLayers => [...oldLayers, {
+        class            : 'Conv2D',
+        kernelSize       : 0,
+        filters          : 0,
+        strides          : 0,
+        activation       : 'sigmoid',
+        kernelInitializer: 'varianceScaling',
+      }]);
     } else {
       await alertHelper.alertWarning("No se pueden añadir más capas")
     }
   }
 
   const handleClick_RemoveLayer = async (idLayer) => {
-    let array = Layer
+    let array = Layers
     let array2 = []
     if (array.length === 1) {
       await alertHelper.alertWarning('No puedes eliminar la última capa')
@@ -234,56 +264,15 @@ export default function ImageClassification(props) {
         if (i !== idLayer) array2.push(array[i])
       }
       if (ActiveLayer === idLayer && idLayer > 0) setActiveLayer(idLayer - 1)
-      setLayer(array2)
+      setLayers(array2)
     }
-  }
-
-  //PARÁMETROS DE LAS CAPAS
-  const handleChange_Kernel = (index) => {
-    let array = Layer
-    array[index].kernelSize = parseInt(
-      document.getElementById(`formKernelLayer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChange_Filters = (index) => {
-    let array = Layer
-    array[index].filters = parseInt(
-      document.getElementById(`formFiltersLayer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChange_Strides = (index) => {
-    let array = Layer
-    array[index].strides = parseInt(
-      document.getElementById(`formStridesLayer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChange_PoolSize = (index, id) => {
-    let array = Layer
-    array[index].poolSize[id] = parseInt(
-      document.getElementById(`formPoolSize${id}Layer${index}`).value,
-    )
-    setLayer(array)
-  }
-
-  const handleChange_StridesMax = (index, id) => {
-    let array = Layer
-    array[index].strides[id] = parseInt(
-      document.getElementById(`formStrides${id}Layer${index}`).value,
-    )
-    setLayer(array)
   }
 
   const handleChange_Class = (e) => {
     const option = e.target.value
     let a = Contador
     a = a + 1
-    let array = Layer
+    let array = Layers
     array[ActiveLayer].class = option
     if (option === 'Conv2D') {
       array[ActiveLayer] = {
@@ -302,40 +291,59 @@ export default function ImageClassification(props) {
       }
     }
     setContador(a)
-    setLayer(array)
+    setLayers(array)
+  }
+  //PARÁMETROS DE LAS CAPAS
+
+  const handleChange_Kernel = (index, e) => {
+    Layers[index].kernelSize = parseInt(e.target.value);
+    setLayers(Layers);
   }
 
-  const handleChange_Activation = (index) => {
-    let array = Layer
-    array[index].activation = document.getElementById(`formActivationLayer${index}`,).value
-    setLayer(array)
+  const handleChange_Filters = (index, e) => {
+    Layers[index].filters = parseInt(e.target.value);
+    setLayers(Layers);
+  }
+
+  const handleChange_Strides = (index, e) => {
+    Layers[index].strides = parseInt(e.target.value);
+    setLayers(Layers);
+  }
+
+  const handleChange_PoolSize = (index, id, e) => {
+    Layers[index].poolSize[id] = parseInt(e.target.value);
+    setLayers(Layers);
+  }
+
+  const handleChange_StridesMax = (index, id, e) => {
+    Layers[index].strides[id] = parseInt(e.target.value);
+    setLayers(Layers);
+  }
+
+  const handleChange_Activation = (index, e) => {
+    Layers[index].activation = e.target.value;
+    setLayers(Layers);
   }
 
   // PARÁMETROS GENERALES
-  const handleChange_NumberEpochs = () => {
-    let aux = document.getElementById('FormNumberOfEpochs').value
-    setNoEpochs(aux)
+  const handleChange_LearningRate = (e) => {
+    setLearningRate(parseInt(e.target.value));
+  }
+  const handleChange_NumberEpochs = (e) => {
+    setNumberEpochs(parseInt(e.target.value));
   }
 
-  const handleChange_Loss = () => {
-    let aux = document.getElementById('FormLoss').value
-    if (aux !== undefined) {
-      setLossValue(aux)
-    }
+  const handleChange_Loss = (e) => {
+    setIdLoss(e.target.value);
   }
 
-  const handleChange_Optimization = () => {
-    let aux = document.getElementById('FormOptimizer').value
-    if (aux !== undefined) {
-      setOptimizer(aux)
-    }
+  const handleChange_Optimization = (e) => {
+    setIdOptimizer(e.target.value);
   }
 
-  const handleChange_Metrics = () => {
-    let aux = document.getElementById('FormMetrics').value
-    if (aux !== undefined) {
-      setMetricsValue(aux)
-    }
+  const handleChange_Metrics = (e) => {
+    setIdMetrics(e.target.value)
+
   }
 
   const handleChange_FileUpload = async (e) => {
@@ -361,44 +369,31 @@ export default function ImageClassification(props) {
     img.src = URL.createObjectURL(files[0])
   }
 
+
+  const isDisabledDownloadModel = () => {
+    return GeneratedModels.length === 0
+  }
+
+  const handleClick_DownloadLastModel = () => {
+
+  }
+
   return (
     <>
-      <Form onSubmit={handleSubmit_Play} id={"ImageClassification"}>
-        <Container>
-          <Row>
-            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-              <Card>
-                <Card.Header><h3>ImageClassification</h3></Card.Header>
-                <Card.Body>
-                  <Card.Text>A continuación se ha pre cargado una arquitectura.</Card.Text>
-                  <Card.Text>Programa dentro de la función "createArchitecture".</Card.Text>
-                  <Card.Text>
-                    A esta función se el pasa un array preparado que continue la información del conjunto de datos.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <hr />
-
-
-            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-              <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
-                <Card.Body>
-                  {DATASET_DESCRIPTION[3][dataset]}
-                </Card.Body>
-              </Card>
-
-              <Card>
-                <Card.Header><h3>Manual</h3></Card.Header>
-                <Card.Body>
+      {/* MANUAL */}
+      <Container>
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            <Accordion>
+              <Accordion.Item eventKey={"manual"}>
+                <Accordion.Header><h3>Manual</h3></Accordion.Header>
+                <Accordion.Body>
                   <ul>
                     <li>Interfaz de edición de arquitectura.</li>
 
                     <li>
                       <b>A la izquierda:</b><br />
-                      Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir
-                      capa". <br />
+                      Se pueden ver las capas de neuronas, puedes agregar tantas como desees pulsando el botón "Añadir capa". <br />
                       Puedes modificar dos parámetros:
                     </li>
                     <ul>
@@ -453,142 +448,19 @@ export default function ImageClassification(props) {
                       introducimos, para ver la salida solamente hay que pulsar "Ver resultado".
                     </li>
                   </ul>
-                </Card.Body>
-              </Card>
-            </Col>
+                </Accordion.Body>
+              </Accordion.Item>
 
-            {/* BLOCK 1 */}
-            <Container>
-              {/* <div className="column"> */}
-              <GraphicRed layer={Layer} setActiveLayer={setActiveLayer} tipo={1} />
-              <Row>
-                {/* SPECIFIC PARAMETERS */}
-                <Col xl className="col-specific">
-                  <div className="container-fluid container-fluid-w1900">
-                    {ActiveLayer !== undefined ? (
-                      <div key={'Capa' + ActiveLayer}>
-                        <div className="container pane-imgc borde">
-                          <div className="title-pane">
-                            Capa {ActiveLayer + 1}
-                            <CloseButton onClick={() => handleClick_RemoveLayer(ActiveLayer)} />
-                          </div>
-                          {/* UNITS */}
-                          <Form.Group className="mb-3"
-                                      controlId={'formClass' + ActiveLayer}>
-                            <Form.Label>Clase de la capa</Form.Label>
-                            <Form.Select aria-label="Selecciona la clase de la capa"
-                                         defaultValue={Layer[ActiveLayer].class}
-                                         onChange={handleChange_Class}>
-                              {TYPE_CLASS.map(({ key, label }, index) => {
-                                return (<option key={index} value={key}>{label}</option>)
-                              })}
-                            </Form.Select>
-                          </Form.Group>
-                          <LayerEdit index={ActiveLayer}
-                                     item={Layer[ActiveLayer]}
-                                     handler_RemoveLayer={handleClick_RemoveLayer}
-                                     handleChange_Kernel={handleChange_Kernel}
-                                     handleChange_Activation={handleChange_Activation}
-                                     handleChange_Filters={handleChange_Filters}
-                                     handleChange_Strides={handleChange_Strides}
-                                     handleChange_PoolSize={handleChange_PoolSize}
-                                     handleChange_StridesMax={handleChange_StridesMax}
-                                     ACTIVATION_TYPE={TYPE_ACTIVATION}
-                                     CLASS_TYPE={TYPE_CLASS} />
-                        </div>
-                      </div>
-                    ) : (
-                      ','
-                    )}
+              <Accordion.Item eventKey={"description-dataset"}>
+                <Accordion.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Accordion.Header>
+                <Accordion.Body>
+                  {DATASET_DESCRIPTION[3][dataset]}
+                </Accordion.Body>
+              </Accordion.Item>
 
-                    {/* ADD LAYER */}
-                    <Button className="btn-add-layer"
-                            type="button"
-                            onClick={() => handlerAddLayer()}
-                            variant="primary">
-                      Añadir capa
-                    </Button>
-                  </div>
-                </Col>
-
-                {/* GENERAL PARAMETERS */}
-                <Col xl className="col-general">
-                  <div className="container borde general-settings">
-                    {/* LEARNING RATE */}
-                    <Form.Group className="mb-3" controlId="formTrainRate">
-                      <Form.Label>Tasa de entrenamiento</Form.Label>
-                      <Form.Control type="number"
-                                    placeholder="Introduce la tasa de entrenamiento"
-                                    defaultValue={learningValue} />
-                      <Form.Text className="text-muted">
-                        Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
-                      </Form.Text>
-                    </Form.Group>
-
-                    {/* Número OF ITERATIONS */}
-                    <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
-                      <Form.Label>Número de iteraciones</Form.Label>
-                      <Form.Control type="number"
-                                    placeholder="Introduce el número de iteraciones"
-                                    defaultValue={NumberEpochs}
-                                    onChange={handleChange_NumberEpochs} />
-                      <Form.Text className="text-muted">
-                        *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
-                      </Form.Text>
-                    </Form.Group>
-
-                    {/* OPTIMIZATION FUNCTION */}
-                    <Form.Group className="mb-3" controlId="FormOptimizer">
-                      <Form.Label>Selecciona el optimizador</Form.Label>
-                      <Form.Select aria-label="Selecciona el optimizador"
-                                   defaultValue={Optimizer}
-                                   onChange={handleChange_Optimization}>
-                        {TYPE_OPTIMIZER.map(({ key, label }, _index) => {
-                          return (<option key={_index} value={key}>{label}</option>)
-                        })}
-                      </Form.Select>
-                      <Form.Text className="text-muted">
-                        Será el optimizador que se usará para activar la función
-                      </Form.Text>
-                    </Form.Group>
-                    {/* LOSS FUNCTION */}
-                    <Form.Group className="mb-3" controlId="FormLoss">
-                      <Form.Label>Selecciona la función de pérdida</Form.Label>
-                      <Form.Select aria-label="Selecciona la función de pérdida"
-                                   defaultValue={LossValue}
-                                   onChange={handleChange_Loss}>
-                        {TYPE_LOSSES.map(({ key, label }, _index) => {
-                          return (<option key={_index} value={key}>{label}</option>)
-                        })}
-                      </Form.Select>
-                      <Form.Text className="text-muted">
-                        Será la perdida que se usará para la evaluación
-                      </Form.Text>
-                    </Form.Group>
-
-                    {/* METRICS FUNCTION */}
-                    <Form.Group className="mb-3" controlId="FormMetrics">
-                      <Form.Label>Selecciona la métrica</Form.Label>
-                      <Form.Select aria-label="Selecciona la función de métrica"
-                                   defaultValue={MetricsValue}
-                                   onChange={handleChange_Metrics}>
-                        {TYPE_METRICS.map(({ key, label }, _index) => {
-                          return (<option key={_index} value={key}>{label}</option>)
-                        })}
-                      </Form.Select>
-                      <Form.Text className="text-muted">
-                        Será la métrica que se usará para la evaluación
-                      </Form.Text>
-                    </Form.Group>
-                  </div>
-                </Col>
-              </Row>
-              {/* </div> */}
-
-              {/* INFO ADDITIONAL LAYERS */}
-              <Card>
-                <Card.Header><h3>Información adicional capas</h3></Card.Header>
-                <Card.Body>
+              <Accordion.Item eventKey={"info"}>
+                <Accordion.Header><h3>Información adicional capas</h3></Accordion.Header>
+                <Accordion.Body>
                   <p>
                     Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en la clasificación de imágenes
                   </p>
@@ -602,83 +474,298 @@ export default function ImageClassification(props) {
                       Es la última capa y tiene 10 unidades de salida, una por cada posible valor (del 0 al 9)
                     </li>
                   </ul>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Col>
+        </Row>
+      </Container>
+
+      {/* EDITOR */}
+      <Form onSubmit={handleSubmit_Play} id={"ImageClassification"}>
+        <Container className={"mt-3"}>
+          <Row>
+            <Col xl={12}>
+              <Card>
+                <Card.Header>
+                  <h3><Trans i18nKey={prefix + "layers.title"} /></h3>
+                </Card.Header>
+                <Card.Body>
+                  <GraphicRed layer={Layers} setActiveLayer={setActiveLayer} tipo={1} />
                 </Card.Body>
               </Card>
+            </Col>
+          </Row>
+          <Row>
+            {/* Layers PARAMETERS */}
+            <Col className={"mt-3"} xl={6}>
+              <Card>
+                <Card.Header className={"d-flex align-items-center justify-content-between"}>
+                  <h3><Trans i18nKey={prefix + "editor-layers.title"} /></h3>
+                  <div className={"d-flex"}>
+                    <Button onClick={() => handleClick_AddLayer_Start()}
+                            size={"sm"}
+                            variant="outline-primary">
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-start"} />
+                    </Button>
+                    <Button onClick={() => handleClick_AddLayer_End()}
+                            size={"sm"}
+                            variant="outline-primary"
+                            className={"ms-3"}>
+                      <Trans i18nKey={prefix + "editor-layers.add-layer-end"} />
+                    </Button>
+                  </div>
+                </Card.Header>
+                <Card.Body>
+                  <Accordion>
+                    {Layers.map((item, index) => {
+                      return <Accordion.Item key={index} eventKey={index.toString()}>
+                        <Accordion.Header>Capa {index + 1}</Accordion.Header>
+                        <Accordion.Body>
+                          <div className="d-grid gap-2">
+                            <Button onClick={() => handleClick_RemoveLayer(index)}
+                                    variant={"outline-danger"}>
+                              <Trans i18nKey={prefix + "editor-layers.delete-layer"} values={{ value: index + 1 }} />
+                            </Button>
+                          </div>
 
+                          {/* UNITS */}
+                          <Form.Group className="mb-3"
+                                      controlId={'formClass' + index}>
+                            <Form.Label>Clase de la capa</Form.Label>
+                            <Form.Select aria-label="Selecciona la clase de la capa"
+                                         defaultValue={Layers[index].class}
+                                         onChange={handleChange_Class}>
+                              {TYPE_CLASS.map(({ key, label }, index) => {
+                                return (<option key={index} value={key}>{label}</option>)
+                              })}
+                            </Form.Select>
+                          </Form.Group>
+                          <LayerEdit index={index}
+                                     item={Layers[index]}
+                                     handler_RemoveLayer={handleClick_RemoveLayer}
+                                     handleChange_Kernel={handleChange_Kernel}
+                                     handleChange_Activation={handleChange_Activation}
+                                     handleChange_Filters={handleChange_Filters}
+                                     handleChange_Strides={handleChange_Strides}
+                                     handleChange_PoolSize={handleChange_PoolSize}
+                                     handleChange_StridesMax={handleChange_StridesMax} />
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    })}
+                  </Accordion>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            {/* GENERAL PARAMETERS */}
+            <Col className={"mt-3"} xl={6}>
+              <Card className={"sticky-top"} style={{ zIndex: 10 }}>
+                <Card.Header><h3><Trans i18nKey={prefix + "general-parameters.title"} /></h3></Card.Header>
+
+                <Card.Body>
+                  {/* LEARNING RATE */}
+                  <Form.Group className="mb-3" controlId="formTrainRate">
+                    <Form.Label>Tasa de entrenamiento</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce la tasa de entrenamiento"
+                                  defaultValue={LearningRate_default}
+                                  onChange={(e) => handleChange_LearningRate(e)} />
+                    <Form.Text className="text-muted">
+                      Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
+                    </Form.Text>
+                  </Form.Group>
+
+                  {/* Número OF ITERATIONS */}
+                  <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
+                    <Form.Label>Número de iteraciones</Form.Label>
+                    <Form.Control type="number"
+                                  placeholder="Introduce el número de iteraciones"
+                                  defaultValue={NumberEpochs_default}
+                                  onChange={(e) => handleChange_NumberEpochs(e)}
+                    />
+                    <Form.Text className="text-muted">
+                      *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
+                    </Form.Text>
+                  </Form.Group>
+
+                  {/* OPTIMIZATION FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormOptimizer">
+                    <Form.Label>Selecciona el optimizador</Form.Label>
+                    <Form.Select aria-label="Selecciona el optimizador"
+                                 defaultValue={idOptimizer}
+                                 onChange={handleChange_Optimization}>
+                      {TYPE_OPTIMIZER.map(({ key, label }, _index) => {
+                        return (<option key={_index} value={key}>{label}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será el optimizador que se usará para activar la función
+                    </Form.Text>
+                  </Form.Group>
+                  {/* LOSS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormLoss">
+                    <Form.Label>Selecciona la función de pérdida</Form.Label>
+                    <Form.Select aria-label="Selecciona la función de pérdida"
+                                 defaultValue={idLoss}
+                                 onChange={handleChange_Loss}>
+                      <optgroup label={"Losses"}>
+                        {TYPE_LOSSES.map(({ key, label }, index) => {
+                          return (<option key={index} value={"losses-" + key}>{label}</option>);
+                        })}
+                      </optgroup>
+                      <optgroup label={"Metrics"}>
+                        {TYPE_METRICS.map(({ key, label }, index) => {
+                          return (<option key={index} value={"metrics-" + key}>{label}</option>);
+                        })}
+                      </optgroup>
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será la perdida que se usará para la evaluación
+                    </Form.Text>
+                  </Form.Group>
+
+                  {/* METRICS FUNCTION */}
+                  <Form.Group className="mb-3" controlId="FormMetrics">
+                    <Form.Label>Selecciona la métrica</Form.Label>
+                    <Form.Select aria-label="Selecciona la función de métrica"
+                                 defaultValue={idMetrics}
+                                 onChange={(e) => handleChange_Metrics(e)}>
+                      {TYPE_METRICS.map(({ key, label }, _index) => {
+                        return (<option key={_index} value={key}>{label}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      Será la métrica que se usará para la evaluación
+                    </Form.Text>
+                  </Form.Group>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className={"mt-3"}>
+            <Col>
               {/* BLOCK  BUTTON */}
-              <div className="col-specific cen">
-                <Button variant="primary"
+              <div className="d-grid gap-2">
+                <Button type={"submit"}
+                        variant="primary"
                         onClick={() => {
                           console.log("TODO")
                         }}>
-                  Crear y entrenar modelo
+                  <Trans i18nKey={prefix + "models.button-submit"} />
                 </Button>
               </div>
-
-              <div className="mt-3">
-                <p>Para <b>ocultar y mostrar</b> el panel lateral pulsa la tecla <b>ñ</b>.</p>
-              </div>
-
-              <div className="mt-3">
-                <p>
-                  Ahora puedes probar este modelo de dos formas, dibujando con el ratón o subiendo una imagen desde tu equipo.
-                </p>
-              </div>
-
-              <div id="salida"></div>
-
-              {Model === undefined ? ('') : (
-                <Button type="button"
-                        onClick={handleClick_DownloadModel}
-                        variant="primary">
-                  Exportar modelo
-                </Button>
-              )}
-            </Container>
-
-            {/* BLOCK 2 */}
-            <Container>
-              <Card className="mt-3">
-                <Card.Header><h3>Resultado</h3></Card.Header>
-                <Card.Body>
-                  {/* VECTOR TEST */}
-                  <Row>
-                    <Col className={"mt-3 d-flex justify-content-center flex-column"}>
-                      <CustomCanvasDrawer submitFunction={handleVectorTest} />
-                    </Col>
-                    <Col className={"mt-3 d-flex justify-content-center flex-column"}>
-                      <input style={{ marginBottom: '2rem' }}
-                             type="file"
-                             name="doc"
-                             onChange={handleChange_FileUpload}></input>
-
-                      <canvas height="200" width="200" id="imageCanvas"></canvas>
-                      <button type="button"
-                              onClick={handleVectorTestImageUpload}>
-                        Validar
-                      </button>
-                    </Col>
-                  </Row>
-
-                  <canvas id="smallcanvas"
-                          width="28"
-                          height="28"
-                          style={{ display: 'none' }}></canvas>
-                  <div id="resultado"></div>
-                  {/* SUBMIT BUTTON */}
-                </Card.Body>
-              </Card>
-              <div className="header-model-editor mt-3">
-                <p>
-                  Ten en cuenta que no se han usado todos los datos para entrenar la red y puede que sus predicciones no
-                  sean correctas.
-                </p>
-              </div>
-            </Container>
-
+            </Col>
           </Row>
         </Container>
       </Form>
+
+      {/* GENERATED MODELS */}
+
+      <Container className={"mt-3"}>
+        <Row>
+          <Col>
+            <Card>
+              <Card.Header className={"d-flex align-items-center"}>
+                <h3><Trans i18nKey={prefix + "models.title"} /> | {GeneratedModels.length + 1}</h3>
+                <div className={"d-flex"}>
+                  <Button variant={"outline-primary"}
+                          className={"ms-3"}
+                          size={"sm"}
+                          onClick={() => {
+                            tfvis.visor().open();
+                          }}>
+                    <Trans i18nKey={prefix + "models.open-visor"} />
+                  </Button>
+                  <Button variant={"outline-primary"}
+                          className={"ms-1"}
+                          size={"sm"}
+                          onClick={() => {
+                            tfvis.visor().close();
+                          }}>
+                    <Trans i18nKey={prefix + "models.close-visor"} />
+                  </Button>
+                  {(Model !== undefined) &&
+                    <Button className={"ms-1"}
+                            disabled={isDisabledDownloadModel()}
+                            onClick={() => handleClick_DownloadLastModel()}
+                            size={"sm"}
+                            variant="outline-primary">
+                      <Trans i18nKey={prefix + "models.export-current-model"} />
+                    </Button>
+                  }
+                </div>
+              </Card.Header>
+              <Card.Body>
+
+                <div id="resultado"></div>
+                <div id="salida"></div>
+                <div id="demo"></div>
+
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
+      {/* BLOCK 2 */}
+      <Container className={"mt-3"}>
+        <Row>
+          <Col>
+            <Card className="mt-3">
+              <Card.Header><h3>Resultado</h3></Card.Header>
+              <Card.Body>
+                {/* VECTOR TEST */}
+                <Row>
+                  <Col>
+                    <CustomCanvasDrawer submitFunction={handleVectorTest}
+                                        clearFunction={() => {
+                                        }}
+                    />
+                  </Col>
+                  <Col>
+                    <input style={{ marginBottom: '2rem' }}
+                           type="file"
+                           name="doc"
+                           onChange={handleChange_FileUpload} />
+
+                    <Row>
+                      <Col className={"d-flex justify-content-center"}>
+                        <canvas id="imageCanvas"
+                                height="100"
+                                width="100"
+                                className={"nets4-border-1"}></canvas>
+                      </Col>
+                      <Col className={"d-flex justify-content-center"}>
+                        <canvas id="smallcanvas"
+                                width="28"
+                                height="28"
+                                className={"nets4-border-1"}></canvas>
+                      </Col>
+                    </Row>
+
+
+                    <div className="d-grid gap-2 mt-3">
+                      <Button variant="primary"
+                              onClick={handleVectorTestImageUpload}>
+                        Validar
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+
+
+                {/* SUBMIT BUTTON */}
+
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+
+      </Container>
+
     </>
   )
 }

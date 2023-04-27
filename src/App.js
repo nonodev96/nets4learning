@@ -5,7 +5,6 @@ import ReactGA from 'react-ga4';
 import './i18n';
 import "./App.css";
 import Loading from "./pages/Loading";
-import datasets from "./pages/datasets/Datasets";
 
 const Home = lazy(() => import( "./pages/_home/Home.jsx"));
 const MenuSelectModel = lazy(() => import( "./pages/menu/MenuSelectModel"));

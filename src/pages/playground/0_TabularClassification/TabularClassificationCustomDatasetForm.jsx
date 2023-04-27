@@ -306,7 +306,9 @@ const cellStyle = {
  *   dataframeOriginal    : dfd.DataFrame,
  *   dataProcessed        : DataProcessedState_t,
  *   setDataProcessed     : Function,
- *   setCustomDataSet_JSON: Function
+ *   setIsDatasetProcessed: Function,
+ *   setCustomDataSet_JSON: Function,
+ *   setLayers            : Function
  * }} props
  * @return {JSX.Element}
  * @constructor
@@ -319,6 +321,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
     setDataProcessed,
     setIsDatasetProcessed,
     setCustomDataSet_JSON,
+    setLayers
   } = props;
 
   const [listColumnTypeProcessed_X, setListColumnTypeProcessed_X] = useState([]);
@@ -395,6 +398,13 @@ export default function TabularClassificationCustomDatasetForm(props) {
     ]);
   };
 
+  const changeUnitsLastLayer = (old_layer, units_last_layer) => {
+    if (old_layer.length > 0) {
+      old_layer[old_layer.length - 1].units = units_last_layer;
+    }
+    return old_layer;
+  }
+
   const handleSubmit_ProcessDataFrame = async (event) => {
     event.preventDefault();
     const list = [...listColumnTypeProcessed_X, ...listColumnTypeProcessed_y];
@@ -411,6 +421,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
       data,
     } = Parser.transform(dataframeOriginal, list, { type_scaler: typeScaler });
 
+    setLayers((old_layer) => changeUnitsLastLayer(old_layer, classes.length));
     setDataProcessed({
       dataframeProcessed,
       obj_encoder,
@@ -485,6 +496,7 @@ export default function TabularClassificationCustomDatasetForm(props) {
                           <Form.Select aria-label={"select"}
                                        size={"sm"}
                                        value={column_type}
+                                       disabled
                                        onChange={(e) => handleChange_cType(e, column_name, setListColumnTypeProcessed_y)}>
                             {options.map((option_value, option_index) => {
                               return <option key={column_name + "_option_" + option_index}

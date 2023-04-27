@@ -26,7 +26,8 @@ import { Trans, withTranslation } from "react-i18next";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 class ImageClassificationModelReview extends React.Component {
-  bar_options = {
+
+  bar_option = {
     responsive: true,
     plugins   : {
       legend: {
@@ -34,7 +35,7 @@ class ImageClassificationModelReview extends React.Component {
       },
       title : {
         display: true,
-        text   : "Predicción",
+        text   : "prediction",
       },
     },
   }
@@ -264,7 +265,6 @@ class ImageClassificationModelReview extends React.Component {
   }
 
 
-  // Limpiamos el canvas
   async handleCanvasDraw_Clear() {
     const originalImage_canvas = document.getElementById("originalImage")
     const originalImage_canvas_ctx = originalImage_canvas.getContext("2d", { willReadFrequently: true })
@@ -651,6 +651,11 @@ class ImageClassificationModelReview extends React.Component {
     }
   }
 
+  barOption_i18n(){
+    this.bar_option.plugins.title.text = this.t("prediction");
+    return this.bar_option
+  }
+
   render() {
     return (
       <>
@@ -759,7 +764,7 @@ class ImageClassificationModelReview extends React.Component {
                       </Col>
                       <Col className={"d-flex align-items-center justify-content-center"}>
                         <Bar ref={this.chartRef_image}
-                             options={this.bar_options}
+                             options={this.barOption_i18n()}
                              data={this.state.bar_data_image} />
                       </Col>
                     </Row>
@@ -797,7 +802,7 @@ class ImageClassificationModelReview extends React.Component {
                 <Col xs={12} sm={7} md={7} xl={9} xxl={9}>
                   <div className={"d-flex align-items-center justify-content-center"}>
                     <Bar ref={this.chartRef_modal}
-                         options={this.state.bar_options}
+                         options={this.barOption_i18n()}
                          data={this.state.bar_data_modal} />
                   </div>
                 </Col>

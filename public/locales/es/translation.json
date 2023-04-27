@@ -17,7 +17,10 @@
     "download-dataset-car": "Descargar conjunto de datos de evaluación de coches",
     "download-dataset-hepatitis-c": "Descargar conjunto de datos de hepatitis C",
     "download-dataset-iris": "Descargar conjunto de datos de iris",
-    "download-dataset-titanic": "Descargar conjunto de datos de supervivencia del titanic"
+    "download-dataset-titanic": "Descargar conjunto de datos de supervivencia del titanic*",
+    "download-dataset-new-thyroid": "Descargar conjunto de datos de new-thyroid",
+    "download-dataset-wine": "Descargar conjunto de datos de vino",
+    "download-dataset-ecoli": "Descargar conjunto de datos de ecoli"
   },
   "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
@@ -25,8 +28,8 @@
   "preprocessing": {
     "title": "Preprocesamiento",
     "transformations-columns": "Transformaciones por columnas",
-    "transformations-set-X": "Transformaciones al conjunto X",
-    "transformations-set-Y": "Transformaciones al conjunto y"
+    "transformations-set-X": "Transformaciones del conjunto X",
+    "transformations-set-Y": "Transformaciones del conjunto y"
   },
   "prediction": "Predicción",
   "predict": "Predecir",
@@ -684,7 +687,7 @@
             }
           },
           "prediction": {
-            "class_id_name": "El identificador <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
+            "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
           }
         }
       },

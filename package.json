@@ -61,6 +61,7 @@
     "react-vis-graph-wrapper": "^0.1.3",
     "react-webcam": "^7.0.1",
     "scikitjs": "^1.24.0",
+    "semver": "^7.3.8",
     "sweetalert2": "^11.7.3",
     "sweetalert2-react-content": "^4.2.0",
     "vis-network": "^9.1.2",

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Trans } from "react-i18next";
-import "./CookiesModal.css"
+import "./CookiesModal.css";
+
 export function CookiesModal() {
   const [show, setShow] = useState(false);
 
@@ -35,7 +36,7 @@ export function CookiesModal() {
 
   useEffect(() => {
     if (!isCookiesAccepted()) handleShow();
-  }, [])
+  }, [isCookiesAccepted])
 
   return (
     <>

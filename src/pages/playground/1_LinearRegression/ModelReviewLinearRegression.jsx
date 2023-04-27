@@ -1,11 +1,10 @@
 import { Form } from 'react-bootstrap'
 
-export default function ModelReviewLinearRegression(props) {
+export default function ModelReviewLinearRegression() {
 
   // TODO
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
-
   }
 
   return (

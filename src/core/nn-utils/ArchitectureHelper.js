@@ -165,9 +165,12 @@ export async function createTabularClassificationCustomDataSet(params, t) {
  * adamax
  * adam
  *
+ * @typedef {Object} Optimizer_t
+ *
+ *
  * @param idOptimizer
  * @param params
- * @returns {Optimizer}
+ * @returns {Optimizer_t} optimizador
  */
 export function createOptimizer(idOptimizer, params) {
   if (!isProduction()) console.debug(">> createOptimizer", { idOptimizer, params });
@@ -209,9 +212,12 @@ export function createOptimizer(idOptimizer, params) {
  * sigmoidCrossEntropy
  * softmaxCrossEntropy
  *
+ * @typedef {Object} Loss_t
+ *
+ *
  * @param idLoss
  * @param params
- * @returns {string}
+ * @returns {Loss_t} loss
  */
 export function createLoss(idLoss, params) {
   if (!isProduction()) console.debug(">> createLoss", { idLoss, params });
@@ -281,9 +287,12 @@ export function createLoss(idLoss, params) {
  * 10 => sparseCategoricalAccuracy
  * 11 => accuracy
  *
+ * @typedef {Object} Metric_t
+ *
+ *
  * @param idMetrics
  * @param params
- * @returns {string[]}
+ * @returns {Metric_t} metric
  */
 export function createMetrics(idMetrics, params) {
   if (!isProduction()) console.debug(">> createMetrics", { idMetrics, params });

@@ -91,22 +91,22 @@ export default function TabularClassificationCustomDataset(props) {
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production";
 
-  // Pasos:
+  // Steps:
   //
-  // 1.   Subir dataset
-  // 1.1. Seleccionar transformaciones del conjunto xTrain e yTrain
-  // 1.X. Preprocesamiento
+  // Upload dataset
+  // Select transformations from the xTrain and yTrain set.
+  // 1.X. Preprocessing
   //
-  // 2.   Definición de la arquitectura del modelo
-  // 2.1. Selección de las capas de la arquitectura
-  // 2.2. Seleccionar los hiperparámetros
-  // 2.X. Entrenamiento del modelo
+  // Definition of the model architecture
+  // 2.1. Selecting the layers of the architecture
+  // 2.2. Selecting the hyper parameters
+  // 2.X. Training the model
   //
-  // 3.   Seleccionar el modelo entrenado
+  // Selecting the trained model
   //
-  // 4.   Predicciones
-  // 4.1. Seleccionamos los datos a predecir
-  // 4.X. Predicción
+  // Predictions
+  // 4.1. Selecting the data to be predicted
+  // 4.X. Prediction
 
   // Dataset
   // dataframe original
@@ -177,8 +177,9 @@ export default function TabularClassificationCustomDataset(props) {
 
   // Prediction
   const [predictionBar, setPredictionBar] = useState({
-    labels: [],
-    data  : [],
+    list_encoded_classes: [],
+    labels              : [],
+    data                : [],
   });
   const [objectToPredict, setObjectToPredict] = useState({});
   const [stringToPredict, setStringToPredict] = useState("");
@@ -519,7 +520,10 @@ export default function TabularClassificationCustomDataset(props) {
     const prediction = currentModel.predict(tensor_input);
     // const predictionWithArgMax = prediction.argMax(-1).dataSync();
     const predictionArraySync = prediction.arraySync()[0];
-    const labels = currentDataProcessed.classes.map(({ name }, index) => {
+    const labels = currentDataProcessed.classes.map(({ name }) => {
+      return name;
+    });
+    const list_encoded_classes = currentDataProcessed.classes.map(({ name }, index) => {
       const class_target_id = currentObjEncoder[columnNameTarget].$labels[name].toString()
       return <Trans key={index}
                     i18nKey="pages.playground.0-tabular-classification.generator.prediction.class_id_name"
@@ -528,8 +532,9 @@ export default function TabularClassificationCustomDataset(props) {
 
     setPredictionBar((old) => {
       return {
-        labels: [...labels],
-        data  : [...predictionArraySync],
+        list_encoded_classes: [...list_encoded_classes],
+        labels              : [...labels],
+        data                : [...predictionArraySync],
       };
     });
 
@@ -625,6 +630,7 @@ export default function TabularClassificationCustomDataset(props) {
       const tensor = tf.tensor2d(input[0], input[1]);
       const prediction = Model.predict(tensor);
       const predictionWithArgMax = prediction.argMax(-1).dataSync();
+      const predictionArraySync = prediction.arraySync();
 
       const prediction_class_name = customDataSet_JSON.classes.find((item) => {
         if (isFinite(TargetSetClasses[predictionWithArgMax]))
@@ -632,6 +638,7 @@ export default function TabularClassificationCustomDataset(props) {
         else
           return item.key === TargetSetClasses[predictionWithArgMax];
       });
+      const list_encoded_classes = customDataSet_JSON.classes.map(({ name }) => name);
       if (!isProduction()) console.info("DataSetClasses: ", { DataSetClasses }, ...input[0]);
       if (!isProduction()) console.info("La solución es: ", { prediction, predictionWithArgMax, TargetSetClasses, prediction_class_name });
       if (prediction_class_name !== undefined) {
@@ -639,6 +646,11 @@ export default function TabularClassificationCustomDataset(props) {
           "" + prediction_class_name.key,
           "" + prediction_class_name.name,
         );
+        setPredictionBar({
+          list_encoded_classes: list_encoded_classes,
+          labels              : [],
+          data                : []
+        })
       } else {
         await alertHelper.alertInfo(
           "Tipo: " + TargetSetClasses[predictionWithArgMax],
@@ -700,7 +712,8 @@ export default function TabularClassificationCustomDataset(props) {
                                                                 dataProcessed={dataProcessed}
                                                                 setDataProcessed={setDataProcessed}
                                                                 setIsDatasetProcessed={setIsDatasetProcessed}
-                                                                setCustomDataSet_JSON={setCustomDataSet_JSON} />
+                                                                setCustomDataSet_JSON={setCustomDataSet_JSON}
+                                                                setLayers={setLayers} />
                       </>}
 
                     </>,
@@ -759,7 +772,9 @@ export default function TabularClassificationCustomDataset(props) {
                     <details>
                       <summary className={"n4l-summary"}><Trans i18nKey={prefix + "dataset.attributes.classes"} /></summary>
                       <main>
-                        <ol start="0">{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
+                        <div className="n4l-list">
+                          <ol start="0">{customDataSet_JSON.classes.map((item, index) => (<li key={"_" + index}>{item.name}</li>))}</ol>
+                        </div>
                       </main>
                     </details>
                   </>

@@ -49,6 +49,7 @@ export default function MenuSelectDataset() {
         // image-classifier
         console.warn("TODO")
         return <>
+          <option value={1}>{t("pages.menu-selection-dataset.1-image-classifier")}</option>
         </>
       }
       default: {
