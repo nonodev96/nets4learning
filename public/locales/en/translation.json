@@ -257,8 +257,9 @@
         "0-option-3": "Data set - Lymphomas classification"
       },
       "list-models": {
-        "0-option-1": "Model - Car Classification",
-        "0-option-2": "Model - Flor Iris classification"
+        "0-option-1": "Model - Car classification",
+        "0-option-2": "Model - Flor Iris classification",
+        "0-option-3": "Model - Lymphomas classification"
       }
     },
     "2-object-detection": {

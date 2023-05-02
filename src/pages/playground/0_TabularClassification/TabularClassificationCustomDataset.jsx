@@ -630,7 +630,7 @@ export default function TabularClassificationCustomDataset(props) {
       const tensor = tf.tensor2d(input[0], input[1]);
       const prediction = Model.predict(tensor);
       const predictionWithArgMax = prediction.argMax(-1).dataSync();
-      const predictionArraySync = prediction.arraySync();
+      // const predictionArraySync = prediction.arraySync();
 
       const prediction_class_name = customDataSet_JSON.classes.find((item) => {
         if (isFinite(TargetSetClasses[predictionWithArgMax]))

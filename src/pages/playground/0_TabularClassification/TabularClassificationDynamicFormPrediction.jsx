@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import { Bar } from "react-chartjs-2";
@@ -27,10 +27,10 @@ export default function TabularClassificationDynamicFormPrediction(props) {
     dataset_JSON,
     stringToPredict = "",
     setStringToPredict,
-    objectToPredict = {},
+    // objectToPredict = {},
     setObjectToPredict,
     predictionBar,
-    list_encoded_classes = [],
+    // list_encoded_classes = [],
 
     handleClick_TestVector,
   } = props;

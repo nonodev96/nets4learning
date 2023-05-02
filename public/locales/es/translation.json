@@ -258,7 +258,8 @@
       },
       "list-models": {
         "0-option-1": "Modelo - Clasificación de coches",
-        "0-option-2": "Modelo - Clasificación de flor iris"
+        "0-option-2": "Modelo - Clasificación de flor iris",
+        "0-option-3": "Modelo - Clasificación de linfomas"
       }
     },
     "1-linear-regression": {

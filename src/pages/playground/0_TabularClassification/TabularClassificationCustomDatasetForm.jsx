@@ -4,7 +4,6 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import * as dfd from "danfojs";
 import * as alertHelper from "../../../utils/alertHelper";
-import * as sk from "scikitjs";
 
 export class Parser {
   /**
@@ -141,7 +140,6 @@ export class Parser {
           encode.fit(newDataframe[column_name]);
           const new_serie = encode.transform(newDataframe[column_name].values);
           obj_encoder[column_name] = encode;
-
           newDataframe.asType(column_name, "string", { inplace: true });
           newDataframe.addColumn(column_name, new_serie, { inplace: true });
           const list_options = [];

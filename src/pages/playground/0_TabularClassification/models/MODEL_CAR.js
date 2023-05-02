@@ -121,12 +121,17 @@ export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
     "Tamaño del maletero",
     "Seguridad estimada"
   ]
+  LIST_EXAMPLES_RESULTS = [
+    "unacc",
+    "acc",
+    "good",
+    "vgood"
+  ]
   LIST_EXAMPLES = [
-    { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "big",   safety: "med" },
     { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "small", safety: "low" },
     { buying: "low",   maint: "vhigh", doors: "4",     persons: "2",    lug_boot: "small", safety: "low" },
-    { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" },
-    { buying: "med",   maint: "med",   doors: "2",     persons: "4",    lug_boot: "big",   safety: "high" }
+    { buying: "med",   maint: "low",   doors: "5more", persons: "more", lug_boot: "med",   safety: "med" },
+    { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" }
   ]
   FORM = [
     { type: "label-encoder", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },

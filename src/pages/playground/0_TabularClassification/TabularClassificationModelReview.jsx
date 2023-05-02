@@ -267,7 +267,7 @@ class TabularClassificationModelReview extends React.Component {
             {this._model.LIST_EXAMPLES.map((example, index) => {
               return <Button key={"example_" + index}
                              onClick={() => this.setExample(example)}>
-                <Trans i18nKey={"example-i"} values={{ i: index + 1 }} />
+                <Trans i18nKey={"example-i"} values={{ i: index + 1 + " - " + this._model.LIST_EXAMPLES_RESULTS[index] }} />
               </Button>
             })}
           </div>
@@ -518,7 +518,7 @@ class TabularClassificationModelReview extends React.Component {
                                     </Form.Group>
                                   </Col>
                                 }
-                                case "string": {
+                                case "label-encoder": {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
@@ -541,7 +541,7 @@ class TabularClassificationModelReview extends React.Component {
                                   </Col>
                                 }
                                 default:
-                                  return <></>
+                                  return <>ksjahfd</>
                               }
                             })}
                           </Row>

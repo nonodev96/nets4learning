@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import * as tf from '@tensorflow/tfjs'
 import * as numberClass from './models/MODEL_MNIST'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
-import { getKeyDatasetByID_TabularClassification, DATASET_DESCRIPTION, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL";
+import {
+  getKeyDatasetByID_ImageClassification,
+  MODEL_IMAGE_MNIST,
+  MODEL_IMAGE_MOBILENET,
+  MODEL_IMAGE_RESNET
+} from "../../../DATA_MODEL";
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import ReactGA from "react-ga4";
 import * as tfvis from "@tensorflow/tfjs-vis";
+
+import { MODEL_IMAGE_CLASSIFICATION } from "./models/_model";
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1
@@ -22,6 +29,9 @@ const DEFAULT_ID_METRICS = "accuracy";
 
 export default function ImageClassification(props) {
   const { dataset } = props
+  const { t } = useTranslation()
+  const [modelInfo, set_ModelInfo] = useState(new MODEL_IMAGE_CLASSIFICATION(t));
+
   const prefix = "pages.playground.0-tabular-classification.generator.";
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
@@ -47,18 +57,42 @@ export default function ImageClassification(props) {
   const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
   const [LearningRate, setLearningRate] = useState(LearningRate_default)
   /**
-   * @typedef {tf.Sequential} Model_t
+   * @typedef {Sequential} Model_t
    */
-  const [Model, setModel] = useState(/**@type {Model_t|null}*/)
+  const [Model, setModel] = useState(/**@type {Model_t}*/)
 
   const [Recarga, setRecarga] = useState(false)
-  const [GeneratedModels, setGeneratedModels] = useState([])
+  /**
+   * @typedef {Object} GeneratedModels_t
+   * @property {string} optimizer
+   * @property {string} loss
+   * @property {string} metric
+   */
+  const [GeneratedModels, setGeneratedModels] = useState(/**@type Array<GeneratedModels_t> */[])
 
   useEffect(() => {
     const dataset_ID = parseInt(dataset)
-    const dataset_key = getKeyDatasetByID_TabularClassification(dataset_ID)
+    const dataset_key = getKeyDatasetByID_ImageClassification(dataset_ID)
     ReactGA.send({ hitType: "pageview", page: "/ImageClassification/" + dataset_key, title: dataset_key });
-  }, [dataset])
+    switch (dataset_key) {
+      case MODEL_IMAGE_MNIST.KEY: {
+        set_ModelInfo(new MODEL_IMAGE_MNIST(t))
+        break
+      }
+      case MODEL_IMAGE_MOBILENET.KEY: {
+        set_ModelInfo(new MODEL_IMAGE_MOBILENET(t))
+        break
+      }
+      case MODEL_IMAGE_RESNET.KEY: {
+        set_ModelInfo(new MODEL_IMAGE_RESNET(t))
+        break
+      }
+      default: {
+        console.error("Error, opción no disponible")
+      }
+    }
+
+  }, [dataset, t])
 
   useEffect(() => {
     if (!Recarga) {
@@ -136,15 +170,21 @@ export default function ImageClassification(props) {
       LearningRate
     };
     if (Layers[0].class === 'Conv2D') {
-      const model = await numberClass.MNIST_run(
-        NumberEpochs,
-        idOptimizer,
-        Layers,
-        idLoss,
-        idMetrics,
-        params
-      );
+      const model = await numberClass.MNIST_run({
+        numberOfEpoch: NumberEpochs,
+        idLoss       : idLoss,
+        idOptimizer  : idOptimizer,
+        idMetrics    : idMetrics,
+        layerList    : Layers,
+        params       : params,
+      });
       setModel(model);
+      setGeneratedModels(oldModels => [...oldModels, {
+        optimizer: idOptimizer,
+        metric   : idMetrics,
+        loss     : idLoss,
+        model    : model
+      }])
       await alertHelper.alertSuccess("Modelo entrenado con éxito")
     } else {
       await alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D',)
@@ -221,7 +261,7 @@ export default function ImageClassification(props) {
   }
 
   const handleClick_DownloadModel = () => {
-    Model.save('downloads://mymodel')
+    Model.save('downloads://my-model')
   }
 
   // CONTROL DE LAS CAPAS
@@ -374,10 +414,6 @@ export default function ImageClassification(props) {
     return GeneratedModels.length === 0
   }
 
-  const handleClick_DownloadLastModel = () => {
-
-  }
-
   return (
     <>
       {/* MANUAL */}
@@ -452,9 +488,13 @@ export default function ImageClassification(props) {
               </Accordion.Item>
 
               <Accordion.Item eventKey={"description-dataset"}>
-                <Accordion.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Accordion.Header>
+                <Accordion.Header>
+                  <h3>
+                    <Trans i18nKey={dataset !== "0" ? modelInfo.TITLE : prefix + "dataset.upload-dataset"} />
+                  </h3>
+                </Accordion.Header>
                 <Accordion.Body>
-                  {DATASET_DESCRIPTION[3][dataset]}
+                  {modelInfo.DESCRIPTION()}
                 </Accordion.Body>
               </Accordion.Item>
 
@@ -530,7 +570,7 @@ export default function ImageClassification(props) {
                           </div>
 
                           {/* UNITS */}
-                          <Form.Group className="mb-3"
+                          <Form.Group className="mt-3"
                                       controlId={'formClass' + index}>
                             <Form.Label>Clase de la capa</Form.Label>
                             <Form.Select aria-label="Selecciona la clase de la capa"
@@ -662,7 +702,6 @@ export default function ImageClassification(props) {
       </Form>
 
       {/* GENERATED MODELS */}
-
       <Container className={"mt-3"}>
         <Row>
           <Col>
@@ -689,7 +728,7 @@ export default function ImageClassification(props) {
                   {(Model !== undefined) &&
                     <Button className={"ms-1"}
                             disabled={isDisabledDownloadModel()}
-                            onClick={() => handleClick_DownloadLastModel()}
+                            onClick={() => handleClick_DownloadModel()}
                             size={"sm"}
                             variant="outline-primary">
                       <Trans i18nKey={prefix + "models.export-current-model"} />
@@ -762,8 +801,6 @@ export default function ImageClassification(props) {
             </Card>
           </Col>
         </Row>
-
-
       </Container>
 
     </>

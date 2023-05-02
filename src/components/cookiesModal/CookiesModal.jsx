@@ -11,6 +11,7 @@ export function CookiesModal() {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+    return false;
   }
 
   const setCookie = (name, value, expiration_days) => {
@@ -23,9 +24,6 @@ export function CookiesModal() {
   const installCookie = () => {
     setCookie("n4l-accept-cookies", "true", 120);
   }
-  const isCookiesAccepted = () => {
-    return getCookie("n4l-accept-cookies") === "true";
-  }
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -35,8 +33,8 @@ export function CookiesModal() {
   };
 
   useEffect(() => {
-    if (!isCookiesAccepted()) handleShow();
-  }, [isCookiesAccepted])
+    if (!(getCookie("n4l-accept-cookies") === "true")) handleShow();
+  }, [])
 
   return (
     <>

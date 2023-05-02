@@ -28,6 +28,7 @@ export default function MenuSelectModel(props) {
         return <>
           <option value={1}>{t("datasets-models.0-tabular-classification.list-models.0-option-1")}</option>
           <option value={2}>{t("datasets-models.0-tabular-classification.list-models.0-option-2")}</option>
+          <option value={3}>{t("datasets-models.0-tabular-classification.list-models.0-option-3")}</option>
         </>
       }
       case '1': {

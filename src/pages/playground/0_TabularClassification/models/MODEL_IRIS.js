@@ -75,6 +75,11 @@ export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
     "Longitud petalo",
     "Anchura petalo"
   ]
+  LIST_EXAMPLES_RESULTS = [
+    "0 Iris-setosa",
+    "1 Iris-versicolor",
+    "2 Iris-virginica",
+  ]
   LIST_EXAMPLES = [
     { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },
     { longitud_sepalo: 6.1, anchura_sepalo: 3.0, longitud_petalo: 4.6, anchura_petalo: 1.4 },

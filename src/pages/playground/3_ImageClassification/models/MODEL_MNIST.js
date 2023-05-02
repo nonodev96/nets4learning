@@ -50,7 +50,17 @@ async function showExamples(data) {
   }
 }
 
-export async function MNIST_run(numberOfEpoch, idOptimizer, layerList, idLoss, idMetrics, params) {
+export async function MNIST_run(params_data) {
+
+  const {
+    numberOfEpoch,
+    idOptimizer,
+    idLoss,
+    idMetrics,
+    layerList,
+    params
+  } = params_data
+
   document.getElementById('salida').innerHTML += `
 <p>MODELO CREADO A PARTIR DE: 
 <b>numberOfEpoch:</b> ${numberOfEpoch.toString()} 

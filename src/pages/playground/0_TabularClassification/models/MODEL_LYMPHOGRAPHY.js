@@ -172,6 +172,12 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   ]
   DATA_CLASSES_KEYS = []
   // @formatter:off
+  LIST_EXAMPLES_RESULTS = [
+    "normal",
+    "metastasis",
+    "malign lymph",
+    "fibrosis",
+  ]
   LIST_EXAMPLES    = [
     // Normal
     {
