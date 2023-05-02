@@ -44,6 +44,21 @@ npm install
 NODE_OPTIONS=--max-old-space-size=4096
 ```
 
+### Project environment variables
+
+Create the files `.env.development` or `.env.production`.
+
+```dosini
+FAST_REFRESH=true
+NODE_ENV="development"
+PUBLIC_URL="http://localhost:3000/n4l"
+REACT_APP_PUBLIC_URL="http://localhost:3000/n4l"
+REACT_APP_PATH="/n4l"
+REACT_APP_ENVIRONMENT="development"
+REACT_APP_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+GENERATE_SOURCEMAP=false
+```
+
 ### Development
 
 ```bash
