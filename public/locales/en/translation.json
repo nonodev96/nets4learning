@@ -348,7 +348,7 @@
         }
       },
       "coco-ssd": {
-        "title": "Coco SSD - Object detector",
+        "title": "COCO SSD - Object detector",
         "description": {
           "text-0": "The SSD model (Single Shot Multibox Detection) of object detection aims to locate and identify multiple objects in a single image.",
           "text-1": "For more information about the tensorflow object detection API, consult this read in <link1> Tensorflow/Object_detection </link1>",
@@ -428,7 +428,7 @@
         }
       },
       "mobilenet": {
-        "title": "Mobilenet - Image classifier",
+        "title": "MobileNet - Image classifier",
         "description": {
           "text-0": "Mobilenet V2 is a family of neural networks for the classification of similar images and tasks.",
           "text-1": "This model is able to differentiate between 1001 categories, identifying the main context of the image.",

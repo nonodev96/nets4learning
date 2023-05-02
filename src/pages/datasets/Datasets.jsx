@@ -78,7 +78,7 @@ export default function Datasets(props) {
    * @param {File_t} file
    */
   const handleClick_DownloadDataset = async (file) => {
-    const response = await fetch(process.env.REACT_APP_PUBLIC_URL + "/datasets/" + file.url);
+    const response = await fetch(process.env.REACT_APP_PATH + "/datasets/" + file.url);
     const content = await response.text();
     _download(file.title, content);
   }

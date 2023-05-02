@@ -125,15 +125,6 @@ export class Parser {
           break;
         }
         case "string":
-        // {
-        //   list_attributes.push({
-        //     index_column: newDataframe.columns.indexOf(column_name),
-        //     name        : column_name,
-        //     type        : "string",
-        //   });
-        //   newDataframe.asType(column_name, "string", { inplace: true });
-        //   break;
-        // }
         case "label-encoder": {
           // Codificamos las columnas de tipo string
           const encode = new dfd.LabelEncoder();

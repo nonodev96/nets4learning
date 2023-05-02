@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
-import { NeuralNetwork } from "../../components/neural-network/neuralNetwork";
 
 export default function InitialMenu() {
   const history = useHistory()
@@ -195,9 +194,9 @@ export default function InitialMenu() {
           </Col>
         </Row>
         <Row className={"mt-3"}>
-          <Col xl={12}>
-            <NeuralNetwork />
-          </Col>
+          {/*<Col xl={12}>*/}
+          {/*  <NeuralNetwork />*/}
+          {/*</Col>*/}
           <Col xl={12}>
             {menuSelection()}
           </Col>

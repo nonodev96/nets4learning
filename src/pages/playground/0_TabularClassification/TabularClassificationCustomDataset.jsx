@@ -1126,12 +1126,13 @@ export default function TabularClassificationCustomDataset(props) {
       {canRender_DynamicFormDataset() &&
         (<TabularClassificationDynamicFormPrediction dataset_JSON={customDataSet_JSON}
                                                      dataset={dataset}
+                                                     dataset_key={dataset_key}
                                                      stringToPredict={stringToPredict}
                                                      setStringToPredict={setStringToPredict}
                                                      objectToPredict={objectToPredict}
                                                      setObjectToPredict={setObjectToPredict}
                                                      predictionBar={predictionBar}
-                                                     handleClick_TestVector={dataset_key === MODEL_UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
+                                                     handleClick_PredictVector={dataset_key === MODEL_UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
       }
 
       {isDebug &&

@@ -32,7 +32,7 @@ export default function N4LNavbar() {
         <Container>
           <Navbar.Brand onClick={() => handleClick_GoHomePage()}>
             <img
-              src={process.env.REACT_APP_PUBLIC_URL + "/without_background.png"}
+              src={process.env.REACT_APP_PATH + "/without_background.png"}
               width="30"
               height="30"
               className="d-inline-block align-top"

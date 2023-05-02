@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import { Bar } from "react-chartjs-2";
+import { MODEL_UPLOAD } from "../../../DATA_MODEL";
 
 const backgroundColorDefault = [
   "rgba(255, 99, 132, 0.4)",
@@ -25,6 +26,7 @@ const borderColorDefault = [
 export default function TabularClassificationDynamicFormPrediction(props) {
   const {
     dataset_JSON,
+    dataset_key,
     stringToPredict = "",
     setStringToPredict,
     // objectToPredict = {},
@@ -32,7 +34,7 @@ export default function TabularClassificationDynamicFormPrediction(props) {
     predictionBar,
     // list_encoded_classes = [],
 
-    handleClick_TestVector,
+    handleClick_PredictVector,
   } = props;
 
   const { t } = useTranslation();
@@ -229,13 +231,6 @@ export default function TabularClassificationDynamicFormPrediction(props) {
                   })}
                 </Row>
 
-                {/*{!isProduction() && <ol>*/}
-                {/*  {Object.entries(objectToPredict).map(([key, value], index) => {*/}
-                {/*    return <li key={index}>{key} | {value}</li>;*/}
-                {/*  })}*/}
-                {/*</ol>*/}
-                {/*}*/}
-
                 <Form.Group className="mb-3" controlId={"formTestInput"}>
                   <Form.Label><Trans i18nKey={prefix + "test-vector"} /></Form.Label>
                   <Form.Control placeholder={t(prefix + "input-vector")}
@@ -246,40 +241,43 @@ export default function TabularClassificationDynamicFormPrediction(props) {
 
                 {/* SUBMIT BUTTON */}
                 <div className="d-grid gap-2">
-                  <Button onClick={handleClick_TestVector}
+                  <Button onClick={handleClick_PredictVector}
                           size={"lg"}
                           variant="primary">
                     {t("predict")}
                   </Button>
                 </div>
-
-                <hr />
-
-                <Row>
-                  <Col>
-                    <ul start="0">
-                      {
-                        predictionBar
-                          .list_encoded_classes
-                          .map((item, index) => <li key={index}>{item}</li>)
-                      }
-                    </ul>
-                    <Bar ref={ref_bar}
-                         options={bar_options}
-                         data={{
-                           labels  : [...predictionBar.labels],
-                           datasets: [
-                             {
-                               label          : t("prediction"),
-                               data           : [...predictionBar.data],
-                               backgroundColor: backgroundColorDefault,
-                               borderColor    : borderColorDefault,
-                               borderWidth    : 1,
-                             },
-                           ],
-                         }} />
-                  </Col>
-                </Row>
+                {
+                  dataset_key === MODEL_UPLOAD &&
+                  <>
+                    <hr />
+                    <Row>
+                      <Col>
+                        <ul start="0">
+                          {
+                            predictionBar
+                              .list_encoded_classes
+                              .map((item, index) => <li key={index}>{item}</li>)
+                          }
+                        </ul>
+                        <Bar ref={ref_bar}
+                             options={bar_options}
+                             data={{
+                               labels  : [...predictionBar.labels],
+                               datasets: [
+                                 {
+                                   label          : t("prediction"),
+                                   data           : [...predictionBar.data],
+                                   backgroundColor: backgroundColorDefault,
+                                   borderColor    : borderColorDefault,
+                                   borderWidth    : 1,
+                                 },
+                               ],
+                             }} />
+                      </Col>
+                    </Row>
+                  </>
+                }
               </Card.Body>
             </Card>
           </Col>
