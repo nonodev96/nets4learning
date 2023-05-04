@@ -1,11 +1,6 @@
 import React from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import Webcam from "react-webcam";
-
-import * as faceDetection from "@tensorflow-models/face-detection";
-import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
-import * as poseDetection from "@tensorflow-models/pose-detection";
-import * as coCoSsdDetection from "@tensorflow-models/coco-ssd";
 import * as tfjs from "@tensorflow/tfjs";
 
 import * as alertHelper from "../../../utils/alertHelper";
@@ -112,155 +107,25 @@ class ObjectDetectionModelReview extends React.Component {
         // TODO
         break;
       }
-      case MODEL_FACE_DETECTOR.KEY: {
-        await this.enable_Model_FaceDetector();
+      case MODEL_FACE_DETECTOR.KEY:
+      case MODEL_FACE_MESH.KEY:
+      case MODEL_MOVE_NET_POSE_NET.KEY:
+      case MODEL_COCO_SSD.KEY:
+        const modelDetector = await this._model.enable_Model();
+        this.setState({
+          modelDetector: modelDetector
+        })
         await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         this.setState({ isShowedAlert: true });
         this.setState({ loading: "" });
         break;
-      }
-      case MODEL_FACE_MESH.KEY: {
-        await this.enable_Model_FaceMesh();
-        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
-        this.setState({ isShowedAlert: true });
-        this.setState({ loading: "" });
-        break;
-      }
-      case MODEL_MOVE_NET_POSE_NET.KEY: {
-        await this.enable_Model_MoveNet();
-        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
-        this.setState({ isShowedAlert: true });
-        this.setState({ loading: "" });
-        break;
-      }
-      case MODEL_COCO_SSD.KEY: {
-        await this.enable_Model_CoCoSsd();
-        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
-        this.setState({ isShowedAlert: true });
-        this.setState({ loading: "" });
-        break;
-      }
+
       default: {
         console.error("Error, conjunto de datos no reconocido");
         break;
       }
     }
   }
-
-  //region FACE DETECTOR
-  async enable_Model_FaceDetector() {
-    const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
-    const mediaPipeFaceDetectorMediaPipeModelConfig = {
-      runtime     : "mediapipe",
-      solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_detection",
-      modelType   : "short",
-      maxFaces    : 4,
-    };
-    this.setState({
-      modelDetector: await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig),
-    });
-  }
-
-  renderFaceDetector(ctx, faces) {
-    ctx.font = "8px Verdana";
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "#FF0902";
-    // ctx.strokeRect(element.x, element.y, 5, 5)
-    faces.forEach((face) => {
-      face.keypoints.forEach((element) => {
-        ctx.beginPath();
-        ctx.arc(element.x, element.y, 2, 0, (Math.PI / 180) * 360);
-        ctx.stroke();
-        ctx.fillText(`${element.name}`, element.x, element.y);
-      });
-    });
-  }
-
-  //endregion
-
-  //region FACE MESH
-  async enable_Model_FaceMesh() {
-    const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-    const mediaPipeFaceMeshMediaPipeModelConfig = {
-      runtime        : "mediapipe",
-      refineLandmarks: true,
-      solutionPath   : "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh",
-      maxFaces       : 4,
-    };
-    this.setState({
-      modelDetector: await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig),
-    });
-  }
-
-  renderFaceMeshDetector(ctx, faces) {
-    faces.forEach((face) => {
-      ctx.strokeStyle = "#FF0902";
-      face.keypoints.forEach((element) => {
-        ctx.strokeRect(element.x, element.y, 1, 1);
-      });
-    });
-  }
-
-  //endregion
-
-  //region MOVE NET
-  async enable_Model_MoveNet() {
-    const model = poseDetection.SupportedModels.MoveNet;
-    // const moveNetModelConfig = {}
-
-    this.setState({
-      modelDetector: await poseDetection.createDetector(model),
-    });
-  }
-
-  renderMoveNetDetector(ctx, poses) {
-    // let lineas = [[10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7], [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],]
-    let lineas = [[0, 1], [0, 2], [1, 3], [2, 4], [5, 6], [5, 7], [5, 11], [6, 8], [6, 12], [7, 9], [8, 10], [11, 12], [11, 13], [12, 14], [13, 15], [14, 16]];
-    ctx.strokeStyle = "#FF0902";
-    poses.forEach((pose) => {
-      if (pose.score > 0.4) {
-        lineas.forEach((index) => {
-          ctx.beginPath();
-          ctx.moveTo(pose.keypoints[index[0]].x, pose.keypoints[index[0]].y);
-          ctx.lineTo(pose.keypoints[index[1]].x, pose.keypoints[index[1]].y);
-          ctx.stroke();
-        });
-        pose.keypoints.forEach((element) => {
-          ctx.beginPath();
-          ctx.arc(element.x, element.y, 5, 0, (Math.PI / 180) * 360);
-          ctx.stroke();
-          ctx.fillText(`${element.name}`, element.x, element.y);
-          // ctx.strokeRect(element.x, element.y, 10, 10)
-        });
-      }
-    });
-  }
-
-  //endregion
-
-  //region COCO SSD
-  async enable_Model_CoCoSsd() {
-    // const moveNetModelConfig = {}
-    this.setState({
-      modelDetector: await coCoSsdDetection.load(),
-    });
-  }
-
-  renderCoCoSsd(ctx, predictions) {
-    let score = 0;
-    ctx.fillStyle = "#fc0400";
-    ctx.font = "1em Verdana";
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "rgba(0,255,21,0.84)";
-
-    predictions.forEach((prediction) => {
-      score = Math.round(parseFloat(prediction.score) * 100);
-      ctx.strokeRect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3]);
-      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] + 20);
-    });
-  }
-
-  //endregion
 
   runModelWithDetector() {
     const frame = async () => {
@@ -311,22 +176,22 @@ class ObjectDetectionModelReview extends React.Component {
       }
       case MODEL_FACE_DETECTOR.KEY: {
         const faces = await model.estimateFaces(img_or_video);
-        this.renderFaceDetector(ctx, faces);
+        this._model.render(ctx, faces);
         break;
       }
       case MODEL_FACE_MESH.KEY: {
         const faces = await model.estimateFaces(img_or_video);
-        this.renderFaceMeshDetector(ctx, faces);
+        this._model.render(ctx, faces);
         break;
       }
       case MODEL_MOVE_NET_POSE_NET.KEY: {
         const poses = await model.estimatePoses(img_or_video);
-        this.renderMoveNetDetector(ctx, poses);
+        this._model.render(ctx, poses);
         break;
       }
       case MODEL_COCO_SSD.KEY: {
         const predictions = await model.detect(img_or_video);
-        this.renderCoCoSsd(ctx, predictions);
+        this._model.render(ctx, predictions);
         break;
       }
       default: {

@@ -1,4 +1,5 @@
 import { MODEL_OBJECT_DETECTION } from "./_model";
+import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
 import { Trans } from "react-i18next";
 
 export class MODEL_FACE_MESH extends MODEL_OBJECT_DETECTION {
@@ -33,6 +34,26 @@ export class MODEL_FACE_MESH extends MODEL_OBJECT_DETECTION {
         </ol>
       </details>
     </>
+  }
+
+  async enable_Model() {
+    const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
+    const mediaPipeFaceMeshMediaPipeModelConfig = {
+      runtime        : "mediapipe",
+      refineLandmarks: true,
+      solutionPath   : "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh",
+      maxFaces       : 4,
+    };
+    return await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
+  }
+
+  render(ctx, faces) {
+    faces.forEach((face) => {
+      ctx.strokeStyle = "#FF0902";
+      face.keypoints.forEach((element) => {
+        ctx.strokeRect(element.x, element.y, 1, 1);
+      });
+    });
   }
 
 }

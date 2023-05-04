@@ -1,4 +1,5 @@
 import { MODEL_OBJECT_DETECTION } from "./_model";
+import * as faceDetection from "@tensorflow-models/face-detection";
 import { Trans } from "react-i18next";
 
 export class MODEL_FACE_DETECTOR extends MODEL_OBJECT_DETECTION {
@@ -34,4 +35,32 @@ export class MODEL_FACE_DETECTOR extends MODEL_OBJECT_DETECTION {
       </details>
     </>
   }
+
+
+  async enable_Model() {
+    const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
+    const mediaPipeFaceDetectorMediaPipeModelConfig = {
+      runtime     : "mediapipe",
+      solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/face_detection",
+      modelType   : "short",
+      maxFaces    : 4,
+    };
+    return await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
+  }
+
+  render(ctx, faces) {
+    ctx.font = "8px Verdana";
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "#FF0902";
+    // ctx.strokeRect(element.x, element.y, 5, 5)
+    faces.forEach((face) => {
+      face.keypoints.forEach((element) => {
+        ctx.beginPath();
+        ctx.arc(element.x, element.y, 2, 0, (Math.PI / 180) * 360);
+        ctx.stroke();
+        ctx.fillText(`${element.name}`, element.x, element.y);
+      });
+    });
+  }
+
 }

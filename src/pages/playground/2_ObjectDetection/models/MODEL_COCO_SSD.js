@@ -1,5 +1,6 @@
 import { Trans } from "react-i18next";
 import { MODEL_OBJECT_DETECTION } from "./_model";
+import * as coCoSsdDetection from "@tensorflow-models/coco-ssd";
 
 export class MODEL_COCO_SSD extends MODEL_OBJECT_DETECTION {
   TITLE = "datasets-models.2-object-detection.coco-ssd.title"
@@ -48,5 +49,24 @@ export class MODEL_COCO_SSD extends MODEL_OBJECT_DETECTION {
         </ol>
       </details>
     </>
+  }
+
+  async enable_Model() {
+    // const moveNetModelConfig = {}
+    return await coCoSsdDetection.load()
+  }
+
+  render(ctx, predictions) {
+    let score = 0;
+    ctx.fillStyle = "#fc0400";
+    ctx.font = "1em Verdana";
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "rgba(0,255,21,0.84)";
+
+    predictions.forEach((prediction) => {
+      score = Math.round(parseFloat(prediction.score) * 100);
+      ctx.strokeRect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3]);
+      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] + 20);
+    });
   }
 }

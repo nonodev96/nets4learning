@@ -9,4 +9,12 @@ export class MODEL_OBJECT_DETECTION {
     return <></>
   }
 
+
+  async enable_Model() {
+
+  }
+
+  render() {
+
+  }
 }
