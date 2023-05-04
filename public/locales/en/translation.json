@@ -32,6 +32,8 @@
     "transformations-set-Y": "Transformations of set y"
   },
   "prediction": "Prediction",
+  "prediction-class": "The prediction is of class {{num}}",
+  "model-loaded-successfully": "Model loaded successfully",
   "predict": "Predict",
   "cookies-policies": {
     "title": "Cookie Policy",
@@ -203,13 +205,13 @@
         }
       },
       "lymphography": {
-        "title": "Lymphoma data classification",
+        "title": "lymphography data classification",
         "description": {
           "text-1": "The dataset of <i> Lymphography </i> allows to detect that possible phases of a lymphoma and in what state it is.",
           "details-input": {
             "title": "Input data",
             "list": {
-              "0": "<b> Lympphats",
+              "0": "<b> lymphography</b>",
               "1": "<b> Block of affection </b>: No, Yes",
               "2": "<b> bl. OF LYMPH. C </b>: No, Yes",
               "3": "<b> bl. OF LYMPH. S </b>: No, Yes",
@@ -222,7 +224,7 @@
               "10": "<b> Changes in Lym. </b>: Bean, Oval, Round",
               "11": "<b> defect in node </b>: no, Lacunar, Lac. Marginal, Lac. central",
               "12": "<b> Changes in node </b>: No, Lacunar, Lac. Margin, Lac. central",
-              "13": "<b> changes in strong",
+              "13": "<b> changes in strong</b>",
               "14": "<b> Special Forms </b>: No, chalices, vesicles",
               "15": "<b> Dislocation of </b>: No, Yes",
               "16": "<b> exclusion of no </b>: no, yes",
@@ -599,14 +601,14 @@
           "table": {
             "id": "Id",
             "load": "Load",
-            "learning-rate": "Learning",
-            "number-of-epochs": "Iterations",
-            "train-rate": "Evidence",
+            "learning-rate": "Learning rate",
+            "number-of-epochs": "Nº of iterations",
+            "train-rate": "Train rate",
             "layers": "Layers",
             "optimizer-id": "Optimizer",
             "loss-id": "Loss",
             "metric-id": "Metrics",
-            "download": "Discharge"
+            "download": "Download"
           },
           "dynamic-form-dataset": {
             "title": "Prediction",

@@ -32,6 +32,8 @@
     "transformations-set-Y": "Transformaciones del conjunto y"
   },
   "prediction": "Predicción",
+  "prediction-class": "La predicción es de la clase {{num}}",
+  "model-loaded-successfully": "Modelo cargado con éxito",
   "predict": "Predecir",
   "cookies-policies": {
     "title": "Política de cookies",
@@ -540,7 +542,7 @@
         "parameter-double": "Parámetro flotante de precisión doble",
         "parameter-categorical": "Parámetro categórico",
         "vector-to-check": "Vector a probar",
-        "button-check-result": "Comprobar resultado"
+        "button-check-result": "Predecir"
       },
       "0-tabular-classification": {
         "general": {

@@ -126,7 +126,7 @@ class TabularClassificationModelReview extends React.Component {
           this.model = await this._model.loadModel()
           this.setState({ loading: "" })
           this.setState({ isButtonDisabled: false })
-          await alertHelper.alertSuccess("Modelo cargado con éxito")
+          await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         } catch (e) {
           console.error("Error, no se ha podido cargar el modelo")
         }
@@ -154,7 +154,7 @@ class TabularClassificationModelReview extends React.Component {
     try {
       this.model = await tf.loadLayersModel(tf.io.browserFiles([this.files.json, this.files.binary]),)
       this.setState({ loading: "", isButtonDisabled: false })
-      await alertHelper.alertSuccess("Modelo cargado con éxito")
+      await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
     } catch (error) {
       console.error(error)
     }
@@ -186,7 +186,7 @@ class TabularClassificationModelReview extends React.Component {
           if (!isProduction()) console.log({ input_0: input[0], tensor })
           const prediction = this.model.predict(tensor)
           const predictionWithArgMax = prediction.argMax(-1).dataSync()
-          await alertHelper.alertInfo(`La solución es el tipo: ${predictionWithArgMax}`, this._model.CLASSES[predictionWithArgMax], prediction)
+          await alertHelper.alertInfo(this.translate("prediction-class", { num: predictionWithArgMax }), this._model.CLASSES[predictionWithArgMax], prediction)
         } catch (error) {
           console.error(error)
           await alertHelper.alertError(error)

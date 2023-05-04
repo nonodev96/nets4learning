@@ -30,6 +30,7 @@ class ObjectDetectionModelReview extends React.Component {
 
   constructor(props) {
     super(props);
+    this.translate = props.t;
     this.dataset = props.dataset;
     this.dataset_ID = parseInt(props.dataset ?? "0");
     this.dataset_key = getKeyDatasetByID_ObjectDetection(this.dataset_ID);
@@ -90,7 +91,7 @@ class ObjectDetectionModelReview extends React.Component {
     tfjs.setBackend("webgl").then(() => {
       tfjs.ready().then(async () => {
         if (tfjs.getBackend() !== "webgl") {
-          await alertHelper.alertError("Backend de tensorflow no instalado");
+          await alertHelper.alertError("Backend of tensorflow not installed");
         }
         await this.init();
       });
@@ -102,7 +103,7 @@ class ObjectDetectionModelReview extends React.Component {
     const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === key);
 
     if (!isValid) {
-      await alertHelper.alertError("Error en la selección del modelo");
+      await alertHelper.alertError("Error in selection of model");
       return;
     }
 
@@ -113,28 +114,28 @@ class ObjectDetectionModelReview extends React.Component {
       }
       case MODEL_FACE_DETECTOR.KEY: {
         await this.enable_Model_FaceDetector();
-        await alertHelper.alertSuccess("Modelo cargado con éxito");
+        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         this.setState({ isShowedAlert: true });
         this.setState({ loading: "" });
         break;
       }
       case MODEL_FACE_MESH.KEY: {
         await this.enable_Model_FaceMesh();
-        await alertHelper.alertSuccess("Modelo cargado con éxito");
+        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         this.setState({ isShowedAlert: true });
         this.setState({ loading: "" });
         break;
       }
       case MODEL_MOVE_NET_POSE_NET.KEY: {
         await this.enable_Model_MoveNet();
-        await alertHelper.alertSuccess("Modelo cargado con éxito");
+        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         this.setState({ isShowedAlert: true });
         this.setState({ loading: "" });
         break;
       }
       case MODEL_COCO_SSD.KEY: {
         await this.enable_Model_CoCoSsd();
-        await alertHelper.alertSuccess("Modelo cargado con éxito");
+        await alertHelper.alertSuccess(this.translate("model-loaded-successfully"))
         this.setState({ isShowedAlert: true });
         this.setState({ loading: "" });
         break;

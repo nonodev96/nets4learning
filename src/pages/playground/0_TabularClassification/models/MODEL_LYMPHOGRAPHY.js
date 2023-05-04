@@ -152,13 +152,13 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   ]
   DATA_CLASSES = [
     ["normal", "arched", "deformed", "displaced"],
-    ["No", "Sí"],
-    ["No", "Sí"],
-    ["No", "Sí"],
-    ["No", "Sí"],
-    ["No", "Sí"],
-    ["No", "Sí"],
-    ["No", "Sí"],
+    ["No", "Yes"],
+    ["No", "Yes"],
+    ["No", "Yes"],
+    ["No", "Yes"],
+    ["No", "Yes"],
+    ["No", "Yes"],
+    ["No", "Yes"],
     ["1", "2", "3"],
     ["1", "2", "3", "4"],
     ["bean", "oval", "round"],
@@ -166,8 +166,8 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
     ["No", "lacunar", "lac. marginal", "lac. central"],
     ["grainy", "drop-like", "coarse", "diluted", "reticular", "stripped", "faint"],
     ["No", "chalices", "vesicles"],
-    ["No", "Sí"],
-    ["No", "Sí"],
+    ["No", "Yes"],
+    ["No", "Yes"],
     ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "=>70"]
   ]
   DATA_CLASSES_KEYS = []
@@ -267,12 +267,12 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
   FORM             = [
     { type: "label-encoder", name: "lymphatics",       options: [{ value: "1", text: "normal" }, { value: "2", text: "arched" },    { value: "3", text: "deformed" },     { value: "4", text: "displaced" }]},
     { type: "label-encoder", name: "block of affere",  options: [{ value: "1", text: "No" },     { value: "2", text: "2" }]},
-    { type: "label-encoder", name: "bl. of lymph. c",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "bl. of lymph. s",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "by pass",          options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "extravasates",     options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "regeneration",     options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "early uptake in",  options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
+    { type: "label-encoder", name: "bl. of lymph. c",  options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "bl. of lymph. s",  options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "by pass",          options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "extravasates",     options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "regeneration",     options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "early uptake in",  options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
     { type: "label-encoder", name: "lym.nodes dimin",  options: [{ value: "1", text: "1" },      { value: "2", text: "2" },         { value: "3", text: "3" }]},
     { type: "label-encoder", name: "lym.nodes enlar",  options: [{ value: "1", text: "1" },      { value: "2", text: "2" },         { value: "3", text: "3" },              { value: "4", text: "4" }]},
     { type: "label-encoder", name: "changes in lym",   options: [{ value: "1", text: "bean" },   { value: "2", text: "oval" },      { value: "3", text: "round" }]},
@@ -280,8 +280,8 @@ export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
     { type: "label-encoder", name: "changes in node",  options: [{ value: "1", text: "No" },     { value: "2", text: "lacunar" },   { value: "3", text: "lac. marginal" },  { value: "4", text: "lac. central" }]},
     { type: "label-encoder", name: "changes in stru",  options: [{ value: "1", text: "No" },     { value: "2", text: "grainy" },    { value: "3", text: "drop-like" },      { value: "4", text: "coarse" }, { value: "5", text: "diluted" }, { value: "6", text: "reticular" }, { value: "7", text: "stripped" }, { value: "8", text: "faint" }]},
     { type: "label-encoder", name: "special forms",    options: [{ value: "1", text: "No" },     { value: "2", text: "chalices" },  { value: "3", text: "vesicles" }]},
-    { type: "label-encoder", name: "dislocation of",   options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
-    { type: "label-encoder", name: "exclusion of",     options: [{ value: "1", text: "No" },     { value: "2", text: "Sí" }]},
+    { type: "label-encoder", name: "dislocation of",   options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
+    { type: "label-encoder", name: "exclusion of",     options: [{ value: "1", text: "No" },     { value: "2", text: "Yes" }]},
     { type: "label-encoder", name: "no. of nodes in",  options: [{ value: "1", text: "0-9" },    { value: "2", text: "10-19" },     { value: "3", text: "20-29" },          { value: "4", text: "30-39" },  { value: "5", text: "40-49" },  { value: "6", text: "50-59" },      { value: "7", text: "60-69" },    { value: "8", text: "=>70" }]}
   ]
   DATA             = [
