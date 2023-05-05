@@ -17,6 +17,7 @@ import {
 import ReactGA from "react-ga4";
 import { Trans, withTranslation } from "react-i18next";
 import { MODEL_OBJECT_DETECTION } from "./models/_model";
+import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
@@ -83,10 +84,23 @@ class ObjectDetectionModelReview extends React.Component {
   }
 
   componentDidMount() {
+    // tfjsWasm.setWasmPaths(process.env.REACT_APP_PATH + "/wasm/");
+    // tfjsWasm.setThreadsCount(4);
+    // tfjs.setBackend("wasm").then(() => {
+    //   tfjs.ready().then(async () => {
+    //     if (tfjs.getBackend() !== "wasm") {
+    //       await alertHelper.alertError("Backend of tensorflow not installed");
+    //       return
+    //     }
+    //     await this.init();
+    //   });
+    // });
+
     tfjs.setBackend("webgl").then(() => {
       tfjs.ready().then(async () => {
         if (tfjs.getBackend() !== "webgl") {
           await alertHelper.alertError("Backend of tensorflow not installed");
+          return
         }
         await this.init();
       });
