@@ -10,7 +10,6 @@ export default function TermsAndConditions() {
   console.log("render")
   return (
     <>
-      <N4LNavbar />
 
       <main className={"mb-3"} data-title={"TermsAndConditions"}>
         <Container>
@@ -42,8 +41,6 @@ export default function TermsAndConditions() {
           </Row>
         </Container>
       </main>
-
-      <N4LFooter />
     </>
   )
 }

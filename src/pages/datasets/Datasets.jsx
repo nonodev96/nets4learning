@@ -84,7 +84,6 @@ export default function Datasets(props) {
   }
 
   return <>
-    <N4LNavbar />
     <Container id={"Datasets"} className={"mt-3 mb-3"}>
       <Row>
         <Col>
@@ -128,6 +127,5 @@ export default function Datasets(props) {
         </Col>
       </Row>
     </Container>
-    <N4LFooter />
   </>
 }

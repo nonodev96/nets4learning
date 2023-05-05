@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from "react-i18next";
 import * as tf from '@tensorflow/tfjs'
-import * as numberClass from './models/MODEL_MNIST'
+// eslint-disable-next-line
+import { Sequential } from '@tensorflow/tfjs'
+import * as tfvis from "@tensorflow/tfjs-vis";
+import ReactGA from "react-ga4";
+
+import * as TrainMNIST from './custom/Train_MNIST'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
+import * as ImageClassificationUtils from "./utils/utils";
 import {
   getKeyDatasetByID_ImageClassification,
   MODEL_IMAGE_MNIST,
@@ -14,8 +20,6 @@ import {
   MODEL_IMAGE_RESNET
 } from "../../../DATA_MODEL";
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../core/nn-utils/ArchitectureTypesHelper";
-import ReactGA from "react-ga4";
-import * as tfvis from "@tensorflow/tfjs-vis";
 
 import { MODEL_IMAGE_CLASSIFICATION } from "./models/_model";
 
@@ -59,7 +63,7 @@ export default function ImageClassification(props) {
   /**
    * @typedef {Sequential} Model_t
    */
-  const [Model, setModel] = useState(/**@type {Model_t}*/)
+  const [Model, setModel] = useState(/**@type {Model_t}*/null)
 
   const [Recarga, setRecarga] = useState(false)
   /**
@@ -170,7 +174,7 @@ export default function ImageClassification(props) {
       LearningRate
     };
     if (Layers[0].class === 'Conv2D') {
-      const model = await numberClass.MNIST_run({
+      const model = await TrainMNIST.MNIST_run({
         numberOfEpoch: NumberEpochs,
         idLoss       : idLoss,
         idOptimizer  : idOptimizer,
@@ -198,7 +202,7 @@ export default function ImageClassification(props) {
       const canvas = document.getElementById('drawCanvas')
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, smallcanvas)
+      ImageClassificationUtils.resample_single(canvas, 28, 28, smallcanvas)
 
       const imgData = ctx2.getImageData(0, 0, 28, 28)
       let arr = [] // El arreglo completo
@@ -233,7 +237,7 @@ export default function ImageClassification(props) {
       const canvas = document.getElementById('imageCanvas')
       const smallcanvas = document.getElementById('smallcanvas')
       const ctx2 = smallcanvas.getContext('2d')
-      numberClass.resample_single(canvas, 28, 28, smallcanvas)
+      ImageClassificationUtils.resample_single(canvas, 28, 28, smallcanvas)
 
       const imgData = ctx2.getImageData(0, 0, 28, 28)
       let arr = [] //El arreglo completo

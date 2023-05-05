@@ -63,7 +63,6 @@ export default function MenuSelectModel(props) {
   console.debug("render MenuSelectModel")
   return (
     <>
-      <N4LNavbar />
       <Form onSubmit={($event) => handleSubmit($event)}>
 
         <Container id={"MenuSelectModel"}>
@@ -100,8 +99,6 @@ export default function MenuSelectModel(props) {
           </Row>
         </Container>
       </Form>
-
-      <N4LFooter />
     </>
   )
 }

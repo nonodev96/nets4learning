@@ -1,7 +1,5 @@
 import React from "react";
 import { Accordion, Col, Container, Row, Table } from "react-bootstrap";
-import N4LNavbar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
 import { Trans, useTranslation } from "react-i18next";
 
 export default function Glossary() {
@@ -9,7 +7,6 @@ export default function Glossary() {
   console.log("render")
   return (
     <>
-      <N4LNavbar />
       <main className={"mb-3"} data-title={"Glossary"}>
         <Container>
           <Row className={"mt-2"}>
@@ -335,7 +332,6 @@ export default function Glossary() {
           </Row>
         </Container>
       </main>
-      <N4LFooter />
     </>
   )
 }

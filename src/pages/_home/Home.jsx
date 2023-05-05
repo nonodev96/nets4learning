@@ -2,17 +2,16 @@ import "./Home.css";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import InitialMenu from "../_initialMenu/InitialMenu";
-import N4LNavbar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
 import { Trans, useTranslation } from "react-i18next";
 import { CookiesModal } from "../../components/cookiesModal/CookiesModal";
 
 
 export default function Home() {
   const { t } = useTranslation();
+
+  console.debug("render Home")
   return (
     <>
-      <N4LNavbar />
       <main className="mb-3" data-title={"Home"}>
         <Container>
           <Row>
@@ -27,7 +26,6 @@ export default function Home() {
 
         <InitialMenu />
       </main>
-      <N4LFooter />
     </>
   );
 }

@@ -23,7 +23,13 @@ const borderColorDefault = [
   "rgb(175, 175, 175)",
 ];
 
-export default function TabularClassificationDynamicFormPrediction(props) {
+/**
+ *
+ * @param props
+ * @return {JSX.Element}
+ * @constructor
+ */
+export default function TabularClassificationPredictionDynamicForm(props) {
   const {
     dataset_JSON,
     dataset_key,

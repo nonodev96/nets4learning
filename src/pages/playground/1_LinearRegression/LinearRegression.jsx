@@ -10,7 +10,7 @@ export default function LinearRegression() {
   return (
     <>
       <Form onSubmit={handleSubmit_Play} id={"LinearRegression"}>
-
+        <h1>LinearRegression Custom</h1>
       </Form>
     </>
   )

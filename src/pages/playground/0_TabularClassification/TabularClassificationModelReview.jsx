@@ -14,7 +14,6 @@ import { CONSOLE_LOG_h3 } from "../../../Constantes";
 import { isProduction } from "../../../utils/utils";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
-import DebugLoadCSV from "../_Debug/DebugLoadCSV";
 import ReactGA from "react-ga4";
 import { Trans, withTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
@@ -596,7 +595,7 @@ class TabularClassificationModelReview extends React.Component {
             </Col>
           </Row>
 
-          <DebugLoadCSV />
+          {/*<DebugLoadCSV />*/}
 
         </Container>
       </>

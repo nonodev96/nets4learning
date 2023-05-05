@@ -61,8 +61,6 @@ export default function MenuSelectDataset() {
   console.debug("render MenuSelectDataset")
   return (
     <>
-      <N4LNavbar />
-
       <Form onSubmit={($event) => handleSubmit($event)}>
         <Container id={"MenuSelectDataset"}>
           <Row className="mt-3 mb-3">
@@ -92,8 +90,6 @@ export default function MenuSelectDataset() {
           </Row>
         </Container>
       </Form>
-
-      <N4LFooter />
     </>
   )
 }

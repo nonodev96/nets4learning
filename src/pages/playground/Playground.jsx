@@ -3,13 +3,10 @@ import React from "react";
 import { useParams } from "react-router";
 import { Col, Container, Row } from "react-bootstrap";
 
-import N4LNavbar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
-
 import NotFoundPage from "../notFound/NotFoundPage";
 
 import TabularClassificationModelReview from "./0_TabularClassification/TabularClassificationModelReview";
-import TabularClassificationCustomDataset from "./0_TabularClassification/TabularClassificationCustomDataset";
+import TabularClassification from "./0_TabularClassification/TabularClassification";
 
 import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
 
@@ -27,7 +24,7 @@ export default function Playground() {
         if (option === "0") {
           return <TabularClassificationModelReview dataset={example} />;
         } else {
-          return <TabularClassificationCustomDataset dataset={example} />;
+          return <TabularClassification dataset={example} />;
         }
       }
       case "1": {
@@ -52,8 +49,6 @@ export default function Playground() {
 
   return (
     <>
-      <N4LNavbar />
-
       <main className={"mb-3"} data-title={"EditArchitecture"}>
         <Container>
           <Row className={"mt-2"}>
@@ -66,8 +61,6 @@ export default function Playground() {
         {/**/}
         {Print_HTML_Model_View()}
       </main>
-
-      <N4LFooter />
     </>
   );
 }

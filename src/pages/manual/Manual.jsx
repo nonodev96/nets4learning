@@ -1,7 +1,5 @@
 import { Accordion, Card, Col, Container, Row } from "react-bootstrap";
 import React from "react";
-import N4LNavBar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
 import { useTranslation } from "react-i18next";
 
 export default function Manual() {
@@ -11,7 +9,6 @@ export default function Manual() {
   console.log("render")
   return (
     <>
-      <N4LNavBar />
       <main className={"mb-3"} data-title={"Manual"}>
         <Container>
           <Row className={"mt-2"}>
@@ -98,7 +95,6 @@ export default function Manual() {
           </Row>
         </Container>
       </main>
-      <N4LFooter />
     </>
   )
 }

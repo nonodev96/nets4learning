@@ -1,8 +1,13 @@
+import "./TabularClassificationManual.css";
 import React from "react";
 import { Trans } from "react-i18next";
-import "./TabularClassificationCustomDatasetManual.css";
 
-export default function TabularClassificationCustomDatasetManual() {
+/**
+ *
+ * @return {JSX.Element}
+ * @constructor
+ */
+export default function TabularClassificationManual() {
   const prefix = "pages.playground.0-tabular-classification.generator.manual.";
 
   console.debug("render TabularClassificationCustomDatasetManual");

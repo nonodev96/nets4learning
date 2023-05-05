@@ -1,6 +1,6 @@
 import { Form } from 'react-bootstrap'
 
-export default function ModelReviewLinearRegression() {
+export default function LinearRegressionModelReview() {
 
   // TODO
   const handleSubmit_Play = async (event) => {
@@ -9,8 +9,8 @@ export default function ModelReviewLinearRegression() {
 
   return (
     <>
-      <Form onSubmit={handleSubmit_Play} id={"ModelReviewLinearRegression"}>
-
+      <Form onSubmit={handleSubmit_Play} id={"LinearRegressionModelReview"}>
+        <h1>LinearRegression Review</h1>
       </Form>
     </>
   )

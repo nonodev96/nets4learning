@@ -1,10 +1,10 @@
-import "./TabularClassificationCustomDataset.css";
+import "./TabularClassification.css";
 import React, { useEffect, useState } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as tfvis from "@tensorflow/tfjs-vis";
 import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
-import { getKeyDatasetByID_TabularClassification, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, MODEL_UPLOAD, } from "../../../DATA_MODEL";
+import { getKeyDatasetByID_TabularClassification, MODEL_UPLOAD, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, } from "../../../DATA_MODEL";
 import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload, } from "../../../core/nn-utils/ArchitectureHelper";
 import { TYPE_ACTIVATION, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER, } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import json_cars from "../../../core/constants/template_car.json";
@@ -13,15 +13,15 @@ import json_lymphatics from "../../../core/constants/template_lymphatcs.json";
 import * as alertHelper from "../../../utils/alertHelper";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
 import GraphicRed from "../../../utils/graphicRed/GraphicRed";
-import TabularClassificationDynamicFormPrediction from "./TabularClassificationDynamicFormPrediction";
+import TabularClassificationForm from "./TabularClassificationForm";
+import TabularClassificationManual from "./TabularClassificationManual";
+import TabularClassificationPredictionDynamicForm from "./TabularClassificationPredictionDynamicForm";
 import N4LTablePagination from "../../../components/table/N4LTablePagination";
 
 import { isProduction } from "../../../utils/utils";
-import TabularClassificationCustomDatasetManual from "./TabularClassificationCustomDatasetManual";
 import { Trans, useTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 import * as dfd from "danfojs";
-import TabularClassificationCustomDatasetForm from "./TabularClassificationCustomDatasetForm";
 import * as errorUtils from "../../../core/error-utils";
 
 const DEFAULT_LEARNING_RATE = 1;
@@ -81,10 +81,9 @@ const DEFAULT_LAYERS_UPLOAD = [
  * > handleClick_TestVector_upload()            <-------------|
  *
  */
-export default function TabularClassificationCustomDataset(props) {
+export default function TabularClassification(props) {
   const { dataset } = props;
   const dataset_key = getKeyDatasetByID_TabularClassification(dataset);
-
 
   const { t } = useTranslation();
   const prefix = "pages.playground.0-tabular-classification.generator.";
@@ -686,7 +685,7 @@ export default function TabularClassificationCustomDataset(props) {
                 </Accordion.Header>
                 <Accordion.Body>
                   {/* TabularClassificationCustomDatasetManual */}
-                  <TabularClassificationCustomDatasetManual />
+                  <TabularClassificationManual />
 
                 </Accordion.Body>
               </Accordion.Item>
@@ -708,12 +707,12 @@ export default function TabularClassificationCustomDataset(props) {
                                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
                       {dataframeOriginal && <>
-                        <TabularClassificationCustomDatasetForm dataframeOriginal={dataframeOriginal}
-                                                                dataProcessed={dataProcessed}
-                                                                setDataProcessed={setDataProcessed}
-                                                                setIsDatasetProcessed={setIsDatasetProcessed}
-                                                                setCustomDataSet_JSON={setCustomDataSet_JSON}
-                                                                setLayers={setLayers} />
+                        <TabularClassificationForm dataframeOriginal={dataframeOriginal}
+                                                   dataProcessed={dataProcessed}
+                                                   setDataProcessed={setDataProcessed}
+                                                   setIsDatasetProcessed={setIsDatasetProcessed}
+                                                   setCustomDataSet_JSON={setCustomDataSet_JSON}
+                                                   setLayers={setLayers} />
                       </>}
 
                     </>,
@@ -1124,7 +1123,7 @@ export default function TabularClassificationCustomDataset(props) {
 
       {/* Prediction */}
       {canRender_DynamicFormDataset() &&
-        (<TabularClassificationDynamicFormPrediction dataset_JSON={customDataSet_JSON}
+        (<TabularClassificationPredictionDynamicForm dataset_JSON={customDataSet_JSON}
                                                      dataset={dataset}
                                                      dataset_key={dataset_key}
                                                      stringToPredict={stringToPredict}

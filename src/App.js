@@ -1,10 +1,12 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import { withRouter, BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 import { Redirect, Route } from "react-router";
 import ReactGA from 'react-ga4';
 import './i18n';
 import "./App.css";
 import Loading from "./pages/Loading";
+import N4LNavbar from "./components/header/N4LNavbar";
+import N4LFooter from "./components/footer/N4LFooter";
 
 const Home = lazy(() => import( "./pages/_home/Home.jsx"));
 const MenuSelectModel = lazy(() => import( "./pages/menu/MenuSelectModel"));
@@ -26,7 +28,8 @@ function App() {
   return (
     <div className="body">
       <BrowserRouter basename={REACT_APP_PATH}>
-        <Suspense fallback={<Loading/>}>
+        <N4LNavbar />
+        <Suspense fallback={<Loading />}>
           <Switch>
             <Route exact path={"/"} component={Home}></Route>
             <Route exact path={"/select-dataset/:id"} component={MenuSelectDataset}></Route>
@@ -36,13 +39,14 @@ function App() {
             <Route exact path={"/glossary/"} component={Glossary}></Route>
             <Route exact path={"/datasets/"} component={Datasets}></Route>
             <Route exact path={"/terms-and-conditions/"} component={TermsAndConditions}></Route>
-            <Route path="/404" component={NotFoundPage}/>
+            <Route path="/404" component={NotFoundPage} />
             <Redirect to="/404"></Redirect>
           </Switch>
         </Suspense>
+        <N4LFooter />
       </BrowserRouter>
     </div>
   );
 }
 
-export default withRouter(App);
+export default App;

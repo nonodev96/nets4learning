@@ -46,7 +46,7 @@ class ImageClassificationModelReview extends React.Component {
     this.dataset = props.dataset ?? "0"
     this.dataset_ID = parseInt(props.dataset ?? "0")
     this.dataset_key = getKeyDatasetByID_ImageClassification(this.dataset_ID)
-    ReactGA.send({ hitType: "pageview", page: "/ModelReviewImageClassification/" + this.dataset_key, title: this.dataset_key });
+    ReactGA.send({ hitType: "pageview", page: "/ImageClassificationModelReview/" + this.dataset_key, title: this.dataset_key });
 
     this.model = null
     this.files = {
