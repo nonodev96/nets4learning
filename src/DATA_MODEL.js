@@ -4,6 +4,12 @@ import {
   MODEL_LYMPHOGRAPHY
 } from "./pages/playground/0_TabularClassification/models";
 import {
+  MODEL_BREAST_CANCER,
+  MODEL_DIABETES,
+  MODEL_STUDENT_PERFORMANCE,
+  MODEL_WINE
+} from "./pages/playground/1_LinearRegression/models";
+import {
   MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
@@ -25,6 +31,14 @@ const LIST_MODELS_TABULAR_CLASSIFICATION = [
   MODEL_LYMPHOGRAPHY.KEY
 ]
 
+const LIST_MODELS_LINEAR_REGRESSION = [
+  MODEL_UPLOAD,
+  MODEL_BREAST_CANCER.KEY,
+  MODEL_DIABETES.KEY,
+  MODEL_STUDENT_PERFORMANCE.KEY,
+  MODEL_WINE.KEY,
+]
+
 const LIST_MODELS_OBJECT_DETECTION = [
   MODEL_UPLOAD,
   MODEL_FACE_DETECTOR.KEY,
@@ -40,37 +54,6 @@ const LIST_MODELS_IMAGE_CLASSIFICATION = [
   MODEL_IMAGE_RESNET.KEY
 ]
 
-const LIST_TYPE_MODALITY = [
-  'Clasificación tabular',
-  'Regresión lineal',
-  'Identificación de objetos',
-  'Clasificador de imágenes',
-]
-
-const LIST_MODEL_OPTIONS = [
-  [
-    'SUBIR CONJUNTO DE DATOS PROPIO',
-    'Clasificación de coches',
-    'Clasificación de flor iris',
-    'Clasificación de linfomas',
-  ],
-  [],
-  [
-    'SUBIR MODELO PROPIO',
-    'FACE DETECTOR - Geometría facial',
-    "FACE MESH - Malla facial",
-    "MOVE NET - Detector de articulaciones",
-    "COCO SSD - Detector de objetos"
-  ],
-  [
-    'SUBIR MODELO PROPIO',
-    'MNIST - Clasificación de números',
-    'MOBILENET - Clasificador de imágenes',
-    // TODO :3
-    // 'RESNET V2 - Clasificador de imágenes'
-  ],
-]
-
 
 export const LIST_MODEL_OPTIONS_IDS = {
   TABULAR_CLASSIFICATION: {
@@ -82,6 +65,11 @@ export const LIST_MODEL_OPTIONS_IDS = {
   },
   LINEAR_REGRESSION     : {
     // 1
+    0: MODEL_UPLOAD,
+    1: MODEL_BREAST_CANCER.KEY,
+    2: MODEL_DIABETES.KEY,
+    3: MODEL_STUDENT_PERFORMANCE.KEY,
+    4: MODEL_WINE.KEY
   },
   OBJECT_DETECTION      : {
     // 2
@@ -142,6 +130,16 @@ const getKeyDatasetByID_TabularClassification = (id) => {
   }
 }
 
+const getKeyDatasetByID_LinearRegression = (id) => {
+  switch (id.toString()) {
+    case '0':
+      return MODEL_UPLOAD
+    case '1':
+      return MODEL_BREAST_CANCER.KEY
+    default:
+      console.error("Error, opción no disponible")
+  }
+}
 
 const getKeyDatasetByID_ObjectDetection = (id) => {
   switch (id.toString()) {
@@ -159,7 +157,7 @@ const getKeyDatasetByID_ObjectDetection = (id) => {
       console.error("Error, opción no disponible")
   }
 }
-// TODO
+
 const getKeyDatasetByID_ImageClassification = (id) => {
   switch (id.toString()) {
     case '0':
@@ -202,10 +200,9 @@ const LIST_OF_IMAGES_MOBILENET = [
 
 export {
   getKeyDatasetByID_TabularClassification,
+  getKeyDatasetByID_LinearRegression,
   getKeyDatasetByID_ObjectDetection,
   getKeyDatasetByID_ImageClassification,
-  LIST_MODEL_OPTIONS,
-  LIST_TYPE_MODALITY,
   // Genérico para todos
   MODEL_UPLOAD,
   // Clasificación tabular
@@ -213,6 +210,13 @@ export {
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY,
+
+  // Regresión lineal
+  LIST_MODELS_LINEAR_REGRESSION,
+  MODEL_BREAST_CANCER,
+  MODEL_DIABETES,
+  MODEL_STUDENT_PERFORMANCE,
+  MODEL_WINE,
   // Identificación de objetos
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_FACE_DETECTOR,

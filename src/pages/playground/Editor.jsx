@@ -1,7 +1,7 @@
 import "./Editor.css"
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router"
-import { Container, Row, Col, Card } from "react-bootstrap"
+import { Container} from "react-bootstrap"
 import useLocalStorage from "../../hooks/useLocalStorage"
 
 export default function Editor(props) {

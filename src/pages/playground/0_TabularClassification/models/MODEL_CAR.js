@@ -5,7 +5,7 @@ import { Trans } from "react-i18next";
 export class MODEL_CAR extends MODEL_TABULAR_CLASSIFICATION {
 
   static KEY = "CAR"
-  static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
+  static URL = "https://archive.ics.uci.edu/ml/datasets/Car+Evaluation"
   static URL_MODEL = "/public/models/classification/car/my-model-car.json"
   TITLE = "datasets-models.0-tabular-classification.car.title"
 

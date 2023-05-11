@@ -1,23 +1,30 @@
 import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
-import N4LNavbar from '../../components/header/N4LNavbar'
-import N4LFooter from '../../components/footer/N4LFooter'
 import * as alertHelper from "../../utils/alertHelper"
 import { useTranslation } from "react-i18next";
+import {
+  // Tabular
+  // MODEL_CAR,
+  // Regresión linear
+  MODEL_BREAST_CANCER,
+  MODEL_DIABETES,
+  MODEL_STUDENT_PERFORMANCE,
+  MODEL_WINE
+} from "../../DATA_MODEL";
 
-export default function MenuSelectModel(props) {
+export default function MenuSelectModel(_props) {
   const { id } = useParams()
-  const [model_id, setModelId] = useState(-1)
+  const [model_key, setModelKey] = useState("null")
   const history = useHistory()
   const { t } = useTranslation()
 
   const handleSubmit = async ($event) => {
     $event.preventDefault()
-    if (model_id === -1) {
+    if (model_key === null) {
       await alertHelper.alertWarning(t("alert.menu.need-select-model"))
     } else {
-      history.push('/playground/' + id + '/' + 0 + '/' + model_id)
+      history.push('/playground/' + id + '/' + 0 + '/' + model_key)
     }
   }
 
@@ -26,15 +33,28 @@ export default function MenuSelectModel(props) {
       case '0': {
         // tabular-classification
         return <>
-          <option value={1}>{t("datasets-models.0-tabular-classification.list-models.0-option-1")}</option>
+          <option value={1}>
+            {t("datasets-models.0-tabular-classification.list-models.0-option-1")}
+          </option>
           <option value={2}>{t("datasets-models.0-tabular-classification.list-models.0-option-2")}</option>
           <option value={3}>{t("datasets-models.0-tabular-classification.list-models.0-option-3")}</option>
         </>
       }
       case '1': {
         // linear-regression
-        console.warn("TODO")
         return <>
+          <option value={MODEL_BREAST_CANCER.KEY}>
+            {t("datasets-models.1-linear-regression.list-models.0-option-1")}
+          </option>
+          <option value={MODEL_DIABETES.KEY}>
+            {t("datasets-models.1-linear-regression.list-models.0-option-2")}
+          </option>
+          <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
+            {t("datasets-models.1-linear-regression.list-models.0-option-3")}
+          </option>
+          <option value={MODEL_WINE.KEY}>
+            {t("datasets-models.1-linear-regression.list-models.0-option-4")}
+          </option>
         </>
       }
       case '2': {
@@ -80,9 +100,9 @@ export default function MenuSelectModel(props) {
                   <Form.Group controlId="FormModel">
                     <Form.Label>{t("pages.menu-selection-model.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-model.form-label")}
-                                 defaultValue={-1}
-                                 onChange={(e) => setModelId(parseInt(e.target.value))}>
-                      <option value={-1} disabled>{t("pages.menu-selection-model.form-option-_-1")}</option>
+                                 defaultValue={"null"}
+                                 onChange={(e) => setModelKey(e.target.value)}>
+                      <option value={"null"} disabled>{t("pages.menu-selection-model.form-option-_-1")}</option>
 
                       {PrintHTML_OPTIONS(id)}
 

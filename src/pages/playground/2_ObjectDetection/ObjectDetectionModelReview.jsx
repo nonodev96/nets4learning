@@ -251,7 +251,7 @@ class ObjectDetectionModelReview extends React.Component {
     let designer_width = container_w * 0.75;
     let designer_height = container_w * 0.50;
 
-    async function draw(event) {
+    async function draw(_event) {
       const original_ratio = this.width / this.height;
       let designer_ratio = designer_width / designer_height;
 
@@ -373,6 +373,7 @@ class ObjectDetectionModelReview extends React.Component {
                                     onUserMedia={this.onUserMediaEvent}
                                     onUserMediaError={this.onUserMediaErrorEvent}
                                     width={250} height={250}
+                                    mirrored={true}
                                     style={{
                                       position: "relative",
                                       display : "block",

@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
-import N4LNavbar from '../../components/header/N4LNavbar'
-import N4LFooter from '../../components/footer/N4LFooter'
 import * as alertHelper from '../../utils/alertHelper'
 import { useTranslation } from "react-i18next";
 

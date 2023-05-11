@@ -1,35 +1,41 @@
-import React, { useEffect, useRef, useState } from 'react'
+import "./customCanvasDrawer.css"
+import React, { useEffect, useRef, useState } from "react"
 import { Button } from "react-bootstrap"
-import './customCanvasDrawer.css'
 import { Trans } from "react-i18next";
 
 export default function CustomCanvasDrawer(props) {
   const { submitFunction, clearFunction } = props
   const [isDrawing, setIsDrawing] = useState(false)
+  /**
+   *
+   * @type {React.MutableRefObject<null| HTMLCanvasElement>}
+   */
   const canvasRef = useRef(null)
   const contextRef = useRef(null)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    canvas.width = 600
-    canvas.height = 600
-    canvas.style.width = '200px'
-    canvas.style.heigt = '200px'
+    if (canvasRef !== null) {
+      const canvas = canvasRef.current
+      canvas.width = 600
+      canvas.height = 600
+      canvas.style.width = "200px"
+      canvas.style.heigt = "200px"
 
-    const context = canvas.getContext('2d')
-    context.scale(3, 3)
-    context.lineCap = 'round'
-    context.strokeStyle = 'black'
-    context.lineWidth = 20
-    contextRef.current = context
+      const context = canvas.getContext("2d")
+      context.scale(3, 3)
+      context.lineCap = "round"
+      context.strokeStyle = "black"
+      context.lineWidth = 20
+      contextRef.current = context
 
-    // React to touch events on the canvas
-    canvas.addEventListener('touchstart', handleTouchStart, { passive: false })
-    canvas.addEventListener('touchmove', handleTouchMove)
+      // React to touch events on the canvas
+      canvas.addEventListener("touchstart", handleTouchStart, { passive: false })
+      canvas.addEventListener("touchmove", handleTouchMove)
 
-    return () => {
-      canvas.removeEventListener("touchstart", null)
-      canvas.removeEventListener("touchmove", null)
+      return () => {
+        canvas.removeEventListener("touchstart", null)
+        canvas.removeEventListener("touchmove", null)
+      }
     }
   }, [])
 
@@ -77,9 +83,10 @@ export default function CustomCanvasDrawer(props) {
   return (
     <>
       <div className={"d-flex justify-content-center"}>
-        <canvas id='drawCanvas'
+        <canvas id="drawCanvas"
                 style={{
-                  border: '1px solid black'
+                  border    : "1px solid black",
+                  background: "white"
                 }}
                 ref={canvasRef}
                 onMouseDown={(event) => startDrawing(event)}
@@ -93,14 +100,14 @@ export default function CustomCanvasDrawer(props) {
                 onClick={() => {
                   submitFunction(canvasRef.current, canvasRef.current.getContext("2d"))
                 }}>
-          <Trans i18nKey={"custom-canvas-drawer.validate"}/>
+          <Trans i18nKey={"custom-canvas-drawer.validate"} />
         </Button>
         <Button variant={"warning"}
                 onClick={() => {
                   clear()
                   clearFunction()
                 }}>
-          <Trans i18nKey={"custom-canvas-drawer.clear"}/>
+          <Trans i18nKey={"custom-canvas-drawer.clear"} />
         </Button>
       </div>
     </>

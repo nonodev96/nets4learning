@@ -14,13 +14,13 @@
     "dataset-name": "Nombre del conjunto de datos",
     "dataset-size": "Número de muestras",
     "dataset-web": "Web original",
-    "download-dataset-car": "Descargar conjunto de datos de evaluación de coches",
-    "download-dataset-hepatitis-c": "Descargar conjunto de datos de hepatitis C",
-    "download-dataset-iris": "Descargar conjunto de datos de iris",
-    "download-dataset-titanic": "Descargar conjunto de datos de supervivencia del titanic*",
-    "download-dataset-new-thyroid": "Descargar conjunto de datos de new-thyroid",
-    "download-dataset-wine": "Descargar conjunto de datos de vino",
-    "download-dataset-ecoli": "Descargar conjunto de datos de ecoli"
+    "download-dataset-car": "Conjunto de datos de evaluación de coches",
+    "download-dataset-hepatitis-c": "Conjunto de datos de hepatitis C",
+    "download-dataset-iris": "Conjunto de datos de iris",
+    "download-dataset-titanic": "Conjunto de datos de supervivencia del titanic*",
+    "download-dataset-new-thyroid": "Conjunto de datos de new-thyroid",
+    "download-dataset-wine": "Conjunto de datos de vino",
+    "download-dataset-ecoli": "Conjunto de datos de ecoli"
   },
   "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
@@ -58,11 +58,12 @@
     "datasets": "Conjuntos de datos"
   },
   "footer": {
-    "description-app": "Esta aplicación web forma parte de un Trabajo de Fin de Grado de Ingeniería Informática de la Universidad de Jaén \"Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo\"",
+    "description-app": "Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo.",
     "about-us": "Sobre nosotros",
-    "author": "Autor",
+    "authors": "Autores",
     "directors": "Directores",
-    "maintainers": "Mantenimiento y mejoras"
+    "maintainers": "Mantenimiento y mejoras",
+    "terms": "Términos y condiciones"
   },
   "drag-and-drop": {
     "label-files-one": "Fichero:",
@@ -268,6 +269,7 @@
       "list-datasets": {
       },
       "list-models": {
+        "0-option-1": "Modelo - Diabetes"
       }
     },
     "2-object-detection": {
@@ -499,6 +501,9 @@
         "2-button": "Entrenar un modelo"
       },
       "linear-regression": {
+        "1-title": "Regresión linear",
+        "1-description-1": "LOREM",
+        "1-button": "Modelos entrenados"
       },
       "object-detection": {
         "1-title": "Identificación de objetos",
@@ -526,8 +531,8 @@
       "form-submit": "Continuar"
     },
     "menu-selection-model": {
-      "form-description-1": " Selecciona a continuación el modelo entrenado sobre el que se va a trabajar.",
-      "form-description-2": "Si deseas usar uno propio, utiliza la opción del desplegable y carga los archivos en la siguiente vista.",
+      "form-description-1": "Selecciona a continuación el modelo entrenado sobre el que se va a trabajar.",
+      "form-description-2": "",
       "form-label": "Selecciona un modelo entrenado",
       "form-option-_-1": "Selecciona un modelo entrenado",
       "form-submit": "Continuar"

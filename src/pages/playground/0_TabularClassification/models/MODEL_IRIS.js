@@ -9,6 +9,33 @@ export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
   static URL_MODEL = "/public/models/classification/iris/my-model-iris.json"
   TITLE = "datasets-models.0-tabular-classification.iris.title"
 
+
+  NUM_CLASSES = 3
+  CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+
+  DATA_OBJECT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
+  DATA_DEFAULT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
+  DATA_OBJECT_KEYS = ["longitud_sepalo", "anchura_sepalo", "longitud_petalo", "anchura_petalo"]
+
+  TABLE_HEADER = ["Longitud sépalo", "Anchura sépalo", "Longitud petalo", "Anchura petalo", "Tipo"]
+  DATA_CLASSES_KEYS = [
+    "Longitud sépalo",
+    "Anchura sépalo",
+    "Longitud petalo",
+    "Anchura petalo"
+  ]
+  LIST_EXAMPLES_RESULTS = [
+    "0 Iris-setosa",
+    "1 Iris-versicolor",
+    "2 Iris-virginica",
+  ]
+  LIST_EXAMPLES = [
+    { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },
+    { longitud_sepalo: 6.1, anchura_sepalo: 3.0, longitud_petalo: 4.6, anchura_petalo: 1.4 },
+    { longitud_sepalo: 5.8, anchura_sepalo: 2.7, longitud_petalo: 5.1, anchura_petalo: 1.9 },
+  ]
+  FORM = []
+
   DESCRIPTION() {
     const prefix = "datasets-models.0-tabular-classification.iris.description."
     return <>
@@ -57,35 +84,12 @@ export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  TABLE_HEADER = ["Longitud sépalo", "Anchura sépalo", "Longitud petalo", "Anchura petalo", "Tipo"]
   loadModel = async function () {
     return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/iris/my-model-iris.json")
   }
-  function_v_input = async function (element, index, param = "") {
+  function_v_input = async function (element, _index, _param = "") {
     return parseFloat(element)
   }
-  CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
-  NUM_CLASSES = 3
-  DATA_OBJECT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
-  DATA_DEFAULT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
-  DATA_OBJECT_KEYS = ["longitud_sepalo", "anchura_sepalo", "longitud_petalo", "anchura_petalo"]
-  DATA_CLASSES_KEYS = [
-    "Longitud sépalo",
-    "Anchura sépalo",
-    "Longitud petalo",
-    "Anchura petalo"
-  ]
-  LIST_EXAMPLES_RESULTS = [
-    "0 Iris-setosa",
-    "1 Iris-versicolor",
-    "2 Iris-virginica",
-  ]
-  LIST_EXAMPLES = [
-    { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },
-    { longitud_sepalo: 6.1, anchura_sepalo: 3.0, longitud_petalo: 4.6, anchura_petalo: 1.4 },
-    { longitud_sepalo: 5.8, anchura_sepalo: 2.7, longitud_petalo: 5.1, anchura_petalo: 1.9 },
-  ]
-  FORM = []
   DATA = [
     [5.1, 3.5, 1.4, 0.2, 0],
     [4.9, 3.0, 1.4, 0.2, 0],
@@ -238,9 +242,4 @@ export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
     [6.2, 3.4, 5.4, 2.3, 2],
     [5.9, 3.0, 5.1, 1.8, 2],
   ]
-}
-
-// https://es.wikipedia.org/wiki/Conjunto_de_datos_flor_iris
-export function getIrisDataType(id) {
-  return MODEL_IRIS.CLASSES[id]
 }

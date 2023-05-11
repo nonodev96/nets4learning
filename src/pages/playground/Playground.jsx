@@ -8,10 +8,14 @@ import NotFoundPage from "../notFound/NotFoundPage";
 import TabularClassificationModelReview from "./0_TabularClassification/TabularClassificationModelReview";
 import TabularClassification from "./0_TabularClassification/TabularClassification";
 
+import LinearRegressionModelReview from "./1_LinearRegression/LinearRegressionModelReview";
+import LinearRegression from "./1_LinearRegression/LinearRegression";
+
 import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
 
 import ImageClassificationModelReview from "./3_ImageClassification/ImageClassificationModelReview";
 import ImageClassification from "./3_ImageClassification/ImageClassification";
+
 
 import { useTranslation } from "react-i18next";
 
@@ -28,9 +32,11 @@ export default function Playground() {
         }
       }
       case "1": {
-        // TODO
-        // return <LinearRegression dataset={example}/>
-        break;
+        if (option === "0") {
+          return <LinearRegressionModelReview dataset={example} />
+        } else {
+          return <LinearRegression dataset={example} />
+        }
       }
       case "2": {
         return <ObjectDetectionModelReview dataset={example} />;

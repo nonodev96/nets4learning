@@ -3,7 +3,7 @@ import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 
 import ReactGA from "react-ga4";
 
 import * as tf from '@tensorflow/tfjs'
-import * as classificationHelper_MNIST from '../3_ImageClassification/models/MODEL_MNIST'
+import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Train_MNIST'
 import * as alertHelper from "../../../utils/alertHelper"
 
 import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
@@ -14,7 +14,7 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS
 } from "../../../core/nn-utils/ArchitectureTypesHelper";
-import { DATASET_DESCRIPTION, getKeyDatasetByID_TabularClassification, LIST_MODEL_OPTIONS } from "../../../DATA_MODEL"
+import { getKeyDatasetByID_TabularClassification } from "../../../DATA_MODEL"
 
 export default function ObjectDetection(props) {
   const { dataset } = props
@@ -374,10 +374,14 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
+                <Card.Header>
+                  <h3>
+                    Clasificador
+                  </h3>
+                </Card.Header>
                 <Card.Body>
                   <Card.Text>
-                    {DATASET_DESCRIPTION[3][dataset]}
+                    DESCRIPTION
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -387,7 +391,11 @@ export default function ObjectDetection(props) {
           <Row className={"mt-3"}>
             <Col>
               <Card>
-                <Card.Header><h3>{LIST_MODEL_OPTIONS[3][dataset]}</h3></Card.Header>
+                <Card.Header>
+                  <h3>
+                    Clasificador
+                  </h3>
+                </Card.Header>
                 <Card.Body>
                   <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
                   <ul>

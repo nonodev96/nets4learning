@@ -265,7 +265,9 @@ export default function ImageClassification(props) {
   }
 
   const handleClick_DownloadModel = () => {
-    Model.save('downloads://my-model')
+    Model.save('downloads://my-model').then(()=>{
+      console.log("downloaded my-model")
+    })
   }
 
   // CONTROL DE LAS CAPAS

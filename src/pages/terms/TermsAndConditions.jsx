@@ -1,7 +1,5 @@
 import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
-import N4LNavbar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
 import { useTranslation } from "react-i18next";
 
 export default function TermsAndConditions() {
@@ -10,13 +8,12 @@ export default function TermsAndConditions() {
   console.log("render")
   return (
     <>
-
       <main className={"mb-3"} data-title={"TermsAndConditions"}>
         <Container>
           <Row>
             <Col><h1>{t("pages.terms.title")}</h1></Col>
           </Row>
-          <Row className={"mt-2"}>
+          <Row>
             <Col className={"mt-3"}>
               <Card border={"primary"}>
                 <Card.Header><h3>{t("pages.terms.privacy-title")}</h3></Card.Header>
@@ -35,7 +32,6 @@ export default function TermsAndConditions() {
                   </Card.Text>
                 </Card.Body>
               </Card>
-
 
             </Col>
           </Row>

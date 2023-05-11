@@ -14,13 +14,13 @@
     "dataset-name": "Data set name",
     "dataset-size": "Number of samples",
     "dataset-web": "Original website",
-    "download-dataset-car": "Download car evaluation data set",
-    "download-dataset-hepatitis-c": "Download Hepatitis C data set",
-    "download-dataset-iris": "Download Iris data set",
-    "download-dataset-titanic": "Download titanic survival data set*",
-    "download-dataset-new-thyroid": "Download new thyroid data set",
-    "download-dataset-wine": "Download wine survival data set",
-    "download-dataset-ecoli": "Download ecoli data set"
+    "download-dataset-car": "Car evaluation data set",
+    "download-dataset-hepatitis-c": "Hepatitis C data set",
+    "download-dataset-iris": "Iris data set",
+    "download-dataset-titanic": "Titanic survival data set*",
+    "download-dataset-new-thyroid": "New thyroid data set",
+    "download-dataset-wine": "Wine survival data set",
+    "download-dataset-ecoli": "Ecoli data set"
   },
   "dataframe-form": "Dataframe form",
   "dataframe-original": "Original dataframe",
@@ -58,11 +58,12 @@
     "datasets": "Data sets"
   },
   "footer": {
-    "description-app": "This web application is part of an end of the degree of computer engineering from the University of Jaén \"Web platform for the design and execution of deep learning models\"",
+    "description-app": "Web platform for the design and execution of deep learning models.",
     "about-us": "About us",
-    "author": "Author",
+    "authors": "Authors",
     "directors": "Directors",
-    "maintainers": "Maintenance and improvements"
+    "maintainers": "Maintenance and improvements",
+    "terms": "Terms and conditions"
   },
   "drag-and-drop": {
     "label-files-one": "File:",
@@ -262,6 +263,21 @@
         "0-option-1": "Model - Car classification",
         "0-option-2": "Model - Flor Iris classification",
         "0-option-3": "Model - Lymphomas classification"
+      }
+    },
+    "1-linear-regression": {
+      "upload": {},
+      "breast-cancer": {
+        "title": "Breast Cancer Wisconsin (Prognostic)"
+      },
+      "diabetes": {
+        "title": "Diabetes"
+      },
+      "student-performance": {
+        "title": "Student Performance"
+      },
+      "wine": {
+        "title": "Wine Quality"
       }
     },
     "2-object-detection": {
@@ -486,6 +502,11 @@
         "2-description-footer": "The classification is used to predict discrete answers.",
         "2-button": "Train a model"
       },
+      "linear-regression": {
+        "1-title": "Linear regression",
+        "1-description-1": "LOREM",
+        "1-button": "Trained models"
+      },
       "object-detection": {
         "1-title": "Object identification",
         "1-description-1": "The classification of objects consists in organizing the elements according to their differences and similarities.",
@@ -513,7 +534,7 @@
     },
     "menu-selection-model": {
       "form-description-1": "Select the trained model on which you are going to work.",
-      "form-description-2": "If you want to use your own, use the drop -down option and load the files in the following view.",
+      "form-description-2": "",
       "form-label": "Select a trained model",
       "form-option-_-1": "Select a trained model",
       "form-submit": "Continue"

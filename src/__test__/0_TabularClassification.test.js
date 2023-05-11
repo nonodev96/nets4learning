@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import i18n from "../i18n";
 import TabularClassificationModelReview from "../pages/playground/0_TabularClassification/TabularClassificationModelReview";
 import { renderWithRouter } from "./utils";

@@ -1,15 +1,11 @@
 import { useTranslation } from "react-i18next";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import N4LNavbar from "../../components/header/N4LNavbar";
-import N4LFooter from "../../components/footer/N4LFooter";
 
 /**
  * @typedef {Object} File_t
  * @property {string} title
  * @property {string} url
  */
-
-
 export default function Datasets(props) {
   const { t } = useTranslation();
 

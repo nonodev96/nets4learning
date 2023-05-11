@@ -4,18 +4,25 @@ import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
+
+export const SELECTOR = {
+  MODEL: "MODEL",
+  DATASET: "DATASET"
+}
 export default function InitialMenu() {
   const history = useHistory()
   const { t } = useTranslation()
+  const colors = ['primary', 'danger', 'warning', 'info']
 
   const [buttonActive, setButtonActive] = useState(0)
 
-  const handleClick_TrainEdit = (_buttonActive, type) => {
-    if (type === 1) history.push('/select-model/' + _buttonActive)
-    if (type === 2) history.push('/select-dataset/' + _buttonActive)
+  const handleClick_TrainEdit = (selector) => {
+    if (selector === SELECTOR.MODEL)
+      history.push('/select-model/' + buttonActive)
+    if (selector === SELECTOR.DATASET)
+      history.push('/select-dataset/' + buttonActive)
   }
 
-  const colors = ['primary', 'danger', 'warning', 'info']
 
   const handleClick_OpenCardModel = (modelType) => {
     setButtonActive(modelType)
@@ -37,7 +44,7 @@ export default function InitialMenu() {
                   {t("pages.index.tabular-classification.1-description-2")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                     {t("pages.index.tabular-classification.1-button")}
                   </Button>
                 </div>
@@ -73,7 +80,7 @@ export default function InitialMenu() {
                   {t("pages.index.tabular-classification.2-description-footer")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
                     {t("pages.index.tabular-classification.2-button")}
                   </Button>
                 </div>
@@ -81,35 +88,22 @@ export default function InitialMenu() {
             </Card>
           </>
         )
-      // case 1:
-      //   return (
-      //     <div className="container">
-      //       <h3 className="titulos">
-      //         La regresión lineal consiste...Lorem Ipsum is simply dummy text of
-      //         the printing and typesetting industry. Lorem Ipsum has been the
-      //         industry's standard dummy text ever since the 1500s, when an
-      //         unknown printer took a galley of type and scrambled it to make a
-      //         type specimen book.
-      //       </h3>
-
-      //       <Row className="btns-description">
-      //         <Col className="col-description">
-      //           <Button
-      //             className="btn-custom-description"
-      //             onClick={() => handleClickTrainEdit(ButtonActive, 1)}>
-      //             Modelo Pre-entrenado
-      //           </Button>
-      //         </Col>
-      //         <Col className="col-description">
-      //           <Button
-      //             className="btn-custom-description"
-      //             onClick={() => handleClickTrainEdit(ButtonActive, 2)}>
-      //             Crear/Editar arquitectura
-      //           </Button>
-      //         </Col>
-      //       </Row>
-      //     </div>
-      //   )
+      case 1:
+        return (
+          <Card className={"border-danger"}>
+            <Card.Header><h3>{t("pages.index.linear-regression.1-title")}</h3></Card.Header>
+            <Card.Body>
+              <Card.Text>
+                {t("pages.index.linear-regression.1-description-1")}
+              </Card.Text>
+              <div className="d-flex gap-2 justify-content-center">
+                <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                  {t("pages.index.linear-regression.1-button")}
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        )
       case 2:
         return (
           <>
@@ -123,7 +117,7 @@ export default function InitialMenu() {
                   {t("pages.index.object-detection.1-description-2")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                     {t("pages.index.object-detection.1-button")}
                   </Button>
                 </div>
@@ -144,12 +138,9 @@ export default function InitialMenu() {
                   {t("pages.index.image-classification.1-description-2")}
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(buttonActive, 1)}>
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                     {t("pages.index.image-classification.1-button")}
                   </Button>
-                  {/*<Button onClick={() => handleClick_TrainEdit(buttonActive, 2)}>*/}
-                  {/*  {t("pages.index.image-classification.2-button")}*/}
-                  {/*</Button>*/}
                 </div>
               </Card.Body>
             </Card>
@@ -174,21 +165,33 @@ export default function InitialMenu() {
               </Button>
             </div>
           </Col>
-          <Col className={"mt-3"}>
-            <div className="d-grid gap-2">
-              <Button onClick={() => handleClick_OpenCardModel(3)}
-                      variant={colors[3]}
-                      size={"lg"}>
-                {t("pages.index.image-classification.1-title")}
-              </Button>
-            </div>
-          </Col>
+          {process.env.REACT_APP_ENVIRONMENT === "development" &&
+            <Col className={"mt-3"}>
+              <div className="d-grid gap-2">
+                <Button onClick={() => handleClick_OpenCardModel(1)}
+                        variant={colors[1]}
+                        size={"lg"}>
+                  {t("pages.index.linear-regression.1-title")}
+                </Button>
+              </div>
+            </Col>
+          }
+
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
               <Button onClick={() => handleClick_OpenCardModel(2)}
                       variant={colors[2]}
                       size={"lg"}>
                 {t("pages.index.object-detection.1-title")}
+              </Button>
+            </div>
+          </Col>
+          <Col className={"mt-3"}>
+            <div className="d-grid gap-2">
+              <Button onClick={() => handleClick_OpenCardModel(3)}
+                      variant={colors[3]}
+                      size={"lg"}>
+                {t("pages.index.image-classification.1-title")}
               </Button>
             </div>
           </Col>
