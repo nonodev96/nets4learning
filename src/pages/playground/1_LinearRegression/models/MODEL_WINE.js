@@ -7,9 +7,9 @@ export default class MODEL_WINE {
   i18n_TITLE = "datasets-models.1-linear-regression.wine.title"
   URL = "https://archive-beta.ics.uci.edu/dataset/186/wine+quality"
 
-  constructor() {
-
-  }
+  // constructor() {
+  //
+  // }
 
   DESCRIPTION() {
     return <>

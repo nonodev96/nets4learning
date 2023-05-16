@@ -15,7 +15,7 @@ export default function N4LFooter() {
             <Col xs={12} sm={12} md={7}>
               <h3>{t("footer.about-us")}</h3>
               <ul style={{ padding: "0 1em" }}>
-                <li>{t("footer.authors")}:{" "}
+                <li>{t("footer.developers")}:{" "}
                   <a href="https://github.com/Davavico22" target="_blank" rel="noreferrer" className="link-secondary">David Valdivia Vico</a>,{" "}
                   <a href="https://github.com/nonodev96" target="_blank" rel="noreferrer" className="link-secondary">Antonio Mudarra Machuca</a>
 
@@ -41,18 +41,18 @@ export default function N4LFooter() {
                   </a>
                 </div>
                 <div>
-                  <a href="https://dasci.es" target="_blank" rel="noreferrer">
-                    <img src={process.env.REACT_APP_PATH + "/assets/DaSCI_logo-1.png"}
-                         alt="DaSCI"
-                         width={200}
-                    />
-                  </a>
-                </div>
-                <div>
                   <a href="https://simidat.ujaen.es" target="_blank" rel="noreferrer">
                     <img src={process.env.REACT_APP_PATH + "/assets/simidat-fill.svg"}
                          alt="SIMIDAT"
                          width={100}
+                    />
+                  </a>
+                </div>
+                <div>
+                  <a href="https://dasci.es" target="_blank" rel="noreferrer">
+                    <img src={process.env.REACT_APP_PATH + "/assets/DaSCI_logo-1.png"}
+                         alt="DaSCI"
+                         width={200}
                     />
                   </a>
                 </div>

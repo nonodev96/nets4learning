@@ -266,7 +266,7 @@ class TabularClassificationModelReview extends React.Component {
             {this._model.LIST_EXAMPLES.map((example, index) => {
               return <Button key={"example_" + index}
                              onClick={() => this.setExample(example)}>
-                <Trans i18nKey={"example-i"} values={{ i: index + 1 + " - " + this._model.LIST_EXAMPLES_RESULTS[index] }} />
+                <Trans i18nKey={"example-i"} values={{ i: index + 1 + "<br /> " + this._model.LIST_EXAMPLES_RESULTS[index] }} />
               </Button>
             })}
           </div>

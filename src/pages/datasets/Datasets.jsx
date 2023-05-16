@@ -84,39 +84,45 @@ export default function Datasets(props) {
       <Row>
         <Col>
           <Card>
-            <Card.Header>
-              <h3>{t("datasets.title")}</h3>
-            </Card.Header>
+            <Card.Header><h3>{t("datasets.title")}</h3></Card.Header>
             <Card.Body>
-              <Card.Title>{t("datasets.text-0")}</Card.Title>
-              <hr />
-              <table className={"table"}>
-                <thead>
-                <tr>
-                  <th>{t("datasets.dataset-name")}</th>
-                  <th>{t("datasets.dataset-size")}</th>
-                  <th>{t("datasets.dataset-web")}</th>
-                  <th>{t("download")}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {datasets_list.map(({ title, url_download, url_original, size, i18n }, index) =>
-                  <tr key={index}>
-                    <td>{t(i18n)}</td>
-                    <td>{size}</td>
-                    <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
-                    <td>
-                      <Button variant="primary"
-                              size={"sm"}
-                              className={"mt-2"}
-                              onClick={() => handleClick_DownloadDataset({ title, url: url_download })}>
-                        {t("download")}
-                      </Button>
-                    </td>
-                  </tr>
-                )}
-                </tbody>
-              </table>
+              {/*<Tabs defaultActiveKey={"tabular-classification"} justify>*/}
+              {/*  <Tab eventKey="tabular-classification" title={t("pages.index.tabular-classification.1-title")}>*/}
+                  <table className={"table"}>
+                    <thead>
+                    <tr>
+                      <th>{t("datasets.dataset-name")}</th>
+                      <th>{t("datasets.dataset-size")}</th>
+                      <th>{t("datasets.dataset-web")}</th>
+                      <th>{t("download")}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {datasets_list.map(({ title, url_download, url_original, size, i18n }, index) =>
+                      <tr key={index}>
+                        <td>{t(i18n)}</td>
+                        <td>{size}</td>
+                        <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
+                        <td>
+                          <Button variant="primary"
+                                  size={"sm"}
+                                  className={"mt-2"}
+                                  onClick={() => handleClick_DownloadDataset({ title, url: url_download })}>
+                            {t("download")}
+                          </Button>
+                        </td>
+                      </tr>
+                    )}
+                    </tbody>
+                  </table>
+                {/*</Tab>*/}
+                {/*<Tab eventKey="linear-regression" title={t("pages.index.linear-regression.1-title")}>*/}
+                {/*</Tab>*/}
+                {/*<Tab eventKey="object-detection" title={t("pages.index.object-detection.1-title")}>*/}
+                {/*</Tab>*/}
+                {/*<Tab eventKey="object-detection" title={t("pages.index.image-classification.1-title")}>*/}
+                {/*</Tab>*/}
+              {/*</Tabs>*/}
 
             </Card.Body>
           </Card>

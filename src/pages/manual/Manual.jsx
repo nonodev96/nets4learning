@@ -1,6 +1,8 @@
+import 'katex/dist/katex.min.css';
 import { Accordion, Card, Col, Container, Row } from "react-bootstrap";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import Latex from "react-latex-next";
 
 export default function Manual() {
 
@@ -46,10 +48,12 @@ export default function Manual() {
                   <Accordion.Body>
                     <h4>{t("pages.manual.0-tabular-classification.1-title")}</h4>
                     <p>{t("pages.manual.0-tabular-classification.1-description-1")}</p>
+                    {/*
                     <ol>
                       <li>{t("pages.manual.0-tabular-classification.1-list-options.0")}</li>
                       <li>{t("pages.manual.0-tabular-classification.1-list-options.1")}</li>
                     </ol>
+                    */}
                     <p>{t("pages.manual.0-tabular-classification.1-description-2")}</p>
                     <p>{t("pages.manual.0-tabular-classification.1-description-3")}</p>
                     <hr />
@@ -61,6 +65,14 @@ export default function Manual() {
                     <p>{t("pages.manual.0-tabular-classification.2-description-5")}</p>
                   </Accordion.Body>
                 </Accordion.Item>
+                {process.env.REACT_APP_ENVIRONMENT === "development" &&
+                  <Accordion.Item eventKey={"manual-1-linear-regression"}>
+                    <Accordion.Header><h3>{t("pages.manual.1-linear-regression.title")}</h3></Accordion.Header>
+                    <Accordion.Body>
+                      <Latex>{"$$ Regresi\\acute{o}n Linear = p $$"}</Latex>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                }
                 <Accordion.Item eventKey={"manual-2-object-identification"}>
                   <Accordion.Header><h3>{t("pages.manual.2-object-identification.title")}</h3></Accordion.Header>
                   <Accordion.Body>

@@ -57,7 +57,7 @@ export async function createTabularClassificationCustomDataSet_upload(params, t)
   };
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
     callbacks: [
-      // 'onBatchEnd',
+      'onBatchEnd',
       "onEpochEnd",
     ],
   });
@@ -141,8 +141,8 @@ export async function createTabularClassificationCustomDataSet(params, t) {
   };
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
     callbacks: [
-      // 'onBatchEnd',
       "onEpochEnd",
+      'onBatchEnd',
     ],
   });
 

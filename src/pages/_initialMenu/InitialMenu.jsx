@@ -1,18 +1,18 @@
 import './InitialMenu.css'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
 
 export const SELECTOR = {
-  MODEL: "MODEL",
+  MODEL  : "MODEL",
   DATASET: "DATASET"
 }
 export default function InitialMenu() {
   const history = useHistory()
   const { t } = useTranslation()
-  const colors = ['primary', 'danger', 'warning', 'info']
+  // const colors = ['primary', 'danger', 'warning', 'info']
 
   const [buttonActive, setButtonActive] = useState(0)
 
@@ -76,9 +76,11 @@ export default function InitialMenu() {
                     </ul>
                   </Col>
                 </Row>
+                {/*
                 <Card.Text>
                   {t("pages.index.tabular-classification.2-description-footer")}
                 </Card.Text>
+                */}
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
                     {t("pages.index.tabular-classification.2-button")}
@@ -96,6 +98,9 @@ export default function InitialMenu() {
               <Card.Text>
                 {t("pages.index.linear-regression.1-description-1")}
               </Card.Text>
+
+              <Link to={"/playground/linear-regression-description/"}>Description</Link>
+
               <div className="d-flex gap-2 justify-content-center">
                 <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                   {t("pages.index.linear-regression.1-button")}
@@ -134,9 +139,11 @@ export default function InitialMenu() {
                 <Card.Text>
                   {t("pages.index.image-classification.1-description-1")}
                 </Card.Text>
+                {/*
                 <Card.Text>
                   {t("pages.index.image-classification.1-description-2")}
                 </Card.Text>
+                */}
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                     {t("pages.index.image-classification.1-button")}
@@ -159,7 +166,7 @@ export default function InitialMenu() {
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
               <Button onClick={() => handleClick_OpenCardModel(0)}
-                      variant={colors[0]}
+                      variant={"primary"}
                       size={"lg"}>
                 {t("pages.index.tabular-classification.1-title")}
               </Button>
@@ -169,29 +176,29 @@ export default function InitialMenu() {
             <Col className={"mt-3"}>
               <div className="d-grid gap-2">
                 <Button onClick={() => handleClick_OpenCardModel(1)}
-                        variant={colors[1]}
+                        variant={"danger"}
                         size={"lg"}>
                   {t("pages.index.linear-regression.1-title")}
                 </Button>
               </div>
             </Col>
           }
+          <Col className={"mt-3"}>
+            <div className="d-grid gap-2">
+              <Button onClick={() => handleClick_OpenCardModel(3)}
+                      variant={"info"}
+                      size={"lg"}>
+                {t("pages.index.image-classification.1-title")}
+              </Button>
+            </div>
+          </Col>
 
           <Col className={"mt-3"}>
             <div className="d-grid gap-2">
               <Button onClick={() => handleClick_OpenCardModel(2)}
-                      variant={colors[2]}
+                      variant={"warning"}
                       size={"lg"}>
                 {t("pages.index.object-detection.1-title")}
-              </Button>
-            </div>
-          </Col>
-          <Col className={"mt-3"}>
-            <div className="d-grid gap-2">
-              <Button onClick={() => handleClick_OpenCardModel(3)}
-                      variant={colors[3]}
-                      size={"lg"}>
-                {t("pages.index.image-classification.1-title")}
               </Button>
             </div>
           </Col>

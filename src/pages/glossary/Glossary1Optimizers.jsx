@@ -1,0 +1,93 @@
+import { Accordion, Col, Row, Table } from "react-bootstrap";
+import { Trans, useTranslation } from "react-i18next";
+import React from "react";
+import Latex from "react-latex-next";
+
+export default function Glossary1Optimizers() {
+
+  const { t } = useTranslation()
+
+  return <>
+    <Accordion defaultValue={"equations"} defaultActiveKey={"equations"}>
+      <Accordion.Item eventKey={"functions-optimizers"}>
+        <Accordion.Header><h3>{t("pages.glossary.optimization-functions.title")}</h3></Accordion.Header>
+        <Accordion.Body>
+          <p>{t("pages.glossary.optimization-functions.text-1")}</p>
+          <p>{t("pages.glossary.optimization-functions.text-2")}</p>
+          <Table striped bordered hover>
+            <thead>
+            <tr>
+              <th>{t("pages.glossary.table-head.function")}</th>
+              <th>{t("pages.glossary.table-head.references")}</th>
+              <th>{t("pages.glossary.table-head.description")}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <th>AdaGrad</th>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adagrad.references"} /></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adagrad.description"} /></td>
+            </tr>
+            <tr>
+              <th>Adadelta</th>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adadelta.references"} /></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adadelta.description"} /></td>
+            </tr>
+            <tr>
+              <th>Adam</th>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.references"} /></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.description"} /></td>
+            </tr>
+            <tr>
+              <th>Momentum</th>
+              <td></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.momentum.description"} /></td>
+            </tr>
+            <tr>
+              <th>RMSProp</th>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.rmsprop.references"} /></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.rmsprop.description"} /></td>
+            </tr>
+            <tr>
+              <th>SGD</th>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.references"} /></td>
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.description"} /></td>
+            </tr>
+            </tbody>
+          </Table>
+        </Accordion.Body>
+      </Accordion.Item>
+
+      {process.env.REACT_APP_ENVIRONMENT === "development" && <>
+        <Accordion.Item eventKey={"equations-optimization"}>
+          <Accordion.Header><h3>{t("equations.title-optimization")}</h3></Accordion.Header>
+          <Accordion.Body>
+            <Row xs={1} sm={1} md={2} lg={2} xl={2} xxl={2}>
+              <Col className={"mt-3"}>
+                <h4 className={"text-lg-center"}>Adagrad</h4>
+                <Latex>{"$$ \\begin{split}g_{t}^{i} = \\frac{\\partial \\mathcal{J}(w_{t}^{i})}{\\partial W} \\\\\n W = W - \\alpha \\frac{\\partial \\mathcal{J}(w_{t}^{i})}{\\sqrt{\\sum_{r=1}^{t}\\left ( g_{r}^{i} \\right )^{2} + \\varepsilon }}\\end{split} $$"}</Latex>
+              </Col>
+              <Col className={"mt-3"}>
+                <h4 className={"text-lg-center"}>Adadelta</h4>
+                <Latex>{"$$ \\begin{split}v_t = \\rho v_{t-1} + (1-\\rho) \\nabla_\\theta^2 J( \\theta) \\\\\n \\Delta\\theta &= \\dfrac{\\sqrt{w_t + \\epsilon}}{\\sqrt{v_t + \\epsilon}} \\nabla_\\theta J( \\theta) \\\\\n \\theta &= \\theta - \\eta \\Delta\\theta \\\\\n w_t = \\rho w_{t-1} + (1-\\rho) \\Delta\\theta^2\\end{split} $$"}</Latex>
+              </Col>
+              <Col className={"mt-3"}>
+                <h4 className={"text-lg-center"}>Adam</h4>
+                <Latex>{"$$ \\begin{split}v_{dW} = \\beta_1 v_{dW} + (1 - \\beta_1) \\frac{\\partial \\mathcal{J} }{ \\partial W } \\\\ s_{dW} = \\beta_2 s_{dW} + (1 - \\beta_2) (\\frac{\\partial \\mathcal{J} }{\\partial W })^2 \\\\ v^{corrected}_{dW} = \\frac{v_{dW}}{1 - (\\beta_1)^t} \\\\ s^{corrected}_{dW} = \\frac{s_{dW}}{1 - (\\beta_1)^t} \\\\ W = W - \\alpha \\frac{v^{corrected}_{dW}}{\\sqrt{s^{corrected}_{dW}} + \\varepsilon}\\end{split} $$"}</Latex>
+              </Col>
+              <Col className={"mt-3"}>
+                <h4 className={"text-lg-center"}>Momentum</h4>
+                <Latex>{"$$ \\begin{split}v_{dW} = \\beta v_{dW} + (1 - \\beta) \\frac{\\partial \\mathcal{J} }{ \\partial W } \\\\\n W = W - \\alpha v_{dW}\\end{split} $$"}</Latex>
+              </Col>
+              <Col className={"mt-3"}>
+                <h4 className={"text-lg-center"}>RMSProp</h4>
+                <Latex>{"$$ \\begin{split}s_{dW} = \\beta s_{dW} + (1 - \\beta) (\\frac{\\partial \\mathcal{J} }{\\partial W })^2 \\\\\n W = W - \\alpha \\frac{\\frac{\\partial \\mathcal{J} }{\\partial W }}{\\sqrt{s^{corrected}_{dW}} + \\varepsilon}\\end{split} $$"}</Latex>
+              </Col>
+            </Row>
+          </Accordion.Body>
+        </Accordion.Item>
+      </>}
+
+    </Accordion>
+  </>
+}

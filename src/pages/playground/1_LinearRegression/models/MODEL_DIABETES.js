@@ -11,9 +11,9 @@ export default class MODEL_DIABETES {
   i18n_TITLE = "datasets-models.1-linear-regression.diabetes.title"
   URL = "https://github.com/jbrownlee/Datasets/blob/master/pima-indians-diabetes.names"
 
-  constructor() {
-
-  }
+  // constructor() {
+  //
+  // }
 
   DESCRIPTION() {
     return <>

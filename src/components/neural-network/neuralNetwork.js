@@ -63,7 +63,7 @@ export function NeuralNetwork() {
           if (bias === true) {
             if (secondIdx === 0 && (i + 1) !== networkLayer.length - 1) {
               console.log(secondIdx)
-              continue;
+
             } else
               drawLineArrow(ctx, firstX + radius, firstY, secondX - radius, secondY);
           } else {

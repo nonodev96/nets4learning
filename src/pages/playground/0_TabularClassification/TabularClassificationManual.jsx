@@ -50,8 +50,10 @@ export default function TabularClassificationManual() {
       <p><Trans i18nKey={prefix + "details-create-and-train-models.text-0"} /></p>
       <p><Trans i18nKey={prefix + "details-create-and-train-models.text-1"} /></p>
       <p><Trans i18nKey={prefix + "details-create-and-train-models.text-2"} /></p>
+      {/*
       <p><Trans i18nKey={prefix + "details-create-and-train-models.text-3"} /></p>
       <p><Trans i18nKey={prefix + "details-create-and-train-models.text-4"} /></p>
+      */}
     </details>
 
     <details>

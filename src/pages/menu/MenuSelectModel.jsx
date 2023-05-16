@@ -94,9 +94,9 @@ export default function MenuSelectModel(_props) {
                   <Card.Text>
                     {t("pages.menu-selection-model.form-description-1")}
                   </Card.Text>
-                  <Card.Text>
-                    {t("pages.menu-selection-model.form-description-2")}
-                  </Card.Text>
+                  {/*<Card.Text>*/}
+                  {/*  {t("pages.menu-selection-model.form-description-2")}*/}
+                  {/*</Card.Text>*/}
                   <Form.Group controlId="FormModel">
                     <Form.Label>{t("pages.menu-selection-model.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-model.form-label")}

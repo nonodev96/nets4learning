@@ -984,6 +984,7 @@ export default function TabularClassification(props) {
                     </Form.Label>
                     <Form.Select aria-label="Selecciona la métrica"
                                  defaultValue={DEFAULT_ID_METRICS}
+                                 disabled={true}
                                  onChange={(e) => setIdMetrics(e.target.value)}>
                       {TYPE_METRICS.map(({ key, label }, index) => {
                         return (<option key={index} value={key}>{label}</option>);

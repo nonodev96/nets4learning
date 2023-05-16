@@ -6,8 +6,8 @@ export default class I_MODEL_LINEAR_REGRESSION {
 
   i18n_TITLE = ""
 
-  constructor() {
-  }
+  // constructor() {
+  // }
 
   DESCRIPTION() {
     return <></>

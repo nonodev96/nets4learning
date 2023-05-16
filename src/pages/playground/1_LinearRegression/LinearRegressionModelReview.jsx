@@ -9,11 +9,9 @@ export default function LinearRegressionModelReview(props) {
 
   const [Model, setModel] = useState(null);
 
-
   useEffect(() => {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
-    console.log(dataset)
     switch (dataset) {
       case MODEL_BREAST_CANCER.KEY:
         setModel(new MODEL_BREAST_CANCER());
@@ -27,12 +25,20 @@ export default function LinearRegressionModelReview(props) {
       case MODEL_WINE.KEY:
         setModel(new MODEL_WINE());
         break
+      default:
+        console.error("Error, incorrect model");
+        break
     }
-  }, [])
-  useEffect(async () => {
-    if (Model !== null) {
-      (await Model.dataframe()).plot("plot_div").table()
+  }, [dataset])
+
+  useEffect(() => {
+    async function asyncFunction() {
+      if (Model !== null) {
+        (await Model.dataframe()).plot("plot_div").table()
+      }
     }
+
+    asyncFunction().then(_r => undefined)
   }, [Model])
 
   console.log("render LinearRegressionModelReview")

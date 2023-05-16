@@ -17,7 +17,7 @@ import {
 import ReactGA from "react-ga4";
 import { Trans, withTranslation } from "react-i18next";
 import { MODEL_OBJECT_DETECTION } from "./models/_model";
-import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
+// import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
 
