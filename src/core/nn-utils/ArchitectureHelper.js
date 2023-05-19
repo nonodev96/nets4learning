@@ -141,8 +141,8 @@ export async function createTabularClassificationCustomDataSet(params, t) {
   };
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
     callbacks: [
-      // "onEpochEnd",
-      'onBatchEnd',
+      // 'onBatchEnd',
+      "onEpochEnd",
     ],
   });
 
