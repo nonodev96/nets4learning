@@ -16,67 +16,69 @@ export default function Glossary3LossFunctions() {
           <p>{t("pages.glossary.loss-functions.text-2")}</p>
           {/*<p>{t("pages.glossary.loss-functions.text-3")}</p>*/}
           <p>{t("pages.glossary.loss-functions.text-4")}</p>
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
               <th>{t("pages.glossary.table-head.function")}</th>
-              <th>{t("pages.glossary.table-head.references")}</th>
               <th>{t("pages.glossary.table-head.description")}</th>
+              {/*<th>{t("pages.glossary.table-head.references")}</th>*/}
             </tr>
             </thead>
             <tbody>
             <tr>
               <th>AbsoluteDifference</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.AbsoluteDifference.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.AbsoluteDifference.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.AbsoluteDifference.references"} /></td>*/}
             </tr>
             <tr>
               <th>ComputeWeightedLoss</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.ComputeWeightedLoss.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.ComputeWeightedLoss.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.ComputeWeightedLoss.references"} /></td>*/}
             </tr>
             <tr>
               <th>CosineDistance</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.CosineDistance.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.CosineDistance.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.CosineDistance.references"} /></td>*/}
             </tr>
             <tr>
               <th>HingeLoss</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.HingeLoss.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.HingeLoss.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.HingeLoss.references"} /></td>*/}
             </tr>
             <tr>
               <th>HuberLoss</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.HuberLoss.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.HuberLoss.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.HuberLoss.references"} /></td>*/}
             </tr>
             <tr>
               <th>LogLoss</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.LogLoss.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.LogLoss.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.LogLoss.references"} /></td>*/}
             </tr>
             <tr>
               <th>MeanSquaredError</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.MeanSquaredError.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.MeanSquaredError.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.MeanSquaredError.references"} /></td>*/}
             </tr>
             <tr>
               <th>CategoricalCrossEntropy</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.CategoricalCrossEntropy.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.CategoricalCrossEntropy.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.CategoricalCrossEntropy.references"} /></td>*/}
             </tr>
             <tr>
               <th>SigmoidCrossEntropy</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.SigmoidCrossEntropy.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.SigmoidCrossEntropy.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.SigmoidCrossEntropy.references"} /></td>*/}
             </tr>
             <tr>
               <th>SoftmaxCrossEntropy</th>
-              <td><Trans i18nKey={"pages.glossary.loss-functions.table.SoftmaxCrossEntropy.references"} /></td>
               <td><Trans i18nKey={"pages.glossary.loss-functions.table.SoftmaxCrossEntropy.description"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.loss-functions.table.SoftmaxCrossEntropy.references"} /></td>*/}
             </tr>
             </tbody>
           </Table>
+          
+          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Training-Losses">TensorFlow JS. Training / Losses</a>
         </Accordion.Body>
       </Accordion.Item>
       {process.env.REACT_APP_ENVIRONMENT === "development" && <>

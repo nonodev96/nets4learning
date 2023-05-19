@@ -1,4 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
+import { Table } from "react-bootstrap";
 
 // https://archive-beta.ics.uci.edu/dataset/46/hepatitis
 export const MODEL_HEPATITIS = {
@@ -43,7 +44,7 @@ export const MODEL_HEPATITIS = {
     </details>
   </>,
   HTML_EXAMPLE     : <>
-    <table className="table table-sm table-striped">
+    <Table size={"sm"} striped={true} responsive={true}>
       <thead>
       <tr>
         <th>Nombre del atributo</th>
@@ -216,7 +217,7 @@ export const MODEL_HEPATITIS = {
         <td>false</td>
       </tr>
       </tbody>
-    </table>
+    </Table>
     <p className={"text-muted"}><a href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch8/5214817-eng.htm" target={"_blank"} rel="noreferrer">Explicación de los tipos de variables</a></p>
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:

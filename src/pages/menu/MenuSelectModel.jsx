@@ -15,13 +15,13 @@ import {
 
 export default function MenuSelectModel(_props) {
   const { id } = useParams()
-  const [model_key, setModelKey] = useState("null")
+  const [model_key, setModelKey] = useState("select-model")
   const history = useHistory()
   const { t } = useTranslation()
 
   const handleSubmit = async ($event) => {
     $event.preventDefault()
-    if (model_key === null) {
+    if (model_key === "select-model") {
       await alertHelper.alertWarning(t("alert.menu.need-select-model"))
     } else {
       history.push('/playground/' + id + '/' + 0 + '/' + model_key)
@@ -100,9 +100,9 @@ export default function MenuSelectModel(_props) {
                   <Form.Group controlId="FormModel">
                     <Form.Label>{t("pages.menu-selection-model.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-model.form-label")}
-                                 defaultValue={"null"}
+                                 defaultValue={"select-model"}
                                  onChange={(e) => setModelKey(e.target.value)}>
-                      <option value={"null"} disabled>{t("pages.menu-selection-model.form-option-_-1")}</option>
+                      <option value={"select-model"} disabled>{t("pages.menu-selection-model.form-option-_-1")}</option>
 
                       {PrintHTML_OPTIONS(id)}
 

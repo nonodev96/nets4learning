@@ -19,7 +19,7 @@ export default function Glossary2ActivationFunctions() {
         <Accordion.Header><h3>{t("pages.glossary.activation-functions.title")}</h3></Accordion.Header>
         <Accordion.Body>
           <p>{t("pages.glossary.activation-functions.text-1")}</p>
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
               <th>{t("pages.glossary.table-head.name")}</th>
@@ -62,6 +62,9 @@ export default function Glossary2ActivationFunctions() {
             </tr>
             </tbody>
           </Table>
+
+          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">TensorFlow JS. Layers / Advanced Activation</a>
+
         </Accordion.Body>
       </Accordion.Item>
       {process.env.REACT_APP_ENVIRONMENT === "development" && <>

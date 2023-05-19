@@ -21,6 +21,7 @@ export default function TabularClassificationManual() {
       </ul>
     </details>
 
+    {/*
     <details>
       <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-hyper-parameters-editor.title"} /></summary>
       <p><Trans i18nKey={prefix + "details-hyper-parameters-editor.text-0"} /></p>
@@ -33,9 +34,10 @@ export default function TabularClassificationManual() {
         <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.5"} /></li>
       </ul>
     </details>
+    */}
 
     <details>
-      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-hyper-parameters-info.title"} /></summary>
+      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-hyper-parameters-editor.title"} /></summary>
       <ul>
         <li><Trans i18nKey={prefix + "details-hyper-parameters-info.list.0"} /></li>
         <li><Trans i18nKey={prefix + "details-hyper-parameters-info.list.1"} /></li>

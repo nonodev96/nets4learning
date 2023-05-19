@@ -179,6 +179,10 @@ class ObjectDetectionModelReview extends React.Component {
     const img_or_video = video;
 
     const ctx = this.canvasRef.current.getContext("2d");
+    // ctx.scale(-1, 1)
+    // ctx.translate(videoWidth, 0);
+    // ctx.scale(-1, 1);
+
     await this.processData(model, ctx, img_or_video);
   }
 
@@ -224,7 +228,7 @@ class ObjectDetectionModelReview extends React.Component {
   }
 
   onUserMediaEvent(mediaStream) {
-
+    // mediaStream.scale(-1,1)
   }
 
   onUserMediaErrorEvent(error) {
@@ -372,8 +376,9 @@ class ObjectDetectionModelReview extends React.Component {
                             <Webcam ref={this.webcamRef}
                                     onUserMedia={this.onUserMediaEvent}
                                     onUserMediaError={this.onUserMediaErrorEvent}
-                                    width={250} height={250}
-                                    mirrored={true}
+                                    width={250}
+                                    height={250}
+                                    mirrored={false}
                                     style={{
                                       position: "relative",
                                       display : "block",

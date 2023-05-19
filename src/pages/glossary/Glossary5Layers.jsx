@@ -12,7 +12,7 @@ export default function Glossary5Layers() {
         <Accordion.Item eventKey={"layers"}>
           <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
           <Accordion.Body>
-            <Table striped bordered hover>
+            <Table striped bordered hover responsive={true}>
               <thead>
               <tr>
                 <th>{t("pages.glossary.table-head.name")}</th>

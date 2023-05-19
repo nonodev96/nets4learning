@@ -12,10 +12,14 @@ export default function Glossary4MetricFunctions() {
       <Accordion.Item eventKey={"functions-metrics"}>
         <Accordion.Header><h3>{t("pages.glossary.metric-functions.title")}</h3></Accordion.Header>
         <Accordion.Body>
-          <p>{t("pages.glossary.metric-functions.text-1")}</p>
-          <p>{t("pages.glossary.metric-functions.text-2")}</p>
-          <p>{t("pages.glossary.metric-functions.text-3")}</p>
-          <Table striped bordered hover>
+          <p><Trans i18nKey={"pages.glossary.metric-functions.text-1"}/></p>
+          <p><Trans i18nKey={"pages.glossary.metric-functions.text-2"}/></p>
+          <p><Trans i18nKey={"pages.glossary.metric-functions.text-3"}/></p>
+          <p><Trans i18nKey={"pages.glossary.metric-functions.text-4"}/></p>
+          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Metrics">TensorFlow JS. Metrics</a>
+
+          {/*
+          <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
               <th>{t("pages.glossary.table-head.function")}</th>
@@ -66,6 +70,7 @@ export default function Glossary4MetricFunctions() {
             </tr>
             </tbody>
           </Table>
+          */}
         </Accordion.Body>
       </Accordion.Item>
       {process.env.REACT_APP_ENVIRONMENT === "development" && <>

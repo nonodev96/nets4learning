@@ -1051,7 +1051,7 @@ export default function TabularClassification(props) {
                 </div>
               </Card.Header>
               <Card.Body className={"overflow-x-scroll"}>
-                <Table size={"sm"}>
+                <Table size={"sm"} responsive={true}>
                   <thead>
                   <tr>
                     <th><Trans i18nKey={prefix + "table.id"} /></th>

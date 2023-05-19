@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Table } from "react-bootstrap";
 
 /**
  * @typedef {Object} File_t
@@ -88,7 +88,7 @@ export default function Datasets(props) {
             <Card.Body>
               {/*<Tabs defaultActiveKey={"tabular-classification"} justify>*/}
               {/*  <Tab eventKey="tabular-classification" title={t("pages.index.tabular-classification.1-title")}>*/}
-                  <table className={"table"}>
+                  <Table className={"table"} responsive={true}>
                     <thead>
                     <tr>
                       <th>{t("datasets.dataset-name")}</th>
@@ -114,7 +114,7 @@ export default function Datasets(props) {
                       </tr>
                     )}
                     </tbody>
-                  </table>
+                  </Table>
                 {/*</Tab>*/}
                 {/*<Tab eventKey="linear-regression" title={t("pages.index.linear-regression.1-title")}>*/}
                 {/*</Tab>*/}

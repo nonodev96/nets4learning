@@ -31,7 +31,7 @@ export default function N4LFooter() {
             <Col xs={12} sm={12} md={5}>
               <h4>Nets4Learning</h4>
               <p>{t("footer.description-app")}</p>
-              <div className="d-flex justify-content-sm-center justify-content-md-between  gap-5 flex-wrap">
+              <div className="d-flex justify-content-xs-around justify-content-sm-between justify-content-md-between flex-wrap">
                 <div>
                   <a href="https://ujaen.es" target="_blank" rel="noreferrer">
                     <img src={process.env.REACT_APP_PATH + "/assets/uja.svg"}

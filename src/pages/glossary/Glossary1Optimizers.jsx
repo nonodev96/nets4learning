@@ -14,47 +14,53 @@ export default function Glossary1Optimizers() {
         <Accordion.Body>
           <p>{t("pages.glossary.optimization-functions.text-1")}</p>
           <p>{t("pages.glossary.optimization-functions.text-2")}</p>
-          <Table striped bordered hover>
+          <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
               <th>{t("pages.glossary.table-head.function")}</th>
-              <th>{t("pages.glossary.table-head.references")}</th>
+              {/*<th>{t("pages.glossary.table-head.references")}</th>*/}
               <th>{t("pages.glossary.table-head.description")}</th>
             </tr>
             </thead>
             <tbody>
             <tr>
+              <th>SGD</th>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.references"} /></td>*/}
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.description"} /></td>
+            </tr>
+            <tr>
+              <th>Momentum</th>
+              {/*<td></td>*/}
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.momentum.description"} /></td>
+            </tr>
+            <tr>
               <th>AdaGrad</th>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adagrad.references"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.adagrad.references"} /></td>*/}
               <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adagrad.description"} /></td>
             </tr>
             <tr>
               <th>Adadelta</th>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adadelta.references"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.adadelta.references"} /></td>*/}
               <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adadelta.description"} /></td>
             </tr>
             <tr>
               <th>Adam</th>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.references"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.references"} /></td>*/}
               <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.description"} /></td>
             </tr>
             <tr>
-              <th>Momentum</th>
-              <td></td>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.momentum.description"} /></td>
+              <th>Adamax</th>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.adam.references"} /></td>*/}
+              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.adamax.description"} /></td>
             </tr>
             <tr>
               <th>RMSProp</th>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.rmsprop.references"} /></td>
+              {/*<td><Trans i18nKey={"pages.glossary.optimization-functions.table.rmsprop.references"} /></td>*/}
               <td><Trans i18nKey={"pages.glossary.optimization-functions.table.rmsprop.description"} /></td>
-            </tr>
-            <tr>
-              <th>SGD</th>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.references"} /></td>
-              <td><Trans i18nKey={"pages.glossary.optimization-functions.table.sgd.description"} /></td>
             </tr>
             </tbody>
           </Table>
+          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Training-Optimizers">TensorFlow JS. Training / Optimizers</a>
         </Accordion.Body>
       </Accordion.Item>
 

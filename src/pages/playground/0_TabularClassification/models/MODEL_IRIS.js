@@ -13,8 +13,18 @@ export class MODEL_IRIS extends MODEL_TABULAR_CLASSIFICATION {
   NUM_CLASSES = 3
   CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
 
-  DATA_OBJECT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
-  DATA_DEFAULT = { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 }
+  DATA_OBJECT = {
+    longitud_sepalo: 5.1,
+    anchura_sepalo : 3.5,
+    longitud_petalo: 1.4,
+    anchura_petalo : 0.2
+  }
+  DATA_DEFAULT = {
+    longitud_sepalo: 5.1,
+    anchura_sepalo : 3.5,
+    longitud_petalo: 1.4,
+    anchura_petalo : 0.2
+  }
   DATA_OBJECT_KEYS = ["longitud_sepalo", "anchura_sepalo", "longitud_petalo", "anchura_petalo"]
 
   TABLE_HEADER = ["Longitud sépalo", "Anchura sépalo", "Longitud petalo", "Anchura petalo", "Tipo"]

@@ -53,7 +53,7 @@ export const MODEL_HEPATITIS_C = {
     </details>
   </>,
   HTML_EXAMPLE     : <>
-    <table className={"table table-sm"}>
+    <Table size={"sm"} striped={true} responsive={true}>
       <thead>
       <tr>
         <th>Clave</th>
@@ -170,7 +170,7 @@ export const MODEL_HEPATITIS_C = {
         <td></td>
       </tr>
       </tbody>
-    </table>
+    </Table>
 
     {/*
     <ul>

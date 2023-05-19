@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 
 export default function MenuSelectDataset() {
   const { id } = useParams()
-  const [dataset_id, setDatasetId] = useState(-1)
+  const [dataset_id, setDatasetId] = useState("select-dataset")
   const history = useHistory()
   const { t } = useTranslation()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (dataset_id === -1) {
+    if (dataset_id === "select-dataset") {
       await alertHelper.alertWarning(t("alert.menu.need-select-dataset"))
     } else {
       history.push('/playground/' + id + '/' + 1 + '/' + dataset_id)
@@ -72,9 +72,9 @@ export default function MenuSelectDataset() {
                   <Form.Group className="mb-3" controlId="FormDataSet">
                     <Form.Label>{t("pages.menu-selection-dataset.form-label")}</Form.Label>
                     <Form.Select aria-label={t("pages.menu-selection-dataset.form-label")}
-                                 defaultValue={-1}
-                                 onChange={(e) => setDatasetId(parseInt(e.target.value))}>
-                      <option value={-1} disabled>{t("pages.menu-selection-dataset.form-option-_-1")}</option>
+                                 defaultValue={"select-dataset"}
+                                 onChange={(e) => setDatasetId(e.target.value)}>
+                      <option value={"select-dataset"} disabled>{t("pages.menu-selection-dataset.form-option-_-1")}</option>
                       {PrintHTML_OPTIONS(id)}
                     </Form.Select>
                   </Form.Group>

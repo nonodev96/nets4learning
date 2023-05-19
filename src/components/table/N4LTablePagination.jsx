@@ -23,7 +23,7 @@ export default function N4LTablePagination({ data_head, data_body }) {
 
   return <>
     <div className={"n4l-table-paginator-table-wrapper-scroll-x"}>
-      <Table className={"n4l-table-paginator-table"}>
+      <Table className={"n4l-table-paginator-table"} striped={true} size={"sm"}>
         <thead>
         <tr>
           <th>ID</th>

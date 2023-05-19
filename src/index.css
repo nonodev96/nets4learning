@@ -53,3 +53,10 @@ code {
 .tf-surface {
   overflow-y: hidden;
 }
+
+
+@media (max-width: 575px) {
+  .justify-content-xs-around {
+    justify-content: space-around;
+  }
+}

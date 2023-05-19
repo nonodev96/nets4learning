@@ -7,6 +7,7 @@
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
   "Files": "Ficheros",
+  "references": "References",
   "download": "Descargar",
   "equations": {
     "title": "Formulas",
@@ -168,7 +169,7 @@
     "0": "Clasificación tabular",
     "1": "Regresión lineal",
     "2": "Identificación de objetos",
-    "3": "Clasificador de imágenes",
+    "3": "Clasificación de imágenes",
     "tabular-classification": "Clasificación tabular",
     "linear-regression": "Regresión lineal",
     "object-detection": "Identificación de objetos",
@@ -238,24 +239,24 @@
         }
       },
       "iris": {
-        "title": "IRIS - Clasificación de flor iris",
+        "title": "IRIS - Clasificación de iris",
         "description": {
           "text-1": "El conjunto de datos de Iris-Data permite detectar que tipo de planta iris es a partir de altitud y longitud de su pétalo y sépalo.",
           "details-1": {
             "title": "Datos de entrada",
             "list": {
-              "1": "Longitud del sépalo en cm",
-              "2": "Anchura del sépalo en cm",
-              "3": "Longitud del pétalo en cm",
-              "4": "Anchura del pétalo en cm"
+              "1": "<b>Longitud del sépalo</b>: continuo",
+              "2": "<b>Anchura del sépalo</b>: continuo",
+              "3": "<b>Longitud del pétalo</b>: continuo",
+              "4": "<b>Anchura del pétalo</b>: continuo"
             }
           },
           "details-2": {
             "title": "Datos de salida",
             "list": {
-              "1": "Iris Setosa",
-              "2": "Iris Versicolor",
-              "3": "Iris Virginica"
+              "1": "<b>0</b>: Iris Setosa",
+              "2": "<b>1</b>: Iris Versicolor",
+              "3": "<b>2</b>: Iris Virginica"
             }
           },
           "details-3": {
@@ -272,7 +273,7 @@
         }
       },
       "lymphography": {
-        "title": "Clasificación por datos de linfomas",
+        "title": "LYMPHOGRAPHY - Clasificación por datos de linfomas",
         "description": {
           "text-1": "El conjunto de datos de <i>lymphography</i> permite detectar que posibles fases de un linfoma y en que estado se encuentra.",
           "details-input": {
@@ -406,9 +407,9 @@
         }
       },
       "move-net--pose-net": {
-        "title": "MOVE NET - Detector de articulaciones",
+        "title": "MoveNet - Detector de articulaciones",
         "description": {
-          "text-0": "PoseNet es un modelo de aprendizaje automático capaz de reconocer la posición del cuerpo en tiempo real. Se puede usar para estimar una sola pose o varias a la vez.",
+          "text-0": "MoveNet es un modelo de aprendizaje automático capaz de reconocer la posición del cuerpo en tiempo real. Se puede usar para estimar una sola pose o varias a la vez.",
           "text-1": "En el siguiente ejemplo, para que su impacto en el rendimiento sea menor solamente detecta una pose a la vez.",
           "details-input": {
             "title": "Datos de entrada",
@@ -444,7 +445,7 @@
             }
           },
           "details-output": {
-            "title": "Mismo elemento de entrada con una serie de puntos que delimitan los diferentes objetos, además del nombre del objeto.",
+            "title": "Datos de salida",
             "list": {
               "0": "Mismo elemento de entrada con una serie de cajas que delimitan los diferentes objetos, así como las etiquetas de los mismos."
             }
@@ -460,7 +461,7 @@
       "list-models": {
         "2-option-1": "Modelo - FACE DETECTOR - Geometría facial",
         "2-option-2": "Modelo - FACE MESH - Malla facial",
-        "2-option-3": "Modelo - MOVE NET - Detector de articulaciones",
+        "2-option-3": "Modelo - MoveNet - Detector de articulaciones",
         "2-option-4": "Modelo - COCO SSD - Detector de objetos"
       }
     },
@@ -488,7 +489,7 @@
         }
       },
       "mnist": {
-        "title": "MNIST - Clasificador de números",
+        "title": "MNIST - Clasificación de números",
         "description": {
           "text-0": "La base de datos <strong>MNIST</strong> es una gran base de datos de dígitos escritos a mano. La base de datos se usa ampliamente para capacitación y pruebas en el campo del aprendizaje automático.",
           "text-1": "Fue creado \"re-mezclando\" las muestras de los conjuntos de datos originales del NIST.",
@@ -511,7 +512,7 @@
         }
       },
       "mobilenet": {
-        "title": "MOBILENET - Clasificador de imágenes",
+        "title": "MobileNet - Clasificación de imágenes",
         "description": {
           "text-0": "MobileNet V2 es una familia de arquitecturas de redes neuronales para la clasificación de imágenes y tareas similares.",
           "text-1": "Este modelo es capaz de diferenciar entre 1001 categorías, identificando el contexto principal de la imagen.",
@@ -541,8 +542,8 @@
       },
       "list-models": {
         "3-option-1": "Modelo - MNIST - Clasificación de números",
-        "3-option-2": "Modelo - MOBILENET - Clasificador de imágenes",
-        "3-option-3": "Modelo - RESNET - Clasificador de imágenes"
+        "3-option-2": "Modelo - MovileNet - Clasificación de imágenes",
+        "3-option-3": "Modelo - ResNet - Clasificación de imágenes"
       }
     }
   },
@@ -552,7 +553,7 @@
         "1-title": "Clasificación tabular",
         "1-description-1": "La clasificación es una técnica para determinar la clase a la que pertenece un elemento (variable dependiente) a partir de sus características (variables independientes).",
         "1-description-2": "Es una tarea predictiva que tiene como salida una variable discreta cuyos valores son las diferentes clases a las que puede pertenecer el elemento a clasificar.",
-        "1-button": "Modelos entrenados",
+        "1-button": "Modelos pre-entrenados",
         "2-title": "Diseñar, crear y editar una arquitectura para clasificar",
         "2-description-1": "A través de esta herramienta podemos crear una red neuronal para clasificar datos multiclase.",
         "2-description-2": "Para diseñar, crear, entrenar y evaluar una arquitectura personalizada, debemos:",
@@ -570,20 +571,20 @@
       "linear-regression": {
         "1-title": "Regresión linear",
         "1-description-1": "LOREM",
-        "1-button": "Modelos entrenados"
+        "1-button": "Modelos pre-entrenados"
       },
       "object-detection": {
         "1-title": "Identificación de objetos",
         "1-description-1": "La identificación de objetos consiste en detectar y clasificar diferentes elementos en una imagen.",
         "1-description-2": "Estos modelos son entrenados con multitud de imágenes diferentes que les permite aprender poco a poco qué caracteriza a cada objeto.",
-        "1-button": "Modelos entrenados",
+        "1-button": "Modelos pre-entrenados",
         "2-title": "Identificación de objetos"
       },
       "image-classification": {
-        "1-title": "Clasificador de imágenes",
+        "1-title": "Clasificación de imágenes",
         "1-description-1": "La clasificación de imágenes de igual forma que la clasificación tabular sirve para determinar la clase a la que pertenece la imagen dependiendo de los elementos que la forman.",
         "1-description-2": null,
-        "1-button": "Modelos entrenados"
+        "1-button": "Modelos pre-entrenados"
       }
     },
     "menu-selection-dataset": {
@@ -600,8 +601,8 @@
     "menu-selection-model": {
       "form-description-1": "Selecciona a continuación el modelo entrenado con el que se va a trabajar.",
       "form-description-2": "-",
-      "form-label": "Selecciona un modelo entrenado",
-      "form-option-_-1": "Selecciona un modelo entrenado",
+      "form-label": "Selecciona un modelo pre-entrenado",
+      "form-option-_-1": "Selecciona un modelo pre-entrenado",
       "form-submit": "Continuar"
     },
     "playground": {
@@ -661,13 +662,13 @@
             "title": "Editor de hiperparámetros",
             "learning-rate": "Tasa de aprendizaje",
             "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
-            "learning-rate-info": "Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)",
+            "learning-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
             "number-of-epochs": "Número de iteraciones",
             "number-of-epochs-placeholder": "Número de iteraciones",
             "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
             "train-rate": "Tamaño del conjunto de pruebas",
             "train-rate-placeholder": "Introduce el tamaño del banco de pruebas",
-            "train-rate-info": "Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)",
+            "train-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
             "optimizer-id": "Selecciona el optimizador",
             "optimizer-id-info": "Será el optimizador que se usará para corregir el error.",
             "loss-id": "Selecciona la función de pérdida",
@@ -783,8 +784,8 @@
       },
       "0-tabular-classification": {
         "title": "Clasificación tabular",
-        "1-title": "Modelos entrenados",
-        "1-description-1": "Debemos acceder a la sección de modelos entrenados y seleccionar uno de los disponibles.",
+        "1-title": "Modelos pre-entrenados",
+        "1-description-1": "Debemos acceder a la sección de modelos pre-entrenados y seleccionar uno de los disponibles.",
         "1-list-options": {
           "0": null,
           "1": null
@@ -803,7 +804,7 @@
       },
       "2-object-identification": {
         "title": "Identificación de objetos",
-        "1-title": "Modelos entrenados",
+        "1-title": "Modelos pre-entrenados",
         "1-description-1": "Dentro de la identificación de objetos contamos con cuatro modelos, para usar esta herramienta es tan sencillo como activar la opción de usar webcam o subir una imagen.",
         "1-description-2": "En esta sección la herramienta ofrece cuatro modelos de identificación de objetos, dichos modelos han sido optimizados para ser funcionales en dispositivos móviles. Estos modelos son:",
         "1-description-3": "En caso de usar la webcam como entrada se generará un filtro de forma que se pueda ver en tiempo real sobre el video los puntos que se están detectando. En caso de usar la opción de subir imágenes podemos adjuntar un fichero en formato png o jpg. Como resultado se mostrará la imagen original, el filtro generado y la imagen con el filtro aplicado.",
@@ -816,14 +817,14 @@
       },
       "3-image-classification": {
         "title": "Clasificación de imágenes",
-        "1-title": "Modelos entrenados",
-        "1-description-1": "En la sección del clasificador de imágenes podemos seleccionar entre dos ejemplos muy representativos de las redes neuronales. Estos son el modelo entrenado con el conjunto de imágenes MNIST y un modelo de clasificación de imágenes genérico. Concretamente:",
+        "1-title": "Modelos pre-entrenados",
+        "1-description-1": "En la sección de la clasificación de imágenes podemos seleccionar entre dos ejemplos muy representativos de las redes neuronales. Estos son el modelo entrenado con el conjunto de imágenes MNIST y un modelo de clasificación de imágenes genérico. Concretamente:",
         "1-list": {
-          "0": "MNIST, clasificador de imágenes que detecta números.",
-          "1": "Mobilenet, clasificador de imágenes pertenecientes a 1001 categorías."
+          "0": "MNIST, Clasificación de imágenes que detecta números.",
+          "1": "Mobilenet, clasificación de imágenes pertenecientes a 1001 categorías."
         },
         "1-description-2": "En el modelo de MNIST se permite seleccionar entre una lista de imágenes que contienen un número, dibujar en un canvas el número a predecir o subir una imagen de un número.",
-        "1-description-3": "En el modelo de MOBILENET se han incluido una lista de imágenes de ejemplo que pueden ser seleccionadas o podemos subir una imagen que la red neuronal clasificará.",
+        "1-description-3": "En el modelo de MobileNet se han incluido una lista de imágenes de ejemplo que pueden ser seleccionadas o podemos subir una imagen que la red neuronal clasificará.",
         "1-description-4": "Para ambos modelos el sistema mostrará la predicción con el porcentaje de precisión calculado."
       }
     },
@@ -915,6 +916,9 @@
           "adam": {
             "references": "Estimación adaptativa del mo \n (Adaptive moment estimation) \n (Velasco, 2020)",
             "description": "Es una combinación de <i>AdaGrad</i> y <i>RMSProp</i>. Se mantiene un factor de entrenamiento por parámetro y se calcula <i>RMSProp</i>, además cada factor de entrenamiento se ve afectado por el <i>momentum</i> del gradiente."
+          },
+          "adamax": {
+            "description": "Combina técnicas de <i>momentum</i> y adaptación del aprendizaje para acelerar la convergencia durante el entrenamiento de redes neuronales. Ajusta automáticamente la tasa de aprendizaje y utiliza un escalado de gradiente para evitar problemas de divergencia."
           }
         }
       },
@@ -972,6 +976,7 @@
         "text-1": "Se utilizan para evaluar el rendimiento del modelo de la red neuronal en un conjunto de datos de prueba. La función de métrica toma las predicciones realizadas por el modelo y las compara con los valores reales de los datos de prueba para determinar la precisión del modelo.",
         "text-2": "Existen diferentes tipos de funciones de métrica que se pueden utilizar en una red neuronal, dependiendo del tipo de problema que se esté abordando. Por ejemplo, para un problema de clasificación binaria, se podría utilizar la precisión (accuracy) como métrica, mientras que para un problema de regresión se podría utilizar el error cuadrático medio (mean squared error).",
         "text-3": "En resumen, una función de métrica es una herramienta importante para evaluar la capacidad de una red neuronal para realizar predicciones precisas en un conjunto de datos de prueba y para ayudar a ajustar los parámetros del modelo para mejorar su rendimiento.",
+        "text-4": "Nosotros usamos principalmente la función <i>accuracy</i>. En la clasificación multietiqueta, esta función calcula la precisión del subconjunto: el conjunto de etiquetas previsto para una muestra debe coincidir exactamente con el conjunto de etiquetas correspondiente en y",
         "table": {
           "BinaryAccuracy": {
             "references": "Precisión binaria <br />(Acervolima, s.f.)",

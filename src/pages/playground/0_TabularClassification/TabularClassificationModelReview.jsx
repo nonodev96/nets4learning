@@ -103,7 +103,6 @@ class TabularClassificationModelReview extends React.Component {
   }
 
   async init() {
-    console.log("e", this.props.dataset)
     const key = getKeyDatasetByID_TabularClassification(this.props.dataset)
     const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === key)
     if (!isValid) {
@@ -430,7 +429,7 @@ class TabularClassificationModelReview extends React.Component {
                             {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, values]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={4} xxl={4}>
                                 <Form.Group controlId={key_parameter}>
-                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>
+                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}: <b>{key_parameter}</b></Form.Label>
                                   <Form.Select aria-label="Default select example"
                                                size={"sm"}
                                                value={this.state.dataToTest[key_parameter]}
@@ -454,7 +453,7 @@ class TabularClassificationModelReview extends React.Component {
                             {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, value]) => {
                               return <Col key={key_parameter} xs={6} sm={6} md={4} xl={6} xxl={6}>
                                 <Form.Group controlId={key_parameter}>
-                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}</Form.Label>
+                                  <Form.Label>{this.translate("pages.playground.form.select-parameter")}: <b>{key_parameter}</b></Form.Label>
                                   <Form.Control type="number"
                                                 min={0}
                                                 size={"sm"}
@@ -484,7 +483,7 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group>
-                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")}: <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
                                                     size={"sm"}
@@ -503,7 +502,7 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
-                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")}: <b>{value.name}</b></Form.Label>
                                       <Form.Control type="number"
                                                     min={0}
                                                     size={"sm"}
@@ -521,7 +520,7 @@ class TabularClassificationModelReview extends React.Component {
                                   return <Col key={"form" + index} className={"mb-3"}
                                               xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
                                     <Form.Group controlId={value.name}>
-                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")} <b>{value.name}</b></Form.Label>
+                                      <Form.Label>{this.translate("pages.playground.form.select-parameter")}: <b>{value.name}</b></Form.Label>
                                       <Form.Select aria-label={this.translate("pages.playground.form.select-parameter")}
                                                    value={this.state.dataToTest[value.name] ?? 0}
                                                    size={"sm"}
