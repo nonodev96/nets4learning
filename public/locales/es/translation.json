@@ -359,7 +359,7 @@
         }
       },
       "face-detection": {
-        "title": "FACE DETECTOR - Geometría facial",
+        "title": "FaceDetector - Geometría facial",
         "description": {
           "text-0": "Este modelo es capaz de reconocer a partir de una imagen o vídeo de entrada diferentes partes de la cara, como los ojos, orejas, nariz y boca.",
           "details-input": {
@@ -383,7 +383,7 @@
         }
       },
       "face-mesh": {
-        "title": "FACE MESH - Malla facial",
+        "title": "FaceMesh - Malla facial",
         "description": {
           "text-0": "Este modelo a partir de una imagen o vídeo de entrada, es capaz de reconocer diferentes puntos de la cara para finalmente hacer una malla de la misma.",
           "details-input": {
@@ -459,8 +459,8 @@
         }
       },
       "list-models": {
-        "2-option-1": "Modelo - FACE DETECTOR - Geometría facial",
-        "2-option-2": "Modelo - FACE MESH - Malla facial",
+        "2-option-1": "Modelo - FaceDetector  - Geometría facial",
+        "2-option-2": "Modelo - FaceMesh - Malla facial",
         "2-option-3": "Modelo - MoveNet - Detector de articulaciones",
         "2-option-4": "Modelo - COCO SSD - Detector de objetos"
       }

@@ -1,4 +1,4 @@
-import { Accordion, Col, Row, Table } from "react-bootstrap";
+import { Accordion, Col, Row } from "react-bootstrap";
 import { Trans, useTranslation } from "react-i18next";
 import Latex from "react-latex-next";
 import React from "react";

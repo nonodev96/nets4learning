@@ -359,7 +359,7 @@
         }
       },
       "face-detection": {
-        "title": "FACE DETECTOR - Facial Geometry",
+        "title": "FaceDetector - Facial Geometry",
         "description": {
           "text-0": "This model is able to recognize from an entry image or video different parts of the face, such as eyes, ears, nose and mouth.",
           "details-input": {
@@ -383,7 +383,7 @@
         }
       },
       "face-mesh": {
-        "title": "FACE MESH - Facial Mesh",
+        "title": "FaceMesh  - Facial Mesh",
         "description": {
           "text-0": "This model from an input image or video is able to recognize different points of the face to finally make a mesh of it.",
           "details-input": {
@@ -459,8 +459,8 @@
         }
       },
       "list-models": {
-        "2-option-1": "Model - FACE DETECTOR - Facial Geometry",
-        "2-option-2": "Model - FACE MESH - Facial Mesh",
+        "2-option-1": "Model - FaceDetector  - Facial Geometry",
+        "2-option-2": "Model - FaceMesh  - Facial Mesh",
         "2-option-3": "Model - MoveNet - Joint detector",
         "2-option-4": "Model - COCO SSD - Object detector"
       }
