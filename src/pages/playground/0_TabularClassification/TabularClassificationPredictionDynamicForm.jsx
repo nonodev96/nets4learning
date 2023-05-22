@@ -51,6 +51,7 @@ export default function TabularClassificationPredictionDynamicForm(props) {
     plugins   : {
       legend: {
         position: "top",
+        display : false,
       },
       title : {
         display: true,
@@ -267,7 +268,19 @@ export default function TabularClassificationPredictionDynamicForm(props) {
                           }
                         </ul>
                         <Bar ref={ref_bar}
-                             options={bar_options}
+                             options={{
+                               responsive: true,
+                               plugins   : {
+                                 legend: {
+                                   position: "top",
+                                   display : false,
+                                 },
+                                 title : {
+                                   display: true,
+                                   text   : t("prediction"),
+                                 },
+                               },
+                             }}
                              data={{
                                labels  : [...predictionBar.labels],
                                datasets: [

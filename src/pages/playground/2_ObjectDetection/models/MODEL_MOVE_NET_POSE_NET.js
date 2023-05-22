@@ -3,11 +3,11 @@ import { Trans } from "react-i18next";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 
 export class MODEL_MOVE_NET_POSE_NET extends MODEL_OBJECT_DETECTION {
-  TITLE = "datasets-models.2-object-detection.move-net--pose-net.title"
-  static KEY = "MOVE-NET--POSE-NET"
+  TITLE = "datasets-models.2-object-detection.move-net--pose-net.title";
+  static KEY = "MOVE-NET--POSE-NET";
 
   DESCRIPTION() {
-    const prefix = "datasets-models.2-object-detection.move-net--pose-net.description."
+    const prefix = "datasets-models.2-object-detection.move-net--pose-net.description.";
     return <>
       <p><Trans i18nKey={prefix + "text-0"} /></p>
       <details>
@@ -28,19 +28,28 @@ export class MODEL_MOVE_NET_POSE_NET extends MODEL_OBJECT_DETECTION {
           <li>
             <Trans i18nKey={prefix + "details-references.list.0"}
                    components={{
-                     link1: <a href={"https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1"} target={"_blank"} rel="noreferrer">link</a>,
+                     link1: <a href={"https://tfhub.dev/google/movenet/multipose/lightning/1"} target={"_blank"} rel="noreferrer">link</a>,
+                   }} />
+
+            <Trans i18nKey={prefix + "details-references.list.1"}
+                   components={{
+                     link1: <a href={"https://tfhub.dev/google/movenet/multipose/lightning/1"} target={"_blank"} rel="noreferrer">link</a>,
                    }} />
           </li>
         </ol>
       </details>
-    </>
+    </>;
   }
 
   async enable_Model() {
     const model = poseDetection.SupportedModels.MoveNet;
-    // const moveNetModelConfig = {}
+    const moveNetModelConfig = {
+      modelType     : poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+      enableTracking: true,
+      trackerType   : poseDetection.TrackerType.BoundingBox,
+    };
 
-    return await poseDetection.createDetector(model);
+    return await poseDetection.createDetector(model, moveNetModelConfig);
   }
 
   render(ctx, poses) {

@@ -426,7 +426,8 @@
           "details-references": {
             "title": "References",
             "list": {
-              "0": "<link1> Paper </link1>"
+              "0": "<link1> Entry into the tensorflow repository </link1>",
+              "1": "<link1>TFHub model</link1>"
             }
           }
         }
@@ -542,7 +543,7 @@
       },
       "list-models": {
         "3-option-1": "Model - MNIST - Number Classification",
-        "3-option-2": "Model - MovileNet - Image Classifier",
+        "3-option-2": "Model - MobileNet - Image Classifier",
         "3-option-3": "Model - ResNet - Image classifier"
       }
     }

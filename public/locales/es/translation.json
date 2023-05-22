@@ -426,7 +426,8 @@
           "details-references": {
             "title": "Referencias",
             "list": {
-              "0": "<link1>Paper</link1>"
+              "0": "<link1>Entrada al repositorio de tensorflow</link1>",
+              "1": "<link1>Modelo de TFHub</link1>"
             }
           }
         }
@@ -542,7 +543,7 @@
       },
       "list-models": {
         "3-option-1": "Modelo - MNIST - Clasificación de números",
-        "3-option-2": "Modelo - MovileNet - Clasificación de imágenes",
+        "3-option-2": "Modelo - MobileNet - Clasificación de imágenes",
         "3-option-3": "Modelo - ResNet - Clasificación de imágenes"
       }
     }

@@ -28,7 +28,7 @@ export class MODEL_FACE_DETECTOR extends MODEL_OBJECT_DETECTION {
           <li>
             <Trans i18nKey={prefix + "details-references.list.0"}
                    components={{
-                     link1: <a href={"https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1"} target={"_blank"} rel="noreferrer">link</a>,
+                     link1: <a href={"https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1"} target={"_blank"} rel="noreferrer">link</a>,
                    }} />
           </li>
         </ol>

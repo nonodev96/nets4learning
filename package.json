@@ -1,7 +1,7 @@
 {
   "name": "tfg-nets4learning",
   "version": "0.8.0",
-  "homepage": "http://localhost:3000/nets4learning",
+  "homepage": ".",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -11,9 +11,11 @@
     "start:development": "sh -ac '. ./.env.development; npm run start'",
     "start:production": "sh -ac '. ./.env.production; npm run start'",
     "start:simidat": "sh -ac '. ./.env.simidat; npm run start'",
+    "start:android": "sh -ac '. ./.env.android; npm run start'",
     "build:development": "sh -ac '. ./.env.development; npm run build'",
     "build:production": "sh -ac '. ./.env.production; npm run build'",
-    "build:simidat": "sh -ac '. ./.env.simidat; npm run build'"
+    "build:simidat": "sh -ac '. ./.env.simidat; npm run build'",
+    "build:android": "sh -ac '. ./.env.android; npm run build'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
