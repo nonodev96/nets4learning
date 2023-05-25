@@ -35,6 +35,7 @@ export default function MenuSelectDataset() {
         // linear-regression
         console.warn("TODO")
         return <>
+          <option value={0}>{t("pages.menu-selection-dataset.1-linear-regression.csv")}</option>
         </>
       }
       case '2': {

@@ -92,22 +92,48 @@ export default function InitialMenu() {
         )
       case 1:
         return (
-          <Card className={"border-danger"}>
-            <Card.Header><h3>{t("pages.index.linear-regression.1-title")}</h3></Card.Header>
-            <Card.Body>
-              <Card.Text>
-                {t("pages.index.linear-regression.1-description-1")}
-              </Card.Text>
+          <>
+            <Card className={"border-danger"}>
+              <Card.Header><h3>{t("pages.index.linear-regression.1-title")}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>{t("pages.index.linear-regression.1-description-1")}</Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                    {t("pages.index.linear-regression.1-button")}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
 
-              <Link to={"/playground/linear-regression-description/"}>Description</Link>
-
-              <div className="d-flex gap-2 justify-content-center">
-                <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
-                  {t("pages.index.linear-regression.1-button")}
-                </Button>
-              </div>
-            </Card.Body>
-          </Card>
+            <Card className={"border-primary mt-3"}>
+              <Card.Header><h3>{t("pages.index.linear-regression.2-title")}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>{t("pages.index.linear-regression.2-description-1")}</Card.Text>
+                <Card.Text>{t("pages.index.linear-regression.2-description-2")}</Card.Text>
+                <Row>
+                  <Col>
+                    <ul>
+                      <li>{t("pages.index.linear-regression.2-description-list.1")}</li>
+                      <li>{t("pages.index.linear-regression.2-description-list.2")}</li>
+                      <li>{t("pages.index.linear-regression.2-description-list.3")}</li>
+                    </ul>
+                  </Col>
+                  <Col>
+                    <ul>
+                      <li>{t("pages.index.linear-regression.2-description-list.4")}</li>
+                      <li>{t("pages.index.linear-regression.2-description-list.5")}</li>
+                      <li>{t("pages.index.linear-regression.2-description-list.6")}</li>
+                    </ul>
+                  </Col>
+                </Row>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
+                    {t("pages.index.tabular-classification.2-button")}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
         )
       case 2:
         return (

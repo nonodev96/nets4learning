@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Trans } from "react-i18next";
-import { MODEL_BREAST_CANCER, MODEL_DIABETES, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "./models";
+import { MODEL_AUTO_MPG, MODEL_BREAST_CANCER, MODEL_DIABETES, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "./models";
 
 export default function LinearRegressionModelReview(props) {
 
@@ -13,6 +13,9 @@ export default function LinearRegressionModelReview(props) {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
     switch (dataset) {
+      case MODEL_AUTO_MPG.KEY:
+        setModel(new MODEL_AUTO_MPG());
+        break
       case MODEL_BREAST_CANCER.KEY:
         setModel(new MODEL_BREAST_CANCER());
         break
@@ -68,7 +71,6 @@ export default function LinearRegressionModelReview(props) {
                   <div id="plot_div"></div>
 
                 </Card.Body>
-                <Card.Footer className="text-muted">2 days ago</Card.Footer>
               </Card>
             </Col>
           </Row>

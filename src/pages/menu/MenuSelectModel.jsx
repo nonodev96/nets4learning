@@ -12,6 +12,7 @@ import {
   MODEL_STUDENT_PERFORMANCE,
   MODEL_WINE
 } from "../../DATA_MODEL";
+import { MODEL_AUTO_MPG } from "../playground/1_LinearRegression/models";
 
 export default function MenuSelectModel(_props) {
   const { id } = useParams()
@@ -43,17 +44,20 @@ export default function MenuSelectModel(_props) {
       case '1': {
         // linear-regression
         return <>
-          <option value={MODEL_BREAST_CANCER.KEY}>
+          <option value={MODEL_AUTO_MPG.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-1")}
           </option>
-          <option value={MODEL_DIABETES.KEY}>
+          <option value={MODEL_BREAST_CANCER.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-2")}
           </option>
-          <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
+          <option value={MODEL_DIABETES.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-3")}
           </option>
-          <option value={MODEL_WINE.KEY}>
+          <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-4")}
+          </option>
+          <option value={MODEL_WINE.KEY}>
+            {t("datasets-models.1-linear-regression.list-models.0-option-5")}
           </option>
         </>
       }
