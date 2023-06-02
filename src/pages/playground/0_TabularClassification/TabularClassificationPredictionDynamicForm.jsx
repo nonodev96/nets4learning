@@ -44,7 +44,7 @@ export default function TabularClassificationPredictionDynamicForm(props) {
   } = props;
 
   const { t } = useTranslation();
-  const prefix = "pages.playground.0-tabular-classification.generator.dynamic-form-dataset.";
+  const prefix = "pages.playground.generator.dynamic-form-dataset.";
   const ref_bar = useRef(0);
   const bar_options = {
     responsive: true,

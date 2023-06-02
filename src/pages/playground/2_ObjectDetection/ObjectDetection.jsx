@@ -7,7 +7,7 @@ import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Tra
 import * as alertHelper from "../../../utils/alertHelper"
 
 import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
-import GraphicRed from '../../../utils/graphicRed/GraphicRed'
+
 import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
@@ -15,6 +15,7 @@ import {
   TYPE_METRICS
 } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import { getKeyDatasetByID_TabularClassification } from "../../../DATA_MODEL"
+import N4LLayerDesign from "../../../components/neural-network/N4LLayerDesign";
 
 export default function ObjectDetection(props) {
   const { dataset } = props
@@ -466,14 +467,7 @@ export default function ObjectDetection(props) {
 
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
-            <Col xl={12}>
-              <Card>
-                <Card.Header><h3>Diseño de capas</h3></Card.Header>
-                <Card.Body>
-                  <GraphicRed layer={Layer} setActiveLayer={setActiveLayer} />
-                </Card.Body>
-              </Card>
-            </Col>
+            <N4LLayerDesign layers={[]}/>
           </Row>
 
           <Row className={"mt-3"}>

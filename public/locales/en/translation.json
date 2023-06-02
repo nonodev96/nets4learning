@@ -1,12 +1,14 @@
 {
   "welcome": "Welcome to Nets4learning",
   "welcome-2": "To continue select one of these disciplines",
-  "list_map": "<1> </1>",
-  "map_item": "<0> </0>",
+  "list_map": "<1></1>",
+  "layer-id": "Layer {{index}}",
+  "map_item": "<0></0>",
   "loading": "Loading",
   "upload": "Upload Image",
   "example-i": "Example {{i}}",
   "Files": "Files",
+  "wait-document": "Waiting for a document",
   "references": "References",
   "download": "Download",
   "equations": {
@@ -195,34 +197,34 @@
           "details-1": {
             "title": "Information",
             "list": {
-              "1": "<b> Buying: </b> Purchase price.",
-              "2": "<b> Maint: </b> Maintenance cost.",
-              "3": "<b> doors: </b> Number of doors.",
-              "4": "<b> Persians: </b> Number of places.",
-              "5": "<b> lug_boot: </b> Trunk size.",
-              "6": "<b> Safety: </b> Estimated vehicle security."
+              "1": "<b>buying:</b> Purchase price.",
+              "2": "<b>maint: </b> Maintenance cost.",
+              "3": "<b>doors: </b> Number of doors.",
+              "4": "<b>persons: </b> Number of places.",
+              "5": "<b>lug_boot: </b> Trunk size.",
+              "6": "<b>safety: </b> Estimated vehicle security."
             }
           },
           "details-2": {
             "title": "Input data",
             "text-1": "Characteristics of the car",
             "list": {
-              "1": "<b> Buying: </b> vhigh, high, med, low.",
-              "2": "<b> Maint: </b> vhigh, high, med, low.",
-              "3": "<b> doors: </b> 2, 3, 4, 5more.",
-              "4": "<b> Persians: </b> 2, 4, more.",
-              "5": "<b> Lug_Boot: </b> small, med, big.",
-              "6": "<b> Safety: </b> low, med, high."
+              "1": "<b>buying: </b> vhigh, high, med, low.",
+              "2": "<b>maint: </b> vhigh, high, med, low.",
+              "3": "<b>doors: </b> 2, 3, 4, 5more.",
+              "4": "<b>persons: </b> 2, 4, more.",
+              "5": "<b>lug_boot: </b> small, med, big.",
+              "6": "<b>safety: </b> low, med, high."
             }
           },
           "details-3": {
             "title": "Output data",
             "text-1": "Vehicle acceptance",
             "list": {
-              "1": "<b> unacc </b>: Inaccessible",
-              "2": "<b> acc </b>: Accessible",
-              "3": "<b> good </b>: Good",
-              "4": "<b> vgood </b>: Very good"
+              "1": "<b>unacc </b>: Inaccessible",
+              "2": "<b>acc </b>: Accessible",
+              "3": "<b>good </b>: Good",
+              "4": "<b>vgood </b>: Very good"
             }
           },
           "details-4": {
@@ -333,6 +335,48 @@
       }
     },
     "1-linear-regression": {
+      "auto-mpg": {
+        "title": "Auto MPG",
+        "description": {
+          "text-1": "The <i>AUTO MPG</i> dataset was taken from the StatLib library maintained at Carnegie Mellon University. The dataset was used at the 1983 American Statistical Association Exposition.",
+          "text-2": "The term \"Auto MPG\" refers to miles per gallon, a unit of fuel efficiency measurement commonly used in the United States. This measure indicates how many miles a vehicle can travel on one gallon of fuel. However, \"Auto MPG\" is an English term and there is no direct translation in Spanish.\n\nIn Spanish, terms such as \"consumo de combustible\" or \"rendimiento de combustible\" are often used to refer to the fuel efficiency of a car. These terms indicate how many kilometres or miles a vehicle can travel on one litre or gallon of fuel, respectively.\n\nIt is important to note that different countries use different units of measurement for fuel consumption. For example, in some places the litre per 100 kilometres travelled (L/100 km) is used to indicate fuel efficiency.",
+          "text-link": "For more information about this dataset, visit the <link1>ICS.UCI.edu repository.</link1>",
+          "details-1": {
+            "title": "Information",
+            "list": {
+              "1": "<b>MPG</b>: MPG is Miles Per Gallon. This is the amount of fuel consumed by the particular vehicle of an instance. This varable can also be used as the variable to be predicted for any car",
+              "2": "<b>cylinders</b>: This attribute describes the number of cylinders of each car. This is a discrete valued attribute",
+              "3": "<b>displacement</b>: This is another attibute of the vehicle which has a quantitative continous value describing the engine displacement",
+              "4": "<b>horsepower</b>: This attribute tells about the horsepower of a car and is a continous valued variable",
+              "5": "<b>weight</b>: This refers to the weight of each car which is a continous valued quantitative variable",
+              "6": "<b>acceleration</b>: The acceleration of the car",
+              "7": "<b>model year</b>: The year the model was released is mentioned in this attribute",
+              "8": "<b>origin</b>: The origin attribute has 3 discrete values. 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
+              "9": "<b>car name</b>: This is the name of the car in string"
+            }
+          },
+          "details-2": {
+            "title": "Input data",
+            "list": {
+              "1": "<b>MPG</b>: continuous",
+              "2": "<b>cylinders</b>: multi-valued discrete, 4, 6, 8",
+              "3": "<b>displacement</b>: continuous",
+              "4": "<b>horsepower</b>: continuous",
+              "5": "<b>weight</b>: continuous",
+              "6": "<b>acceleration</b>: continuous",
+              "7": "<b>model Year</b>: multi-valued discrete",
+              "8": "<b>origin</b>: multi-valued discrete, 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
+              "9": "<b>car name</b>: string (unique for each instance)"
+            }
+          },
+          "details-3": {
+            "title": "Output data",
+            "list": {
+              "1": "<b>MPG</b>: continuous"
+            }
+          }
+        }
+      },
       "breast-cancer": {
         "title": "Breast Cancer Wisconsin (Prognostic)"
       },
@@ -344,6 +388,20 @@
       },
       "wine": {
         "title": "Wine Quality"
+      },
+      "list-datasets": {
+        "1-auto-mpg": "Data set - Auto MPG",
+        "2-breast-cancer": "Data set - Breast cancer",
+        "3-diabetes": "Data set - Diabetes",
+        "4-student-performance": "Data set - Student performance",
+        "5-wine": "Data set - Wine"
+      },
+      "list-models": {
+        "1-auto-mpg": "Model - Auto MPG",
+        "2-breast-cancer": "Model - Breast cancer",
+        "3-diabetes": "Model - Diabetes",
+        "4-student-performance": "Model - Student performance",
+        "5-wine": "Model - Wine"
       }
     },
     "2-object-detection": {
@@ -426,7 +484,7 @@
           "details-references": {
             "title": "References",
             "list": {
-              "0": "<link1> Entry into the tensorflow repository </link1>",
+              "0": "<link1>Tensorflow repository entry</link1>",
               "1": "<link1>TFHub model</link1>"
             }
           }
@@ -566,7 +624,6 @@
           "5": "Define the loss function.",
           "6": "Define the metric function."
         },
-        "2-description-footer": null,
         "2-button": "Train a model"
       },
       "linear-regression": {
@@ -584,7 +641,6 @@
       "image-classification": {
         "1-title": "Image classification",
         "1-description-1": "The classification of images in the same way that the classical classification helps us to determine the class to which the dependent belongs according to one or more independent variables.",
-        "1-description-2": null,
         "1-button": "Pre-trained models"
       }
     },
@@ -597,7 +653,11 @@
       "form-label": "Select a dataset",
       "form-option-_-1": "Select a dataset",
       "form-upload-description": "Now if you wish you can load your own architecture, otherwise click on continuing and an architecture will be loaded by example default.",
-      "form-submit": "Continue"
+      "form-submit": "Continue",
+      "1-linear-regression": {
+        "csv": "Upload dataset - CSV",
+        "csv-text": "Upload a file with a dataset treated in <Oce> .CSV format </code>"
+      }
     },
     "menu-selection-model": {
       "form-description-1": "Select the trained model on which you are going to work.",
@@ -631,82 +691,8 @@
           "button-upload-your-model": "Load model"
         },
         "generator": {
-          "dataset": {
-            "title": "Data set",
-            "upload-dataset": "Upload data set",
-            "attributes": {
-              "title": "Attributes",
-              "int32": "Numeric",
-              "float32": "Decimal",
-              "string": "Text",
-              "label-encoder": "Label Encoder",
-              "one-hot-encoder": "ONE HOT Encoder",
-              "classes": "Classes"
-            }
-          },
-          "layers": {
-            "title": "Layer design",
-            "page-info": "You can visit the <link1> Netron.app"
-          },
-          "editor-layers": {
-            "title": "Layer editor",
-            "add-layer-start": "Add a layer to the start",
-            "add-layer-end": "Add a layer to the end",
-            "delete-layer": "Delete layer {{value}}",
-            "layer-id": "Layer {{value}}",
-            "units": "Layer neurons",
-            "units-placeholder": "Enter the number of cape neurons",
-            "activation-function-select": "Select the activation function",
-            "activation-function-info": "It will be the optimizer that will be used to activate the function"
-          },
-          "general-parameters": {
-            "title": "Hyper parameter editor",
-            "learning-rate": "Learning rate",
-            "learning-rate-placeholder": "Enter the learning rate",
-            "learning-rate-info": "A value between 0 and 100 (it is a percentage)",
-            "number-of-epochs": "Number of iterations",
-            "number-of-epochs-placeholder": "Number of iterations",
-            "number-of-epochs-info": "The higher it, the more training will be executed",
-            "train-rate": "Test set size",
-            "train-rate-placeholder": "Enter the size of the test bank",
-            "train-rate-info": "A value between 0 and 100 (it is a percentage)",
-            "optimizer-id": "Select the optimizer",
-            "optimizer-id-info": "It will be the optimizer that will be used to correct the error.",
-            "loss-id": "Select the loss function",
-            "loss-id-info": "It will be the function that will be used to evaluate the error of the neurons.",
-            "metrics-id": "Select the metric",
-            "metrics-id-info": "It will be the type of metric that will be used for training evaluation."
-          },
-          "models": {
-            "title": "Models",
-            "history-train": "Training history",
-            "train": "Training",
-            "button-submit": "Create and train model",
-            "open-visor": "Open visor",
-            "close-visor": "Close visor",
-            "export-current-model": "Export current model"
-          },
-          "table": {
-            "id": "Id",
-            "load": "Load",
-            "learning-rate": "Learning rate",
-            "number-of-epochs": "Nº of iterations",
-            "train-rate": "Train rate",
-            "layers": "Layers",
-            "optimizer-id": "Optimizer",
-            "loss-id": "Loss",
-            "metric-id": "Metrics",
-            "download": "Download"
-          },
-          "dynamic-form-dataset": {
-            "title": "Prediction",
-            "text-0": "Enter the values of each entry feature of the example to predict",
-            "select-option": "Select an option",
-            "input-vector": "Enter the vector to try",
-            "test-vector": "Vector to try"
-          },
           "manual": {
-            "title": "Manual",
+            "title": "Model Generator Manual",
             "details-edit-layers": {
               "title": "Editor of the Layers",
               "text-0": "You can edit the layers of the neuronal network, you can add as many as you want by pressing the \"Add layer\" button at the start or at the end.",
@@ -741,9 +727,7 @@
               "title": "Create and train model",
               "text-0": "Once all previous fields have been filled we can create the model by pressing the \"Create and train model\" button.",
               "text-1": "If we have trained the model with the metric function <i> Accuracy </i> two graphs will appear in the visor. The most relevant to us is that below, since at tensorflow.js, <i> ac </i> and <i> Val_acc </i> are evaluation metrics commonly used in training models of neural networks. <br /> <i> Acc </i> represents the precision (Accuracy) of the model in the training dataset. The precision is defined as the number of correct predictions divided by the total number of predictions. <br /> <i> Val_acc </i> represents the precision of the model in the validation dataset. Validation is used to evaluate the model capacity to generalize new data that has not been seen during training.",
-              "text-2": "The validation precision is important to detect the over juste (<i> over fitting </i>) of the model, which occurs when the model fits too much to training data and does not generalize well to new data.",
-              "text-3": null,
-              "text-4": null
+              "text-2": "The validation precision is important to detect the over juste (<i> over fitting </i>) of the model, which occurs when the model fits too much to training data and does not generalize well to new data."
             },
             "details-export-models": {
               "title": "Export model",
@@ -754,10 +738,89 @@
               "text-0": "The final form allows us to select the main characteristics used to determine the class.",
               "text-1": "By pressing the \"See Result\" button, from the input features of the element you get the prediction of its output class."
             }
-          },
-          "prediction": {
-            "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
           }
+        }
+      },
+      "generator": {
+        "dataset": {
+          "title": "Data set",
+          "upload-dataset": "Upload data set",
+          "attributes": {
+            "title": "Attributes",
+            "int32": "Numeric",
+            "float32": "Decimal",
+            "string": "Text",
+            "label-encoder": "Label Encoder",
+            "one-hot-encoder": "ONE HOT Encoder",
+            "classes": "Classes"
+          }
+        },
+        "layers": {
+          "title": "Layer design",
+          "page-info": "You can visit the <link1> Netron.app"
+        },
+        "editor-layers": {
+          "title": "Layer editor",
+          "add-layer-start": "Add a layer to the start",
+          "add-layer-end": "Add a layer to the end",
+          "delete-layer": "Delete layer {{value}}",
+          "layer-id": "Layer {{value}}",
+          "units": "Layer neurons",
+          "units-placeholder": "Enter the number of cape neurons",
+          "activation-function-select": "Select the activation function",
+          "activation-function-info": "It will be the optimizer that will be used to activate the function"
+        },
+        "general-parameters": {
+          "title": "Hyper parameter editor",
+          "learning-rate": "Learning rate",
+          "learning-rate-placeholder": "Enter the learning rate",
+          "learning-rate-info": "A value between 0 and 100 (it is a percentage)",
+          "number-of-epochs": "Number of iterations",
+          "number-of-epochs-placeholder": "Number of iterations",
+          "number-of-epochs-info": "The higher it, the more training will be executed",
+          "train-rate": "Test set size",
+          "train-rate-placeholder": "Enter the size of the test bank",
+          "train-rate-info": "A value between 0 and 100 (it is a percentage)",
+          "optimizer-id": "Select the optimizer",
+          "optimizer-id-info": "It will be the optimizer that will be used to correct the error.",
+          "loss-id": "Select the loss function",
+          "loss-id-info": "It will be the function that will be used to evaluate the error of the neurons.",
+          "metrics-id": "Select the metric",
+          "metrics-id-info": "It will be the type of metric that will be used for training evaluation."
+        },
+        "loaded": "Loaded",
+        "load": "Load",
+        "waiting-for-file": "Waiting for file",
+        "models": {
+          "title": "Models",
+          "history-train": "Training history",
+          "train": "Training",
+          "button-submit": "Create and train model",
+          "open-visor": "Open visor",
+          "close-visor": "Close visor",
+          "export-current-model": "Export current model"
+        },
+        "table": {
+          "id": "Id",
+          "load": "Load",
+          "learning-rate": "Learning rate",
+          "number-of-epochs": "Nº of iterations",
+          "train-rate": "Train rate",
+          "layers": "Layers",
+          "optimizer-id": "Optimizer",
+          "loss-id": "Loss",
+          "metric-id": "Metrics",
+          "download": "Download"
+        },
+        "dynamic-form-dataset": {
+          "title": "Prediction",
+          "text-0": "Enter the values of each entry feature of the example to predict",
+          "select-option": "Select an option",
+          "input-vector": "Enter the vector to try",
+          "test-vector": "Vector to try"
+        },
+        "prediction": {
+          "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
         }
       }
     },
@@ -787,10 +850,6 @@
         "title": "Tabular classification",
         "1-title": "Pre-trained models",
         "1-description-1": "We must access the pre-questioned models section and select one of the available ones.",
-        "1-list-options": {
-          "0": null,
-          "1": null
-        },
         "1-description-2": "The tool has a list of representative examples that allow to alter the characteristics form.",
         "1-description-3": "When accessing the tool section on the models we can edit the characteristics of the element to predict. The tool has a dynamic form that allows changing the types of neuronal network input data.",
         "2-title": "Train models",
@@ -927,7 +986,6 @@
         "title": "Loss functions",
         "text-1": "In automatic learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how well the model conforms to training data.",
         "text-2": "The objective of an automatic learning algorithm is to minimize the loss function, which means finding the model set of the model that best suits training data. Therefore, the choice of loss function is very important, since it can affect the model ability to correctly learn patterns in the data and make precise predictions in new data.",
-        "text-3": null,
         "text-4": "In tensorflow.js there are different loss functions and the application of each of them depends on the type of problem we want to face. Some examples are shown below:",
         "table": {
           "AbsoluteDifference": {
@@ -1031,5 +1089,13 @@
     "drop": "Drop",
     "ignored": "Ignore",
     "submit": "Process dataframe"
+  },
+  "joyride": {
+    "back": "Back",
+    "close": "Close",
+    "last": "Last",
+    "next": "Next",
+    "open": "Open",
+    "skip": "Skip"
   }
 }

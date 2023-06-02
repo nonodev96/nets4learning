@@ -11,18 +11,18 @@ import json_cars from "../../../core/constants/template_car.json";
 import json_iris from "../../../core/constants/template_iris.json";
 import json_lymphatics from "../../../core/constants/template_lymphatcs.json";
 import * as alertHelper from "../../../utils/alertHelper";
-import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
-import GraphicRed from "../../../utils/graphicRed/GraphicRed";
 import TabularClassificationForm from "./TabularClassificationForm";
 import TabularClassificationManual from "./TabularClassificationManual";
 import TabularClassificationPredictionDynamicForm from "./TabularClassificationPredictionDynamicForm";
-import N4LTablePagination from "../../../components/table/N4LTablePagination";
 
 import { isProduction } from "../../../utils/utils";
 import { Trans, useTranslation } from "react-i18next";
 import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 import * as dfd from "danfojs";
 import * as errorUtils from "../../../core/error-utils";
+import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
+import N4LLayerDesign from "../../../components/neural-network/N4LLayerDesign";
+import N4LTablePagination from "../../../components/table/N4LTablePagination";
 
 const DEFAULT_LEARNING_RATE = 1;
 const DEFAULT_NUMBER_EPOCHS = 20;
@@ -86,7 +86,8 @@ export default function TabularClassification(props) {
   const dataset_key = getKeyDatasetByID_TabularClassification(dataset);
 
   const { t } = useTranslation();
-  const prefix = "pages.playground.0-tabular-classification.generator.";
+  const prefix = "pages.playground.generator.";
+  const prefixManual = "pages.playground.0-tabular-classification.generator.";
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== "production";
 
@@ -98,7 +99,7 @@ export default function TabularClassification(props) {
   //
   // Definition of the model architecture
   // 2.1. Selecting the layers of the architecture
-  // 2.2. Selecting the hyper parameters
+  // 2.2. Selecting the hyperparameters
   // 2.X. Training the model
   //
   // Selecting the trained model
@@ -525,11 +526,11 @@ export default function TabularClassification(props) {
     const list_encoded_classes = currentDataProcessed.classes.map(({ name }, index) => {
       const class_target_id = currentObjEncoder[columnNameTarget].$labels[name].toString()
       return <Trans key={index}
-                    i18nKey="pages.playground.0-tabular-classification.generator.prediction.class_id_name"
+                    i18nKey="pages.playground.generator.prediction.class_id_name"
                     values={{ name, class_target_id }} />
     });
 
-    setPredictionBar((old) => {
+    setPredictionBar((_prevState) => {
       return {
         list_encoded_classes: [...list_encoded_classes],
         labels              : [...labels],
@@ -681,13 +682,9 @@ export default function TabularClassification(props) {
             <Accordion defaultActiveKey={dataset_key === MODEL_UPLOAD ? "description_dataset" : ""}>
               <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={prefix + "manual.title"} /></h3>
+                  <h3><Trans i18nKey={prefixManual + "manual.title"} /></h3>
                 </Accordion.Header>
-                <Accordion.Body>
-                  {/* TabularClassificationCustomDatasetManual */}
-                  <TabularClassificationManual />
-
-                </Accordion.Body>
+                <Accordion.Body><TabularClassificationManual /></Accordion.Body>
               </Accordion.Item>
 
               <Accordion.Item key={"1"} eventKey={"description_dataset"}>
@@ -714,7 +711,12 @@ export default function TabularClassification(props) {
                                                    setCustomDataSet_JSON={setCustomDataSet_JSON}
                                                    setLayers={setLayers} />
                       </>}
-
+                      {!dataframeOriginal && <>
+                        <p className="placeholder-glow">
+                          <small className={"text-muted"}>{t("pages.playground.generator.waiting-for-file")}</small>
+                          <span className="placeholder col-12"></span>
+                        </p>
+                      </>}
                     </>,
                   }[dataset]}
                   {dataset !== "0" ? (
@@ -789,21 +791,7 @@ export default function TabularClassification(props) {
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
             <Col xl={12}>
-              <Card>
-                <Card.Header>
-                  <h3><Trans i18nKey={prefix + "layers.title"} /></h3>
-                </Card.Header>
-                <Card.Body>
-                  <GraphicRed layer={layers}
-                              tipo={0} />
-                  <Card.Text className={"text-muted text-center"}>
-                    <Trans i18nKey={prefix + "layers.page-info"}
-                           components={{
-                             link1: <a href="https://netron.app/">Text</a>,
-                           }} />
-                  </Card.Text>
-                </Card.Body>
-              </Card>
+              <N4LLayerDesign layers={layers} />
             </Col>
 
             {/* SPECIFIC PARAMETERS */}
@@ -1076,7 +1064,7 @@ export default function TabularClassification(props) {
                                   size={"sm"}
                                   disabled={value.isLoad}
                                   onClick={() => handleClick_LoadGeneratedModel(value)}>
-                            {value.isLoad ? "Cargado" : "Cargar"}
+                            {value.isLoad ? t("pages.playground.generator.loaded") : t("pages.playground.generator.load")}
                           </Button>
                         </td>
                         <td>{value.learningRate * 100}%</td>

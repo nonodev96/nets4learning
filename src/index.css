@@ -60,3 +60,15 @@ code {
     justify-content: space-around;
   }
 }
+
+
+pre.highlight {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+.highlight_string { color: green; }
+.highlight_number { color: darkorange; }
+.highlight_boolean { color: blue; }
+.highlight_null { color: magenta; }
+.highlight_key { color: red; }

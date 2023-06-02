@@ -2,20 +2,14 @@ import "./N4LTablePagination.css"
 import React, { useState } from "react"
 import { Pagination, Table } from "react-bootstrap"
 
-export default function N4LTablePagination({ data_head, data_body }) {
+export default function N4LTablePagination({ data_head, data_body, rows_per_page = 10 }) {
 
   const [activePage, setActivePage] = useState(0);
 
-  const rowsPerPage = 10
+  const rowsPerPage = rows_per_page
   const rowsCount = data_body.length;
   const startPage = 0
   const pageCount = Math.ceil(rowsCount / rowsPerPage)
-
-  //const countDigit = (n) => {
-  //  if (n / 10 === 0)
-  //    return 0;
-  //  return 1 + countDigit(parseInt(n / 10));
-  //}
 
   const handleClick_ChangePage = (pageNumber) => {
     setActivePage(pageNumber);

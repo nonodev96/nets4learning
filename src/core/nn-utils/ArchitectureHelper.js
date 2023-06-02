@@ -51,8 +51,8 @@ export async function createTabularClassificationCustomDataSet_upload(params, t)
   // Creamos las métricas que van a aparecer en los gráficos
   const fit_callbacks_metrics_labels = ["loss", "val_loss", "acc", "val_acc"];
   const fit_callbacks_container = {
-    name  : t("pages.playground.0-tabular-classification.generator.models.history-train"),
-    tab   : t("pages.playground.0-tabular-classification.generator.models.train"),
+    name  : t("pages.playground.generator.models.history-train"),
+    tab   : t("pages.playground.generator.models.train"),
     styles: { height: "1000px" },
   };
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
@@ -135,8 +135,8 @@ export async function createTabularClassificationCustomDataSet(params, t) {
   // Creamos las métricas que van a aparecer en los gráficos
   const fit_callbacks_metrics_labels = ["loss", "val_loss", "acc", "val_acc"];
   const fit_callbacks_container = {
-    name  : t("pages.playground.0-tabular-classification.generator.models.history-train"),
-    tab   : t("pages.playground.0-tabular-classification.generator.models.train"),
+    name  : t("pages.playground.generator.models.history-train"),
+    tab   : t("pages.playground.generator.models.train"),
     styles: { height: "1000px" },
   };
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {

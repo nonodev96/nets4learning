@@ -34,9 +34,7 @@ export default function MenuSelectModel(_props) {
       case '0': {
         // tabular-classification
         return <>
-          <option value={1}>
-            {t("datasets-models.0-tabular-classification.list-models.0-option-1")}
-          </option>
+          <option value={1}>{t("datasets-models.0-tabular-classification.list-models.0-option-1")}</option>
           <option value={2}>{t("datasets-models.0-tabular-classification.list-models.0-option-2")}</option>
           <option value={3}>{t("datasets-models.0-tabular-classification.list-models.0-option-3")}</option>
         </>

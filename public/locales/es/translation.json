@@ -2,11 +2,13 @@
   "welcome": "Bienvenido a Nets4Learning",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
   "list_map": "<1></1>",
+  "layer-id": "Layer {{index}}",
   "map_item": "<0></0>",
   "loading": "Cargando",
   "upload": "Subir",
   "example-i": "Ejemplo {{i}}",
   "Files": "Ficheros",
+  "wait-document": "Esperando documento",
   "references": "References",
   "download": "Descargar",
   "equations": {
@@ -333,6 +335,48 @@
       }
     },
     "1-linear-regression": {
+      "auto-mpg": {
+        "title": "Rendimiento de combustible",
+        "description": {
+          "text-1": "El conjunto de datos <i>AUTO MPG</i> se tomó de la biblioteca StatLib que se mantiene en la Universidad Carnegie Mellon. El conjunto de datos se utilizó en la Exposición de la Asociación Estadounidense de Estadística de 1983.",
+          "text-2": "El término \"Auto MPG\" se refiere a las millas por galón, una unidad de medida de eficiencia de combustible utilizada comúnmente en los Estados Unidos. Esta medida indica cuántas millas puede recorrer un vehículo con un galón de combustible. Sin embargo, \"Auto MPG\" es un término en inglés y no hay una traducción directa en español.\n\nEn español, para referirse a la eficiencia de combustible de un automóvil, se suelen utilizar términos como \"consumo de combustible\" o \"rendimiento de combustible\". Estos términos indican cuántos kilómetros o millas puede recorrer un vehículo con un litro o galón de combustible, respectivamente.\n\nEs importante tener en cuenta que en diferentes países se utilizan unidades de medida distintas para el consumo de combustible. Por ejemplo, en algunos lugares se utiliza el litro por cada 100 kilómetros recorridos (L/100 km) para indicar la eficiencia de combustible.",
+          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>ics.uci.edu</link1>.",
+          "details-1": {
+            "title": "Información",
+            "list": {
+              "1": "<b>MPG</b>: MPG son las siglas en inglés de Millas por Galón. Es la cantidad de combustible consumido por el vehículo particular de una instancia. Esta variable también se puede utilizar como la variable a predecir para cualquier coche.",
+              "2": "<b>cylinders</b>: Este atributo describe el número de cilindros de cada coche. Se trata de un atributo de valor discreto",
+              "3": "<b>displacement</b>: Este es otro atributo del vehículo que tiene un valor cuantitativo continuo que describe el desplazamiento del motor",
+              "4": "<b>horsepower</b>: Este atributo informa sobre los caballos de un coche y es una variable de valor continuo",
+              "5": "<b>weight</b>: Se refiere al peso de cada coche que es una variable cuantitativa de valor continuo",
+              "6": "<b>acceleration</b>: La aceleración del coche",
+              "7": "<b>model year</b>: El año de lanzamiento del modelo",
+              "8": "<b>origin</b>: El atributo origen tiene 3 valores discretos. 1 se refiere a coches fabricados en EE.UU., 2 para Europa y 3 para Asia",
+              "9": "<b>car name</b>: Es el nombre del coche en cadena."
+            }
+          },
+          "details-2": {
+            "title": "Datos de entrada",
+            "list": {
+              "1": "<b>MPG</b>: continuo",
+              "2": "<b>cylinders</b>: discreto multivalor, 4, 6, 8",
+              "3": "<b>displacement</b>: continuo",
+              "4": "<b>horsepower</b>: continua",
+              "5": "<b>weight</b>: continuo",
+              "6": "<b>acceleration</b>: continua",
+              "7": "<b>model Year</b>: discreto de varios valores",
+              "8": "<b>origin</b>: discreto multivalor, 1 se refiere a automóviles fabricados en EE. UU., 2 para Europa y 3 para Asia",
+              "9": "<b>car name</b>: texto (única para cada instancia)"
+            }
+          },
+          "details-3": {
+            "title": "Datos de salida",
+            "list": {
+              "1": "<b>MPG</b>: continuo"
+            }
+          }
+        }
+      },
       "breast-cancer": {
         "title": "Cáncer de mama Wisconsin (pronóstico)"
       },
@@ -344,6 +388,20 @@
       },
       "wine": {
         "title": "Calidad del vino"
+      },
+      "list-datasets": {
+        "1-auto-mpg": "Conjunto de datos - Auto MPG",
+        "2-breast-cancer": "Conjunto de datos - Breast cancer",
+        "3-diabetes": "Conjunto de datos - Diabetes",
+        "4-student-performance": "Conjunto de datos - Student performance",
+        "5-wine": "Conjunto de datos - Wine"
+      },
+      "list-models": {
+        "1-auto-mpg": "Modelo - Auto MPG",
+        "2-breast-cancer": "Modelo - Breast cancer",
+        "3-diabetes": "Modelo - Diabetes",
+        "4-student-performance": "Modelo - Student performance",
+        "5-wine": "Modelo - Wine"
       }
     },
     "2-object-detection": {
@@ -566,7 +624,6 @@
           "5": "Definir la función de perdida.",
           "6": "Definir la métrica para la evaluación."
         },
-        "2-description-footer": null,
         "2-button": "Entrenar un modelo"
       },
       "linear-regression": {
@@ -584,7 +641,6 @@
       "image-classification": {
         "1-title": "Clasificación de imágenes",
         "1-description-1": "La clasificación de imágenes de igual forma que la clasificación tabular sirve para determinar la clase a la que pertenece la imagen dependiendo de los elementos que la forman.",
-        "1-description-2": null,
         "1-button": "Modelos pre-entrenados"
       }
     },
@@ -597,7 +653,11 @@
       "form-label": "Selecciona un conjunto de datos",
       "form-option-_-1": "Selecciona un conjunto de datos",
       "form-upload-description": "Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y se cargará una arquitectura por defecto de ejemplo.",
-      "form-submit": "Continuar"
+      "form-submit": "Continuar",
+      "1-linear-regression": {
+        "csv": "Subir conjunto de datos - CSV",
+        "csv-text": "Sube un fichero con un conjunto de datos tratado en formato <code>.csv</code>"
+      }
     },
     "menu-selection-model": {
       "form-description-1": "Selecciona a continuación el modelo entrenado con el que se va a trabajar.",
@@ -631,80 +691,6 @@
           "button-upload-your-model": "Cargar modelo"
         },
         "generator": {
-          "dataset": {
-            "title": "Conjunto de datos",
-            "upload-dataset": "Subir conjunto de datos.",
-            "attributes": {
-              "title": "Atributos",
-              "int32": "Numérico",
-              "float32": "Decimal",
-              "string": "Texto",
-              "label-encoder": "Label encoder",
-              "one-hot-encoder": "OneHot encoder",
-              "classes": "Clases"
-            }
-          },
-          "layers": {
-            "title": "Diseño de capas",
-            "page-info": "Puedes visitar la web <link1>netron.app</link1> para visualizar la topología al completo"
-          },
-          "editor-layers": {
-            "title": "Editor de capas",
-            "add-layer-start": "Añadir capa al principio",
-            "add-layer-end": "Añadir capa al final",
-            "delete-layer": "Eliminar capa {{value}}",
-            "layer-id": "Capa {{value}}",
-            "units": "Neuronas de la capa",
-            "units-placeholder": "Introduce el número de neuronas de la capa",
-            "activation-function-select": "Selecciona la función de activación",
-            "activation-function-info": "Será el optimizador que se usará para activar la función"
-          },
-          "general-parameters": {
-            "title": "Editor de hiperparámetros",
-            "learning-rate": "Tasa de aprendizaje",
-            "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
-            "learning-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
-            "number-of-epochs": "Número de iteraciones",
-            "number-of-epochs-placeholder": "Número de iteraciones",
-            "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
-            "train-rate": "Tamaño del conjunto de pruebas",
-            "train-rate-placeholder": "Introduce el tamaño del banco de pruebas",
-            "train-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
-            "optimizer-id": "Selecciona el optimizador",
-            "optimizer-id-info": "Será el optimizador que se usará para corregir el error.",
-            "loss-id": "Selecciona la función de pérdida",
-            "loss-id-info": "Será la función que se usará para evaluar el error de las neuronas.",
-            "metrics-id": "Selecciona la métrica",
-            "metrics-id-info": "Será el tipo de métrica que se usará para la evaluación durante entrenamiento."
-          },
-          "models": {
-            "title": "Modelos",
-            "history-train": "Historial del entrenamiento",
-            "train": "Entrenamiento",
-            "button-submit": "Crear y entrenar modelo",
-            "open-visor": "Abrir visor",
-            "close-visor": "Cerrar visor",
-            "export-current-model": "Exportar modelo actual"
-          },
-          "table": {
-            "id": "ID",
-            "load": "Cargar",
-            "learning-rate": "Aprendizaje",
-            "number-of-epochs": "Nª de iteraciones",
-            "train-rate": "Pruebas",
-            "layers": "Capas",
-            "optimizer-id": "Optimizador",
-            "loss-id": "Perdida",
-            "metric-id": "Métrica",
-            "download": "Descargar"
-          },
-          "dynamic-form-dataset": {
-            "title": "Predicción",
-            "text-0": "Introduce los valores de cada característica de entrada del ejemplo a predecir",
-            "select-option": "Selecciona una opción",
-            "input-vector": "Introduce el vector a probar",
-            "test-vector": "Vector a probar"
-          },
           "manual": {
             "title": "Manual del generador de modelos",
             "details-edit-layers": {
@@ -741,9 +727,7 @@
               "title": "Crear y entrenar modelo",
               "text-0": "Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón \"Crear y entrenar modelo\".",
               "text-1": "Si se pulsa el botón \"Abrir Visor\" se muestran dos gráficas. La gráfica superior muestra la evolución de la función de pérdida durante el entrenamiento. La gráfica inferior muestra la evolución de la métrica de evaluación <i>accuracy<i>. En las gráficas el color azul representa la evolución de los valores en el conjunto de entrenamiento y el color naranja representa las medidas para el conjunto de prueba.",
-              "text-2": "La precisión de validación es importante para detectar el sobre ajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos.",
-              "text-3": null,
-              "text-4": null
+              "text-2": "La precisión de validación es importante para detectar el sobre ajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos."
             },
             "details-export-models": {
               "title": "Exportar modelo",
@@ -754,10 +738,89 @@
               "text-0": "El formulario final nos permite seleccionar las características principales que se usan para determinar la clase.",
               "text-1": "Al pulsar el botón \"Ver resultado\",  a partir de las características de entrada del elemento se obtiene la predicción de su clase de salida."
             }
-          },
-          "prediction": {
-            "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
           }
+        }
+      },
+      "generator": {
+        "dataset": {
+          "title": "Conjunto de datos",
+          "upload-dataset": "Subir conjunto de datos",
+          "attributes": {
+            "title": "Atributos",
+            "int32": "Numérico",
+            "float32": "Decimal",
+            "string": "Texto",
+            "label-encoder": "Label encoder",
+            "one-hot-encoder": "OneHot encoder",
+            "classes": "Clases"
+          }
+        },
+        "layers": {
+          "title": "Diseño de capas",
+          "page-info": "Puedes visitar la web <link1>netron.app</link1> para visualizar la topología al completo"
+        },
+        "editor-layers": {
+          "title": "Editor de capas",
+          "add-layer-start": "Añadir capa al principio",
+          "add-layer-end": "Añadir capa al final",
+          "delete-layer": "Eliminar capa {{value}}",
+          "layer-id": "Capa {{value}}",
+          "units": "Neuronas de la capa",
+          "units-placeholder": "Introduce el número de neuronas de la capa",
+          "activation-function-select": "Selecciona la función de activación",
+          "activation-function-info": "Será el optimizador que se usará para activar la función"
+        },
+        "general-parameters": {
+          "title": "Editor de hiperparámetros",
+          "learning-rate": "Tasa de aprendizaje",
+          "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
+          "learning-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
+          "number-of-epochs": "Número de iteraciones",
+          "number-of-epochs-placeholder": "Número de iteraciones",
+          "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
+          "train-rate": "Tamaño del conjunto de pruebas",
+          "train-rate-placeholder": "Introduce el tamaño del banco de pruebas",
+          "train-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
+          "optimizer-id": "Selecciona el optimizador",
+          "optimizer-id-info": "Será el optimizador que se usará para corregir el error.",
+          "loss-id": "Selecciona la función de pérdida",
+          "loss-id-info": "Será la función que se usará para evaluar el error de las neuronas.",
+          "metrics-id": "Selecciona la métrica",
+          "metrics-id-info": "Será el tipo de métrica que se usará para la evaluación durante entrenamiento."
+        },
+        "loaded": "Cargado",
+        "load": "Cargar",
+        "waiting-for-file": "Esperando archivo",
+        "models": {
+          "title": "Modelos",
+          "history-train": "Historial del entrenamiento",
+          "train": "Entrenamiento",
+          "button-submit": "Crear y entrenar modelo",
+          "open-visor": "Abrir visor",
+          "close-visor": "Cerrar visor",
+          "export-current-model": "Exportar modelo actual"
+        },
+        "table": {
+          "id": "ID",
+          "load": "Cargar",
+          "learning-rate": "Aprendizaje",
+          "number-of-epochs": "Nª de iteraciones",
+          "train-rate": "Pruebas",
+          "layers": "Capas",
+          "optimizer-id": "Optimizador",
+          "loss-id": "Perdida",
+          "metric-id": "Métrica",
+          "download": "Descargar"
+        },
+        "dynamic-form-dataset": {
+          "title": "Predicción",
+          "text-0": "Introduce los valores de cada característica de entrada del ejemplo a predecir",
+          "select-option": "Selecciona una opción",
+          "input-vector": "Introduce el vector a probar",
+          "test-vector": "Vector a probar"
+        },
+        "prediction": {
+          "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
         }
       }
     },
@@ -787,10 +850,6 @@
         "title": "Clasificación tabular",
         "1-title": "Modelos pre-entrenados",
         "1-description-1": "Debemos acceder a la sección de modelos pre-entrenados y seleccionar uno de los disponibles.",
-        "1-list-options": {
-          "0": null,
-          "1": null
-        },
         "1-description-2": "La herramienta cuenta con una lista de ejemplos representativos que permiten alterar el formulario de características.",
         "1-description-3": "Al acceder a la sección de la herramienta en los modelos podremos editar las características de los elemento a predecir. La herramienta cuenta con formulario dinámico que permite cambiar los tipos de datos de entrada de la red neuronal.",
         "2-title": "Entrenar modelos",
@@ -927,7 +986,6 @@
         "title": "Funciones de pérdida",
         "text-1": "En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada. En otras palabras, la función de pérdida mide qué tan bien el modelo se ajusta a los datos de entrenamiento.",
         "text-2": "El objetivo de un algoritmo de aprendizaje automático es minimizar la función de pérdida, lo que significa encontrar el conjunto de parámetros del modelo que mejor se ajuste a los datos de entrenamiento. Por lo tanto, la elección de la función de pérdida es muy importante, ya que puede afectar la capacidad del modelo para aprender correctamente los patrones en los datos y hacer predicciones precisas en nuevos datos.",
-        "text-3": null,
         "text-4": "En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar. Algunos ejemplos se muestran a continuación:",
         "table": {
           "AbsoluteDifference": {
@@ -1031,5 +1089,13 @@
     "drop": "Descartar",
     "ignored": "Ignorar",
     "submit": "Procesar dataframe"
+  },
+  "joyride": {
+    "back": "Atras",
+    "close": "Cerrar",
+    "last": "Anterior",
+    "next": "Siguiente",
+    "open": "Abrir",
+    "skip": "Saltar"
   }
 }

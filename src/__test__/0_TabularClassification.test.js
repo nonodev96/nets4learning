@@ -12,7 +12,7 @@ describe('TabularClassification Review', () => {
 
   test('renders TabularClassification Review 0', () => {
     renderWithRouter(<TabularClassificationModelReview dataset="0" />)
-    expect(screen.getAllByText(/pages.playground.0-tabular-classification.0_upload.upload-your-model/i)[0]).toBeInTheDocument()
+    expect(screen.getAllByText(/pages.playground.0_upload.upload-your-model/i)[0]).toBeInTheDocument()
   });
 
 });

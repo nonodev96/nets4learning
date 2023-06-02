@@ -9,7 +9,6 @@ import ReactGA from "react-ga4";
 
 import * as TrainMNIST from './custom/Train_MNIST'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
-import GraphicRed from '../../../utils/graphicRed/GraphicRed'
 import LayerEdit from './LayerEdit'
 import * as alertHelper from "../../../utils/alertHelper";
 import * as ImageClassificationUtils from "./utils/utils";
@@ -22,6 +21,7 @@ import {
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../core/nn-utils/ArchitectureTypesHelper";
 
 import { MODEL_IMAGE_CLASSIFICATION } from "./models/_model";
+import N4LLayerDesign from "../../../components/neural-network/N4LLayerDesign";
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1
@@ -36,7 +36,7 @@ export default function ImageClassification(props) {
   const { t } = useTranslation()
   const [modelInfo, set_ModelInfo] = useState(new MODEL_IMAGE_CLASSIFICATION(t));
 
-  const prefix = "pages.playground.0-tabular-classification.generator.";
+  const prefix = "pages.playground.generator.";
 
   // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
 
@@ -244,14 +244,16 @@ export default function ImageClassification(props) {
       let arr28 = [] //Al llegar a 28 posiciones se pone en 'arr' como un nuevo índice
       for (let p = 0; p < imgData.data.length; p += 4) {
         let valor = imgData.data[p + 3] / 255
-        arr28.push([valor]) //Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
+        arr28.push([valor])
+        // Agregar al arr28 y normalizar a 0-1. Aparte guarda dentro de un arreglo en el indice 0... again
         if (arr28.length === 28) {
           arr.push(arr28)
           arr28 = []
         }
       }
 
-      arr = [arr] //Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
+      arr = [arr]
+      // Meter el arreglo en otro arreglo porque si no tio tensorflow se enoja >:(
       //Nah básicamente Debe estar en un arreglo nuevo en el índice 0, por ser un tensor4d en forma 1, 28, 28, 1
       const tensor4 = tf.tensor4d(arr)
       const resultados = Model.predict(tensor4).dataSync()
@@ -265,7 +267,7 @@ export default function ImageClassification(props) {
   }
 
   const handleClick_DownloadModel = () => {
-    Model.save('downloads://my-model').then(()=>{
+    Model.save('downloads://my-model').then(() => {
       console.log("downloaded my-model")
     })
   }
@@ -530,18 +532,13 @@ export default function ImageClassification(props) {
       {/* EDITOR */}
       <Form onSubmit={handleSubmit_Play} id={"ImageClassification"}>
         <Container className={"mt-3"}>
+
           <Row>
             <Col xl={12}>
-              <Card>
-                <Card.Header>
-                  <h3><Trans i18nKey={prefix + "layers.title"} /></h3>
-                </Card.Header>
-                <Card.Body>
-                  <GraphicRed layer={Layers} setActiveLayer={setActiveLayer} tipo={1} />
-                </Card.Body>
-              </Card>
+              <N4LLayerDesign layers={[]} />
             </Col>
           </Row>
+
           <Row>
             {/* Layers PARAMETERS */}
             <Col className={"mt-3"} xl={6}>
