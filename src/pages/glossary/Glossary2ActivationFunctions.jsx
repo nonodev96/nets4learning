@@ -63,7 +63,10 @@ export default function Glossary2ActivationFunctions() {
             </tbody>
           </Table>
 
-          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">TensorFlow JS. Layers / Advanced Activation</a>
+          <Trans i18nKey={"references"}/>
+          <ol>
+            <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">TensorFlow JS. Layers / Advanced Activation</a></li>
+          </ol>
 
         </Accordion.Body>
       </Accordion.Item>

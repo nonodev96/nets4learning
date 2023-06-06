@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import i18n from "../i18n";
-import LinearRegressionModelReview from "../pages/playground/1_LinearRegression/LinearRegressionModelReview";
+import LinearRegression_ModelReview from "../pages/playground/1_LinearRegression/LinearRegression_ModelReview";
 import LinearRegression from "../pages/playground/1_LinearRegression/LinearRegression";
 
 describe('LinearRegression', () => {
@@ -10,7 +10,7 @@ describe('LinearRegression', () => {
   });
 
   test('renders LinearRegression Review', () => {
-    render(<LinearRegressionModelReview dataset="0" />)
+    render(<LinearRegression_ModelReview dataset="0" />)
     expect(screen.getAllByText(/LinearRegression Review/i)[0]).toBeInTheDocument()
   });
 

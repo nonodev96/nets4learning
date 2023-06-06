@@ -17,7 +17,7 @@ import TabularClassificationPredictionDynamicForm from "./TabularClassificationP
 
 import { isProduction } from "../../../utils/utils";
 import { Trans, useTranslation } from "react-i18next";
-import { MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
+import { I_MODEL_TABULAR_CLASSIFICATION } from "./models/_model";
 import * as dfd from "danfojs";
 import * as errorUtils from "../../../core/error-utils";
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
@@ -173,7 +173,7 @@ export default function TabularClassification(props) {
   const [customDataSet_JSON, setCustomDataSet_JSON] = useState(/** @type CustomDataset_t */   null);
 
   // Class && Controllers
-  const [modelInfo, set_ModelInfo] = useState(new MODEL_TABULAR_CLASSIFICATION(t));
+  const [modelInfo, set_ModelInfo] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t));
 
   // Prediction
   const [predictionBar, setPredictionBar] = useState({
@@ -1074,8 +1074,8 @@ export default function TabularClassification(props) {
                           {value.layerList.map((value, index) => {
                             return (
                               <span key={index} style={{ fontFamily: "monospace" }}>
-                                  <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br />
-                                </span>
+                                <small>{value.units.toString().padStart(2, "0")} - {value.activation}</small><br />
+                              </span>
                             );
                           })}
                         </td>

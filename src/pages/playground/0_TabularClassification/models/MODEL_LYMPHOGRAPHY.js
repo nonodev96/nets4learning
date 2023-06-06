@@ -1,8 +1,8 @@
 import * as tf from "@tensorflow/tfjs";
-import { MODEL_TABULAR_CLASSIFICATION } from "./_model";
+import { I_MODEL_TABULAR_CLASSIFICATION } from "./_model";
 import { Trans } from "react-i18next";
 
-export class MODEL_LYMPHOGRAPHY extends MODEL_TABULAR_CLASSIFICATION {
+export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   static KEY = "LYMPHOGRAPHY"
   static URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
   static URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"

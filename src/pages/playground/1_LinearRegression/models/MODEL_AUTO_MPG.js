@@ -9,6 +9,7 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   static KEY = "AUTO_MPG"
   static URL = "https://archive.ics.uci.edu/ml/datasets/auto+mpg"
   i18n_TITLE = "datasets-models.1-linear-regression.auto-mpg.title"
+  _KEY = "AUTO_MPG"
 
 
   async dataframe() {
@@ -164,28 +165,6 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     return {
       run       : true,
       continuous: true,
-      callback  : (e) => {
-        console.log("callback", e)
-      },
-      locale    : {
-        back : this.t("joyride.back"),
-        close: this.t("joyride.close"),
-        last : this.t("joyride.last"),
-        next : this.t("joyride.next"),
-        open : this.t("joyride.open"),
-        skip : this.t("joyride.skip")
-      },
-      style     : {
-        options: {
-          arrowColor     : '#e3ffeb',
-          backgroundColor: '#e3ffeb',
-          overlayColor   : 'rgba(79, 26, 0, 0.4)',
-          primaryColor   : '#000',
-          textColor      : '#004a14',
-          width          : 900,
-          zIndex         : 1000,
-        }
-      },
       steps     : [
         {
           target : '.my-step-1',
@@ -199,7 +178,13 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         {
           target : '.my-step-3',
           locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          content: 'This another awesome feature!',
+          content: <>
+            <div class="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
+              <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
+                <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+              </audio>
+            </div>
+          </>,
         },
       ]
     };

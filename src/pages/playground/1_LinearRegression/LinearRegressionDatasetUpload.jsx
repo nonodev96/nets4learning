@@ -1,7 +1,7 @@
-import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import LinearRegressionDatasetForm from "./LinearRegressionDatasetForm";
+import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
+import React from "react"
+import { useTranslation } from "react-i18next"
+import LinearRegressionDatasetForm from "./LinearRegressionDatasetForm"
 
 export default function LinearRegressionDatasetUpload({ dataset, i_model, tmpModel, setTmpModel }) {
 

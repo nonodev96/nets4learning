@@ -77,8 +77,11 @@ export default function Glossary3LossFunctions() {
             </tr>
             </tbody>
           </Table>
-          
-          <Trans i18nKey={"references"}/>: <a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Training-Losses">TensorFlow JS. Training / Losses</a>
+
+          <Trans i18nKey={"references"} />
+          <ol>
+            <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Training-Losses">TensorFlow JS. Training / Losses</a></li>
+          </ol>
         </Accordion.Body>
       </Accordion.Item>
       {process.env.REACT_APP_ENVIRONMENT === "development" && <>

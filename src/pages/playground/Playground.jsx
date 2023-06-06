@@ -5,16 +5,16 @@ import { Col, Container, Row } from "react-bootstrap";
 
 import NotFoundPage from "../notFound/NotFoundPage";
 
-import TabularClassificationModelReview from "./0_TabularClassification/TabularClassificationModelReview";
 import TabularClassification from "./0_TabularClassification/TabularClassification";
+import TabularClassification_ModelReview from "./0_TabularClassification/TabularClassification_ModelReview";
 
-import LinearRegressionModelReview from "./1_LinearRegression/LinearRegressionModelReview";
 import LinearRegression from "./1_LinearRegression/LinearRegression";
+import LinearRegression_ModelReview from "./1_LinearRegression/LinearRegression_ModelReview";
 
 import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
 
-import ImageClassificationModelReview from "./3_ImageClassification/ImageClassificationModelReview";
 import ImageClassification from "./3_ImageClassification/ImageClassification";
+import ImageClassificationModelReview from "./3_ImageClassification/ImageClassificationModelReview";
 
 
 import { useTranslation } from "react-i18next";
@@ -26,14 +26,14 @@ export default function Playground() {
     switch (id.toString()) {
       case "0": {
         if (option === "0") {
-          return <TabularClassificationModelReview dataset={example} />;
+          return <TabularClassification_ModelReview dataset={example} />;
         } else {
           return <TabularClassification dataset={example} />;
         }
       }
       case "1": {
         if (option === "0") {
-          return <LinearRegressionModelReview dataset={example} />
+          return <LinearRegression_ModelReview dataset={example} />
         } else {
           return <LinearRegression dataset={example} />
         }

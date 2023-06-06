@@ -6,6 +6,7 @@ import I_MODEL_LINEAR_REGRESSION from "./_model";
 export default class MODEL_DIABETES extends I_MODEL_LINEAR_REGRESSION{
 
   static KEY = "DIABETES"
+  _KEY = "DIABETES"
   i18n_TITLE = "datasets-models.1-linear-regression.diabetes.title"
   URL = "https://github.com/jbrownlee/Datasets/blob/master/pima-indians-diabetes.names"
 
@@ -19,6 +20,10 @@ export default class MODEL_DIABETES extends I_MODEL_LINEAR_REGRESSION{
     return <>
 
     </>
+  }
+
+  JOYRIDE() {
+    return super.JOYRIDE();
   }
 
   async dataframe() {
