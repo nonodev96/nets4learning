@@ -610,7 +610,7 @@
     "index": {
       "tabular-classification": {
         "1-title": "Clasificación tabular",
-        "1-description-1": "La clasificación es una técnica para determinar la clase a la que pertenece un elemento (variable dependiente) a partir de sus características (variables independientes).",
+        "1-description-1": "La clasificación es una tarea para determinar la clase a la que pertenece un elemento (variable dependiente) a partir de sus características (variables independientes).",
         "1-description-2": "Es una tarea predictiva que tiene como salida una variable discreta cuyos valores son las diferentes clases a las que puede pertenecer el elemento a clasificar.",
         "1-button": "Modelos pre-entrenados",
         "2-title": "Diseñar, crear y editar una arquitectura para clasificar",
@@ -755,6 +755,12 @@
             "classes": "Clases"
           }
         },
+        "layer-design": "Diseño de capas",
+        "neural_network_modes": {
+          "title": "Modos de visualización",
+          "compact": "Modo compacto",
+          "extend": "Modo extendido"
+        },
         "layers": {
           "title": "Diseño de capas",
           "page-info": "Puedes visitar la web <link1>netron.app</link1> para visualizar la topología al completo"
@@ -786,7 +792,13 @@
           "loss-id": "Selecciona la función de pérdida",
           "loss-id-info": "Será la función que se usará para evaluar el error de las neuronas.",
           "metrics-id": "Selecciona la métrica",
-          "metrics-id-info": "Será el tipo de métrica que se usará para la evaluación durante entrenamiento."
+          "metrics-id-info": "Será el tipo de métrica que se usará para la evaluación durante entrenamiento.",
+          "test-size": "Tamaño del conjunto de pruebas",
+          "test-size-placeholder": "Tamaño del conjunto de pruebas",
+          "test-size-info": "Valor entre 0 y 100 (es un porcentaje) del tamaño del conjunto de pruebas",
+          "add-metric": "Añadir función de métrica",
+          "metric-id-select": "Selecciona la función de métrica",
+          "metric-id-info": "Será una de las funciones de métrica"
         },
         "loaded": "Cargado",
         "load": "Cargar",
@@ -821,6 +833,13 @@
         },
         "prediction": {
           "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
+        }
+      },
+      "1-linear-regression": {
+        "generator": {
+          "manual": {
+            "title": "Manual del generador de modelos"
+          }
         }
       }
     },

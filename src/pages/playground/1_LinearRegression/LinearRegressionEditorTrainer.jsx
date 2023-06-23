@@ -8,16 +8,16 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
 
   // 1 - Inf(1000)
   const DEFAULT_NUMBER_OF_EPOCHS = 10
-  // 0 - 1
-  const DEFAULT_LEARNING_RATE = 0.01
-  // 0 - 1
-  const DEFAULT_TEST_SIZE = 0.01
+  // 0 - 1 --> 0 - 100
+  const DEFAULT_LEARNING_RATE = 1
+  // 0 - 1 --> 0 - 100
+  const DEFAULT_TEST_SIZE = 10
   // TYPE_OPTIMIZER.key
   const DEFAULT_OPTIMIZER = "rmsprop"
   // TYPE_LOSSES.key
   const DEFAULT_LOSS = "meanSquaredError"
   // TYPE_METRICS.key
-  const DEFAULT_METRIC = "meanSquaredError"
+  // const DEFAULT_METRIC = "meanSquaredError"
 
   const prefix = "pages.playground.generator.general-parameters."
   const { t } = useTranslation()
@@ -60,11 +60,6 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
 
   const handlerClick_AddMetric_Start = () => {
     const new_metric = "meanSquaredError"
-    change_params_training("list_id_metrics", [new_metric, ...tmpModel.params_training.list_id_metrics])
-  }
-
-  const handlerClick_AddMetric_End = () => {
-    const new_metric = "meanAbsoluteError"
     change_params_training("list_id_metrics", [...tmpModel.params_training.list_id_metrics, new_metric])
   }
 
@@ -87,13 +82,7 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
           <Button size={"sm"}
                   variant={"outline-primary"}
                   onClick={handlerClick_AddMetric_Start}>
-            <Trans i18nKey={prefix + "add-metric-start"} />
-          </Button>
-          <Button size={"sm"}
-                  className={"ms-3"}
-                  variant={"outline-primary"}
-                  onClick={handlerClick_AddMetric_End}>
-            <Trans i18nKey={prefix + "add-metric-end"} />
+            <Trans i18nKey={prefix + "add-metric"} />
           </Button>
         </div>
       </Card.Header>
@@ -104,7 +93,7 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
             <Trans i18nKey={prefix + "learning-rate"} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={100}
+                        min={1} max={100} step={1}
                         placeholder={t(prefix + "learning-rate-placeholder")}
                         defaultValue={DEFAULT_LEARNING_RATE}
                         onChange={(e) => {
@@ -117,12 +106,12 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
           </Form.Text>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formTrainer">
+        <Form.Group className="mb-3" controlId="formTrainer_n_of_epochs">
           <Form.Label>
             <Trans i18nKey={prefix + "number-of-epochs"} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={1000}
+                        min={1} max={1000} step={1}
                         placeholder={t(prefix + "number-of-epochs-placeholder")}
                         defaultValue={DEFAULT_NUMBER_OF_EPOCHS}
                         onChange={(e) => {
@@ -135,12 +124,12 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
           </Form.Text>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formTrainer">
+        <Form.Group className="mb-3" controlId="formTrainer_train_rate">
           <Form.Label>
             <Trans i18nKey={prefix + "train-rate"} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={100}
+                        min={1} max={100} step={1}
                         placeholder={t(prefix + "train-rate-placeholder")}
                         defaultValue={DEFAULT_TEST_SIZE}
                         onChange={(e) => {

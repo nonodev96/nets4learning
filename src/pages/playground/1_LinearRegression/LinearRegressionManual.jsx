@@ -1,9 +1,9 @@
 import { Trans, useTranslation } from "react-i18next"
-import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS, Step } from 'react-joyride';
+import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "react-bootstrap";
 
-export default function LinearRegressionManual({ i_model, JoyrideButton }) {
+export default function LinearRegressionManual({ i_model }) {
 
   const prefixManual = "pages.playground.1-linear-regression.generator.";
   const { t } = useTranslation()
@@ -32,20 +32,18 @@ export default function LinearRegressionManual({ i_model, JoyrideButton }) {
 
   useEffect(() => {
     setJoyride(i_model.JOYRIDE())
+
+    if (localStorage.getItem("linear-regression.joyride-" + i_model._KEY) !== null) {
+      localStorage.setItem("linear-regression.joyride-" + i_model._KEY, JSON.stringify({ run: true }))
+    } else {
+      console.debug("èlse linear-regression.joyride-" + i_model._KEY)
+    }
   }, [i_model])
 
   useEffect(() => {
     const interval = setInterval(() => {
       updateScreenJoyride()
     }, 5000);
-
-
-    if (localStorage.getItem("linear-regression.joyride-" + i_model._KEY) !== null) {
-      localStorage.setItem("linear-regression.joyride-" + i_model._KEY, JSON.stringify({ run: true }))
-    } else {
-
-    }
-
 
     return () => clearInterval(interval);
   }, []);
@@ -61,8 +59,8 @@ export default function LinearRegressionManual({ i_model, JoyrideButton }) {
               variant={"outline-primary"}
               onClick={() => {
                 console.log(joyrideRef.current)
-                joyrideRef.current.store.reset()
-                joyrideRef.current.store.start()
+                joyrideRef.current?.store.reset()
+                joyrideRef.current?.store.start()
               }}>Joyride Button</Button>
     </>
   }
@@ -75,7 +73,8 @@ export default function LinearRegressionManual({ i_model, JoyrideButton }) {
     if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
       setJoyride({ ...joyride, run: false, stepIndex: 0 });
     } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
-      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+      console.log({ nextStepIndex })
 
       if (index === 0) {
 
@@ -103,23 +102,23 @@ export default function LinearRegressionManual({ i_model, JoyrideButton }) {
     {joyrideButton()}
     <br />
 
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} /><br />
-    <Trans i18nKey={"manual."} />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} /><br />
+    <Trans i18nKey={prefixManual + "TEXT_1"} />
   </>
 }

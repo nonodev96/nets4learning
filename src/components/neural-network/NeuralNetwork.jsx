@@ -62,6 +62,9 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
         setGraphState(graph)
         break
       }
+      default:
+        console.error("Error, option not valid")
+        break
     }
   }, [JSON.stringify(layers), mode])
 
@@ -123,16 +126,16 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
       <Col className={"mynetwork"} id={id_parent} xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
         <VisGraph graph={graphState}
                   options={{
-                    layout    : {
+                    layout: {
                       hierarchical: {
                         enabled  : true,
                         direction: 'LR',
                       },
                     },
-                    edges     : {
+                    edges : {
                       color: '#000000',
                     },
-                    height    : options.height + "px",
+                    height: options.height + "px",
                     // width     : options.width + "px"
                   }}
                   events={events}

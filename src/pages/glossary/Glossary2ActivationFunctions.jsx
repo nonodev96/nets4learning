@@ -4,14 +4,53 @@ import { Trans, useTranslation } from "react-i18next";
 import Latex from "react-latex-next";
 import React from "react";
 import IMGLinear from "./assets/Linear.png"
-import IMGTanh from "./assets/Tanh.png"
-import IMGLeakyReLU from "./assets/LeakyReLu.png"
-import IMGRelu from "./assets/ReLu.png"
+import IMGLeakyReLU from "./assets/LeakyReLU.png"
+import IMGHardSigmoid from "./assets/Hardsigmoid.png"
+import IMGRelU from "./assets/ReLU.png"
+import IMGRelU6 from "./assets/ReLU6.png"
+import IMGSELU from "./assets/SELU.png"
+import IMGELU from "./assets/ELU.png"
 import IMGSigmoid from "./assets/Sigmoid.png"
+import IMGTanh from "./assets/Tanh.png"
+import IMGMish from "./assets/Mish.png"
+import IMGSoftPlus from "./assets/Softplus.png"
 
 export default function Glossary2ActivationFunctions() {
 
   const { t } = useTranslation()
+
+  const activationsFunctions = [
+    // Linear Layers
+    {
+      i18n_title_section: "Linear Layers",
+      layers            : [
+        { i18n_title: "Linear", img: IMGLinear, latex: "$$ \\begin{split} R(z,m) = \\begin{Bmatrix} z*m \\end{Bmatrix} \\end{split} $$" },
+      ]
+    },
+    // Non-linear Activations (weighted sum, nonlinearity)
+    {
+      i18n_title_section: "Non-linear Activations (weighted sum, nonlinearity)",
+      layers            : [
+        { i18n_title: "ELU", img: IMGELU, latex: "$$ \\begin{split} ELU(x) = \\begin{Bmatrix} x & x > 0 \\\\ \\alpha * (exp(x) - 1) & x \\leq 0 \\end{Bmatrix}\\end{split} $$" },
+        { i18n_title: "Sigmoid", img: IMGSigmoid, latex: "$$ Sigmoid(z) = \\frac{1} {1 + e^{-z}} $$" },
+        { i18n_title: "ReLU", img: IMGRelU, latex: "$$ ReLU(z) = max(0, z) $$" },
+        { i18n_title: "ReLU6", img: IMGRelU6, latex: "$$ ReLU6(x) = min(max(0,x),6) $$" },
+        { i18n_title: "LeakyReLU", img: IMGLeakyReLU, latex: "$$ \\begin{split} L(z) = \\begin{Bmatrix} z & z > 0 \\\\ \\alpha * z & z \\leq 0 \\end{Bmatrix}\\end{split} $$" },
+        { i18n_title: "Hardsigmoid", img: IMGHardSigmoid, latex: "$$ \\begin{split} H(x) = \\begin{Bmatrix} 0 & x \\leq -3 \\\\ 1 & x \\leq +3 \\\\ x/6 + 1/2 & otherwise \\end{Bmatrix}\\end{split} $$" },
+        { i18n_title: "Tanh", img: IMGTanh, latex: "$$ T(z) = \\frac{e^{z} - e^{-z}}{e^{z} + e^{-z}} $$" },
+        { i18n_title: "SoftPlus", img: IMGSoftPlus, latex: "$$ Softplus(x) = \\frac{1}{\\beta} \\log(1 + \\exp(\\beta * x)) $$" },
+        { i18n_title: "Mish", img: IMGMish, latex: "$$ Mish(x) = x ∗ Tanh(Softplus(x)) $$" },
+        { i18n_title: "SELU", img: IMGSELU, latex: "$$ SELU(x)=scale * (max(0, x)+min(0,\\alpha * (exp(x) − 1))) $$" },
+      ]
+    },
+    // Non-linear Activations
+    {
+      i18n_title_section: "Non-linear Activations (other)",
+      layers            : [
+        { i18n_title: "Softmax", img: false, latex: "$$ \\sigma(z_i) = \\frac{e^{z_{i}}}{\\sum_{j=1}^K e^{z_{j}}} \\ \\ \\ for\\ i=1,2,\\dots,K $$" },
+      ]
+    }
+  ]
 
   return <>
     <Accordion defaultValue={""} defaultActiveKey={""}>
@@ -63,7 +102,7 @@ export default function Glossary2ActivationFunctions() {
             </tbody>
           </Table>
 
-          <Trans i18nKey={"references"}/>
+          <Trans i18nKey={"references"} />
           <ol>
             <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">TensorFlow JS. Layers / Advanced Activation</a></li>
           </ol>
@@ -74,8 +113,38 @@ export default function Glossary2ActivationFunctions() {
         <Accordion.Item eventKey={"equations-activation"}>
           <Accordion.Header><h3>{t("equations.title-activation")}</h3></Accordion.Header>
           <Accordion.Body>
+            {activationsFunctions.map((section, index)=>{
+              return <>
+                <h4 className={"text-center text-muted"}>{section.i18n_title_section}</h4>
+                <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4} className={"mb-3"}>
+                  {section.layers.map((value, index) => {
+                    return <Col key={index}>
+                      <Row>
+                        <Col>
+                          <h4 className={"text-lg-center"}>{value.i18n_title}</h4>
+                          {value.img !== false ?
+                            <div><img src={value.img} alt="linear-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
+                            :
+                            <div className="img-n4l-glossary"></div>
+                          }
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col><p><Latex>{value.latex}</Latex></p></Col>
+                      </Row>
+                    </Col>
+                  })}
+                </Row>
+              </>
+              })
+
+            }
             <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>
 
+            </Row>
+
+            {/*
+            <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>
               <Col>
                 <Row>
                   <Col>
@@ -99,7 +168,7 @@ export default function Glossary2ActivationFunctions() {
                 </Row>
                 <Row>
                   <Col>
-                    <p><Latex>{"$$ S(z) = \\frac{1} {1 + e^{-z}}$$"}</Latex></p>
+                    <p><Latex>{"$$ S(z) = \\frac{1} {1 + e^{-z}} $$"}</Latex></p>
                   </Col>
                 </Row>
               </Col>
@@ -107,13 +176,27 @@ export default function Glossary2ActivationFunctions() {
               <Col>
                 <Row>
                   <Col>
-                    <h4 className={"text-lg-center"}>Relu</h4>
-                    <div><img src={IMGRelu} alt="relu-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
+                    <h4 className={"text-lg-center"}>ReLU</h4>
+                    <div><img src={IMGRelU} alt="relu-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
                   </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <p><Latex>{"$$ ReLu(z) = max(0, z)$$"}</Latex></p>
+                    <p><Latex>{"$$ ReLu(z) = max(0, z) $$"}</Latex></p>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col>
+                <Row>
+                  <Col>
+                    <h4 className={"text-lg-center"}>ReLU6</h4>
+                    <div><img src={IMGRelU6} alt="relu6-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <p><Latex>{"$$ ReLU6(x) = min(max(0,x),6) $$"}</Latex></p>
                   </Col>
                 </Row>
               </Col>
@@ -149,6 +232,34 @@ export default function Glossary2ActivationFunctions() {
               <Col>
                 <Row>
                   <Col>
+                    <h4 className={"text-lg-center"}>SoftPlus</h4>
+                    <div><img src={IMGSoftPlus} alt="tanh-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <p><Latex>{"$$ Softplus(x) = \\frac{1}{\\beta} \\log(1 + \\exp(\\beta * x)) $$"}</Latex></p>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col>
+                <Row>
+                  <Col>
+                    <h4 className={"text-lg-center"}>Mish</h4>
+                    <div><img src={IMGMish} alt="mish-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <p><Latex>{"$$ Mish(x) = x ∗ Tanh(Softplus(x)) $$"}</Latex></p>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col>
+                <Row>
+                  <Col>
                     <h4 className={"text-lg-center"}>Softmax</h4>
                     <div className="img-n4l-glossary"></div>
                   </Col>
@@ -160,6 +271,7 @@ export default function Glossary2ActivationFunctions() {
                 </Row>
               </Col>
             </Row>
+            */}
           </Accordion.Body>
         </Accordion.Item>
       </>}

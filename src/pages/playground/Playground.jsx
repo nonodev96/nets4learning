@@ -6,10 +6,10 @@ import { Col, Container, Row } from "react-bootstrap";
 import NotFoundPage from "../notFound/NotFoundPage";
 
 import TabularClassification from "./0_TabularClassification/TabularClassification";
-import TabularClassification_ModelReview from "./0_TabularClassification/TabularClassification_ModelReview";
+import TabularClassificationModelReview from "./0_TabularClassification/ModelReviewTabularClassification";
 
 import LinearRegression from "./1_LinearRegression/LinearRegression";
-import LinearRegression_ModelReview from "./1_LinearRegression/LinearRegression_ModelReview";
+import ModelReviewLinearRegression from "./1_LinearRegression/ModelReviewLinearRegression";
 
 import ObjectDetectionModelReview from "./2_ObjectDetection/ObjectDetectionModelReview";
 
@@ -26,14 +26,14 @@ export default function Playground() {
     switch (id.toString()) {
       case "0": {
         if (option === "0") {
-          return <TabularClassification_ModelReview dataset={example} />;
+          return <TabularClassificationModelReview dataset={example} />;
         } else {
           return <TabularClassification dataset={example} />;
         }
       }
       case "1": {
         if (option === "0") {
-          return <LinearRegression_ModelReview dataset={example} />
+          return <ModelReviewLinearRegression dataset={example} />
         } else {
           return <LinearRegression dataset={example} />
         }

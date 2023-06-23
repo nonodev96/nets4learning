@@ -390,18 +390,20 @@
         "title": "Wine Quality"
       },
       "list-datasets": {
-        "1-auto-mpg": "Data set - Auto MPG",
-        "2-breast-cancer": "Data set - Breast cancer",
-        "3-diabetes": "Data set - Diabetes",
-        "4-student-performance": "Data set - Student performance",
-        "5-wine": "Data set - Wine"
+        "1-salary": "Data set - Salary",
+        "2-auto-mpg": "Data set - Auto MPG",
+        "3-boston-housing": "Data set - Boston Housing",
+        "4-breast-cancer": "Data set - Breast cancer",
+        "5-student-performance": "Data set - Student performance",
+        "6-wine": "Data set - Wine"
       },
       "list-models": {
+        "1-salary": "Model - Salary",
         "1-auto-mpg": "Model - Auto MPG",
-        "2-breast-cancer": "Model - Breast cancer",
-        "3-diabetes": "Model - Diabetes",
-        "4-student-performance": "Model - Student performance",
-        "5-wine": "Model - Wine"
+        "3-boston-housing": "Model - Boston Housing",
+        "4-breast-cancer": "Model - Breast cancer",
+        "5-student-performance": "Model - Student performance",
+        "6-wine": "Model - Wine"
       }
     },
     "2-object-detection": {
@@ -610,10 +612,10 @@
     "index": {
       "tabular-classification": {
         "1-title": "Tabular classification",
-        "1-description-1": "The classification is a technique to determine the class to which an element (dependent variable) belongs from its characteristics (independent variables).",
+        "1-description-1": "Classification is a task to determine the class to which an element (dependent variable) belongs from its characteristics (independent variables).",
         "1-description-2": "It is a predictive task that has a discrete variable whose values are the different classes to which the element to be classified can belong.",
         "1-button": "Pre-trained models",
-        "2-title": "Design, create and edit an architecture to classify",
+        "2-title": "Design, create and edit an architecture network",
         "2-description-1": "Through this tool we can create a neuronal network to classify multi-label data.",
         "2-description-2": "To design, create, train and evaluate a personalized architecture, we must:",
         "2-description-list": {
@@ -755,6 +757,12 @@
             "classes": "Classes"
           }
         },
+        "layer-design": "Layer design",
+        "neural_network_modes": {
+          "title": "Visualization modes",
+          "compact": "Compact mode",
+          "extend": "Extended mode"
+        },
         "layers": {
           "title": "Layer design",
           "page-info": "You can visit the <link1> Netron.app"
@@ -786,7 +794,13 @@
           "loss-id": "Select the loss function",
           "loss-id-info": "It will be the function that will be used to evaluate the error of the neurons.",
           "metrics-id": "Select the metric",
-          "metrics-id-info": "It will be the type of metric that will be used for training evaluation."
+          "metrics-id-info": "It will be the type of metric that will be used for training evaluation.",
+          "test-size": "Test set size",
+          "test-size-placeholder": "Test set size",
+          "test-size-info": "Value between 0 and 100 (is a percentage) of the size of the test set",
+          "add-metric": "Add metric function",
+          "metric-id-select": "Select the metric function",
+          "metric-id-info": "It will be one of the metric functions"
         },
         "loaded": "Loaded",
         "load": "Load",
@@ -821,6 +835,13 @@
         },
         "prediction": {
           "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
+        }
+      },
+      "1-linear-regression": {
+        "generator": {
+          "manual": {
+            "title": "Model generator manual"
+          }
         }
       }
     },

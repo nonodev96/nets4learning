@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import * as alertHelper from '../../utils/alertHelper'
 import { useTranslation } from "react-i18next";
-import { MODEL_AUTO_MPG, MODEL_BREAST_CANCER, MODEL_DIABETES, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "../playground/1_LinearRegression/models";
+import { MODEL_SALARY, MODEL_AUTO_MPG, MODEL_BOSTON_HOUSING, MODEL_BREAST_CANCER, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "../playground/1_LinearRegression/models";
 import { MODEL_UPLOAD } from "../../DATA_MODEL";
 
 export default function MenuSelectDataset() {
@@ -39,20 +39,23 @@ export default function MenuSelectDataset() {
           <option value={MODEL_UPLOAD}>
             {t("pages.menu-selection-dataset.1-linear-regression.csv")}
           </option>
+          <option value={MODEL_SALARY.KEY}>
+            {t("datasets-models.1-linear-regression.list-datasets.1-salary")}
+          </option>
           <option value={MODEL_AUTO_MPG.KEY}>
-            {t("datasets-models.1-linear-regression.list-datasets.1-auto-mpg")}
+            {t("datasets-models.1-linear-regression.list-datasets.2-auto-mpg")}
+          </option>
+          <option value={MODEL_BOSTON_HOUSING.KEY}>
+            {t("datasets-models.1-linear-regression.list-datasets.3-boston-housing")}
           </option>
           <option value={MODEL_BREAST_CANCER.KEY}>
-            {t("datasets-models.1-linear-regression.list-datasets.2-breast-cancer")}
-          </option>
-          <option value={MODEL_DIABETES.KEY}>
-            {t("datasets-models.1-linear-regression.list-datasets.3-diabetes")}
+            {t("datasets-models.1-linear-regression.list-datasets.4-breast-cancer")}
           </option>
           <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
-            {t("datasets-models.1-linear-regression.list-datasets.4-student-performance")}
+            {t("datasets-models.1-linear-regression.list-datasets.5-student-performance")}
           </option>
           <option value={MODEL_WINE.KEY}>
-            {t("datasets-models.1-linear-regression.list-datasets.5-wine")}
+            {t("datasets-models.1-linear-regression.list-datasets.6-wine")}
           </option>
         </>
       }

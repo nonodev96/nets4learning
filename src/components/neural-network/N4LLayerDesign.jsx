@@ -16,7 +16,7 @@ export default function N4LLayerDesign({ layers }) {
 
   return <>
     <Card>
-      <Card.Header className={"d-flex align-items-center"}>
+      <Card.Header className={"d-flex align-items-center justify-content-between"}>
         <h3><Trans i18nKey={prefix + "layer-design"} /></h3>
         <div className={"ms-3"}>
           <Form.Group controlId={"mode"}>
