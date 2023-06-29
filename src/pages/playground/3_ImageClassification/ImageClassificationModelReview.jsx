@@ -14,7 +14,7 @@ import {
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET,
-  MODEL_UPLOAD
+  UPLOAD
 } from "../../../DATA_MODEL"
 import CustomCanvasDrawer from "./components/customCanvasDrawer"
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
@@ -156,7 +156,7 @@ class ImageClassificationModelReview extends React.Component {
       }
 
       switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-        case MODEL_UPLOAD: {
+        case UPLOAD: {
           this.model = await tf.loadLayersModel(
             tf.io.browserFiles([this.files.json, this.files.binary]),
           )
@@ -292,7 +292,7 @@ class ImageClassificationModelReview extends React.Component {
 
 
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         // TODO
 
         break
@@ -380,7 +380,7 @@ class ImageClassificationModelReview extends React.Component {
 
   async handleClick_ImageByExamples_OpenDrawAndPredict(image_src) {
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         break
       }
       case MODEL_IMAGE_MNIST.KEY: {
@@ -406,7 +406,7 @@ class ImageClassificationModelReview extends React.Component {
   Print_HTML_Examples() {
     let examples;
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         return <></>
       }
       case MODEL_IMAGE_MNIST.KEY: {
@@ -469,7 +469,7 @@ class ImageClassificationModelReview extends React.Component {
 
   Print_HTML_Section() {
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         return <>
           <div>
             <Card.Text><Trans i18nKey={"datasets-models.3-image-classifier.interface.0-upload.title"} /></Card.Text>
@@ -535,7 +535,7 @@ class ImageClassificationModelReview extends React.Component {
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         break
       }
       case MODEL_IMAGE_MNIST.KEY: {

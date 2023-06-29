@@ -12,7 +12,7 @@ import {
   MODEL_FACE_DETECTOR,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD,
-  MODEL_UPLOAD,
+  UPLOAD,
 } from "../../../DATA_MODEL";
 import ReactGA from "react-ga4";
 import { Trans, withTranslation } from "react-i18next";
@@ -117,7 +117,7 @@ class ObjectDetectionModelReview extends React.Component {
     }
 
     switch (key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         // TODO
         break;
       }
@@ -188,7 +188,7 @@ class ObjectDetectionModelReview extends React.Component {
 
   async processData(model, ctx, img_or_video) {
     switch (getKeyDatasetByID_ObjectDetection(this.state.dataset)) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         // TODO
         break;
       }
@@ -305,7 +305,7 @@ class ObjectDetectionModelReview extends React.Component {
                 <Card.Title>
                   <Trans i18nKey={this._model.TITLE} /> {this.state.loading}
                 </Card.Title>
-                {getKeyDatasetByID_ObjectDetection(this.state.dataset) === MODEL_UPLOAD ?
+                {getKeyDatasetByID_ObjectDetection(this.state.dataset) === UPLOAD ?
                   <>
                     <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                     <Card.Text>

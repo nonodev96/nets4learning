@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useTranslation } from "react-i18next"
 import { Card } from "react-bootstrap"
+import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
 // TODO
-export default function LinearRegressionDatasetForm({ dataset, i_model }) {
+export default function LinearRegressionDatasetForm() {
   const prefix = "pages.playground.generator."
   const { t } = useTranslation()
+  const {dataset, i_model} = useContext(LinearRegressionContext)
 
   return <>
     <Card>

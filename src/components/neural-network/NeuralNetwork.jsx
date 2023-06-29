@@ -48,26 +48,6 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
     };
   }, [windowWidth, id_parent])
 
-  useEffect(() => {
-    switch (mode) {
-      case "COMPACT": {
-        let { nodes, edges } = modeCompact()
-        const graph = { nodes, edges };
-        setGraphState(graph)
-        break;
-      }
-      case "EXTEND": {
-        let { nodes, edges } = modeExtend()
-        const graph = { nodes, edges };
-        setGraphState(graph)
-        break
-      }
-      default:
-        console.error("Error, option not valid")
-        break
-    }
-  }, [JSON.stringify(layers), mode])
-
   const modeCompact = () => {
     const nodes = [], edges = [];
     for (let [index, element] of Object.entries(layers)) {
@@ -105,6 +85,26 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
     }
     return { nodes, edges }
   }
+
+  useEffect(() => {
+    switch (mode) {
+      case "COMPACT": {
+        let { nodes, edges } = modeCompact()
+        const graph = { nodes, edges };
+        setGraphState(graph)
+        break;
+      }
+      case "EXTEND": {
+        let { nodes, edges } = modeExtend()
+        const graph = { nodes, edges };
+        setGraphState(graph)
+        break
+      }
+      default:
+        console.error("Error, option not valid")
+        break
+    }
+  }, [JSON.stringify(layers), mode])
 
   return <>
     <Row className={"mt-3"}>

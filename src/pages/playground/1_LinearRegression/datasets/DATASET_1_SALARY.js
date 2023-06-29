@@ -1,25 +1,18 @@
 import * as df from "danfojs";
 import * as tf from "@tensorflow/tfjs"
 import * as tfjs from "@tensorflow/tfjs";
-import I_MODEL_LINEAR_REGRESSION from "./_model";
 import { Trans } from "react-i18next";
+import * as dfd from "danfojs";
 
-export default class MODEL_SALARY extends I_MODEL_LINEAR_REGRESSION {
+import I_DATASETS_LINEAR_REGRESSION from "./_model";
+import { DataFrameTransform } from "../DataFrameTransform";
+
+export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
 
   static KEY = "SALARY"
   static URL = "https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook"
   i18n_TITLE = "datasets-models.1-linear-regression.salary.title"
   _KEY = "SALARY"
-
-
-  async dataframe() {
-    return df.readCSV(process.env.REACT_APP_PATH + "/datasets/linear-regression/salary/salary.csv")
-  }
-
-
-  compile() {
-
-  }
 
   LAYERS() {
     const inputShape = 7
@@ -29,16 +22,6 @@ export default class MODEL_SALARY extends I_MODEL_LINEAR_REGRESSION {
     model.add(tf.layers.dense({ units: 64, activation: "relu" }))
     model.add(tf.layers.dense({ units: 64, activation: "relu" }))
     model.add(tf.layers.dense({ units: 1, activation: "relu" }))
-    return model
-  }
-
-  COMPILE() {
-    const model = tfjs.sequential()
-    model.compile({
-      optimizer: tf.train.rmsprop(0.01),
-      loss     : "mean_squared_error",
-      metrics  : ["mean_squared_error", "mean_absolute_error"]
-    })
     return model
   }
 
@@ -75,8 +58,40 @@ export default class MODEL_SALARY extends I_MODEL_LINEAR_REGRESSION {
           <li><Trans i18nKey={prefix + "details-3.list.1"} /></li>
         </ol>
       </details>
-
     </>
+  }
+
+  async DATASETS() {
+    const datasets_path = process.env.REACT_APP_PATH + "/datasets/linear-regression/salary/"
+    const path_dataset_1 = datasets_path + "salary.csv"
+    const dataframe_original_1 = await dfd.readCSV(path_dataset_1)
+    const dataframe_transforms = []
+    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(path_dataset_1), dataframe_transforms)
+
+    // dataframe_processed_1.print()
+
+    return {
+      datasets     : [{
+        path                : path_dataset_1,
+        info                : "salary.names",
+        csv                 : "salary.csv",
+        dataframe_original  : dataframe_original_1,
+        dataframe_processed : dataframe_processed_1,
+        dataframe_transforms: dataframe_transforms,
+        isDatasetProcessed  : true,
+      }],
+      datasets_path: datasets_path,
+    }
+  }
+
+  COMPILE() {
+    const model = tfjs.sequential()
+    model.compile({
+      optimizer: tf.train.rmsprop(0.01),
+      loss     : "mean_squared_error",
+      metrics  : ["mean_squared_error", "mean_absolute_error"]
+    })
+    return model
   }
 
   ATTRIBUTE_INFORMATION() {

@@ -4,7 +4,7 @@ import * as tf from "@tensorflow/tfjs";
 import * as tfvis from "@tensorflow/tfjs-vis";
 import ReactGA from "react-ga4";
 import { Accordion, Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
-import { getKeyDatasetByID_TabularClassification, MODEL_UPLOAD, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, } from "../../../DATA_MODEL";
+import { getKeyDatasetByID_TabularClassification, UPLOAD, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, } from "../../../DATA_MODEL";
 import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload, } from "../../../core/nn-utils/ArchitectureHelper";
 import { TYPE_ACTIVATION, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER, } from "../../../core/nn-utils/ArchitectureTypesHelper";
 import json_cars from "../../../core/constants/template_car.json";
@@ -126,7 +126,7 @@ export default function TabularClassification(props) {
   const [isDatasetProcessed, setIsDatasetProcessed] = useState(false);
 
   // Layers
-  const [layers, setLayers] = useState(dataset_key === MODEL_UPLOAD ? DEFAULT_LAYERS_UPLOAD : DEFAULT_LAYERS);
+  const [layers, setLayers] = useState(dataset_key === UPLOAD ? DEFAULT_LAYERS_UPLOAD : DEFAULT_LAYERS);
 
   // Params
   const [learningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE);
@@ -192,7 +192,7 @@ export default function TabularClassification(props) {
     ReactGA.send({ hitType: "pageview", page: "/TabularClassificationCustomDataset/" + dataset_key, title: dataset_key });
 
     switch (dataset_key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         // TODO
         // const uploadedArchitecture = localStorage.getItem('custom-architecture')
         // if (uploadedArchitecture !== "{}") {
@@ -547,7 +547,7 @@ export default function TabularClassification(props) {
   };
 
   const handleClick_PredictVector = async () => {
-    if (dataset_key === MODEL_UPLOAD) {
+    if (dataset_key === UPLOAD) {
       if (customDataSet_JSON === null) {
         await alertHelper.alertError("Primero debes de cargar un dataset");
         return;
@@ -561,7 +561,7 @@ export default function TabularClassification(props) {
     let input = [[], [1, stringToPredict.split(";").length]];
     try {
       switch (dataset_key) {
-        case MODEL_UPLOAD: {
+        case UPLOAD: {
           dataset_JSON = customDataSet_JSON;
           break;
         }
@@ -666,7 +666,7 @@ export default function TabularClassification(props) {
 
   // Comprueba si se han ejecutado los pasos previos
   const canRender_DynamicFormDataset = () => {
-    if (dataset_key === MODEL_UPLOAD) {
+    if (dataset_key === UPLOAD) {
       return (customDataSet_JSON || dataProcessed) && Model;
     } else {
       return (customDataSet_JSON) && Model;
@@ -679,7 +679,7 @@ export default function TabularClassification(props) {
       <Container className={"mb-3"}>
         <Row>
           <Col xl={12} className={"mt-3"}>
-            <Accordion defaultActiveKey={dataset_key === MODEL_UPLOAD ? "description_dataset" : ""}>
+            <Accordion defaultActiveKey={dataset_key === UPLOAD ? "description_dataset" : ""}>
               <Accordion.Item key={"0"} eventKey={"description_architecture_editor"}>
                 <Accordion.Header>
                   <h3><Trans i18nKey={prefixManual + "manual.title"} /></h3>
@@ -786,7 +786,7 @@ export default function TabularClassification(props) {
         </Row>
       </Container>
 
-      <Form id={"TabularClassificationCustomDataset"} onSubmit={dataset_key === MODEL_UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
+      <Form id={"TabularClassificationCustomDataset"} onSubmit={dataset_key === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
         <Container>
           {/* BLOCK 1 */}
           <Row className={"mt-3"}>
@@ -1120,7 +1120,7 @@ export default function TabularClassification(props) {
                                                      objectToPredict={objectToPredict}
                                                      setObjectToPredict={setObjectToPredict}
                                                      predictionBar={predictionBar}
-                                                     handleClick_PredictVector={dataset_key === MODEL_UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
+                                                     handleClick_PredictVector={dataset_key === UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
       }
 
       {isDebug &&

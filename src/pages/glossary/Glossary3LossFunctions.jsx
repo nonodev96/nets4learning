@@ -117,7 +117,7 @@ export default function Glossary3LossFunctions() {
 
               <Col className={"mt-3"}>
                 <h4 className={"text-lg-center"}>{t("equations.loss-functions.cosine-distance.title")}</h4>
-                <Latex>{"$$ {cosine\\ distance}=S_{C}(A,B):=\\cos(\\theta )={\\mathbf {A} \\cdot \\mathbf {B}  \\over \\|\\mathbf {A} \\|\\|\\mathbf {B} \\|}={\\frac {\\sum \\limits _{i=1}^{n}{A_{i}B_{i}}}{{\\sqrt {\\sum \\limits _{i=1}^{n}{A_{i}^{2}}}}{\\sqrt {\\sum \\limits _{i=1}^{n}{B_{i}^{2}}}}}} $$"}</Latex>
+                <Latex>{"$$ S_{C}(A,B):=\\cos(\\theta )={\\mathbf {A} \\cdot \\mathbf {B}  \\over \\|\\mathbf {A} \\|\\|\\mathbf {B} \\|}={\\frac {\\sum \\limits _{i=1}^{n}{A_{i}B_{i}}}{{\\sqrt {\\sum \\limits _{i=1}^{n}{A_{i}^{2}}}}{\\sqrt {\\sum \\limits _{i=1}^{n}{B_{i}^{2}}}}}} $$"}</Latex>
               </Col>
 
               <Col className={"mt-3"}>

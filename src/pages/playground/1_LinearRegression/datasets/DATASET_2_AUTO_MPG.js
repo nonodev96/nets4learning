@@ -1,10 +1,9 @@
-import * as df from "danfojs";
-import * as tf from "@tensorflow/tfjs"
-import * as tfjs from "@tensorflow/tfjs";
-import I_MODEL_LINEAR_REGRESSION from "./_model";
-import { Trans } from "react-i18next";
+import * as tfjs from "@tensorflow/tfjs"
+import { Trans } from "react-i18next"
+import * as dfd from "danfojs"
+import I_DATASETS_LINEAR_REGRESSION from "./_model"
 
-export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
+export default class DATASET_2_AUTO_MPG extends I_DATASETS_LINEAR_REGRESSION {
 
   static KEY = "AUTO_MPG"
   static URL = "https://archive.ics.uci.edu/ml/datasets/auto+mpg"
@@ -12,25 +11,33 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   _KEY = "AUTO_MPG"
 
 
-  async dataframe() {
-    return df.readCSV(process.env.REACT_APP_PATH + "/datasets/linear-regression/auto-mpg/auto-mpg.csv")
+  async DATASETS() {
+    const datasets_path = process.env.REACT_APP_PATH + "/datasets/linear-regression/auto-mpg/"
+    const path_dataset_1 = datasets_path + "auto-mpg.csv"
+    const dataframe_original_1 = await dfd.readCSV(path_dataset_1)
+    const dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
+    return {
+      datasets     : [{
+        path               : path_dataset_1,
+        info               : "auto-mpg.names",
+        csv                : "auto-mpg.csv",
+        dataframe_original : dataframe_original_1,
+        dataframe_processed: dataframe_processed_1,
+        dataset_transforms : [],
+        isDatasetProcessed : true
+      }],
+      datasets_path: datasets_path
+    }
   }
 
   LAYERS() {
-    const inputShape = 7
-    const model = tfjs.sequential()
-    model.add(tf.layers.dense({ units: 64, activation: "relu", inputShape: [inputShape] }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 1, activation: "relu" }))
-    return model
+    return tfjs.sequential()
   }
 
   COMPILE() {
     const model = tfjs.sequential()
     model.compile({
-      optimizer: tf.train.rmsprop(0.01),
+      optimizer: tfjs.train.rmsprop(0.01),
       loss     : "mean_squared_error",
       metrics  : ["mean_squared_error", "mean_absolute_error"]
     })
@@ -82,7 +89,6 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
           <li><Trans i18nKey={prefix + "details-3.list.1"} /></li>
         </ol>
       </details>
-
     </>
   }
 
@@ -93,31 +99,6 @@ export default class MODEL_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   }
 
   JOYRIDE() {
-    return {
-      run       : true,
-      continuous: true,
-      steps     : [
-        {
-          target : '.my-step-1',
-          title  : 'Our projects',
-          content: 'This is my awesome feature!',
-        },
-        {
-          target : '.my-step-2',
-          content: 'This another awesome feature!',
-        },
-        {
-          target : '.my-step-3',
-          locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          content: <>
-            <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
-              <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
-                <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-              </audio>
-            </div>
-          </>,
-        },
-      ]
-    };
+    return super.JOYRIDE()
   }
 }

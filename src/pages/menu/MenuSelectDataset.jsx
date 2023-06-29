@@ -3,8 +3,8 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import * as alertHelper from '../../utils/alertHelper'
 import { useTranslation } from "react-i18next";
-import { MODEL_SALARY, MODEL_AUTO_MPG, MODEL_BOSTON_HOUSING, MODEL_BREAST_CANCER, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "../playground/1_LinearRegression/models";
-import { MODEL_UPLOAD } from "../../DATA_MODEL";
+import { DATASET_1_SALARY, DATASET_2_AUTO_MPG, DATASET_3_BOSTON_HOUSING, DATASET_4_BREAST_CANCER, DATASET_5_STUDENT_PERFORMANCE, DATASET_6_WINE } from "../playground/1_LinearRegression/datasets";
+import { UPLOAD } from "../../DATA_MODEL";
 
 export default function MenuSelectDataset() {
   const { id } = useParams()
@@ -36,25 +36,25 @@ export default function MenuSelectDataset() {
       case '1': {
         // linear-regression
         return <>
-          <option value={MODEL_UPLOAD}>
+          <option value={UPLOAD}>
             {t("pages.menu-selection-dataset.1-linear-regression.csv")}
           </option>
-          <option value={MODEL_SALARY.KEY}>
+          <option value={DATASET_1_SALARY.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.1-salary")}
           </option>
-          <option value={MODEL_AUTO_MPG.KEY}>
+          <option value={DATASET_2_AUTO_MPG.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.2-auto-mpg")}
           </option>
-          <option value={MODEL_BOSTON_HOUSING.KEY}>
+          <option value={DATASET_3_BOSTON_HOUSING.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.3-boston-housing")}
           </option>
-          <option value={MODEL_BREAST_CANCER.KEY}>
+          <option value={DATASET_4_BREAST_CANCER.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.4-breast-cancer")}
           </option>
-          <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
+          <option value={DATASET_5_STUDENT_PERFORMANCE.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.5-student-performance")}
           </option>
-          <option value={MODEL_WINE.KEY}>
+          <option value={DATASET_6_WINE.KEY}>
             {t("datasets-models.1-linear-regression.list-datasets.6-wine")}
           </option>
         </>

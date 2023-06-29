@@ -1,12 +1,13 @@
 import { Table } from "react-bootstrap"
 import { useTranslation } from "react-i18next";
-import React from "react";
+import React, { useContext } from "react";
+import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
 
-export default function LinearRegressionTableModels({ listModels }) {
+export default function LinearRegressionTableModels() {
   const prefix = "generator.table-models."
-
   const { t } = useTranslation()
+  const { listModels } = useContext(LinearRegressionContext)
 
   return <>
     <Table size={"sm"} striped={true} bordered={false} hover={true} responsive={true}>

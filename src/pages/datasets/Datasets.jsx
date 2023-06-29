@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Card, Col, Container, Row, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
 
 /**
  * @typedef {Object} File_t
@@ -9,7 +9,7 @@ import { Card, Col, Container, Row, Table } from "react-bootstrap";
 export default function Datasets(props) {
   const { t } = useTranslation();
 
-  const datasets_list = [
+  const tabular_classification_datasets_list = [
     {
       title       : "car.csv",
       url_download: "car.csv",
@@ -60,6 +60,58 @@ export default function Datasets(props) {
       i18n        : "datasets.download-dataset-titanic"
     }
   ];
+  const linear_regression_datasets_list = [
+    {
+      title       : "salary/salary.csv",
+      url_download: "salary/salary.csv",
+      url_original: "https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook",
+      size        : 31,
+      i18n        : "datasets.download.dataset.1-linear-regression.salary"
+    },
+    {
+      title       : "auto-mpg/auto-mpg.csv",
+      url_download: "auto-mpg/auto-mpg.csv",
+      url_original: "https://archive.ics.uci.edu/ml/datasets/auto+mpg",
+      size        : 396,
+      i18n        : "datasets.download.dataset.1-linear-regression.auto-mpg"
+    },
+    {
+      title       : "boston-housing/housing.csv",
+      url_download: "boston-housing/housing.csv",
+      url_original: "https://archive.ics.uci.edu/ml/datasets/Housing",
+      size        : 506,
+      i18n        : "datasets.download.dataset.1-linear-regression.boston"
+    },
+    {
+      title       : "student-performance/student-mat.csv",
+      url_download: "student-performance/student-mat.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/320/student+performance",
+      size        : 396,
+      i18n        : "datasets.download.dataset.1-linear-regression.student-performance-mathematics"
+    },
+    {
+      title       : "student-performance/student-por.csv",
+      url_download: "student-performance/student-por.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/320/student+performance",
+      size        : 650,
+      i18n        : "datasets.download.dataset.1-linear-regression.student-performance-portuguese"
+    },
+    {
+      title       : "wine-quality/wine-quality-red.csv",
+      url_download: "wine-quality/wine-quality-red.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/186/wine+quality",
+      size        : 1600,
+      i18n        : "datasets.download.dataset.1-linear-regression.wine-red"
+    },
+    {
+      title       : "wine-quality/wine-quality-white.csv",
+      url_download: "wine-quality/wine-quality-white.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/186/wine+quality",
+      size        : 4899,
+      i18n        : "datasets.download.dataset.1-linear-regression.wine-white"
+    },
+  ]
+
 
   // const _download = (filename, textInput) => {
   //   const link = document.createElement('a')
@@ -86,9 +138,9 @@ export default function Datasets(props) {
           <Card>
             <Card.Header><h3>{t("datasets.title")}</h3></Card.Header>
             <Card.Body>
-              {/*<Tabs defaultActiveKey={"tabular-classification"} justify>*/}
-              {/*  <Tab eventKey="tabular-classification" title={t("pages.index.tabular-classification.1-title")}>*/}
-                  <Table className={"table"} responsive={true}>
+              <Tabs defaultActiveKey={"tabular-classification"} justify>
+                <Tab eventKey="tabular-classification" title={t("pages.index.tabular-classification.1-title")}>
+                  <Table className={"mt-3"} responsive={true}>
                     <thead>
                     <tr>
                       <th>{t("datasets.dataset-name")}</th>
@@ -98,28 +150,57 @@ export default function Datasets(props) {
                     </tr>
                     </thead>
                     <tbody>
-                    {datasets_list.map(({ title, url_download, url_original, size, i18n }, index) =>
-                      <tr key={index}>
+                    {tabular_classification_datasets_list.map(({ title, url_download, url_original, size, i18n }, index) => <tr key={index}>
+                      <td>{t(i18n)}</td>
+                      <td>{size}</td>
+                      <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
+                      <td>
+                        <a download href={process.env.REACT_APP_PATH + "/datasets/" + url_download} className={"btn btn-primary btn-sm mt-2"}>
+                          {t("download")}
+                        </a>
+                      </td>
+                    </tr>)}
+                    </tbody>
+                  </Table>
+                </Tab>
+                {
+                  /**
+                   * TODO
+                   * Esto se debe eliminar en la versión estable de la regresión lineal
+                   */
+                }
+                {process.env.REACT_APP_ENVIRONMENT === "development" &&
+                  <Tab eventKey="linear-regression" title={t("pages.index.linear-regression.1-title")}>
+                    <Table className={"mt-3"} responsive={true}>
+                      <thead>
+                      <tr>
+                        <th>{t("datasets.dataset-name")}</th>
+                        <th>{t("datasets.dataset-size")}</th>
+                        <th>{t("datasets.dataset-web")}</th>
+                        <th>{t("download")}</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      {linear_regression_datasets_list.map(({ title, url_download, url_original, size, i18n }, index) => <tr key={index}>
                         <td>{t(i18n)}</td>
                         <td>{size}</td>
                         <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
                         <td>
-                          <a download href={process.env.REACT_APP_PATH + "/datasets/" + url_download} className={"btn btn-primary btn-sm mt-2"} >
+                          <a download href={process.env.REACT_APP_PATH + "/datasets/linear-regression/" + url_download}
+                             className={"btn btn-primary btn-sm mt-2"}>
                             {t("download")}
                           </a>
                         </td>
-                      </tr>
-                    )}
-                    </tbody>
-                  </Table>
-                {/*</Tab>*/}
-                {/*<Tab eventKey="linear-regression" title={t("pages.index.linear-regression.1-title")}>*/}
-                {/*</Tab>*/}
+                      </tr>)}
+                      </tbody>
+                    </Table>
+                  </Tab>
+                }
                 {/*<Tab eventKey="object-detection" title={t("pages.index.object-detection.1-title")}>*/}
                 {/*</Tab>*/}
                 {/*<Tab eventKey="object-detection" title={t("pages.index.image-classification.1-title")}>*/}
                 {/*</Tab>*/}
-              {/*</Tabs>*/}
+              </Tabs>
 
             </Card.Body>
           </Card>

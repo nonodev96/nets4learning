@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from "react-i18next";
-import { MODEL_AUTO_MPG, MODEL_BREAST_CANCER, MODEL_STUDENT_PERFORMANCE, MODEL_WINE } from "./models";
+import { DATASET_1_SALARY, DATASET_2_AUTO_MPG, DATASET_3_BOSTON_HOUSING, DATASET_4_BREAST_CANCER, DATASET_5_STUDENT_PERFORMANCE, DATASET_6_WINE } from "./datasets";
 
 export default function ModelReviewLinearRegression(props) {
 
@@ -14,17 +14,23 @@ export default function ModelReviewLinearRegression(props) {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
     switch (dataset) {
-      case MODEL_AUTO_MPG.KEY:
-        setModel(new MODEL_AUTO_MPG(t));
+      case DATASET_1_SALARY.KEY:
+        setModel(new DATASET_1_SALARY(t));
         break
-      case MODEL_BREAST_CANCER.KEY:
-        setModel(new MODEL_BREAST_CANCER(t));
+      case DATASET_2_AUTO_MPG.KEY:
+        setModel(new DATASET_2_AUTO_MPG(t));
         break
-      case MODEL_STUDENT_PERFORMANCE.KEY:
-        setModel(new MODEL_STUDENT_PERFORMANCE(t));
+      case DATASET_3_BOSTON_HOUSING.KEY:
+        setModel(new DATASET_3_BOSTON_HOUSING(t));
         break
-      case MODEL_WINE.KEY:
-        setModel(new MODEL_WINE(t));
+      case DATASET_4_BREAST_CANCER.KEY:
+        setModel(new DATASET_4_BREAST_CANCER(t));
+        break
+      case DATASET_5_STUDENT_PERFORMANCE.KEY:
+        setModel(new DATASET_5_STUDENT_PERFORMANCE(t));
+        break
+      case DATASET_6_WINE.KEY:
+        setModel(new DATASET_6_WINE(t));
         break
       default:
         console.error("Error, incorrect model");

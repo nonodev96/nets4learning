@@ -6,6 +6,7 @@ import ReactGA from 'react-ga4';
 import Loading from "./pages/Loading";
 import N4LNavbar from "./components/header/N4LNavbar";
 import N4LFooter from "./components/footer/N4LFooter";
+import "./ConfigChartJS"
 
 const Home = lazy(() => import( "./pages/_home/Home.jsx"));
 const MenuSelectModel = lazy(() => import( "./pages/menu/MenuSelectModel"));

@@ -31,23 +31,78 @@ export default function Glossary2ActivationFunctions() {
     {
       i18n_title_section: "Non-linear Activations (weighted sum, nonlinearity)",
       layers            : [
-        { i18n_title: "ELU", img: IMGELU, latex: "$$ \\begin{split} ELU(x) = \\begin{Bmatrix} x & x > 0 \\\\ \\alpha * (exp(x) - 1) & x \\leq 0 \\end{Bmatrix}\\end{split} $$" },
-        { i18n_title: "Sigmoid", img: IMGSigmoid, latex: "$$ Sigmoid(z) = \\frac{1} {1 + e^{-z}} $$" },
-        { i18n_title: "ReLU", img: IMGRelU, latex: "$$ ReLU(z) = max(0, z) $$" },
-        { i18n_title: "ReLU6", img: IMGRelU6, latex: "$$ ReLU6(x) = min(max(0,x),6) $$" },
-        { i18n_title: "LeakyReLU", img: IMGLeakyReLU, latex: "$$ \\begin{split} L(z) = \\begin{Bmatrix} z & z > 0 \\\\ \\alpha * z & z \\leq 0 \\end{Bmatrix}\\end{split} $$" },
-        { i18n_title: "Hardsigmoid", img: IMGHardSigmoid, latex: "$$ \\begin{split} H(x) = \\begin{Bmatrix} 0 & x \\leq -3 \\\\ 1 & x \\leq +3 \\\\ x/6 + 1/2 & otherwise \\end{Bmatrix}\\end{split} $$" },
-        { i18n_title: "Tanh", img: IMGTanh, latex: "$$ T(z) = \\frac{e^{z} - e^{-z}}{e^{z} + e^{-z}} $$" },
-        { i18n_title: "SoftPlus", img: IMGSoftPlus, latex: "$$ Softplus(x) = \\frac{1}{\\beta} \\log(1 + \\exp(\\beta * x)) $$" },
-        { i18n_title: "Mish", img: IMGMish, latex: "$$ Mish(x) = x ∗ Tanh(Softplus(x)) $$" },
-        { i18n_title: "SELU", img: IMGSELU, latex: "$$ SELU(x)=scale * (max(0, x)+min(0,\\alpha * (exp(x) − 1))) $$" },
+        {
+          i18n_title: "ELU",
+          img       : IMGELU,
+          latex     : "$$ \\begin{split} ELU(x) = \\begin{Bmatrix} x & x > 0 \\\\ \\alpha * (exp(x) - 1) & x \\leq 0 \\end{Bmatrix}\\end{split} $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.ELU.html"
+        },
+        {
+          i18n_title: "Sigmoid",
+          img       : IMGSigmoid,
+          latex     : "$$ Sigmoid(x) =\\alpha(x) = \\frac{1} {1 + e^{-x}} $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html"
+        },
+        {
+          i18n_title: "ReLU",
+          img       : IMGRelU,
+          latex     : "$$ ReLU(x) = (x)^+ = max(0, x) $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.ReLU.html"
+        },
+        {
+          i18n_title: "ReLU6",
+          img       : IMGRelU6,
+          latex     : "$$ ReLU6(x) = min(max(0,x),6) $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.ReLU6.html"
+        },
+        {
+          i18n_title: "LeakyReLU",
+          img       : IMGLeakyReLU,
+          latex     : "$$ \\begin{split} LeakyReLU(x) = \\begin{Bmatrix} x & x > 0 \\\\ negative\\_slope * x & x \\leq 0 \\end{Bmatrix}\\end{split} $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html"
+        },
+        {
+          i18n_title: "Hardsigmoid",
+          img       : IMGHardSigmoid,
+          latex     : "$$ \\begin{split} Hardsigmoid(x) = \\begin{Bmatrix} 0 & x \\leq -3 \\\\ 1 & x \\leq +3 \\\\ x/6 + 1/2 & otherwise \\end{Bmatrix}\\end{split} $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html"
+        },
+        {
+          i18n_title: "Tanh",
+          img       : IMGTanh,
+          latex     : "$$ Tanh(x) = tanh(x) = \\frac{e^{x} - e^{-x}}{e^{x} + e^{-x}} $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Tanh.html"
+        },
+        {
+          i18n_title: "SoftPlus",
+          img       : IMGSoftPlus,
+          latex     : "$$ Softplus(x) = \\frac{1}{\\beta} \\log(1 + e^{(\\beta * x)}) $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Softplus.html"
+        },
+        {
+          i18n_title: "Mish",
+          img       : IMGMish,
+          latex     : "$$ Mish(x) = x * Tanh(Softplus(x)) $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Mish.html"
+        },
+        {
+          i18n_title: "SELU",
+          img       : IMGSELU,
+          latex     : "$$ \\begin{split}  \\begin{Bmatrix} SELU(x) = scale * (max(0, x) + min(0, \\alpha * (e^x − 1))) \\\\ \\alpha = 1.6732632423543772848170429916717 \\\\ scale = 1.0507009873554804934193349852946. \\end{Bmatrix}\\end{split}$$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.SELU.html"
+        },
       ]
     },
     // Non-linear Activations
     {
       i18n_title_section: "Non-linear Activations (other)",
       layers            : [
-        { i18n_title: "Softmax", img: false, latex: "$$ \\sigma(z_i) = \\frac{e^{z_{i}}}{\\sum_{j=1}^K e^{z_{j}}} \\ \\ \\ for\\ i=1,2,\\dots,K $$" },
+        {
+          i18n_title: "Softmax",
+          img       : false,
+          latex     : "$$ \\sigma(z_i) = \\frac{e^{z_{i}}}{\\sum_{j=1}^K e^{z_{j}}} \\ \\ \\ for\\ i=1,2,\\dots,K $$",
+          ref       : "https://pytorch.org/docs/stable/generated/torch.nn.Softmax.html"
+        },
       ]
     }
   ]
@@ -90,7 +145,7 @@ export default function Glossary2ActivationFunctions() {
               </td>
             </tr>
             <tr>
-              <th>ReLu</th>
+              <th>ReLU</th>
               <td><Trans i18nKey={"pages.glossary.activation-functions.table.relu.description"} /></td>
               <td>
                 <ol>
@@ -113,20 +168,28 @@ export default function Glossary2ActivationFunctions() {
         <Accordion.Item eventKey={"equations-activation"}>
           <Accordion.Header><h3>{t("equations.title-activation")}</h3></Accordion.Header>
           <Accordion.Body>
-            {activationsFunctions.map((section, index)=>{
-              return <>
+            {activationsFunctions.map((section, index) => {
+              return <div key={index}>
                 <h4 className={"text-center text-muted"}>{section.i18n_title_section}</h4>
-                <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4} className={"mb-3"}>
+                <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3} className={"mb-3"}>
                   {section.layers.map((value, index) => {
                     return <Col key={index}>
                       <Row>
                         <Col>
                           <h4 className={"text-lg-center"}>{value.i18n_title}</h4>
-                          {value.img !== false ?
-                            <div><img src={value.img} alt="linear-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} /></div>
-                            :
-                            <div className="img-n4l-glossary"></div>
+                          {value.img &&
+                            <div>
+                              {value.ref ?
+                                <a href={value.ref} target="_blank" rel="noreferrer" className="link-secondary">
+                                  <img src={value.img} alt="linear-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} />
+                                </a>
+                                :
+                                <img src={value.img} alt="linear-activation-function" className={"img-n4l-glossary img-thumbnail d-block mx-auto"} />
+                              }
+                            </div>
                           }
+                          {!value.img && <div className="img-n4l-glossary"></div>}
+
                         </Col>
                       </Row>
                       <Row>
@@ -135,8 +198,9 @@ export default function Glossary2ActivationFunctions() {
                     </Col>
                   })}
                 </Row>
-              </>
-              })
+                {activationsFunctions.length - 1 !== index && <hr />}
+              </div>
+            })
 
             }
             <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>

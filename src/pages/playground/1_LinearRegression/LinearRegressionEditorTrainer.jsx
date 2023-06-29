@@ -1,10 +1,11 @@
 import { Accordion, Button, Card, Form } from "react-bootstrap"
 import { Trans, useTranslation } from "react-i18next"
-import React from "react"
+import React, { useContext } from "react"
 import { alertWarning } from "../../../utils/alertHelper";
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from "../../../core/nn-utils/ArchitectureTypesHelper";
+import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
-export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel }) {
+export default function LinearRegressionEditorTrainer() {
 
   // 1 - Inf(1000)
   const DEFAULT_NUMBER_OF_EPOCHS = 10
@@ -21,6 +22,7 @@ export default function LinearRegressionEditorTrainer({ tmpModel, setTmpModel })
 
   const prefix = "pages.playground.generator.general-parameters."
   const { t } = useTranslation()
+  const { tmpModel, setTmpModel } = useContext(LinearRegressionContext)
 
   // 1 - 100
   const handlerChange_TestSize = (_test_size) => {

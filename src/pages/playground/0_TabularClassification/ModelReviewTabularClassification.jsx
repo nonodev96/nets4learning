@@ -11,7 +11,7 @@ import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 import { I_MODEL_TABULAR_CLASSIFICATION } from "./models/_model"
 import {
   getKeyDatasetByID_TabularClassification,
-  MODEL_UPLOAD,
+  UPLOAD,
   LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
@@ -59,7 +59,7 @@ class ModelReviewTabularClassification extends React.Component {
     this._model = new I_MODEL_TABULAR_CLASSIFICATION(props.t)
 
     switch (this.dataset_key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         this.state.loading = ""
         break
       }
@@ -111,7 +111,7 @@ class ModelReviewTabularClassification extends React.Component {
     }
 
     switch (this.dataset_key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         break
       }
       case MODEL_CAR.KEY:
@@ -167,7 +167,7 @@ class ModelReviewTabularClassification extends React.Component {
     }
 
     switch (this.dataset_key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
 
         break;
       }
@@ -236,7 +236,7 @@ class ModelReviewTabularClassification extends React.Component {
 
   Print_HTML_InfoDataset() {
     switch (this.dataset_key) {
-      case MODEL_UPLOAD:
+      case UPLOAD:
         return <>
           <p>
             <Trans i18nKey={"datasets-models.0-tabular-classification.upload.html-example.text"} />
@@ -255,7 +255,7 @@ class ModelReviewTabularClassification extends React.Component {
 
   Print_HTML_EXAMPLES() {
     switch (this.dataset_key) {
-      case MODEL_UPLOAD:
+      case UPLOAD:
         return <></>
       case MODEL_CAR.KEY:
       case MODEL_IRIS.KEY:
@@ -279,7 +279,7 @@ class ModelReviewTabularClassification extends React.Component {
     let head = []
     let body = [[]]
     switch (this.dataset_key) {
-      case MODEL_UPLOAD: {
+      case UPLOAD: {
         if (this.files.csv !== null) {
           head = this.state.header
           body = this.state.body
@@ -347,7 +347,7 @@ class ModelReviewTabularClassification extends React.Component {
                     {this.state.loading}
                   </Card.Title>
 
-                  {this.dataset_key === MODEL_UPLOAD ? (
+                  {this.dataset_key === UPLOAD ? (
                     <>
                       <Card.Subtitle className="mb-3 text-muted">
                         <Trans i18nKey={"pages.playground.0-tabular-classification.0_upload.upload-your-model"} />
@@ -553,7 +553,7 @@ class ModelReviewTabularClassification extends React.Component {
                             <Form.Label>{this.translate("pages.playground.form.vector-to-check")}</Form.Label>
                             <Form.Control placeholder={this.translate("pages.playground.form.vector-to-check")}
                                           autoComplete="off"
-                                          disabled={this.dataset_key !== MODEL_UPLOAD}
+                                          disabled={this.dataset_key !== UPLOAD}
                                           value={this.state.textToTest}
                                           onChange={this.handleChange_TestInput} />
                           </Form.Group>

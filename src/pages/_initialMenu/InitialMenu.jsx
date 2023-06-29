@@ -1,6 +1,6 @@
 import './InitialMenu.css'
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
@@ -198,6 +198,12 @@ export default function InitialMenu() {
               </Button>
             </div>
           </Col>
+          {
+            /**
+             * TODO
+             * Esto se debe eliminar en la versión estable de la regresión lineal
+             */
+          }
           {process.env.REACT_APP_ENVIRONMENT === "development" &&
             <Col className={"mt-3"}>
               <div className="d-grid gap-2">

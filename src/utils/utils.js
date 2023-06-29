@@ -13,3 +13,5 @@ export function isMobile() {
 export function isProduction() {
   return process.env.REACT_APP_ENVIRONMENT === "production"
 }
+
+export const delay = ms => new Promise(res => setTimeout(res, ms));

@@ -36,7 +36,7 @@ export default function LinearRegressionManual({ i_model }) {
     if (localStorage.getItem("linear-regression.joyride-" + i_model._KEY) !== null) {
       localStorage.setItem("linear-regression.joyride-" + i_model._KEY, JSON.stringify({ run: true }))
     } else {
-      console.debug("èlse linear-regression.joyride-" + i_model._KEY)
+      console.debug("else linear-regression.joyride-" + i_model._KEY)
     }
   }, [i_model])
 
@@ -66,34 +66,11 @@ export default function LinearRegressionManual({ i_model }) {
   }
 
 
-  const handleJoyrideCallback = (data) => {
-    console.log("handleJoyrideCallback", { data })
-    const { action, index, status, type } = data;
-
-    if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
-      setJoyride({ ...joyride, run: false, stepIndex: 0 });
-    } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
-      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
-      console.log({ nextStepIndex })
-
-      if (index === 0) {
-
-      } else if (index === 1) {
-
-      } else if (action === ACTIONS.PREV) {
-
-      } else {
-
-      }
-    }
-  }
-
   return <>
-
     <Joyride ref={joyrideRef}
              style={joyride_style}
              locale={joyride_locale}
-             callback={handleJoyrideCallback}
+             callback={joyride.handleJoyrideCallback}
              continuous={joyride.continuous}
              run={joyride.run}
              steps={joyride.steps}

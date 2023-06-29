@@ -7,12 +7,12 @@ import {
   // Tabular
   // MODEL_CAR,
   // Regresión linear
-  MODEL_SALARY,
-  MODEL_AUTO_MPG,
-  MODEL_BOSTON_HOUSING,
-  MODEL_BREAST_CANCER,
-  MODEL_STUDENT_PERFORMANCE,
-  MODEL_WINE
+  DATASET_1_SALARY,
+  DATASET_2_AUTO_MPG,
+  DATASET_3_BOSTON_HOUSING,
+  DATASET_4_BREAST_CANCER,
+  DATASET_5_STUDENT_PERFORMANCE,
+  DATASET_6_WINE
 } from "../../DATA_MODEL";
 
 export default function MenuSelectModel(_props) {
@@ -43,22 +43,22 @@ export default function MenuSelectModel(_props) {
       case '1': {
         // linear-regression
         return <>
-          <option value={MODEL_SALARY.KEY}>
+          <option value={DATASET_1_SALARY.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-1")}
           </option>
-          <option value={MODEL_AUTO_MPG.KEY}>
+          <option value={DATASET_2_AUTO_MPG.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-2")}
           </option>
-          <option value={MODEL_BOSTON_HOUSING.KEY}>
+          <option value={DATASET_3_BOSTON_HOUSING.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-3")}
           </option>
-          <option value={MODEL_BREAST_CANCER.KEY}>
+          <option value={DATASET_4_BREAST_CANCER.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-4")}
           </option>
-          <option value={MODEL_STUDENT_PERFORMANCE.KEY}>
+          <option value={DATASET_5_STUDENT_PERFORMANCE.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-5")}
           </option>
-          <option value={MODEL_WINE.KEY}>
+          <option value={DATASET_6_WINE.KEY}>
             {t("datasets-models.1-linear-regression.list-models.0-option-6")}
           </option>
         </>

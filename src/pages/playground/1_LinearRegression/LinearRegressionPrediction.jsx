@@ -1,31 +1,11 @@
-import React, { useRef, useState } from 'react'
-import {
-  Chart as ChartJS,
-  LinearScale,
-  CategoryScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Legend,
-  Tooltip,
-  LineController,
-  BarController,
-} from 'chart.js'
+import React, { useContext, useRef, useState } from 'react'
+
 import { Chart } from 'react-chartjs-2'
+
 import { faker } from "@faker-js/faker"
 import { Button } from "react-bootstrap";
+import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
-ChartJS.register(
-  LinearScale,
-  CategoryScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Legend,
-  Tooltip,
-  LineController,
-  BarController
-)
 const DEFAULT_OPTIONS = {
   elements: {
     point: {
@@ -37,7 +17,9 @@ const DEFAULT_OPTIONS = {
   }
 }
 
-export default function LinearRegressionPrediction({ data_prediction, setDataPrediction }) {
+export default function LinearRegressionPrediction() {
+
+  const { dataPrediction, setDataPrediction } = useContext(LinearRegressionContext)
 
   const refChartJS = useRef()
   const labels = Array(100).fill("").map(() => {
@@ -82,15 +64,15 @@ export default function LinearRegressionPrediction({ data_prediction, setDataPre
 
   const [data, setData] = useState({
     labels  : labels,
-    datasets: [...generate(), ...generate(), ...generate(), ...generate(), ...generate()],
+    datasets: [...generate()],
   })
 
 
   const updateDataPrediction = () => {
-    console.log(data_prediction)
+    console.log(dataPrediction)
 
     // model.
-    setDataPrediction(...data)
+    // setDataPrediction(...data)
   }
 
 

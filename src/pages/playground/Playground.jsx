@@ -18,6 +18,7 @@ import ImageClassificationModelReview from "./3_ImageClassification/ImageClassif
 
 
 import { useTranslation } from "react-i18next";
+import { LinearRegressionProvider } from "../../context/LinearRegressionContext";
 
 export default function Playground() {
   const { id, option, example } = useParams();
@@ -35,7 +36,7 @@ export default function Playground() {
         if (option === "0") {
           return <ModelReviewLinearRegression dataset={example} />
         } else {
-          return <LinearRegression dataset={example} />
+          return <LinearRegressionProvider><LinearRegression dataset_id={example} /></LinearRegressionProvider>
         }
       }
       case "2": {
