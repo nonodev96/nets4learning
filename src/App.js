@@ -18,6 +18,7 @@ const Glossary = lazy(() => import( "./pages/glossary/Glossary"));
 const Datasets = lazy(() => import( "./pages/datasets/Datasets"));
 const TermsAndConditions = lazy(() => import( "./pages/terms/TermsAndConditions"));
 const NotFoundPage = lazy(() => import( "./pages/notFound/NotFoundPage"));
+const Version = lazy(() => import( "./pages/version/Version"));
 
 function App() {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
@@ -39,6 +40,7 @@ function App() {
             <Route exact path={"/select-model/:id"} component={MenuSelectModel}></Route>
             <Route exact path={"/playground/:id/:option/:example"} component={Playground}></Route>
             <Route exact path={"/playground/linear-regression-description"} component={DescriptionLinearRegression}></Route>
+            <Route exact path={"/version/"} component={Version}></Route>
             <Route exact path={"/manual/"} component={Manual}></Route>
             <Route exact path={"/glossary/"} component={Glossary}></Route>
             <Route exact path={"/datasets/"} component={Datasets}></Route>

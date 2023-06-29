@@ -15,7 +15,7 @@ export default function TermsAndConditions() {
           </Row>
           <Row>
             <Col className={"mt-3"}>
-              <Card border={"primary"}>
+              <Card>
                 <Card.Header><h3>{t("pages.terms.privacy-title")}</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>
@@ -24,7 +24,7 @@ export default function TermsAndConditions() {
                 </Card.Body>
               </Card>
 
-              <Card border={"primary"} className={"mt-3"}>
+              <Card className={"mt-3"}>
                 <Card.Header><h3>{t("pages.terms.cookies-title")}</h3></Card.Header>
                 <Card.Body>
                   <Card.Text>

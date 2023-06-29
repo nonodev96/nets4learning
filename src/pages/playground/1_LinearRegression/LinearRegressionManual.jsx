@@ -40,9 +40,13 @@ export default function LinearRegressionManual({ i_model }) {
     }
   }, [i_model])
 
+  window.addEventListener("scroll", () => {
+    updateScreenJoyride()
+  })
+
   useEffect(() => {
     const interval = setInterval(() => {
-      updateScreenJoyride()
+      // updateScreenJoyride()
     }, 5000);
 
     return () => clearInterval(interval);
@@ -74,7 +78,8 @@ export default function LinearRegressionManual({ i_model }) {
              continuous={joyride.continuous}
              run={joyride.run}
              steps={joyride.steps}
-             showProgress={true} />
+             showProgress={true}
+             spotlightClicks={true} />
 
     {joyrideButton()}
     <br />

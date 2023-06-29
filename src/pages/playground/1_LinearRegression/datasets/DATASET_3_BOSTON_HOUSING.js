@@ -51,7 +51,6 @@ export default class DATASET_3_BOSTON_HOUSING extends I_DATASETS_LINEAR_REGRESSI
     const dataframe_original = await dfd.readCSV(path_dataset)
     const dataframe_processed = await dfd.readCSV(path_dataset)
 
-
     return {
       datasets     : [{
         path               : path_dataset,

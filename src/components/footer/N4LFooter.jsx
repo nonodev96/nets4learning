@@ -25,7 +25,8 @@ export default function N4LFooter() {
                   <a href="https://simidat.ujaen.es/members/lperez/" target="_blank" rel="noreferrer" className="link-secondary">María Dolores Pérez Godoy</a>,{" "}
                   <a href="https://simidat.ujaen.es/members/mjjesus/" target="_blank" rel="noreferrer" className="link-secondary">María José del Jesus Díaz</a>
                 </li>
-                <li><Link to={"/terms-and-conditions/"} className="link-secondary">{t("footer.terms")}</Link></li>
+                <li><Link to={"/terms-and-conditions"} className="link-secondary">{t("footer.terms")}</Link></li>
+                <li><Link to={"/version"} className="link-secondary">{t("footer.version")}</Link></li>
               </ul>
             </Col>
             <Col xs={12} sm={12} md={5}>

@@ -4,8 +4,12 @@ import * as dfd from "danfojs"
 import { Trans } from "react-i18next"
 import N4LTablePagination from "../../../components/table/N4LTablePagination"
 import N4LSummary from "../../../components/summary/N4LSummary"
-import { TABLE_PLOT_STYLE_CONFIG } from "../../../ConfigDanfoJS";
-import LinearRegressionContext from "../../../context/LinearRegressionContext";
+
+import LinearRegressionContext from "../../../context/LinearRegressionContext"
+import { TABLE_PLOT_STYLE_CONFIG } from "../../../ConfigDanfoJS"
+import DataFrameHistogram from "./dataframe/DataFrameHistogram"
+import DataFramePlot from "./dataframe/DataFramePlot"
+
 
 export default function LinearRegressionDatasetShow() {
 
@@ -13,50 +17,56 @@ export default function LinearRegressionDatasetShow() {
 
   // i18n
   const prefix = "pages.playground.generator.dataset."
-  const [dataset, setDataset] = useState({
+  const [indexDatasetSelected, setIndexDatasetSelected] = useState(0)
+
+  /**
+   * @typedef {Object} CustomDatasetLocal_t
+   * @property {dfd.DataFrame} dataframe_original
+   * @property {dfd.DataFrame} dataframe_processed
+   * @property {string} container_info
+   * @property {Array<string>} attributes
+   */
+  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
     dataframe_original : new dfd.DataFrame(),
     dataframe_processed: new dfd.DataFrame(),
     container_info     : "",
     attributes         : []
   })
 
-  useEffect(() => {
-    const init = async () => {
-      if (tmpModel.datasets.length > 0) {
-        const dataframe_original = tmpModel.datasets[0].dataframe_original
-        const dataframe_processed = tmpModel.datasets[0].dataframe_processed
-        const promise_info = await fetch(tmpModel.datasets_path + tmpModel.datasets[0].info)
-        const container_info = await promise_info.text()
-        dataframe_original.describe().T.plot("dataframe_original_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
-        dataframe_processed.describe().T.plot("dataframe_processed_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
-
-        setDataset({
-          dataframe_original : dataframe_original,
-          dataframe_processed: dataframe_processed,
-          container_info     : container_info,
-          attributes         : []
-        })
-      }
-    }
-    init().then(() => undefined)
-  }, [tmpModel.datasets, setDataset])
-
-  const handleChange_dataset = async (e) => {
-    const { info, index } = JSON.parse(e.target.value)
-    const dataframe_original = tmpModel.datasets[index].dataframe_original
-    const dataframe_processed = tmpModel.datasets[index].dataframe_processed
-    const promise_info = await fetch(tmpModel.datasets_path + info)
+  /**
+   *
+   * @param {CustomDataset_t} _dataset
+   * @return {Promise<void>}
+   */
+  const updateDataFrameLocal = async (_dataset) => {
+    const dataframe_original = _dataset.dataframe_original
+    const dataframe_processed = _dataset.dataframe_processed
+    const promise_info = await fetch(tmpModel.datasets_path + _dataset.info)
     const container_info = await promise_info.text()
 
     dataframe_original.describe().T.plot("dataframe_original_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
     dataframe_processed.describe().T.plot("dataframe_processed_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
 
-    setDataset(() => ({
+    setDatasetLocal({
       dataframe_original : dataframe_original,
       dataframe_processed: dataframe_processed,
       container_info     : container_info,
       attributes         : []
-    }))
+    })
+  }
+
+  useEffect(() => {
+    const init = async () => {
+      if (tmpModel.datasets.length > 0) {
+        await updateDataFrameLocal(tmpModel.datasets[indexDatasetSelected])
+      }
+    }
+    init().then(() => undefined)
+  }, [tmpModel, indexDatasetSelected])
+
+  const handleChange_dataset = async (e) => {
+    const { index } = JSON.parse(e.target.value)
+    setIndexDatasetSelected(index)
   }
 
   return <>
@@ -68,7 +78,7 @@ export default function LinearRegressionDatasetShow() {
             <Form.Select aria-label={"dataset"}
                          size={"sm"}
                          onChange={(e) => handleChange_dataset(e)}>
-              {tmpModel.datasets.map(({ csv, info, tr }, index) => {
+              {tmpModel.datasets.map(({ csv, info }, index) => {
                 return <option key={"option_" + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
               })}
             </Form.Select>
@@ -76,19 +86,26 @@ export default function LinearRegressionDatasetShow() {
         </div>
       </Card.Header>
       <Card.Body>
-        {dataset.dataframe_original &&
-          <N4LTablePagination data_head={dataset.dataframe_original.columns}
-                              data_body={dataset.dataframe_original.values}
+        {datasetLocal.dataframe_original &&
+          <N4LTablePagination data_head={datasetLocal.dataframe_original.columns}
+                              data_body={datasetLocal.dataframe_original.values}
                               rows_per_page={10} />
         }
 
         <Row>
           <Col>
+            <N4LSummary title={<Trans i18nKey={prefix + "details.info"} />} info={datasetLocal.container_info} />
             <N4LSummary title={<Trans i18nKey={prefix + "details.description-original"} />} info={<div id={"dataframe_original_plot"}></div>} />
             <N4LSummary title={<Trans i18nKey={prefix + "details.description-processed"} />} info={<div id={"dataframe_processed_plot"}></div>} />
-            <N4LSummary title={<Trans i18nKey={prefix + "details.data"} />} info={dataset.container_info} />
           </Col>
         </Row>
+        <hr />
+
+        <N4LSummary title={<Trans i18nKey={prefix + "details.histogram-processed"} />} info={<DataFramePlot dataframe={datasetLocal.dataframe_processed} />} />
+
+        {/*<N4LSummary title={<Trans i18nKey={prefix + "details.histogram-processed"} />} info={<DataFrameHistogram dataframe={datasetLocal.dataframe_processed} />} />*/}
+        {/*<N4LSummary title={<Trans i18nKey={prefix + "details.violin-processed"} />} info={<DataFrameViolin dataframe={datasetLocal.dataframe_processed} />} />*/}
+        {/*<N4LSummary title={<Trans i18nKey={prefix + "details.box-processed"} />} info={<DataFrameBox dataframe={datasetLocal.dataframe_processed} />} />*/}
 
       </Card.Body>
     </Card>

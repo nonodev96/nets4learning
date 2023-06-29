@@ -76,7 +76,6 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    */
   JOYRIDE() {
     const handleJoyrideCallback = async (data) => {
-      console.log("handleJoyrideCallback", { data })
       const { action, index, lifecycle, status, type, step } = data;
       const { target } = step
       const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)

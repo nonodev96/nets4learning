@@ -20,7 +20,6 @@ export default class DATASET_4_BREAST_CANCER extends I_DATASETS_LINEAR_REGRESSIO
     // TODO FIX
     dataframe_original_1.replace("?", NaN, { columns: ["Bare Nuclei"], inplace: true })
     dataframe_original_1.dropNa({ axis: 1, inplace: true })
-    dataframe_original_1.print()
 
     let dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
     const dataset_transforms_1 = [
