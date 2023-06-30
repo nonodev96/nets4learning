@@ -83,6 +83,20 @@ export default function Datasets(props) {
       i18n        : "datasets.download.dataset.1-linear-regression.boston"
     },
     {
+      title       : "breast-cancer/wdbc.csv",
+      url_download: "breast-cancer/wdbc.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic",
+      size        : 570,
+      i18n        : "datasets.download.dataset.1-linear-regression.breast-cancer-wdbc"
+    },
+    {
+      title       : "breast-cancer/wpbc.csv",
+      url_download: "breast-cancer/wpbc.csv",
+      url_original: "https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic",
+      size        : 199,
+      i18n        : "datasets.download.dataset.1-linear-regression.breast-cancer-wpbc"
+    },
+    {
       title       : "student-performance/student-mat.csv",
       url_download: "student-performance/student-mat.csv",
       url_original: "https://archive.ics.uci.edu/dataset/320/student+performance",

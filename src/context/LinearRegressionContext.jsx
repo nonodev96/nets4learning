@@ -46,6 +46,14 @@ import { I_DATASETS_LINEAR_REGRESSION } from "../pages/playground/1_LinearRegres
  */
 
 /**
+ * @typedef {Object} CustomDatasetLocal_t
+ * @property {dfd.DataFrame} dataframe_original
+ * @property {dfd.DataFrame} dataframe_processed
+ * @property {string} container_info
+ * @property {Array<string>} attributes
+ */
+
+/**
  * @typedef {Object} CustomLinearRegressionContext_t
  *
  * @property {CustomModel_t} tmpModel
@@ -68,6 +76,9 @@ import { I_DATASETS_LINEAR_REGRESSION } from "../pages/playground/1_LinearRegres
  *
  * @property {Object} dataPrediction
  * @property {Function} setDataPrediction
+ *
+ * @property {CustomDatasetLocal_t} datasetLocal
+ * @property {Function} setDatasetLocal
  *
  */
 const LinearRegressionContext = createContext(
@@ -111,6 +122,7 @@ export function LinearRegressionProvider({ children }) {
     params_visor   : []
   }
   // @formatter:on
+
   const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */DEFAULT_CUSTOM_MODEL)
   const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
   const [i_model, setIModel] = useState(new I_DATASETS_LINEAR_REGRESSION(t, setAccordionActive))
@@ -118,6 +130,13 @@ export function LinearRegressionProvider({ children }) {
   const [dataPrediction, setDataPrediction] = useState({
     labels  : [],
     datasets: []
+  })
+
+  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
+    dataframe_original : new dfd.DataFrame(),
+    dataframe_processed: new dfd.DataFrame(),
+    container_info     : "",
+    attributes         : []
   })
 
   return (
@@ -133,7 +152,9 @@ export function LinearRegressionProvider({ children }) {
       i_model,
       setIModel,
       dataPrediction,
-      setDataPrediction
+      setDataPrediction,
+      datasetLocal,
+      setDatasetLocal
     }}>
       {children}
     </LinearRegressionContext.Provider>

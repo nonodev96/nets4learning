@@ -4,34 +4,21 @@ import * as dfd from "danfojs"
 import { Trans } from "react-i18next"
 import N4LTablePagination from "../../../components/table/N4LTablePagination"
 import N4LSummary from "../../../components/summary/N4LSummary"
+import DataFramePlot from "../../../components/dataframe/DataFramePlot"
 
 import LinearRegressionContext from "../../../context/LinearRegressionContext"
 import { TABLE_PLOT_STYLE_CONFIG } from "../../../ConfigDanfoJS"
-import DataFrameHistogram from "./dataframe/DataFrameHistogram"
-import DataFramePlot from "./dataframe/DataFramePlot"
 
 
 export default function LinearRegressionDatasetShow() {
 
-  const { tmpModel } = useContext(LinearRegressionContext)
+  const { tmpModel, datasetLocal, setDatasetLocal } = useContext(LinearRegressionContext)
 
   // i18n
   const prefix = "pages.playground.generator.dataset."
   const [indexDatasetSelected, setIndexDatasetSelected] = useState(0)
 
-  /**
-   * @typedef {Object} CustomDatasetLocal_t
-   * @property {dfd.DataFrame} dataframe_original
-   * @property {dfd.DataFrame} dataframe_processed
-   * @property {string} container_info
-   * @property {Array<string>} attributes
-   */
-  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
-    dataframe_original : new dfd.DataFrame(),
-    dataframe_processed: new dfd.DataFrame(),
-    container_info     : "",
-    attributes         : []
-  })
+
 
   /**
    *
@@ -99,9 +86,6 @@ export default function LinearRegressionDatasetShow() {
             <N4LSummary title={<Trans i18nKey={prefix + "details.description-processed"} />} info={<div id={"dataframe_processed_plot"}></div>} />
           </Col>
         </Row>
-        <hr />
-
-        <N4LSummary title={<Trans i18nKey={prefix + "details.histogram-processed"} />} info={<DataFramePlot dataframe={datasetLocal.dataframe_processed} />} />
 
         {/*<N4LSummary title={<Trans i18nKey={prefix + "details.histogram-processed"} />} info={<DataFrameHistogram dataframe={datasetLocal.dataframe_processed} />} />*/}
         {/*<N4LSummary title={<Trans i18nKey={prefix + "details.violin-processed"} />} info={<DataFrameViolin dataframe={datasetLocal.dataframe_processed} />} />*/}

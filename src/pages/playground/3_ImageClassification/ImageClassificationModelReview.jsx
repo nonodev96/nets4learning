@@ -776,7 +776,7 @@ class ImageClassificationModelReview extends React.Component {
         </Container>
 
         <Modal show={this.state.isModalShow}
-               fullscreen={isMobile()}
+               fullscreen={"md-down"}
                onHide={this.handleModal_Close}
                onEntered={this.handleModal_Entered}
                onExited={this.handleModal_Exited}

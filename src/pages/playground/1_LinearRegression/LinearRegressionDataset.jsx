@@ -6,15 +6,20 @@ import { UPLOAD } from "../../../DATA_MODEL";
 import { Form } from "react-bootstrap";
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
-export default function LinearRegressionDataset() {
+export default function LinearRegressionDataset({ dataset_id }) {
 
   const prefix = ""
   const { t } = useTranslation()
   const [DataFrame, setDataFrame] = useState()
-  const { dataset, i_model, tmpModel, setTmpModel } = useContext(LinearRegressionContext)
+  const { i_model, tmpModel, setTmpModel } = useContext(LinearRegressionContext)
 
   const handleChange_FileUpload_CSV = (files, event) => {
     console.log(files)
+
+    setTmpModel({
+      ...tmpModel,
+      datasets: []
+    })
   }
 
   const handleChange_FileUpload_CSV_reject = (files, event) => {
@@ -27,8 +32,7 @@ export default function LinearRegressionDataset() {
 
 
   return <>
-    <h2>Dataset: info-> {dataset}</h2>
-    {dataset === UPLOAD && <>
+    {dataset_id === UPLOAD && <>
       <DragAndDrop name={"csv"}
                    accept={{ "text/csv": [".csv"] }}
                    text={t("drag-and-drop.csv")}
@@ -48,7 +52,7 @@ export default function LinearRegressionDataset() {
         </p>
       </>}
     </>}
-    {dataset !== UPLOAD && <>
+    {dataset_id !== UPLOAD && <>
       {i_model.DESCRIPTION()}
     </>}
   </>

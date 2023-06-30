@@ -1,23 +1,8 @@
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import React, { useContext, useEffect, useState } from "react"
+import React, { lazy, useContext, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next"
-import * as dfd from "danfojs"
-import * as tfjs from "@tensorflow/tfjs"
-
 import N4LLayerDesign from "../../../components/neural-network/N4LLayerDesign"
 import DebugJSON from "../../../components/debug/DebugJSON"
-
-// Manual and datasets
-import LinearRegressionManual from "./LinearRegressionManual"
-import LinearRegressionDataset from "./LinearRegressionDataset"
-import LinearRegressionDatasetShow from "./LinearRegressionDatasetShow"
-// Editors
-import LinearRegressionEditorLayers from "./LinearRegressionEditorLayer"
-import LinearRegressionEditorTrainer from "./LinearRegressionEditorTrainer"
-import LinearRegressionVisor from "./LinearRegressionVisor"
-// Models
-import LinearRegressionTableModels from "./LinearRegressionTableModels"
-import LinearRegressionPrediction from "./LinearRegressionPrediction"
 
 import { UPLOAD } from "../../../DATA_MODEL"
 import {
@@ -30,6 +15,19 @@ import {
   DATASET_6_WINE
 } from "./datasets"
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
+
+// Manual and datasets
+const LinearRegressionManual = lazy(() => import( "./LinearRegressionManual"))
+const LinearRegressionDataset = lazy(() => import( "./LinearRegressionDataset"))
+const LinearRegressionDatasetShow = lazy(() => import( "./LinearRegressionDatasetShow"))
+const LinearRegressionDatasetPlot = lazy(() => import( "./LinearRegressionDatasetPlot"))
+// Editors
+const LinearRegressionEditorLayers = lazy(() => import( "./LinearRegressionEditorLayer"))
+const LinearRegressionEditorTrainer = lazy(() => import( "./LinearRegressionEditorTrainer"))
+const LinearRegressionVisor = lazy(() => import( "./LinearRegressionVisor"))
+// Models
+const LinearRegressionTableModels = lazy(() => import( "./LinearRegressionTableModels"))
+const LinearRegressionPrediction = lazy(() => import(  "./LinearRegressionPrediction"))
 
 
 // TODO
@@ -145,7 +143,8 @@ export default function LinearRegression(props) {
                   <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : "dataset.upload-dataset"} /></h3>
                 </Accordion.Header>
                 <Accordion.Body id={"info_model"}>
-                  <LinearRegressionDataset />
+
+                  <LinearRegressionDataset dataset_id={dataset_id} />
 
                 </Accordion.Body>
               </Accordion.Item>
@@ -156,9 +155,17 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row>
-          <Col className={"joyride-step-3-dataset"}>
+        <Row className={"joyride-step-3-dataset"}>
+          <Col>
             <LinearRegressionDatasetShow />
+          </Col>
+        </Row>
+
+        <hr />
+
+        <Row className={"joyride-step-3-dataset"}>
+          <Col>
+            <LinearRegressionDatasetPlot />
           </Col>
         </Row>
 
