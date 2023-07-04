@@ -6,20 +6,21 @@ import { faker } from "@faker-js/faker"
 import { Button } from "react-bootstrap";
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
-const DEFAULT_OPTIONS = {
-  elements: {
-    point: {
-      pointStyle : 'circle',
-      borderWidth: 2,
-      radius     : 3,
-      hoverRadius: 8
-    }
-  }
-}
 
 export default function LinearRegressionPrediction() {
 
-  const { dataPrediction, setDataPrediction } = useContext(LinearRegressionContext)
+  const DEFAULT_OPTIONS = {
+    elements: {
+      point: {
+        pointStyle : 'circle',
+        borderWidth: 2,
+        radius     : 3,
+        hoverRadius: 8
+      }
+    }
+  }
+
+  const { dataPrediction } = useContext(LinearRegressionContext)
 
   const refChartJS = useRef()
   const labels = Array(100).fill("").map(() => {
@@ -72,10 +73,14 @@ export default function LinearRegressionPrediction() {
     console.log(dataPrediction)
 
     // model.
-    // setDataPrediction(...data)
+    setData({
+      labels  : labels,
+      datasets: [...generate()],
+    })
   }
 
 
+  console.log("render LinearRegressionPrediction")
   return <>
     <Button variant={"outline-primary"} onClick={updateDataPrediction}>Update</Button>
 

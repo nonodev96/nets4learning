@@ -15,3 +15,16 @@ export function isProduction() {
 }
 
 export const delay = ms => new Promise(res => setTimeout(res, ms));
+
+export function modificarPropiedad(objeto, clave, nuevoValor) {
+  const keys = clave.split(".");
+  const ultimaClave = keys.pop();
+
+  for (const key of keys) {
+    objeto = objeto[key];
+  }
+
+  objeto[ultimaClave] = nuevoValor;
+
+  return objeto
+}

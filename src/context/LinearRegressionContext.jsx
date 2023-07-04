@@ -98,15 +98,15 @@ export function LinearRegressionProvider({ children }) {
     { units: 10, activation: "relu" },
     { units: 3,  activation: "relu" },
   ]
-  const DEFAULT_DATASETS = {
-    path               : "",
-    info               : "",
-    csv                : "",
-    dataframe_original : new dfd.DataFrame(),
-    dataframe_processed: new dfd.DataFrame(),
-    isDatasetProcessed : false,
-    dataset_transforms : [],
-  }
+  // const DEFAULT_DATASETS = {
+  //   path               : "",
+  //   info               : "",
+  //   csv                : "",
+  //   dataframe_original : new dfd.DataFrame(),
+  //   dataframe_processed: new dfd.DataFrame(),
+  //   isDatasetProcessed : false,
+  //   dataset_transforms : [],
+  // }
   const DEFAULT_CUSTOM_MODEL = {
     datasets       : [],
     list_layers    : DEFAULT_LAYERS,
@@ -143,16 +143,22 @@ export function LinearRegressionProvider({ children }) {
     <LinearRegressionContext.Provider value={{
       tmpModel,
       setTmpModel,
+
       listModels,
       setListModels,
+
       isTraining,
       setIsTraining,
+
       accordionActive,
       setAccordionActive,
+
       i_model,
       setIModel,
+
       dataPrediction,
       setDataPrediction,
+
       datasetLocal,
       setDatasetLocal
     }}>

@@ -1,7 +1,7 @@
-import * as dfd from "danfojs"
 
-/***
- *
+/**
+ * @requires danfojs@
+
  * @param {dfd.DataFrame} dataframe
  * @param {Array<{column_name, column_transform}>} dataframe_transforms
  *

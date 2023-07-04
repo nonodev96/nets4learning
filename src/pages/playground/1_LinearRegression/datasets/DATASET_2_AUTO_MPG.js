@@ -1,6 +1,6 @@
 import * as tfjs from "@tensorflow/tfjs"
-import { Trans } from "react-i18next"
 import * as dfd from "danfojs"
+import { Trans } from "react-i18next"
 import I_DATASETS_LINEAR_REGRESSION from "./_model"
 
 export default class DATASET_2_AUTO_MPG extends I_DATASETS_LINEAR_REGRESSION {

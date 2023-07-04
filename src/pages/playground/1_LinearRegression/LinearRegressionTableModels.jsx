@@ -1,25 +1,25 @@
 import { Table } from "react-bootstrap"
-import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import React, { useContext } from "react";
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
 
 export default function LinearRegressionTableModels() {
   const prefix = "generator.table-models."
-  const { t } = useTranslation()
   const { listModels } = useContext(LinearRegressionContext)
 
+  console.log("render LinearRegressionTableModels")
   return <>
     <Table size={"sm"} striped={true} bordered={false} hover={true} responsive={true}>
       <thead>
       <tr>
-        <th>{t(prefix + "Learning rate")}</th>
-        <th>{t(prefix + "Test size")}</th>
-        <th>{t(prefix + "Nº of epochs")}</th>
-        <th>{t(prefix + "ID optimizer")}</th>
-        <th>{t(prefix + "ID loss")}</th>
-        <th>{t(prefix + "ID metrics")}</th>
-        <th>{t(prefix + "Layers")}</th>
+        <th><Trans i18nKey={prefix + "Learning rate"} /></th>
+        <th><Trans i18nKey={prefix + "Test size"} /></th>
+        <th><Trans i18nKey={prefix + "Nº of epochs"} /></th>
+        <th><Trans i18nKey={prefix + "ID optimizer"} /></th>
+        <th><Trans i18nKey={prefix + "ID loss"} /></th>
+        <th><Trans i18nKey={prefix + "ID metrics"} /></th>
+        <th><Trans i18nKey={prefix + "Layers"} /></th>
       </tr>
       </thead>
 

@@ -1,5 +1,3 @@
-import * as df from "danfojs";
-import * as tf from "@tensorflow/tfjs"
 import * as tfjs from "@tensorflow/tfjs";
 import { Trans } from "react-i18next";
 import * as dfd from "danfojs";
@@ -17,11 +15,11 @@ export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
   LAYERS() {
     const inputShape = 7
     const model = tfjs.sequential()
-    model.add(tf.layers.dense({ units: 64, activation: "relu", inputShape: [inputShape] }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 64, activation: "relu" }))
-    model.add(tf.layers.dense({ units: 1, activation: "relu" }))
+    model.add(tfjs.layers.dense({ units: 64, activation: "relu", inputShape: [inputShape] }))
+    model.add(tfjs.layers.dense({ units: 64, activation: "relu" }))
+    model.add(tfjs.layers.dense({ units: 64, activation: "relu" }))
+    model.add(tfjs.layers.dense({ units: 64, activation: "relu" }))
+    model.add(tfjs.layers.dense({ units: 1, activation: "relu" }))
     return model
   }
 
@@ -87,7 +85,7 @@ export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
   COMPILE() {
     const model = tfjs.sequential()
     model.compile({
-      optimizer: tf.train.rmsprop(0.01),
+      optimizer: tfjs.train.rmsprop(0.01),
       loss     : "mean_squared_error",
       metrics  : ["mean_squared_error", "mean_absolute_error"]
     })

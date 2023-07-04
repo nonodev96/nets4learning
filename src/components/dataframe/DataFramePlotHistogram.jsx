@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 
-export default function DataFrameHistogram({ dataframe }) {
+export default function DataFramePlotHistogram({ dataframe }) {
   const [column, setColumn] = useState("")
   const handleChange_Column = (e) => {
     setColumn(e.target.value)

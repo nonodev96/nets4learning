@@ -1,5 +1,5 @@
-import I_DATASETS_LINEAR_REGRESSION from "./_model";
 import * as dfd from "danfojs";
+import I_DATASETS_LINEAR_REGRESSION from "./_model";
 
 export default class DATASET_WINE extends I_DATASETS_LINEAR_REGRESSION {
 

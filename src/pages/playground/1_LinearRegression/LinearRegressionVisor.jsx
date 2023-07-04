@@ -9,7 +9,9 @@ export default function LinearRegressionVisor() {
 
   const prefix = "pages.playground.generator.visor."
   const { t } = useTranslation()
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionContext)
+  const {
+    setTmpModel
+  } = useContext(LinearRegressionContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)
@@ -27,13 +29,15 @@ export default function LinearRegressionVisor() {
     }))
   }, [visorOptions, setTmpModel])
 
-  const updateVisorOptions = (newOptions) => {
-    setVisorOptions((oldVisorOptions) => ({
-      ...oldVisorOptions,
-      ...newOptions
-    }))
+  const updateVisorOptions = (key, value) => {
+    setVisorOptions((prevState) => {
+      const _prevState = Object.assign({}, prevState)
+      _prevState[key] = value
+      return _prevState
+    })
   }
 
+  console.log("render LinearRegressionVisor")
   return <>
     <Card>
       <Card.Header>
@@ -43,28 +47,28 @@ export default function LinearRegressionVisor() {
         <Form.Check type={"checkbox"}
                     label={t(prefix + "rmse")}
                     checked={visorOptions.rmse}
-                    onChange={() => updateVisorOptions({ rmse: !visorOptions.rmse })}
+                    onChange={() => updateVisorOptions("rmse", !visorOptions.rmse)}
                     id={"rmse"}
         />
 
         <Form.Check type={"checkbox"}
                     label={t(prefix + "val_rmse")}
                     checked={visorOptions.val_rmse}
-                    onChange={() => updateVisorOptions({ val_rmse: !visorOptions.val_rmse })}
+                    onChange={() => updateVisorOptions("val_rmse", !visorOptions.val_rmse)}
                     id={"val_rmse"}
         />
 
         <Form.Check type={"checkbox"}
                     label={t(prefix + "mae")}
                     checked={visorOptions.mae}
-                    onChange={() => updateVisorOptions({ mae: !visorOptions.mae })}
+                    onChange={() => updateVisorOptions("mae", !visorOptions.mae)}
                     id={"mae"}
         />
 
         <Form.Check type={"checkbox"}
                     label={t(prefix + "val_mae")}
                     checked={visorOptions.val_mae}
-                    onChange={() => updateVisorOptions({ val_mae: !visorOptions.val_mae })}
+                    onChange={() => updateVisorOptions("val_mae", !visorOptions.val_mae)}
                     id={"val_mae"}
         />
 

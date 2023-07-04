@@ -1,10 +1,8 @@
 import { Card, Col, Form, Row } from "react-bootstrap"
-import React, { useContext, useEffect, useState } from "react"
-import * as dfd from "danfojs"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { Trans } from "react-i18next"
 import N4LTablePagination from "../../../components/table/N4LTablePagination"
 import N4LSummary from "../../../components/summary/N4LSummary"
-import DataFramePlot from "../../../components/dataframe/DataFramePlot"
 
 import LinearRegressionContext from "../../../context/LinearRegressionContext"
 import { TABLE_PLOT_STYLE_CONFIG } from "../../../ConfigDanfoJS"
@@ -25,10 +23,10 @@ export default function LinearRegressionDatasetShow() {
    * @param {CustomDataset_t} _dataset
    * @return {Promise<void>}
    */
-  const updateDataFrameLocal = async (_dataset) => {
+  const updateDataFrameLocal = useCallback(async (_path, _dataset) => {
     const dataframe_original = _dataset.dataframe_original
     const dataframe_processed = _dataset.dataframe_processed
-    const promise_info = await fetch(tmpModel.datasets_path + _dataset.info)
+    const promise_info = await fetch(_path + _dataset.info)
     const container_info = await promise_info.text()
 
     dataframe_original.describe().T.plot("dataframe_original_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
@@ -40,22 +38,23 @@ export default function LinearRegressionDatasetShow() {
       container_info     : container_info,
       attributes         : []
     })
-  }
+  }, [setDatasetLocal])
 
   useEffect(() => {
     const init = async () => {
       if (tmpModel.datasets.length > 0) {
-        await updateDataFrameLocal(tmpModel.datasets[indexDatasetSelected])
+        await updateDataFrameLocal(tmpModel.datasets_path, tmpModel.datasets[indexDatasetSelected])
       }
     }
     init().then(() => undefined)
-  }, [tmpModel, indexDatasetSelected])
+  }, [tmpModel, indexDatasetSelected, updateDataFrameLocal])
 
   const handleChange_dataset = async (e) => {
     const { index } = JSON.parse(e.target.value)
     setIndexDatasetSelected(index)
   }
 
+  console.log("render LinearRegressionDatasetShow")
   return <>
     <Card>
       <Card.Header className={"d-flex align-items-center justify-content-between"}>

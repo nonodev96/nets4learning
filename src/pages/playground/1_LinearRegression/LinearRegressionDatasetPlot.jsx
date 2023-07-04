@@ -1,13 +1,20 @@
-import React, { useContext } from "react";
-import DataFramePlot from "../../../components/dataframe/DataFramePlot";
+import React, { useContext, useEffect } from "react";
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
+import DataFramePlot from "../../../components/dataframe/DataFramePlot";
+import { DataFramePlotProvider } from "../../../components/_context/DataFramePlotContext";
 
 export default function LinearRegressionDatasetPlot() {
 
-  const prefix = "pages.playground.generator.dataset."
   const { datasetLocal } = useContext(LinearRegressionContext)
 
+  useEffect(() => {
+    // console.debug("useEffect[datasetLocal]")
+  }, [datasetLocal])
+
+  console.log("render LinearRegressionDatasetPlot")
   return <>
-    <DataFramePlot dataframe={datasetLocal.dataframe_processed} />
+    <DataFramePlotProvider>
+      <DataFramePlot dataframe={datasetLocal.dataframe_processed} />
+    </DataFramePlotProvider>
   </>
 }

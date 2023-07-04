@@ -48,7 +48,7 @@ export default function ModelReviewLinearRegression(props) {
     asyncFunction().then(_r => undefined)
   }, [Model])
 
-  console.log("render LinearRegressionModelReview")
+  console.log("render ModelReviewLinearRegression")
   return (
     <>
       <Container id={"LinearRegressionModelReview"}>

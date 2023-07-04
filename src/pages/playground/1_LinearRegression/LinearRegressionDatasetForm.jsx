@@ -1,21 +1,21 @@
 import React, { useContext } from "react"
-import { useTranslation } from "react-i18next"
+import { Trans } from "react-i18next"
 import { Card } from "react-bootstrap"
 import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
-// TODO
 export default function LinearRegressionDatasetForm() {
   const prefix = "pages.playground.generator."
-  const { t } = useTranslation()
-  const {dataset, i_model} = useContext(LinearRegressionContext)
+  const {
+    i_model
+  } = useContext(LinearRegressionContext)
 
   return <>
     <Card>
       <Card.Header>
-        <h3>TODO</h3>
+        <h3><Trans i18nKey={prefix + "dataset-form"} /></h3>
       </Card.Header>
       <Card.Body>
-
+        <Card.Text>{i_model._KEY}</Card.Text>
       </Card.Body>
     </Card>
   </>

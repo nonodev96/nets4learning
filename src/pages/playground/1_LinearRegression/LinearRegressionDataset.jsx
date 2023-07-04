@@ -1,5 +1,5 @@
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { useTranslation } from "react-i18next"
 import LinearRegressionDatasetForm from "./LinearRegressionDatasetForm"
 import { UPLOAD } from "../../../DATA_MODEL";
@@ -8,9 +8,7 @@ import LinearRegressionContext from "../../../context/LinearRegressionContext";
 
 export default function LinearRegressionDataset({ dataset_id }) {
 
-  const prefix = ""
   const { t } = useTranslation()
-  const [DataFrame, setDataFrame] = useState()
   const { i_model, tmpModel, setTmpModel } = useContext(LinearRegressionContext)
 
   const handleChange_FileUpload_CSV = (files, event) => {

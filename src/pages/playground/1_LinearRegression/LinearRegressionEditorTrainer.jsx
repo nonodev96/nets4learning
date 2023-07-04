@@ -75,7 +75,7 @@ export default function LinearRegressionEditorTrainer() {
     })
   }
 
-
+  console.log("render LinearRegressionEditorTrainer")
   return <>
     <Card>
       <Card.Header className={"d-flex align-items-center justify-content-between"}>
@@ -183,7 +183,7 @@ export default function LinearRegressionEditorTrainer() {
         <hr />
 
         <Accordion className={"mt-2"}>
-          {tmpModel.params_training.list_id_metrics.map((metric, index, array) => {
+          {tmpModel.params_training.list_id_metrics.map((metric, index) => {
             return <Accordion.Item key={index} eventKey={index.toString()}>
               <Accordion.Header>
                 Metrics {index + 1}

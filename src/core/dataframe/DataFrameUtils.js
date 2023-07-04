@@ -1,32 +1,38 @@
 import * as dfd from "danfojs"
 
 /**
- * @typedef {Object} ConfigTimeSeriesPlots_t
+ * @typedef {Object} ConfigLayoutPlots_t
  * @property {string} title
  * @property {string} x_axis
  * @property {string} y_axis
  */
 
 /**
+ * @typedef {Object} ConfigTimeSeriesPlots_t
+ * @property {{config: index}} config
+ */
+
+/**
  * @typedef {Object} DataframePlotConfig_t
+ * @property {ConfigLayoutPlots_t} LAYOUT
  * @property {ConfigTimeSeriesPlots_t} TIME_SERIES_PLOTS
  * @property {Array<string>} COLUMNS
  */
 
 /**
  * @typedef {Object} TimeSeriesPlotsValidConfigResponse_t
- * @property {boolean} isValidConfig
- * @property {Object} config
- * @property {Object} layout
+ * @property {boolean} isValidConfig_TimeSeries
+ * @property {{columns: Array<string>}} config_TimeSeries
+ * @property {{column, drop: boolean}} index
  */
-
-/**
- * @typedef {Object} TimeSeriesPlotsValidConfigResponse_t
- * @property {boolean} isValidConfig
- * @property {Object} config
- * @property {Object} layout
- * @property {Object} index
- */
+// E_PLOTS.LINE_CHARTS
+// E_PLOTS.BAR_CHARTS
+// E_PLOTS.SCATTER_PLOTS
+// E_PLOTS.HISTOGRAMS
+// E_PLOTS.PIE_CHARTS
+// E_PLOTS.BOX_PLOTS
+// E_PLOTS.VIOLIN_PLOTS
+// E_PLOTS.TIME_SERIES_PLOTS
 
 /**
  *
@@ -37,17 +43,27 @@ import * as dfd from "danfojs"
  * @return {TimeSeriesPlotsValidConfigResponse_t}
  */
 export function timeSeriesPlotsValidConfig(dataframe, dataframePlotConfig, columnsToShow) {
-  const layout = {
-    title: dataframePlotConfig.TIME_SERIES_PLOTS.title,
-    xaxis: { title: dataframePlotConfig.TIME_SERIES_PLOTS.x_axis, },
-    yaxis: { title: dataframePlotConfig.TIME_SERIES_PLOTS.y_axis, },
+  const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
+  const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index);
+  const isValidConfig_TimeSeries = notContainIndexInColumnsToShow && containsIndexInDataframe
+
+  const config_TimeSeries = { columns: columnsToShow }
+
+  const index = { column: dataframePlotConfig.TIME_SERIES_PLOTS.config.index, drop: true }
+
+  return { isValidConfig_TimeSeries, config_TimeSeries, index }
+}
+
+export function barChartsValidConfig(){
+
+}
+
+
+export function lineChartsValidConfig(dataframe, dataframePlotConfig, columnsToShow) {
+  const config_LineCharts = {
+    columns: columnsToShow
   }
-  const config = { columns: columnsToShow }
-  const index = { column: dataframePlotConfig.TIME_SERIES_PLOTS.index, drop: true }
 
-  const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.index)
-  const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.index);
-
-  const isValidConfig = notContainIndexInColumnsToShow && containsIndexInDataframe
-  return { isValidConfig, config, layout, index }
+  const isValidConfig_LineCharts = true
+  return { isValidConfig_LineCharts, config_LineCharts }
 }

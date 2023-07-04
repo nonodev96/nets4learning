@@ -19,7 +19,6 @@ import {
 import CustomCanvasDrawer from "./components/customCanvasDrawer"
 import DragAndDrop from "../../../components/dragAndDrop/DragAndDrop"
 
-import { isMobile } from "../../../utils/utils";
 import { MODEL_IMAGE_CLASSIFICATION } from "./models/_model";
 import { Trans, withTranslation } from "react-i18next";
 

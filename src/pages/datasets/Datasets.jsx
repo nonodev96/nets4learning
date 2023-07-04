@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { Button, Card, Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
+import { Card, Col, Container, Row, Tab, Table, Tabs } from "react-bootstrap";
 
 /**
  * @typedef {Object} File_t
  * @property {string} title
  * @property {string} url
  */
-export default function Datasets(props) {
+export default function Datasets() {
   const { t } = useTranslation();
 
   const tabular_classification_datasets_list = [

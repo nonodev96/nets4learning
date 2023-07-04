@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from "react-i18next"
-import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import Joyride from 'react-joyride';
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "react-bootstrap";
 
@@ -40,16 +40,13 @@ export default function LinearRegressionManual({ i_model }) {
     }
   }, [i_model])
 
-  window.addEventListener("scroll", () => {
-    updateScreenJoyride()
-  })
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      // updateScreenJoyride()
-    }, 5000);
+    const scroll = () => {
+      updateScreenJoyride()
+    }
+    window.addEventListener("scroll", scroll, { passive: true })
 
-    return () => clearInterval(interval);
+    return () => window.removeEventListener("scroll", scroll, {})
   }, []);
 
   const updateScreenJoyride = () => {
@@ -70,6 +67,7 @@ export default function LinearRegressionManual({ i_model }) {
   }
 
 
+  console.log("render LinearRegressionManual")
   return <>
     <Joyride ref={joyrideRef}
              style={joyride_style}

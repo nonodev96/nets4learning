@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Trans } from "react-i18next";
 import { ArrowRight } from "react-bootstrap-icons";
@@ -48,7 +48,7 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
     };
   }, [windowWidth, id_parent])
 
-  const modeCompact = () => {
+  const modeCompact = useCallback(() => {
     const nodes = [], edges = [];
     for (let [index, element] of Object.entries(layers)) {
       nodes.push({
@@ -62,9 +62,9 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
       edges.push({ from: index - 1, to: index })
     }
     return { edges, nodes }
-  }
+  }, [layers])
 
-  const modeExtend = () => {
+  const modeExtend = useCallback(() => {
     const nodes = [], edges = [];
     for (let index = 0; index < layers.length; index++) {
       for (let unit = 0; unit < layers[index].units; unit++) {
@@ -84,7 +84,7 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
       }
     }
     return { nodes, edges }
-  }
+  }, [layers])
 
   useEffect(() => {
     switch (mode) {
@@ -104,7 +104,7 @@ export function NeuralNetwork({ layers, id_parent, mode = NEURAL_NETWORK_MODES.C
         console.error("Error, option not valid")
         break
     }
-  }, [JSON.stringify(layers), mode])
+  }, [mode, modeCompact, modeExtend])
 
   return <>
     <Row className={"mt-3"}>

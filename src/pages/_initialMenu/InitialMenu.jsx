@@ -1,6 +1,6 @@
 import './InitialMenu.css'
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Row, Col, Button, Card, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 

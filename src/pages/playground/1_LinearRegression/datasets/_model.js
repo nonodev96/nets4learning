@@ -1,4 +1,3 @@
-import * as dfd from "danfojs";
 import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
 import { delay } from "../../../../utils/utils";
 
@@ -76,20 +75,23 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    */
   JOYRIDE() {
     const handleJoyrideCallback = async (data) => {
-      const { action, index, lifecycle, status, type, step } = data;
+      const { action, lifecycle, status, type, step } = data;
       const { target } = step
-      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
+      // const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
       if (([ACTIONS.UPDATE]).includes(action) && ([LIFECYCLE.TOOLTIP]).includes(lifecycle)) {
         switch (target) {
           case ".joyride-step-1-manual": {
             this.setAccordionActive(["manual"])
-
             break;
           }
           case ".joyride-step-2-dataset-info": {
             this.setAccordionActive(["manual", "dataset_info"])
             break;
+          }
+          default: {
+            console.error("Error, option not valid")
+            break
           }
         }
         await delay(500)
@@ -101,7 +103,7 @@ export default class I_DATASETS_LINEAR_REGRESSION {
 
       }
     }
-    const prefix = "datasets-models.1-linear-regression.joyride."
+    // const prefix = "datasets-models.1-linear-regression.joyride."
     return {
       run                  : true,
       continuous           : true,
