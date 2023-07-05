@@ -1,5 +1,5 @@
 export class I_MODEL_TABULAR_CLASSIFICATION {
-  TITLE = ""
+  TITLE = ''
   LIST_EXAMPLES_RESULTS = []
   LIST_EXAMPLES = []
   DATA_OBJECT = {}
@@ -10,23 +10,23 @@ export class I_MODEL_TABULAR_CLASSIFICATION {
   DATA_OBJECT_KEYS = {}
   DATA = [[]]
 
-  constructor(_t) {
+  constructor (_t) {
     this.t = _t
   }
 
-  loadModel() {
-    throw new Error("Error")
+  loadModel () {
+    throw new Error('Error')
   }
 
-  function_v_input(element, index, param) {
-    throw new Error("Error")
+  function_v_input (element, index, param) {
+    throw new Error('Error')
   }
 
-  DESCRIPTION() {
+  DESCRIPTION () {
     return <></>
   }
 
-  HTML_EXAMPLE() {
+  HTML_EXAMPLE () {
     return <></>
   }
 

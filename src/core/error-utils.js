@@ -16,8 +16,8 @@ export const error_tensor_shape_regex = /target expected a batch of elements whe
  * @param {string} message
  * @return {*}
  */
-export function isErrorTargetExpected(message) {
-  return message.includes("target expected a batch of elements")
+export function isErrorTargetExpected (message) {
+  return message.includes('target expected a batch of elements')
 }
 
 /**
@@ -25,7 +25,7 @@ export function isErrorTargetExpected(message) {
  * @param message
  * @return {ErrorTensorShape_match_groups_t}
  */
-export function matchErrorTargetExpected(message) {
-  const match = message.match(error_tensor_shape_regex);
-  return match.groups;
+export function matchErrorTargetExpected (message) {
+  const match = message.match(error_tensor_shape_regex)
+  return match.groups
 }

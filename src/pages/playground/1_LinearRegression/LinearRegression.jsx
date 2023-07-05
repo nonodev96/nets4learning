@@ -1,10 +1,10 @@
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import React, { lazy, Suspense, useCallback, useContext, useEffect } from "react"
-import { Trans, useTranslation } from "react-i18next"
-import N4LLayerDesign from "../../../components/neural-network/N4LLayerDesign"
-import DebugJSON from "../../../components/debug/DebugJSON"
+import React, { lazy, Suspense, useCallback, useContext, useEffect } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
+import N4LLayerDesign from '../../../components/neural-network/N4LLayerDesign'
+import DebugJSON from '../../../components/debug/DebugJSON'
 
-import { UPLOAD } from "../../../DATA_MODEL"
+import { UPLOAD } from '../../../DATA_MODEL'
 import {
   DATASET_1_SALARY,
   DATASET_2_AUTO_MPG,
@@ -12,30 +12,29 @@ import {
   DATASET_4_BREAST_CANCER,
   DATASET_5_STUDENT_PERFORMANCE,
   DATASET_6_WINE
-} from "./datasets"
+} from './datasets'
 
-import LinearRegressionContext from "../../../context/LinearRegressionContext"
+import LinearRegressionContext from '../../../context/LinearRegressionContext'
 
 // Manual and datasets
-const LinearRegressionManual = lazy(() => import( "./LinearRegressionManual"))
-const LinearRegressionDataset = lazy(() => import( "./LinearRegressionDataset"))
-const LinearRegressionDatasetShow = lazy(() => import( "./LinearRegressionDatasetShow"))
-const LinearRegressionDatasetPlot = lazy(() => import( "./LinearRegressionDatasetPlot"))
+const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
+const LinearRegressionDataset = lazy(() => import( './LinearRegressionDataset'))
+const LinearRegressionDatasetShow = lazy(() => import( './LinearRegressionDatasetShow'))
+const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatasetPlot'))
 // Editors
-const LinearRegressionEditorLayers = lazy(() => import( "./LinearRegressionEditorLayers"))
-const LinearRegressionEditorTrainer = lazy(() => import( "./LinearRegressionEditorTrainer"))
-const LinearRegressionVisor = lazy(() => import( "./LinearRegressionVisor"))
+const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
+const LinearRegressionEditorTrainer = lazy(() => import( './LinearRegressionEditorTrainer'))
+const LinearRegressionVisor = lazy(() => import( './LinearRegressionVisor'))
 // Models
-const LinearRegressionTableModels = lazy(() => import( "./LinearRegressionTableModels"))
-const LinearRegressionPrediction = lazy(() => import(  "./LinearRegressionPrediction"))
-
+const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
+const LinearRegressionPrediction = lazy(() => import(  './LinearRegressionPrediction'))
 
 // TODO
-export default function LinearRegression(props) {
+export default function LinearRegression (props) {
   const { dataset_id } = props
 
   // i18n
-  const prefix = "pages.playground.generator."
+  const prefix = 'pages.playground.generator.'
   const { t } = useTranslation()
 
   const {
@@ -55,7 +54,7 @@ export default function LinearRegression(props) {
   const handleSubmit_TrainModel = async (event) => {
     event.preventDefault()
     setIsTraining(true)
-    console.log("handleSubmit_TrainModel")
+    console.log('handleSubmit_TrainModel')
   }
 
   const init = useCallback(async () => {
@@ -89,7 +88,7 @@ export default function LinearRegression(props) {
           break
         }
         default: {
-          console.error("Error, option not valid")
+          console.error('Error, option not valid')
           break
         }
       }
@@ -102,7 +101,7 @@ export default function LinearRegression(props) {
   }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
 
   useEffect(() => {
-    console.debug("LinearRegression useEffect[init]")
+    console.debug('LinearRegression useEffect[init]')
     init().then(() => undefined)
   }, [init])
 
@@ -117,29 +116,29 @@ export default function LinearRegression(props) {
     setAccordionActive(copy)
   }
 
-  console.log("render LinearRegression")
+  console.log('render LinearRegression')
   return (
     <>
-      <Container className={"mt-3"}>
+      <Container className={'mt-3'}>
         <Row>
           <Col>
 
             <Accordion defaultActiveKey={[]} activeKey={accordionActive}>
-              <Accordion.Item className={"joyride-step-1-manual"}
-                              eventKey={"manual"}>
-                <Accordion.Header onClick={() => accordionToggle("manual")}>
-                  <h3><Trans i18nKey={"pages.playground.1-linear-regression.generator.manual.title"} /></h3>
+              <Accordion.Item className={'joyride-step-1-manual'}
+                              eventKey={'manual'}>
+                <Accordion.Header onClick={() => accordionToggle('manual')}>
+                  <h3><Trans i18nKey={'pages.playground.1-linear-regression.generator.manual.title'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   <Suspense fallback={<></>}><LinearRegressionManual i_model={i_model} /></Suspense>
                 </Accordion.Body>
               </Accordion.Item>
-              <Accordion.Item className={"joyride-step-2-dataset-info"}
-                              eventKey={"dataset_info"}>
-                <Accordion.Header onClick={() => accordionToggle("dataset_info")}>
-                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : "dataset.upload-dataset"} /></h3>
+              <Accordion.Item className={'joyride-step-2-dataset-info'}
+                              eventKey={'dataset_info'}>
+                <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
+                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
-                <Accordion.Body id={"info_model"}>
+                <Accordion.Body id={'info_model'}>
 
                   <LinearRegressionDataset dataset_id={dataset_id} />
 
@@ -152,7 +151,7 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row className={"joyride-step-3-dataset"}>
+        <Row className={'joyride-step-3-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetShow /></Suspense>
           </Col>
@@ -160,7 +159,7 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row className={"joyride-step-3-dataset"}>
+        <Row className={'joyride-step-3-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetPlot /></Suspense>
           </Col>
@@ -169,32 +168,32 @@ export default function LinearRegression(props) {
         <hr />
 
         <Row>
-          <Col className={"joyride-step-4-layer"}>
+          <Col className={'joyride-step-4-layer'}>
             <N4LLayerDesign layers={tmpModel.list_layers} />
           </Col>
         </Row>
 
         <Form onSubmit={handleSubmit_TrainModel}>
 
-          <Row className={"mt-3"}>
-            <Col className={"mb-3 joyride-step-5-editor-layers"}>
+          <Row className={'mt-3'}>
+            <Col className={'mb-3 joyride-step-5-editor-layers'}>
               <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               <hr />
               <Suspense fallback={<></>}><LinearRegressionVisor /></Suspense>
             </Col>
-            <Col className={"joyride-step-6-editor-trainer"}>
+            <Col className={'joyride-step-6-editor-trainer'}>
               <Suspense fallback={<></>}><LinearRegressionEditorTrainer /></Suspense>
             </Col>
           </Row>
 
-          <Row className={"mt-3"}>
+          <Row className={'mt-3'}>
             <Col xl={12}>
               <div className="d-grid gap-2">
-                <Button type={"submit"}
+                <Button type={'submit'}
                         disabled={isTraining || !tmpModel.isDatasetProcessed}
-                        size={"lg"}
+                        size={'lg'}
                         variant="primary">
-                  <Trans i18nKey={prefix + "models.button-submit"} />
+                  <Trans i18nKey={prefix + 'models.button-submit'} />
                 </Button>
               </div>
             </Col>
@@ -204,11 +203,11 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row className={"mt-3"}>
-          <Col className={"joyride-step-7-list-of-models"}>
+        <Row className={'mt-3'}>
+          <Col className={'joyride-step-7-list-of-models'}>
             <Card>
-              <Card.Header className={"d-flex align-items-center"}>
-                <h3>{prefix + "list-models-generated"}</h3>
+              <Card.Header className={'d-flex align-items-center'}>
+                <h3>{prefix + 'list-models-generated'}</h3>
               </Card.Header>
               <Card.Body>
                 <Suspense fallback={<></>}><LinearRegressionTableModels /></Suspense>
@@ -219,11 +218,11 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row className={"mt-3"}>
-          <Col className={"joyride-step-8-predict-visualization"}>
+        <Row className={'mt-3'}>
+          <Col className={'joyride-step-8-predict-visualization'}>
             <Card>
               <Card.Header>
-                <h3>{t("pages.playground.1-linear-regression.prediction")}</h3>
+                <h3>{t('pages.playground.1-linear-regression.prediction')}</h3>
               </Card.Header>
               <Card.Body>
                 <Suspense fallback={<></>}><LinearRegressionPrediction /></Suspense>
@@ -232,7 +231,7 @@ export default function LinearRegression(props) {
           </Col>
         </Row>
 
-        <Row className={"mt-3"}>
+        <Row className={'mt-3'}>
           <Col>
             <Card>
               <Card.Header>
@@ -251,10 +250,10 @@ export default function LinearRegression(props) {
 
         <hr />
 
-        <Row className={"mt-3 text-center"}>
-          <Col className={"my-step-1"}><h1>hello world</h1></Col>
-          <Col className={"my-step-2"}><h1>hello world</h1></Col>
-          <Col className={"my-step-3"}><h1>hello world</h1></Col>
+        <Row className={'mt-3 text-center'}>
+          <Col className={'my-step-1'}><h1>hello world</h1></Col>
+          <Col className={'my-step-2'}><h1>hello world</h1></Col>
+          <Col className={'my-step-3'}><h1>hello world</h1></Col>
         </Row>
 
       </Container>

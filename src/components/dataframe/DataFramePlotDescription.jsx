@@ -2,6 +2,14 @@ import { Modal } from "react-bootstrap";
 import { Trans } from "react-i18next";
 import React, { useContext } from "react";
 import DataFramePlotContext from "../_context/DataFramePlotContext";
+import TimeSeries from "./description/TimeSeries";
+import Violin from "./description/Violin";
+import Pie from "./description/Pie";
+import Box from "./description/Box";
+import Histograms from "./description/Histograms";
+import Scatter from "./description/Scatter";
+import Bar from "./description/Bar";
+import Line from "./description/Line";
 
 export default function DataFramePlotDescription() {
   const {
@@ -17,21 +25,21 @@ export default function DataFramePlotDescription() {
   const description_plot = () => {
     switch (dataframePlotConfig.PLOT_ENABLE) {
       case E_PLOTS.TIME_SERIES_PLOTS:
-        return <><Trans i18nKey={"dataframe-plot.time_series_plots.description"} /></>
+        return <><TimeSeries /></>
       case E_PLOTS.VIOLIN_PLOTS:
-        return <><Trans i18nKey={"dataframe-plot.violin_plots.description"} /></>
+        return <><Violin /><Trans i18nKey={"dataframe-plot.violin_plots.description"} /></>
       case E_PLOTS.BOX_PLOTS:
-        return <><Trans i18nKey={"dataframe-plot.box_plots.description"} /></>
+        return <><Box /><Trans i18nKey={"dataframe-plot.box_plots.description"} /></>
       case E_PLOTS.PIE_CHARTS:
-        return <><Trans i18nKey={"dataframe-plot.pie_charts.description"} /></>
+        return <><Pie /><Trans i18nKey={"dataframe-plot.pie_charts.description"} /></>
       case E_PLOTS.HISTOGRAMS:
-        return <><Trans i18nKey={"dataframe-plot.histograms.description"} /></>
+        return <><Histograms /><Trans i18nKey={"dataframe-plot.histograms.description"} /></>
       case E_PLOTS.SCATTER_PLOTS:
-        return <><Trans i18nKey={"dataframe-plot.scatter_plots.description"} /></>
+        return <><Scatter /><Trans i18nKey={"dataframe-plot.scatter_plots.description"} /></>
       case E_PLOTS.BAR_CHARTS:
-        return <><Trans i18nKey={"dataframe-plot.bar_charts.description"} /></>
+        return <><Bar /><Trans i18nKey={"dataframe-plot.bar_charts.description"} /></>
       case E_PLOTS.LINE_CHARTS:
-        return <><Trans i18nKey={"dataframe-plot.line_charts.description"} /></>
+        return <><Line /><Trans i18nKey={"dataframe-plot.line_charts.description"} /></>
 
       default: {
         console.error("Error, option not valid")

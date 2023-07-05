@@ -1,7 +1,7 @@
-import * as tfvis from "@tensorflow/tfjs-vis";
-import * as tf from "@tensorflow/tfjs";
-import { MnistData } from "../models/MODEL_MNIST_Data";
-import { createLoss, createMetrics, createOptimizer } from "../../../../core/nn-utils/ArchitectureHelper";
+import * as tfvis from '@tensorflow/tfjs-vis'
+import * as tf from '@tensorflow/tfjs'
+import { MnistData } from '../models/MODEL_MNIST_Data'
+import { createLoss, createMetrics, createOptimizer } from '../../../../core/nn-utils/ArchitectureHelper'
 
 const classNames = [
   'Zero',
@@ -16,7 +16,7 @@ const classNames = [
   'Nine',
 ]
 
-async function showExamples(data) {
+async function showExamples (data) {
   // Create a container in the visor
   const surface = tfvis
     .visor()
@@ -38,7 +38,7 @@ async function showExamples(data) {
     const canvas = document.createElement('canvas')
     canvas.width = 28
     canvas.height = 28
-    canvas.style.margin = "4px"
+    canvas.style.margin = '4px'
     await tf.browser.toPixels(imageTensor, canvas)
     surface.drawArea.appendChild(canvas)
 
@@ -46,7 +46,7 @@ async function showExamples(data) {
   }
 }
 
-async function train(model, data, numberOfEpoch) {
+async function train (model, data, numberOfEpoch) {
   const metrics = ['loss', 'val_loss', 'acc', 'val_acc']
   const container = {
     name  : 'Entrenamiento del modelo',
@@ -78,7 +78,7 @@ async function train(model, data, numberOfEpoch) {
   })
 }
 
-function doPrediction(model, data, testDataSize = 500) {
+function doPrediction (model, data, testDataSize = 500) {
   const IMAGE_WIDTH = 28
   const IMAGE_HEIGHT = 28
   const testData = data.nextTestBatch(testDataSize)
@@ -95,7 +95,7 @@ function doPrediction(model, data, testDataSize = 500) {
   return [prediction, labels]
 }
 
-async function showAccuracy(model, data) {
+async function showAccuracy (model, data) {
   const [preds, labels] = doPrediction(model, data)
   const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, preds)
   const container = { name: 'Exactitud', tab: 'Evaluación' }
@@ -104,7 +104,7 @@ async function showAccuracy(model, data) {
   labels.dispose()
 }
 
-async function showConfusion(model, data) {
+async function showConfusion (model, data) {
   const [preds, labels] = doPrediction(model, data)
   const confusionMatrix = await tfvis.metrics.confusionMatrix(labels, preds)
   const container = { name: 'Matriz de confusión', tab: 'Evaluación' }
@@ -116,7 +116,7 @@ async function showConfusion(model, data) {
   labels.dispose()
 }
 
-function getModel(idOptimizer, layerList, idLoss, idMetrics, params) {
+function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
   const { LearningRate } = params
   const model = tf.sequential()
   const IMAGE_WIDTH = 28
@@ -200,7 +200,7 @@ function getModel(idOptimizer, layerList, idLoss, idMetrics, params) {
   return model
 }
 
-export async function MNIST_run(params_data) {
+export async function MNIST_run (params_data) {
 
   const {
     numberOfEpoch,

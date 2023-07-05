@@ -1,16 +1,16 @@
-import i18n from 'i18next';
-import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next'
+import Backend from 'i18next-http-backend'
+import LanguageDetector from 'i18next-browser-languagedetector'
+import { initReactI18next } from 'react-i18next'
 
 i18n
   .use(LanguageDetector)
   .use(Backend)
   .use(initReactI18next)
   .init({
-    preload      : ["en"],
-    load         : "languageOnly",
-    fallbackLng  : "en",
+    preload    : ['en'],
+    load       : 'languageOnly',
+    fallbackLng: 'en',
     // debug        : process.env.REACT_APP_ENVIRONMENT === "development",
     backend      : {
       loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json'
@@ -25,6 +25,6 @@ i18n
     },
   })
   .then((_r) => {
-  });
+  })
 
-export default i18n;
+export default i18n

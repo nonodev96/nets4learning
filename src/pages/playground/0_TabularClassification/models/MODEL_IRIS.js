@@ -1,17 +1,16 @@
-import * as tf from "@tensorflow/tfjs";
-import { I_MODEL_TABULAR_CLASSIFICATION } from "./_model";
-import { Trans } from "react-i18next";
+import * as tf from '@tensorflow/tfjs'
+import { Trans } from 'react-i18next'
+import { I_MODEL_TABULAR_CLASSIFICATION } from './_model'
 
 export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
 
-  static  KEY = "IRIS"
-  static URL = "https://archive.ics.uci.edu/ml/datasets/iris"
-  static URL_MODEL = "/public/models/classification/iris/my-model-iris.json"
-  TITLE = "datasets-models.0-tabular-classification.iris.title"
-
+  static  KEY = 'IRIS'
+  static URL = 'https://archive.ics.uci.edu/ml/datasets/iris'
+  static URL_MODEL = '/public/models/classification/iris/my-model-iris.json'
+  TITLE = 'datasets-models.0-tabular-classification.iris.title'
 
   NUM_CLASSES = 3
-  CLASSES = ["Iris-setosa", "Iris-versicolor", "Iris-virginica"]
+  CLASSES = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
 
   DATA_OBJECT = {
     longitud_sepalo: 5.1,
@@ -25,19 +24,19 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     longitud_petalo: 1.4,
     anchura_petalo : 0.2
   }
-  DATA_OBJECT_KEYS = ["longitud_sepalo", "anchura_sepalo", "longitud_petalo", "anchura_petalo"]
+  DATA_OBJECT_KEYS = ['longitud_sepalo', 'anchura_sepalo', 'longitud_petalo', 'anchura_petalo']
 
-  TABLE_HEADER = ["Longitud sépalo", "Anchura sépalo", "Longitud petalo", "Anchura petalo", "Tipo"]
+  TABLE_HEADER = ['Longitud sépalo', 'Anchura sépalo', 'Longitud petalo', 'Anchura petalo', 'Tipo']
   DATA_CLASSES_KEYS = [
-    "Longitud sépalo",
-    "Anchura sépalo",
-    "Longitud petalo",
-    "Anchura petalo"
+    'Longitud sépalo',
+    'Anchura sépalo',
+    'Longitud petalo',
+    'Anchura petalo'
   ]
   LIST_EXAMPLES_RESULTS = [
-    "0 Iris-setosa",
-    "1 Iris-versicolor",
-    "2 Iris-virginica",
+    '0 Iris-setosa',
+    '1 Iris-versicolor',
+    '2 Iris-virginica',
   ]
   LIST_EXAMPLES = [
     { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },
@@ -46,35 +45,35 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   ]
   FORM = []
 
-  DESCRIPTION() {
-    const prefix = "datasets-models.0-tabular-classification.iris.description."
+  DESCRIPTION () {
+    const prefix = 'datasets-models.0-tabular-classification.iris.description.'
     return <>
       <p>
-        <Trans i18nKey={prefix + "text-1"} />
+        <Trans i18nKey={prefix + 'text-1'} />
       </p>
       <details>
-        <summary><Trans i18nKey={prefix + "details-1.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-1.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + "details-1.list.1"} /></li>
-          <li><Trans i18nKey={prefix + "details-1.list.2"} /></li>
-          <li><Trans i18nKey={prefix + "details-1.list.3"} /></li>
-          <li><Trans i18nKey={prefix + "details-1.list.4"} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.2'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.3'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.4'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-2.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-2.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + "details-2.list.1"} /></li>
-          <li><Trans i18nKey={prefix + "details-2.list.2"} /></li>
-          <li><Trans i18nKey={prefix + "details-2.list.3"} /></li>
+          <li><Trans i18nKey={prefix + 'details-2.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-2.list.2'} /></li>
+          <li><Trans i18nKey={prefix + 'details-2.list.3'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-3.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-3.title'} /></summary>
         <ol>
           <li>
             <a href="https://archive.ics.uci.edu/ml/datasets/Iris" target="_blank" rel="noreferrer">
-              <Trans i18nKey={prefix + "details-3.list.1"} />
+              <Trans i18nKey={prefix + 'details-3.list.1'} />
             </a>
           </li>
         </ol>
@@ -82,22 +81,22 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  HTML_EXAMPLE() {
-    const prefix = "datasets-models.0-tabular-classification.iris.html-example."
+  HTML_EXAMPLE () {
+    const prefix = 'datasets-models.0-tabular-classification.iris.html-example.'
     return <>
       <p>
-        <Trans i18nKey={prefix + "text"} />
+        <Trans i18nKey={prefix + 'text'} />
         <br />
-        <b><Trans i18nKey={prefix + "items"} /></b>
+        <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-      <p><Trans i18nKey={prefix + "examples"} /></p>
+      <p><Trans i18nKey={prefix + 'examples'} /></p>
     </>
   }
 
   loadModel = async function () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/iris/my-model-iris.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/iris/my-model-iris.json')
   }
-  function_v_input = async function (element, _index, _param = "") {
+  function_v_input = async function (element, _index, _param = '') {
     return parseFloat(element)
   }
   DATA = [

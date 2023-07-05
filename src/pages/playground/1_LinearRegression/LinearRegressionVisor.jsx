@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { Card, Form } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import LinearRegressionContext from "../../../context/LinearRegressionContext";
+import { Card, Form } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import LinearRegressionContext from '../../../context/LinearRegressionContext'
 
+export default function LinearRegressionVisor () {
 
-export default function LinearRegressionVisor() {
-
-  const prefix = "pages.playground.generator.visor."
+  const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
   const {
     setTmpModel
@@ -18,10 +17,10 @@ export default function LinearRegressionVisor() {
 
   useEffect(() => {
     const params_visor = []
-    if (visorOptions.rmse) params_visor.push("rmse")
-    if (visorOptions.val_rmse) params_visor.push("val_rmse")
-    if (visorOptions.mae) params_visor.push("mae")
-    if (visorOptions.val_mae) params_visor.push("val_mae")
+    if (visorOptions.rmse) params_visor.push('rmse')
+    if (visorOptions.val_rmse) params_visor.push('val_rmse')
+    if (visorOptions.mae) params_visor.push('mae')
+    if (visorOptions.val_mae) params_visor.push('val_mae')
 
     setTmpModel((oldTmpModel) => ({
       ...oldTmpModel,
@@ -37,39 +36,39 @@ export default function LinearRegressionVisor() {
     })
   }
 
-  console.log("render LinearRegressionVisor")
+  console.log('render LinearRegressionVisor')
   return <>
     <Card>
       <Card.Header>
-        <h3>{t("Params visor")}</h3>
+        <h3>{t('Params visor')}</h3>
       </Card.Header>
       <Card.Body>
-        <Form.Check type={"checkbox"}
-                    label={t(prefix + "rmse")}
+        <Form.Check type={'checkbox'}
+                    label={t(prefix + 'rmse')}
                     checked={visorOptions.rmse}
-                    onChange={() => updateVisorOptions("rmse", !visorOptions.rmse)}
-                    id={"rmse"}
+                    onChange={() => updateVisorOptions('rmse', !visorOptions.rmse)}
+                    id={'rmse'}
         />
 
-        <Form.Check type={"checkbox"}
-                    label={t(prefix + "val_rmse")}
+        <Form.Check type={'checkbox'}
+                    label={t(prefix + 'val_rmse')}
                     checked={visorOptions.val_rmse}
-                    onChange={() => updateVisorOptions("val_rmse", !visorOptions.val_rmse)}
-                    id={"val_rmse"}
+                    onChange={() => updateVisorOptions('val_rmse', !visorOptions.val_rmse)}
+                    id={'val_rmse'}
         />
 
-        <Form.Check type={"checkbox"}
-                    label={t(prefix + "mae")}
+        <Form.Check type={'checkbox'}
+                    label={t(prefix + 'mae')}
                     checked={visorOptions.mae}
-                    onChange={() => updateVisorOptions("mae", !visorOptions.mae)}
-                    id={"mae"}
+                    onChange={() => updateVisorOptions('mae', !visorOptions.mae)}
+                    id={'mae'}
         />
 
-        <Form.Check type={"checkbox"}
-                    label={t(prefix + "val_mae")}
+        <Form.Check type={'checkbox'}
+                    label={t(prefix + 'val_mae')}
                     checked={visorOptions.val_mae}
-                    onChange={() => updateVisorOptions("val_mae", !visorOptions.val_mae)}
-                    id={"val_mae"}
+                    onChange={() => updateVisorOptions('val_mae', !visorOptions.val_mae)}
+                    id={'val_mae'}
         />
 
       </Card.Body>

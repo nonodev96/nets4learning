@@ -1,8 +1,7 @@
-import * as tf from "@tensorflow/tfjs";
-import * as dfd from "danfojs";
+import * as tf from '@tensorflow/tfjs'
+import * as dfd from 'danfojs'
 
-
-export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
+export function transform_datasetJSON_To_DataFrame (dataset_JSON) {
   const data_parsed = dataset_JSON.data.map((row) => {
     return row.map((item) => {
       if (dataset_JSON?.missing_value_key === item) return NaN
@@ -10,13 +9,13 @@ export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
     })
   })
   const columns_number = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "int32";
+    return type === 'int32'
   })
   const columns_float = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "float32";
+    return type === 'float32'
   })
   const columns_select = dataset_JSON.attributes.filter(({ type }) => {
-    return type === "string";
+    return type === 'string'
   })
   let df = new dfd.DataFrame(data_parsed)
 
@@ -44,19 +43,17 @@ export function transform_datasetJSON_To_DataFrame(dataset_JSON) {
     df.addColumn(index_column, enc_val, { inplace: true })
   })
 
-  console.log("ENCODER", { df })
-
+  console.log('ENCODER', { df })
 
   return df
 }
 
-export function convertToTensorsDataFrame(df, dataset_JSON) {
-
+export function convertToTensorsDataFrame (df, dataset_JSON) {
 
   return []
 }
 
-export function getClassesFromDataSet(dataset_JSON) {
+export function getClassesFromDataSet (dataset_JSON) {
   try {
 
     let data = []
@@ -104,79 +101,79 @@ export function getClassesFromDataSet(dataset_JSON) {
   }
 }
 
-function convertToTensors(data, targets, testSize, numClasses) {
-  const numExamples = data.length;
+function convertToTensors (data, targets, testSize, numClasses) {
+  const numExamples = data.length
   if (numExamples !== targets.length) {
-    throw new Error('data and split have different numbers of examples');
+    throw new Error('data and split have different numbers of examples')
   }
 
   // Randomly shuffle `data` and `targets`.
-  const indices = [];
+  const indices = []
   for (let i = 0; i < numExamples; ++i) {
-    indices.push(i);
+    indices.push(i)
   }
-  tf.util.shuffle(indices);
+  tf.util.shuffle(indices)
 
-  const shuffledData = [];
-  const shuffledTargets = [];
+  const shuffledData = []
+  const shuffledTargets = []
   for (let i = 0; i < numExamples; ++i) {
-    shuffledData.push(data[indices[i]]);
-    shuffledTargets.push(targets[indices[i]]);
+    shuffledData.push(data[indices[i]])
+    shuffledTargets.push(targets[indices[i]])
   }
 
   // Split the data into a training set and a tet set, based on `testSplit`.
-  const numTestExamples = Math.round(numExamples * testSize);
-  const numTrainExamples = numExamples - numTestExamples;
+  const numTestExamples = Math.round(numExamples * testSize)
+  const numTrainExamples = numExamples - numTestExamples
 
-  const xDims = shuffledData[0].length;
+  const xDims = shuffledData[0].length
 
   // Create a 2D `tf.Tensor` to hold the feature data.
-  const xs = tf.tensor2d(shuffledData, [numExamples, xDims]);
+  const xs = tf.tensor2d(shuffledData, [numExamples, xDims])
 
   // Create a 1D `tf.Tensor` to hold the labels, and convert the number label
   // from the set {0, 1, 2} into one-hot encoding (.e.g., 0 --> [1, 0, 0]).
-  const ys = tf.oneHot(tf.tensor1d(shuffledTargets).toInt(), numClasses);
+  const ys = tf.oneHot(tf.tensor1d(shuffledTargets).toInt(), numClasses)
 
   // Split the data into training and test sets, using `slice`.
-  const xTrain = xs.slice([0, 0], [numTrainExamples, xDims]);
-  const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims]);
-  const yTrain = ys.slice([0, 0], [numTrainExamples, numClasses]);
-  const yTest = ys.slice([0, 0], [numTestExamples, numClasses]);
-  return [xTrain, yTrain, xTest, yTest];
+  const xTrain = xs.slice([0, 0], [numTrainExamples, xDims])
+  const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims])
+  const yTrain = ys.slice([0, 0], [numTrainExamples, numClasses])
+  const yTest = ys.slice([0, 0], [numTestExamples, numClasses])
+  return [xTrain, yTrain, xTest, yTest]
 }
 
-export function trainTestSplit(data, classes, testSize) {
+export function trainTestSplit (data, classes, testSize) {
 
   return tf.tidy(() => {
-    const dataByClass = [];
-    const targetByClass = [];
+    const dataByClass = []
+    const targetByClass = []
     for (let i = 0; i < classes.length; i++) {
-      dataByClass.push([]);
-      targetByClass.push([]);
+      dataByClass.push([])
+      targetByClass.push([])
     }
 
     for (const example of data) {
-      const target = example[example.length - 1];
-      const data = example.slice(0, example.length - 1);
-      dataByClass[target].push(data);
-      targetByClass[target].push(target);
+      const target = example[example.length - 1]
+      const data = example.slice(0, example.length - 1)
+      dataByClass[target].push(data)
+      targetByClass[target].push(target)
     }
 
-    const xTrains = [], yTrains = [], xTests = [], yTests = [];
+    const xTrains = [], yTrains = [], xTests = [], yTests = []
     for (let i = 0; i < classes.length; i++) {
-      const [xTrain, yTrain, xTest, yTest] = convertToTensors(dataByClass[i], targetByClass[i], testSize, classes.length);
-      xTrains.push(xTrain);
-      yTrains.push(yTrain);
-      xTests.push(xTest);
-      yTests.push(yTest);
+      const [xTrain, yTrain, xTest, yTest] = convertToTensors(dataByClass[i], targetByClass[i], testSize, classes.length)
+      xTrains.push(xTrain)
+      yTrains.push(yTrain)
+      xTests.push(xTest)
+      yTests.push(yTest)
     }
 
-    const concatAxis = 0;
+    const concatAxis = 0
     return [
       tf.concat(xTrains, concatAxis),
       tf.concat(yTrains, concatAxis),
       tf.concat(xTests, concatAxis),
       tf.concat(yTests, concatAxis),
-    ];
-  });
+    ]
+  })
 }

@@ -1,8 +1,8 @@
-import { createContext, useState } from "react"
-import * as dfd from "danfojs"
-import * as tfjs from "@tensorflow/tfjs"
-import { useTranslation } from "react-i18next"
-import { I_DATASETS_LINEAR_REGRESSION } from "../pages/playground/1_LinearRegression/datasets"
+import { createContext, useState } from 'react'
+import * as dfd from 'danfojs'
+import * as tfjs from '@tensorflow/tfjs'
+import { useTranslation } from 'react-i18next'
+import { I_DATASETS_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/datasets'
 
 /**
  * @typedef {Object} CustomPreprocessDataset_t
@@ -86,7 +86,7 @@ const LinearRegressionContext = createContext(
   {}
 )
 
-export function LinearRegressionProvider({ children }) {
+export function LinearRegressionProvider ({ children }) {
 
   const { t } = useTranslation()
 
@@ -135,7 +135,7 @@ export function LinearRegressionProvider({ children }) {
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
     dataframe_original : new dfd.DataFrame(),
     dataframe_processed: new dfd.DataFrame(),
-    container_info     : "",
+    container_info     : '',
     attributes         : []
   })
 

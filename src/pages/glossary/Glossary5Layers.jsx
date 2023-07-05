@@ -1,22 +1,22 @@
-import { Accordion, Table } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import React from "react";
+import { Accordion, Table } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import React from 'react'
 
-export default function Glossary5Layers() {
+export default function Glossary5Layers () {
 
   const { t } = useTranslation()
 
   return <>
-    {process.env.REACT_APP_ENVIRONMENT === "development" && <>
-      <Accordion defaultValue={""} defaultActiveKey={""}>
-        <Accordion.Item eventKey={"layers"}>
+    {process.env.REACT_APP_ENVIRONMENT === 'development' && <>
+      <Accordion defaultValue={''} defaultActiveKey={''}>
+        <Accordion.Item eventKey={'layers'}>
           <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
           <Accordion.Body>
             <Table striped bordered hover responsive={true}>
               <thead>
               <tr>
-                <th>{t("pages.glossary.table-head.name")}</th>
-                <th>{t("pages.glossary.table-head.description")}</th>
+                <th>{t('pages.glossary.table-head.name')}</th>
+                <th>{t('pages.glossary.table-head.description')}</th>
               </tr>
               </thead>
               <tbody>
@@ -41,7 +41,7 @@ export default function Glossary5Layers() {
             </Table>
           </Accordion.Body>
         </Accordion.Item>
-        <Accordion.Item eventKey={"normalization"} style={{ display: 'none' }}>
+        <Accordion.Item eventKey={'normalization'} style={{ display: 'none' }}>
           <Accordion.Header><h3>Normalización</h3></Accordion.Header>
           <Accordion.Body>
             <p>La normalización de datos es un paso importante en el procesamiento de datos para redes neuronales. La normalización se refiere a la transformación de los datos de entrada para que tengan una escala común.</p>

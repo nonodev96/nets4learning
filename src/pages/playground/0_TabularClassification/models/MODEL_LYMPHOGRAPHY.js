@@ -1,44 +1,44 @@
-import * as tf from "@tensorflow/tfjs";
-import { I_MODEL_TABULAR_CLASSIFICATION } from "./_model";
-import { Trans } from "react-i18next";
+import * as tf from '@tensorflow/tfjs'
+import { Trans } from 'react-i18next'
+import { I_MODEL_TABULAR_CLASSIFICATION } from './_model'
 
 export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
-  static KEY = "LYMPHOGRAPHY"
-  static URL = "https://archive.ics.uci.edu/ml/datasets/Lymphography"
-  static URL_MODEL = "/public/models/classification/car/my-model-lymphography.json"
-  static URL_DATASET = "https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/"
-  TITLE = "datasets-models.0-tabular-classification.lymphography.title"
+  static KEY = 'LYMPHOGRAPHY'
+  static URL = 'https://archive.ics.uci.edu/ml/datasets/Lymphography'
+  static URL_MODEL = '/public/models/classification/car/my-model-lymphography.json'
+  static URL_DATASET = 'https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/'
+  TITLE = 'datasets-models.0-tabular-classification.lymphography.title'
 
-  DESCRIPTION() {
-    const prefix = "datasets-models.0-tabular-classification.lymphography.description."
+  DESCRIPTION () {
+    const prefix = 'datasets-models.0-tabular-classification.lymphography.description.'
     return <>
-      <p><Trans i18nKey={prefix + "text-1"} /></p>
+      <p><Trans i18nKey={prefix + 'text-1'} /></p>
       <details>
-        <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-input.title'} /></summary>
         <ol>
           {Array
             .from({ length: 17 })
-            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-input.list." + i} /></li>)}
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + 'details-input.list.' + i} /></li>)}
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-output.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-output.title'} /></summary>
         <ol>
           {Array
             .from({ length: 4 })
-            .map((v, i) => <li key={i}><Trans i18nKey={prefix + "details-output.list." + i} /></li>)}
+            .map((v, i) => <li key={i}><Trans i18nKey={prefix + 'details-output.list.' + i} /></li>)}
         </ol>
       </details>
       <details>
         <summary>
-          <Trans i18nKey={prefix + "details-references.title"} />
+          <Trans i18nKey={prefix + 'details-references.title'} />
         </summary>
         <ol>
           <li>
             <a href="https://archive.ics.uci.edu/ml/datasets/Lymphography"
                target="_blank"
                rel="noreferrer">
-              <Trans i18nKey={prefix + "details-references.list.0"} />
+              <Trans i18nKey={prefix + 'details-references.list.0'} />
             </a>
           </li>
         </ol>
@@ -46,129 +46,129 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  HTML_EXAMPLE() {
-    const prefix = "datasets-models.0-tabular-classification.lymphography.html-example."
+  HTML_EXAMPLE () {
+    const prefix = 'datasets-models.0-tabular-classification.lymphography.html-example.'
     return <>
       <p>
-        <Trans i18nKey={prefix + "text"} />
+        <Trans i18nKey={prefix + 'text'} />
         <br />
-        <b><Trans i18nKey={prefix + "items"} /></b>
+        <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-      <p><Trans i18nKey={prefix + "examples"} /></p>
+      <p><Trans i18nKey={prefix + 'examples'} /></p>
     </>
   }
 
   TABLE_HEADER = [
-    "lymphatics",
-    "block of affere",
-    "bl. of lymph. c",
-    "bl. of lymph. s",
-    "by pass",
-    "extravasates",
-    "regeneration",
-    "early uptake in",
-    "lym.nodes dimin",
-    "lym.nodes enlar",
-    "changes in lym",
-    "defect in node",
-    "changes in node",
-    "changes in stru",
-    "special forms",
-    "dislocation of",
-    "exclusion of",
-    "no. of nodes in",
-    "Category"
+    'lymphatics',
+    'block of affere',
+    'bl. of lymph. c',
+    'bl. of lymph. s',
+    'by pass',
+    'extravasates',
+    'regeneration',
+    'early uptake in',
+    'lym.nodes dimin',
+    'lym.nodes enlar',
+    'changes in lym',
+    'defect in node',
+    'changes in node',
+    'changes in stru',
+    'special forms',
+    'dislocation of',
+    'exclusion of',
+    'no. of nodes in',
+    'Category'
   ]
   loadModel = async () => {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/lymphography/my-model-lymphography.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/lymphography/my-model-lymphography.json')
   }
-  function_v_input = async function (element, index, param = "") {
+  function_v_input = async function (element, index, param = '') {
     return parseInt(element)
   }
   CONFIGURATION = <></>
   EXAMPLES = []
-  CLASSES = ["normal find", "metastases", "malign lymph", "fibrosis"]
+  CLASSES = ['normal find', 'metastases', 'malign lymph', 'fibrosis']
   NUM_CLASSES = 4
   DATA_OBJECT = {
-    "lymphatics"     : ["1", "2", "3", "4"],
-    "block of affere": ["1", "2"],
-    "bl. of lymph. c": ["1", "2"],
-    "bl. of lymph. s": ["1", "2"],
-    "by pass"        : ["1", "2"],
-    "extravasates"   : ["1", "2"],
-    "regeneration"   : ["1", "2"],
-    "early uptake in": ["1", "2"],
-    "lym.nodes dimin": ["1", "2", "3"],
-    "lym.nodes enlar": ["1", "2", "3", "4"],
-    "changes in lym" : ["1", "2", "3"],
-    "defect in node" : ["1", "2", "3", "4"],
-    "changes in node": ["1", "2", "3", "4"],
-    "changes in stru": ["1", "2", "3", "4", "5", "6", "7"],
-    "special forms"  : ["1", "2", "3"],
-    "dislocation of" : ["1", "2"],
-    "exclusion of"   : ["1", "2"],
-    "no. of nodes in": ["1", "2", "3", "4", "5", "6", "7", "8"]
+    'lymphatics'     : ['1', '2', '3', '4'],
+    'block of affere': ['1', '2'],
+    'bl. of lymph. c': ['1', '2'],
+    'bl. of lymph. s': ['1', '2'],
+    'by pass'        : ['1', '2'],
+    'extravasates'   : ['1', '2'],
+    'regeneration'   : ['1', '2'],
+    'early uptake in': ['1', '2'],
+    'lym.nodes dimin': ['1', '2', '3'],
+    'lym.nodes enlar': ['1', '2', '3', '4'],
+    'changes in lym' : ['1', '2', '3'],
+    'defect in node' : ['1', '2', '3', '4'],
+    'changes in node': ['1', '2', '3', '4'],
+    'changes in stru': ['1', '2', '3', '4', '5', '6', '7'],
+    'special forms'  : ['1', '2', '3'],
+    'dislocation of' : ['1', '2'],
+    'exclusion of'   : ['1', '2'],
+    'no. of nodes in': ['1', '2', '3', '4', '5', '6', '7', '8']
   }
   DATA_DEFAULT = {
     // 4 -> fibrosis
-    "lymphatics"     : "3",
-    "block of affere": "1",
-    "bl. of lymph. c": "1",
-    "bl. of lymph. s": "1",
-    "by pass"        : "1",
-    "extravasates"   : "2",
-    "regeneration"   : "2",
-    "early uptake in": "1",
-    "lym.nodes dimin": "3",
-    "lym.nodes enlar": "1",
-    "changes in lym" : "1",
-    "defect in node" : "2",
-    "changes in node": "1",
-    "changes in stru": "4",
-    "special forms"  : "2",
-    "dislocation of" : "1",
-    "exclusion of"   : "1",
-    "no. of nodes in": "7"
+    'lymphatics'     : '3',
+    'block of affere': '1',
+    'bl. of lymph. c': '1',
+    'bl. of lymph. s': '1',
+    'by pass'        : '1',
+    'extravasates'   : '2',
+    'regeneration'   : '2',
+    'early uptake in': '1',
+    'lym.nodes dimin': '3',
+    'lym.nodes enlar': '1',
+    'changes in lym' : '1',
+    'defect in node' : '2',
+    'changes in node': '1',
+    'changes in stru': '4',
+    'special forms'  : '2',
+    'dislocation of' : '1',
+    'exclusion of'   : '1',
+    'no. of nodes in': '7'
   }
   DATA_OBJECT_KEYS = [
-    "lymphatics",
-    "block of affere",
-    "bl. of lymph. c",
-    "bl. of lymph. s",
-    "by pass",
-    "extravasates",
-    "regeneration",
-    "early uptake in",
-    "lym.nodes dimin",
-    "lym.nodes enlar",
-    "changes in lym",
-    "defect in node",
-    "changes in node",
-    "changes in stru",
-    "special forms",
-    "dislocation of",
-    "exclusion of",
-    "no. of nodes in"
+    'lymphatics',
+    'block of affere',
+    'bl. of lymph. c',
+    'bl. of lymph. s',
+    'by pass',
+    'extravasates',
+    'regeneration',
+    'early uptake in',
+    'lym.nodes dimin',
+    'lym.nodes enlar',
+    'changes in lym',
+    'defect in node',
+    'changes in node',
+    'changes in stru',
+    'special forms',
+    'dislocation of',
+    'exclusion of',
+    'no. of nodes in'
   ]
   DATA_CLASSES = [
-    ["normal", "arched", "deformed", "displaced"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["1", "2", "3"],
-    ["1", "2", "3", "4"],
-    ["bean", "oval", "round"],
-    ["No", "lacunar", "lac. marginal", "lac. central"],
-    ["No", "lacunar", "lac. marginal", "lac. central"],
-    ["grainy", "drop-like", "coarse", "diluted", "reticular", "stripped", "faint"],
-    ["No", "chalices", "vesicles"],
-    ["No", "Yes"],
-    ["No", "Yes"],
-    ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "=>70"]
+    ['normal', 'arched', 'deformed', 'displaced'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['1', '2', '3'],
+    ['1', '2', '3', '4'],
+    ['bean', 'oval', 'round'],
+    ['No', 'lacunar', 'lac. marginal', 'lac. central'],
+    ['No', 'lacunar', 'lac. marginal', 'lac. central'],
+    ['grainy', 'drop-like', 'coarse', 'diluted', 'reticular', 'stripped', 'faint'],
+    ['No', 'chalices', 'vesicles'],
+    ['No', 'Yes'],
+    ['No', 'Yes'],
+    ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '=>70']
   ]
   DATA_CLASSES_KEYS = []
   // @formatter:off

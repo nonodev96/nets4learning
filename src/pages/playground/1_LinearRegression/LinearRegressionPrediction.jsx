@@ -2,12 +2,11 @@ import React, { useContext, useRef, useState } from 'react'
 
 import { Chart } from 'react-chartjs-2'
 
-import { faker } from "@faker-js/faker"
-import { Button } from "react-bootstrap";
-import LinearRegressionContext from "../../../context/LinearRegressionContext";
+import { faker } from '@faker-js/faker'
+import { Button } from 'react-bootstrap'
+import LinearRegressionContext from '../../../context/LinearRegressionContext'
 
-
-export default function LinearRegressionPrediction() {
+export default function LinearRegressionPrediction () {
 
   const DEFAULT_OPTIONS = {
     elements: {
@@ -23,7 +22,7 @@ export default function LinearRegressionPrediction() {
   const { dataPrediction } = useContext(LinearRegressionContext)
 
   const refChartJS = useRef()
-  const labels = Array(100).fill("").map(() => {
+  const labels = Array(100).fill('').map(() => {
     return faker.date.month()
   })
 
@@ -68,7 +67,6 @@ export default function LinearRegressionPrediction() {
     datasets: [...generate()],
   })
 
-
   const updateDataPrediction = () => {
     console.log(dataPrediction)
 
@@ -79,11 +77,10 @@ export default function LinearRegressionPrediction() {
     })
   }
 
-
-  console.log("render LinearRegressionPrediction")
+  console.log('render LinearRegressionPrediction')
   return <>
-    <Button variant={"outline-primary"} onClick={updateDataPrediction}>Update</Button>
+    <Button variant={'outline-primary'} onClick={updateDataPrediction}>Update</Button>
 
-    <Chart type='bar' ref={refChartJS} data={data} options={DEFAULT_OPTIONS} />
+    <Chart type="bar" ref={refChartJS} data={data} options={DEFAULT_OPTIONS} />
   </>
 }

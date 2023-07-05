@@ -1,10 +1,9 @@
-import React from "react";
-import * as tfVis from "@tensorflow/tfjs-vis";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import React from 'react'
+import * as tfVis from '@tensorflow/tfjs-vis'
+import { Button, Card, Col, Row } from 'react-bootstrap'
 
-export default function DebugLoadCSV() {
-  const _isDebug = process.env.REACT_APP_ENVIRONMENT !== "production"
-
+export default function DebugLoadCSV () {
+  const _isDebug = process.env.REACT_APP_ENVIRONMENT !== 'production'
 
   const handleClick_Layers = async () => {
 
@@ -26,11 +25,11 @@ export default function DebugLoadCSV() {
 
   }
 
-  console.debug("DebugLoadCSV")
+  console.debug('render DebugLoadCSV')
   return <>
     {
       (_isDebug) &&
-      <Row className={"mt-3"}>
+      <Row className={'mt-3'}>
         <Col>
           <Card>
             <Card.Header><h3>Debug</h3></Card.Header>
@@ -41,18 +40,18 @@ export default function DebugLoadCSV() {
               <div className="d-grid gap-2 mt-3">
                 <Button type="button"
                         onClick={async () => {
-                          console.log("TODO")
+                          console.log('TODO')
                         }}
-                        size={"sm"}
+                        size={'sm'}
                         variant="primary">
                   Debug
                 </Button>
                 <Button type="button"
                         onClick={async () => {
-                          console.log("TODO")
+                          console.log('TODO')
                           await handleClick_debug_ALL()
                         }}
-                        size={"sm"}
+                        size={'sm'}
                         variant="primary">
                   CLEAR DATA
                 </Button>
@@ -60,31 +59,31 @@ export default function DebugLoadCSV() {
 
                 <Button type="button"
                         onClick={() => tfVis.visor().toggle()}
-                        size={"sm"}
+                        size={'sm'}
                         variant="outline-primary">
                   Conmutar visor
                 </Button>
                 <Button type="button"
                         onClick={() => handleClick_Layers}
-                        size={"sm"}
+                        size={'sm'}
                         variant="outline-secondary">
                   Definir capas
                 </Button>
                 <Button type="button"
                         onClick={() => handleClick_Compile}
-                        size={"sm"}
+                        size={'sm'}
                         variant="outline-warning">
                   Compilar
                 </Button>
                 <Button type="button"
                         onClick={() => handleClick_Fit}
-                        size={"sm"}
+                        size={'sm'}
                         variant="outline-danger">
                   Entrenar
                 </Button>
                 <Button type="button"
                         onClick={() => handleClick_Download}
-                        size={"sm"}
+                        size={'sm'}
                         variant="outline-success">
                   Descargar
                 </Button>

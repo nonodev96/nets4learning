@@ -25,8 +25,8 @@
     "@mediapipe/face_mesh": "^0.4.1633559619",
     "@mediapipe/pose": "^0.4.1633558788",
     "@tensorflow-models/coco-ssd": "^2.2.2",
-    "@tensorflow-models/face-detection": "^1.0.1",
-    "@tensorflow-models/face-landmarks-detection": "^1.0.1",
+    "@tensorflow-models/face-detection": "1.0.1",
+    "@tensorflow-models/face-landmarks-detection": "1.0.1",
     "@tensorflow-models/hand-pose-detection": "^2.0.0",
     "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow-models/pose-detection": "^1.0.1",
@@ -75,6 +75,7 @@
     "@testing-library/user-event": "^14.4.3",
     "jest": "^27.5.1",
     "react-scripts": "^5.0.1",
+    "standard": "^17.1.0",
     "webpack": "^5.76.2"
   },
   "eslintConfig": {

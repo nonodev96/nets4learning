@@ -1,10 +1,10 @@
-import * as tf from "@tensorflow/tfjs";
-import { Table } from "react-bootstrap";
+import * as tf from '@tensorflow/tfjs'
+import { Table } from 'react-bootstrap'
 
 // https://archive-beta.ics.uci.edu/dataset/46/hepatitis
 export const MODEL_HEPATITIS = {
-  KEY              : "HEPATITIS",
-  TITLE            : "HEPATITIS - Clasificación de Hepatitis",
+  KEY              : 'HEPATITIS',
+  TITLE            : 'HEPATITIS - Clasificación de Hepatitis',
   URL              : 'https://archive.ics.uci.edu/ml/datasets/hepatitis',
   DESCRIPTION      : <>
     <p>
@@ -44,7 +44,7 @@ export const MODEL_HEPATITIS = {
     </details>
   </>,
   HTML_EXAMPLE     : <>
-    <Table size={"sm"} striped={true} responsive={true}>
+    <Table size={'sm'} striped={true} responsive={true}>
       <thead>
       <tr>
         <th>Nombre del atributo</th>
@@ -59,7 +59,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Class</td>
         <td>Objetivo</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>false</td>
@@ -67,7 +67,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Age</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>false</td>
@@ -75,7 +75,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Sex</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>false</td>
@@ -83,7 +83,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Steroid</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -91,7 +91,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Antivirals</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>false</td>
@@ -99,7 +99,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Fatigue</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -107,7 +107,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Malaise</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -115,7 +115,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Anorexia</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -123,7 +123,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Liver Big</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -131,7 +131,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Liver Firm</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -139,7 +139,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Spleen Palpable</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -147,7 +147,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Spiders</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -155,7 +155,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Ascites</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -163,7 +163,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Varices</td>
         <td>Característica</td>
-        <td><span style={{ color: "green" }}>*</span> Categórica</td>
+        <td><span style={{ color: 'green' }}>*</span> Categórica</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -171,7 +171,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Bilirubin</td>
         <td>Característica</td>
-        <td><span style={{ color: "red" }}>*</span> Continua</td>
+        <td><span style={{ color: 'red' }}>*</span> Continua</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -179,7 +179,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Alk Phosphate</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -187,7 +187,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Sgot</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -195,7 +195,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Albumin</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -203,7 +203,7 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Protime</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>true</td>
@@ -211,23 +211,23 @@ export const MODEL_HEPATITIS = {
       <tr>
         <td>Histology</td>
         <td>Característica</td>
-        <td><span style={{ color: "blue" }}>*</span> Discreta</td>
+        <td><span style={{ color: 'blue' }}>*</span> Discreta</td>
         <td></td>
         <td></td>
         <td>false</td>
       </tr>
       </tbody>
     </Table>
-    <p className={"text-muted"}><a href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch8/5214817-eng.htm" target={"_blank"} rel="noreferrer">Explicación de los tipos de variables</a></p>
+    <p className={'text-muted'}><a href="https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch8/5214817-eng.htm" target={'_blank'} rel="noreferrer">Explicación de los tipos de variables</a></p>
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-      <br/>
+      <br />
       <b>(sex; steroid; antivirals; fatigue; malaise; anorexia; liver_big; liver_firm; spleen_palpable; spiders; ascites; varices).</b>
     </p>
     <p>Ejemplos:</p>
   </>,
   loadModel        : async function () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/hepatitis/mymodelHepatitis.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/hepatitis/mymodelHepatitis.json')
   },
   function_v_input : async function (element, index) {
     return this.DATA_CLASSES[index].findIndex((data_class) => data_class === element)
@@ -237,47 +237,47 @@ export const MODEL_HEPATITIS = {
   CLASSES          : [],
   NUM_CLASSES      : 0,
   DATA_OBJECT      : {
-    sex            : ["1", "2"],
-    steroid        : ["1", "2"],
-    antivirals     : ["1", "2"],
-    fatigue        : ["1", "2"],
-    malaise        : ["1", "2"],
-    anorexia       : ["1", "2"],
-    liver_big      : ["1", "2"],
-    liver_firm     : ["1", "2"],
-    spleen_palpable: ["1", "2"],
-    spiders        : ["1", "2"],
-    ascites        : ["1", "2"],
-    varices        : ["1", "2"]
+    sex            : ['1', '2'],
+    steroid        : ['1', '2'],
+    antivirals     : ['1', '2'],
+    fatigue        : ['1', '2'],
+    malaise        : ['1', '2'],
+    anorexia       : ['1', '2'],
+    liver_big      : ['1', '2'],
+    liver_firm     : ['1', '2'],
+    spleen_palpable: ['1', '2'],
+    spiders        : ['1', '2'],
+    ascites        : ['1', '2'],
+    varices        : ['1', '2']
   },
-  DATA_OBJECT_KEYS : ["sex", "steroid", "antivirals", "fatigue", "malaise", "anorexia", "liver_big", "liver_firm", "spleen_palpable", "spiders", "ascites", "varices"],
+  DATA_OBJECT_KEYS : ['sex', 'steroid', 'antivirals', 'fatigue', 'malaise', 'anorexia', 'liver_big', 'liver_firm', 'spleen_palpable', 'spiders', 'ascites', 'varices'],
   DATA_DEFAULT     : {
-    sex            : "1",
-    steroid        : "1",
-    antivirals     : "2",
-    fatigue        : "1",
-    malaise        : "1",
-    anorexia       : "1",
-    liver_big      : "1",
-    liver_firm     : "1",
-    spleen_palpable: "2",
-    spiders        : "1",
-    ascites        : "2",
-    varices        : "1",
+    sex            : '1',
+    steroid        : '1',
+    antivirals     : '2',
+    fatigue        : '1',
+    malaise        : '1',
+    anorexia       : '1',
+    liver_big      : '1',
+    liver_firm     : '1',
+    spleen_palpable: '2',
+    spiders        : '1',
+    ascites        : '2',
+    varices        : '1',
   },
   DATA_CLASSES_KEYS: [
-    "Género",
-    "Esteroide",
-    "antivirales",
-    "Fatiga",
-    "Malestar",
-    "Anorexia",
-    "Hígado grande",
-    "Hígado firme",
-    "Bazo palpable",
+    'Género',
+    'Esteroide',
+    'antivirales',
+    'Fatiga',
+    'Malestar',
+    'Anorexia',
+    'Hígado grande',
+    'Hígado firme',
+    'Bazo palpable',
   ],
   LIST_EXAMPLES    : [
-    { sex: "1", steroid: "1", antivirals: "2", fatigue: "1", malaise: "1", anorexia: "1", liver_big: "1", liver_firm: "1", spleen_palpable: "2", spiders: "1", ascites: "2", varices: "1", }
+    { sex: '1', steroid: '1', antivirals: '2', fatigue: '1', malaise: '1', anorexia: '1', liver_big: '1', liver_firm: '1', spleen_palpable: '2', spiders: '1', ascites: '2', varices: '1', }
   ],
   // @formatter:off
   FORM             : [
@@ -297,26 +297,26 @@ export const MODEL_HEPATITIS = {
   ],
   // @formatter:on
   TABLE_HEADER: [
-    "Class",
-    "Age",
-    "Sex",
-    "Steroid",
-    "Antivirals",
-    "Fatigue",
-    "Malaise",
-    "Anorexia",
-    "Liver",
-    "Liver",
-    "Spleen",
-    "Spiders",
-    "Ascites",
-    "Varices",
-    "Bilirubin",
-    "Alk phosphate",
-    "Sgot",
-    "Albumin",
-    "Protime",
-    "HISTOLOGY:"
+    'Class',
+    'Age',
+    'Sex',
+    'Steroid',
+    'Antivirals',
+    'Fatigue',
+    'Malaise',
+    'Anorexia',
+    'Liver',
+    'Liver',
+    'Spleen',
+    'Spiders',
+    'Ascites',
+    'Varices',
+    'Bilirubin',
+    'Alk phosphate',
+    'Sgot',
+    'Albumin',
+    'Protime',
+    'HISTOLOGY:'
   ],
   // @formatter:off
   DATA: [

@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { useTranslation } from "react-i18next";
+import React, { useMemo } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 const baseStyle = {
   flex           : 1,
@@ -16,33 +16,33 @@ const baseStyle = {
   color          : '#bdbdbd',
   outline        : 'none',
   transition     : 'border .24s ease-in-out'
-};
+}
 //     border-color: rgb(177 177 177);
 //     border-style: dashed;
 //     background-color: rgb(229 229 229);
 
 const focusedStyle = {
   borderColor: '#2196f3'
-};
+}
 
 const acceptStyle = {
   borderColor: '#00e676'
-};
+}
 
 const rejectStyle = {
   borderColor: '#ff1744'
-};
-export default function DragAndDrop(props) {
+}
+export default function DragAndDrop (props) {
   const { t } = useTranslation()
   const {
     name,
     id,
     accept,
     text,
-    labelFiles = t("Files"),
+    labelFiles = t('Files'),
     multiple = false,
-    function_DropAccepted = (files, event) => console.log("function_DropAccepted", { files, event }),
-    function_DropRejected = (files, event) => console.log("function_Rejected", { files, event }),
+    function_DropAccepted = (files, event) => console.log('function_DropAccepted', { files, event }),
+    function_DropRejected = (files, event) => console.log('function_Rejected', { files, event }),
   } = props
 
   const {
@@ -61,8 +61,8 @@ export default function DragAndDrop(props) {
     onDropRejected: (files, event) => {
       function_DropRejected(files, event)
     },
-    accept  : accept,
-    multiple: multiple
+    accept        : accept,
+    multiple      : multiple
   })
   const style = useMemo(() => ({
     ...baseStyle,
@@ -95,13 +95,13 @@ export default function DragAndDrop(props) {
     <section className="container p-0">
       <div {...getRootProps({ style, name })}>
         <input id={id}{...getInputProps()} />
-        <p className={"mb-0"}>{text}</p>
+        <p className={'mb-0'}>{text}</p>
       </div>
-      <aside className={"mt-2"}>
-        <p className={"text-muted"}>{labelFiles}</p>
+      <aside className={'mt-2'}>
+        <p className={'text-muted'}>{labelFiles}</p>
         <ul>{acceptedFileItems}</ul>
         <ul>{rejectionFileItems}</ul>
       </aside>
     </section>
-  );
+  )
 }

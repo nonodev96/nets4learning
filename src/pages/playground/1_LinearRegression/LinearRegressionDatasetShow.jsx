@@ -1,22 +1,19 @@
-import { Card, Col, Form, Row } from "react-bootstrap"
-import React, { useCallback, useContext, useEffect, useState } from "react"
-import { Trans } from "react-i18next"
-import N4LTablePagination from "../../../components/table/N4LTablePagination"
-import N4LSummary from "../../../components/summary/N4LSummary"
+import { Card, Col, Form, Row } from 'react-bootstrap'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { Trans } from 'react-i18next'
+import N4LTablePagination from '../../../components/table/N4LTablePagination'
+import N4LSummary from '../../../components/summary/N4LSummary'
 
-import LinearRegressionContext from "../../../context/LinearRegressionContext"
-import { TABLE_PLOT_STYLE_CONFIG } from "../../../ConfigDanfoJS"
+import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import { TABLE_PLOT_STYLE_CONFIG } from '../../../ConfigDanfoJS'
 
-
-export default function LinearRegressionDatasetShow() {
+export default function LinearRegressionDatasetShow () {
 
   const { tmpModel, datasetLocal, setDatasetLocal } = useContext(LinearRegressionContext)
 
   // i18n
-  const prefix = "pages.playground.generator.dataset."
+  const prefix = 'pages.playground.generator.dataset.'
   const [indexDatasetSelected, setIndexDatasetSelected] = useState(0)
-
-
 
   /**
    *
@@ -29,8 +26,8 @@ export default function LinearRegressionDatasetShow() {
     const promise_info = await fetch(_path + _dataset.info)
     const container_info = await promise_info.text()
 
-    dataframe_original.describe().T.plot("dataframe_original_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
-    dataframe_processed.describe().T.plot("dataframe_processed_plot").table({ config: TABLE_PLOT_STYLE_CONFIG })
+    dataframe_original.describe().T.plot('dataframe_original_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
+    dataframe_processed.describe().T.plot('dataframe_processed_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
 
     setDatasetLocal({
       dataframe_original : dataframe_original,
@@ -54,18 +51,18 @@ export default function LinearRegressionDatasetShow() {
     setIndexDatasetSelected(index)
   }
 
-  console.log("render LinearRegressionDatasetShow")
+  console.log('render LinearRegressionDatasetShow')
   return <>
     <Card>
-      <Card.Header className={"d-flex align-items-center justify-content-between"}>
-        <h3><Trans i18nKey={prefix + "title"} /></h3>
-        <div className={"ms-3"}>
-          <Form.Group controlId={"dataset"}>
-            <Form.Select aria-label={"dataset"}
-                         size={"sm"}
+      <Card.Header className={'d-flex align-items-center justify-content-between'}>
+        <h3><Trans i18nKey={prefix + 'title'} /></h3>
+        <div className={'ms-3'}>
+          <Form.Group controlId={'dataset'}>
+            <Form.Select aria-label={'dataset'}
+                         size={'sm'}
                          onChange={(e) => handleChange_dataset(e)}>
               {tmpModel.datasets.map(({ csv, info }, index) => {
-                return <option key={"option_" + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
+                return <option key={'option_' + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
               })}
             </Form.Select>
           </Form.Group>
@@ -80,9 +77,9 @@ export default function LinearRegressionDatasetShow() {
 
         <Row>
           <Col>
-            <N4LSummary title={<Trans i18nKey={prefix + "details.info"} />} info={datasetLocal.container_info} />
-            <N4LSummary title={<Trans i18nKey={prefix + "details.description-original"} />} info={<div id={"dataframe_original_plot"}></div>} />
-            <N4LSummary title={<Trans i18nKey={prefix + "details.description-processed"} />} info={<div id={"dataframe_processed_plot"}></div>} />
+            <N4LSummary title={<Trans i18nKey={prefix + 'details.info'} />} info={datasetLocal.container_info} />
+            <N4LSummary title={<Trans i18nKey={prefix + 'details.description-original'} />} info={<div id={'dataframe_original_plot'}></div>} />
+            <N4LSummary title={<Trans i18nKey={prefix + 'details.description-processed'} />} info={<div id={'dataframe_processed_plot'}></div>} />
           </Col>
         </Row>
 

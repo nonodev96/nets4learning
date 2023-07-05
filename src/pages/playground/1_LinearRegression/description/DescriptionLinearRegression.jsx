@@ -1,16 +1,15 @@
-import 'katex/dist/katex.min.css';
-import Latex from "react-latex-next";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import 'katex/dist/katex.min.css'
+import Latex from 'react-latex-next'
+import { Card, Col, Container, Row } from 'react-bootstrap'
 
-export default function DescriptionLinearRegression() {
-
+export default function DescriptionLinearRegression () {
 
   return <>
-    <Container className={"mt-3 mb-3"}>
+    <Container className={'mt-3 mb-3'}>
       <Row>
         <Col>
           <h1>Regresión lineal</h1>
-          <Card className={"mt-3"}>
+          <Card className={'mt-3'}>
             <Card.Header>
               <h3>Descripción del problema y los modelos </h3>
             </Card.Header>
@@ -35,23 +34,26 @@ export default function DescriptionLinearRegression() {
 
               <p>
                 <Latex>
-                  Supongamos que queremos predecir el precio de una casa (variable de respuesta, denotada por $Y$) basándonos en el tamaño de la casa en metros cuadrados (variable predictora, denotada por $x$). Podemos expresar la relación entre
+                  Supongamos que queremos predecir el precio de una casa (variable de respuesta, denotada por $Y$) basándonos en el tamaño de la casa en metros cuadrados (variable predictora, denotada por $x$). Podemos expresar la relación
+                  entre
                   estas dos variables mediante la siguiente ecuación de regresión lineal:
                 </Latex>
               </p>
-              <Latex>{"$$ Y = \\beta_0 + \\beta_1 * x + \\epsilon $$"}</Latex>
+              <Latex>{'$$ Y = \\beta_0 + \\beta_1 * x + \\epsilon $$'}</Latex>
 
               Donde:
 
-              <ol style={{ listStyleType: "none" }}>
+              <ol style={{ listStyleType: 'none' }}>
                 <li><Latex>$Y$ representa el precio de la casa.</Latex></li>
                 <li><Latex>X representa el tamaño de la casa.</Latex></li>
                 <li><Latex>$\beta_0$ es el intercepto, que indica el valor de Y cuando X es igual a cero.</Latex></li>
                 <li><Latex>$\beta_1$ es la pendiente de la línea de regresión, que representa el cambio en el precio de la casa asociado a un incremento unitario en el tamaño de la casa.</Latex></li>
                 <li><Latex>$\epsilon$ es el término de error, que representa la variabilidad no explicada por el modelo.</Latex></li>
               </ol>
-              <p><Latex>El objetivo del modelo de regresión lineal es estimar los valores de los coeficientes $\beta_0$ y $\beta_1$ a partir de los datos observados para obtener una línea recta que mejor se ajuste a los puntos en el gráfico de dispersión de las variables.</Latex></p>
-              <p><Latex>Una vez que el modelo está ajustado, podemos utilizarlo para predecir el precio de una casa desconocida dada su área en metros cuadrados. Simplemente debemos sustituir el valor de $x$ en la ecuación y calcular el valor predicho de $Y$.</Latex></p>
+              <p><Latex>El objetivo del modelo de regresión lineal es estimar los valores de los coeficientes $\beta_0$ y $\beta_1$ a partir de los datos observados para obtener una línea recta que mejor se ajuste a los puntos en el gráfico
+                de dispersión de las variables.</Latex></p>
+              <p><Latex>Una vez que el modelo está ajustado, podemos utilizarlo para predecir el precio de una casa desconocida dada su área en metros cuadrados. Simplemente debemos sustituir el valor de $x$ en la ecuación y calcular el
+                valor predicho de $Y$.</Latex></p>
               <p><Latex>Cabe destacar que este ejemplo es un caso simplificado de regresión lineal simple, y en la práctica los modelos pueden involucrar múltiples variables predictoras y considerar interacciones entre ellas.</Latex></p>
             </Card.Body>
           </Card>

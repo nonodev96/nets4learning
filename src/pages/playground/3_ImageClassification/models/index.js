@@ -1,6 +1,6 @@
-import { MODEL_IMAGE_MNIST } from "./MODEL_MNIST";
-import { MODEL_IMAGE_MOBILENET } from "./MODEL_MOBILENET";
-import { MODEL_IMAGE_RESNET } from "./MODEL_RESNET";
+import { MODEL_IMAGE_MNIST } from './MODEL_MNIST'
+import { MODEL_IMAGE_MOBILENET } from './MODEL_MOBILENET'
+import { MODEL_IMAGE_RESNET } from './MODEL_RESNET'
 
 export {
   MODEL_IMAGE_MNIST,

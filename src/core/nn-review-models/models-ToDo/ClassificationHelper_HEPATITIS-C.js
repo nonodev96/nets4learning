@@ -1,8 +1,8 @@
-import * as tf from "@tensorflow/tfjs";
+import * as tf from '@tensorflow/tfjs'
 
 export const MODEL_HEPATITIS_C = {
-  KEY              : "HEPATITIS-C",
-  TITLE            : "Clasificación de Hepatitis C",
+  KEY              : 'HEPATITIS-C',
+  TITLE            : 'Clasificación de Hepatitis C',
   URL              : 'https://archive.ics.uci.edu/ml/datasets/HCV+data',
   DESCRIPTION      : <>
     <p>
@@ -12,7 +12,7 @@ export const MODEL_HEPATITIS_C = {
       <summary>Datos de entrada</summary>
       <ol>
         <li>
-          <b>Category:</b> Distingue donantes sanos de personas afectadas y los grados de afectación. <br/>
+          <b>Category:</b> Distingue donantes sanos de personas afectadas y los grados de afectación. <br />
           Categórica. 5 valores diferentes.
           <ol>
             <li>0=Blood Donor</li>
@@ -23,7 +23,7 @@ export const MODEL_HEPATITIS_C = {
           </ol>
         </li>
         <li><b>Age:</b> Edad del paciente. Numérica.</li>
-        <li><b>Sex:</b> Sexo del paciente. <br/>Categórica. 2 valores diferentes.
+        <li><b>Sex:</b> Sexo del paciente. <br />Categórica. 2 valores diferentes.
           <ol>
             <li>m=male</li>
             <li>f=female</li>
@@ -53,7 +53,7 @@ export const MODEL_HEPATITIS_C = {
     </details>
   </>,
   HTML_EXAMPLE     : <>
-    <Table size={"sm"} striped={true} responsive={true}>
+    <Table size={'sm'} striped={true} responsive={true}>
       <thead>
       <tr>
         <th>Clave</th>
@@ -239,71 +239,71 @@ export const MODEL_HEPATITIS_C = {
     */}
     <p>
       Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:
-      <br/>
+      <br />
       <b>(age, sex, alb, alp, alt, ast, bil, che, chol, crea, ggt, prot).</b>
     </p>
     <p>Ejemplos:</p>
   </>,
   loadModel        : async () => {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification/hepatitis-c/model.json")
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/hepatitis-c/model.json')
   },
-  function_v_input : async (element, index, param = "") => {
+  function_v_input : async (element, index, param = '') => {
     switch (param) {
-      case "age": {
+      case 'age': {
         return parseInt(element)
       }
-      case "sex": {
-        return element === "m" ? 1 : 0
+      case 'sex': {
+        return element === 'm' ? 1 : 0
       }
-      case "alb":
-      case "alp":
-      case "alt":
-      case "ast":
-      case "bil":
-      case "che":
-      case "chol":
-      case "crea":
-      case "ggt":
-      case "prot":
-        return parseFloat(element);
+      case 'alb':
+      case 'alp':
+      case 'alt':
+      case 'ast':
+      case 'bil':
+      case 'che':
+      case 'chol':
+      case 'crea':
+      case 'ggt':
+      case 'prot':
+        return parseFloat(element)
       default:
-        console.error("Opción no válida")
+        console.error('Opción no válida')
     }
   },
   CONFIGURATION    : <> </>,
   EXAMPLES         : [],
-  CLASSES          : ["Blood Donor", "suspect Blood Donor", "Hepatitis", "Fibrosis", "Cirrhosis"],
+  CLASSES          : ['Blood Donor', 'suspect Blood Donor', 'Hepatitis', 'Fibrosis', 'Cirrhosis'],
   NUM_CLASSES      : 0,
-  DATA_OBJECT      : { age: 32, sex: "m", alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
-  DATA_DEFAULT     : { age: 32, sex: "m", alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
-  DATA_OBJECT_KEYS : ["age", "sex", "alb", "alp", "alt", "ast", "bil", "che", "chol", "crea", "ggt", "prot"],
+  DATA_OBJECT      : { age: 32, sex: 'm', alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
+  DATA_DEFAULT     : { age: 32, sex: 'm', alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
+  DATA_OBJECT_KEYS : ['age', 'sex', 'alb', 'alp', 'alt', 'ast', 'bil', 'che', 'chol', 'crea', 'ggt', 'prot'],
   DATA_CLASSES_KEYS: [
-    "Edad",
-    "Género",
-    "Albúmina",
-    "Fosfatasa alcalina",
-    "Transaminasa alcalina ",
-    "Aspartato de aminotransferasa",
-    "Bilirrubina",
-    "Colinesterasa",
-    "Colesterol",
-    "Creatinina",
-    "Gamma glutamil transferasa",
-    "Proteína",
+    'Edad',
+    'Género',
+    'Albúmina',
+    'Fosfatasa alcalina',
+    'Transaminasa alcalina ',
+    'Aspartato de aminotransferasa',
+    'Bilirrubina',
+    'Colinesterasa',
+    'Colesterol',
+    'Creatinina',
+    'Gamma glutamil transferasa',
+    'Proteína',
   ],
   LIST_EXAMPLES    : [
     // 0  = Blood Donor
-    { age: 32, sex: "m", alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
+    { age: 32, sex: 'm', alb: 38.5, alp: 52.5, alt: 18, ast: 24.7, bil: 3.9, che: 11.17, chol: 4.8, crea: 74, ggt: 15.6, prot: 76.5 },
     // 0s = suspect Blood Donor
-    { age: 47, sex: "m", alb: 22.5, alp: 124, alt: 79.5, ast: 46.7, bil: 2.3, che: 6.83, chol: 4.3, crea: 170, ggt: 345.6, prot: 58.6 },
+    { age: 47, sex: 'm', alb: 22.5, alp: 124, alt: 79.5, ast: 46.7, bil: 2.3, che: 6.83, chol: 4.3, crea: 170, ggt: 345.6, prot: 58.6 },
     // 1  = Hepatitis
-    { age: 23, sex: "m", alb: 47, alp: 19.1, alt: 38.9, ast: 164.2, bil: 17, che: 7.09, chol: 3.2, crea: 79.3, ggt: 90.4, prot: 70.1 },
+    { age: 23, sex: 'm', alb: 47, alp: 19.1, alt: 38.9, ast: 164.2, bil: 17, che: 7.09, chol: 3.2, crea: 79.3, ggt: 90.4, prot: 70.1 },
     // 2  = Fibrosis
     // { age: 38, sex: "f", alb: 40, alp: 39.8, alt: 14.9, ast: 68.9, bil: 11, che: 8.55, chol: 4.31, crea: 60.5, ggt: 40.1, prot: 76.5 },
     // ["2=Fibrosis",         43,      52.1,      8.3,      68.9,      11,      8.55,       6.19,       71.4,      27.9,       82],
-    { age: 57, sex: "f", alb: 43, alp: 52.1, alt: 8.3, ast: 68.9, bil: 11, che: 8.55, chol: 6.19, crea: 71.4, ggt: 27.9, prot: 82 },
+    { age: 57, sex: 'f', alb: 43, alp: 52.1, alt: 8.3, ast: 68.9, bil: 11, che: 8.55, chol: 6.19, crea: 71.4, ggt: 27.9, prot: 82 },
     // 3  = Cirrhosis
-    { age: 56, sex: "m", alb: 30, alp: 40.4, alt: 0.9, ast: 80.3, bil: 119, che: 1.88, chol: 1.43, crea: 79.3, ggt: 17.6, prot: 54.2 }
+    { age: 56, sex: 'm', alb: 30, alp: 40.4, alt: 0.9, ast: 80.3, bil: 119, che: 1.88, chol: 1.43, crea: 79.3, ggt: 17.6, prot: 54.2 }
   ],
   // @formatter:off
   FORM             : [

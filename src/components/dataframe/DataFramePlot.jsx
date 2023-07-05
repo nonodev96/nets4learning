@@ -1,13 +1,14 @@
-import React, { useCallback, useContext, useEffect, useId } from "react"
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap"
-import { Trans } from "react-i18next"
-import DebugJSON from "../debug/DebugJSON"
-import { lineChartsValidConfig, timeSeriesPlotsValidConfig } from "../../core/dataframe/DataFrameUtils"
-import DataFramePlotDescription from "./DataFramePlotDescription"
-import DataFramePlotConfiguration from "./DataFramePlotConfiguration"
-import DataFramePlotContext from "../_context/DataFramePlotContext"
+import React, { useCallback, useContext, useEffect, useId } from 'react'
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Trans } from 'react-i18next'
+import { lineChartsValidConfig, pieChartsValidConfig, timeSeriesPlotsValidConfig } from '../../core/dataframe/DataFrameUtils'
+import DataFramePlotDescription from './DataFramePlotDescription'
+import DataFramePlotConfiguration from './DataFramePlotConfiguration'
+import DataFramePlotContext from '../_context/DataFramePlotContext'
+import '../../styles/ScrollBar.css'
+import DebugJSON from '../debug/DebugJSON'
 
-export default function DataFramePlot({ dataframe }) {
+export default function DataFramePlot ({ dataframe }) {
 
   const {
     dataframePlotConfig, setDataframePlotConfig, setShowOptions, setShowDescription, dataFrameLocal, setDataFrameLocal, E_PLOTS, LIST_PLOTS
@@ -18,7 +19,7 @@ export default function DataFramePlot({ dataframe }) {
   const init = useCallback(() => {
     const _columnsValidForIndex = (_dataframe) => {
       return _dataframe.columns.filter((column) => {
-        return _dataframe[column].unique().shape[0] === _dataframe.shape[0];
+        return _dataframe[column].unique().shape[0] === _dataframe.shape[0]
       })
     }
 
@@ -52,85 +53,46 @@ export default function DataFramePlot({ dataframe }) {
             const { isValidConfig_TimeSeries, config_TimeSeries, index } = timeSeriesPlotsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
             if (isValidConfig_TimeSeries) {
               const sub_sub_df = sub_df.setIndex(index)
-              sub_sub_df.plot(dataframe_plot_id).line({
-                config: {
-                  ...dataframePlotConfig._DEFAULT_.config,
-                  ...config_TimeSeries
-                },
-                layout: layout
-              })
+              sub_sub_df.plot(dataframe_plot_id).line({ layout })
             } else {
-              console.log("Configuración no valida E_PLOTS.TIME_SERIES_PLOTS", { index })
+              console.log('Configuración no valida E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
             }
             break
           case E_PLOTS.VIOLIN_PLOTS:
-            sub_df.plot(dataframe_plot_id).violin({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-              },
-              layout
-            })
+            sub_df.plot(dataframe_plot_id).violin({ layout })
             break
           case E_PLOTS.BOX_PLOTS:
-            sub_df.plot(dataframe_plot_id).box({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-
-              },
-              layout
-            })
+            sub_df.plot(dataframe_plot_id).box({ layout })
             break
           case E_PLOTS.PIE_CHARTS:
-            // TODO
-            sub_df.plot(dataframe_plot_id).pie({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-              },
-              layout
-            })
+            const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+            if (isValidConfig_PieCharts) {
+              sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
+            } else {
+              console.log('Configuración no valida E_PLOTS.PIE_CHARTS', { config_PieCharts })
+            }
             break
           case E_PLOTS.HISTOGRAMS:
-            sub_df.plot(dataframe_plot_id).hist({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-              },
-              layout
-            })
+            sub_df.plot(dataframe_plot_id).hist({ layout })
             break
           case E_PLOTS.SCATTER_PLOTS:
             // TODO
-            sub_df.plot(dataframe_plot_id).scatter({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-              },
-              layout
-            })
+            sub_df.plot(dataframe_plot_id).scatter({ layout })
             break
           case E_PLOTS.BAR_CHARTS:
-            sub_df.plot(dataframe_plot_id).bar({
-              config: {
-                ...dataframePlotConfig._DEFAULT_.config,
-              },
-              layout
-            })
+            sub_df.plot(dataframe_plot_id).bar({ layout })
             break
           case E_PLOTS.LINE_CHARTS:
             // TODO
             const { isValidConfig_LineCharts, config_LineCharts } = lineChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
             if (isValidConfig_LineCharts) {
-              sub_df.plot(dataframe_plot_id).line({
-                config: {
-                  ...dataframePlotConfig._DEFAULT_.config,
-                  ...config_LineCharts
-                },
-                layout: layout
-              })
+              sub_df.plot(dataframe_plot_id).line({ layout })
             } else {
-              console.log("Configuración no valida E_PLOTS.LINE_CHARTS", { config_LineCharts })
+              console.log('Configuración no valida E_PLOTS.LINE_CHARTS', { config_LineCharts })
             }
             break
           default: {
-            console.error("Error, option not valid")
+            console.error('Error, option not valid')
             break
           }
         }
@@ -141,17 +103,17 @@ export default function DataFramePlot({ dataframe }) {
   }, [dataframePlotConfig, E_PLOTS, dataframe_plot_id, dataFrameLocal])
 
   useEffect(() => {
-    console.debug("useEffect[init]")
+    console.debug('useEffect[init]')
     setDataFrameLocal(dataframe)
-  }, [setDataFrameLocal, dataframe]);
+  }, [setDataFrameLocal, dataframe])
 
   useEffect(() => {
-    console.debug("useEffect[init dataFrameLocal]")
+    console.debug('useEffect[init dataFrameLocal]')
     init()
   }, [init])
 
   useEffect(() => {
-    console.debug("useEffect[update_interfaz]")
+    console.debug('useEffect[update_interfaz]')
     update_interfaz()
   }, [update_interfaz])
 
@@ -159,27 +121,27 @@ export default function DataFramePlot({ dataframe }) {
     setDataframePlotConfig({ ...dataframePlotConfig, PLOT_ENABLE: e.target.value })
   }
 
-  console.log("render DataFramePlot")
+  console.log('render DataFramePlot')
   return <>
     <Card>
-      <Card.Header className={"d-flex align-items-center justify-content-between"}>
-        <h3><Trans i18nKey={"DataFrame Plot"} /></h3>
-        <div className={"d-flex"}>
-          <Form.Group controlId={"plot"}>
-            <Form.Select aria-label={"plot"}
-                         size={"sm"}
+      <Card.Header className={'d-flex align-items-center justify-content-between'}>
+        <h3><Trans i18nKey={'DataFrame Plot'} /></h3>
+        <div className={'d-flex'}>
+          <Form.Group controlId={'plot'}>
+            <Form.Select aria-label={'plot'}
+                         size={'sm'}
                          value={dataframePlotConfig.PLOT_ENABLE}
                          onChange={(e) => handleChange_Plot(e)}>
               {LIST_PLOTS.map((plot, index) => {
-                return <option key={"option_" + index} value={plot}>{plot}</option>
+                return <option key={'option_' + index} value={plot}>{plot}</option>
               })}
             </Form.Select>
           </Form.Group>
-          <Button variant="outline-primary" size={"sm"} className={"ms-3"} onClick={() => setShowOptions(true)}>
-            <Trans i18nKey={"plot.options"} />
+          <Button variant="outline-primary" size={'sm'} className={'ms-3'} onClick={() => setShowOptions(true)}>
+            <Trans i18nKey={'plot.options'} />
           </Button>
-          <Button variant="outline-primary" size={"sm"} className={"ms-3"} onClick={() => setShowDescription(true)}>
-            <Trans i18nKey={"plot.description"} />
+          <Button variant="outline-primary" size={'sm'} className={'ms-3'} onClick={() => setShowDescription(true)}>
+            <Trans i18nKey={'plot.description'} />
           </Button>
         </div>
       </Card.Header>

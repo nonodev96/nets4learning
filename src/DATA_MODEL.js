@@ -2,7 +2,7 @@ import {
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY
-} from "./pages/playground/0_TabularClassification/models";
+} from './pages/playground/0_TabularClassification/models'
 import {
   DATASET_1_SALARY,
   DATASET_2_AUTO_MPG,
@@ -10,21 +10,20 @@ import {
   DATASET_4_BREAST_CANCER,
   DATASET_5_STUDENT_PERFORMANCE,
   DATASET_6_WINE
-} from "./pages/playground/1_LinearRegression/datasets";
+} from './pages/playground/1_LinearRegression/datasets'
 import {
   MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD
-} from "./pages/playground/2_ObjectDetection/models";
+} from './pages/playground/2_ObjectDetection/models'
 import {
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET
-} from "./pages/playground/3_ImageClassification/models";
+} from './pages/playground/3_ImageClassification/models'
 
-const UPLOAD = "UPLOAD"
-
+const UPLOAD = 'UPLOAD'
 
 const LIST_MODELS_TABULAR_CLASSIFICATION = [
   UPLOAD,
@@ -57,7 +56,6 @@ const LIST_MODELS_IMAGE_CLASSIFICATION = [
   MODEL_IMAGE_MOBILENET.KEY,
   MODEL_IMAGE_RESNET.KEY
 ]
-
 
 export const LIST_MODEL_OPTIONS_IDS = {
   TABULAR_CLASSIFICATION: {
@@ -105,7 +103,7 @@ const getKeyDatasetByID_TabularClassification = (id) => {
     case '3':
       return MODEL_LYMPHOGRAPHY.KEY
     default:
-      console.error("Error, opción no disponible")
+      console.error('Error, opción no disponible')
   }
 }
 
@@ -126,7 +124,7 @@ const getKeyDatasetByID_LinearRegression = (id) => {
     case '6':
       return DATASET_6_WINE.KEY
     default:
-      console.error("Error, opción no disponible")
+      console.error('Error, opción no disponible')
   }
 }
 
@@ -143,7 +141,7 @@ const getKeyDatasetByID_ObjectDetection = (id) => {
     case '4':
       return MODEL_COCO_SSD.KEY
     default:
-      console.error("Error, opción no disponible")
+      console.error('Error, opción no disponible')
   }
 }
 
@@ -158,33 +156,33 @@ const getKeyDatasetByID_ImageClassification = (id) => {
     case '3':
       return MODEL_IMAGE_RESNET.KEY
     default:
-      console.error("Error, opción no disponible")
+      console.error('Error, opción no disponible')
   }
 }
 
 const LIST_OF_IMAGES_MNIST = [
-  "0_new.png",
-  "1_new.png",
-  "2_new.png",
-  "3_new.png",
-  "4_new.png",
-  "5_new.png",
-  "6_new.png",
-  "7_new.png",
-  "8_new.png",
-  "9_new.png"
+  '0_new.png',
+  '1_new.png',
+  '2_new.png',
+  '3_new.png',
+  '4_new.png',
+  '5_new.png',
+  '6_new.png',
+  '7_new.png',
+  '8_new.png',
+  '9_new.png'
 ]
 
 const LIST_OF_IMAGES_MOBILENET = [
-  "beef-burger.jpg",
-  "bulldog.jpg",
-  "butterfly.jpg",
-  "cat.jpg",
-  "cheetah.jpg",
-  "cruise.jpg",
-  "duck.jpg",
-  "elephant.jpg",
-  "lion.jpg",
+  'beef-burger.jpg',
+  'bulldog.jpg',
+  'butterfly.jpg',
+  'cat.jpg',
+  'cheetah.jpg',
+  'cruise.jpg',
+  'duck.jpg',
+  'elephant.jpg',
+  'lion.jpg',
 ]
 
 export {

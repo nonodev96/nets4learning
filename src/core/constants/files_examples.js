@@ -1,5 +1,5 @@
-import json_iris from "./template_iris.json";
-import json_lymphatcs from "./template_lymphatcs.json";
+import json_iris from './template_iris.json'
+import json_lymphatics from './template_lymphatics.json'
 
 export const FILE_TEMPLATE = {
   title  : 'plantilla.json',
@@ -127,5 +127,5 @@ export const FILE_TEMPLATE_IRIS = {
 }
 export const FILE_TEMPLATE_LYMPHATCS = {
   title  : 'plantilla_lymphatcs.json',
-  content: JSON.stringify(json_lymphatcs)
+  content: JSON.stringify(json_lymphatics)
 }

@@ -1,30 +1,29 @@
-import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from "react-joyride";
-import { delay } from "../../../../utils/utils";
+import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from 'react-joyride'
+import { delay } from '../../../../utils/utils'
 
 export default class I_DATASETS_LINEAR_REGRESSION {
-  _KEY = ""
-  URL_DATASET = ""
-  i18n_TITLE = ""
+  _KEY = ''
+  URL_DATASET = ''
+  i18n_TITLE = ''
 
-
-  constructor(_t, _setAccordionActive) {
+  constructor (_t, _setAccordionActive) {
     this.t = _t
     this.setAccordionActive = _setAccordionActive
   }
 
-  DESCRIPTION() {
+  DESCRIPTION () {
     return <></>
   }
 
-  ATTRIBUTE_INFORMATION() {
+  ATTRIBUTE_INFORMATION () {
     return <></>
   }
 
-  LAYERS() {
+  LAYERS () {
 
   }
 
-  COMPILE() {
+  COMPILE () {
 
   }
 
@@ -47,10 +46,10 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    *
    * @return {Object<CustomDatasets_t>}
    */
-  async DATASETS() {
+  async DATASETS () {
     return {
       datasets     : [],
-      datasets_path: ""
+      datasets_path: ''
     }
   }
 
@@ -73,29 +72,29 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    * }}
    * @constructor
    */
-  JOYRIDE() {
+  JOYRIDE () {
     const handleJoyrideCallback = async (data) => {
-      const { action, lifecycle, status, type, step } = data;
+      const { action, lifecycle, status, type, step } = data
       const { target } = step
       // const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
       if (([ACTIONS.UPDATE]).includes(action) && ([LIFECYCLE.TOOLTIP]).includes(lifecycle)) {
         switch (target) {
-          case ".joyride-step-1-manual": {
-            this.setAccordionActive(["manual"])
-            break;
+          case '.joyride-step-1-manual': {
+            this.setAccordionActive(['manual'])
+            break
           }
-          case ".joyride-step-2-dataset-info": {
-            this.setAccordionActive(["manual", "dataset_info"])
-            break;
+          case '.joyride-step-2-dataset-info': {
+            this.setAccordionActive(['manual', 'dataset_info'])
+            break
           }
           default: {
-            console.error("Error, option not valid")
+            console.error('Error, option not valid')
             break
           }
         }
         await delay(500)
-        window.dispatchEvent(new Event("resize"));
+        window.dispatchEvent(new Event('resize'))
 
       } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
 
@@ -110,55 +109,55 @@ export default class I_DATASETS_LINEAR_REGRESSION {
       handleJoyrideCallback: handleJoyrideCallback,
       steps                : [
         {
-          title    : this.t("Manual"),
-          content  : this.t("This is my awesome feature!"),
-          target   : ".joyride-step-1-manual",
-          placement: "top",
+          title    : this.t('Manual'),
+          content  : this.t('This is my awesome feature!'),
+          target   : '.joyride-step-1-manual',
+          placement: 'top',
         },
         {
-          title    : this.t("Dataset info"),
-          content  : "This another awesome feature!",
-          target   : ".joyride-step-2-dataset-info",
-          placement: "top",
+          title    : this.t('Dataset info'),
+          content  : 'This another awesome feature!',
+          target   : '.joyride-step-2-dataset-info',
+          placement: 'top',
         },
         {
-          title    : this.t("Dataset"),
-          content  : "This another awesome feature!",
-          target   : ".joyride-step-3-dataset",
-          placement: "top",
+          title    : this.t('Dataset'),
+          content  : 'This another awesome feature!',
+          target   : '.joyride-step-3-dataset',
+          placement: 'top',
         },
         {
-          title    : this.t("Layer visualizer"),
-          content  : "This another awesome feature!",
-          target   : ".joyride-step-4-layer",
-          placement: "top",
+          title    : this.t('Layer visualizer'),
+          content  : 'This another awesome feature!',
+          target   : '.joyride-step-4-layer',
+          placement: 'top',
         },
         {
-          title    : this.t("Editor layers"),
-          target   : ".joyride-step-5-editor-layers",
-          content  : "This another awesome feature!",
-          placement: "right"
+          title    : this.t('Editor layers'),
+          target   : '.joyride-step-5-editor-layers',
+          content  : 'This another awesome feature!',
+          placement: 'right'
         },
         {
-          title    : this.t("Editor params"),
-          target   : ".joyride-step-6-editor-trainer",
-          content  : "This another awesome feature!",
-          placement: "left-start"
+          title    : this.t('Editor params'),
+          target   : '.joyride-step-6-editor-trainer',
+          content  : 'This another awesome feature!',
+          placement: 'left-start'
         },
         {
-          title    : this.t("List of models"),
-          target   : ".joyride-step-7-list-of-models",
-          content  : "This another awesome feature!",
-          placement: "bottom"
+          title    : this.t('List of models'),
+          target   : '.joyride-step-7-list-of-models',
+          content  : 'This another awesome feature!',
+          placement: 'bottom'
         },
         {
-          title    : this.t("Predict and visualizer"),
-          target   : ".joyride-step-8-predict-visualization",
-          content  : "This another awesome feature!",
-          placement: "top"
+          title    : this.t('Predict and visualizer'),
+          target   : '.joyride-step-8-predict-visualization',
+          content  : 'This another awesome feature!',
+          placement: 'top'
         },
         {
-          target : ".my-step-1",
+          target : '.my-step-1',
           locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
           content: <>
             <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
@@ -169,7 +168,7 @@ export default class I_DATASETS_LINEAR_REGRESSION {
           </>,
         },
         {
-          target : ".my-step-2",
+          target : '.my-step-2',
           locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
           content: <>
             <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
@@ -180,7 +179,7 @@ export default class I_DATASETS_LINEAR_REGRESSION {
           </>,
         },
         {
-          target : ".my-step-3",
+          target : '.my-step-3',
           locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
           content: <>
             <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
@@ -191,7 +190,7 @@ export default class I_DATASETS_LINEAR_REGRESSION {
           </>,
         },
       ]
-    };
+    }
     // return {
     //   debug     : process.env.REACT_APP_ENVIRONMENT === "development",
     //   run       : true,

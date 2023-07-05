@@ -1,21 +1,21 @@
-import { createContext, useState } from "react";
-import * as dfd from "danfojs"
+import { createContext, useState } from 'react'
+import * as dfd from 'danfojs'
 
 const DataFramePlotContext = createContext({})
 
-export function DataFramePlotProvider({ children }) {
+export function DataFramePlotProvider ({ children }) {
 
   // @formatter:off
   const E_PLOTS = {
     // TODO
-    TIME_SERIES_PLOTS: "TimeSeries Plots",
+    TIME_SERIES_PLOTS: "TimeSeries Plots // TODO",
     VIOLIN_PLOTS     : "Violin Plots",
     BOX_PLOTS        : "Box Plots",
     PIE_CHARTS       : "Pie Charts // TODO",
     HISTOGRAMS       : "Histograms",
-    SCATTER_PLOTS    : "Scatter Plots // TODO",
+    SCATTER_PLOTS    : "Scatter Plots",
     BAR_CHARTS       : "Bar Charts",
-    LINE_CHARTS      : "Line Charts // TODO"
+    LINE_CHARTS      : "Line Charts"
   }
   const LIST_PLOTS = Object.entries(E_PLOTS).map(([_key, value]) => value)
 
@@ -28,7 +28,7 @@ export function DataFramePlotProvider({ children }) {
     TIME_SERIES_PLOTS: { config: { index: "" } },
     VIOLIN_PLOTS     : {},
     BOX_PLOTS        : {},
-    PIE_CHARTS       : {},
+    PIE_CHARTS       : { config: { labels:"" } },
     HISTOGRAMS       : {},
     SCATTER_PLOTS    : {},
     BAR_CHARTS       : {},
@@ -44,7 +44,7 @@ export function DataFramePlotProvider({ children }) {
 
   const columnsValidForIndex = () => {
     return dataFrameLocal.columns.filter((column) => {
-      return dataFrameLocal[column].unique().shape[0] === dataFrameLocal.shape[0];
+      return dataFrameLocal[column].unique().shape[0] === dataFrameLocal.shape[0]
     })
   }
 

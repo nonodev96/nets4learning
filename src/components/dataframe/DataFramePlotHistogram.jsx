@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import React, { useEffect, useState } from 'react'
+import { Form } from 'react-bootstrap'
 
-export default function DataFramePlotHistogram({ dataframe }) {
-  const [column, setColumn] = useState("")
+export default function DataFramePlotHistogram ({ dataframe }) {
+  const [column, setColumn] = useState('')
   const handleChange_Column = (e) => {
     setColumn(e.target.value)
   }
@@ -12,16 +12,16 @@ export default function DataFramePlotHistogram({ dataframe }) {
   }, [])
 
   useEffect(() => {
-    if (column !== "" && dataframe[column]) {
-      dataframe[column].plot("dataframe_histogram_plot").hist()
+    if (column !== '' && dataframe[column]) {
+      dataframe[column].plot('dataframe_histogram_plot').hist()
     }
   }, [column, dataframe])
 
-
+  console.log('render DataFramePlotHistogram')
   return <>
-    <Form.Group controlId={"dataframe-column"} className={"mt-3 mb-3"}>
-      <Form.Select aria-label={"dataframe-column"}
-                   size={"sm"}
+    <Form.Group controlId={'dataframe-column'} className={'mt-3 mb-3'}>
+      <Form.Select aria-label={'dataframe-column'}
+                   size={'sm'}
                    onChange={(e) => handleChange_Column(e)}>
         {dataframe.columns.map((value, index) => {
           return <option key={index} value={value}>{value}</option>
@@ -29,6 +29,6 @@ export default function DataFramePlotHistogram({ dataframe }) {
       </Form.Select>
     </Form.Group>
 
-    <div id={"dataframe_histogram_plot"}></div>
+    <div id={'dataframe_histogram_plot'}></div>
   </>
 }

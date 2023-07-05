@@ -1,11 +1,11 @@
 export class MODEL_IMAGE_CLASSIFICATION {
-  TITLE = ""
+  TITLE = ''
 
-  constructor(_t) {
+  constructor (_t) {
     this.t = _t
   }
 
-  DESCRIPTION() {
+  DESCRIPTION () {
     return <>
 
     </>

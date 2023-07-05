@@ -1,4 +1,4 @@
-import * as dfd from "danfojs"
+import * as dfd from 'danfojs'
 
 /**
  * @typedef {Object} ConfigLayoutPlots_t
@@ -42,9 +42,9 @@ import * as dfd from "danfojs"
  *
  * @return {TimeSeriesPlotsValidConfigResponse_t}
  */
-export function timeSeriesPlotsValidConfig(dataframe, dataframePlotConfig, columnsToShow) {
+export function timeSeriesPlotsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
   const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
-  const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index);
+  const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
   const isValidConfig_TimeSeries = notContainIndexInColumnsToShow && containsIndexInDataframe
 
   const config_TimeSeries = { columns: columnsToShow }
@@ -54,16 +54,21 @@ export function timeSeriesPlotsValidConfig(dataframe, dataframePlotConfig, colum
   return { isValidConfig_TimeSeries, config_TimeSeries, index }
 }
 
-export function barChartsValidConfig(){
-
+export function pieChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
+  const isValidConfig_PieCharts = true
+  const config_PieCharts = { labels: dataframePlotConfig.PIE_CHARTS.config.labels }
+  return { isValidConfig_PieCharts, config_PieCharts }
 }
 
-
-export function lineChartsValidConfig(dataframe, dataframePlotConfig, columnsToShow) {
+export function lineChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
   const config_LineCharts = {
     columns: columnsToShow
   }
 
   const isValidConfig_LineCharts = true
   return { isValidConfig_LineCharts, config_LineCharts }
+}
+
+export function TransformArrayToSeriesTensor (series) {
+  return new dfd.Series(series).tensor
 }

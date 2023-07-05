@@ -1,10 +1,10 @@
 const TYPE_GRADIENTS = [
-  { key: "grad", label: "grad" },
-  { key: "grads", label: "grads" },
-  { key: "customGrad", label: "customGrad" },
-  { key: "valueAndGrad", label: "valueAndGrad" },
-  { key: "valueAndGrads", label: "valueAndGrads" },
-  { key: "variableGrads", label: "variableGrads" }
+  { key: 'grad', label: 'grad' },
+  { key: 'grads', label: 'grads' },
+  { key: 'customGrad', label: 'customGrad' },
+  { key: 'valueAndGrad', label: 'valueAndGrad' },
+  { key: 'valueAndGrads', label: 'valueAndGrads' },
+  { key: 'variableGrads', label: 'variableGrads' }
 ]
 
 const TYPE_OPTIMIZER = [
@@ -37,7 +37,7 @@ const TYPE_LOSSES = [
   { key: 'sigmoidCrossEntropy', label: 'SigmoidCrossEntropy' },
   { key: 'softmaxCrossEntropy', label: 'SoftmaxCrossEntropy' },
 // Metrics
-  { key: 'categoricalCrossentropy', label: "CategoricalCrossentropy" }
+  { key: 'categoricalCrossentropy', label: 'CategoricalCrossentropy' }
 ]
 
 // Metrics

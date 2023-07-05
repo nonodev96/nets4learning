@@ -1,10 +1,10 @@
-import { MODEL_IMAGE_CLASSIFICATION } from "./_model";
+import { MODEL_IMAGE_CLASSIFICATION } from './_model'
 
 export class MODEL_IMAGE_RESNET extends MODEL_IMAGE_CLASSIFICATION {
-  static KEY = "IMAGE-RESNET"
-  TITLE = ""
+  static KEY = 'IMAGE-RESNET'
+  TITLE = ''
 
-  DESCRIPTION() {
+  DESCRIPTION () {
     return <>
       <p>
         ResNet V2 es una familiar de redes de arquitecturas para la clasificación de imágenes con un número variable de capas.
@@ -32,7 +32,7 @@ export class MODEL_IMAGE_RESNET extends MODEL_IMAGE_CLASSIFICATION {
       <details>
         <summary>Datos de salida</summary>
         <ol>
-          <li>Un número de 0 a 1001 que son cada una de las categorías de esta{" "}
+          <li>Un número de 0 a 1001 que son cada una de las categorías de esta{' '}
             <a rel="noreferrer" target="_blank"
                href="https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt">lista</a>
           </li>
