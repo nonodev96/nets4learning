@@ -1,5 +1,6 @@
 import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from 'react-joyride'
 import { delay } from '../../../../utils/utils'
+import Errors from '@shared/Errors'
 
 export default class I_DATASETS_LINEAR_REGRESSION {
   _KEY = ''
@@ -42,14 +43,12 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
    *
    * @typedef {Object} CustomDatasets_t
-   * @property {string} datasets_path
    *
    * @return {Object<CustomDatasets_t>}
    */
   async DATASETS () {
     return {
-      datasets     : [],
-      datasets_path: ''
+      datasets: []
     }
   }
 
@@ -66,9 +65,10 @@ export default class I_DATASETS_LINEAR_REGRESSION {
    * }
    *
    * @return {{
-   *    run       : boolean,
-   *    continuous: boolean,
-   *    steps     : Array<{content: string, target: string}>
+   *    run                   : boolean,
+   *    continuous            : boolean,
+   *    handleJoyrideCallback : (data) => void,
+   *    steps                 : Array<{content: string, target: string}>
    * }}
    * @constructor
    */
@@ -94,7 +94,10 @@ export default class I_DATASETS_LINEAR_REGRESSION {
           }
         }
         await delay(500)
-        window.dispatchEvent(new Event('resize'))
+        const isDispatchedEvent = window.dispatchEvent(new Event('resize'))
+        if (!isDispatchedEvent) {
+          Errors.notDispatchedEvent()
+        }
 
       } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
 
@@ -127,32 +130,38 @@ export default class I_DATASETS_LINEAR_REGRESSION {
           placement: 'top',
         },
         {
+          title    : this.t('dataset Plot'),
+          content  : 'This another awesome feature!',
+          target   : '.joyride-step-4-dataset-plot',
+          placement: 'top',
+        },
+        {
           title    : this.t('Layer visualizer'),
           content  : 'This another awesome feature!',
-          target   : '.joyride-step-4-layer',
+          target   : '.joyride-step-5-layer',
           placement: 'top',
         },
         {
           title    : this.t('Editor layers'),
-          target   : '.joyride-step-5-editor-layers',
+          target   : '.joyride-step-6-editor-layers',
           content  : 'This another awesome feature!',
           placement: 'right'
         },
         {
           title    : this.t('Editor params'),
-          target   : '.joyride-step-6-editor-trainer',
+          target   : '.joyride-step-7-editor-trainer',
           content  : 'This another awesome feature!',
           placement: 'left-start'
         },
         {
           title    : this.t('List of models'),
-          target   : '.joyride-step-7-list-of-models',
+          target   : '.joyride-step-8-list-of-models',
           content  : 'This another awesome feature!',
           placement: 'bottom'
         },
         {
           title    : this.t('Predict and visualizer'),
-          target   : '.joyride-step-8-predict-visualization',
+          target   : '.joyride-step-9-predict-visualization',
           content  : 'This another awesome feature!',
           placement: 'top'
         },

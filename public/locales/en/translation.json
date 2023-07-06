@@ -89,7 +89,20 @@
     "download-dataset-titanic": "Titanic survival data set*",
     "download-dataset-new-thyroid": "New thyroid data set",
     "download-dataset-wine": "Wine survival data set",
-    "download-dataset-ecoli": "Ecoli data set"
+    "download-dataset-ecoli": "Ecoli data set",
+    "download": {
+      "dataset": {
+        "1-linear-regression": {
+          "salary": "Salary data set",
+          "auto-mpg": "Fuel consumption data set",
+          "boston": "Boston Houses Data set",
+          "student-performance-mathematics": "Mathematics Student Data set",
+          "student-performance-portuguese": "Portuguese student data set",
+          "wine-red": "Tinto wine data set",
+          "wine-white": null
+        }
+      }
+    }
   },
   "dataframe-form": "Dataframe form",
   "dataframe-original": "Original dataframe",
@@ -335,6 +348,9 @@
       }
     },
     "1-linear-regression": {
+      "salary": {
+        "title": "Salario por años"
+      },
       "auto-mpg": {
         "title": "Auto MPG",
         "description": {
@@ -390,20 +406,18 @@
         "title": "Wine Quality"
       },
       "list-datasets": {
-        "1-salary": "Data set - Salary",
-        "2-auto-mpg": "Data set - Auto MPG",
-        "3-boston-housing": "Data set - Boston Housing",
-        "4-breast-cancer": "Data set - Breast cancer",
-        "5-student-performance": "Data set - Student performance",
-        "6-wine": "Data set - Wine"
+        "1-auto-mpg": "Data set - Auto MPG",
+        "2-breast-cancer": "Data set - Breast cancer",
+        "3-diabetes": "Data set - Diabetes",
+        "4-student-performance": "Data set - Student performance",
+        "5-wine": "Data set - Wine"
       },
       "list-models": {
-        "1-salary": "Model - Salary",
         "1-auto-mpg": "Model - Auto MPG",
-        "3-boston-housing": "Model - Boston Housing",
-        "4-breast-cancer": "Model - Breast cancer",
-        "5-student-performance": "Model - Student performance",
-        "6-wine": "Model - Wine"
+        "2-breast-cancer": "Model - Breast cancer",
+        "3-diabetes": "Model - Diabetes",
+        "4-student-performance": "Model - Student performance",
+        "5-wine": "Model - Wine"
       }
     },
     "2-object-detection": {
@@ -608,6 +622,199 @@
       }
     }
   },
+  "dataframe-plot": {
+    "title": "DataFrame Plot",
+    "description": {
+      "title": "Description of the type of graphics"
+    },
+    "configuration": {
+      "title": "Setting",
+      "reset": "Restart",
+      "select-all-columns": "Select all attributes",
+      "layout": {
+        "plot": {
+          "title": "Graphic title",
+          "x-axis": "Title Axis X",
+          "y-axis": "Title Axis Y"
+        },
+        "title": "Layout"
+      },
+      "columns": {
+        "title": "DataFrame columns"
+      }
+    },
+    "buttons": {
+      "configuration": "Setting",
+      "description": "Description"
+    },
+    "bar-charts": {
+      "title": "Bar Charts",
+      "description": {
+        "intro": {
+          "0": "Bar or bar charts are a visual representation that shows the comparison of different categories or groups by rectangular bars.\nThis type of graph uses the length or height of the bars to represent the magnitude or amount of a specific variable.",
+          "1": "In a bar chart, the horizontal axis represents the categories or groups, while the vertical axis shows the magnitude or frequency of the variable that is being analyzed.\nEach category has an individual bar, and the length or height of the bar is proportional to the corresponding value or amount.\nThe bars can be horizontal or vertical, depending on the orientation of the graph.",
+          "2": "The bar charts have several features and outstanding applications:"
+        },
+        "list": {
+          "0": "Comparison of categories: bar graphics are ideal to visually compare different categories or groups.\nWhen observing the bars, it is possible to quickly identify the differences in the magnitude or the amount between the categories.",
+          "1": "Representation of categorical or discreet data: bar graphics are suitable for representing categorical or discrete variables.\nEach bar represents a specific category and the height or length of the bar shows the magnitude or amount associated with that category.",
+          "2": "Categories ordering: The categories in a bar chart can be ordered based on different criteria, such as alphabetical order, order of magnitude or any other logical order.\nThis allows to highlight specific patterns or trends between the categories.",
+          "3": "View of frequencies or percentages: bar graphics are also used to represent frequencies or percentages.\nIn this case, the height or length of the bars represents the proportion or percentage corresponding to each category.",
+          "4": "Effective presentation: bar graphics are an effective tool to present information clearly and concisely.\nIts simple structure and their ability to highlight the differences between the categories make them widely used in reports, presentations and documents.",
+          "5": "Barra -type graphics are an effective way to visualize and compare categories or groups depending on their magnitude or quantity.\nThey are ideal to represent categorical or discreet data and allow an effective presentation of information.\nTheir simplicity and ability to highlight the differences make them a tool commonly used in data analysis and communication."
+        },
+        "end": {
+          "0": "Barra -type graphics are an effective way to visualize and compare categories or groups depending on their magnitude or quantity.\nThey are ideal to represent categorical or discreet data and allow an effective presentation of information.\nTheir simplicity and ability to highlight the differences make them a tool commonly used in data analysis and communication."
+        }
+      }
+    },
+    "box-plots": {
+      "title": "Box Plot",
+      "description": {
+        "intro": {
+          "0": "Box type graphics, also known as cash diagrams and mustaches or boxplots in English, are a visual representation used to show the distribution and statistical summaries of a numerical data set.\nThis type of graph is based on a rectangle that represents the interquotile range (IQR), where the central line indicates the median and extended lines, known as mustaches, represent the range of\nvalues ​​beyond the IQR.",
+          "1": "In a boxing chart, the rectangle is traced vertically or horizontally, and is delimited by two lines, one at the bottom and one in the upper part.\nThe line in the middle of the rectangle represents the median, which is the value that divides the data ordered into two equal parts.\nThe mustaches extend from the edges of the rectangle to the extreme values, with a length determined by the variability of the data.",
+          "2": "Box type graphics have several features and outstanding applications:"
+        },
+        "list": {
+          "0": "Statistical summary: Box type graphics provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also show quartiles (Q1 and Q3), which divide data into four equal parts, and atypical values, which are shown as points or asterisks outside the mustaches.",
+          "1": "Identification of asymmetries and atypical values: when observing a box of the box type, it is possible to identify asymmetries in the distribution of the data.\nIf the mustaches do not have the same length, it can indicate an asymmetry towards one of the ends.\nIn addition, the atypical values ​​that are outside the mustaches can be easily highlighted.",
+          "2": "Comparison between groups or categories: Box type graphs are also used to compare the distribution of data between different groups or categories.\nBy superimposing several cash diagrams on the same graph, it is possible to visualize the differences in medium -sized, interquile ranges and the presence of atypical values ​​between the groups.",
+          "3": "Detect biases and distributions: Box type graphs allow visually identifying if the distribution of the data is symmetrical or biased towards one end.\nIf the central line of the rectangle is not in the middle, you can indicate a bias towards the opposite direction.",
+          "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
+        },
+        "end": {
+          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+        }
+      }
+    },
+    "histograms": {
+      "title": "Histograms",
+      "description": {
+        "intro": {
+          "0": "Histogram type graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents an interval of values ​​and the height of the bar indicates the frequency or amount of observations within that\ninterval.",
+          "1": "In a histogram type graph, the horizontal axis is used to represent the range of values ​​of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or amount of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
+          "2": "Histogram type graphics have several features and outstanding applications:"
+        },
+        "list": {
+          "0": "Distribution visualization: Histograms allow visualizing the form and distribution of numerical data.\nThey can show if the data follow a symmetric, biased, multimodal or uniform distribution.",
+          "1": "Identification of atypical values: when observing a histogram, it is possible to identify atypical or extreme values ​​that are outside the range of most data.\nThese values ​​will be represented as isolated bars or as bars that extend beyond the main range of values.",
+          "2": "Trend and patterns analysis: histograms can reveal patterns and trends in the data.\nFor example, a biased distribution to the left or to the right indicates an asymmetry in the data, while a normal distribution shows approximate symmetry.",
+          "3": "Comparison of groups or categories: histograms can also be used to compare the distribution of data between different groups or categories.\nBy superimposing several histograms in the same chart, it is possible to visualize the differences and similarities between the groups.",
+          "4": "Density estimate: in addition to showing the absolute frequency, histograms can also provide a visual estimate of the data probability.\nWhen normalizing the heights of the bars, it is possible to obtain a relative representation of the probability of occurrence of the values ​​in each interval."
+        },
+        "end": {
+          "0": "Histogram type graphs are a useful tool to visualize the distribution and patterns of numerical data.\nThey allow to identify atypical values, analyze trends and compare distributions between groups.\nTheir clear and concise visual representation makes them an effective tool to communicate information on the distribution of the data in an understandable way."
+        }
+      }
+    },
+    "line-charts": {
+      "title": "Line Charts",
+      "description": {
+        "intro": {
+          "0": "Line type graphics, also known as series or trend graphs graphics, are a visual representation that shows the relationship and evolution of data over time or a continuous variable.\nThese graphics are constructed by drawing data points in a Cartesian coordinate system, where each point represents a specific measurement or value of the variable in the vertical axis depending on the time or variable\nindependent on the horizontal axis.",
+          "1": "In a line -type graph, the data points are connected by straight lines, which creates a series of connected points.\nThese lines allow to visualize the trajectory and pattern of data change over time or the independent variable.\nThe slope of the line may indicate a growing or decreasing trend, while variations in the direction and shape of the line can reveal additional patterns in the data.",
+          "2": "Line type graphics have several features and outstanding applications:"
+        },
+        "list": {
+          "0": "Trend representation: Line type graphics are especially useful for showing trends and changes over time.\nThey can reveal growth patterns, decline or fluctuation in the data as they occur over time.",
+          "1": "Identification of changes and variations: when observing a line -type chart, it is possible to identify abrupt changes or variations in the data.\nThese changes may indicate significant events or factors that influence the measured variable.",
+          "2": "Comparison of multiple series: Line type graphics also allow comparing multiple data series in a single graph.\nThis is useful for analyzing and visualizing the relationship between different variables as they evolve over time.",
+          "3": "Seasonality analysis and cycles: If the data exhibits seasonal or cyclical patterns, line -type graphics can help identify and analyze these patterns.\nThis can be useful in fields such as economics, meteorology and sales analysis, where there are recurring fluctuations in the data.",
+          "4": "Forecast and projection: Line type graphics are also used to perform forecasts and projections based on historical data.\nWhen observing past trends, it is possible to infer and predict how the data will behave in the future."
+        },
+        "end": {
+          "0": "Line type graphics are a valuable tool to visualize and analyze the relationship and evolution of the data over time or a continuous variable.\nThey allow to identify trends, changes and patterns in the data, as well as make comparisons and forecasts.\nTheir clear and concise visual representation makes them an effective tool to communicate complex information understandably."
+        }
+      }
+    },
+    "pie-charts": {
+      "title": "Pie Charts",
+      "description": {
+        "intro": {
+          "0": "Circular or sectors graphics are a visual representation that shows the proportion of different categories or parts in relation to the whole.\nThese graphics are based on a circle divided into sectors, where each sector represents a specific category and its relative size reflects the proportion that this category represents in the data set.",
+          "1": "In a sectors type graph, the complete circle represents 100% or total data.\nEach sector is shown as a portion of the circle and is labeled with the name or label corresponding to the category it represents.\nThe measure of the sector angle is proportional to the proportion that this category has in the data set.",
+          "2": "Foot -type graphics have several features and outstanding applications:"
+        },
+        "list": {
+          "0": "Representation of proportions: foot graphics are ideal for representing proportions and percentages.\nThey allow to quickly visualize the relative contribution of each category in the total data set.",
+          "1": "Identification of dominant categories: the relative sizes of the sectors in the foot chart help to easily identify the dominant or more significant categories.\nThe largest sectors indicate the categories that have a greater proportion or contribution in relation to others.",
+          "2": "Comparison between categories: While foot graphics are useful to show the proportions of the categories, they can be limited to make precise comparisons between them.\nThis is because human perception can have difficulties in precisely evaluating differences in sizes of angles or sectors.\nHowever, the relative comparison between sectors sizes can still provide general information about the proportions between categories.",
+          "3": "Representation of categorical data: Foot -type graphics are especially useful for representing categorical data, where categories are mutually exclusive and do not have an inherent order.\nFor example, they can be used to show the percentage distribution of income in different categories of expenses.",
+          "4": "Improvement of the visual presentation: Pie type graphics are commonly used in presentations and documents to communicate information visually attractive and easily understandable.\nThe circular shape and the colors used can quickly capture attention and highlight the proportional relationships between the categories."
+        },
+        "end": {
+          "0": "Type of sectors graphics are an effective tool to represent proportions and percentages of categories in a data set.\nThey allow to identify the dominant categories and provide an attractive visual presentation.\nHowever, it is important to take into account its limitations in terms of precise comparison between categories and its focus on categorical data."
+        }
+      }
+    },
+    "scatter-plots": {
+      "title": "Scatter Plots",
+      "description": {
+        "intro": {
+          "0": "A dispersion chart, also known as points graph or Scatter Plot in English, is a visual representation that uses Cartesian coordinates to show the relationship between two variables.\nIn this type of graph, the data is represented as individual points in the two -dimensional space, where each point represents a couple of values ​​corresponding to the two variables.",
+          "1": "In a dispersion graph, the horizontal axis is generally assigned to the independent variable, while the vertical axis is assigned to the dependent variable.\nEach point in the graph represents an individual observation and its position in the graph is determined by the values ​​it has for both variables.\nThe relative location of the points in the graph reveals patterns and relationships between the two variables.",
+          "2": "Dispersion graphics have several applications and prominent characteristics:"
+        },
+        "list": {
+          "0": "Relationship between variables: Dispersion graphics allow analyzing the relationship between two variables.\nThey can show if there is a positive correlation (the points tend to group in an ascending direction), a negative correlation (the points tend to group in a descending direction) or a lack of correlation (the points do not show a defined pattern).",
+          "1": "Trends identification: A dispersion chart can reveal trends or patterns in the data.\nWhen observing the general direction of the points, it is possible to identify whether there is a linear, non -linear relationship or even a curvilinear relationship between the variables.",
+          "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values ​​in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
+          "3": "Analysis of clusters or groups: If the points in the dispersion graph are grouped or form different patterns, this may indicate the presence of clusters or groups.\nThis may be useful in data classification or classification analysis.",
+          "4": "Multidimensional data display: If additional colors or sizes are used, dispersion graphics can also represent additional information in a two -dimensional space.\nThis allows to visualize multidimensional data more intuitively."
+        },
+        "end": {
+          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values ​​in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
+        }
+      }
+    },
+    "time-series-plots": {
+      "title": "Time Series Plots",
+      "description": {
+        "intro": {
+          "0": "A time series graph is a visual representation of data that are collected and recorded in regular intervals over time.\nThese graphics are widely used in various disciplines, such as economy, finance, meteorology, engineering and many others, to analyze and understand how the data changed as time elapses.",
+          "1": "The horizontal axis of the graph represents the time, while the vertical axis shows the values ​​of the data that is being observed or recorded.\nThe data points are connected with lines, which allows identifying patterns and trends over time.",
+          "2": "Time series graphics offer various advantages and practical applications:"
+        },
+        "list": {
+          "0": "Trend analysis: Time series graphs allow to identify and analyze long -term trends in the data.\nThis can be useful to predict how data will behave in the future and make informed decisions.",
+          "1": "Identification of seasonal patterns: in many data sets, there are seasonal patterns that are repeated regularly over time, such as Christmas sales or seasonal fluctuations in agricultural production.\nTime series graphics help identify these seasonal patterns and understand their impact on data.",
+          "2": "DETECTION OF CHANGES AND ANOMALIES: When observing a time series graph, it is possible to identify sudden changes or abnormalities in the data.\nThese changes may indicate important or unusual events that require greater research and analysis.",
+          "3": "Modeling and prognosis: Time series graphics are a fundamental tool for developing models and forecasts.\nWhen observing past patterns, it is possible to build mathematical or statistical models that capture relationships and allow predictions about the future.",
+          "4": "Comparative analysis: Time series graphs are also used to compare different data sets that are collected during the same period of time.\nThis can help identify differences, similarities and relationships between the observed variables."
+        },
+        "end": {
+          "0": "Time series graphics are an essential tool to analyze and understand how data changes over time.\nThey provide valuable information about trends, seasonal patterns, changes and forecasts, allowing informed decisions and comparative analysis."
+        }
+      },
+      "index-info": "The selected index must contain a unique series and should not select the index next to the columns to show"
+    },
+    "time-series": {
+      "warning": {
+        "index": "This dataframe does not allow adequate visualization by not fulfilling the condition of a characteristic with unique values"
+      }
+    },
+    "violin-plots": {
+      "title": "Violin Plots",
+      "description": {
+        "intro": {
+          "0": "A violin type graph is a visual representation that combines characteristics of a cash and mustaches chart with a probability density function.\nThis type of graph provides a detailed vision of data distribution and allows you to compare multiple groups or categories in a single graphic.",
+          "1": "The appearance of a violin chart resembles the shape of a violin, hence its name.\nIt has a central line that represents the median data and two shaded areas on both sides that represent the distribution of probability density.\nThese shaded symmetry areas along the central line to reflect the symmetry or asymmetry of the data.",
+          "2": "The shape of the violin chart provides information on the distribution of the data.\nFor example, a wider violin chart in a particular section indicates a higher data density in that area, while a narrower section indicates a lower density.\nIn addition, violin graphs can have multiple violins grouped or overlapping to allow visual comparison of different groups or categories.",
+          "3": "Violin graphics have several practical applications:"
+        },
+        "list": {
+          "0": "Comparison of distributions: violin graphics allow comparing data distributions between different groups or categories.\nThis is useful for identifying differences or similarities in the form, dispersion and data trends.",
+          "1": "Identification of atypical values: violin graphs provide visual information about the presence of atypical or extreme values ​​in the data.\nThese values ​​are represented as points outside the shaded areas and may indicate unusual observations that may require additional analysis.",
+          "2": "Probability density display: violin graphics also offer a graphic representation of data probability density.\nThis allows to easily identify high or low density areas, as well as possible biases or asymmetries in the distribution.",
+          "3": "Effective data communication: violin graphics are an effective way to communicate complex information on data distribution in a visually attractive way.\nThey can summarize the information in a concise manner and help transmit important patterns and characteristics to a non -technical audience."
+        },
+        "end": {
+          "0": "Violin graphics are a useful tool to visualize and compare data distributions.\nThey allow analyzing the form, dispersion, symmetry and presence of atypical values ​​in the data, and are especially useful when comparison is required between multiple groups or categories.\nTheir attractive and concise graphic representation makes them an effective tool to communicate complex information understandably."
+        }
+      }
+    }
+  },
   "pages": {
     "index": {
       "tabular-classification": {
@@ -755,6 +962,12 @@
             "label-encoder": "Label Encoder",
             "one-hot-encoder": "ONE HOT Encoder",
             "classes": "Classes"
+          },
+          "details": {
+            "description-original": "Description of the original DataFrame",
+            "description-processed": "Description of the processed DataFrame",
+            "data": "Data set information",
+            "info": "Information"
           }
         },
         "layer-design": "Layer design",
@@ -833,6 +1046,7 @@
           "input-vector": "Enter the vector to try",
           "test-vector": "Vector to try"
         },
+        "list-models-generated": "List models generated",
         "prediction": {
           "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
         }
@@ -842,7 +1056,8 @@
           "manual": {
             "title": "Model generator manual"
           }
-        }
+        },
+        "prediction": null
       }
     },
     "manual": {
@@ -1099,6 +1314,17 @@
       "privacy-text": "On our website, we only collect statistical information about visits in order to improve the performance and functionality of the site. We do not collect or store any personal information from our users. We use cookies to account for the number of visitors and improve the navigation experience. If you have any questions or doubt about our privacy policy, do not hesitate to contact us through our contact page.",
       "cookies-title": "Cookies",
       "cookies-text": "Our website uses Google Analytics cookies to account for the number of visitors we receive. These cookies allow us to collect anonymous statistical information about the use of our website and help us improve their performance and functionality. Google Analytics cookies do not collect personal information from users. When navigating our website, you accept the use of these cookies. If you want to get more information about how we use cookies, please consult our privacy policy."
+    }
+  },
+  "generator": {
+    "table-models": {
+      "learning-rate": "Learning rate",
+      "test-size": "Test size",
+      "n-of-epochs": "Nº of epochs",
+      "id-optimizer": "Ootimizer",
+      "id-loss": "Loss",
+      "id-metrics": "Métric",
+      "layers": "Layers"
     }
   },
   "form-dataframe": {

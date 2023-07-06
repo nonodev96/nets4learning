@@ -5,23 +5,46 @@ import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
 import { UPLOAD } from '../../../DATA_MODEL'
 import { Form } from 'react-bootstrap'
 import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import * as dfd from 'danfojs'
+import * as alertHelper from '../../../utils/alertHelper'
 
 export default function LinearRegressionDataset ({ dataset_id }) {
 
   const { t } = useTranslation()
   const { i_model, tmpModel, setTmpModel } = useContext(LinearRegressionContext)
 
-  const handleChange_FileUpload_CSV = (files, event) => {
-    console.log(files)
+  const handleChange_FileUpload_CSV = async (files, event) => {
+    if (files.length < 1) {
+      console.error(t('error.load-json-csv'))
+      return
+    }
+    try {
+      const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
 
-    setTmpModel({
-      ...tmpModel,
-      datasets: []
-    })
+      dfd.readCSV(file_csv).then((_dataframe) => {
+
+        setTmpModel((prevState) => ({
+          ...prevState,
+          datasets: [{
+            is_dataset_upload     : true,
+            csv                 : files[0].name,
+            info                : '',
+            path                : '',
+            dataframe_original  : _dataframe,
+            dataframe_processed : _dataframe,
+            isDatasetProcessed  : false,
+            dataframe_transforms: []
+          }]
+        }))
+      })
+      await alertHelper.alertSuccess(t('alert.file-upload-success'))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleChange_FileUpload_CSV_reject = (files, event) => {
-
+    console.log({ files })
   }
 
   const handleSubmit_ProcessDataset = (e) => {

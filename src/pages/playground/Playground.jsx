@@ -1,8 +1,6 @@
 import './Playground.css'
 import React from 'react'
 import { useParams } from 'react-router'
-import { Col, Container, Row } from 'react-bootstrap'
-import { Trans } from 'react-i18next'
 
 import NotFoundPage from '../notFound/NotFoundPage'
 
@@ -56,14 +54,6 @@ export default function Playground () {
   return (
     <>
       <main className={'mb-3'} data-title={'EditArchitecture'}>
-        <Container>
-          <Row className={'mt-2'}>
-            <Col xl={12}>
-              <h1><Trans i18nKey={'modality.' + id} /></h1>
-            </Col>
-          </Row>
-        </Container>
-
         {Print_HTML_Model_View()}
       </main>
     </>

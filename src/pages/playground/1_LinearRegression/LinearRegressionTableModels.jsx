@@ -12,13 +12,13 @@ export default function LinearRegressionTableModels () {
     <Table size={'sm'} striped={true} bordered={false} hover={true} responsive={true}>
       <thead>
       <tr>
-        <th><Trans i18nKey={prefix + 'Learning rate'} /></th>
-        <th><Trans i18nKey={prefix + 'Test size'} /></th>
-        <th><Trans i18nKey={prefix + 'Nº of epochs'} /></th>
-        <th><Trans i18nKey={prefix + 'ID optimizer'} /></th>
-        <th><Trans i18nKey={prefix + 'ID loss'} /></th>
-        <th><Trans i18nKey={prefix + 'ID metrics'} /></th>
-        <th><Trans i18nKey={prefix + 'Layers'} /></th>
+        <th><Trans i18nKey={prefix + 'learning-rate'} /></th>
+        <th><Trans i18nKey={prefix + 'test-size'} /></th>
+        <th><Trans i18nKey={prefix + 'n-of-epochs'} /></th>
+        <th><Trans i18nKey={prefix + 'id-optimizer'} /></th>
+        <th><Trans i18nKey={prefix + 'id-loss'} /></th>
+        <th><Trans i18nKey={prefix + 'id-metrics'} /></th>
+        <th><Trans i18nKey={prefix + 'layers'} /></th>
       </tr>
       </thead>
 

@@ -1,5 +1,6 @@
+import React, { lazy, Suspense, useCallback, useContext, useEffect, useRef } from 'react'
+import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import React, { lazy, Suspense, useCallback, useContext, useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import N4LLayerDesign from '../../../components/neural-network/N4LLayerDesign'
 import DebugJSON from '../../../components/debug/DebugJSON'
@@ -15,6 +16,7 @@ import {
 } from './datasets'
 
 import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionJoyride from './LinearRegressionJoyride'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -30,8 +32,8 @@ const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableM
 const LinearRegressionPrediction = lazy(() => import(  './LinearRegressionPrediction'))
 
 // TODO
-export default function LinearRegression (props) {
-  const { dataset_id } = props
+export default function LinearRegression ({ dataset_id }) {
+  const { id: param_id } = useParams()
 
   // i18n
   const prefix = 'pages.playground.generator.'
@@ -50,6 +52,8 @@ export default function LinearRegression (props) {
     i_model,
     setIModel,
   } = useContext(LinearRegressionContext)
+
+  const refJoyrideButton = useRef({})
 
   const handleSubmit_TrainModel = async (event) => {
     event.preventDefault()
@@ -92,10 +96,11 @@ export default function LinearRegression (props) {
           break
         }
       }
-      const { datasets, datasets_path } = await info_dataset.DATASETS()
+      const { datasets } = await info_dataset.DATASETS()
       setIModel(info_dataset)
       setTmpModel((old) => ({
-        ...old, datasets: datasets, datasets_path: datasets_path,
+        ...old,
+        datasets: datasets
       }))
     }
   }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
@@ -119,6 +124,24 @@ export default function LinearRegression (props) {
   console.log('render LinearRegression')
   return (
     <>
+        <LinearRegressionJoyride refJoyrideButton={refJoyrideButton}/>
+
+        <Container>
+          <Row className={'mt-2'}>
+            <Col xl={12}>
+              <h1><Trans i18nKey={'modality.' + param_id} /></h1>
+              <div className="d-flex">
+                <Button size={'sm'}
+                        variant={'outline-primary'}
+                        onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                  <Trans i18nKey={'Joyride Button'} />
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+
+
       <Container className={'mt-3'}>
         <Row>
           <Col>
@@ -159,7 +182,7 @@ export default function LinearRegression (props) {
 
         <hr />
 
-        <Row className={'joyride-step-3-dataset'}>
+        <Row className={'joyride-step-4-dataset-plot'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetPlot /></Suspense>
           </Col>
@@ -168,7 +191,7 @@ export default function LinearRegression (props) {
         <hr />
 
         <Row>
-          <Col className={'joyride-step-4-layer'}>
+          <Col className={'joyride-step-5-layer'}>
             <N4LLayerDesign layers={tmpModel.list_layers} />
           </Col>
         </Row>
@@ -176,12 +199,12 @@ export default function LinearRegression (props) {
         <Form onSubmit={handleSubmit_TrainModel}>
 
           <Row className={'mt-3'}>
-            <Col className={'mb-3 joyride-step-5-editor-layers'}>
+            <Col className={'mb-3 joyride-step-6-editor-layers'}>
               <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               <hr />
               <Suspense fallback={<></>}><LinearRegressionVisor /></Suspense>
             </Col>
-            <Col className={'joyride-step-6-editor-trainer'}>
+            <Col className={'joyride-step-7-editor-trainer'}>
               <Suspense fallback={<></>}><LinearRegressionEditorTrainer /></Suspense>
             </Col>
           </Row>
@@ -204,10 +227,10 @@ export default function LinearRegression (props) {
         <hr />
 
         <Row className={'mt-3'}>
-          <Col className={'joyride-step-7-list-of-models'}>
+          <Col className={'joyride-step-8-list-of-models'}>
             <Card>
               <Card.Header className={'d-flex align-items-center'}>
-                <h3>{prefix + 'list-models-generated'}</h3>
+                <h3><Trans i18nKey={prefix + 'list-models-generated'} /></h3>
               </Card.Header>
               <Card.Body>
                 <Suspense fallback={<></>}><LinearRegressionTableModels /></Suspense>
@@ -219,7 +242,7 @@ export default function LinearRegression (props) {
         <hr />
 
         <Row className={'mt-3'}>
-          <Col className={'joyride-step-8-predict-visualization'}>
+          <Col className={'joyride-step-9-predict-visualization'}>
             <Card>
               <Card.Header>
                 <h3>{t('pages.playground.1-linear-regression.prediction')}</h3>

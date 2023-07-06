@@ -16,14 +16,14 @@ export default class DATASET_WINE extends I_DATASETS_LINEAR_REGRESSION {
 
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/wine-quality/'
-    const path_dataset_1 = datasets_path + 'wine-quality-red.csv'
-    const path_dataset_2 = datasets_path + 'wine-quality-white.csv'
-    const dataframe_original = await dfd.readCSV(path_dataset_1)
-    const dataframe_processed = await dfd.readCSV(path_dataset_1)
-    const dataframe_original_2 = await dfd.readCSV(path_dataset_2)
-    const dataframe_processed_2 = await dfd.readCSV(path_dataset_2)
+    const dataframe_original = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
+    const dataframe_processed = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
+    const dataframe_original_2 = await dfd.readCSV(datasets_path + 'wine-quality-white.csv')
+    const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'wine-quality-white.csv')
+
     return {
-      datasets     : [{
+      datasets: [{
+        is_dataset_upload    : false,
         path               : datasets_path,
         info               : 'wine-quality.names',
         csv                : 'wine-quality-red.csv',
@@ -32,6 +32,7 @@ export default class DATASET_WINE extends I_DATASETS_LINEAR_REGRESSION {
         dataset_transforms : [],
         isDatasetProcessed : true,
       }, {
+        is_dataset_upload    : false,
         path               : datasets_path,
         csv                : 'wine-quality-white.csv',
         info               : 'wine-quality.names',
@@ -39,15 +40,12 @@ export default class DATASET_WINE extends I_DATASETS_LINEAR_REGRESSION {
         dataframe_processed: dataframe_processed_2,
         dataset_transforms : [],
         isDatasetProcessed : true,
-      }],
-      datasets_path: ''
+      }]
     }
   }
 
   ATTRIBUTE_INFORMATION () {
-    return <>
-
-    </>
+    return <></>
   }
 
   JOYRIDE () {

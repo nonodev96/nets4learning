@@ -10,15 +10,14 @@ export default class DATASET_5_STUDENT_PERFORMANCE extends I_DATASETS_LINEAR_REG
 
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/student-performance/'
-    const path_dataset_1 = datasets_path + 'student-mat.csv'
-    const path_dataset_2 = datasets_path + 'student-por.csv'
-    const dataframe_original_1 = await dfd.readCSV(path_dataset_1)
-    const dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
-    const dataframe_original_2 = await dfd.readCSV(path_dataset_2)
-    const dataframe_processed_2 = await dfd.readCSV(path_dataset_2)
+    const dataframe_original_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
+    const dataframe_processed_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
+    const dataframe_original_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
+    const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
     return {
-      datasets     : [{
-        path               : path_dataset_1,
+      datasets: [{
+        is_dataset_upload    : false,
+        path               : datasets_path,
         info               : 'student.txt',
         csv                : 'student-mat.csv',
         dataframe_original : dataframe_original_1,
@@ -26,22 +25,20 @@ export default class DATASET_5_STUDENT_PERFORMANCE extends I_DATASETS_LINEAR_REG
         dataset_transforms : [],
         isDatasetProcessed : true,
       }, {
-        path               : path_dataset_2,
+        is_dataset_upload    : false,
+        path               : datasets_path,
         dataframe_original : dataframe_original_2,
         dataframe_processed: dataframe_processed_2,
         dataset_transforms : [],
         isDatasetProcessed : true,
         csv                : 'student-por.csv',
         info               : 'student.txt'
-      }],
-      datasets_path: datasets_path,
+      }]
     }
   }
 
   DESCRIPTION () {
-    return <>
-
-    </>
+    return <></>
   }
 
   ATTRIBUTE_INFORMATION () {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
-import { Sequential } from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from 'react-ga4'
 

@@ -12,6 +12,7 @@ import { I_DATASETS_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegres
 
 /**
  * @typedef {Object} CustomDataset_t
+ * @property {boolean} is_dataset_upload
  * @property {string} csv
  * @property {string} info
  * @property {string} path
@@ -133,6 +134,7 @@ export function LinearRegressionProvider ({ children }) {
   })
 
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
+    is_dataset_upload  : false,
     dataframe_original : new dfd.DataFrame(),
     dataframe_processed: new dfd.DataFrame(),
     container_info     : '',

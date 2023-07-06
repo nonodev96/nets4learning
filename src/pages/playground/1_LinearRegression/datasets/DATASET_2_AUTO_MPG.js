@@ -11,21 +11,20 @@ export default class DATASET_2_AUTO_MPG extends I_DATASETS_LINEAR_REGRESSION {
   _KEY = 'AUTO_MPG'
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/'
-    const path_dataset_1 = datasets_path + 'auto-mpg.csv'
-    const dataframe_original_1 = await dfd.readCSV(path_dataset_1)
-    const dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
+    const dataset_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/'
+    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
+    const dataframe_processed_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
     return {
-      datasets     : [{
-        path               : path_dataset_1,
+      datasets: [{
+        is_dataset_upload    : false,
+        path               : dataset_path,
         info               : 'auto-mpg.names',
         csv                : 'auto-mpg.csv',
         dataframe_original : dataframe_original_1,
         dataframe_processed: dataframe_processed_1,
         dataset_transforms : [],
         isDatasetProcessed : true
-      }],
-      datasets_path: datasets_path
+      }]
     }
   }
 
@@ -92,9 +91,7 @@ export default class DATASET_2_AUTO_MPG extends I_DATASETS_LINEAR_REGRESSION {
   }
 
   ATTRIBUTE_INFORMATION () {
-    return <>
-
-    </>
+    return <></>
   }
 
   JOYRIDE () {

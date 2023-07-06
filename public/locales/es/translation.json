@@ -89,7 +89,20 @@
     "download-dataset-titanic": "Conjunto de datos de supervivencia del titanic*",
     "download-dataset-new-thyroid": "Conjunto de datos de new-thyroid",
     "download-dataset-wine": "Conjunto de datos de vino",
-    "download-dataset-ecoli": "Conjunto de datos de ecoli"
+    "download-dataset-ecoli": "Conjunto de datos de ecoli",
+    "download": {
+      "dataset": {
+        "1-linear-regression": {
+          "salary": "Conjunto de datos de salarios",
+          "auto-mpg": "Conjunto de datos de consumo de combustible",
+          "boston": "Conjunto de datos casas de Boston",
+          "student-performance-mathematics": "Conjunto de datos de de estudiantes de matemáticas",
+          "student-performance-portuguese": "Conjunto de datos de estudiantes de Portugués",
+          "wine-red": "Conjunto de datos de vino tinto",
+          "wine-white": "Conjunto de datos de vino blanco"
+        }
+      }
+    }
   },
   "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
@@ -335,6 +348,9 @@
       }
     },
     "1-linear-regression": {
+      "salary": {
+        "title": "Salario por años"
+      },
       "auto-mpg": {
         "title": "Rendimiento de combustible",
         "description": {
@@ -606,6 +622,199 @@
       }
     }
   },
+  "dataframe-plot": {
+    "title": "Graficos del DataFrame",
+    "description": {
+      "title": "Descripción del tipo de gráfica"
+    },
+    "configuration": {
+      "title": "Configuración",
+      "reset": "Reiniciar",
+      "select-all-columns": "Seleccionar todos los atributos",
+      "layout": {
+        "plot": {
+          "title": "Titulo del gráfico",
+          "x-axis": "Título eje X",
+          "y-axis": "Título eje Y"
+        },
+        "title": "Disposición"
+      },
+      "columns": {
+        "title": "Columnas del DataFrame"
+      }
+    },
+    "buttons": {
+      "configuration": "Configuración",
+      "description": "Descripción"
+    },
+    "bar-charts": {
+      "title": "Grafico de Barras",
+      "description": {
+        "intro": {
+          "0": "Los gráficos de tipo barra o barras, son una representación visual que muestra la comparación de diferentes categorías o grupos mediante barras rectangulares.\nEste tipo de gráfico utiliza la longitud o altura de las barras para representar la magnitud o la cantidad de una variable específica.",
+          "1": "En un gráfico de tipo barra, el eje horizontal representa las categorías o grupos, mientras que el eje vertical muestra la magnitud o la frecuencia de la variable que se está analizando.\nCada categoría tiene una barra individual, y la longitud o altura de la barra es proporcional al valor o la cantidad correspondiente.\nLas barras pueden ser horizontales o verticales, dependiendo de la orientación del gráfico.",
+          "2": "Los gráficos de tipo barra tienen varias características y aplicaciones destacadas:"
+        },
+        "list": {
+          "0": "Comparación de categorías: Los gráficos de tipo barra son ideales para comparar visualmente diferentes categorías o grupos.\nAl observar las barras, es posible identificar rápidamente las diferencias en la magnitud o la cantidad entre las categorías.",
+          "1": "Representación de datos categóricos o discretos: Los gráficos de tipo barra son adecuados para representar variables categóricas o discretas.\nCada barra representa una categoría específica y la altura o longitud de la barra muestra la magnitud o la cantidad asociada a esa categoría.",
+          "2": "Ordenamiento de categorías: Las categorías en un gráfico de tipo barra se pueden ordenar en función de diferentes criterios, como orden alfabético, orden de magnitud o cualquier otro orden lógico.\nEsto permite resaltar patrones o tendencias específicas entre las categorías.",
+          "3": "Visualización de frecuencias o porcentajes: Los gráficos de tipo barra también se utilizan para representar frecuencias o porcentajes.\nEn este caso, la altura o longitud de las barras representa la proporción o el porcentaje correspondiente a cada categoría.",
+          "4": "Presentación efectiva: Los gráficos de tipo barra son una herramienta efectiva para presentar información de manera clara y concisa.\nSu estructura simple y su capacidad para resaltar las diferencias entre las categorías los hacen ampliamente utilizados en informes, presentaciones y documentos.",
+          "5": "Los gráficos de tipo barra son una forma eficaz de visualizar y comparar categorías o grupos en función de su magnitud o cantidad.\nSon ideales para representar datos categóricos o discretos y permiten una presentación efectiva de la información.\nSu simplicidad y capacidad para resaltar las diferencias los convierten en una herramienta comúnmente utilizada en el análisis de datos y la comunicación."
+        },
+        "end": {
+          "0": "Los gráficos de tipo barra son una forma eficaz de visualizar y comparar categorías o grupos en función de su magnitud o cantidad.\nSon ideales para representar datos categóricos o discretos y permiten una presentación efectiva de la información.\nSu simplicidad y capacidad para resaltar las diferencias los convierten en una herramienta comúnmente utilizada en el análisis de datos y la comunicación."
+        }
+      }
+    },
+    "box-plots": {
+      "title": "Grafico de Bigotes",
+      "description": {
+        "intro": {
+          "0": "Los gráficos de tipo Box, también conocidos como diagramas de caja y bigotes o boxplots en inglés, son una representación visual utilizada para mostrar la distribución y los resúmenes estadísticos de un conjunto de datos numéricos.\nEste tipo de gráfico se basa en un rectángulo que representa el rango intercuartil (IQR, por sus siglas en inglés), donde la línea central indica la mediana y las líneas extendidas, conocidas como bigotes, representan el rango de\nvalores más allá del IQR.",
+          "1": "En un gráfico de tipo Box, el rectángulo se traza de manera vertical u horizontal, y está delimitado por dos líneas, una en la parte inferior y otra en la parte superior.\nLa línea en el medio del rectángulo representa la mediana, que es el valor que divide a los datos ordenados en dos partes iguales.\nLos bigotes se extienden desde los bordes del rectángulo hacia los valores extremos, con una longitud determinada por la variabilidad de los datos.",
+          "2": "Los gráficos de tipo Box tienen varias características y aplicaciones destacadas:"
+        },
+        "list": {
+          "0": "Resumen estadístico: Los gráficos de tipo Box proporcionan un resumen visual de los estadísticos clave de un conjunto de datos.\nAdemás de la mediana, también se pueden mostrar los cuartiles (Q1 y Q3), que dividen los datos en cuatro partes iguales, y los valores atípicos, que se muestran como puntos o asteriscos fuera de los bigotes.",
+          "1": "Identificación de asimetrías y valores atípicos: Al observar un gráfico de tipo Box, es posible identificar asimetrías en la distribución de los datos.\nSi los bigotes no tienen la misma longitud, puede indicar una asimetría hacia uno de los extremos.\nAdemás, los valores atípicos que se encuentran fuera de los bigotes pueden resaltarse fácilmente.",
+          "2": "Comparación entre grupos o categorías: Los gráficos de tipo Box también se utilizan para comparar la distribución de los datos entre diferentes grupos o categorías.\nAl superponer varios diagramas de caja en el mismo gráfico, es posible visualizar las diferencias en las medianas, los rangos intercuartiles y la presencia de valores atípicos entre los grupos.",
+          "3": "Detectar sesgos y distribuciones: Los gráficos de tipo Box permiten identificar visualmente si la distribución de los datos es simétrica o sesgada hacia un extremo.\nSi la línea central del rectángulo no está en el medio, puede indicar un sesgo hacia la dirección opuesta.",
+          "4": "Visualización de dispersiones: Además de proporcionar información sobre la posición central y la variabilidad de los datos, los gráficos de tipo Box también permiten visualizar la dispersión y la variabilidad de los datos en un solo gráfico.\nEsto puede ser útil para tener una idea rápida de la distribución y la variabilidad general de los datos."
+        },
+        "end": {
+          "0": "Los gráficos de tipo Box son una herramienta útil para visualizar la distribución, los resúmenes estadísticos y la variabilidad de un conjunto de datos numéricos.\nPermiten identificar asimetrías, valores atípicos y comparar distribuciones entre grupos.\nSu representación visual concisa y efectiva los convierte en una herramienta comúnmente utilizada en el análisis de datos y la comunicación."
+        }
+      }
+    },
+    "histograms": {
+      "title": "Grafico de tipo Histograma",
+      "description": {
+        "intro": {
+          "0": "Los gráficos de tipo histograma son una representación visual utilizada para mostrar la distribución de los datos numéricos o continuos.\nEste tipo de gráfico se basa en un conjunto de barras rectangulares adyacentes, donde el ancho de cada barra representa un intervalo de valores y la altura de la barra indica la frecuencia o la cantidad de observaciones dentro de ese\nintervalo.",
+          "1": "En un gráfico de tipo histograma, el eje horizontal se utiliza para representar el rango de valores de la variable en estudio, dividido en intervalos o bins.\nEl eje vertical representa la frecuencia o la cantidad de observaciones en cada intervalo.\nLa altura de cada barra muestra cuántas observaciones caen dentro de ese intervalo específico.",
+          "2": "Los gráficos de tipo histograma tienen varias características y aplicaciones destacadas:"
+        },
+        "list": {
+          "0": "Visualización de distribuciones: Los histogramas permiten visualizar la forma y la distribución de los datos numéricos.\nPueden mostrar si los datos siguen una distribución simétrica, sesgada, multimodal o uniforme.",
+          "1": "Identificación de valores atípicos: Al observar un histograma, es posible identificar valores atípicos o extremos que se encuentren fuera del rango de la mayoría de los datos.\nEstos valores se representarán como barras aisladas o como barras que se extienden más allá del rango principal de valores.",
+          "2": "Análisis de tendencias y patrones: Los histogramas pueden revelar patrones y tendencias en los datos.\nPor ejemplo, una distribución sesgada hacia la izquierda o hacia la derecha indica una asimetría en los datos, mientras que una distribución normal muestra una simetría aproximada.",
+          "3": "Comparación de grupos o categorías: Los histogramas también pueden ser utilizados para comparar la distribución de datos entre diferentes grupos o categorías.\nAl superponer varios histogramas en el mismo gráfico, es posible visualizar las diferencias y similitudes entre los grupos.",
+          "4": "Estimación de densidad: Además de mostrar la frecuencia absoluta, los histogramas también pueden proporcionar una estimación visual de la densidad de probabilidad de los datos.\nAl normalizar las alturas de las barras, es posible obtener una representación relativa de la probabilidad de ocurrencia de los valores en cada intervalo."
+        },
+        "end": {
+          "0": "Los gráficos de tipo histograma son una herramienta útil para visualizar la distribución y los patrones de los datos numéricos.\nPermiten identificar valores atípicos, analizar tendencias y comparar distribuciones entre grupos.\nSu representación visual clara y concisa los convierte en una herramienta efectiva para comunicar información sobre la distribución de los datos de manera comprensible."
+        }
+      }
+    },
+    "line-charts": {
+      "title": "Grafico de tipo Linea",
+      "description": {
+        "intro": {
+          "0": "Los gráficos de tipo línea, también conocidos como gráficos de series o gráficos de tendencia, son una representación visual que muestra la relación y la evolución de los datos a lo largo del tiempo o de una variable continua.\nEstos gráficos se construyen trazando puntos de datos en un sistema de coordenadas cartesianas, donde cada punto representa una medición o un valor específico de la variable en el eje vertical en función del tiempo o de la variable\nindependiente en el eje horizontal.",
+          "1": "En un gráfico de tipo línea, los puntos de datos se conectan mediante líneas rectas, lo que crea una serie de puntos conectados.\nEstas líneas permiten visualizar la trayectoria y el patrón de cambio de los datos a lo largo del tiempo o de la variable independiente.\nLa pendiente de la línea puede indicar una tendencia creciente o decreciente, mientras que las variaciones en la dirección y la forma de la línea pueden revelar patrones adicionales en los datos.",
+          "2": "Los gráficos de tipo línea tienen varias características y aplicaciones destacadas:"
+        },
+        "list": {
+          "0": "Representación de tendencias: Los gráficos de tipo línea son especialmente útiles para mostrar tendencias y cambios a lo largo del tiempo.\nPueden revelar patrones de crecimiento, declive o fluctuación en los datos a medida que se suceden en el tiempo.",
+          "1": "Identificación de cambios y variaciones: Al observar un gráfico de tipo línea, es posible identificar cambios abruptos o variaciones en los datos.\nEstos cambios pueden indicar eventos significativos o factores que influyen en la variable medida.",
+          "2": "Comparación de múltiples series: Los gráficos de tipo línea también permiten comparar múltiples series de datos en un solo gráfico.\nEsto es útil para analizar y visualizar la relación entre diferentes variables a medida que evolucionan en el tiempo.",
+          "3": "Análisis de estacionalidad y ciclos: Si los datos exhiben patrones estacionales o cíclicos, los gráficos de tipo línea pueden ayudar a identificar y analizar estos patrones.\nEsto puede ser útil en campos como la economía, la meteorología y el análisis de ventas, donde existen fluctuaciones recurrentes en los datos.",
+          "4": "Pronóstico y proyección: Los gráficos de tipo línea también se utilizan para realizar pronósticos y proyecciones basadas en los datos históricos.\nAl observar las tendencias pasadas, es posible inferir y predecir cómo se comportarán los datos en el futuro."
+        },
+        "end": {
+          "0": "Los gráficos de tipo línea son una herramienta valiosa para visualizar y analizar la relación y la evolución de los datos a lo largo del tiempo o de una variable continua.\nPermiten identificar tendencias, cambios y patrones en los datos, así como realizar comparaciones y pronósticos.\nSu representación visual clara y concisa los convierte en una herramienta efectiva para comunicar información compleja de manera comprensible."
+        }
+      }
+    },
+    "pie-charts": {
+      "title": "Grafico de Sectores",
+      "description": {
+        "intro": {
+          "0": "Los gráficos circulares o de sectores, son una representación visual que muestra la proporción de diferentes categorías o partes en relación con el todo.\nEstos gráficos se basan en un círculo dividido en sectores, donde cada sector representa una categoría específica y su tamaño relativo refleja la proporción que esa categoría representa en el conjunto de datos.",
+          "1": "En un gráfico de tipo sectores, el círculo completo representa el 100% o el total de los datos.\nCada sector se muestra como una porción del círculo y se etiqueta con el nombre o la etiqueta correspondiente a la categoría que representa.\nLa medida del ángulo del sector es proporcional a la proporción que esa categoría tiene en el conjunto de datos.",
+          "2": "Los gráficos de tipo pie tienen varias características y aplicaciones destacadas:"
+        },
+        "list": {
+          "0": "Representación de proporciones: Los gráficos de tipo pie son ideales para representar proporciones y porcentajes.\nPermiten visualizar rápidamente la contribución relativa de cada categoría en el conjunto de datos total.",
+          "1": "Identificación de categorías dominantes: Los tamaños relativos de los sectores en el gráfico de tipo pie ayudan a identificar fácilmente las categorías dominantes o más significativas.\nLos sectores más grandes indican las categorías que tienen una mayor proporción o contribución en relación con las demás.",
+          "2": "Comparación entre categorías: Si bien los gráficos de tipo pie son útiles para mostrar las proporciones de las categorías, pueden resultar limitados para realizar comparaciones precisas entre ellas.\nEsto se debe a que la percepción humana puede tener dificultades para evaluar con precisión las diferencias en los tamaños de los ángulos o sectores.\nSin embargo, la comparación relativa entre los tamaños de los sectores aún puede proporcionar información general sobre las proporciones entre categorías.",
+          "3": "Representación de datos categóricos: Los gráficos de tipo pie son especialmente útiles para representar datos categóricos, donde las categorías son mutuamente excluyentes y no tienen un orden inherente.\nPor ejemplo, se pueden usar para mostrar la distribución porcentual de ingresos en diferentes categorías de gastos.",
+          "4": "Mejora de la presentación visual: Los gráficos de tipo pie se utilizan comúnmente en presentaciones y documentos para comunicar información de manera visualmente atractiva y fácilmente comprensible.\nLa forma circular y los colores utilizados pueden captar rápidamente la atención y resaltar las relaciones proporcionales entre las categorías."
+        },
+        "end": {
+          "0": "Los gráficos de tipo de sectores son una herramienta efectiva para representar proporciones y porcentajes de categorías en un conjunto de datos.\nPermiten identificar las categorías dominantes y proporcionan una presentación visual atractiva.\nSin embargo, es importante tener en cuenta sus limitaciones en términos de comparación precisa entre categorías y su enfoque en datos categóricos."
+        }
+      }
+    },
+    "scatter-plots": {
+      "title": "Grafico de tipo Dispersión",
+      "description": {
+        "intro": {
+          "0": "Un gráfico de dispersión, también conocido como gráfico de puntos o scatter plot en inglés, es una representación visual que utiliza coordenadas cartesianas para mostrar la relación entre dos variables.\nEn este tipo de gráfico, los datos se representan como puntos individuales en el espacio bidimensional, donde cada punto representa un par de valores correspondientes a las dos variables.",
+          "1": "En un gráfico de dispersión, el eje horizontal generalmente se asigna a la variable independiente, mientras que el eje vertical se asigna a la variable dependiente.\nCada punto en el gráfico representa una observación individual y su posición en el gráfico se determina por los valores que tiene para ambas variables.\nLa ubicación relativa de los puntos en el gráfico revela patrones y relaciones entre las dos variables.",
+          "2": "Los gráficos de dispersión tienen varias aplicaciones y características destacadas:"
+        },
+        "list": {
+          "0": "Relación entre variables: Los gráficos de dispersión permiten analizar la relación entre dos variables.\nPueden mostrar si hay una correlación positiva (los puntos tienden a agruparse en una dirección ascendente), una correlación negativa (los puntos tienden a agruparse en una dirección descendente) o una falta de correlación (los puntos no muestran un patrón definido).",
+          "1": "Identificación de tendencias: Un gráfico de dispersión puede revelar tendencias o patrones en los datos.\nAl observar la dirección general de los puntos, es posible identificar si existe una relación lineal, no lineal o incluso una relación curvilínea entre las variables.",
+          "2": "Detección de valores atípicos: Los gráficos de dispersión pueden ayudar a identificar valores atípicos o extremos en los datos.\nEstos puntos se destacan y se encuentran lejos de la agrupación principal, lo que sugiere observaciones inusuales o excepcionales que pueden requerir un análisis adicional.",
+          "3": "Análisis de clusters o grupos: Si los puntos en el gráfico de dispersión se agrupan o forman patrones distintos, esto puede indicar la presencia de clusters o grupos.\nEsto puede ser útil en análisis de segmentación o clasificación de datos.",
+          "4": "Visualización de datos multidimensionales: Si se utilizan colores o tamaños de puntos adicionales, los gráficos de dispersión también pueden representar información adicional en un espacio bidimensional.\nEsto permite visualizar datos multidimensionales de manera más intuitiva."
+        },
+        "end": {
+          "0": "Los gráficos de dispersión son una herramienta poderosa para explorar y visualizar la relación entre dos variables.\nPermiten identificar patrones, tendencias y valores atípicos en los datos, y son útiles en diversas aplicaciones, como análisis de correlación, detección de clusters y visualización de datos multidimensionales."
+        }
+      }
+    },
+    "time-series-plots": {
+      "title": "Grafico de tipo Series Temporales",
+      "description": {
+        "intro": {
+          "0": "Un gráfico de tipo series de tiempo es una representación visual de datos que se recopilan y registran en intervalos regulares a lo largo del tiempo.\nEstos gráficos son ampliamente utilizados en diversas disciplinas, como la economía, las finanzas, la meteorología, la ingeniería y muchas otras, para analizar y comprender cómo cambian los datos a medida que transcurre el tiempo.",
+          "1": "El eje horizontal del gráfico representa el tiempo, mientras que el eje vertical muestra los valores de los datos que se están observando o registrando.\nLos puntos de datos se conectan con líneas, lo que permite identificar patrones y tendencias a lo largo del tiempo.",
+          "2": "Los gráficos de series de tiempo ofrecen varias ventajas y aplicaciones prácticas:"
+        },
+        "list": {
+          "0": "Análisis de tendencias: Los gráficos de series de tiempo permiten identificar y analizar tendencias a largo plazo en los datos.\nEsto puede ser útil para predecir cómo se comportarán los datos en el futuro y tomar decisiones informadas.",
+          "1": "Identificación de patrones estacionales: En muchos conjuntos de datos, existen patrones estacionales que se repiten regularmente en el tiempo, como las ventas navideñas o las fluctuaciones estacionales en la producción agrícola.\nLos gráficos de series de tiempo ayudan a identificar estos patrones estacionales y comprender su impacto en los datos.",
+          "2": "Detección de cambios y anomalías: Al observar un gráfico de series de tiempo, es posible identificar cambios bruscos o anomalías en los datos.\nEstos cambios pueden indicar eventos importantes o inusuales que requieren una mayor investigación y análisis.",
+          "3": "Modelado y pronóstico: Los gráficos de series de tiempo son una herramienta fundamental para desarrollar modelos y pronósticos.\nAl observar los patrones pasados, es posible construir modelos matemáticos o estadísticos que capturen las relaciones y permitan hacer predicciones sobre el futuro.",
+          "4": "Análisis comparativo: Los gráficos de series de tiempo también se utilizan para comparar diferentes conjuntos de datos que se recopilan durante el mismo período de tiempo.\nEsto puede ayudar a identificar diferencias, similitudes y relaciones entre las variables observadas."
+        },
+        "end": {
+          "0": "Los gráficos de series de tiempo son una herramienta esencial para analizar y comprender cómo cambian los datos a lo largo del tiempo.\nProporcionan información valiosa sobre las tendencias, patrones estacionales, cambios y pronósticos, lo que permite tomar decisiones informadas y realizar análisis comparativos."
+        }
+      },
+      "index-info": "El indice seleccionado debe contener una serie única y no debe seleccionar el índice junto a las columnas a mostrar"
+    },
+    "time-series": {
+      "warning": {
+        "index": "Este dataframe no permite una visualización adecuada al no cumplir la condición de una característica con valores únicos"
+      }
+    },
+    "violin-plots": {
+      "title": "Grafico de tipo Violin",
+      "description": {
+        "intro": {
+          "0": "Un gráfico de tipo violín es una representación visual que combina características de un gráfico de caja y bigotes con una función de densidad de probabilidad.\nEste tipo de gráfico proporciona una visión detallada de la distribución de los datos y permite comparar múltiples grupos o categorías en un solo gráfico.",
+          "1": "La apariencia de un gráfico de violín se asemeja a la forma de un violín, de ahí su nombre.\nTiene una línea central que representa la mediana de los datos y dos áreas sombreadas a ambos lados que representan la distribución de la densidad de probabilidad.\nEstas áreas sombreadas de simetría a lo largo de la línea central para reflejar la simetría o asimetría de los datos.",
+          "2": "La forma del gráfico de violín proporciona información sobre la distribución de los datos.\nPor ejemplo, un gráfico de violín más ancho en una sección particular indica una mayor densidad de datos en esa área, mientras que una sección más estrecha indica una menor densidad.\nAdemás, los gráficos de violín pueden tener múltiples violines agrupados o superpuestos para permitir la comparación visual de diferentes grupos o categorías.",
+          "3": "Los gráficos de violín tienen varias aplicaciones prácticas:"
+        },
+        "list": {
+          "0": "Comparación de distribuciones: Los gráficos de violín permiten comparar las distribuciones de datos entre diferentes grupos o categorías.\nEsto es útil para identificar diferencias o similitudes en la forma, dispersión y tendencias de los datos.",
+          "1": "Identificación de valores atípicos: Los gráficos de violín proporcionan información visual sobre la presencia de valores atípicos o extremos en los datos.\nEstos valores se representan como puntos fuera de las áreas sombreadas y pueden indicar observaciones inusuales que pueden requerir un análisis adicional.",
+          "2": "Visualización de densidad de probabilidad: Los gráficos de violín también ofrecen una representación gráfica de la densidad de probabilidad de los datos.\nEsto permite identificar fácilmente áreas de alta o baja densidad, así como posibles sesgos o asimetrías en la distribución.",
+          "3": "Comunicación efectiva de datos: Los gráficos de violín son una forma efectiva de comunicar información compleja sobre la distribución de los datos de una manera visualmente atractiva.\nPueden resumir la información de manera concisa y ayudar a transmitir patrones y características importantes a un público no técnico."
+        },
+        "end": {
+          "0": "Los gráficos de violín son una herramienta útil para visualizar y comparar distribuciones de datos.\nPermiten analizar la forma, dispersión, simetría y presencia de valores atípicos en los datos, y son especialmente útiles cuando se requiere la comparación entre múltiples grupos o categorías.\nSu representación gráfica atractiva y concisa los convierte en una herramienta efectiva para comunicar información compleja de manera comprensible."
+        }
+      }
+    }
+  },
   "pages": {
     "index": {
       "tabular-classification": {
@@ -753,6 +962,12 @@
             "label-encoder": "Label encoder",
             "one-hot-encoder": "OneHot encoder",
             "classes": "Clases"
+          },
+          "details": {
+            "description-original": "Descripción del dataframe original",
+            "description-processed": "Descripción del dataframe procesado",
+            "data": "Información del conjunto de datos",
+            "info": "Información"
           }
         },
         "layer-design": "Diseño de capas",
@@ -831,6 +1046,7 @@
           "input-vector": "Introduce el vector a probar",
           "test-vector": "Vector a probar"
         },
+        "list-models-generated": "Lista de modelos generados",
         "prediction": {
           "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
         }
@@ -840,7 +1056,8 @@
           "manual": {
             "title": "Manual del generador de modelos"
           }
-        }
+        },
+        "prediction": null
       }
     },
     "manual": {
@@ -1097,6 +1314,17 @@
       "privacy-text": "En nuestro sitio web, solo recopilamos información estadística sobre las visitas con el fin de mejorar el rendimiento y la funcionalidad del sitio. No recopilamos ni almacenamos ninguna información personal de nuestros usuarios. Utilizamos cookies para contabilizar el número de visitantes y mejorar la experiencia de navegación. Si tienes alguna pregunta o duda sobre nuestra política de privacidad, no dudes en ponerte en contacto con nosotros a través de nuestra página de contacto.",
       "cookies-title": "Cookies",
       "cookies-text": "Nuestra página web utiliza cookies de Google Analytics para contabilizar el número de visitantes que recibimos. Estas cookies nos permiten recopilar información estadística anónima sobre el uso de nuestro sitio web y nos ayudan a mejorar su rendimiento y funcionalidad. Las cookies de Google Analytics no recopilan información personal de los usuarios. Al navegar por nuestra web, aceptas el uso de estas cookies. Si deseas obtener más información acerca de cómo utilizamos las cookies, por favor consulta nuestra política de privacidad."
+    }
+  },
+  "generator": {
+    "table-models": {
+      "learning-rate": "Tasa de aprendizaje",
+      "test-size": "Tamaño del conjunto de pruebas",
+      "n-of-epochs": "Número de épocas",
+      "id-optimizer": "Optimizador",
+      "id-loss": "Pérdida",
+      "id-metrics": "Métrica",
+      "layers": "Capas"
     }
   },
   "form-dataframe": {

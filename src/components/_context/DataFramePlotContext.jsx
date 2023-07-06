@@ -1,46 +1,15 @@
 import { createContext, useState } from 'react'
 import * as dfd from 'danfojs'
+import { DEFAULT_DATAFRAME_PLOT_CONFIG } from './Constants'
 
 const DataFramePlotContext = createContext({})
 
 export function DataFramePlotProvider ({ children }) {
 
-  // @formatter:off
-  const E_PLOTS = {
-    // TODO
-    TIME_SERIES_PLOTS: "TimeSeries Plots // TODO",
-    VIOLIN_PLOTS     : "Violin Plots",
-    BOX_PLOTS        : "Box Plots",
-    PIE_CHARTS       : "Pie Charts // TODO",
-    HISTOGRAMS       : "Histograms",
-    SCATTER_PLOTS    : "Scatter Plots",
-    BAR_CHARTS       : "Bar Charts",
-    LINE_CHARTS      : "Line Charts"
-  }
-  const LIST_PLOTS = Object.entries(E_PLOTS).map(([_key, value]) => value)
-
-  const DEFAULT_PLOT = E_PLOTS.BOX_PLOTS
-  const DEFAULT_DATAFRAME_PLOT_CONFIG = {
-    PLOT_ENABLE      : DEFAULT_PLOT,
-    LAYOUT           : { title: "", x_axis: "", y_axis: "" },
-    COLUMNS          : [],
-
-    TIME_SERIES_PLOTS: { config: { index: "" } },
-    VIOLIN_PLOTS     : {},
-    BOX_PLOTS        : {},
-    PIE_CHARTS       : { config: { labels:"" } },
-    HISTOGRAMS       : {},
-    SCATTER_PLOTS    : {},
-    BAR_CHARTS       : {},
-    LINE_CHARTS      : {},
-    _DEFAULT_        : { config: { x: "", y: "" } }
-  }
-  // @formatter:on
-
+  const [dataFrameLocal, setDataFrameLocal] = useState(new dfd.DataFrame())
   const [dataframePlotConfig, setDataframePlotConfig] = useState(DEFAULT_DATAFRAME_PLOT_CONFIG)
   const [showDescription, setShowDescription] = useState(false)
   const [showOptions, setShowOptions] = useState(false)
-  const [dataFrameLocal, setDataFrameLocal] = useState(new dfd.DataFrame())
 
   const columnsValidForIndex = () => {
     return dataFrameLocal.columns.filter((column) => {
@@ -54,6 +23,9 @@ export function DataFramePlotProvider ({ children }) {
 
   return (
     <DataFramePlotContext.Provider value={{
+      dataFrameLocal,
+      setDataFrameLocal,
+
       dataframePlotConfig,
       setDataframePlotConfig,
 
@@ -62,13 +34,6 @@ export function DataFramePlotProvider ({ children }) {
 
       showOptions,
       setShowOptions,
-
-      dataFrameLocal,
-      setDataFrameLocal,
-
-      E_PLOTS,
-      LIST_PLOTS,
-      DEFAULT_DATAFRAME_PLOT_CONFIG,
 
       columnsValidForIndex,
       isDataFrameValidForIndex,

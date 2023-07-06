@@ -3,7 +3,7 @@ import { Trans } from 'react-i18next'
 import * as dfd from 'danfojs'
 
 import I_DATASETS_LINEAR_REGRESSION from './_model'
-import { DataFrameTransform } from '../DataFrameTransform'
+import { DataFrameTransform } from '../../../../core/dataframe/DataFrameUtils'
 
 export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
 
@@ -11,17 +11,6 @@ export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
   static URL = 'https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook'
   i18n_TITLE = 'datasets-models.1-linear-regression.salary.title'
   _KEY = 'SALARY'
-
-  LAYERS () {
-    const inputShape = 7
-    const model = tfjs.sequential()
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu', inputShape: [inputShape] }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1, activation: 'relu' }))
-    return model
-  }
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.salary.description.'
@@ -60,25 +49,24 @@ export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
   }
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/'
-    const path_dataset_1 = datasets_path + 'salary.csv'
-    const dataframe_original_1 = await dfd.readCSV(path_dataset_1)
+    const dataset_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/'
+    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'salary.csv')
     const dataframe_transforms = []
-    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(path_dataset_1), dataframe_transforms)
+    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + 'salary.csv'), dataframe_transforms)
 
     // dataframe_processed_1.print()
 
     return {
-      datasets     : [{
-        path                : path_dataset_1,
+      datasets: [{
+        is_dataset_upload     : false,
+        path                : dataset_path,
         info                : 'salary.names',
         csv                 : 'salary.csv',
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataframe_transforms: dataframe_transforms,
         isDatasetProcessed  : true,
-      }],
-      datasets_path: datasets_path,
+      }]
     }
   }
 
@@ -92,10 +80,17 @@ export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
     return model
   }
 
-  ATTRIBUTE_INFORMATION () {
-    return <>
+  LAYERS () {
+    const inputShape = 7
+    const model = tfjs.sequential()
+    model.add(tfjs.layers.dense({ units: 64, activation: 'relu', inputShape: [inputShape] }))
+    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
+    model.add(tfjs.layers.dense({ units: 1, activation: 'relu' }))
+    return model
+  }
 
-    </>
+  ATTRIBUTE_INFORMATION () {
+    return <></>
   }
 
   JOYRIDE () {

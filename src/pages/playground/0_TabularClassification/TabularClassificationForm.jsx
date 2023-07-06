@@ -1,4 +1,3 @@
-import './TabularClassificationForm.css'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'

@@ -9,7 +9,11 @@ import { TABLE_PLOT_STYLE_CONFIG } from '../../../ConfigDanfoJS'
 
 export default function LinearRegressionDatasetShow () {
 
-  const { tmpModel, datasetLocal, setDatasetLocal } = useContext(LinearRegressionContext)
+  const {
+    tmpModel,
+    datasetLocal,
+    setDatasetLocal
+  } = useContext(LinearRegressionContext)
 
   // i18n
   const prefix = 'pages.playground.generator.dataset.'
@@ -20,12 +24,14 @@ export default function LinearRegressionDatasetShow () {
    * @param {CustomDataset_t} _dataset
    * @return {Promise<void>}
    */
-  const updateDataFrameLocal = useCallback(async (_path, _dataset) => {
+  const updateDataFrameLocal = useCallback(async (_dataset) => {
     const dataframe_original = _dataset.dataframe_original
     const dataframe_processed = _dataset.dataframe_processed
-    const promise_info = await fetch(_path + _dataset.info)
-    const container_info = await promise_info.text()
-
+    let container_info = ''
+    if (!_dataset.is_dataset_upload) {
+      const promise_info = await fetch(_dataset.path + _dataset.info)
+      container_info = await promise_info.text()
+    }
     dataframe_original.describe().T.plot('dataframe_original_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
     dataframe_processed.describe().T.plot('dataframe_processed_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
 
@@ -40,7 +46,7 @@ export default function LinearRegressionDatasetShow () {
   useEffect(() => {
     const init = async () => {
       if (tmpModel.datasets.length > 0) {
-        await updateDataFrameLocal(tmpModel.datasets_path, tmpModel.datasets[indexDatasetSelected])
+        await updateDataFrameLocal(tmpModel.datasets[indexDatasetSelected])
       }
     }
     init().then(() => undefined)
@@ -77,7 +83,9 @@ export default function LinearRegressionDatasetShow () {
 
         <Row>
           <Col>
-            <N4LSummary title={<Trans i18nKey={prefix + 'details.info'} />} info={datasetLocal.container_info} />
+            {!datasetLocal.is_dataset_upload &&
+              <N4LSummary title={<Trans i18nKey={prefix + 'details.info'} />} info={datasetLocal.container_info} />
+            }
             <N4LSummary title={<Trans i18nKey={prefix + 'details.description-original'} />} info={<div id={'dataframe_original_plot'}></div>} />
             <N4LSummary title={<Trans i18nKey={prefix + 'details.description-processed'} />} info={<div id={'dataframe_processed_plot'}></div>} />
           </Col>
