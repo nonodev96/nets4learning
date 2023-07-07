@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
-import DataFramePlot from '../../../components/dataframe/DataFramePlot'
-import { DataFramePlotProvider } from '../../../components/_context/DataFramePlotContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
+import DataFramePlot from '@components/dataframe/DataFramePlot'
+import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
 
 export default function LinearRegressionDatasetPlot () {
 

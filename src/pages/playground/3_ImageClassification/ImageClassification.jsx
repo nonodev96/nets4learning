@@ -8,18 +8,18 @@ import ReactGA from 'react-ga4'
 import * as TrainMNIST from './custom/Train_MNIST'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 import LayerEdit from './LayerEdit'
-import * as alertHelper from '../../../utils/alertHelper'
+import * as alertHelper from '@utils/alertHelper'
 import * as ImageClassificationUtils from './utils/utils'
 import {
   getKeyDatasetByID_ImageClassification,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET
-} from '../../../DATA_MODEL'
-import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '../../../core/nn-utils/ArchitectureTypesHelper'
+} from '@/DATA_MODEL'
+import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 
 import { MODEL_IMAGE_CLASSIFICATION } from './models/_model'
-import N4LLayerDesign from '../../../components/neural-network/N4LLayerDesign'
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1

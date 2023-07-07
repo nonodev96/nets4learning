@@ -15,7 +15,7 @@ import ObjectDetectionModelReview from './2_ObjectDetection/ObjectDetectionModel
 import ImageClassification from './3_ImageClassification/ImageClassification'
 import ImageClassificationModelReview from './3_ImageClassification/ImageClassificationModelReview'
 
-import { LinearRegressionProvider } from '../../context/LinearRegressionContext'
+import { LinearRegressionProvider } from '@context/LinearRegressionContext'
 
 export default function Playground () {
   const { id, option, example } = useParams()

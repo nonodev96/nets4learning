@@ -21,26 +21,19 @@ export function DataFramePlotProvider ({ children }) {
     return columnsValidForIndex().length > 0
   }
 
-  return (
-    <DataFramePlotContext.Provider value={{
-      dataFrameLocal,
-      setDataFrameLocal,
+  return (<DataFramePlotContext.Provider value={{
+    dataFrameLocal, setDataFrameLocal,
 
-      dataframePlotConfig,
-      setDataframePlotConfig,
+    dataframePlotConfig, setDataframePlotConfig,
 
-      showDescription,
-      setShowDescription,
+    showDescription, setShowDescription,
 
-      showOptions,
-      setShowOptions,
+    showOptions, setShowOptions,
 
-      columnsValidForIndex,
-      isDataFrameValidForIndex,
-    }}>
-      {children}
-    </DataFramePlotContext.Provider>
-  )
+    columnsValidForIndex, isDataFrameValidForIndex,
+  }}>
+    {children}
+  </DataFramePlotContext.Provider>)
 }
 
 export default DataFramePlotContext

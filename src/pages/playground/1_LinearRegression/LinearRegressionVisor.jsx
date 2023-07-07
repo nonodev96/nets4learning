@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { Card, Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionVisor () {
 

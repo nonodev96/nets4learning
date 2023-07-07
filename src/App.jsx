@@ -6,6 +6,7 @@ import ReactGA from 'react-ga4'
 import Loading from './pages/Loading'
 import N4LNavbar from './components/header/N4LNavbar'
 import N4LFooter from './components/footer/N4LFooter'
+import TestPage from '@pages/TestPage'
 import './ConfigChartJS'
 
 const Home = lazy(() => import( './pages/_home/Home.jsx'))
@@ -19,6 +20,7 @@ const Datasets = lazy(() => import( './pages/datasets/Datasets'))
 const TermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
 const NotFoundPage = lazy(() => import( './pages/notFound/NotFoundPage'))
 const Version = lazy(() => import( './pages/version/Version'))
+const TestPage_lazy = lazy(() => import( './pages/TestPage'))
 
 function App () {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
@@ -45,6 +47,8 @@ function App () {
             <Route exact path={'/glossary/'} component={Glossary}></Route>
             <Route exact path={'/datasets/'} component={Datasets}></Route>
             <Route exact path={'/terms-and-conditions/'} component={TermsAndConditions}></Route>
+            <Route exact path={'/test-page-lazy'} component={TestPage_lazy}></Route>
+            <Route exact path={'/test-page'} component={TestPage}></Route>
             <Route path="/404" component={NotFoundPage} />
             <Redirect to="/404"></Redirect>
           </Switch>

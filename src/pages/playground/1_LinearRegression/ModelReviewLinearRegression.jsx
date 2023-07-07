@@ -8,29 +8,29 @@ export default function ModelReviewLinearRegression (props) {
   const { dataset } = props
   const { t } = useTranslation()
 
-  const [Model, setModel] = useState(null)
+  const [iModel, setIModel] = useState(null)
 
   useEffect(() => {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
     switch (dataset) {
       case DATASET_1_SALARY.KEY:
-        setModel(new DATASET_1_SALARY(t))
+        setIModel(new DATASET_1_SALARY(t, {}))
         break
       case DATASET_2_AUTO_MPG.KEY:
-        setModel(new DATASET_2_AUTO_MPG(t))
+        setIModel(new DATASET_2_AUTO_MPG(t, {}))
         break
       case DATASET_3_BOSTON_HOUSING.KEY:
-        setModel(new DATASET_3_BOSTON_HOUSING(t))
+        setIModel(new DATASET_3_BOSTON_HOUSING(t, {}))
         break
       case DATASET_4_BREAST_CANCER.KEY:
-        setModel(new DATASET_4_BREAST_CANCER(t))
+        setIModel(new DATASET_4_BREAST_CANCER(t, {}))
         break
       case DATASET_5_STUDENT_PERFORMANCE.KEY:
-        setModel(new DATASET_5_STUDENT_PERFORMANCE(t))
+        setIModel(new DATASET_5_STUDENT_PERFORMANCE(t, {}))
         break
       case DATASET_6_WINE.KEY:
-        setModel(new DATASET_6_WINE(t))
+        setIModel(new DATASET_6_WINE(t, {}))
         break
       default:
         console.error('Error, incorrect model')
@@ -40,27 +40,27 @@ export default function ModelReviewLinearRegression (props) {
 
   useEffect(() => {
     async function asyncFunction () {
-      if (Model !== null) {
-        (await Model.dataframe()).plot('plot_div').table()
+      if (iModel !== null) {
+        (await iModel.DATASETS()).datasets[0].dataframe_original.plot('plot_div').table()
       }
     }
 
     asyncFunction().then(_r => undefined)
-  }, [Model])
+  }, [iModel])
 
   console.log('render ModelReviewLinearRegression')
   return (
     <>
       <Container id={'LinearRegressionModelReview'}>
-        {Model !== null &&
+        {iModel !== null &&
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top border-info mt-3'}>
                 <Card.Header>
-                  <h3><Trans i18nKey={Model.i18n_TITLE} /></h3>
+                  <h3><Trans i18nKey={iModel.i18n_TITLE} /></h3>
                 </Card.Header>
                 <Card.Body>
-                  {Model.DESCRIPTION()}
+                  {iModel.DESCRIPTION()}
                 </Card.Body>
               </Card>
             </Col>

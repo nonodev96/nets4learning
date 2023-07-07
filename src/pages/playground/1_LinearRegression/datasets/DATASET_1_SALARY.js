@@ -1,9 +1,9 @@
-import * as tfjs from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
+import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 
 import I_DATASETS_LINEAR_REGRESSION from './_model'
-import { DataFrameTransform } from '../../../../core/dataframe/DataFrameUtils'
+import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 
 export default class DATASET_1_SALARY extends I_DATASETS_LINEAR_REGRESSION {
 

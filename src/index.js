@@ -1,14 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './index.css'
-import './i18n'
+import './globals.css'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import './i18n'
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-root.render(<BrowserRouter><App /></BrowserRouter>)
+root.render(<App />)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

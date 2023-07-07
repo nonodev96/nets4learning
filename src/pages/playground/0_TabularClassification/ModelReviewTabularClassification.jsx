@@ -3,12 +3,12 @@ import ReactGA from 'react-ga4'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, withTranslation } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
-import N4LTablePagination from '../../../components/table/N4LTablePagination'
-import DragAndDrop from '../../../components/dragAndDrop/DragAndDrop'
 
-import * as alertHelper from '../../../utils/alertHelper'
-import { CONSOLE_LOG_h3 } from '../../../Constantes'
-import { isProduction } from '../../../utils/utils'
+import N4LTablePagination from '@components/table/N4LTablePagination'
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
+import { CONSOLE_LOG_h3 } from '@/Constantes'
+import { isProduction } from '@utils/utils'
+import * as alertHelper from '@utils/alertHelper'
 
 import { I_MODEL_TABULAR_CLASSIFICATION } from './models/_model'
 
@@ -19,7 +19,7 @@ import {
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY
-} from '../../../DATA_MODEL'
+} from '@/DATA_MODEL'
 
 class ModelReviewTabularClassification extends React.Component {
   constructor (props) {

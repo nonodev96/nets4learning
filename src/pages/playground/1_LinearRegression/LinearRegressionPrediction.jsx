@@ -4,7 +4,7 @@ import { Chart } from 'react-chartjs-2'
 
 import { faker } from '@faker-js/faker'
 import { Button } from 'react-bootstrap'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionPrediction () {
 

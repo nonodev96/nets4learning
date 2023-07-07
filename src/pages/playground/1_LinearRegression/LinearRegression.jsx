@@ -2,10 +2,10 @@ import React, { lazy, Suspense, useCallback, useContext, useEffect, useRef } fro
 import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
-import N4LLayerDesign from '../../../components/neural-network/N4LLayerDesign'
-import DebugJSON from '../../../components/debug/DebugJSON'
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import DebugJSON from '@components/debug/DebugJSON'
 
-import { UPLOAD } from '../../../DATA_MODEL'
+import { UPLOAD } from '@/DATA_MODEL'
 import {
   DATASET_1_SALARY,
   DATASET_2_AUTO_MPG,
@@ -15,7 +15,7 @@ import {
   DATASET_6_WINE
 } from './datasets'
 
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
 
 // Manual and datasets
@@ -124,22 +124,22 @@ export default function LinearRegression ({ dataset_id }) {
   console.log('render LinearRegression')
   return (
     <>
-        <LinearRegressionJoyride refJoyrideButton={refJoyrideButton}/>
+      <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
 
-        <Container>
-          <Row className={'mt-2'}>
-            <Col xl={12}>
+      <Container>
+        <Row className={'mt-2'}>
+          <Col xl={12}>
+            <div className="d-flex">
               <h1><Trans i18nKey={'modality.' + param_id} /></h1>
-              <div className="d-flex">
-                <Button size={'sm'}
-                        variant={'outline-primary'}
-                        onClick={refJoyrideButton.current.handleClick_StartJoyride}>
-                  <Trans i18nKey={'Joyride Button'} />
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Container>
+              <Button size={'sm'}
+                      variant={'outline-primary'}
+                      onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                <Trans i18nKey={'Joyride Button'} />
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Container>
 
 
       <Container className={'mt-3'}>

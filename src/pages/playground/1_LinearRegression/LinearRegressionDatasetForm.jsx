@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Trans } from 'react-i18next'
 import { Card } from 'react-bootstrap'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionDatasetForm () {
   const prefix = 'pages.playground.generator.'

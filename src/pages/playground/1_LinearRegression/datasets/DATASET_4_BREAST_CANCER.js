@@ -1,7 +1,7 @@
 import I_DATASETS_LINEAR_REGRESSION from './_model'
 import * as dfd from 'danfojs'
-import { DANFOJS_FRAME_CONFIG } from '../../../../ConfigDanfoJS'
-import { DataFrameTransform } from '../../../../core/dataframe/DataFrameUtils'
+import { DANFOJS_FRAME_CONFIG } from '@/ConfigDanfoJS'
+import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 
 export default class DATASET_4_BREAST_CANCER extends I_DATASETS_LINEAR_REGRESSION {
 

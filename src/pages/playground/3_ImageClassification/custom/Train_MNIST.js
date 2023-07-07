@@ -1,7 +1,7 @@
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tf from '@tensorflow/tfjs'
 import { MnistData } from '../models/MODEL_MNIST_Data'
-import { createLoss, createMetrics, createOptimizer } from '../../../../core/nn-utils/ArchitectureHelper'
+import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
 const classNames = [
   'Zero',

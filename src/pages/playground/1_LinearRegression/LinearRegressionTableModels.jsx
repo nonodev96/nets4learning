@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 import React, { useContext } from 'react'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'

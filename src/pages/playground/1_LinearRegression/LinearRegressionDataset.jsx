@@ -1,12 +1,12 @@
-import DragAndDrop from '../../../components/dragAndDrop/DragAndDrop'
 import React, { useContext } from 'react'
-import { useTranslation } from 'react-i18next'
-import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
-import { UPLOAD } from '../../../DATA_MODEL'
 import { Form } from 'react-bootstrap'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
-import * as alertHelper from '../../../utils/alertHelper'
+import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
+import LinearRegressionContext from '@context/LinearRegressionContext'
+import { UPLOAD } from '@/DATA_MODEL'
+import * as alertHelper from '@utils/alertHelper'
 
 export default function LinearRegressionDataset ({ dataset_id }) {
 

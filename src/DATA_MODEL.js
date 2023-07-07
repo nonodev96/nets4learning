@@ -2,7 +2,7 @@ import {
   MODEL_CAR,
   MODEL_IRIS,
   MODEL_LYMPHOGRAPHY
-} from './pages/playground/0_TabularClassification/models'
+} from '@pages/playground/0_TabularClassification/models'
 import {
   DATASET_1_SALARY,
   DATASET_2_AUTO_MPG,
@@ -10,18 +10,18 @@ import {
   DATASET_4_BREAST_CANCER,
   DATASET_5_STUDENT_PERFORMANCE,
   DATASET_6_WINE
-} from './pages/playground/1_LinearRegression/datasets'
+} from '@pages/playground/1_LinearRegression/datasets'
 import {
   MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD
-} from './pages/playground/2_ObjectDetection/models'
+} from '@pages/playground/2_ObjectDetection/models'
 import {
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET
-} from './pages/playground/3_ImageClassification/models'
+} from '@pages/playground/3_ImageClassification/models'
 
 const UPLOAD = 'UPLOAD'
 

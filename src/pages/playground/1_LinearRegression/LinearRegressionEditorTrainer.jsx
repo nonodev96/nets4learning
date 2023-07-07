@@ -1,9 +1,9 @@
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useContext } from 'react'
-import { alertWarning } from '../../../utils/alertHelper'
-import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '../../../core/nn-utils/ArchitectureTypesHelper'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import { alertWarning } from '@utils/alertHelper'
+import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionEditorTrainer () {
 

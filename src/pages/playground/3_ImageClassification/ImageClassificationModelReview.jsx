@@ -6,7 +6,7 @@ import ReactGA from 'react-ga4'
 import { Trans, withTranslation } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
 import * as tf_mobilenet from '@tensorflow-models/mobilenet'
-import * as alertHelper from '../../../utils/alertHelper'
+import * as alertHelper from '@utils/alertHelper'
 import {
   getKeyDatasetByID_ImageClassification,
   LIST_MODELS_IMAGE_CLASSIFICATION,
@@ -16,9 +16,9 @@ import {
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET,
   UPLOAD
-} from '../../../DATA_MODEL'
+} from '@/DATA_MODEL'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
-import DragAndDrop from '../../../components/dragAndDrop/DragAndDrop'
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
 import { MODEL_IMAGE_CLASSIFICATION } from './models/_model'
 

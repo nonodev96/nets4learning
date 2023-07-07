@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 import * as tf from '@tensorflow/tfjs'
-import * as alertHelper from '../../../utils/alertHelper'
+import * as alertHelper from '@utils/alertHelper'
 import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Train_MNIST'
 import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
-import { getKeyDatasetByID_TabularClassification } from '../../../DATA_MODEL'
-import N4LLayerDesign from '../../../components/neural-network/N4LLayerDesign'
+import { getKeyDatasetByID_TabularClassification } from '@/DATA_MODEL'
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
   TYPE_METRICS
-} from '../../../core/nn-utils/ArchitectureTypesHelper'
+} from '@core/nn-utils/ArchitectureTypesHelper'
 
 export default function ObjectDetection (props) {
   const { dataset } = props

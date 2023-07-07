@@ -1,5 +1,5 @@
 import { Form, Row } from 'react-bootstrap'
-import { TYPE_ACTIVATION } from "../../../core/nn-utils/ArchitectureTypesHelper";
+import { TYPE_ACTIVATION } from "@core/nn-utils/ArchitectureTypesHelper";
 
 export default function LayerEdit(props) {
   const {

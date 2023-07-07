@@ -1,7 +1,7 @@
 import Joyride from 'react-joyride'
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import LinearRegressionContext from '../../../context/LinearRegressionContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionJoyride ({ refJoyrideButton }) {
 

@@ -74,68 +74,69 @@ export default function DataFramePlot ({ dataframe }) {
   }, [dataFrameLocal, setDataframePlotConfig])
 
   const update_interfaz = useCallback(() => {
-    try {
-      const layout = {
-        title: dataframePlotConfig.LAYOUT.title,
-        xaxis: { title: dataframePlotConfig.LAYOUT.x_axis, },
-        yaxis: { title: dataframePlotConfig.LAYOUT.y_axis, },
-      }
-      if (dataframePlotConfig.COLUMNS !== []) {
-        const columnsToShow = dataframePlotConfig.COLUMNS.filter(elemento => dataFrameLocal.columns.includes(elemento))
-        const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
-        switch (dataframePlotConfig.PLOT_ENABLE) {
-          case E_PLOTS.BAR_CHARTS:
-            // TODO
-            sub_df.plot(dataframe_plot_id).bar({ layout })
-            break
-          case E_PLOTS.BOX_PLOTS:
-            sub_df.plot(dataframe_plot_id).box({ layout })
-            break
-          case E_PLOTS.HISTOGRAMS:
-            sub_df.plot(dataframe_plot_id).hist({ layout })
-            break
-          case E_PLOTS.LINE_CHARTS:
-            const { isValidConfig_LineCharts, config_LineCharts } = lineChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-            if (isValidConfig_LineCharts) {
-              sub_df.plot(dataframe_plot_id).line({ layout })
-            } else {
-              console.log('Configuración no valida E_PLOTS.LINE_CHARTS', { config_LineCharts })
+      try {
+        const layout = {
+          title: dataframePlotConfig.LAYOUT.title,
+          xaxis: { title: dataframePlotConfig.LAYOUT.x_axis, },
+          yaxis: { title: dataframePlotConfig.LAYOUT.y_axis, },
+        }
+        if (dataframePlotConfig.COLUMNS !== []) {
+          const columnsToShow = dataframePlotConfig.COLUMNS.filter(elemento => dataFrameLocal.columns.includes(elemento))
+          const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
+          switch (dataframePlotConfig.PLOT_ENABLE) {
+            case E_PLOTS.BAR_CHARTS:
+              // TODO
+              sub_df.plot(dataframe_plot_id).bar({ layout })
+              break
+            case E_PLOTS.BOX_PLOTS:
+              sub_df.plot(dataframe_plot_id).box({ layout })
+              break
+            case E_PLOTS.HISTOGRAMS:
+              sub_df.plot(dataframe_plot_id).hist({ layout })
+              break
+            case E_PLOTS.LINE_CHARTS:
+              const { isValidConfig_LineCharts, config_LineCharts } = lineChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+              if (isValidConfig_LineCharts) {
+                sub_df.plot(dataframe_plot_id).line({ layout })
+              } else {
+                console.log('Configuración no valida E_PLOTS.LINE_CHARTS', { config_LineCharts })
+              }
+              break
+            case E_PLOTS.PIE_CHARTS:
+              const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+              if (isValidConfig_PieCharts) {
+                sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
+              } else {
+                console.log('Configuración no valida E_PLOTS.PIE_CHARTS', { config_PieCharts })
+              }
+              break
+            case E_PLOTS.SCATTER_PLOTS:
+              sub_df.plot(dataframe_plot_id).scatter({ layout })
+              break
+            case E_PLOTS.TIME_SERIES_PLOTS:
+              // TODO
+              const { isValidConfig_TimeSeries, config_TimeSeries, index } = timeSeriesPlotsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+              if (isValidConfig_TimeSeries) {
+                const sub_sub_df = sub_df.setIndex(index)
+                sub_sub_df.plot(dataframe_plot_id).line({ layout })
+              } else {
+                console.log('Configuración no valida E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
+              }
+              break
+            case E_PLOTS.VIOLIN_PLOTS:
+              sub_df.plot(dataframe_plot_id).violin({ layout })
+              break
+            default: {
+              console.error('Error, option not valid')
+              break
             }
-            break
-          case E_PLOTS.PIE_CHARTS:
-            const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-            if (isValidConfig_PieCharts) {
-              sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
-            } else {
-              console.log('Configuración no valida E_PLOTS.PIE_CHARTS', { config_PieCharts })
-            }
-            break
-          case E_PLOTS.SCATTER_PLOTS:
-            sub_df.plot(dataframe_plot_id).scatter({ layout })
-            break
-          case E_PLOTS.TIME_SERIES_PLOTS:
-            // TODO
-            const { isValidConfig_TimeSeries, config_TimeSeries, index } = timeSeriesPlotsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-            if (isValidConfig_TimeSeries) {
-              const sub_sub_df = sub_df.setIndex(index)
-              sub_sub_df.plot(dataframe_plot_id).line({ layout })
-            } else {
-              console.log('Configuración no valida E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
-            }
-            break
-          case E_PLOTS.VIOLIN_PLOTS:
-            sub_df.plot(dataframe_plot_id).violin({ layout })
-            break
-          default: {
-            console.error('Error, option not valid')
-            break
           }
         }
+      } catch (e) {
+        console.log({ e })
       }
-    } catch (e) {
-      console.log({ e })
-    }
-  }, [
+      // eslint-disable-next-line
+    }, [
     dataframePlotConfig.PLOT_ENABLE,
     dataframePlotConfig.COLUMNS,
     // dataframePlotConfig.LAYOUT.title,
@@ -143,7 +144,9 @@ export default function DataFramePlot ({ dataframe }) {
     // dataframePlotConfig.LAYOUT.y_axis,
     dataframePlotConfig.TIME_SERIES_PLOTS.config.index,
     dataframePlotConfig.PIE_CHARTS.config.labels,
-    dataframe_plot_id, dataFrameLocal])
+    dataframe_plot_id, dataFrameLocal
+  ])
+  
 
   useEffect(() => {
     console.debug('useEffect[dataframe, setDataFrameLocal]')

@@ -1,5 +1,5 @@
 import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from 'react-joyride'
-import { delay } from '../../../../utils/utils'
+import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 
 export default class I_DATASETS_LINEAR_REGRESSION {

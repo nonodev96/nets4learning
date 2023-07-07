@@ -5,8 +5,8 @@ import { Trans, withTranslation } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import ReactGA from 'react-ga4'
 
-import * as alertHelper from '../../../utils/alertHelper'
-import DragAndDrop from '../../../components/dragAndDrop/DragAndDrop'
+import * as alertHelper from '@utils/alertHelper'
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import {
   getKeyDatasetByID_ObjectDetection,
   LIST_MODELS_OBJECT_DETECTION,
@@ -15,7 +15,7 @@ import {
   MODEL_MOVE_NET_POSE_NET,
   MODEL_COCO_SSD,
   UPLOAD,
-} from '../../../DATA_MODEL'
+} from '@/DATA_MODEL'
 import { MODEL_OBJECT_DETECTION } from './models/_model'
 // import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 

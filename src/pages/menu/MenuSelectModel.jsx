@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
-import * as alertHelper from '../../utils/alertHelper'
+import * as alertHelper from '@utils/alertHelper'
 import { useTranslation } from 'react-i18next'
 import {
   DATASET_1_SALARY,
@@ -10,7 +10,7 @@ import {
   DATASET_4_BREAST_CANCER,
   DATASET_5_STUDENT_PERFORMANCE,
   DATASET_6_WINE
-} from '../../DATA_MODEL'
+} from '@/DATA_MODEL'
 
 export default function MenuSelectModel (_props) {
 

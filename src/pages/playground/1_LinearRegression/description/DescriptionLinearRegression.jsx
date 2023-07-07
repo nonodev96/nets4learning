@@ -11,7 +11,7 @@ export default function DescriptionLinearRegression () {
           <h1>Regresión lineal</h1>
           <Card className={'mt-3'}>
             <Card.Header>
-              <h3>Descripción del problema y los modelos </h3>
+              <h3>Descripción del problema y los modelos</h3>
             </Card.Header>
             <Card.Body>
               <p>Los problemas en el contexto del análisis de datos se refieren a situaciones en las que se busca predecir o estimar un valor numérico basado en variables de entrada. Los problemas de regresión lineal involucran la
