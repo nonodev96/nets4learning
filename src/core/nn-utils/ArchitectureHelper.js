@@ -1,9 +1,11 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
-import { getClassesFromDataSet, trainTestSplit } from './ClassificationHelper'
-import { isProduction } from '../../utils/utils'
 import * as dfd from 'danfojs'
 import * as sk from 'scikitjs'
+
+import { isProduction } from '@utils/utils'
+
+import { getClassesFromDataSet, trainTestSplit } from './ClassificationHelper'
 
 sk.setBackend(dfd.tensorflow)
 

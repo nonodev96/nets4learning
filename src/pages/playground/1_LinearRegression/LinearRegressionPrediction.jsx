@@ -77,7 +77,7 @@ export default function LinearRegressionPrediction () {
     })
   }
 
-  console.log('render LinearRegressionPrediction')
+  console.debug('render LinearRegressionPrediction')
   return <>
     <Button variant={'outline-primary'} onClick={updateDataPrediction}>Update</Button>
 

@@ -1,13 +1,15 @@
+import '@styles/ScrollBar.css'
 import React, { useCallback, useContext, useEffect, useId } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
-import { lineChartsValidConfig, pieChartsValidConfig, timeSeriesPlotsValidConfig } from '../../core/dataframe/DataFrameUtils'
-import DataFramePlotDescription from './DataFramePlotDescription'
-import DataFramePlotConfiguration from './DataFramePlotConfiguration'
+
+import { lineChartsValidConfig, pieChartsValidConfig, timeSeriesPlotsValidConfig } from '@core/dataframe/DataFrameUtils'
+
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
+import DataFramePlotConfiguration from './DataFramePlotConfiguration'
+import DataFramePlotDescription from './DataFramePlotDescription'
 import DebugJSON from '../debug/DebugJSON'
-import '../../styles/ScrollBar.css'
 
 export default function DataFramePlot ({ dataframe }) {
 
@@ -170,7 +172,7 @@ export default function DataFramePlot ({ dataframe }) {
     })
   }
 
-  console.log('render DataFramePlot')
+  console.debug('render DataFramePlot')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

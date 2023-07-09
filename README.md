@@ -65,6 +65,14 @@ GENERATE_SOURCEMAP=false
 
 ### Development
 
+
+```bash
+node -v 
+# v18.16.1
+npm -v 
+# 9.5.1
+```
+
 ```bash
 npm run start:development
 ```

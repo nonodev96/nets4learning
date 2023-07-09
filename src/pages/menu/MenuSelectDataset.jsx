@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
-import * as alertHelper from '../../utils/alertHelper'
 import { useTranslation } from 'react-i18next'
+import alertHelper from '@utils/alertHelper'
 import { DATASET_1_SALARY, DATASET_2_AUTO_MPG, DATASET_3_BOSTON_HOUSING, DATASET_4_BREAST_CANCER, DATASET_5_STUDENT_PERFORMANCE, DATASET_6_WINE } from '../playground/1_LinearRegression/datasets'
-import { UPLOAD } from '../../DATA_MODEL'
+import { UPLOAD } from '@/DATA_MODEL'
 
 export default function MenuSelectDataset () {
 
@@ -82,7 +82,7 @@ export default function MenuSelectDataset () {
   console.debug('render MenuSelectDataset')
   return <>
     <Form onSubmit={($event) => handleSubmit($event)}>
-      <Container id={'MenuSelectDataset'}>
+      <Container id={'MenuSelectDataset'} data-testid={'Test-MenuSelectDataset'}>
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
@@ -101,7 +101,9 @@ export default function MenuSelectDataset () {
                   </Form.Select>
                 </Form.Group>
 
-                <Button type="submit">
+                <Button className={'mt-3'}
+                        type="submit"
+                        data-testid={'Test-MenuSelectDataset-Submit'}>
                   {t('pages.menu-selection-dataset.form-submit')}
                 </Button>
               </Card.Body>

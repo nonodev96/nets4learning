@@ -23,6 +23,7 @@ yarn-error.log*
 package-lock.json
 
 .env
+.env.android
 .env.development
 .env.production
 .env.simidat

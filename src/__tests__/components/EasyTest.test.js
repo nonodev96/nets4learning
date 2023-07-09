@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react'
-import EasyTest from '@components/EasyTest'
+import EasyTestComponent from '@components/EasyTestComponent'
 
 describe('EasyTest', () => {
   test('renders EasyTest', () => {
-    const { getByText } = render(<EasyTest />)
-    expect(getByText(/EasyTest/)).toBeInTheDocument()
+    const { getByText } = render(<EasyTestComponent />)
+    expect(getByText(/EasyTestComponent/)).toBeInTheDocument()
   })
 })

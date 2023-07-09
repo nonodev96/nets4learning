@@ -3,7 +3,7 @@ import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import { alertWarning } from '@utils/alertHelper'
+import alertHelper from '@utils/alertHelper'
 
 export default function LinearRegressionEditorLayers () {
 
@@ -16,7 +16,7 @@ export default function LinearRegressionEditorLayers () {
       const nuevoArray = [{ units: 1, activation: 'sigmoid' }, ...tmpModel.list_layers]
       setTmpModel({ ...tmpModel, list_layers: nuevoArray })
     } else {
-      await alertWarning(t('error.layers-length'))
+      await alertHelper.alertWarning(t('error.layers-length'))
     }
   }
 
@@ -25,7 +25,7 @@ export default function LinearRegressionEditorLayers () {
       const nuevoArray = [...tmpModel.list_layers, { units: 1, activation: 'softmax' }]
       setTmpModel({ ...tmpModel, list_layers: nuevoArray })
     } else {
-      await alertWarning(t('error.layers-length'))
+      await alertHelper.alertWarning(t('error.layers-length'))
     }
   }
 
@@ -35,7 +35,7 @@ export default function LinearRegressionEditorLayers () {
       const nuevoArray = tmpModel.list_layers
       setTmpModel({ ...tmpModel, list_layers: nuevoArray })
     } else {
-      await alertWarning(t('error.layers-length'))
+      await alertHelper.alertWarning(t('error.layers-length'))
     }
   }
 
@@ -45,7 +45,7 @@ export default function LinearRegressionEditorLayers () {
     setTmpModel({ ...tmpModel, list_layers: nuevoArray })
   }
 
-  console.log('render LinearRegressionEditorLayers')
+  console.debug('render LinearRegressionEditorLayers')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

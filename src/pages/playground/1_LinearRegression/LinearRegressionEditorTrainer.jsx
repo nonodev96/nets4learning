@@ -1,7 +1,7 @@
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useContext } from 'react'
-import { alertWarning } from '@utils/alertHelper'
+import alertHelper from '@utils/alertHelper'
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
@@ -51,7 +51,7 @@ export default function LinearRegressionEditorTrainer () {
       new_list_id_metrics.splice(index, 1)
       change_params_training('list_id_metrics', new_list_id_metrics)
     } else {
-      await alertWarning(t('error.metrics-length'))
+      await alertHelper.alertWarning(t('error.metrics-length'))
     }
   }
 
@@ -75,7 +75,7 @@ export default function LinearRegressionEditorTrainer () {
     })
   }
 
-  console.log('render LinearRegressionEditorTrainer')
+  console.debug('render LinearRegressionEditorTrainer')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

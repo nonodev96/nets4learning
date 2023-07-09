@@ -5,7 +5,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap'
 export default function DescriptionLinearRegression () {
 
   return <>
-    <Container className={'mt-3 mb-3'}>
+    <Container className={'mt-3 mb-3'} data-testid={'Test-DescriptionLinearRegression'}>
       <Row>
         <Col>
           <h1>Regresión lineal</h1>

@@ -5,11 +5,9 @@ import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from 'react-ga4'
 
-import * as TrainMNIST from './custom/Train_MNIST'
-import CustomCanvasDrawer from './components/customCanvasDrawer'
-import LayerEdit from './LayerEdit'
-import * as alertHelper from '@utils/alertHelper'
-import * as ImageClassificationUtils from './utils/utils'
+
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import alertHelper from '@utils/alertHelper'
 import {
   getKeyDatasetByID_ImageClassification,
   MODEL_IMAGE_MNIST,
@@ -18,8 +16,11 @@ import {
 } from '@/DATA_MODEL'
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 
+import CustomCanvasDrawer from './components/customCanvasDrawer'
+import LayerEdit from './LayerEdit'
+import * as ImageClassificationUtils from './utils/utils'
+import * as TrainMNIST from './custom/Train_MNIST'
 import { MODEL_IMAGE_CLASSIFICATION } from './models/_model'
-import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1

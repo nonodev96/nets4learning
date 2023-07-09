@@ -88,7 +88,7 @@ export default function Glossary2ActivationFunctions () {
         {
           i18n_title: 'SELU',
           img       : IMGSELU,
-          latex     : '$$ \\begin{split}  \\begin{Bmatrix} SELU(x) = scale * (max(0, x) + min(0, \\alpha * (e^x − 1))) \\\\ \\alpha = 1.6732632423543772848170429916717 \\\\ scale = 1.0507009873554804934193349852946. \\end{Bmatrix}\\end{split}$$',
+          latex     : '$$ \\begin{split}  \\begin{Bmatrix} SELU(x) = scale * (max(0, x) + min(0, \\alpha * (e^x - 1))) \\\\ \\alpha = 1.6732632423543772848170429916717 \\\\ scale = 1.0507009873554804934193349852946. \\end{Bmatrix}\\end{split}$$',
           ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.SELU.html'
         },
       ]

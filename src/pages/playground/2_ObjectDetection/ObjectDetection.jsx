@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, CloseButton, Button, Container, Card, Accordion } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 import * as tf from '@tensorflow/tfjs'
-import * as alertHelper from '@utils/alertHelper'
-import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Train_MNIST'
-import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
-import { getKeyDatasetByID_TabularClassification } from '@/DATA_MODEL'
+
+import alertHelper from '@utils/alertHelper'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import {
   TYPE_CLASS,
@@ -13,6 +11,10 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS
 } from '@core/nn-utils/ArchitectureTypesHelper'
+import { getKeyDatasetByID_TabularClassification } from '@/DATA_MODEL'
+
+import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
+import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Train_MNIST'
 
 export default function ObjectDetection (props) {
   const { dataset } = props
@@ -27,7 +29,11 @@ export default function ObjectDetection (props) {
   const [Optimizer, setOptimizer] = useState('Adam')
   const [LossValue, setLossValue] = useState('CategoricalCrossentropy')
   const [MetricsValue, setMetricsValue] = useState('Accuracy')
-  const [Model, setModel] = useState()
+  /**
+   * @typedef ObjectDetectionModel_t
+   * @property {Function} predict
+   */
+  const [Model, setModel] = useState(/**@type ObjectDetectionModel_t*/{})
   const [NoEpochs, setNoEpochs] = useState(2)
   const [Recarga, setRecarga] = useState(false)
 

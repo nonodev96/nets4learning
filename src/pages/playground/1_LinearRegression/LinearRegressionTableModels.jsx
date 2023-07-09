@@ -7,7 +7,7 @@ export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'
   const { listModels } = useContext(LinearRegressionContext)
 
-  console.log('render LinearRegressionTableModels')
+  console.debug('render LinearRegressionTableModels')
   return <>
     <Table size={'sm'} striped={true} bordered={false} hover={true} responsive={true}>
       <thead>

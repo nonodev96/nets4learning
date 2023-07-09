@@ -36,7 +36,7 @@ export default function LinearRegressionVisor () {
     })
   }
 
-  console.log('render LinearRegressionVisor')
+  console.debug('render LinearRegressionVisor')
   return <>
     <Card>
       <Card.Header>

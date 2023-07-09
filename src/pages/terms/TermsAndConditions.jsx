@@ -4,7 +4,7 @@ import { Trans } from 'react-i18next'
 
 export default function TermsAndConditions () {
 
-  console.log('render TermsAndConditions')
+  console.debug('render TermsAndConditions')
   return <>
     <main className={'mb-3'} data-title={'TermsAndConditions'}>
       <Container>

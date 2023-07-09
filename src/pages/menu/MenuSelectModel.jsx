@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
-import * as alertHelper from '@utils/alertHelper'
 import { useTranslation } from 'react-i18next'
+
+import alertHelper from '@utils/alertHelper'
 import {
   DATASET_1_SALARY,
   DATASET_2_AUTO_MPG,
   DATASET_3_BOSTON_HOUSING,
   DATASET_4_BREAST_CANCER,
   DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE
+  DATASET_6_WINE,
 } from '@/DATA_MODEL'
 
 export default function MenuSelectModel (_props) {
@@ -90,7 +91,7 @@ export default function MenuSelectModel (_props) {
     <>
       <Form onSubmit={($event) => handleSubmit($event)}>
 
-        <Container id={'MenuSelectModel'}>
+        <Container id={'MenuSelectModel'} data-testid={'Test-MenuSelectModel'}>
           <Row className="mt-3 mb-3">
             <Col>
               <Card>
@@ -106,6 +107,7 @@ export default function MenuSelectModel (_props) {
                     <Form.Label>{t('pages.menu-selection-model.form-label')}</Form.Label>
                     <Form.Select aria-label={t('pages.menu-selection-model.form-label')}
                                  defaultValue={'select-model'}
+                                 data-testid={'Test-MenuSelectModel-Select'}
                                  onChange={(e) => setModelKey(e.target.value)}>
                       <option value={'select-model'} disabled>{t('pages.menu-selection-model.form-option-_-1')}</option>
 
@@ -115,7 +117,8 @@ export default function MenuSelectModel (_props) {
                   </Form.Group>
 
                   <Button className="mt-3"
-                          type={'submit'}>
+                          type={'submit'}
+                          data-testid={'Test-MenuSelectModel-Submit'}>
                     {t('pages.menu-selection-model.form-submit')}
                   </Button>
                 </Card.Body>

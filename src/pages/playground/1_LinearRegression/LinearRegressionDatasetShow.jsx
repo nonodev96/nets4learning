@@ -57,7 +57,7 @@ export default function LinearRegressionDatasetShow () {
     setIndexDatasetSelected(index)
   }
 
-  console.log('render LinearRegressionDatasetShow')
+  console.debug('render LinearRegressionDatasetShow')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

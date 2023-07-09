@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
-import * as alertHelper from '@utils/alertHelper'
+
+import alertHelper from '@utils/alertHelper'
+
 export class Parser {
   /**
    * @typedef {Object} Parser_list_column_type_to_transform_t

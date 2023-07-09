@@ -14,7 +14,7 @@ import { TYPE_ACTIVATION, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER, } from '@co
 import json_cars from '@core/constants/template_car.json'
 import json_iris from '@core/constants/template_iris.json'
 import json_lymphatics from '@core/constants/template_lymphatics.json'
-import * as alertHelper from '@utils/alertHelper'
+import alertHelper from '@utils/alertHelper'
 
 import TabularClassificationForm from './TabularClassificationForm'
 import TabularClassificationManual from './TabularClassificationManual'

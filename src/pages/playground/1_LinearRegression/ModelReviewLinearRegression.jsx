@@ -1,10 +1,20 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
+import { useParams } from 'react-router'
 import { Trans, useTranslation } from 'react-i18next'
-import { DATASET_1_SALARY, DATASET_2_AUTO_MPG, DATASET_3_BOSTON_HOUSING, DATASET_4_BREAST_CANCER, DATASET_5_STUDENT_PERFORMANCE, DATASET_6_WINE } from './datasets'
+
+import {
+  DATASET_1_SALARY,
+  DATASET_2_AUTO_MPG,
+  DATASET_3_BOSTON_HOUSING,
+  DATASET_4_BREAST_CANCER,
+  DATASET_5_STUDENT_PERFORMANCE,
+  DATASET_6_WINE,
+} from './datasets'
 
 export default function ModelReviewLinearRegression (props) {
 
+  const { dataset: param_id } = useParams()
   const { dataset } = props
   const { t } = useTranslation()
 
@@ -33,10 +43,10 @@ export default function ModelReviewLinearRegression (props) {
         setIModel(new DATASET_6_WINE(t, {}))
         break
       default:
-        console.error('Error, incorrect model')
+        console.error('Error, incorrect model', param_id)
         break
     }
-  }, [dataset, t])
+  }, [dataset, t, param_id])
 
   useEffect(() => {
     async function asyncFunction () {
@@ -48,10 +58,20 @@ export default function ModelReviewLinearRegression (props) {
     asyncFunction().then(_r => undefined)
   }, [iModel])
 
-  console.log('render ModelReviewLinearRegression')
+  console.debug('render ModelReviewLinearRegression')
   return (
     <>
-      <Container id={'LinearRegressionModelReview'}>
+      <Container>
+        <Row className={'mt-2'}>
+          <Col xl={12}>
+            <div className="d-flex justify-content-between">
+              <h1><Trans i18nKey={'modality.' + param_id} /></h1>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
+      <Container id={'ModelReviewLinearRegression'} data-testid="Test-ModelReviewLinearRegression">
         {iModel !== null &&
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>

@@ -1,14 +1,15 @@
 import React from 'react'
 import ReactGA from 'react-ga4'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import { Trans, withTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
 
+import withHooks from '@hooks/withHooks'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { CONSOLE_LOG_h3 } from '@/Constantes'
 import { isProduction } from '@utils/utils'
-import * as alertHelper from '@utils/alertHelper'
+import alertHelper from '@utils/alertHelper'
 
 import { I_MODEL_TABULAR_CLASSIFICATION } from './models/_model'
 
@@ -18,7 +19,7 @@ import {
   LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
   MODEL_IRIS,
-  MODEL_LYMPHOGRAPHY
+  MODEL_LYMPHOGRAPHY,
 } from '@/DATA_MODEL'
 
 class ModelReviewTabularClassification extends React.Component {
@@ -31,7 +32,7 @@ class ModelReviewTabularClassification extends React.Component {
     ReactGA.send({
       hitType: 'pageview',
       page   : '/TabularClassificationModelReview/' + this.dataset_key,
-      title  : this.dataset_key
+      title  : this.dataset_key,
     })
 
     this.state = {
@@ -42,7 +43,7 @@ class ModelReviewTabularClassification extends React.Component {
                style={{
                  fontSize: '0.5em',
                  height  : '1rem',
-                 width   : '1rem'
+                 width   : '1rem',
                }}>
             <span className="sr-only"></span>
           </div>
@@ -52,12 +53,12 @@ class ModelReviewTabularClassification extends React.Component {
       textToTest      : '',
       isButtonDisabled: true,
       dataToTest      : {},
-      filesUpload     : true
+      filesUpload     : true,
     }
     this.files = {
       binary: null,
       json  : null,
-      csv   : null
+      csv   : null,
     }
     this._model = new I_MODEL_TABULAR_CLASSIFICATION(props.t)
 
@@ -100,6 +101,8 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   componentDidMount () {
+    let { id } = this.props.params
+    this.param_id = id
     this.init()
       .then(() => undefined)
       .catch((reason) => console.log(reason))
@@ -153,7 +156,7 @@ class ModelReviewTabularClassification extends React.Component {
       return
     }
     try {
-      this.model = await tf.loadLayersModel(tf.io.browserFiles([this.files.json, this.files.binary]),)
+      this.model = await tf.loadLayersModel(tf.io.browserFiles([this.files.json, this.files.binary]))
       this.setState({ loading: '', isButtonDisabled: false })
       await alertHelper.alertSuccess(this.translate('model-loaded-successfully'))
     } catch (error) {
@@ -319,7 +322,7 @@ class ModelReviewTabularClassification extends React.Component {
     if (!isProduction()) console.log({ key_parameter, value })
     this.setState((prevState) => ({
       dataToTest: { ...prevState.dataToTest, [key_parameter]: value },
-      textToTest: Object.values({ ...prevState.dataToTest, [key_parameter]: value }).join(';')
+      textToTest: Object.values({ ...prevState.dataToTest, [key_parameter]: value }).join(';'),
     }))
   }
 
@@ -327,15 +330,25 @@ class ModelReviewTabularClassification extends React.Component {
     if (!isProduction()) console.log(example)
     this.setState({
       dataToTest: example,
-      textToTest: Object.values(example).join(';')
+      textToTest: Object.values(example).join(';'),
     })
   }
 
   render () {
-    console.debug('render')
+    console.debug('render ModelReviewTabularClassification')
     return (
       <>
-        <Container id={'TabularClassificationModelReview'}>
+        <Container>
+          <Row className={'mt-2'}>
+            <Col xl={12}>
+              <div className="d-flex justify-content-between">
+                <h1><Trans i18nKey={'modality.' + this.param_id} /></h1>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+
+        <Container id={'ModelReviewTabularClassification'} data-testid={'Test-ModelReviewTabularClassification'}>
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top mt-3 border-info'} style={{ 'zIndex': 0 }}>
@@ -605,4 +618,4 @@ class ModelReviewTabularClassification extends React.Component {
   }
 }
 
-export default withTranslation()(ModelReviewTabularClassification)
+export default withHooks(ModelReviewTabularClassification)

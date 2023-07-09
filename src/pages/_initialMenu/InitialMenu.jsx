@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 export const SELECTOR = {
   MODEL  : 'MODEL',
-  DATASET: 'DATASET'
+  DATASET: 'DATASET',
 }
 export default function InitialMenu () {
   const history = useHistory()
@@ -96,7 +96,8 @@ export default function InitialMenu () {
               <Card.Body>
                 <Card.Text>{t('pages.index.linear-regression.1-description-1')}</Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}
+                          data-testid={'Test-GoTo-SelectModel-LinearRegression'}>
                     {t('pages.index.linear-regression.1-button')}
                   </Button>
                 </div>
@@ -182,7 +183,6 @@ export default function InitialMenu () {
     }
   }
 
-  console.debug('render InitialMenu')
   return (
     <>
       <Container>
@@ -206,6 +206,7 @@ export default function InitialMenu () {
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button onClick={() => handleClick_OpenCardModel(1)}
+                        data-testid={'Test-InitialMenu-LinearRegression'}
                         variant={'danger'}
                         size={'lg'}>
                   {t('pages.index.linear-regression.1-title')}

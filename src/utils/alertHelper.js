@@ -3,7 +3,7 @@ import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-export async function alertError (text, params = { title: 'Opps...' }) {
+async function alertError (text, params = { title: 'Opps...' }) {
   MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
@@ -18,7 +18,7 @@ export async function alertError (text, params = { title: 'Opps...' }) {
   })
 }
 
-export async function alertInfo (text, title, footer = '') {
+async function alertInfo (text, title, footer = '') {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
@@ -34,7 +34,7 @@ export async function alertInfo (text, title, footer = '') {
   })
 }
 
-export async function alertWarning (title, params = { text: '', footer: '', html: <></> }) {
+async function alertWarning (title, params = { text: '', footer: '', html: <></> }) {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
@@ -51,7 +51,7 @@ export async function alertWarning (title, params = { text: '', footer: '', html
   })
 }
 
-export async function alertSuccess (title, params = { text: '', html: <></> }) {
+async function alertSuccess (title, params = { text: '', html: <></> }) {
   return MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
@@ -68,3 +68,11 @@ export async function alertSuccess (title, params = { text: '', html: <></> }) {
     })
   })
 }
+
+const alertHelper = {
+  alertError,
+  alertWarning,
+  alertSuccess,
+  alertInfo,
+}
+export default alertHelper

@@ -8,7 +8,7 @@ export default function Manual () {
 
   const { t } = useTranslation()
 
-  console.log('render Manual')
+  console.debug('render Manual')
   return (
     <>
       <main className={'mb-3'} data-title={'Manual'}>

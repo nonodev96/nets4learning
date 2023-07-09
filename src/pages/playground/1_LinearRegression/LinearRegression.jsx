@@ -121,7 +121,7 @@ export default function LinearRegression ({ dataset_id }) {
     setAccordionActive(copy)
   }
 
-  console.log('render LinearRegression')
+  console.debug('render LinearRegression')
   return (
     <>
       <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
@@ -129,7 +129,7 @@ export default function LinearRegression ({ dataset_id }) {
       <Container>
         <Row className={'mt-2'}>
           <Col xl={12}>
-            <div className="d-flex">
+            <div className="d-flex justify-content-between">
               <h1><Trans i18nKey={'modality.' + param_id} /></h1>
               <Button size={'sm'}
                       variant={'outline-primary'}

@@ -110,7 +110,7 @@ export default function DataFramePlotConfiguration () {
     return size.toString().padStart(4, '0')
   }
 
-  console.log('render DataFramePlotConfiguration')
+  console.debug('render DataFramePlotConfiguration')
   return <>
     <Modal show={showOptions} onHide={() => setShowOptions(false)} size={'xl'} fullscreen={'md-down'}>
       <Modal.Header closeButton>

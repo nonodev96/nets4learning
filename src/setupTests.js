@@ -5,3 +5,14 @@
 import '@testing-library/jest-dom'
 
 window.URL.createObjectURL = jest.fn()
+window.scrollTo = jest.fn()
+
+global.console = {
+  ...console,
+  // uncomment to ignore a specific log level
+  debug: jest.fn(),
+  // log: jest.fn(),
+  // info: jest.fn(),
+  // warn: jest.fn(),
+  // error: jest.fn(),
+}

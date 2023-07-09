@@ -66,7 +66,7 @@ export default function LinearRegressionJoyride ({ refJoyrideButton }) {
     joyrideRef.current?.store.start()
   }
 
-  console.log('render LinearRegression')
+  console.debug('render LinearRegression')
   return <>
     <Joyride ref={joyrideRef}
              style={joyride_style}

@@ -7,7 +7,6 @@ import { CookiesModal } from '@components/cookiesModal/CookiesModal'
 
 export default function Home () {
 
-  console.debug('render Home')
   return (
     <>
       <main className="mb-3" data-title={'Home'}>

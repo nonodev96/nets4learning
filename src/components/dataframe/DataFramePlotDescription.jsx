@@ -31,7 +31,7 @@ export default function DataFramePlotDescription () {
   }, [dataframePlotConfig.PLOT_ENABLE, t, setPlotDescription])
 
   useEffect(() => {
-    console.debug('useEffect descriptionPlot()')
+    console.debug('useEffect [ descriptionPlot() ]')
     descriptionPlot()
   }, [descriptionPlot])
 
