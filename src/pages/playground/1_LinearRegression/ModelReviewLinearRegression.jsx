@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useParams } from 'react-router'
 import { Trans, useTranslation } from 'react-i18next'
+import ReactGA from 'react-ga4'
 
 import {
   DATASET_1_SALARY,
@@ -19,6 +20,10 @@ export default function ModelReviewLinearRegression (props) {
   const { t } = useTranslation()
 
   const [iModel, setIModel] = useState(null)
+
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page   : '/ModelReviewLinearRegression/' + dataset, title: dataset, })
+  }, [dataset])
 
   useEffect(() => {
     // const dataset_ID = parseInt(dataset)

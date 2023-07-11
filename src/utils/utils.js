@@ -28,3 +28,19 @@ export function modificarPropiedad (objeto, clave, nuevoValor) {
 
   return objeto
 }
+
+export function getRandomInt (max) {
+  return Math.floor(Math.random() * max)
+}
+
+export function generateColor () {
+  const r = getRandomInt(255)
+  const g = getRandomInt(255)
+  const b = getRandomInt(255)
+  return {
+    borderColor         : `rgba(${r}, ${g}, ${b})`,
+    backgroundColor     : `rgba(${Math.ceil(r * 0.95)}, ${Math.ceil(g * 0.95)}, ${Math.ceil(b * 0.95)})`,
+    pointBorderColor    : `rgba(${r}, ${g}, ${b})`,
+    pointBackgroundColor: `rgba(0, 0, 0, 0)`,
+  }
+}

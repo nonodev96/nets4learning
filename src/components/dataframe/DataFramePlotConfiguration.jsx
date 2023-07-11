@@ -1,8 +1,10 @@
 import { Col, Container, Form, Modal, Row, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useContext } from 'react'
+
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/Constants'
+import { columnsTimeSeriesValidForIndex, isTimeSeriesDataFrameValidForIndex } from '@core/dataframe/DataFrameUtils'
 
 export default function DataFramePlotConfiguration () {
 
@@ -13,11 +15,9 @@ export default function DataFramePlotConfiguration () {
     setDataframePlotConfig,
 
     showOptions,
-    setShowOptions,
-
-    columnsValidForIndex,
-    isDataFrameValidForIndex
+    setShowOptions
   } = useContext(DataFramePlotContext)
+
   const prefix = 'dataframe-plot.configuration.'
   const { t } = useTranslation()
 
@@ -48,8 +48,8 @@ export default function DataFramePlotConfiguration () {
     setDataframePlotConfig(() => {
       const resetState = { ...DEFAULT_DATAFRAME_PLOT_CONFIG }
       resetState.COLUMNS = dataFrameLocal.columns
-      if (isDataFrameValidForIndex()) {
-        resetState.TIME_SERIES_PLOTS.config.index = columnsValidForIndex()[0]
+      if (isTimeSeriesDataFrameValidForIndex(dataFrameLocal, resetState.COLUMNS)) {
+        resetState.TIME_SERIES_PLOTS.config.index = columnsTimeSeriesValidForIndex(dataFrameLocal, resetState.COLUMNS)[0]
       }
       return resetState
     })
@@ -84,13 +84,6 @@ export default function DataFramePlotConfiguration () {
       return prevState
     })
   }
-  // const handleChange_PlotConfig_DEFAULT_ = (e, key) => {
-  //   setDataframePlotConfig((prevState) => {
-  //     const _prevState = Object.assign({}, prevState);
-  //     _prevState._DEFAULT_.config[key] = e.target.value
-  //     return _prevState
-  //   })
-  // }
 
   const handleSubmit_Config = (e) => {
     e.preventDefault()
@@ -205,7 +198,7 @@ export default function DataFramePlotConfiguration () {
                   <Form.Label><Trans i18nKey={prefix + 'pie-charts.labels'} /></Form.Label>
                   <Form.Select onChange={(e) => handleChange_PlotConfig_PieCharts(e, 'labels')}
                                value={dataframePlotConfig.PIE_CHARTS.config.labels}
-                               aria-label="Default select example">
+                               aria-label="dataframe-plot.pie-charts.labels">
                     <option value="_disabled_" disabled="disabled"><Trans i18nKey={'Labels'} /></option>
                     {dataframePlotConfig.COLUMNS.map((column_name, index) => {
                       return <option key={index} value={column_name}> nUnique {getFromColumnOfDataFrame_nUnique_PieCharts_Labels(column_name)} | {column_name}</option>
@@ -218,20 +211,13 @@ export default function DataFramePlotConfiguration () {
               </>}
               {dataframePlotConfig.PLOT_ENABLE === E_PLOTS.TIME_SERIES_PLOTS && <>
                 <Col lg={12} xl={12}>
-                  {!isDataFrameValidForIndex() &&
-                    <p className="text-warning">
-                      <Trans i18nKey={'dataframe-plot.time-series.warning.index'} />
-                    </p>
-                  }
-                </Col>
-                <Col lg={12} xl={12}>
-                  <Form.Group controlId={'dataframe-plot.time-series-plots.index'}>
-                    <Form.Label><Trans i18nKey={'dataframe-plot.time-series-plots.index'} /></Form.Label>
+                  <Form.Group controlId={'dataframe-plot.time-series-plots.form.index'}>
+                    <Form.Label><Trans i18nKey={'dataframe-plot.time-series-plots.form.index'} /></Form.Label>
                     <Form.Select onChange={(e) => handleChange_PlotConfig_TimeSeries(e, 'index')}
                                  value={dataframePlotConfig.TIME_SERIES_PLOTS.config.index}
-                                 aria-label="Default select example">
+                                 aria-label="dataframe-plot.time-series-plots.form.index">
                       <option value="_disabled_" disabled="disabled">Index</option>
-                      {columnsValidForIndex().map((value, index) => {
+                      {columnsTimeSeriesValidForIndex(dataFrameLocal, dataframePlotConfig.COLUMNS).map((value, index) => {
                         return <option key={index} value={value}>{value}</option>
                       })}
                     </Form.Select>

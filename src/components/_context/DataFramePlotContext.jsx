@@ -11,16 +11,6 @@ export function DataFramePlotProvider ({ children }) {
   const [showDescription, setShowDescription] = useState(false)
   const [showOptions, setShowOptions] = useState(false)
 
-  const columnsValidForIndex = () => {
-    return dataFrameLocal.columns.filter((column) => {
-      return dataFrameLocal[column].unique().shape[0] === dataFrameLocal.shape[0]
-    })
-  }
-
-  const isDataFrameValidForIndex = () => {
-    return columnsValidForIndex().length > 0
-  }
-
   return (<DataFramePlotContext.Provider value={{
     dataFrameLocal, setDataFrameLocal,
 
@@ -29,8 +19,6 @@ export function DataFramePlotProvider ({ children }) {
     showDescription, setShowDescription,
 
     showOptions, setShowOptions,
-
-    columnsValidForIndex, isDataFrameValidForIndex,
   }}>
     {children}
   </DataFramePlotContext.Provider>)

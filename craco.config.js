@@ -2,7 +2,7 @@ const cracoAlias = require('craco-alias')
 const CracoEnvPlugin = require('craco-plugin-env')
 
 module.exports = {
-  presets  : 'es2015',
+  presets  : 'es2017',
   jest     : {
     babel    : {
       addPresets: true,

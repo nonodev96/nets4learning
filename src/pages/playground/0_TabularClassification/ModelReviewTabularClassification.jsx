@@ -2,17 +2,15 @@ import React from 'react'
 import ReactGA from 'react-ga4'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
-import * as tf from '@tensorflow/tfjs'
+import { Bar } from 'react-chartjs-2'
+import * as tfjs from '@tensorflow/tfjs'
 
 import withHooks from '@hooks/withHooks'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
-import { CONSOLE_LOG_h3 } from '@/Constantes'
-import { isProduction } from '@utils/utils'
-import alertHelper from '@utils/alertHelper'
 
-import { I_MODEL_TABULAR_CLASSIFICATION } from './models/_model'
-
+import { CONSOLE_LOG_h3 } from '@/CONSTANTS'
+import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import {
   getKeyDatasetByID_TabularClassification,
   UPLOAD,
@@ -22,6 +20,12 @@ import {
   MODEL_LYMPHOGRAPHY,
 } from '@/DATA_MODEL'
 
+import { isProduction } from '@utils/utils'
+
+import alertHelper from '@utils/alertHelper'
+
+import { I_MODEL_TABULAR_CLASSIFICATION } from './models/_model'
+
 class ModelReviewTabularClassification extends React.Component {
   constructor (props) {
     super(props)
@@ -29,11 +33,7 @@ class ModelReviewTabularClassification extends React.Component {
     this.dataset = props.dataset
     this.dataset_ID = parseInt(props.dataset ?? '0')
     this.dataset_key = getKeyDatasetByID_TabularClassification(this.dataset_ID)
-    ReactGA.send({
-      hitType: 'pageview',
-      page   : '/TabularClassificationModelReview/' + this.dataset_key,
-      title  : this.dataset_key,
-    })
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewTabularClassification/' + this.dataset_key, title: this.dataset_key, })
 
     this.state = {
       loading         :
@@ -54,6 +54,7 @@ class ModelReviewTabularClassification extends React.Component {
       isButtonDisabled: true,
       dataToTest      : {},
       filesUpload     : true,
+      prediction      : { labels: [], data: [] }
     }
     this.files = {
       binary: null,
@@ -156,7 +157,7 @@ class ModelReviewTabularClassification extends React.Component {
       return
     }
     try {
-      this.model = await tf.loadLayersModel(tf.io.browserFiles([this.files.json, this.files.binary]))
+      this.model = await tfjs.loadLayersModel(tfjs.io.browserFiles([this.files.json, this.files.binary]))
       this.setState({ loading: '', isButtonDisabled: false })
       await alertHelper.alertSuccess(this.translate('model-loaded-successfully'))
     } catch (error) {
@@ -186,11 +187,17 @@ class ModelReviewTabularClassification extends React.Component {
           for (let index = 0; index < array.length; index++) {
             input[0].push(await this._model.function_v_input(array[index], index, this._model.DATA_OBJECT_KEYS[index]))
           }
-          const tensor = tf.tensor2d(input[0], input[1])
-          if (!isProduction()) console.log({ input_0: input[0], tensor })
-          const prediction = this.model.predict(tensor)
-          const predictionWithArgMax = prediction.argMax(-1).dataSync()
-          await alertHelper.alertInfo(this.translate('prediction-class', { num: predictionWithArgMax }), this._model.CLASSES[predictionWithArgMax], prediction)
+          const tensor = tfjs.tensor2d(input[0], input[1])
+          const model_prediction = this.model.predict(tensor)
+          const model_prediction_data = model_prediction.dataSync()
+          // const model_prediction_data_arg_max = tfjs.argMax(model_prediction_data, -1)
+          const prediction = {
+            labels: this._model.CLASSES,
+            data  : Array.from(model_prediction_data).map((item) => item.toFixed(4))
+          }
+          this.setState({ prediction })
+          // console.log({ model_prediction, model_prediction_data, model_prediction_data_arg_max, prediction })
+          // await alertHelper.alertInfo(this.translate('prediction-class', { num: model_prediction_data_arg_max }), this._model.CLASSES[model_prediction_data_arg_max])
         } catch (error) {
           console.error(error)
           await alertHelper.alertError(error)
@@ -206,6 +213,7 @@ class ModelReviewTabularClassification extends React.Component {
     this.setState({ isButtonDisabled: false })
   }
 
+  // region UPLOAD
   handleFileUpload_JSON (files) {
     this.files.json = new File([files[0]], files[0].name, { type: files[0].type })
     this.setState({ filesUpload: (this.files.json === null || this.files.binary === null) })
@@ -239,6 +247,8 @@ class ModelReviewTabularClassification extends React.Component {
       that.setState({ header, body })
     }
   }
+
+  // endregion
 
   Print_HTML_InfoDataset () {
     switch (this.dataset_key) {
@@ -305,16 +315,52 @@ class ModelReviewTabularClassification extends React.Component {
     }
 
     return <>
-      <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-        <Card className={'mt-3'}>
-          <Card.Header><h3>{this.translate('table.dataset')}</h3></Card.Header>
-          <Card.Body className={'overflow-x-scroll'}>
+      <Card className={'mt-3'}>
+        <Card.Header><h3>{this.translate('table.dataset')}</h3></Card.Header>
+        <Card.Body className={'overflow-x-scroll'}>
 
-            <N4LTablePagination data_head={head}
-                                data_body={body} />
-          </Card.Body>
-        </Card>
-      </Col>
+          <N4LTablePagination data_head={head}
+                              data_body={body} />
+        </Card.Body>
+      </Card>
+    </>
+  }
+
+  Print_HTML_BAR_PREDICTION () {
+    const bar_options = {
+      responsive: true,
+      plugins   : {
+        legend: {
+          position: 'top',
+          display : false,
+        },
+        title : {
+          display: true,
+          text   : this.translate('prediction'),
+        },
+      },
+    }
+    return <>
+      <Card className={'mt-3'}>
+        <Card.Header>
+          <h3><Trans i18nKey={'prediction'} /></h3>
+        </Card.Header>
+        <Card.Body>
+          <Bar options={bar_options}
+               data={{
+                 labels  : this.state.prediction.labels,
+                 datasets: [
+                   {
+                     label          : this.translate('prediction'),
+                     data           : this.state.prediction.data,
+                     backgroundColor: CHARTJS_CONFIG_DEFAULT.BACKGROUND_COLOR,
+                     borderColor    : CHARTJS_CONFIG_DEFAULT.BORDER_COLOR,
+                     borderWidth    : 1,
+                   },
+                 ],
+               }} />
+        </Card.Body>
+      </Card>
     </>
   }
 
@@ -420,193 +466,192 @@ class ModelReviewTabularClassification extends React.Component {
             </Col>
 
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
-              <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-                <Card className={'mt-3'}>
-                  <Card.Header><h3>{this.translate('pages.playground.0-tabular-classification.general.description-input')}</h3></Card.Header>
-                  <Card.Body>
-                    {this.Print_HTML_InfoDataset()}
-                    {this.Print_HTML_EXAMPLES()}
-                  </Card.Body>
-                </Card>
-              </Col>
-
-              <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-                <Card className={'mt-3'}>
-                  <Card.Header>
-                    <h3>
-                      <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-features'} />
-                    </h3>
-                  </Card.Header>
-                  <Card.Body>
-                    <div>
-                      {(this.dataset_key === MODEL_CAR.KEY) &&
-                        <>
-                          <Row className={'mt-3'}>
-                            {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, values]) => {
-                              return <Col key={key_parameter} xs={6} sm={6} md={4} xl={4} xxl={4}>
-                                <Form.Group controlId={key_parameter}>
-                                  <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{key_parameter}</b></Form.Label>
-                                  <Form.Select aria-label="Default select example"
-                                               size={'sm'}
-                                               value={this.state.dataToTest[key_parameter]}
-                                               onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)}>
-                                    {values.map((itemAct, indexAct) => {
-                                      return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
-                                    })}
-                                  </Form.Select>
-                                  <Form.Text className="text-muted">
-                                    {this.translate('pages.playground.form.parameter')}: {key_parameter}
-                                  </Form.Text>
-                                </Form.Group>
-                              </Col>
-                            })}
-                          </Row>
-                        </>
-                      }
-                      {(this.dataset_key === MODEL_IRIS.KEY) &&
-                        <>
-                          <Row className={'mt-3'}>
-                            {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, value]) => {
-                              return <Col key={key_parameter} xs={6} sm={6} md={4} xl={6} xxl={6}>
-                                <Form.Group controlId={key_parameter}>
-                                  <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{key_parameter}</b></Form.Label>
-                                  <Form.Control type="number"
-                                                min={0}
-                                                size={'sm'}
-                                                placeholder={'Enter parameter'}
-                                                step={0.1}
-                                                value={this.state.dataToTest[key_parameter] ?? value}
-                                                onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)} />
-                                  <Form.Text className="text-muted">
-                                    {this.translate('pages.playground.form.parameter')}: {key_parameter}
-                                  </Form.Text>
-                                </Form.Group>
-                              </Col>
-                            })}
-                          </Row>
-                        </>
-                      }
-                      {(this.dataset_key === MODEL_LYMPHOGRAPHY.KEY) &&
-                        <>
-                          <Row className={'mt-3'}>
-                            {this._model.FORM.map((value, index) => {
-                              // VALUES:
-                              // {name: "type1", type: "int32" },
-                              // {name: "type2", type: "float32" },
-                              // {name: "type3", type: "string", options: [{value: "", text: ""] },
-                              switch (value.type) {
-                                case 'int32': {
-                                  return <Col key={'form' + index} className={'mb-3'}
-                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-                                    <Form.Group>
-                                      <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
-                                      <Form.Control type="number"
-                                                    min={0}
-                                                    size={'sm'}
-                                                    placeholder={this.translate('pages.playground.form.parameter-integer')}
-                                                    step={1}
-                                                    value={this.state.dataToTest[value.name] ?? 0}
-                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
-                                      <Form.Text className="text-muted">
-                                        {this.translate('pages.playground.form.parameter-integer')}: {value.name}
-                                      </Form.Text>
-                                    </Form.Group>
-                                  </Col>
-                                }
-
-                                case 'float32': {
-                                  return <Col key={'form' + index} className={'mb-3'}
-                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-                                    <Form.Group controlId={value.name}>
-                                      <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
-                                      <Form.Control type="number"
-                                                    min={0}
-                                                    size={'sm'}
-                                                    placeholder={this.translate('pages.playground.form.parameter-decimal')}
-                                                    step={0.1}
-                                                    value={this.state.dataToTest[value.name] ?? 0.0}
-                                                    onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
-                                      <Form.Text className="text-muted">
-                                        {this.translate('pages.playground.form.parameter-decimal')}: {value.name}
-                                      </Form.Text>
-                                    </Form.Group>
-                                  </Col>
-                                }
-                                case 'label-encoder': {
-                                  return <Col key={'form' + index} className={'mb-3'}
-                                              xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-                                    <Form.Group controlId={value.name}>
-                                      <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
-                                      <Form.Select aria-label={this.translate('pages.playground.form.select-parameter')}
-                                                   value={this.state.dataToTest[value.name] ?? 0}
-                                                   size={'sm'}
-                                                   onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}>
-                                        {value.options.map((option_value, option_index) => {
-                                          return <option key={value.name + '_option_' + option_index}
-                                                         value={option_value.value}>
-                                            {option_value.text}
-                                          </option>
-                                        })}
-                                      </Form.Select>
-                                      <Form.Text className="text-muted">
-                                        {this.translate('pages.playground.form.parameter-decimal')}: {value.name}
-                                      </Form.Text>
-                                    </Form.Group>
-                                  </Col>
-                                }
-                                default:
-                                  return <>default</>
-                              }
-                            })}
-                          </Row>
-                        </>
-                      }
-
-                      <Row className={'mt-3'}>
-                        <Col>
-                          {/* VECTOR TEST */}
-                          <Form.Group controlId={'formTestInput'}>
-                            <Form.Label>{this.translate('pages.playground.form.vector-to-check')}</Form.Label>
-                            <Form.Control placeholder={this.translate('pages.playground.form.vector-to-check')}
-                                          autoComplete="off"
-                                          disabled={this.dataset_key !== UPLOAD}
-                                          value={this.state.textToTest}
-                                          onChange={this.handleChange_TestInput} />
-                          </Form.Group>
-                        </Col>
-                      </Row>
-
-                      <Row className={'mt-3'}>
-                        <Col>
-                          {/* SUBMIT BUTTON */}
-                          <div className="d-grid gap-2 mt-3">
-                            <Button type="button"
-                                    onClick={this.handleClick_TestVector}
-                                    disabled={this.state.isButtonDisabled}
-                                    size={'lg'}
-                                    variant="primary">
-                              {(this.state.isButtonDisabled) ?
-                                <>
-                                  <span className="spinner-border spinner-border-sm"
-                                        role="status"
-                                        aria-hidden="true"></span>
-                                  <span className="visually-hidden">Loading...</span>
-                                </>
-                                :
-                                <>
-                                  {this.translate('pages.playground.form.button-check-result')}
-                                </>
-                              }
-                            </Button>
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+              <Card className={'mt-3'}>
+                <Card.Header><h3>{this.translate('pages.playground.0-tabular-classification.general.description-input')}</h3></Card.Header>
+                <Card.Body>
+                  {this.Print_HTML_InfoDataset()}
+                  {this.Print_HTML_EXAMPLES()}
+                </Card.Body>
+              </Card>
 
               {this.Print_HTML_TABLE_DATASET()}
+
+              <Card className={'mt-3'}>
+                <Card.Header>
+                  <h3>
+                    <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-features'} />
+                  </h3>
+                </Card.Header>
+                <Card.Body>
+                  <div>
+                    {(this.dataset_key === MODEL_CAR.KEY) &&
+                      <>
+                        <Row className={'mt-3'}>
+                          {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, values]) => {
+                            return <Col key={key_parameter} xs={6} sm={6} md={4} xl={4} xxl={4}>
+                              <Form.Group controlId={key_parameter}>
+                                <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{key_parameter}</b></Form.Label>
+                                <Form.Select aria-label="Default select example"
+                                             size={'sm'}
+                                             value={this.state.dataToTest[key_parameter]}
+                                             onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)}>
+                                  {values.map((itemAct, indexAct) => {
+                                    return (<option key={indexAct} value={itemAct}>{itemAct}</option>)
+                                  })}
+                                </Form.Select>
+                                <Form.Text className="text-muted">
+                                  {this.translate('pages.playground.form.parameter')}: {key_parameter}
+                                </Form.Text>
+                              </Form.Group>
+                            </Col>
+                          })}
+                        </Row>
+                      </>
+                    }
+                    {(this.dataset_key === MODEL_IRIS.KEY) &&
+                      <>
+                        <Row className={'mt-3'}>
+                          {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, value]) => {
+                            return <Col key={key_parameter} xs={6} sm={6} md={4} xl={6} xxl={6}>
+                              <Form.Group controlId={key_parameter}>
+                                <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{key_parameter}</b></Form.Label>
+                                <Form.Control type="number"
+                                              min={0}
+                                              size={'sm'}
+                                              placeholder={'Enter parameter'}
+                                              step={0.1}
+                                              value={this.state.dataToTest[key_parameter] ?? value}
+                                              onChange={($event) => this.handleChange_Parameter(key_parameter, $event.target.value)} />
+                                <Form.Text className="text-muted">
+                                  {this.translate('pages.playground.form.parameter')}: {key_parameter}
+                                </Form.Text>
+                              </Form.Group>
+                            </Col>
+                          })}
+                        </Row>
+                      </>
+                    }
+                    {(this.dataset_key === MODEL_LYMPHOGRAPHY.KEY) &&
+                      <>
+                        <Row className={'mt-3'}>
+                          {this._model.FORM.map((value, index) => {
+                            // VALUES:
+                            // {name: "type1", type: "int32" },
+                            // {name: "type2", type: "float32" },
+                            // {name: "type3", type: "string", options: [{value: "", text: ""] },
+                            switch (value.type) {
+                              case 'int32': {
+                                return <Col key={'form' + index} className={'mb-3'}
+                                            xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+                                  <Form.Group>
+                                    <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
+                                    <Form.Control type="number"
+                                                  min={0}
+                                                  size={'sm'}
+                                                  placeholder={this.translate('pages.playground.form.parameter-integer')}
+                                                  step={1}
+                                                  value={this.state.dataToTest[value.name] ?? 0}
+                                                  onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
+                                    <Form.Text className="text-muted">
+                                      {this.translate('pages.playground.form.parameter-integer')}: {value.name}
+                                    </Form.Text>
+                                  </Form.Group>
+                                </Col>
+                              }
+
+                              case 'float32': {
+                                return <Col key={'form' + index} className={'mb-3'}
+                                            xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+                                  <Form.Group controlId={value.name}>
+                                    <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
+                                    <Form.Control type="number"
+                                                  min={0}
+                                                  size={'sm'}
+                                                  placeholder={this.translate('pages.playground.form.parameter-decimal')}
+                                                  step={0.1}
+                                                  value={this.state.dataToTest[value.name] ?? 0.0}
+                                                  onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)} />
+                                    <Form.Text className="text-muted">
+                                      {this.translate('pages.playground.form.parameter-decimal')}: {value.name}
+                                    </Form.Text>
+                                  </Form.Group>
+                                </Col>
+                              }
+                              case 'label-encoder': {
+                                return <Col key={'form' + index} className={'mb-3'}
+                                            xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+                                  <Form.Group controlId={value.name}>
+                                    <Form.Label>{this.translate('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
+                                    <Form.Select aria-label={this.translate('pages.playground.form.select-parameter')}
+                                                 value={this.state.dataToTest[value.name] ?? 0}
+                                                 size={'sm'}
+                                                 onChange={($event) => this.handleChange_Parameter(value.name, $event.target.value)}>
+                                      {value.options.map((option_value, option_index) => {
+                                        return <option key={value.name + '_option_' + option_index}
+                                                       value={option_value.value}>
+                                          {option_value.text}
+                                        </option>
+                                      })}
+                                    </Form.Select>
+                                    <Form.Text className="text-muted">
+                                      {this.translate('pages.playground.form.parameter-decimal')}: {value.name}
+                                    </Form.Text>
+                                  </Form.Group>
+                                </Col>
+                              }
+                              default:
+                                return <>default</>
+                            }
+                          })}
+                        </Row>
+                      </>
+                    }
+
+                    <Row className={'mt-3'}>
+                      <Col>
+                        {/* VECTOR TEST */}
+                        <Form.Group controlId={'formTestInput'}>
+                          <Form.Label>{this.translate('pages.playground.form.vector-to-check')}</Form.Label>
+                          <Form.Control placeholder={this.translate('pages.playground.form.vector-to-check')}
+                                        autoComplete="off"
+                                        disabled={this.dataset_key !== UPLOAD}
+                                        value={this.state.textToTest}
+                                        onChange={this.handleChange_TestInput} />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row className={'mt-3'}>
+                      <Col>
+                        {/* SUBMIT BUTTON */}
+                        <div className="d-grid gap-2 mt-3">
+                          <Button type="button"
+                                  onClick={this.handleClick_TestVector}
+                                  disabled={this.state.isButtonDisabled}
+                                  size={'lg'}
+                                  variant="primary">
+                            {(this.state.isButtonDisabled) ?
+                              <>
+                                <span className="spinner-border spinner-border-sm"
+                                      role="status"
+                                      aria-hidden="true"></span>
+                                <span className="visually-hidden">Loading...</span>
+                              </>
+                              :
+                              <>
+                                {this.translate('pages.playground.form.button-check-result')}
+                              </>
+                            }
+                          </Button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                </Card.Body>
+              </Card>
+
+
+              {this.Print_HTML_BAR_PREDICTION()}
             </Col>
           </Row>
 

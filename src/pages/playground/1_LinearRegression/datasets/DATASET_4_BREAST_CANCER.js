@@ -1,6 +1,8 @@
 import I_DATASETS_LINEAR_REGRESSION from './_model'
 import * as dfd from 'danfojs'
-import { DANFOJS_FRAME_CONFIG } from '@/ConfigDanfoJS'
+
+import { CONFIG_DANFOJS_FRAME } from '@/CONSTANTS_DanfoJS'
+
 import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 
 export default class DATASET_4_BREAST_CANCER extends I_DATASETS_LINEAR_REGRESSION {
@@ -22,7 +24,7 @@ export default class DATASET_4_BREAST_CANCER extends I_DATASETS_LINEAR_REGRESSIO
     const path_dataset_2 = dataset_path + 'wdbc.csv'
     const path_dataset_3 = dataset_path + 'wpbc.csv'
 
-    const dataframe_original_1 = await dfd.readCSV(path_dataset_1, DANFOJS_FRAME_CONFIG)
+    const dataframe_original_1 = await dfd.readCSV(path_dataset_1, CONFIG_DANFOJS_FRAME)
     dataframe_original_1.replace('?', NaN, { columns: ['Bare Nuclei'], inplace: true })
     dataframe_original_1.dropNa({ axis: 1, inplace: true })
 

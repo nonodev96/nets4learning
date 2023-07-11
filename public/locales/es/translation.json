@@ -623,7 +623,8 @@
     }
   },
   "dataframe-plot": {
-    "title": "Graficos del DataFrame",
+    "title": "Gráficos del DataFrame",
+    "info": "Información",
     "description": {
       "title": "Descripción del tipo de gráfica"
     },

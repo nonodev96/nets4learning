@@ -1,4 +1,4 @@
-import { act, fireEvent, getByText, waitFor } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 import { renderWithRouter } from '@/__tests__/setup/utils'
 import App from '@/App'
 

@@ -13,13 +13,6 @@ import * as dfd from 'danfojs'
  */
 
 /**
- * @typedef {Object} DataframePlotConfig_t
- * @property {ConfigLayoutPlots_t} LAYOUT
- * @property {ConfigTimeSeriesPlots_t} TIME_SERIES_PLOTS
- * @property {Array<string>} COLUMNS
- */
-
-/**
  * @typedef {Object} TimeSeriesPlotsValidConfigResponse_t
  * @property {boolean} isValidConfig_TimeSeries
  * @property {{columns: Array<string>}} config_TimeSeries
@@ -34,27 +27,46 @@ import * as dfd from 'danfojs'
 // E_PLOTS.VIOLIN_PLOTS
 // E_PLOTS.TIME_SERIES_PLOTS
 
+export function columnsTimeSeriesValidForIndex (_dataFrameLocal, _columns) {
+  return _columns.filter((column) => {
+    if (_dataFrameLocal.columns.includes(column))
+      return _dataFrameLocal[column].unique().shape[0] === _dataFrameLocal.shape[0]
+    return false
+  })
+}
+
+export function isTimeSeriesDataFrameValidForIndex (_dataFrameLocal, _columns) {
+  return columnsTimeSeriesValidForIndex(_dataFrameLocal, _columns).length > 0
+}
+
+/**
+ * @typedef {Object} DataframePlotConfig_t
+ * @property {ConfigLayoutPlots_t} LAYOUT
+ * @property {ConfigTimeSeriesPlots_t} TIME_SERIES_PLOTS
+ * @property {Array<string>} COLUMNS
+ */
+
 /**
  *
  * @param {dfd.DataFrame} dataframe
  * @param {DataframePlotConfig_t} dataframePlotConfig
- * @param {Array<string>} columnsToShow
  *
  * @return {TimeSeriesPlotsValidConfigResponse_t}
  */
-export function timeSeriesPlotsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
-  const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
-  const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
-  const isValidConfig_TimeSeries = notContainIndexInColumnsToShow && containsIndexInDataframe
+export function timeSeriesPlotsValidConfig (dataframe, dataframePlotConfig) {
+  // const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
+  // const containsIndexInDataframe = dataframe.columns.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
+  // const isValidConfig_TimeSeries = notContainIndexInColumnsToShow && containsIndexInDataframe
+  const isValidConfig_TimeSeries = isTimeSeriesDataFrameValidForIndex(dataframe, dataframePlotConfig.COLUMNS)
 
-  const config_TimeSeries = { columns: columnsToShow }
+  const config_TimeSeries = { columns: dataframePlotConfig.COLUMNS }
 
   const index = { column: dataframePlotConfig.TIME_SERIES_PLOTS.config.index, drop: true }
 
   return { isValidConfig_TimeSeries, config_TimeSeries, index }
 }
 
-export function pieChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
+export function pieChartsValidConfig (dataframe, dataframePlotConfig) {
   const isValidConfig_PieCharts = true
   const config_PieCharts = { labels: dataframePlotConfig.PIE_CHARTS.config.labels }
   return { isValidConfig_PieCharts, config_PieCharts }
@@ -74,8 +86,13 @@ export function TransformArrayToSeriesTensor (series) {
 }
 
 /**
+ * @typedef DataFrameColumnTransform_t
+ * @property {string} column_name
+ * @property {string} column_transform
+ */
+/**
  * @param {dfd.DataFrame} dataframe
- * @param {Array<{column_name, column_transform}>} dataframe_transforms
+ * @param {Array<DataFrameColumnTransform_t>} dataframe_transforms
  *
  * @return {dfd.DataFrame}
  */
@@ -92,7 +109,7 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         break
       }
       case 'dropNa': {
-        dataframe.dropNa({ columns: [column_name], inplace: true })
+        dataframe.dropNa({ inplace: true, axis: 1 })
         break
       }
       case 'drop': {

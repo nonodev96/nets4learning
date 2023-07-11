@@ -1,23 +1,13 @@
 import React, { useContext, useRef, useState } from 'react'
-
-import { Chart } from 'react-chartjs-2'
-
-import { faker } from '@faker-js/faker'
 import { Button } from 'react-bootstrap'
+import { Chart } from 'react-chartjs-2'
+import { faker } from '@faker-js/faker'
+
+import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { generateColor } from '@utils/utils'
 
 export default function LinearRegressionPrediction () {
-
-  const DEFAULT_OPTIONS = {
-    elements: {
-      point: {
-        pointStyle : 'circle',
-        borderWidth: 2,
-        radius     : 3,
-        hoverRadius: 8
-      }
-    }
-  }
 
   const { dataPrediction } = useContext(LinearRegressionContext)
 
@@ -25,21 +15,6 @@ export default function LinearRegressionPrediction () {
   const labels = Array(100).fill('').map(() => {
     return faker.date.month()
   })
-
-  const getRandomInt = (max) => {
-    return Math.floor(Math.random() * max)
-  }
-  const generateColor = () => {
-    const r = getRandomInt(255)
-    const g = getRandomInt(255)
-    const b = getRandomInt(255)
-    return {
-      borderColor         : `rgba(${r}, ${g}, ${b})`,
-      backgroundColor     : `rgba(${Math.ceil(r * 0.95)}, ${Math.ceil(g * 0.95)}, ${Math.ceil(b * 0.95)})`,
-      pointBorderColor    : `rgba(${r}, ${g}, ${b})`,
-      pointBackgroundColor: `rgba(0, 0, 0, 0)`,
-    }
-  }
 
   const generate = () => {
     const color_dataset = generateColor()
@@ -81,6 +56,6 @@ export default function LinearRegressionPrediction () {
   return <>
     <Button variant={'outline-primary'} onClick={updateDataPrediction}>Update</Button>
 
-    <Chart type="bar" ref={refChartJS} data={data} options={DEFAULT_OPTIONS} />
+    <Chart type="bar" ref={refChartJS} data={data} options={CHARTJS_CONFIG_DEFAULT.LINEAR_REGRESSION_PREDICTION} />
   </>
 }

@@ -1,11 +1,12 @@
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Trans } from 'react-i18next'
 
+import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
+
+import { Trans } from 'react-i18next'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import N4LSummary from '@components/summary/N4LSummary'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import { TABLE_PLOT_STYLE_CONFIG } from '@/ConfigDanfoJS'
 
 export default function LinearRegressionDatasetShow () {
 

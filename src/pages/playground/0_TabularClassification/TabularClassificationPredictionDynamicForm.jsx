@@ -1,27 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
 import { UPLOAD } from '@/DATA_MODEL'
-
-const backgroundColorDefault = [
-  'rgba(255, 99, 132, 0.4)',
-  'rgba(255, 159, 64, 0.4)',
-  'rgba(255, 205, 86, 0.4)',
-  'rgba(75, 192, 192, 0.4)',
-  'rgba(54, 162, 235, 0.4)',
-  'rgba(153, 102, 255, 0.4)',
-  'rgba(175, 175, 175, 0.4)',
-]
-const borderColorDefault = [
-  'rgb(255, 99, 132)',
-  'rgb(255, 159, 64)',
-  'rgb(255, 205, 86)',
-  'rgb(75, 192, 192)',
-  'rgb(54, 162, 235)',
-  'rgb(153, 102, 255)',
-  'rgb(175, 175, 175)',
-]
+import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 /**
  *
@@ -45,7 +27,6 @@ export default function TabularClassificationPredictionDynamicForm (props) {
 
   const { t } = useTranslation()
   const prefix = 'pages.playground.generator.dynamic-form-dataset.'
-  const ref_bar = useRef(0)
   const bar_options = {
     responsive: true,
     plugins   : {
@@ -267,16 +248,15 @@ export default function TabularClassificationPredictionDynamicForm (props) {
                               .map((item, index) => <li key={index}>{item}</li>)
                           }
                         </ul>
-                        <Bar ref={ref_bar}
-                             options={bar_options}
+                        <Bar options={bar_options}
                              data={{
                                labels  : [...predictionBar.labels],
                                datasets: [
                                  {
                                    label          : t('prediction'),
                                    data           : [...predictionBar.data],
-                                   backgroundColor: backgroundColorDefault,
-                                   borderColor    : borderColorDefault,
+                                   backgroundColor: CHARTJS_CONFIG_DEFAULT.BACKGROUND_COLOR,
+                                   borderColor    : CHARTJS_CONFIG_DEFAULT.BORDER_COLOR,
                                    borderWidth    : 1,
                                  },
                                ],

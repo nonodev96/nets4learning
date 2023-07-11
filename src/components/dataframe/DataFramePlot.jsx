@@ -1,9 +1,13 @@
 import '@styles/ScrollBar.css'
-import React, { useCallback, useContext, useEffect, useId } from 'react'
+import React, { useCallback, useContext, useEffect, useId, useState } from 'react'
 import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
-import { lineChartsValidConfig, pieChartsValidConfig, timeSeriesPlotsValidConfig } from '@core/dataframe/DataFrameUtils'
+import {
+  lineChartsValidConfig,
+  pieChartsValidConfig,
+  timeSeriesPlotsValidConfig
+} from '@core/dataframe/DataFrameUtils'
 
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
@@ -24,6 +28,9 @@ export default function DataFramePlot ({ dataframe }) {
     setShowDescription,
   } = useContext(DataFramePlotContext)
 
+  const { t } = useTranslation()
+  const [listWarning, setListWarning] = useState([])
+
   const dataframe_plot_id = useId()
 
   const init = useCallback(() => {
@@ -34,11 +41,9 @@ export default function DataFramePlot ({ dataframe }) {
         return _dataframe[column].unique().shape[0] === _dataframe.shape[0]
       })
     }
-
     const _isDataFrameValidFor_TimeSeriesPlots_Index = (_dataframe) => {
       return _columnsValidFor_TimeSeriesPlots_Index(_dataframe).length > 0
     }
-
     // Funciones para inicializar PIE_CHARTS
     const _getDataFrame_nUnique_PieCharts_Labels = (_dataframe) => {
       const list = []
@@ -59,6 +64,18 @@ export default function DataFramePlot ({ dataframe }) {
     const _isDataFrameValidFor_PieCharts_Labels = (_dataframe) => {
       return true
     }
+    // Funciones para definir que plots se van a mostrar
+    const _listPlotsAvailable = (_dataframe) => {
+      const list_of_available_plots = []
+      for (const plot_id of LIST_PLOTS) {
+        let available = true
+        if (E_PLOTS.TIME_SERIES_PLOTS === plot_id) {
+          available = _isDataFrameValidFor_TimeSeriesPlots_Index(_dataframe)
+        }
+        if (available) list_of_available_plots.push(plot_id)
+      }
+      return list_of_available_plots
+    }
 
     setDataframePlotConfig((prevState) => {
       const _prevState = Object.assign({}, prevState)
@@ -71,87 +88,87 @@ export default function DataFramePlot ({ dataframe }) {
           _prevState.PIE_CHARTS.config.labels = _getDataFrame_Min_nUnique_PieCharts_Labels(dataFrameLocal).col_name
         }
       }
+      _prevState.LIST_OF_AVAILABLE_PLOTS = _listPlotsAvailable(dataFrameLocal)
       return _prevState
     })
   }, [dataFrameLocal, setDataframePlotConfig])
 
-  const update_interfaz = useCallback(() => {
-      try {
-        const layout = {
-          title: dataframePlotConfig.LAYOUT.title,
-          xaxis: { title: dataframePlotConfig.LAYOUT.x_axis, },
-          yaxis: { title: dataframePlotConfig.LAYOUT.y_axis, },
-        }
-        if (dataframePlotConfig.COLUMNS !== []) {
-          const columnsToShow = dataframePlotConfig.COLUMNS.filter(elemento => dataFrameLocal.columns.includes(elemento))
-          const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
-          switch (dataframePlotConfig.PLOT_ENABLE) {
-            case E_PLOTS.BAR_CHARTS:
-              // TODO
-              sub_df.plot(dataframe_plot_id).bar({ layout })
-              break
-            case E_PLOTS.BOX_PLOTS:
-              sub_df.plot(dataframe_plot_id).box({ layout })
-              break
-            case E_PLOTS.HISTOGRAMS:
-              sub_df.plot(dataframe_plot_id).hist({ layout })
-              break
-            case E_PLOTS.LINE_CHARTS:
-              const { isValidConfig_LineCharts, config_LineCharts } = lineChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-              if (isValidConfig_LineCharts) {
-                sub_df.plot(dataframe_plot_id).line({ layout })
-              } else {
-                console.log('Configuración no valida E_PLOTS.LINE_CHARTS', { config_LineCharts })
-              }
-              break
-            case E_PLOTS.PIE_CHARTS:
-              const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-              if (isValidConfig_PieCharts) {
-                sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
-              } else {
-                console.log('Configuración no valida E_PLOTS.PIE_CHARTS', { config_PieCharts })
-              }
-              break
-            case E_PLOTS.SCATTER_PLOTS:
-              sub_df.plot(dataframe_plot_id).scatter({ layout })
-              break
-            case E_PLOTS.TIME_SERIES_PLOTS:
-              // TODO
-              const { isValidConfig_TimeSeries, config_TimeSeries, index } = timeSeriesPlotsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
-              if (isValidConfig_TimeSeries) {
-                const sub_sub_df = sub_df.setIndex(index)
-                sub_sub_df.plot(dataframe_plot_id).line({ layout })
-              } else {
-                console.log('Configuración no valida E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
-              }
-              break
-            case E_PLOTS.VIOLIN_PLOTS:
-              sub_df.plot(dataframe_plot_id).violin({ layout })
-              break
-            default: {
-              console.error('Error, option not valid')
-              break
+  const updateInterfaz = useCallback(() => {
+    try {
+      const layout = {
+        title: dataframePlotConfig.LAYOUT.title,
+        xaxis: { title: dataframePlotConfig.LAYOUT.x_axis, },
+        yaxis: { title: dataframePlotConfig.LAYOUT.y_axis, },
+      }
+      const list_warnings = []
+      if (dataframePlotConfig.COLUMNS !== []) {
+        const columnsToShow = dataframePlotConfig.COLUMNS.filter(elemento => dataFrameLocal.columns.includes(elemento))
+        const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
+        switch (dataframePlotConfig.PLOT_ENABLE) {
+          case E_PLOTS.BAR_CHARTS:
+            // TODO
+            sub_df.plot(dataframe_plot_id).bar({ layout })
+            break
+          case E_PLOTS.BOX_PLOTS:
+            sub_df.plot(dataframe_plot_id).box({ layout })
+            break
+          case E_PLOTS.HISTOGRAMS:
+            sub_df.plot(dataframe_plot_id).hist({ layout })
+            break
+          case E_PLOTS.LINE_CHARTS:
+            const { isValidConfig_LineCharts, config_LineCharts } = lineChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+            if (isValidConfig_LineCharts) {
+              sub_df.plot(dataframe_plot_id).line({ layout })
+            } else {
+              console.log('Configuración no valida E_PLOTS.LINE_CHARTS', { config_LineCharts })
             }
+            break
+          case E_PLOTS.PIE_CHARTS:
+            const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+            if (isValidConfig_PieCharts) {
+              sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
+            } else {
+              console.log('Configuración no valida E_PLOTS.PIE_CHARTS', { config_PieCharts })
+            }
+            break
+          case E_PLOTS.SCATTER_PLOTS:
+            sub_df.plot(dataframe_plot_id).scatter({ layout })
+            break
+          case E_PLOTS.TIME_SERIES_PLOTS:
+            // TODO
+            const { isValidConfig_TimeSeries, config_TimeSeries, index } = timeSeriesPlotsValidConfig(dataFrameLocal, dataframePlotConfig)
+            if (isValidConfig_TimeSeries) {
+              const sub_sub_df = sub_df.setIndex(index)
+              sub_sub_df.plot(dataframe_plot_id).line({ layout })
+            } else {
+              list_warnings.push('dataframe-plot.time-series.warning.index')
+              console.log('Configuración no valida E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
+            }
+            break
+          case E_PLOTS.VIOLIN_PLOTS:
+            sub_df.plot(dataframe_plot_id).violin({ layout })
+            break
+          default: {
+            console.error('Error, option not valid')
+            break
           }
         }
-      } catch (e) {
-        console.log({ e })
+        setListWarning(list_warnings)
       }
-      // eslint-disable-next-line
-    }, [
+    } catch (e) {
+      console.error(e)
+    }
+    // eslint-disable-next-line
+  }, [
     dataframePlotConfig.PLOT_ENABLE,
     dataframePlotConfig.COLUMNS,
-    // dataframePlotConfig.LAYOUT.title,
-    // dataframePlotConfig.LAYOUT.x_axis,
-    // dataframePlotConfig.LAYOUT.y_axis,
     dataframePlotConfig.TIME_SERIES_PLOTS.config.index,
     dataframePlotConfig.PIE_CHARTS.config.labels,
     dataframe_plot_id, dataFrameLocal
   ])
-  
 
   useEffect(() => {
-    console.debug('useEffect[dataframe, setDataFrameLocal]')
+    console.debug('useEffect[ dataframe, setDataFrameLocal ]')
     setDataFrameLocal(dataframe)
   }, [dataframe, setDataFrameLocal])
 
@@ -161,15 +178,26 @@ export default function DataFramePlot ({ dataframe }) {
   }, [init])
 
   useEffect(() => {
-    console.debug('useEffect[ update_interfaz() ]')
-    update_interfaz()
-  }, [update_interfaz])
+    console.debug('useEffect[ updateInterfaz() ]')
+    updateInterfaz()
+  }, [updateInterfaz])
 
   const handleChange_Plot = (e) => {
     setDataframePlotConfig({
       ...dataframePlotConfig,
       PLOT_ENABLE: e.target.value
     })
+  }
+
+  const DFPListWarnings = () => {
+    if (listWarning === []) return <></>
+    return <>
+      <ul className={'list-group'}>
+        {listWarning.map((value, index) => {
+          return <li className={'list-group-item list-group-item-warning'} key={index}>{t(value)}</li>
+        })}
+      </ul>
+    </>
   }
 
   console.debug('render DataFramePlot')
@@ -183,7 +211,11 @@ export default function DataFramePlot ({ dataframe }) {
                          aria-label={'plot'}
                          size={'sm'}
                          value={dataframePlotConfig.PLOT_ENABLE}>
-              <>{LIST_PLOTS.map((value, index) => (<option key={'option_' + index} value={value}><Trans i18nKey={`dataframe-plot.${value}.title`} /></option>))}</>
+              <>
+                {dataframePlotConfig.LIST_OF_AVAILABLE_PLOTS.map((value, index) =>
+                  (<option key={'option_' + index} value={value}><Trans i18nKey={`dataframe-plot.${value}.title`} /></option>)
+                )}
+              </>
             </Form.Select>
           </Form.Group>
 
@@ -206,11 +238,13 @@ export default function DataFramePlot ({ dataframe }) {
       </Card.Body>
 
       <Card.Footer>
-        <DebugJSON obj={dataframePlotConfig} />
+        <p className={'mb-2'}><Trans i18nKey={'dataframe-plot.info'} /></p>
+        <DFPListWarnings />
       </Card.Footer>
     </Card>
 
 
+    <DebugJSON obj={dataframePlotConfig} />
     <DataFramePlotDescription />
     <DataFramePlotConfiguration />
   </>

@@ -104,7 +104,8 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
         console.error('Error, option not valid')
         break
     }
-  }, [mode, modeCompact, modeExtend])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, modeCompact, modeExtend, JSON.stringify(layers)])
 
   return <>
     <Row className={'mt-3'}>
@@ -123,7 +124,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
           <ArrowRight style={{ 'fontSize': 'xxx-large' }} />
         </div>
       </Col>
-      <Col className={'mynetwork'} id={id_parent} xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
+      <Col id={id_parent} xs={8} sm={8} md={8} lg={8} xl={8} xxl={8}>
         <VisGraph graph={graphState}
                   options={{
                     layout: {
