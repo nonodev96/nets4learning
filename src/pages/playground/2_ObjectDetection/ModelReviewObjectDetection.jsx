@@ -9,7 +9,6 @@ import withHooks from '@hooks/withHooks'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import {
-  getKeyDatasetByID_ObjectDetection,
   LIST_MODELS_OBJECT_DETECTION,
   MODEL_FACE_MESH,
   MODEL_FACE_DETECTOR,
@@ -28,14 +27,12 @@ class ModelReviewObjectDetection extends React.Component {
     super(props)
     this.translate = props.t
     this.dataset = props.dataset
-    this.dataset_ID = parseInt(props.dataset ?? '0')
-    this.dataset_key = getKeyDatasetByID_ObjectDetection(this.dataset_ID)
-    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + this.dataset_key, title: this.dataset_key })
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + this.dataset, title: this.dataset })
 
     this.state = {
       isCameraEnable  : false,
       isProcessedImage: false,
-      dataset         : parseInt(props.dataset ?? '0'),
+      dataset         : props.dataset,
       isShowedAlert   : false,
       modelDetector   : null,
       loading         :
@@ -60,7 +57,7 @@ class ModelReviewObjectDetection extends React.Component {
     this.animation_id = 0
 
     this._model = new MODEL_OBJECT_DETECTION(props.t)
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case MODEL_FACE_MESH.KEY: {
         this._model = new MODEL_FACE_MESH(props.t)
         break
@@ -108,15 +105,14 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   async init () {
-    const key = getKeyDatasetByID_ObjectDetection(this.props.dataset)
-    const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === key)
+    const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === this.dataset)
 
     if (!isValid) {
       await alertHelper.alertError('Error in selection of model')
       return
     }
 
-    switch (key) {
+    switch (this.dataset) {
       case UPLOAD: {
         // TODO
         break
@@ -142,20 +138,18 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   runModelWithDetector () {
-    const frame = async () => {
-      if (this.state.isCameraEnable) {
-        try {
-          this.animation_id = requestAnimationFrame(async () => {
-            await this.processWebcam(this.state.modelDetector)
-            await frame()
-          })
-        } catch (e) {
-          console.log(`catch cancelAnimationFrame(${this.animation_id});`)
-          cancelAnimationFrame(this.animation_id)
+    try {
+      const frame = async () => {
+        if (this.state.isCameraEnable) {
+          this.animation_id = requestAnimationFrame(frame)
+          await this.processWebcam(this.state.modelDetector)
         }
       }
+      this.animation_id = requestAnimationFrame(frame)
+    } catch (e) {
+      console.log(`catch cancelAnimationFrame(${this.animation_id});`)
+      cancelAnimationFrame(this.animation_id)
     }
-    this.animation_id = requestAnimationFrame(frame)
   }
 
   async processWebcam (model) {
@@ -187,7 +181,7 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   async processData (model, ctx, img_or_video) {
-    switch (getKeyDatasetByID_ObjectDetection(this.state.dataset)) {
+    switch (this.dataset) {
       case UPLOAD: {
         // TODO
         break
@@ -228,7 +222,7 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   onUserMediaEvent (mediaStream) {
-    // mediaStream.scale(-1,1)
+    // mediaStream.scale(-1, 1)
   }
 
   onUserMediaErrorEvent (error) {
@@ -276,9 +270,7 @@ class ModelReviewObjectDetection extends React.Component {
 
       originalImageCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
       const imgData = originalImageCanvas_ctx.getImageData(0, 0, originalImageCanvas.height, originalImageCanvas.width)
-
       await that.processData(that.state.modelDetector, processImageCanvas_ctx, imgData)
-
       resultCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
       await that.processData(that.state.modelDetector, resultCanvas_ctx, imgData)
       that.setState({ isProcessedImage: true })
@@ -305,7 +297,7 @@ class ModelReviewObjectDetection extends React.Component {
                 <Card.Title>
                   <Trans i18nKey={this._model.TITLE} /> {this.state.loading}
                 </Card.Title>
-                {getKeyDatasetByID_ObjectDetection(this.state.dataset) === UPLOAD ?
+                {this.dataset === UPLOAD ?
                   <>
                     <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
                     <Card.Text>
@@ -378,13 +370,13 @@ class ModelReviewObjectDetection extends React.Component {
                                     onUserMediaError={this.onUserMediaErrorEvent}
                                     width={250}
                                     height={250}
-                                    mirrored={false}
                                     style={{
                                       position: 'relative',
                                       display : 'block',
                                     }} />
                             <canvas ref={this.canvasRef}
-                                    width={250} height={250}
+                                    width={250}
+                                    height={250}
                                     style={{
                                       position: 'absolute',
                                       display : 'block',

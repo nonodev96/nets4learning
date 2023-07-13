@@ -144,9 +144,8 @@ async function testModel (model, inputData, normalizationData) {
   return { original: originalPoints, predicted: predictedPoints }
 }
 
-export async function run () {
-  const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
-  const columns = { x_name: 'horsepower', y_name: 'mpg' }
+export async function run (filename, columns) {
+
   const data = await getData(filename, columns)
   console.log(data)
 

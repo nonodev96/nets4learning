@@ -1,6 +1,6 @@
 import { Card, Form } from 'react-bootstrap'
 import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 
 export default function N4LLayerDesign ({ layers }) {

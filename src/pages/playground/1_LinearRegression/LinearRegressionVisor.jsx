@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
-
 import { Card, Form } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionVisor () {
 
   const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
-  const {
-    setTmpModel
-  } = useContext(LinearRegressionContext)
+
+  const { setTmpModel } = useContext(LinearRegressionContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)
@@ -40,7 +39,7 @@ export default function LinearRegressionVisor () {
   return <>
     <Card>
       <Card.Header>
-        <h3>{t('Params visor')}</h3>
+        <h3><Trans i18nKey={prefix + 'title'} /></h3>
       </Card.Header>
       <Card.Body>
         <Form.Check type={'checkbox'}

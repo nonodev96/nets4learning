@@ -11,17 +11,16 @@ import {
   TYPE_LOSSES,
   TYPE_METRICS
 } from '@core/nn-utils/ArchitectureTypesHelper'
-import { getKeyDatasetByID_TabularClassification } from '@/DATA_MODEL'
 
 import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
 import * as classificationHelper_MNIST from '../3_ImageClassification/custom/Train_MNIST'
 
+// TODO
 export default function ObjectDetection (props) {
   const { dataset } = props
 
-  // TODO: DEPENDIENDO DEL TIPO QUE SEA SE PRE CARGAN UNOS AJUSTES U OTROS
   const [Layer, setLayer] = useState([])
-  const [ActiveLayer, setActiveLayer] = useState()
+  const [ActiveLayer, setActiveLayer] = useState(0)
   const [Contador, setContador] = useState(0)
 
   const NumberEpochs = 10
@@ -38,9 +37,7 @@ export default function ObjectDetection (props) {
   const [Recarga, setRecarga] = useState(false)
 
   useEffect(() => {
-    const dataset_ID = parseInt(dataset)
-    const dataset_key = getKeyDatasetByID_TabularClassification(dataset_ID)
-    ReactGA.send({ hitType: 'pageview', page: '/ObjectDetection/' + dataset_key, title: dataset_key })
+    ReactGA.send({ hitType: 'pageview', page: '/ObjectDetection/' + dataset, title: dataset })
   }, [dataset])
 
   useEffect(() => {

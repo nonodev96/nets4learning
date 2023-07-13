@@ -5,9 +5,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionJoyride ({ refJoyrideButton }) {
 
-  const {
-    i_model
-  } = useContext(LinearRegressionContext)
+  const { i_model } = useContext(LinearRegressionContext)
 
   const { t } = useTranslation()
 

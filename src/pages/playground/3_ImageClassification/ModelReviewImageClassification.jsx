@@ -10,7 +10,6 @@ import * as tf_mobilenet from '@tensorflow-models/mobilenet'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import alertHelper from '@utils/alertHelper'
 import {
-  getKeyDatasetByID_ImageClassification,
   LIST_MODELS_IMAGE_CLASSIFICATION,
   LIST_OF_IMAGES_MNIST,
   LIST_OF_IMAGES_MOBILENET,
@@ -43,10 +42,8 @@ class ModelReviewImageClassification extends React.Component {
   constructor (props) {
     super(props)
     this.t = props.t
-    this.dataset = props.dataset ?? '0'
-    this.dataset_ID = parseInt(props.dataset ?? '0')
-    this.dataset_key = getKeyDatasetByID_ImageClassification(this.dataset_ID)
-    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewImageClassification/' + this.dataset_key, title: this.dataset_key })
+    this.dataset = props.dataset
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewImageClassification/' + this.dataset, title: this.dataset })
 
     this.model = null
     this.files = {
@@ -121,7 +118,7 @@ class ModelReviewImageClassification extends React.Component {
     this.handleFileUpload_Image = this.handleFileUpload_Image.bind(this)
 
     this._model = new MODEL_IMAGE_CLASSIFICATION(props.t)
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case MODEL_IMAGE_MNIST.KEY: {
         this._model = new MODEL_IMAGE_MNIST(props.t)
         break
@@ -147,15 +144,14 @@ class ModelReviewImageClassification extends React.Component {
 
   async loadModel () {
     try {
-      const key = getKeyDatasetByID_ImageClassification(this.props.dataset)
-      const isValid = LIST_MODELS_IMAGE_CLASSIFICATION.some((e) => e === key)
+      const isValid = LIST_MODELS_IMAGE_CLASSIFICATION.some((e) => e === this.dataset)
 
       if (!isValid) {
         await alertHelper.alertError(this.t('error.model-selected'))
         return
       }
 
-      switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+      switch (this.dataset) {
         case UPLOAD: {
           this.model = await tf.loadLayersModel(
             tf.io.browserFiles([this.files.json, this.files.binary]),
@@ -287,7 +283,7 @@ class ModelReviewImageClassification extends React.Component {
     const canvas_ctx = canvas.getContext('2d')
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (this.dataset) {
       case UPLOAD: {
         // TODO
 
@@ -375,7 +371,7 @@ class ModelReviewImageClassification extends React.Component {
   }
 
   async handleClick_ImageByExamples_OpenDrawAndPredict (image_src) {
-    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (this.dataset) {
       case UPLOAD: {
         break
       }
@@ -401,7 +397,7 @@ class ModelReviewImageClassification extends React.Component {
 
   Print_HTML_Examples () {
     let examples
-    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (this.dataset) {
       case UPLOAD: {
         return <></>
       }
@@ -464,7 +460,7 @@ class ModelReviewImageClassification extends React.Component {
   }
 
   Print_HTML_Section () {
-    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (this.dataset) {
       case UPLOAD: {
         return <>
           <div>
@@ -530,7 +526,7 @@ class ModelReviewImageClassification extends React.Component {
     const canvas_ctx = canvas.getContext('2d')
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    switch (getKeyDatasetByID_ImageClassification(this.dataset_ID)) {
+    switch (this.dataset) {
       case UPLOAD: {
         break
       }
@@ -618,7 +614,7 @@ class ModelReviewImageClassification extends React.Component {
   }
 
   isMNIST () {
-    return getKeyDatasetByID_ImageClassification(this.dataset_ID) === MODEL_IMAGE_MNIST.KEY
+    return this.dataset === MODEL_IMAGE_MNIST.KEY
   }
 
   UTILS_image = {

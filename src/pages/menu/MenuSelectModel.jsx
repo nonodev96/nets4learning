@@ -5,12 +5,25 @@ import { useTranslation } from 'react-i18next'
 
 import alertHelper from '@utils/alertHelper'
 import {
-  DATASET_1_SALARY,
-  DATASET_2_AUTO_MPG,
-  DATASET_3_BOSTON_HOUSING,
-  DATASET_4_BREAST_CANCER,
-  DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE,
+  MODEL_CAR,
+  MODEL_IRIS,
+  MODEL_LYMPHOGRAPHY,
+
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE,
+
+  MODEL_IMAGE_MNIST,
+  MODEL_IMAGE_MOBILENET,
+
+  MODEL_FACE_DETECTOR,
+  MODEL_FACE_MESH,
+  MODEL_MOVE_NET_POSE_NET,
+  MODEL_COCO_SSD,
+  TASKS,
 } from '@/DATA_MODEL'
 
 export default function MenuSelectModel (_props) {
@@ -26,58 +39,46 @@ export default function MenuSelectModel (_props) {
     if (model_key === 'select-model') {
       await alertHelper.alertWarning(t('alert.menu.need-select-model'))
     } else {
-      history.push('/playground/' + id + '/' + 0 + '/' + model_key)
+      history.push('/playground/' + id + '/model/' + model_key)
     }
   }
 
-  const PrintHTML_OPTIONS = (_id) => {
-    switch (_id) {
-      case '0': {
+  const Print_HTML_OPTIONS = () => {
+    switch (id) {
+      case TASKS.TABULAR_CLASSIFICATION: {
         // tabular-classification
         return <>
-          <option value={1}>{t('datasets-models.0-tabular-classification.list-models.0-option-1')}</option>
-          <option value={2}>{t('datasets-models.0-tabular-classification.list-models.0-option-2')}</option>
-          <option value={3}>{t('datasets-models.0-tabular-classification.list-models.0-option-3')}</option>
+          <option value={MODEL_CAR.KEY}>{t('datasets-models.0-tabular-classification.list-models.0-option-1')}</option>
+          <option value={MODEL_IRIS.KEY}>{t('datasets-models.0-tabular-classification.list-models.0-option-2')}</option>
+          <option value={MODEL_LYMPHOGRAPHY.KEY}>{t('datasets-models.0-tabular-classification.list-models.0-option-3')}</option>
         </>
       }
-      case '1': {
+      case TASKS.LINEAR_REGRESSION: {
         // linear-regression
         return <>
-          <option value={DATASET_1_SALARY.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-1')}
-          </option>
-          <option value={DATASET_2_AUTO_MPG.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-2')}
-          </option>
-          <option value={DATASET_3_BOSTON_HOUSING.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-3')}
-          </option>
-          <option value={DATASET_4_BREAST_CANCER.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-4')}
-          </option>
-          <option value={DATASET_5_STUDENT_PERFORMANCE.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-5')}
-          </option>
-          <option value={DATASET_6_WINE.KEY}>
-            {t('datasets-models.1-linear-regression.list-models.0-option-6')}
-          </option>
+          <option value={MODEL_1_SALARY.KEY}>{t('datasets-models.1-linear-regression.list-models.salary')}</option>
+          <option value={MODEL_2_AUTO_MPG.KEY}>{t('datasets-models.1-linear-regression.list-models.auto-mpg')}</option>
+          <option value={MODEL_3_BOSTON_HOUSING.KEY}>{t('datasets-models.1-linear-regression.list-models.boston-housing')}</option>
+          <option value={MODEL_4_BREAST_CANCER.KEY}>{t('datasets-models.1-linear-regression.list-models.breast-cancer')}</option>
+          <option value={MODEL_5_STUDENT_PERFORMANCE.KEY}>{t('datasets-models.1-linear-regression.list-models.student-performance')}</option>
+          <option value={MODEL_6_WINE.KEY}>{t('datasets-models.1-linear-regression.list-models.wine')}</option>
         </>
       }
-      case '2': {
+      case TASKS.OBJECT_DETECTION: {
         // object-detection
         return <>
-          <option value={1}>{t('datasets-models.2-object-detection.list-models.2-option-1')}</option>
-          <option value={2}>{t('datasets-models.2-object-detection.list-models.2-option-2')}</option>
-          <option value={3}>{t('datasets-models.2-object-detection.list-models.2-option-3')}</option>
-          <option value={4}>{t('datasets-models.2-object-detection.list-models.2-option-4')}</option>
+          <option value={MODEL_FACE_DETECTOR.KEY}>{t('datasets-models.2-object-detection.list-models.2-option-1')}</option>
+          <option value={MODEL_FACE_MESH.KEY}>{t('datasets-models.2-object-detection.list-models.2-option-2')}</option>
+          <option value={MODEL_MOVE_NET_POSE_NET.KEY}>{t('datasets-models.2-object-detection.list-models.2-option-3')}</option>
+          <option value={MODEL_COCO_SSD.KEY}>{t('datasets-models.2-object-detection.list-models.2-option-4')}</option>
         </>
       }
-      case '3': {
+      case TASKS.IMAGE_CLASSIFICATION: {
         // Clasificación imágenes
         return <>
-          <option value={1}>{t('datasets-models.3-image-classifier.list-models.3-option-1')}</option>
-          <option value={2}>{t('datasets-models.3-image-classifier.list-models.3-option-2')}</option>
-          {/*<option value={3}>{t("models.3-option-3")}</option>*/}
+          <option value={MODEL_IMAGE_MNIST.KEY}>{t('datasets-models.3-image-classifier.list-models.3-option-1')}</option>
+          <option value={MODEL_IMAGE_MOBILENET.KEY}>{t('datasets-models.3-image-classifier.list-models.3-option-2')}</option>
+          {/*<option value={MODEL_RESNET.KEY}>{t('datasets-models.3-image-classifier.list-models.3-option-3')}</option>*/}
         </>
       }
       default: {
@@ -111,7 +112,7 @@ export default function MenuSelectModel (_props) {
                                  onChange={(e) => setModelKey(e.target.value)}>
                       <option value={'select-model'} disabled>{t('pages.menu-selection-model.form-option-_-1')}</option>
 
-                      {PrintHTML_OPTIONS(id)}
+                      {Print_HTML_OPTIONS()}
 
                     </Form.Select>
                   </Form.Group>

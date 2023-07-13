@@ -16,35 +16,39 @@ import ImageClassification from './3_ImageClassification/ImageClassification'
 import ModelReviewImageClassification from './3_ImageClassification/ModelReviewImageClassification'
 
 import { LinearRegressionProvider } from '@context/LinearRegressionContext'
+import { TASKS } from '@/DATA_MODEL'
 
 export default function Playground () {
   const { id, option, example } = useParams()
 
   const Print_HTML_Model_View = () => {
     switch (id.toString()) {
-      case '0': {
-        if (option === '0') {
+      case TASKS.TABULAR_CLASSIFICATION: {
+        if (option === 'model') {
           return <ModelReviewTabularClassification dataset={example} />
-        } else {
+        } else if (option === 'dataset') {
           return <TabularClassification dataset={example} />
         }
+        break
       }
-      case '1': {
-        if (option === '0') {
+      case TASKS.LINEAR_REGRESSION: {
+        if (option === 'model') {
           return <ModelReviewLinearRegression dataset={example} />
-        } else {
+        } else if (option === 'dataset') {
           return <LinearRegressionProvider><LinearRegression dataset_id={example} /></LinearRegressionProvider>
         }
+        break
       }
-      case '2': {
+      case TASKS.OBJECT_DETECTION: {
         return <ModelReviewObjectDetection dataset={example} />
       }
-      case '3': {
-        if (option === '0') {
+      case TASKS.IMAGE_CLASSIFICATION: {
+        if (option === 'model') {
           return <ModelReviewImageClassification dataset={example} />
-        } else {
+        } else if (option === 'dataset') {
           return <ImageClassification dataset={example} />
         }
+        break
       }
       default:
         return <NotFoundPage />

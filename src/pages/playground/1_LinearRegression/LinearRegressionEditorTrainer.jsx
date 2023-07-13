@@ -42,9 +42,11 @@ export default function LinearRegressionEditorTrainer () {
   const handlerChange_IdOptimizer = (_id_optimizer) => {
     change_params_training('id_optimizer', _id_optimizer)
   }
+
   const handlerChange_IdLoss = (_id_loss) => {
     change_params_training('id_loss', _id_loss)
   }
+
   const handlerClick_RemoveMetric = async (index) => {
     const new_list_id_metrics = [...tmpModel.params_training.list_id_metrics]
     if (new_list_id_metrics.length > 1) {
@@ -192,7 +194,8 @@ export default function LinearRegressionEditorTrainer () {
                 <div className="d-grid gap-2">
                   <Button onClick={() => handlerClick_RemoveMetric(index)}
                           variant={'outline-danger'}>
-                    <Trans i18nKey={prefix + 'delete-layer'} values={{ index: index + 1 }} />
+                    <Trans i18nKey={prefix + 'delete-metric'}
+                           values={{ index: index + 1 }} />
                   </Button>
                 </div>
 

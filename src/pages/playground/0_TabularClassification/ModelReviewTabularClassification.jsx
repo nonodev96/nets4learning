@@ -12,7 +12,6 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { CONSOLE_LOG_h3 } from '@/CONSTANTS'
 import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import {
-  getKeyDatasetByID_TabularClassification,
   UPLOAD,
   LIST_MODELS_TABULAR_CLASSIFICATION,
   MODEL_CAR,
@@ -31,9 +30,8 @@ class ModelReviewTabularClassification extends React.Component {
     super(props)
     this.translate = props.t
     this.dataset = props.dataset
-    this.dataset_ID = parseInt(props.dataset ?? '0')
-    this.dataset_key = getKeyDatasetByID_TabularClassification(this.dataset_ID)
-    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewTabularClassification/' + this.dataset_key, title: this.dataset_key, })
+
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewTabularClassification/' + this.dataset, title: this.dataset, })
 
     this.state = {
       loading         :
@@ -63,7 +61,7 @@ class ModelReviewTabularClassification extends React.Component {
     }
     this._model = new I_MODEL_TABULAR_CLASSIFICATION(props.t)
 
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD: {
         this.state.loading = ''
         break
@@ -110,14 +108,14 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   async init () {
-    const key = getKeyDatasetByID_TabularClassification(this.props.dataset)
-    const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === key)
+
+    const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === this.dataset)
     if (!isValid) {
       await alertHelper.alertError('Error en la selección del modelo')
       return
     }
 
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD: {
         break
       }
@@ -173,7 +171,7 @@ class ModelReviewTabularClassification extends React.Component {
       return
     }
 
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD: {
 
         break
@@ -251,7 +249,7 @@ class ModelReviewTabularClassification extends React.Component {
   // endregion
 
   Print_HTML_InfoDataset () {
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD:
         return <>
           <p>
@@ -270,7 +268,7 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   Print_HTML_EXAMPLES () {
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD:
         return <></>
       case MODEL_CAR.KEY:
@@ -294,7 +292,7 @@ class ModelReviewTabularClassification extends React.Component {
   Print_HTML_TABLE_DATASET () {
     let head = []
     let body = [[]]
-    switch (this.dataset_key) {
+    switch (this.dataset) {
       case UPLOAD: {
         if (this.files.csv !== null) {
           head = this.state.header
@@ -409,7 +407,7 @@ class ModelReviewTabularClassification extends React.Component {
                     {this.state.loading}
                   </Card.Title>
 
-                  {this.dataset_key === UPLOAD ? (
+                  {this.dataset === UPLOAD ? (
                     <>
                       <Card.Subtitle className="mb-3 text-muted">
                         <Trans i18nKey={'pages.playground.0-tabular-classification.0_upload.upload-your-model'} />
@@ -484,7 +482,7 @@ class ModelReviewTabularClassification extends React.Component {
                 </Card.Header>
                 <Card.Body>
                   <div>
-                    {(this.dataset_key === MODEL_CAR.KEY) &&
+                    {(this.dataset === MODEL_CAR.KEY) &&
                       <>
                         <Row className={'mt-3'}>
                           {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, values]) => {
@@ -508,7 +506,7 @@ class ModelReviewTabularClassification extends React.Component {
                         </Row>
                       </>
                     }
-                    {(this.dataset_key === MODEL_IRIS.KEY) &&
+                    {(this.dataset === MODEL_IRIS.KEY) &&
                       <>
                         <Row className={'mt-3'}>
                           {Object.entries(this._model.DATA_OBJECT).map(([key_parameter, value]) => {
@@ -531,7 +529,7 @@ class ModelReviewTabularClassification extends React.Component {
                         </Row>
                       </>
                     }
-                    {(this.dataset_key === MODEL_LYMPHOGRAPHY.KEY) &&
+                    {(this.dataset === MODEL_LYMPHOGRAPHY.KEY) &&
                       <>
                         <Row className={'mt-3'}>
                           {this._model.FORM.map((value, index) => {
@@ -614,7 +612,7 @@ class ModelReviewTabularClassification extends React.Component {
                           <Form.Label>{this.translate('pages.playground.form.vector-to-check')}</Form.Label>
                           <Form.Control placeholder={this.translate('pages.playground.form.vector-to-check')}
                                         autoComplete="off"
-                                        disabled={this.dataset_key !== UPLOAD}
+                                        disabled={this.dataset !== UPLOAD}
                                         value={this.state.textToTest}
                                         onChange={this.handleChange_TestInput} />
                         </Form.Group>

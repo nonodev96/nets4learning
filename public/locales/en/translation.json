@@ -94,12 +94,14 @@
       "dataset": {
         "1-linear-regression": {
           "salary": "Salary data set",
-          "auto-mpg": "Fuel consumption data set",
+          "auto-mpg": "Data set Fuel consumption",
           "boston": "Boston Houses Data set",
-          "student-performance-mathematics": "Mathematics Student Data set",
-          "student-performance-portuguese": "Portuguese student data set",
+          "breast-cancer-wdbc": "Data set Breast Cancer Wisconsin (Diagnostic)",
+          "breast-cancer-wpbc": "Data set Breast Cancer Wisconsin (Prognostic)",
+          "student-performance-mathematics": "Mathematics student Data set",
+          "student-performance-portuguese": "Portuguese student Data set",
           "wine-red": "Tinto wine data set",
-          "wine-white": null
+          "wine-white": "White wine data set"
         }
       }
     }
@@ -349,7 +351,31 @@
     },
     "1-linear-regression": {
       "salary": {
-        "title": "Salario por años"
+        "title": "Salario por años",
+        "description": {
+          "text-0": "The \"Salary\" data set is a collection of information that relates the number of years of work experience of an individual with their corresponding salary.",
+          "text-1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the number of years that an employee has worked in its specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually.",
+          "text-link": "For more information about this data set, visit the repository <link1>www.kaggy.com</link1>",
+          "details-input": {
+            "title": "Model entry data details",
+            "list": {
+              "0": "Years of experience (Yearsexperience)",
+              "1": "SALARY - (SALARY)"
+            }
+          },
+          "details-output": {
+            "title": "Model output data details",
+            "list": {
+              "1": "Salary"
+            }
+          },
+          "details-references": {
+            "title": "References",
+            "list": {
+              "0": "Data set"
+            }
+          }
+        }
       },
       "auto-mpg": {
         "title": "Auto MPG",
@@ -406,18 +432,61 @@
         "title": "Wine Quality"
       },
       "list-datasets": {
-        "1-auto-mpg": "Data set - Auto MPG",
-        "2-breast-cancer": "Data set - Breast cancer",
-        "3-diabetes": "Data set - Diabetes",
-        "4-student-performance": "Data set - Student performance",
-        "5-wine": "Data set - Wine"
+        "salary": "Data set - Salary",
+        "auto-mpg": "Data set - Auto MPG",
+        "boston-housing": "Data set - Boston Housing",
+        "breast-cancer": "Data set - Breast cancer",
+        "student-performance": "Data set - Student performance",
+        "wine": "Data set - Wine"
       },
       "list-models": {
-        "1-auto-mpg": "Model - Auto MPG",
-        "2-breast-cancer": "Model - Breast cancer",
-        "3-diabetes": "Model - Diabetes",
-        "4-student-performance": "Model - Student performance",
-        "5-wine": "Model - Wine"
+        "salary": "Model - Auto MPG",
+        "auto-mpg": "Model - Auto MPG",
+        "boston-housing": "Model - Boston Housing",
+        "breast-cancer": "Model - Breast cancer",
+        "student-performance": "Model - Student performance",
+        "wine": "Model - Wine"
+      },
+      "joyride": {
+        "title": "Activate the tutorial",
+        "steps": {
+          "manual": {
+            "title": "Manual",
+            "content": "You can check the information search manual"
+          },
+          "dataset-info": {
+            "title": "Data set information",
+            "content": "Check the information set information"
+          },
+          "dataset": {
+            "title": "Data set",
+            "content": "You can see the data set and extract statistics from your descriptions"
+          },
+          "dataset-plot": {
+            "title": "Data set plot",
+            "content": "You can extract very relevant information by analyzing the data set using the different graphics, bars diagram, sectors diagrams, etc."
+          },
+          "layer-visualizer": {
+            "title": "Visualizer of the layers of the neuronal network",
+            "content": "You can visualize the layers, activation functions in two formats, compact mode and extended mode"
+          },
+          "layer-editor": {
+            "title": "Layer editor",
+            "content": "You can edit the layers of the neuronal network, modify the units of each layer, the activation function, add new layers or eliminate them."
+          },
+          "params-editor": {
+            "title": "Hyperparameter editor",
+            "content": "You can configure the hyperparameters of your neuronal network so that the training is customized for the data set."
+          },
+          "list-of-models": {
+            "title": "Model list",
+            "content": "Once the model can be generated, you can load or download the model, to test each model and perform the predictions."
+          },
+          "predict-and-visualizer": {
+            "title": "Prediction and visualization",
+            "content": "Once our model for linear regression can be loaded you can make predictions and visualize the results"
+          }
+        }
       }
     },
     "2-object-detection": {
@@ -624,13 +693,14 @@
   },
   "dataframe-plot": {
     "title": "DataFrame Plot",
+    "info": "Information",
     "description": {
       "title": "Description of the type of graphics"
     },
     "configuration": {
       "title": "Setting",
       "reset": "Restart",
-      "select-all-columns": "Select all attributes",
+      "select-all-columns": "Select all columns",
       "layout": {
         "plot": {
           "title": "Graphic title",
@@ -684,7 +754,7 @@
           "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
         },
         "end": {
-          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+          "0": "Box type graphics are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
         }
       }
     },
@@ -787,7 +857,10 @@
           "0": "Time series graphics are an essential tool to analyze and understand how data changes over time.\nThey provide valuable information about trends, seasonal patterns, changes and forecasts, allowing informed decisions and comparative analysis."
         }
       },
-      "index-info": "The selected index must contain a unique series and should not select the index next to the columns to show"
+      "index-info": "The selected index must contain a unique series and should not select the index next to the columns to show",
+      "form": {
+        "index": "Index"
+      }
     },
     "time-series": {
       "warning": {
@@ -837,8 +910,22 @@
       },
       "linear-regression": {
         "1-title": "Linear regression",
-        "1-description-1": "LOREM",
-        "1-button": "Pre-trained models"
+        "2-title": "Design, create and edit an architecture to calculate a linear regression",
+        "1-description-1": "Linear regression is a task to determine a specific numerical value (dependent variable) based on its characteristics (independent variables).",
+        "1-description-2": "It is a predictive task that has a continuous variable, where it is sought to find a straight line that best suits the data and allows predicting the numerical value of the dependent variable depending on the independent variables.",
+        "1-button": "Pre-trained models",
+        "2-description-1": "Through this tool we can create a neuronal network to make preditions.",
+        "2-description-2": "Define the independent variables, which will be used in the model, define the dependent variable, which will be the numerical value that is sought to predict.",
+        "2-description-3": "#VALUE!",
+        "2-description-list": {
+          "1": "Establish an activation function or a linear function for the layers of linear regression.",
+          "2": "Define the value of the learning rate.",
+          "3": "Define the number of iterations or times.",
+          "4": "Define the optimizer.",
+          "5": "Define the loss function",
+          "6": "Define the metric for evaluation",
+          "title": "To apply linear regression and model the relationship between variables, we must follow the following steps:"
+        }
       },
       "object-detection": {
         "1-title": "Object identification",
@@ -984,8 +1071,8 @@
           "title": "Layer editor",
           "add-layer-start": "Add a layer to the start",
           "add-layer-end": "Add a layer to the end",
-          "delete-layer": "Delete layer {{value}}",
-          "layer-id": "Layer {{value}}",
+          "delete-layer": "Delete layer {{index}}",
+          "layer-id": "Layer {{index}}",
           "units": "Layer neurons",
           "units-placeholder": "Enter the number of cape neurons",
           "activation-function-select": "Select the activation function",
@@ -1011,6 +1098,7 @@
           "test-size": "Test set size",
           "test-size-placeholder": "Test set size",
           "test-size-info": "Value between 0 and 100 (is a percentage) of the size of the test set",
+          "delete-metric": "Delete metric function {{index}}",
           "add-metric": "Add metric function",
           "metric-id-select": "Select the metric function",
           "metric-id-info": "It will be one of the metric functions"
@@ -1046,7 +1134,14 @@
           "input-vector": "Enter the vector to try",
           "test-vector": "Vector to try"
         },
-        "list-models-generated": "List models generated",
+        "list-models-generated": "List generated models",
+        "visor": {
+          "title": "Configuration of visor",
+          "rmse": "RMSE",
+          "val_rmse": "VAL RMSE",
+          "mae": "MAE",
+          "val_mae": "VAL MAE"
+        },
         "prediction": {
           "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
         }
@@ -1057,7 +1152,7 @@
             "title": "Model generator manual"
           }
         },
-        "prediction": null
+        "prediction": "Prediccoón de la regresión lineal"
       }
     },
     "manual": {
@@ -1318,6 +1413,7 @@
   },
   "generator": {
     "table-models": {
+      "list-models-generated": "List generated models",
       "learning-rate": "Learning rate",
       "test-size": "Test size",
       "n-of-epochs": "Nº of epochs",

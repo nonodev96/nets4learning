@@ -14,15 +14,13 @@ import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 export default function TabularClassificationPredictionDynamicForm (props) {
   const {
     dataset_JSON,
-    dataset_key,
+    dataset,
     stringToPredict = '',
     setStringToPredict,
-    // objectToPredict = {},
     setObjectToPredict,
     predictionBar,
-    // list_encoded_classes = [],
 
-    handleClick_PredictVector,
+    handleSubmit_PredictVector,
   } = props
 
   const { t } = useTranslation()
@@ -107,7 +105,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
 
   console.debug('Render TabularClassificationDynamicFormPrediction')
   return <>
-    <Form onSubmit={(event) => event.preventDefault()}>
+    <Form onSubmit={(e) => handleSubmit_PredictVector(e)}>
       <Container>
         <Row className={'mt-3'}>
           <Col xl={12}>
@@ -229,14 +227,14 @@ export default function TabularClassificationPredictionDynamicForm (props) {
 
                 {/* SUBMIT BUTTON */}
                 <div className="d-grid gap-2">
-                  <Button onClick={handleClick_PredictVector}
+                  <Button type={'submit'}
                           size={'lg'}
                           variant="primary">
-                    {t('predict')}
+                    <Trans i18nKey={'predict'} />
                   </Button>
                 </div>
                 {
-                  dataset_key === UPLOAD &&
+                  dataset === UPLOAD &&
                   <>
                     <hr />
                     <Row>

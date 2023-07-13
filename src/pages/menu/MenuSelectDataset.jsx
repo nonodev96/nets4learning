@@ -3,8 +3,22 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import alertHelper from '@utils/alertHelper'
-import { DATASET_1_SALARY, DATASET_2_AUTO_MPG, DATASET_3_BOSTON_HOUSING, DATASET_4_BREAST_CANCER, DATASET_5_STUDENT_PERFORMANCE, DATASET_6_WINE } from '../playground/1_LinearRegression/datasets'
-import { UPLOAD } from '@/DATA_MODEL'
+import {
+  TASKS,
+  UPLOAD,
+
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE,
+
+  MODEL_CAR,
+  MODEL_IRIS,
+  MODEL_LYMPHOGRAPHY,
+  MODEL_IMAGE_MNIST
+} from '@/DATA_MODEL'
 
 export default function MenuSelectDataset () {
 
@@ -19,58 +33,44 @@ export default function MenuSelectDataset () {
     if (dataset_id === 'select-dataset') {
       await alertHelper.alertWarning(t('alert.menu.need-select-dataset'))
     } else {
-      history.push('/playground/' + id + '/' + 1 + '/' + dataset_id)
+      history.push('/playground/' + id + '/dataset/' + dataset_id)
     }
   }
 
-  const PrintHTML_OPTIONS = (_id) => {
-    switch (_id) {
-      case '0': {
+  const Print_HTML_OPTIONS = () => {
+    switch (id) {
+      case TASKS.TABULAR_CLASSIFICATION: {
         // tabular-classification
         return <>
-          <option value={0}>{t('pages.menu-selection-dataset.0-tabular-classification.csv')}</option>
-          <option value={1}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-1')}</option>
-          <option value={2}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-2')}</option>
-          <option value={3}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-3')}</option>
+          <option value={UPLOAD}>{t('pages.menu-selection-dataset.0-tabular-classification.csv')}</option>
+          <option value={MODEL_CAR.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-1')}</option>
+          <option value={MODEL_IRIS.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-2')}</option>
+          <option value={MODEL_LYMPHOGRAPHY.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-3')}</option>
         </>
       }
-      case '1': {
+      case TASKS.LINEAR_REGRESSION: {
         // linear-regression
         return <>
-          <option value={UPLOAD}>
-            {t('pages.menu-selection-dataset.1-linear-regression.csv')}
-          </option>
-          <option value={DATASET_1_SALARY.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.1-salary')}
-          </option>
-          <option value={DATASET_2_AUTO_MPG.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.2-auto-mpg')}
-          </option>
-          <option value={DATASET_3_BOSTON_HOUSING.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.3-boston-housing')}
-          </option>
-          <option value={DATASET_4_BREAST_CANCER.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.4-breast-cancer')}
-          </option>
-          <option value={DATASET_5_STUDENT_PERFORMANCE.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.5-student-performance')}
-          </option>
-          <option value={DATASET_6_WINE.KEY}>
-            {t('datasets-models.1-linear-regression.list-datasets.6-wine')}
-          </option>
+          <option value={UPLOAD}>{t('pages.menu-selection-dataset.1-linear-regression.csv')}</option>
+          <option value={MODEL_1_SALARY.KEY}>{t('datasets-models.1-linear-regression.list-datasets.salary')}</option>
+          <option value={MODEL_2_AUTO_MPG.KEY}>{t('datasets-models.1-linear-regression.list-datasets.auto-mpg')}</option>
+          <option value={MODEL_3_BOSTON_HOUSING.KEY}>{t('datasets-models.1-linear-regression.list-datasets.boston-housing')}</option>
+          <option value={MODEL_4_BREAST_CANCER.KEY}>{t('datasets-models.1-linear-regression.list-datasets.breast-cancer')}</option>
+          <option value={MODEL_5_STUDENT_PERFORMANCE.KEY}>{t('datasets-models.1-linear-regression.list-datasets.student-performance')}</option>
+          <option value={MODEL_6_WINE.KEY}>{t('datasets-models.1-linear-regression.list-datasets.wine')}</option>
         </>
       }
-      case '2': {
+      case TASKS.OBJECT_DETECTION: {
         // object-detection
         console.warn('TODO')
         return <>
         </>
       }
-      case '3': {
+      case TASKS.IMAGE_CLASSIFICATION: {
         // image-classifier
         console.warn('TODO')
         return <>
-          <option value={1}>{t('pages.menu-selection-dataset.1-image-classifier')}</option>
+          <option value={MODEL_IMAGE_MNIST.KEY}>{t('pages.menu-selection-dataset.1-image-classifier')}</option>
         </>
       }
       default: {
@@ -97,7 +97,7 @@ export default function MenuSelectDataset () {
                                defaultValue={'select-dataset'}
                                onChange={(e) => setDatasetId(e.target.value)}>
                     <option value={'select-dataset'} disabled>{t('pages.menu-selection-dataset.form-option-_-1')}</option>
-                    {PrintHTML_OPTIONS(id)}
+                    {Print_HTML_OPTIONS()}
                   </Form.Select>
                 </Form.Group>
 

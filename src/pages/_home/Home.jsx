@@ -1,15 +1,189 @@
-import './Home.css'
-import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import { Trans } from 'react-i18next'
-import InitialMenu from '../_initialMenu/InitialMenu'
-import { CookiesModal } from '@components/cookiesModal/CookiesModal'
+import React, { useState } from 'react'
+import { Col, Container, Row, Button, Card } from 'react-bootstrap'
+import { Trans, useTranslation } from 'react-i18next'
+
+import CookiesModal from '@components/cookiesModal/CookiesModal'
+
+import { useHistory } from 'react-router-dom'
+import { TASKS } from '@/DATA_MODEL'
+
+const SELECTOR = {
+  MODEL  : 'MODEL',
+  DATASET: 'DATASET',
+}
 
 export default function Home () {
+  const history = useHistory()
+  const { t } = useTranslation()
+
+  const [buttonActive, setButtonActive] = useState(TASKS.TABULAR_CLASSIFICATION)
+
+  const handleClick_TrainEdit = (selector) => {
+    if (selector === SELECTOR.MODEL)
+      history.push('/select-model/' + buttonActive)
+    if (selector === SELECTOR.DATASET)
+      history.push('/select-dataset/' + buttonActive)
+  }
+
+  const handleClick_OpenCardModel = (modelType) => {
+    setButtonActive(modelType)
+  }
+
+  const MenuSelection = () => {
+    switch (buttonActive) {
+      case TASKS.TABULAR_CLASSIFICATION:
+        return (
+          <>
+            <Card className={'border-primary'}>
+              <Card.Header><h3>{t('pages.index.tabular-classification.1-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  {t('pages.index.tabular-classification.1-description-1')}
+                </Card.Text>
+                <Card.Text>
+                  {t('pages.index.tabular-classification.1-description-2')}
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                    {t('pages.index.tabular-classification.1-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+
+            <Card className={'border-primary mt-3'}>
+              <Card.Header><h3>{t('pages.index.tabular-classification.2-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  {t('pages.index.tabular-classification.2-description-1')}
+                </Card.Text>
+                <Card.Text>
+                  {t('pages.index.tabular-classification.2-description-2')}
+                </Card.Text>
+                <Row>
+                  <Col>
+                    <ul>
+                      <li>{t('pages.index.tabular-classification.2-description-list.1')}</li>
+                      <li>{t('pages.index.tabular-classification.2-description-list.2')}</li>
+                      <li>{t('pages.index.tabular-classification.2-description-list.3')}</li>
+                    </ul>
+                  </Col>
+                  <Col>
+                    <ul>
+                      <li>{t('pages.index.tabular-classification.2-description-list.4')}</li>
+                      <li>{t('pages.index.tabular-classification.2-description-list.5')}</li>
+                      <li>{t('pages.index.tabular-classification.2-description-list.6')}</li>
+                    </ul>
+                  </Col>
+                </Row>
+                {/*
+                <Card.Text>
+                  {t("pages.index.tabular-classification.2-description-footer")}
+                </Card.Text>
+                */}
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
+                    {t('pages.index.tabular-classification.2-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
+        )
+      case TASKS.LINEAR_REGRESSION:
+        return (
+          <>
+            <Card className={'border-danger'}>
+              <Card.Header><h3>{t('pages.index.linear-regression.1-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>{t('pages.index.linear-regression.1-description-1')}</Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}
+                          data-testid={'Test-GoTo-SelectModel-LinearRegression'}>
+                    {t('pages.index.linear-regression.1-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+
+            <Card className={'border-primary mt-3'}>
+              <Card.Header><h3>{t('pages.index.linear-regression.2-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>{t('pages.index.linear-regression.2-description-1')}</Card.Text>
+                <Card.Text>{t('pages.index.linear-regression.2-description-2')}</Card.Text>
+                <Card.Text>{t('pages.index.linear-regression.2-description-list.title')}</Card.Text>
+                <Row>
+                  <Col>
+                    <ul>
+                      <li>{t('pages.index.linear-regression.2-description-list.1')}</li>
+                      <li>{t('pages.index.linear-regression.2-description-list.2')}</li>
+                      <li>{t('pages.index.linear-regression.2-description-list.3')}</li>
+                    </ul>
+                  </Col>
+                  <Col>
+                    <ul>
+                      <li>{t('pages.index.linear-regression.2-description-list.4')}</li>
+                      <li>{t('pages.index.linear-regression.2-description-list.5')}</li>
+                      <li>{t('pages.index.linear-regression.2-description-list.6')}</li>
+                    </ul>
+                  </Col>
+                </Row>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
+                    {t('pages.index.tabular-classification.2-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
+        )
+      case TASKS.OBJECT_DETECTION:
+        return (
+          <>
+            <Card className={'border-warning'}>
+              <Card.Header><h3>{t('pages.index.object-detection.1-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  {t('pages.index.object-detection.1-description-1')}
+                </Card.Text>
+                <Card.Text>
+                  {t('pages.index.object-detection.1-description-2')}
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                    {t('pages.index.object-detection.1-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
+        )
+      case TASKS.IMAGE_CLASSIFICATION:
+        return (
+          <>
+            <Card className={'border-info'}>
+              <Card.Header><h3>{t('pages.index.image-classification.1-title')}</h3></Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  {t('pages.index.image-classification.1-description-1')}
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
+                    {t('pages.index.image-classification.1-button')}
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </>
+        )
+      default:
+        return ''
+    }
+  }
 
   return (
     <>
-      <main className="mb-3" data-title={'Home'}>
+      <main className={'mb-3'} data-title={'Home'}>
         <Container>
           <Row>
             <Col>
@@ -21,7 +195,61 @@ export default function Home () {
 
         <CookiesModal />
 
-        <InitialMenu />
+        <Container>
+          <Row className={'row-cols-1 row-cols-md-3 row-cols-xl-3'}>
+            <Col className={'mt-3'}>
+              <div className="d-grid gap-2">
+                <Button onClick={() => handleClick_OpenCardModel(TASKS.TABULAR_CLASSIFICATION)}
+                        variant={'primary'}
+                        size={'lg'}>
+                  {t('pages.index.tabular-classification.1-title')}
+                </Button>
+              </div>
+            </Col>
+            {
+              /**
+               * TODO
+               * Esto se debe eliminar en la versión estable de la regresión lineal
+               */
+            }
+            {process.env.REACT_APP_ENVIRONMENT === 'development' &&
+              <Col className={'mt-3'}>
+                <div className="d-grid gap-2">
+                  <Button onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}
+                          data-testid={'Test-InitialMenu-LinearRegression'}
+                          variant={'danger'}
+                          size={'lg'}>
+                    {t('pages.index.linear-regression.1-title')}
+                  </Button>
+                </div>
+              </Col>
+            }
+            <Col className={'mt-3'}>
+              <div className="d-grid gap-2">
+                <Button onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}
+                        variant={'info'}
+                        size={'lg'}>
+                  {t('pages.index.image-classification.1-title')}
+                </Button>
+              </div>
+            </Col>
+
+            <Col className={'mt-3'}>
+              <div className="d-grid gap-2">
+                <Button onClick={() => handleClick_OpenCardModel(TASKS.OBJECT_DETECTION)}
+                        variant={'warning'}
+                        size={'lg'}>
+                  {t('pages.index.object-detection.1-title')}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+          <Row className={'mt-3'}>
+            <Col xl={12}>
+              {MenuSelection()}
+            </Col>
+          </Row>
+        </Container>
       </main>
     </>
   )

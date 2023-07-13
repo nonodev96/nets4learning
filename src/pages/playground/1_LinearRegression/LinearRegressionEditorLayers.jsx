@@ -67,51 +67,57 @@ export default function LinearRegressionEditorLayers () {
       <Card.Body>
 
         <Accordion defaultValue={''} defaultActiveKey={''}>
-          {tmpModel.list_layers.map((item, index) => {
-            return <Accordion.Item eventKey={index.toString()} key={index}>
-              <Accordion.Header><Trans i18nKey={'layer-id'} values={{ index: index + 1 }} /></Accordion.Header>
-              <Accordion.Body>
-                <div className="d-grid gap-2">
-                  <Button onClick={() => handlerClick_RemoveLayer(index)}
-                          variant={'outline-danger'}>
-                    <Trans i18nKey={prefix + 'delete-layer'} values={{ index: index + 1 }} />
-                  </Button>
-                </div>
-                <Form.Group className="mt-3" controlId={'formUnitsLayer' + index}>
-                  <Form.Label>
-                    <Trans i18nKey={prefix + 'units'} />
-                  </Form.Label>
-                  <Form.Control type="number"
-                                min={1} max={200}
-                                placeholder={t('units-placeholder')}
-                                value={item.units}
-                                onChange={(e) => handleChange_Layer(index, {
-                                  units     : parseInt(e.target.value),
-                                  activation: item.activation,
-                                })} />
-                </Form.Group>
+          <>
+            {tmpModel.list_layers.map((item, index) => {
+              return <Accordion.Item eventKey={index.toString()} key={index}>
+                <Accordion.Header>
+                  <Trans i18nKey={prefix + 'layer-id'}
+                         values={{ index: index + 1 }} />
+                </Accordion.Header>
+                <Accordion.Body>
+                  <div className="d-grid gap-2">
+                    <Button onClick={() => handlerClick_RemoveLayer(index)}
+                            variant={'outline-danger'}>
+                      <Trans i18nKey={prefix + 'delete-layer'}
+                             values={{ index: index + 1 }} />
+                    </Button>
+                  </div>
+                  <Form.Group className="mt-3" controlId={'formUnitsLayer' + index}>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + 'units'} />
+                    </Form.Label>
+                    <Form.Control type="number"
+                                  min={1} max={200}
+                                  placeholder={t(prefix + 'units-placeholder')}
+                                  value={item.units}
+                                  onChange={(e) => handleChange_Layer(index, {
+                                    units     : parseInt(e.target.value),
+                                    activation: item.activation,
+                                  })} />
+                  </Form.Group>
 
-                <Form.Group className="m3-3" controlId={'formActivationLayer' + index}>
-                  <Form.Label>
-                    <Trans i18nKey={prefix + 'activation-function-select'} />
-                  </Form.Label>
-                  <Form.Select aria-label={'Default select example: ' + item.activation}
-                               value={item.activation}
-                               onChange={(e) => handleChange_Layer(index, {
-                                 units     : item.units,
-                                 activation: e.target.value,
-                               })}>
-                    {TYPE_ACTIVATION.map(({ key, label }, index) => {
-                      return (<option key={index} value={key}>{label}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    <Trans i18nKey={prefix + 'activation-function-info'} />
-                  </Form.Text>
-                </Form.Group>
-              </Accordion.Body>
-            </Accordion.Item>
-          })}
+                  <Form.Group className="mt-3" controlId={'formActivationLayer' + index}>
+                    <Form.Label>
+                      <Trans i18nKey={prefix + 'activation-function-select'} />
+                    </Form.Label>
+                    <Form.Select aria-label={'Default select example: ' + item.activation}
+                                 value={item.activation}
+                                 onChange={(e) => handleChange_Layer(index, {
+                                   units     : item.units,
+                                   activation: e.target.value,
+                                 })}>
+                      {TYPE_ACTIVATION.map(({ key, label }, index) => {
+                        return (<option key={index} value={key}>{label}</option>)
+                      })}
+                    </Form.Select>
+                    <Form.Text className="text-muted">
+                      <Trans i18nKey={prefix + 'activation-function-info'} />
+                    </Form.Text>
+                  </Form.Group>
+                </Accordion.Body>
+              </Accordion.Item>
+            })}
+          </>
         </Accordion>
 
       </Card.Body>

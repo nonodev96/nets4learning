@@ -7,7 +7,7 @@ import * as dfd from 'danfojs'
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-import { getKeyDatasetByID_TabularClassification, UPLOAD, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, } from '@/DATA_MODEL'
+import { UPLOAD, MODEL_CAR, MODEL_IRIS, MODEL_LYMPHOGRAPHY, } from '@/DATA_MODEL'
 import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload, } from '@core/nn-utils/ArchitectureHelper'
 import { TYPE_ACTIVATION, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER, } from '@core/nn-utils/ArchitectureTypesHelper'
 
@@ -85,7 +85,6 @@ const DEFAULT_LAYERS_UPLOAD = [
  */
 export default function TabularClassification (props) {
   const { dataset } = props
-  const dataset_key = getKeyDatasetByID_TabularClassification(dataset)
 
   const { t } = useTranslation()
   const prefix = 'pages.playground.generator.'
@@ -128,7 +127,7 @@ export default function TabularClassification (props) {
   const [isDatasetProcessed, setIsDatasetProcessed] = useState(false)
 
   // Layers
-  const [layers, setLayers] = useState(dataset_key === UPLOAD ? DEFAULT_LAYERS_UPLOAD : DEFAULT_LAYERS)
+  const [layers, setLayers] = useState(dataset === UPLOAD ? DEFAULT_LAYERS_UPLOAD : DEFAULT_LAYERS)
 
   // Params
   const [learningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE)
@@ -191,9 +190,9 @@ export default function TabularClassification (props) {
   }
 
   useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: '/TabularClassificationCustomDataset/' + dataset_key, title: dataset_key })
+    ReactGA.send({ hitType: 'pageview', page: '/TabularClassificationCustomDataset/' + dataset, title: dataset })
 
-    switch (dataset_key) {
+    switch (dataset) {
       case UPLOAD: {
         // TODO
         // const uploadedArchitecture = localStorage.getItem('custom-architecture')
@@ -255,7 +254,7 @@ export default function TabularClassification (props) {
     return () => {
       tfvis.visor().close()
     }
-  }, [dataset_key, t])
+  }, [dataset, t])
 
   // region Dataset
   const handleChange_FileUpload_CSV = async (files, _event) => {
@@ -498,7 +497,8 @@ export default function TabularClassification (props) {
 
   // region Prediction
   // TODO Prediction Upload
-  const handleClick_PredictVector_upload = async () => {
+  const handleSubmit_PredictVector_upload = async (e) => {
+    e.preventDefault()
     const currentDataProcessed = generatedModels[generatedModelsIndex].dataProcessed
     const currentObjEncoder = currentDataProcessed.obj_encoder
     const columnNameTarget = currentDataProcessed.column_name_target
@@ -546,8 +546,9 @@ export default function TabularClassification (props) {
     await alertHelper.alertSuccess(t('prediction'), { text })
   }
 
-  const handleClick_PredictVector = async () => {
-    if (dataset_key === UPLOAD) {
+  const handleSubmit_PredictVector = async (e) => {
+    e.preventDefault()
+    if (dataset === UPLOAD) {
       if (customDataSet_JSON === null) {
         await alertHelper.alertError('Primero debes de cargar un dataset')
         return
@@ -560,7 +561,7 @@ export default function TabularClassification (props) {
     let dataset_JSON = null
     let input = [[], [1, stringToPredict.split(';').length]]
     try {
-      switch (dataset_key) {
+      switch (dataset) {
         case UPLOAD: {
           dataset_JSON = customDataSet_JSON
           break
@@ -666,7 +667,7 @@ export default function TabularClassification (props) {
 
   // Comprueba si se han ejecutado los pasos previos
   const canRender_DynamicFormDataset = () => {
-    if (dataset_key === UPLOAD) {
+    if (dataset === UPLOAD) {
       return (customDataSet_JSON || dataProcessed) && Model
     } else {
       return (customDataSet_JSON) && Model
@@ -679,8 +680,8 @@ export default function TabularClassification (props) {
       <Container className={'mb-3'}>
         <Row>
           <Col xl={12} className={'mt-3'}>
-            <Accordion defaultActiveKey={dataset_key === UPLOAD ? 'description_dataset' : ''}>
-              <Accordion.Item key={'0'} eventKey={'description_architecture_editor'}>
+            <Accordion defaultActiveKey={dataset === UPLOAD ? 'description_dataset' : ''}>
+              <Accordion.Item key={UPLOAD} eventKey={'description_architecture_editor'}>
                 <Accordion.Header>
                   <h3><Trans i18nKey={prefixManual + 'manual.title'} /></h3>
                 </Accordion.Header>
@@ -690,12 +691,12 @@ export default function TabularClassification (props) {
               <Accordion.Item key={'1'} eventKey={'description_dataset'}>
                 <Accordion.Header>
                   <h3>
-                    <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
+                    <Trans i18nKey={dataset !== UPLOAD ? modelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
                   </h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   {{
-                    '0': <>
+                    [UPLOAD]: <>
                       <DragAndDrop name={'csv'}
                                    accept={{ 'text/csv': ['.csv'] }}
                                    text={t('drag-and-drop.csv')}
@@ -719,7 +720,7 @@ export default function TabularClassification (props) {
                       </>}
                     </>,
                   }[dataset]}
-                  {dataset !== '0' ? (
+                  {dataset !== UPLOAD ? (
                     modelInfo.DESCRIPTION()
                   ) : ('')}
                 </Accordion.Body>
@@ -786,7 +787,7 @@ export default function TabularClassification (props) {
         </Row>
       </Container>
 
-      <Form id={'TabularClassificationCustomDataset'} onSubmit={dataset_key === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
+      <Form id={'TabularClassificationCustomDataset'} onSubmit={dataset === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
         <Container>
           {/* BLOCK 1 */}
           <Row className={'mt-3'}>
@@ -820,14 +821,16 @@ export default function TabularClassification (props) {
                       return (
                         <Accordion.Item key={index} eventKey={index.toString()}>
                           <Accordion.Header>
-                            <Trans i18nKey={prefix + 'editor-layers.layer-id'} values={{ value: index + 1 }} />
+                            <Trans i18nKey={prefix + 'editor-layers.layer-id'}
+                                   values={{ index: index + 1 }} />
                           </Accordion.Header>
 
                           <Accordion.Body>
                             <div className="d-grid gap-2">
                               <Button onClick={() => handlerClick_RemoveLayer(index)}
                                       variant={'outline-danger'}>
-                                <Trans i18nKey={prefix + 'editor-layers.delete-layer'} values={{ value: index + 1 }} />
+                                <Trans i18nKey={prefix + 'editor-layers.delete-layer'}
+                                       values={{ index: index + 1 }} />
                               </Button>
                             </div>
                             {/* UNITS */}
@@ -1114,13 +1117,12 @@ export default function TabularClassification (props) {
       {canRender_DynamicFormDataset() &&
         (<TabularClassificationPredictionDynamicForm dataset_JSON={customDataSet_JSON}
                                                      dataset={dataset}
-                                                     dataset_key={dataset_key}
                                                      stringToPredict={stringToPredict}
                                                      setStringToPredict={setStringToPredict}
                                                      objectToPredict={objectToPredict}
                                                      setObjectToPredict={setObjectToPredict}
                                                      predictionBar={predictionBar}
-                                                     handleClick_PredictVector={dataset_key === UPLOAD ? handleClick_PredictVector_upload : handleClick_PredictVector} />)
+                                                     handleSubmit_PredictVector={dataset === UPLOAD ? handleSubmit_PredictVector_upload : handleSubmit_PredictVector} />)
       }
 
       {isDebug &&
@@ -1140,12 +1142,7 @@ export default function TabularClassification (props) {
                   </div>
                 </Card.Header>
                 <Card.Body>
-                  <Button onClick={() => handleClick_PredictVector_upload()}
-                          className={'ms-3'}
-                          size={'sm'}
-                          variant={'outline-primary'}>
-                    Debug Prediction
-                  </Button>
+
                   <div id="plot_div"></div>
                 </Card.Body>
               </Card>

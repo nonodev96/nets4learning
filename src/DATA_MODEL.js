@@ -4,13 +4,13 @@ import {
   MODEL_LYMPHOGRAPHY
 } from '@pages/playground/0_TabularClassification/models'
 import {
-  DATASET_1_SALARY,
-  DATASET_2_AUTO_MPG,
-  DATASET_3_BOSTON_HOUSING,
-  DATASET_4_BREAST_CANCER,
-  DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE
-} from '@pages/playground/1_LinearRegression/datasets'
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE
+} from '@pages/playground/1_LinearRegression/models'
 import {
   MODEL_FACE_DETECTOR,
   MODEL_FACE_MESH,
@@ -23,6 +23,13 @@ import {
   MODEL_IMAGE_RESNET
 } from '@pages/playground/3_ImageClassification/models'
 
+const TASKS = {
+  TABULAR_CLASSIFICATION: 'tabular-classification',
+  LINEAR_REGRESSION     : 'linear-regression',
+  IMAGE_CLASSIFICATION  : 'image-classification',
+  OBJECT_DETECTION      : 'object-detection'
+}
+
 const UPLOAD = 'UPLOAD'
 
 const LIST_MODELS_TABULAR_CLASSIFICATION = [
@@ -34,12 +41,12 @@ const LIST_MODELS_TABULAR_CLASSIFICATION = [
 
 const LIST_MODELS_LINEAR_REGRESSION = [
   UPLOAD,
-  DATASET_1_SALARY.KEY,
-  DATASET_2_AUTO_MPG.KEY,
-  DATASET_3_BOSTON_HOUSING.KEY,
-  DATASET_4_BREAST_CANCER.KEY,
-  DATASET_5_STUDENT_PERFORMANCE.KEY,
-  DATASET_6_WINE.KEY
+  MODEL_1_SALARY.KEY,
+  MODEL_2_AUTO_MPG.KEY,
+  MODEL_3_BOSTON_HOUSING.KEY,
+  MODEL_4_BREAST_CANCER.KEY,
+  MODEL_5_STUDENT_PERFORMANCE.KEY,
+  MODEL_6_WINE.KEY
 ]
 
 const LIST_MODELS_OBJECT_DETECTION = [
@@ -68,12 +75,12 @@ export const LIST_MODEL_OPTIONS_IDS = {
   LINEAR_REGRESSION     : {
     // 1
     0: UPLOAD,
-    1: DATASET_1_SALARY.KEY,
-    2: DATASET_2_AUTO_MPG.KEY,
-    3: DATASET_3_BOSTON_HOUSING.KEY,
-    4: DATASET_4_BREAST_CANCER.KEY,
-    5: DATASET_5_STUDENT_PERFORMANCE.KEY,
-    6: DATASET_6_WINE.KEY
+    1: MODEL_1_SALARY.KEY,
+    2: MODEL_2_AUTO_MPG.KEY,
+    3: MODEL_3_BOSTON_HOUSING.KEY,
+    4: MODEL_4_BREAST_CANCER.KEY,
+    5: MODEL_5_STUDENT_PERFORMANCE.KEY,
+    6: MODEL_6_WINE.KEY
   },
   OBJECT_DETECTION      : {
     // 2
@@ -89,74 +96,6 @@ export const LIST_MODEL_OPTIONS_IDS = {
     1: MODEL_IMAGE_MNIST.KEY,
     2: MODEL_IMAGE_MOBILENET.KEY,
     3: MODEL_IMAGE_RESNET.KEY
-  }
-}
-
-const getKeyDatasetByID_TabularClassification = (id) => {
-  switch (id.toString()) {
-    case '0':
-      return UPLOAD
-    case '1':
-      return MODEL_CAR.KEY
-    case '2':
-      return MODEL_IRIS.KEY
-    case '3':
-      return MODEL_LYMPHOGRAPHY.KEY
-    default:
-      console.error('Error, opción no disponible')
-  }
-}
-
-const getKeyDatasetByID_LinearRegression = (id) => {
-  switch (id.toString()) {
-    case '0':
-      return UPLOAD
-    case '1':
-      return DATASET_1_SALARY.KEY
-    case '2':
-      return DATASET_2_AUTO_MPG.KEY
-    case '3':
-      return DATASET_3_BOSTON_HOUSING.KEY
-    case '4':
-      return DATASET_4_BREAST_CANCER.KEY
-    case '5':
-      return DATASET_5_STUDENT_PERFORMANCE.KEY
-    case '6':
-      return DATASET_6_WINE.KEY
-    default:
-      console.error('Error, opción no disponible')
-  }
-}
-
-const getKeyDatasetByID_ObjectDetection = (id) => {
-  switch (id.toString()) {
-    case '0':
-      return UPLOAD
-    case '1':
-      return MODEL_FACE_DETECTOR.KEY
-    case '2':
-      return MODEL_FACE_MESH.KEY
-    case '3':
-      return MODEL_MOVE_NET_POSE_NET.KEY
-    case '4':
-      return MODEL_COCO_SSD.KEY
-    default:
-      console.error('Error, opción no disponible')
-  }
-}
-
-const getKeyDatasetByID_ImageClassification = (id) => {
-  switch (id.toString()) {
-    case '0':
-      return UPLOAD
-    case '1':
-      return MODEL_IMAGE_MNIST.KEY
-    case '2':
-      return MODEL_IMAGE_MOBILENET.KEY
-    case '3':
-      return MODEL_IMAGE_RESNET.KEY
-    default:
-      console.error('Error, opción no disponible')
   }
 }
 
@@ -186,10 +125,8 @@ const LIST_OF_IMAGES_MOBILENET = [
 ]
 
 export {
-  getKeyDatasetByID_TabularClassification,
-  getKeyDatasetByID_LinearRegression,
-  getKeyDatasetByID_ObjectDetection,
-  getKeyDatasetByID_ImageClassification,
+  TASKS,
+
   // Genérico para todos
   UPLOAD,
 
@@ -201,12 +138,12 @@ export {
 
   // Regresión lineal
   LIST_MODELS_LINEAR_REGRESSION,
-  DATASET_1_SALARY,
-  DATASET_2_AUTO_MPG,
-  DATASET_3_BOSTON_HOUSING,
-  DATASET_4_BREAST_CANCER,
-  DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE,
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE,
 
   // Identificación de objetos
   LIST_MODELS_OBJECT_DETECTION,

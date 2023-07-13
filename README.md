@@ -24,8 +24,8 @@ There are some classical problems prepared and reviewed to make predictions, the
     - [MODEL_IRIS.js](src/pages/playground/0_TabularClassification/models/MODEL_IRIS.js)
     - [MODEL_LYMPHOGRAPHY.js](src/pages/playground/0_TabularClassification/models/MODEL_LYMPHOGRAPHY.js)
 2. Image classifier
-    - [MODEL_MNIST.js](src/pages/playground/3_ImageClassification/models/MODEL_MNIST.js)
-    - [MODEL_MOBILENET.js](src/pages/playground/3_ImageClassification/models/MODEL_MOBILENET.js)
+    - [MODEL_IMAGE_MNIST.js](src/pages/playground/3_ImageClassification/models/MODEL_MNIST.js)
+    - [MODEL_IMAGE_MOBILENET.js](src/pages/playground/3_ImageClassification/models/MODEL_MOBILENET.js)
 3. Object identification
     - [MODEL_FACE_DETECTOR.js](src/pages/playground/2_ObjectDetection/models/MODEL_FACE_DETECTOR.js)
     - [MODEL_FACE_MESH.js](src/pages/playground/2_ObjectDetection/models/MODEL_FACE_MESH.js)

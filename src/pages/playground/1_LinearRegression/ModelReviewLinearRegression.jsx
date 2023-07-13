@@ -1,57 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Container, Row } from 'react-bootstrap'
 import { useParams } from 'react-router'
 import { Trans, useTranslation } from 'react-i18next'
+import { Card, Col, Container, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 
 import {
-  DATASET_1_SALARY,
-  DATASET_2_AUTO_MPG,
-  DATASET_3_BOSTON_HOUSING,
-  DATASET_4_BREAST_CANCER,
-  DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE,
-} from './datasets'
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE,
+} from '@/DATA_MODEL'
 
-export default function ModelReviewLinearRegression (props) {
+export default function ModelReviewLinearRegression ({ dataset }) {
+  const { id } = useParams()
 
-  const { dataset: param_id } = useParams()
-  const { dataset } = props
   const { t } = useTranslation()
 
   const [iModel, setIModel] = useState(null)
 
   useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page   : '/ModelReviewLinearRegression/' + dataset, title: dataset, })
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewLinearRegression/' + dataset, title: dataset, })
   }, [dataset])
 
   useEffect(() => {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
     switch (dataset) {
-      case DATASET_1_SALARY.KEY:
-        setIModel(new DATASET_1_SALARY(t, {}))
+      case MODEL_1_SALARY.KEY:
+        setIModel(new MODEL_1_SALARY(t, {}))
         break
-      case DATASET_2_AUTO_MPG.KEY:
-        setIModel(new DATASET_2_AUTO_MPG(t, {}))
+      case MODEL_2_AUTO_MPG.KEY:
+        setIModel(new MODEL_2_AUTO_MPG(t, {}))
         break
-      case DATASET_3_BOSTON_HOUSING.KEY:
-        setIModel(new DATASET_3_BOSTON_HOUSING(t, {}))
+      case MODEL_3_BOSTON_HOUSING.KEY:
+        setIModel(new MODEL_3_BOSTON_HOUSING(t, {}))
         break
-      case DATASET_4_BREAST_CANCER.KEY:
-        setIModel(new DATASET_4_BREAST_CANCER(t, {}))
+      case MODEL_4_BREAST_CANCER.KEY:
+        setIModel(new MODEL_4_BREAST_CANCER(t, {}))
         break
-      case DATASET_5_STUDENT_PERFORMANCE.KEY:
-        setIModel(new DATASET_5_STUDENT_PERFORMANCE(t, {}))
+      case MODEL_5_STUDENT_PERFORMANCE.KEY:
+        setIModel(new MODEL_5_STUDENT_PERFORMANCE(t, {}))
         break
-      case DATASET_6_WINE.KEY:
-        setIModel(new DATASET_6_WINE(t, {}))
+      case MODEL_6_WINE.KEY:
+        setIModel(new MODEL_6_WINE(t, {}))
         break
       default:
-        console.error('Error, incorrect model', param_id)
+        console.error('Error, incorrect model', dataset)
         break
     }
-  }, [dataset, t, param_id])
+  }, [dataset, t])
 
   useEffect(() => {
     async function asyncFunction () {
@@ -70,7 +69,7 @@ export default function ModelReviewLinearRegression (props) {
         <Row className={'mt-2'}>
           <Col xl={12}>
             <div className="d-flex justify-content-between">
-              <h1><Trans i18nKey={'modality.' + param_id} /></h1>
+              <h1><Trans i18nKey={'modality.' + id} /></h1>
             </div>
           </Col>
         </Row>

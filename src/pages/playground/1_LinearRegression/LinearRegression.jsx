@@ -7,13 +7,13 @@ import DebugJSON from '@components/debug/DebugJSON'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import {
-  DATASET_1_SALARY,
-  DATASET_2_AUTO_MPG,
-  DATASET_3_BOSTON_HOUSING,
-  DATASET_4_BREAST_CANCER,
-  DATASET_5_STUDENT_PERFORMANCE,
-  DATASET_6_WINE
-} from './datasets'
+  MODEL_1_SALARY,
+  MODEL_2_AUTO_MPG,
+  MODEL_3_BOSTON_HOUSING,
+  MODEL_4_BREAST_CANCER,
+  MODEL_5_STUDENT_PERFORMANCE,
+  MODEL_6_WINE
+} from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
@@ -67,28 +67,28 @@ export default function LinearRegression ({ dataset_id }) {
     } else {
       let info_dataset
       switch (dataset_id) {
-        case DATASET_1_SALARY.KEY: {
-          info_dataset = new DATASET_1_SALARY(t, setAccordionActive)
+        case MODEL_1_SALARY.KEY: {
+          info_dataset = new MODEL_1_SALARY(t, setAccordionActive)
           break
         }
-        case DATASET_2_AUTO_MPG.KEY: {
-          info_dataset = new DATASET_2_AUTO_MPG(t, setAccordionActive)
+        case MODEL_2_AUTO_MPG.KEY: {
+          info_dataset = new MODEL_2_AUTO_MPG(t, setAccordionActive)
           break
         }
-        case DATASET_3_BOSTON_HOUSING.KEY: {
-          info_dataset = new DATASET_3_BOSTON_HOUSING(t, setAccordionActive)
+        case MODEL_3_BOSTON_HOUSING.KEY: {
+          info_dataset = new MODEL_3_BOSTON_HOUSING(t, setAccordionActive)
           break
         }
-        case DATASET_4_BREAST_CANCER.KEY: {
-          info_dataset = new DATASET_4_BREAST_CANCER(t, setAccordionActive)
+        case MODEL_4_BREAST_CANCER.KEY: {
+          info_dataset = new MODEL_4_BREAST_CANCER(t, setAccordionActive)
           break
         }
-        case DATASET_5_STUDENT_PERFORMANCE.KEY: {
-          info_dataset = new DATASET_5_STUDENT_PERFORMANCE(t, setAccordionActive)
+        case MODEL_5_STUDENT_PERFORMANCE.KEY: {
+          info_dataset = new MODEL_5_STUDENT_PERFORMANCE(t, setAccordionActive)
           break
         }
-        case DATASET_6_WINE.KEY: {
-          info_dataset = new DATASET_6_WINE(t, setAccordionActive)
+        case MODEL_6_WINE.KEY: {
+          info_dataset = new MODEL_6_WINE(t, setAccordionActive)
           break
         }
         default: {
@@ -134,7 +134,7 @@ export default function LinearRegression ({ dataset_id }) {
               <Button size={'sm'}
                       variant={'outline-primary'}
                       onClick={refJoyrideButton.current.handleClick_StartJoyride}>
-                <Trans i18nKey={'Joyride Button'} />
+                <Trans i18nKey={'datasets-models.1-linear-regression.joyride.title'} />
               </Button>
             </div>
           </Col>
@@ -156,17 +156,17 @@ export default function LinearRegression ({ dataset_id }) {
                   <Suspense fallback={<></>}><LinearRegressionManual i_model={i_model} /></Suspense>
                 </Accordion.Body>
               </Accordion.Item>
+
               <Accordion.Item className={'joyride-step-2-dataset-info'}
                               eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
                   <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body id={'info_model'}>
-
-                  <LinearRegressionDataset dataset_id={dataset_id} />
-
+                  <Suspense fallback={<></>}><LinearRegressionDataset dataset_id={dataset_id} /></Suspense>
                 </Accordion.Body>
               </Accordion.Item>
+
             </Accordion>
 
           </Col>
@@ -228,14 +228,7 @@ export default function LinearRegression ({ dataset_id }) {
 
         <Row className={'mt-3'}>
           <Col className={'joyride-step-8-list-of-models'}>
-            <Card>
-              <Card.Header className={'d-flex align-items-center'}>
-                <h3><Trans i18nKey={prefix + 'list-models-generated'} /></h3>
-              </Card.Header>
-              <Card.Body>
-                <Suspense fallback={<></>}><LinearRegressionTableModels /></Suspense>
-              </Card.Body>
-            </Card>
+            <Suspense fallback={<></>}><LinearRegressionTableModels /></Suspense>
           </Col>
         </Row>
 
@@ -243,14 +236,7 @@ export default function LinearRegression ({ dataset_id }) {
 
         <Row className={'mt-3'}>
           <Col className={'joyride-step-9-predict-visualization'}>
-            <Card>
-              <Card.Header>
-                <h3>{t('pages.playground.1-linear-regression.prediction')}</h3>
-              </Card.Header>
-              <Card.Body>
-                <Suspense fallback={<></>}><LinearRegressionPrediction /></Suspense>
-              </Card.Body>
-            </Card>
+            <Suspense fallback={<></>}><LinearRegressionPrediction /></Suspense>
           </Col>
         </Row>
 

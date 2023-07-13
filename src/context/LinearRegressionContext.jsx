@@ -2,7 +2,7 @@ import { createContext, useState } from 'react'
 import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
 import { useTranslation } from 'react-i18next'
-import { I_DATASETS_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/datasets'
+import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
 
 /**
  * @typedef {Object} CustomPreprocessDataset_t
@@ -72,7 +72,7 @@ import { I_DATASETS_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegres
  * @property {Array<string>} accordionActive
  * @property {Function} setAccordionActive
  *
- * @property {I_DATASETS_LINEAR_REGRESSION} i_model
+ * @property {I_MODEL_LINEAR_REGRESSION} i_model
  * @property {Function} setIModel
  *
  * @property {Object} dataPrediction
@@ -126,11 +126,15 @@ export function LinearRegressionProvider ({ children }) {
 
   const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */DEFAULT_CUSTOM_MODEL)
   const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
-  const [i_model, setIModel] = useState(new I_DATASETS_LINEAR_REGRESSION(t, setAccordionActive))
+  const [i_model, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
   const [isTraining, setIsTraining] = useState(false)
   const [dataPrediction, setDataPrediction] = useState({
-    labels  : [],
-    datasets: []
+    dataOriginal_label : '',
+    dataOriginal_x     : [],
+    dataOriginal_y     : [],
+    dataPredicted_label: '',
+    dataPredicted_x    : [],
+    dataPredicted_y    : [],
   })
 
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{

@@ -94,8 +94,10 @@
       "dataset": {
         "1-linear-regression": {
           "salary": "Conjunto de datos de salarios",
-          "auto-mpg": "Conjunto de datos de consumo de combustible",
+          "auto-mpg": "Conjunto de datos consumo de combustible",
           "boston": "Conjunto de datos casas de Boston",
+          "breast-cancer-wdbc": "Conjunto de datos Breast Cancer Wisconsin (Diagnostic)",
+          "breast-cancer-wpbc": "Conjunto de datos Breast Cancer Wisconsin (Prognostic)",
           "student-performance-mathematics": "Conjunto de datos de de estudiantes de matemáticas",
           "student-performance-portuguese": "Conjunto de datos de estudiantes de Portugués",
           "wine-red": "Conjunto de datos de vino tinto",
@@ -349,7 +351,31 @@
     },
     "1-linear-regression": {
       "salary": {
-        "title": "Salario por años"
+        "title": "Salario por años",
+        "description": {
+          "text-0": "El conjunto de datos \"Salary\" es una colección de información que relaciona la cantidad de años de experiencia laboral de un individuo con su salario correspondiente.",
+          "text-1": "Cada entrada en el conjunto de datos consta de dos variables principales: \"Years of Experience\" (Años de experiencia) y \"Salary\" (Salario). La variable \"Years of Experience\" representa la cantidad de años que un empleado ha trabajado en su campo específico, mientras que la variable \"Salary\" representa la cantidad de dinero que dicho empleado gana anualmente.",
+          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>www.kaggle.com</link1>.",
+          "details-input": {
+            "title": "Detalles de los datos de entrada del modelo",
+            "list": {
+              "0": "Años de experiencia (YearsExperience)",
+              "1": "Salary - (Salary)"
+            }
+          },
+          "details-output": {
+            "title": "Detalles de los datos de salida del modelo",
+            "list": {
+              "1": "Salary"
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "Conjunto de datos"
+            }
+          }
+        }
       },
       "auto-mpg": {
         "title": "Rendimiento de combustible",
@@ -406,18 +432,61 @@
         "title": "Calidad del vino"
       },
       "list-datasets": {
-        "1-auto-mpg": "Conjunto de datos - Auto MPG",
-        "2-breast-cancer": "Conjunto de datos - Breast cancer",
-        "3-diabetes": "Conjunto de datos - Diabetes",
-        "4-student-performance": "Conjunto de datos - Student performance",
-        "5-wine": "Conjunto de datos - Wine"
+        "salary": "Conjunto de datos - Salary",
+        "auto-mpg": "Conjunto de datos - Auto MPG",
+        "boston-housing": "Conjunto de datos - Boston Housing",
+        "breast-cancer": "Conjunto de datos - Breast cancer",
+        "student-performance": "Conjunto de datos - Student performance",
+        "wine": "Conjunto de datos - Wine"
       },
       "list-models": {
-        "1-auto-mpg": "Modelo - Auto MPG",
-        "2-breast-cancer": "Modelo - Breast cancer",
-        "3-diabetes": "Modelo - Diabetes",
-        "4-student-performance": "Modelo - Student performance",
-        "5-wine": "Modelo - Wine"
+        "salary": "Modelo - Auto MPG",
+        "auto-mpg": "Modelo - Auto MPG",
+        "boston-housing": "Modelo - Boston Housing",
+        "breast-cancer": "Modelo - Breast cancer",
+        "student-performance": "Modelo - Student performance",
+        "wine": "Modelo - Wine"
+      },
+      "joyride": {
+        "title": "Activar el tutorial",
+        "steps": {
+          "manual": {
+            "title": "Manual",
+            "content": "Puedes consultar el manual en busqueda de información"
+          },
+          "dataset-info": {
+            "title": "Información del conjunto de datos",
+            "content": "Consulta la información del conjunto de datos"
+          },
+          "dataset": {
+            "title": "Conjuto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+          },
+          "dataset-plot": {
+            "title": "Graficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+          },
+          "layer-visualizer": {
+            "title": "Visualizador de las capas de la red neuronal",
+            "content": "Puedes visualizar las capas, funciones de activación en dos formatos, modo compacto y modo extendido"
+          },
+          "layer-editor": {
+            "title": "Editor de capas",
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+          },
+          "params-editor": {
+            "title": "Editor de hiperparametros",
+            "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
+          },
+          "list-of-models": {
+            "title": "Lista de modelos",
+            "content": "Una vez generado el modelo puedes cargar o descargar el modelo, para probar cada modelo y realizar las predicciones."
+          },
+          "predict-and-visualizer": {
+            "title": "Predicción y visualización",
+            "content": "Una vez cargado nuestro modelo para la regresión lineal puedes realizar predicciones y visualizar los resultados"
+          }
+        }
       }
     },
     "2-object-detection": {
@@ -623,7 +692,7 @@
     }
   },
   "dataframe-plot": {
-    "title": "Gráficos del DataFrame",
+    "title": "Graficos del DataFrame",
     "info": "Información",
     "description": {
       "title": "Descripción del tipo de gráfica"
@@ -631,7 +700,7 @@
     "configuration": {
       "title": "Configuración",
       "reset": "Reiniciar",
-      "select-all-columns": "Seleccionar todos los atributos",
+      "select-all-columns": "Seleccionar todos las columnas",
       "layout": {
         "plot": {
           "title": "Titulo del gráfico",
@@ -788,7 +857,10 @@
           "0": "Los gráficos de series de tiempo son una herramienta esencial para analizar y comprender cómo cambian los datos a lo largo del tiempo.\nProporcionan información valiosa sobre las tendencias, patrones estacionales, cambios y pronósticos, lo que permite tomar decisiones informadas y realizar análisis comparativos."
         }
       },
-      "index-info": "El indice seleccionado debe contener una serie única y no debe seleccionar el índice junto a las columnas a mostrar"
+      "index-info": "El indice seleccionado debe contener una serie única y no debe seleccionar el índice junto a las columnas a mostrar",
+      "form": {
+        "index": "Indice"
+      }
     },
     "time-series": {
       "warning": {
@@ -838,8 +910,22 @@
       },
       "linear-regression": {
         "1-title": "Regresión linear",
-        "1-description-1": "LOREM",
-        "1-button": "Modelos pre-entrenados"
+        "2-title": "Diseñar, crear y editar una arquitectura para calcular una regresión lineal",
+        "1-description-1": "La regresión lineal es una tarea para determinar un valor numérico específico (variable dependiente) a partir de sus características (variables independientes).",
+        "1-description-2": "Es una tarea predictiva que tiene como salida una variable continua, donde se busca encontrar una línea recta que mejor se ajuste a los datos y permita predecir el valor numérico de la variable dependiente en función de las variables independientes.",
+        "1-button": "Modelos pre-entrenados",
+        "2-description-1": "A través de esta herramienta podemos crear una red neuronal para realizar prediciones.",
+        "2-description-2": "Definir las variables independientes, que se utilizarán en el modelo, definir la variable dependiente, que será el valor numérico que se busca predecir.",
+        "2-description-3": null,
+        "2-description-list": {
+          "1": "Establecer una función de activación o una función lineal para las capas de la regresión lineal.",
+          "2": "Definir el valor de la tasa de aprendizaje.",
+          "3": "Definir el número de iteraciones o épocas.",
+          "4": "Definir el optimizador.",
+          "5": "Definir la función de perdida",
+          "6": "Defininir la métrica para la evaluación",
+          "title": "Para aplicar la regresión lineal y modelar la relación entre variables, debemos seguir los siguientes pasos:"
+        }
       },
       "object-detection": {
         "1-title": "Identificación de objetos",
@@ -985,8 +1071,8 @@
           "title": "Editor de capas",
           "add-layer-start": "Añadir capa al principio",
           "add-layer-end": "Añadir capa al final",
-          "delete-layer": "Eliminar capa {{value}}",
-          "layer-id": "Capa {{value}}",
+          "delete-layer": "Eliminar capa {{index}}",
+          "layer-id": "Capa {{index}}",
           "units": "Neuronas de la capa",
           "units-placeholder": "Introduce el número de neuronas de la capa",
           "activation-function-select": "Selecciona la función de activación",
@@ -1012,6 +1098,7 @@
           "test-size": "Tamaño del conjunto de pruebas",
           "test-size-placeholder": "Tamaño del conjunto de pruebas",
           "test-size-info": "Valor entre 0 y 100 (es un porcentaje) del tamaño del conjunto de pruebas",
+          "delete-metric": "Eliminar funcion de métrica {{index}}",
           "add-metric": "Añadir función de métrica",
           "metric-id-select": "Selecciona la función de métrica",
           "metric-id-info": "Será una de las funciones de métrica"
@@ -1047,7 +1134,14 @@
           "input-vector": "Introduce el vector a probar",
           "test-vector": "Vector a probar"
         },
-        "list-models-generated": "Lista de modelos generados",
+        "list-models-generated": "Lista modelos generados",
+        "visor": {
+          "title": "Configuración del visor",
+          "rmse": "RMSE",
+          "val_rmse": "VAL RMSE",
+          "mae": "MAE",
+          "val_mae": "VAL MAE"
+        },
         "prediction": {
           "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
         }
@@ -1058,7 +1152,7 @@
             "title": "Manual del generador de modelos"
           }
         },
-        "prediction": null
+        "prediction": "Linear Regression Prediction"
       }
     },
     "manual": {
@@ -1319,6 +1413,7 @@
   },
   "generator": {
     "table-models": {
+      "list-models-generated": "Lista modelos generados",
       "learning-rate": "Tasa de aprendizaje",
       "test-size": "Tamaño del conjunto de pruebas",
       "n-of-epochs": "Número de épocas",

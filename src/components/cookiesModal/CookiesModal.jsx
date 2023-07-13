@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import { Trans } from 'react-i18next'
 import './CookiesModal.css'
+import React, { useEffect, useState } from 'react'
+import { Button, Modal } from 'react-bootstrap'
+import { Trans } from 'react-i18next'
 
-export function CookiesModal () {
+export default function CookiesModal () {
   const [show, setShow] = useState(false)
 
   const getCookie = (name) => {

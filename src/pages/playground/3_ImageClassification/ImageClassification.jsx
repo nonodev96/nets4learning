@@ -9,7 +9,6 @@ import ReactGA from 'react-ga4'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import alertHelper from '@utils/alertHelper'
 import {
-  getKeyDatasetByID_ImageClassification,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
   MODEL_IMAGE_RESNET
@@ -73,10 +72,8 @@ export default function ImageClassification (props) {
   const [GeneratedModels, setGeneratedModels] = useState(/**@type Array<GeneratedModels_t> */[])
 
   useEffect(() => {
-    const dataset_ID = parseInt(dataset)
-    const dataset_key = getKeyDatasetByID_ImageClassification(dataset_ID)
-    ReactGA.send({ hitType: 'pageview', page: '/ImageClassification/' + dataset_key, title: dataset_key })
-    switch (dataset_key) {
+    ReactGA.send({ hitType: 'pageview', page: '/ImageClassification/' + dataset, title: dataset })
+    switch (dataset) {
       case MODEL_IMAGE_MNIST.KEY: {
         set_ModelInfo(new MODEL_IMAGE_MNIST(t))
         break
@@ -560,12 +557,16 @@ export default function ImageClassification (props) {
                   <Accordion>
                     {Layers.map((item, index) => {
                       return <Accordion.Item key={index} eventKey={index.toString()}>
-                        <Accordion.Header>Capa {index + 1}</Accordion.Header>
+                        <Accordion.Header>
+                          <Trans i18nKey={prefix + 'editor-layers.layer-id'}
+                                 values={{ index: index + 1 }} />
+                        </Accordion.Header>
                         <Accordion.Body>
                           <div className="d-grid gap-2">
                             <Button onClick={() => handleClick_RemoveLayer(index)}
                                     variant={'outline-danger'}>
-                              <Trans i18nKey={prefix + 'editor-layers.delete-layer'} values={{ value: index + 1 }} />
+                              <Trans i18nKey={prefix + 'editor-layers.delete-layer'}
+                                     values={{ index: index + 1 }} />
                             </Button>
                           </div>
 
