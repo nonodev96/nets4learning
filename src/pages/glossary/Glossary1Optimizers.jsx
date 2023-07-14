@@ -1,25 +1,23 @@
-import { Accordion, Col, Row, Table } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
-import React from 'react'
 import Latex from 'react-latex-next'
+import { Trans } from 'react-i18next'
+import { Accordion, Col, Row, Table } from 'react-bootstrap'
 
 export default function Glossary1Optimizers () {
-
-  const { t } = useTranslation()
-
   return <>
     <Accordion defaultValue={'equations'} defaultActiveKey={'equations'}>
       <Accordion.Item eventKey={'functions-optimizers'}>
-        <Accordion.Header><h3>{t('pages.glossary.optimization-functions.title')}</h3></Accordion.Header>
+        <Accordion.Header>
+          <h3><Trans i18nKey={'pages.glossary.optimization-functions.title'} /></h3>
+        </Accordion.Header>
         <Accordion.Body>
-          <p>{t('pages.glossary.optimization-functions.text-1')}</p>
-          <p>{t('pages.glossary.optimization-functions.text-2')}</p>
+          <p><Trans i18nKey={'pages.glossary.optimization-functions.text-1'} /></p>
+          <p><Trans i18nKey={'pages.glossary.optimization-functions.text-2'} /></p>
           <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
-              <th>{t('pages.glossary.table-head.function')}</th>
-              {/*<th>{t("pages.glossary.table-head.references")}</th>*/}
-              <th>{t('pages.glossary.table-head.description')}</th>
+              <th><Trans i18nKey={'pages.glossary.table-head.function'} /></th>
+              {/*<th><Trans i18nKey={"pages.glossary.table-head.references"}/</th>*/}
+              <th><Trans i18nKey={'pages.glossary.table-head.description'} /></th>
             </tr>
             </thead>
             <tbody>
@@ -70,7 +68,9 @@ export default function Glossary1Optimizers () {
 
       {process.env.REACT_APP_ENVIRONMENT === 'development' && <>
         <Accordion.Item eventKey={'equations-optimization'}>
-          <Accordion.Header><h3>{t('equations.title-optimization')}</h3></Accordion.Header>
+          <Accordion.Header>
+            <h3><Trans i18nKey={'equations.title-optimization'} /></h3>
+          </Accordion.Header>
           <Accordion.Body>
             <Row xs={1} sm={1} md={2} lg={2} xl={2} xxl={2}>
               <Col className={'mt-3'}>

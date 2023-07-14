@@ -52,14 +52,14 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
 
     return {
       datasets: [{
-        is_dataset_upload    : false,
-        path               : datasets_path,
-        csv                : 'housing.csv',
-        info               : 'housing.names',
-        dataframe_original : dataframe_original,
-        dataframe_processed: dataframe_processed,
-        dataset_transforms : [],
-        isDatasetProcessed : true,
+        is_dataset_upload   : false,
+        path                : datasets_path,
+        csv                 : 'housing.csv',
+        info                : 'housing.names',
+        dataframe_original  : dataframe_original,
+        dataframe_processed : dataframe_processed,
+        dataset_transforms  : [],
+        is_dataset_processed: true,
       }]
     }
   }

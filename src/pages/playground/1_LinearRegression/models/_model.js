@@ -39,7 +39,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @property {string} path
    * @property {dataframe} dataframe_original
    * @property {dataframe} dataframe_processed
-   * @property {boolean} isDatasetProcessed
+   * @property {boolean} is_dataset_processed
    * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
    *
    * @typedef {Object} CustomDatasets_t

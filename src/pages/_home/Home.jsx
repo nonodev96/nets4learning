@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 
 import CookiesModal from '@components/cookiesModal/CookiesModal'
 
@@ -14,7 +14,6 @@ const SELECTOR = {
 
 export default function Home () {
   const history = useHistory()
-  const { t } = useTranslation()
 
   const [buttonActive, setButtonActive] = useState(TASKS.TABULAR_CLASSIFICATION)
 
@@ -35,55 +34,59 @@ export default function Home () {
         return (
           <>
             <Card className={'border-primary'}>
-              <Card.Header><h3>{t('pages.index.tabular-classification.1-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.tabular-classification.1-title'} /></h3>
+              </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  {t('pages.index.tabular-classification.1-description-1')}
+                  <Trans i18nKey={'pages.index.tabular-classification.1-description-1'} />
                 </Card.Text>
                 <Card.Text>
-                  {t('pages.index.tabular-classification.1-description-2')}
+                  <Trans i18nKey={'pages.index.tabular-classification.1-description-2'} />
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
-                    {t('pages.index.tabular-classification.1-button')}
+                    <Trans i18nKey={'pages.index.tabular-classification.1-button'} />
                   </Button>
                 </div>
               </Card.Body>
             </Card>
 
             <Card className={'border-primary mt-3'}>
-              <Card.Header><h3>{t('pages.index.tabular-classification.2-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.tabular-classification.2-title'} /></h3>
+              </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  {t('pages.index.tabular-classification.2-description-1')}
+                  <Trans i18nKey={'pages.index.tabular-classification.2-description-1'} />
                 </Card.Text>
                 <Card.Text>
-                  {t('pages.index.tabular-classification.2-description-2')}
+                  <Trans i18nKey={'pages.index.tabular-classification.2-description-2'} />
                 </Card.Text>
                 <Row>
                   <Col>
                     <ul>
-                      <li>{t('pages.index.tabular-classification.2-description-list.1')}</li>
-                      <li>{t('pages.index.tabular-classification.2-description-list.2')}</li>
-                      <li>{t('pages.index.tabular-classification.2-description-list.3')}</li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.1'} /></li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.2'} /></li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.3'} /></li>
                     </ul>
                   </Col>
                   <Col>
                     <ul>
-                      <li>{t('pages.index.tabular-classification.2-description-list.4')}</li>
-                      <li>{t('pages.index.tabular-classification.2-description-list.5')}</li>
-                      <li>{t('pages.index.tabular-classification.2-description-list.6')}</li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.4'} /></li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.5'} /></li>
+                      <li><Trans i18nKey={'pages.index.tabular-classification.2-description-list.6'} /></li>
                     </ul>
                   </Col>
                 </Row>
                 {/*
                 <Card.Text>
-                  {t("pages.index.tabular-classification.2-description-footer")}
+                  <Trans i18nKey={"pages.index.tabular-classification.2-description-footer"} />
                 </Card.Text>
                 */}
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
-                    {t('pages.index.tabular-classification.2-button')}
+                    <Trans i18nKey={'pages.index.tabular-classification.2-button'} />
                   </Button>
                 </div>
               </Card.Body>
@@ -94,43 +97,47 @@ export default function Home () {
         return (
           <>
             <Card className={'border-danger'}>
-              <Card.Header><h3>{t('pages.index.linear-regression.1-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.linear-regression.1-title'} /></h3>
+              </Card.Header>
               <Card.Body>
-                <Card.Text>{t('pages.index.linear-regression.1-description-1')}</Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.linear-regression.1-description-1'} /></Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}
                           data-testid={'Test-GoTo-SelectModel-LinearRegression'}>
-                    {t('pages.index.linear-regression.1-button')}
+                    <Trans i18nKey={'pages.index.linear-regression.1-button'} />
                   </Button>
                 </div>
               </Card.Body>
             </Card>
 
             <Card className={'border-primary mt-3'}>
-              <Card.Header><h3>{t('pages.index.linear-regression.2-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.linear-regression.2-title'} /></h3>
+              </Card.Header>
               <Card.Body>
-                <Card.Text>{t('pages.index.linear-regression.2-description-1')}</Card.Text>
-                <Card.Text>{t('pages.index.linear-regression.2-description-2')}</Card.Text>
-                <Card.Text>{t('pages.index.linear-regression.2-description-list.title')}</Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-1'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-2'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-list.title'} /></Card.Text>
                 <Row>
                   <Col>
                     <ul>
-                      <li>{t('pages.index.linear-regression.2-description-list.1')}</li>
-                      <li>{t('pages.index.linear-regression.2-description-list.2')}</li>
-                      <li>{t('pages.index.linear-regression.2-description-list.3')}</li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.1'} /></li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.2'} /></li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.3'} /></li>
                     </ul>
                   </Col>
                   <Col>
                     <ul>
-                      <li>{t('pages.index.linear-regression.2-description-list.4')}</li>
-                      <li>{t('pages.index.linear-regression.2-description-list.5')}</li>
-                      <li>{t('pages.index.linear-regression.2-description-list.6')}</li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.4'} /></li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.5'} /></li>
+                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.6'} /></li>
                     </ul>
                   </Col>
                 </Row>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
-                    {t('pages.index.tabular-classification.2-button')}
+                    <Trans i18nKey={'pages.index.tabular-classification.2-button'} />
                   </Button>
                 </div>
               </Card.Body>
@@ -141,17 +148,19 @@ export default function Home () {
         return (
           <>
             <Card className={'border-warning'}>
-              <Card.Header><h3>{t('pages.index.object-detection.1-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.object-detection.1-title'} /></h3>
+              </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  {t('pages.index.object-detection.1-description-1')}
+                  <Trans i18nKey={'pages.index.object-detection.1-description-1'} />
                 </Card.Text>
                 <Card.Text>
-                  {t('pages.index.object-detection.1-description-2')}
+                  <Trans i18nKey={'pages.index.object-detection.1-description-2'} />
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
-                    {t('pages.index.object-detection.1-button')}
+                    <Trans i18nKey={'pages.index.object-detection.1-button'} />
                   </Button>
                 </div>
               </Card.Body>
@@ -162,14 +171,16 @@ export default function Home () {
         return (
           <>
             <Card className={'border-info'}>
-              <Card.Header><h3>{t('pages.index.image-classification.1-title')}</h3></Card.Header>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.image-classification.1-title'} /></h3>
+              </Card.Header>
               <Card.Body>
                 <Card.Text>
-                  {t('pages.index.image-classification.1-description-1')}
+                  <Trans i18nKey={'pages.index.image-classification.1-description-1'} />
                 </Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
-                    {t('pages.index.image-classification.1-button')}
+                    <Trans i18nKey={'pages.index.image-classification.1-button'} />
                   </Button>
                 </div>
               </Card.Body>
@@ -202,7 +213,7 @@ export default function Home () {
                 <Button onClick={() => handleClick_OpenCardModel(TASKS.TABULAR_CLASSIFICATION)}
                         variant={'primary'}
                         size={'lg'}>
-                  {t('pages.index.tabular-classification.1-title')}
+                  <Trans i18nKey={'pages.index.tabular-classification.1-title'} />
                 </Button>
               </div>
             </Col>
@@ -219,7 +230,7 @@ export default function Home () {
                           data-testid={'Test-InitialMenu-LinearRegression'}
                           variant={'danger'}
                           size={'lg'}>
-                    {t('pages.index.linear-regression.1-title')}
+                    <Trans i18nKey={'pages.index.linear-regression.1-title'} />
                   </Button>
                 </div>
               </Col>
@@ -229,7 +240,7 @@ export default function Home () {
                 <Button onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}
                         variant={'info'}
                         size={'lg'}>
-                  {t('pages.index.image-classification.1-title')}
+                  <Trans i18nKey={'pages.index.image-classification.1-title'} />
                 </Button>
               </div>
             </Col>
@@ -239,14 +250,14 @@ export default function Home () {
                 <Button onClick={() => handleClick_OpenCardModel(TASKS.OBJECT_DETECTION)}
                         variant={'warning'}
                         size={'lg'}>
-                  {t('pages.index.object-detection.1-title')}
+                  <Trans i18nKey={'pages.index.object-detection.1-title'} />
                 </Button>
               </div>
             </Col>
           </Row>
           <Row className={'mt-3'}>
             <Col xl={12}>
-              {MenuSelection()}
+              <MenuSelection />
             </Col>
           </Row>
         </Container>

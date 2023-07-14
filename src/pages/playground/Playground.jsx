@@ -1,5 +1,5 @@
-import './Playground.css'
 import React from 'react'
+// import styles from './Playground.module.css'
 import { useParams } from 'react-router'
 
 import NotFoundPage from '../notFound/NotFoundPage'
@@ -21,7 +21,7 @@ import { TASKS } from '@/DATA_MODEL'
 export default function Playground () {
   const { id, option, example } = useParams()
 
-  const Print_HTML_Model_View = () => {
+  const PrintHTMLPlaygroundView = () => {
     switch (id.toString()) {
       case TASKS.TABULAR_CLASSIFICATION: {
         if (option === 'model') {
@@ -57,8 +57,8 @@ export default function Playground () {
 
   return (
     <>
-      <main className={'mb-3'} data-title={'Playground'} data-testid={'Test-Playground'}>
-        {Print_HTML_Model_View()}
+      <main className={`mb-3`} data-title={'Playground'} data-testid={'Test-Playground'}>
+        <PrintHTMLPlaygroundView />
       </main>
     </>
   )

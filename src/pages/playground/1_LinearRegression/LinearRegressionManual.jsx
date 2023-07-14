@@ -8,22 +8,5 @@ export default function LinearRegressionManual ({ i_model }) {
   console.debug('render LinearRegressionManual')
   return <>
     <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} /><br />
-    <Trans i18nKey={prefixManual + 'TEXT_1'} />
   </>
 }

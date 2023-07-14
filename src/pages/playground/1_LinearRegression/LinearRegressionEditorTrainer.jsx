@@ -68,11 +68,13 @@ export default function LinearRegressionEditorTrainer () {
   }
 
   const change_params_training = (_key, _value) => {
-    setTmpModel({
-      ...tmpModel,
-      params_training: {
-        ...tmpModel.params_training,
-        [_key]: _value
+    setTmpModel((preState) => {
+      return {
+        ...preState,
+        params_training: {
+          ...preState.params_training,
+          [_key]: _value
+        }
       }
     })
   }
@@ -148,7 +150,7 @@ export default function LinearRegressionEditorTrainer () {
 
         <hr />
 
-        <Form.Group className="m3-3" controlId={'formIdOptimizer'}>
+        <Form.Group className="mb-3" controlId={'formIdOptimizer'}>
           <Form.Label>
             <Trans i18nKey={prefix + 'optimizer-id'} />
           </Form.Label>
@@ -166,7 +168,7 @@ export default function LinearRegressionEditorTrainer () {
 
         <hr />
 
-        <Form.Group className="m3-3" controlId={'formIdLoss'}>
+        <Form.Group className="mb-3" controlId={'formIdLoss'}>
           <Form.Label>
             <Trans i18nKey={prefix + 'loss-id'} />
           </Form.Label>
@@ -185,39 +187,43 @@ export default function LinearRegressionEditorTrainer () {
         <hr />
 
         <Accordion className={'mt-2'}>
-          {tmpModel.params_training.list_id_metrics.map((metric, index) => {
-            return <Accordion.Item key={index} eventKey={index.toString()}>
-              <Accordion.Header>
-                Metrics {index + 1}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="d-grid gap-2">
-                  <Button onClick={() => handlerClick_RemoveMetric(index)}
-                          variant={'outline-danger'}>
-                    <Trans i18nKey={prefix + 'delete-metric'}
-                           values={{ index: index + 1 }} />
-                  </Button>
-                </div>
+          <>
+            {tmpModel
+              .params_training
+              .list_id_metrics
+              .map((metric, index) => {
+                return <Accordion.Item key={index} eventKey={index.toString()}>
+                  <Accordion.Header>
+                    Metrics {index + 1}
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <div className="d-grid gap-2">
+                      <Button onClick={() => handlerClick_RemoveMetric(index)}
+                              variant={'outline-danger'}>
+                        <Trans i18nKey={prefix + 'delete-metric'}
+                               values={{ index: index + 1 }} />
+                      </Button>
+                    </div>
 
-                <Form.Group className="m3-3" controlId={'formMetric_' + index}>
-                  <Form.Label>
-                    <Trans i18nKey={prefix + 'metric-id-select'} />
-                  </Form.Label>
-                  <Form.Select aria-label={t(prefix + 'metric-id-info')}
-                               value={metric}
-                               onChange={(e) => handleChange_Metric(index, e.target.value)}>
-                    {TYPE_METRICS.map(({ key, label }, index) => {
-                      return (<option key={index} value={key}>{label}</option>)
-                    })}
-                  </Form.Select>
-                  <Form.Text className="text-muted">
-                    <Trans i18nKey={prefix + 'metric-id-info'} />
-                  </Form.Text>
-                </Form.Group>
-              </Accordion.Body>
-            </Accordion.Item>
-          })}
-
+                    <Form.Group className="mb-3" controlId={'formMetric_' + index}>
+                      <Form.Label>
+                        <Trans i18nKey={prefix + 'metric-id-select'} />
+                      </Form.Label>
+                      <Form.Select aria-label={t(prefix + 'metric-id-info')}
+                                   value={metric}
+                                   onChange={(e) => handleChange_Metric(index, e.target.value)}>
+                        {TYPE_METRICS.map(({ key, label }, index) => {
+                          return (<option key={index} value={key}>{label}</option>)
+                        })}
+                      </Form.Select>
+                      <Form.Text className="text-muted">
+                        <Trans i18nKey={prefix + 'metric-id-info'} />
+                      </Form.Text>
+                    </Form.Group>
+                  </Accordion.Body>
+                </Accordion.Item>
+              })}
+          </>
         </Accordion>
       </Card.Body>
     </Card>

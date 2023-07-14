@@ -1,35 +1,41 @@
 import { createContext, useState } from 'react'
 import * as dfd from 'danfojs'
-import * as tfjs from '@tensorflow/tfjs'
+import { Sequential } from '@tensorflow/tfjs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
 
 /**
- * @typedef {Object} CustomPreprocessDataset_t
+ * @typedef CustomPreprocessDataset_t
  * @property {string} column_name
  * @property {string} column_transform
  */
 
 /**
- * @typedef {Object} CustomDataset_t
+ * @typedef CustomDataset_t
  * @property {boolean} is_dataset_upload
+ * @property {boolean} is_dataset_processed
  * @property {string} csv
  * @property {string} info
  * @property {string} path
  * @property {dfd.DataFrame} dataframe_original
  * @property {dfd.DataFrame} dataframe_processed
- * @property {boolean} isDatasetProcessed
  * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
  */
 
 /**
- * @typedef {Object} CustomParamsLayerModel_t
+ * @typedef CustomParamsLayerModel_t
  * @property {number} units
  * @property {string} activation
  */
 
 /**
- * @typedef {Object} CustomParamsTrainModel_t
+ * @typedef CustomFeatureSelector_t
+ * @property {string} x_name
+ * @property {string} y_name
+ */
+
+/**
+ * @typedef CustomParamsTrainModel_t
  * @property {number} learning_rate
  * @property {number} n_of_epochs
  * @property {number} test_size
@@ -39,15 +45,27 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  */
 
 /**
- * @typedef {Object} CustomModel_t
+ * @typedef CustomModel_t
  * @property {Array<CustomDataset_t>} datasets
  * @property {Array<CustomParamsLayerModel_t>} list_layers
+ * @property {Sequential} model
+ * @property {Array<string>} params_visor
  * @property {CustomParamsTrainModel_t} params_training
- * @property {tfjs.sequential} model
+ * @property {CustomFeatureSelector_t} feature_selector
  */
 
 /**
- * @typedef {Object} CustomDatasetLocal_t
+ * @typedef CustomPredict_t
+ * @property {string} dataOriginal_label
+ * @property {Point_t[]} dataOriginal_x
+ * @property {Point_t[]} dataOriginal_y
+ * @property {string} dataPredicted_label
+ * @property {Point_t[]} dataPredicted_x
+ * @property {Point_t[]} dataPredicted_y
+ */
+
+/**
+ * @typedef CustomDatasetLocal_t
  * @property {dfd.DataFrame} dataframe_original
  * @property {dfd.DataFrame} dataframe_processed
  * @property {string} container_info
@@ -55,31 +73,31 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  */
 
 /**
- * @typedef {Object} CustomLinearRegressionContext_t
+ * @typedef  CustomLinearRegressionContext_t
  *
  * @property {CustomModel_t} tmpModel
- * @property {Function} setTmpModel
+ * @property {React.Dispatch<React.SetStateAction<CustomModel_t>>} setTmpModel
  *
  * @property {Array<CustomModel_t>} listModels
- * @property {Function} setListModels
+ * @property {React.Dispatch<React.SetStateAction<Array<CustomModel_t>>>} setListModels
  *
  * @property {boolean} isTraining
- * @property {Function} setIsTraining
+ * @property {React.Dispatch<React.SetStateAction<boolean>>} setIsTraining
  *
  * @property {Array<string>} accordionActive
- * @property {Function} setAccordionActive
+ * @property {React.Dispatch<React.SetStateAction<Array<string>>>} setAccordionActive
  *
  * @property {Array<string>} accordionActive
- * @property {Function} setAccordionActive
+ * @property {React.Dispatch<React.SetStateAction<Array<string>>>} setAccordionActive
  *
  * @property {I_MODEL_LINEAR_REGRESSION} i_model
- * @property {Function} setIModel
+ * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModel
  *
  * @property {Object} dataPrediction
- * @property {Function} setDataPrediction
+ * @property {React.Dispatch<React.SetStateAction<Object>>} setDataPrediction
  *
  * @property {CustomDatasetLocal_t} datasetLocal
- * @property {Function} setDatasetLocal
+ * @property {React.Dispatch<React.SetStateAction<CustomDatasetLocal_t>>} setDatasetLocal
  *
  */
 const LinearRegressionContext = createContext(
@@ -108,42 +126,59 @@ export function LinearRegressionProvider ({ children }) {
   //   isDatasetProcessed : false,
   //   dataset_transforms : [],
   // }
+  /**
+   * @type CustomModel_t
+   */
   const DEFAULT_CUSTOM_MODEL = {
-    datasets       : [],
-    list_layers    : DEFAULT_LAYERS,
-    model          : new tfjs.sequential(),
-    params_training: {
+    datasets            : [],
+    list_layers         : DEFAULT_LAYERS,
+    model               : new Sequential(),
+    params_visor        : [],
+    params_training     : {
       learning_rate  : 0.01,
       n_of_epochs    : 20,
       test_size      : 0.1,
-      id_optimizer   : "rmsprop",
-      id_loss        : "meanSquaredError",
-      list_id_metrics: ["meanSquaredError", "meanAbsoluteError"]
+      id_optimizer   : 'rmsprop',
+      id_loss        : 'meanSquaredError',
+      list_id_metrics: ['meanSquaredError', 'meanAbsoluteError']
     },
-    params_visor   : []
+    feature_selector    : {
+      x_name: '',
+      y_name: '',
+    }
   }
-  // @formatter:on
 
-  const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */DEFAULT_CUSTOM_MODEL)
-  const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
-  const [i_model, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
-  const [isTraining, setIsTraining] = useState(false)
-  const [dataPrediction, setDataPrediction] = useState({
+  /**
+   * @type CustomDatasetLocal_t
+   */
+  const DEFAULT_DATASET_LOCAL = {
+    is_dataset_upload   : false,
+    is_dataset_processed: true,
+    dataframe_original  : new dfd.DataFrame(),
+    dataframe_processed : new dfd.DataFrame(),
+    container_info      : '',
+    attributes          : []
+  }
+
+  /**
+   * @type CustomPredict_t
+   */
+  const DEFAULT_DATA_PREDICT = {
     dataOriginal_label : '',
     dataOriginal_x     : [],
     dataOriginal_y     : [],
     dataPredicted_label: '',
     dataPredicted_x    : [],
     dataPredicted_y    : [],
-  })
+  }
+  // @formatter:on
 
-  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */{
-    is_dataset_upload  : false,
-    dataframe_original : new dfd.DataFrame(),
-    dataframe_processed: new dfd.DataFrame(),
-    container_info     : '',
-    attributes         : []
-  })
+  const [i_model, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
+  const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */ DEFAULT_CUSTOM_MODEL)
+  const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
+  const [isTraining, setIsTraining] = useState(false)
+  const [dataPrediction, setDataPrediction] = useState(/** @type CustomPredict_t */ DEFAULT_DATA_PREDICT)
+  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */ DEFAULT_DATASET_LOCAL)
 
   return (
     <LinearRegressionContext.Provider value={{
@@ -166,7 +201,7 @@ export function LinearRegressionProvider ({ children }) {
       setDataPrediction,
 
       datasetLocal,
-      setDatasetLocal
+      setDatasetLocal,
     }}>
       {children}
     </LinearRegressionContext.Provider>

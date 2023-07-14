@@ -1,22 +1,18 @@
 import React, { lazy, Suspense, useCallback, useContext, useEffect, useRef } from 'react'
+import styles from './LinearRegression.module.css'
 import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import DebugJSON from '@components/debug/DebugJSON'
 
 import { UPLOAD } from '@/DATA_MODEL'
-import {
-  MODEL_1_SALARY,
-  MODEL_2_AUTO_MPG,
-  MODEL_3_BOSTON_HOUSING,
-  MODEL_4_BREAST_CANCER,
-  MODEL_5_STUDENT_PERFORMANCE,
-  MODEL_6_WINE
-} from './models'
+import { MAP_LR_MODEL } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
+import LinearRegressionModelController from '@core/LinearRegressionModelController'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -26,9 +22,11 @@ const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatase
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
 const LinearRegressionEditorTrainer = lazy(() => import( './LinearRegressionEditorTrainer'))
-const LinearRegressionVisor = lazy(() => import( './LinearRegressionVisor'))
+const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
+const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
 // Models
 const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
+// const LinearRegressionPredictionExample = lazy(() => import( './LinearRegressionPredictionExample'))
 const LinearRegressionPrediction = lazy(() => import(  './LinearRegressionPrediction'))
 
 // TODO
@@ -46,6 +44,11 @@ export default function LinearRegression ({ dataset_id }) {
     isTraining,
     setIsTraining,
 
+    datasetLocal,
+
+    listModels,
+    setListModels,
+
     accordionActive,
     setAccordionActive,
 
@@ -59,49 +62,48 @@ export default function LinearRegression ({ dataset_id }) {
     event.preventDefault()
     setIsTraining(true)
     console.log('handleSubmit_TrainModel')
+
+    const modelController = new LinearRegressionModelController(t, datasetLocal.dataframe_processed)
+    modelController.setColumns({ x_name: 'Salary', y_name: 'YearsExperience' })
+    const { model } = await modelController.run()
+
+    setTmpModel((prevState) => {
+      const _prevState = Object.assign(prevState, {})
+      return {
+        ..._prevState,
+        model: model
+      }
+    })
+    setListModels((prevState) => ([...prevState, tmpModel]))
+    setIsTraining(false)
+  }
+
+  const handleSubmit_TrainModel_Upload = async (event) => {
+    event.preventDefault()
+    setIsTraining(true)
+    console.log('handleSubmit_TrainModel_Upload')
+    setIsTraining((prevState) => false)
   }
 
   const init = useCallback(async () => {
     if (dataset_id === UPLOAD) {
-
+      // TODO
+      console.log('TODO')
     } else {
       let info_dataset
-      switch (dataset_id) {
-        case MODEL_1_SALARY.KEY: {
-          info_dataset = new MODEL_1_SALARY(t, setAccordionActive)
-          break
-        }
-        case MODEL_2_AUTO_MPG.KEY: {
-          info_dataset = new MODEL_2_AUTO_MPG(t, setAccordionActive)
-          break
-        }
-        case MODEL_3_BOSTON_HOUSING.KEY: {
-          info_dataset = new MODEL_3_BOSTON_HOUSING(t, setAccordionActive)
-          break
-        }
-        case MODEL_4_BREAST_CANCER.KEY: {
-          info_dataset = new MODEL_4_BREAST_CANCER(t, setAccordionActive)
-          break
-        }
-        case MODEL_5_STUDENT_PERFORMANCE.KEY: {
-          info_dataset = new MODEL_5_STUDENT_PERFORMANCE(t, setAccordionActive)
-          break
-        }
-        case MODEL_6_WINE.KEY: {
-          info_dataset = new MODEL_6_WINE(t, setAccordionActive)
-          break
-        }
-        default: {
-          console.error('Error, option not valid')
-          break
-        }
+      if (MAP_LR_MODEL.hasOwnProperty(dataset_id)) {
+        info_dataset = new MAP_LR_MODEL[dataset_id](t, setAccordionActive)
+      } else {
+        console.error('Error, option not valid')
       }
       const { datasets } = await info_dataset.DATASETS()
       setIModel(info_dataset)
-      setTmpModel((old) => ({
-        ...old,
-        datasets: datasets
-      }))
+      setTmpModel((prevState) => {
+        return {
+          ...prevState,
+          datasets: datasets
+        }
+      })
     }
   }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
 
@@ -121,13 +123,14 @@ export default function LinearRegression ({ dataset_id }) {
     setAccordionActive(copy)
   }
 
-  console.debug('render LinearRegression')
+  console.debug('render LinearRegression', { styles })
   return (
     <>
       <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
 
+
       <Container>
-        <Row className={'mt-2'}>
+        <Row className={'mt-2 mb-3'}>
           <Col xl={12}>
             <div className="d-flex justify-content-between">
               <h1><Trans i18nKey={'modality.' + param_id} /></h1>
@@ -139,10 +142,10 @@ export default function LinearRegression ({ dataset_id }) {
             </div>
           </Col>
         </Row>
-      </Container>
+
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Información</span></div>
 
 
-      <Container className={'mt-3'}>
         <Row>
           <Col>
 
@@ -153,7 +156,7 @@ export default function LinearRegression ({ dataset_id }) {
                   <h3><Trans i18nKey={'pages.playground.1-linear-regression.generator.manual.title'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body>
-                  <Suspense fallback={<></>}><LinearRegressionManual i_model={i_model} /></Suspense>
+                  <Suspense fallback={<></>}><LinearRegressionManual /></Suspense>
                 </Accordion.Body>
               </Accordion.Item>
 
@@ -172,7 +175,7 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <hr />
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Conjunto de datos</span></div>
 
         <Row className={'joyride-step-3-dataset'}>
           <Col>
@@ -188,7 +191,7 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <hr />
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Modelo</span></div>
 
         <Row>
           <Col className={'joyride-step-5-layer'}>
@@ -196,13 +199,21 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <Form onSubmit={handleSubmit_TrainModel}>
+        <Form onSubmit={dataset_id === UPLOAD ? handleSubmit_TrainModel_Upload : handleSubmit_TrainModel}>
 
           <Row className={'mt-3'}>
-            <Col className={'mb-3 joyride-step-6-editor-layers'}>
-              <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
+            <Col className={'mb-3'}>
+              <div className={'joyride-step-6-editor-selector-features'}>
+                <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
+              </div>
               <hr />
-              <Suspense fallback={<></>}><LinearRegressionVisor /></Suspense>
+              <div className={'joyride-step-6-editor-layers'}>
+                <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
+              </div>
+              <hr />
+              <div className={'joyride-step-6-editor-visor'}>
+                <Suspense fallback={<></>}><LinearRegressionEditorVisor /></Suspense>
+              </div>
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>
               <Suspense fallback={<></>}><LinearRegressionEditorTrainer /></Suspense>
@@ -213,7 +224,7 @@ export default function LinearRegression ({ dataset_id }) {
             <Col xl={12}>
               <div className="d-grid gap-2">
                 <Button type={'submit'}
-                        disabled={isTraining || !tmpModel.isDatasetProcessed}
+                        disabled={isTraining || !datasetLocal.is_dataset_processed}
                         size={'lg'}
                         variant="primary">
                   <Trans i18nKey={prefix + 'models.button-submit'} />
@@ -232,7 +243,16 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <hr />
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Predict</span></div>
+
+
+        {/*<Row className={'mt-3'}>*/}
+        {/*  <Col className={'joyride-step-8-list-of-models'}>*/}
+        {/*    <Suspense fallback={<></>}><LinearRegressionPredictionExample /></Suspense>*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
+
+        {/*<hr />*/}
 
         <Row className={'mt-3'}>
           <Col className={'joyride-step-9-predict-visualization'}>
@@ -247,9 +267,12 @@ export default function LinearRegression ({ dataset_id }) {
                 <h3>Debug</h3>
               </Card.Header>
               <Card.Body>
-                <Row>
+                <Row lg={3}>
+                  <Col><DebugJSON obj={tmpModel.feature_selector} /></Col>
                   <Col><DebugJSON obj={tmpModel.params_training} /></Col>
-                  <Col><DebugJSON obj={tmpModel.params_training} /></Col>
+                  <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
+                  <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
+                  <Col><DebugJSON obj={{ columns: datasetLocal.dataframe_processed.columns }} /></Col>
                   <Col><DebugJSON obj={accordionActive} /></Col>
                 </Row>
               </Card.Body>

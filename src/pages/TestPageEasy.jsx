@@ -4,7 +4,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import Plot from 'react-plotly.js'
 
 import TestComponentEasy from '@components/TestComponentEasy'
-import * as LinearRegressionModelController from '@core/LinearRegressionModelController'
+import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
 
 export default function TestPageEasy () {
 
@@ -19,7 +19,7 @@ export default function TestPageEasy () {
     // const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
     const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/boston-housing/housing.csv'
     const columns = { x_name: 'LSTAT', y_name: 'MEDV' } // features = ['LSTAT', 'RM']
-    const { original, predicted } = await LinearRegressionModelController.run(filename, columns)
+    const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
     console.log({ original, predicted })
 
     const original_x = original.map((v) => v.x)

@@ -140,6 +140,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
                     // width     : options.width + "px"
                   }}
                   events={events}
+                  // zoomKey={'shiftKey'}
                   ref={(_network) => {
 
                   }} />

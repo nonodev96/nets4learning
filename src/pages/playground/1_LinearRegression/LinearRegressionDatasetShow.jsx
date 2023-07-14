@@ -36,18 +36,21 @@ export default function LinearRegressionDatasetShow () {
     dataframe_original.describe().T.plot('dataframe_original_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
     dataframe_processed.describe().T.plot('dataframe_processed_plot').table({ config: TABLE_PLOT_STYLE_CONFIG })
 
-    setDatasetLocal({
-      dataframe_original : dataframe_original,
-      dataframe_processed: dataframe_processed,
-      container_info     : container_info,
-      attributes         : []
+    setDatasetLocal((prevState) => {
+      return {
+        ...prevState,
+        dataframe_original : dataframe_original,
+        dataframe_processed: dataframe_processed,
+        container_info     : container_info,
+        attributes         : []
+      }
     })
   }, [setDatasetLocal])
 
   useEffect(() => {
     const init = async () => {
-      if (tmpModel.datasets.length > 0) {
-        await updateDataFrameLocal(tmpModel.datasets[indexDatasetSelected])
+      if (tmpModel.datasets?.length >= 1) {
+        await updateDataFrameLocal(tmpModel?.datasets[indexDatasetSelected])
       }
     }
     init().then(() => undefined)
@@ -68,9 +71,11 @@ export default function LinearRegressionDatasetShow () {
             <Form.Select aria-label={'dataset'}
                          size={'sm'}
                          onChange={(e) => handleChange_dataset(e)}>
-              {tmpModel.datasets.map(({ csv, info }, index) => {
-                return <option key={'option_' + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
-              })}
+              {tmpModel
+                .datasets
+                .map(({ csv, info }, index) => {
+                  return <option key={'option_' + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
+                })}
             </Form.Select>
           </Form.Group>
         </div>

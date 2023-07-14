@@ -244,7 +244,7 @@ export default function DataFramePlot ({ dataframe }) {
     </Card>
 
 
-    <DebugJSON obj={dataframePlotConfig} />
+    {/*<DebugJSON obj={dataframePlotConfig} />*/}
     <DataFramePlotDescription />
     <DataFramePlotConfiguration />
   </>

@@ -23,23 +23,23 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
     return {
       datasets: [{
-        is_dataset_upload    : false,
-        path               : datasets_path,
-        info               : 'wine-quality.names',
-        csv                : 'wine-quality-red.csv',
-        dataframe_original : dataframe_original,
-        dataframe_processed: dataframe_processed,
-        dataset_transforms : [],
-        isDatasetProcessed : true,
+        is_dataset_upload   : false,
+        path                : datasets_path,
+        info                : 'wine-quality.names',
+        csv                 : 'wine-quality-red.csv',
+        dataframe_original  : dataframe_original,
+        dataframe_processed : dataframe_processed,
+        dataset_transforms  : [],
+        is_dataset_processed: true,
       }, {
-        is_dataset_upload    : false,
-        path               : datasets_path,
-        csv                : 'wine-quality-white.csv',
-        info               : 'wine-quality.names',
-        dataframe_original : dataframe_original_2,
-        dataframe_processed: dataframe_processed_2,
-        dataset_transforms : [],
-        isDatasetProcessed : true,
+        is_dataset_upload   : false,
+        path                : datasets_path,
+        csv                 : 'wine-quality-white.csv',
+        info                : 'wine-quality.names',
+        dataframe_original  : dataframe_original_2,
+        dataframe_processed : dataframe_processed_2,
+        dataset_transforms  : [],
+        is_dataset_processed: true,
       }]
     }
   }

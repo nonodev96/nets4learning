@@ -43,7 +43,7 @@ export default function MenuSelectModel (_props) {
     }
   }
 
-  const Print_HTML_OPTIONS = () => {
+  const PrintFormSelectOptions = () => {
     switch (id) {
       case TASKS.TABULAR_CLASSIFICATION: {
         // tabular-classification
@@ -112,7 +112,7 @@ export default function MenuSelectModel (_props) {
                                  onChange={(e) => setModelKey(e.target.value)}>
                       <option value={'select-model'} disabled>{t('pages.menu-selection-model.form-option-_-1')}</option>
 
-                      {Print_HTML_OPTIONS()}
+                      <PrintFormSelectOptions />
 
                     </Form.Select>
                   </Form.Group>

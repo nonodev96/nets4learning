@@ -68,7 +68,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataframe_transforms: dataframe_transforms,
-        isDatasetProcessed  : true,
+        is_dataset_processed: true,
       }]
     }
   }

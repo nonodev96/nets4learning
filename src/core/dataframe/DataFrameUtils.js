@@ -108,6 +108,14 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         dataframe.fillNa(values, { columns: [column_name], inplace: true })
         break
       }
+      case 'drop_?': {
+        /**
+         * @type {number[]}
+         */
+        let index_to_drop = dataframe.query(dataframe[column_name].eq('?')).index
+        dataframe.drop({ index: index_to_drop, inplace: true })
+        break
+      }
       case 'dropNa': {
         dataframe.dropNa({ inplace: true, axis: 1 })
         break

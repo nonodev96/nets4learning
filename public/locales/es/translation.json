@@ -351,7 +351,7 @@
     },
     "1-linear-regression": {
       "salary": {
-        "title": "Salario por años",
+        "title": "Salario por años de experiencia",
         "description": {
           "text-0": "El conjunto de datos \"Salary\" es una colección de información que relaciona la cantidad de años de experiencia laboral de un individuo con su salario correspondiente.",
           "text-1": "Cada entrada en el conjunto de datos consta de dos variables principales: \"Years of Experience\" (Años de experiencia) y \"Salary\" (Salario). La variable \"Years of Experience\" representa la cantidad de años que un empleado ha trabajado en su campo específico, mientras que la variable \"Salary\" representa la cantidad de dinero que dicho empleado gana anualmente.",
@@ -366,7 +366,7 @@
           "details-output": {
             "title": "Detalles de los datos de salida del modelo",
             "list": {
-              "1": "Salary"
+              "0": "Salary"
             }
           },
           "details-references": {
@@ -440,7 +440,7 @@
         "wine": "Conjunto de datos - Wine"
       },
       "list-models": {
-        "salary": "Modelo - Auto MPG",
+        "salary": "Modelo - Salary",
         "auto-mpg": "Modelo - Auto MPG",
         "boston-housing": "Modelo - Boston Housing",
         "breast-cancer": "Modelo - Breast cancer",
@@ -1038,6 +1038,9 @@
         }
       },
       "generator": {
+        "prediction": {
+          "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
+        },
         "dataset": {
           "title": "Conjunto de datos",
           "upload-dataset": "Subir conjunto de datos",
@@ -1077,6 +1080,11 @@
           "units-placeholder": "Introduce el número de neuronas de la capa",
           "activation-function-select": "Selecciona la función de activación",
           "activation-function-info": "Será el optimizador que se usará para activar la función"
+        },
+        "editor-feature-selector": {
+          "title": "Selector de caracteristicas",
+          "feature-selector-x": "Selector de caracteristicas / Eje X",
+          "feature-selector-y": "Selector de caracteristicas / Eje Y"
         },
         "general-parameters": {
           "title": "Editor de hiperparámetros",
@@ -1141,9 +1149,6 @@
           "val_rmse": "VAL RMSE",
           "mae": "MAE",
           "val_mae": "VAL MAE"
-        },
-        "prediction": {
-          "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
         }
       },
       "1-linear-regression": {
@@ -1152,7 +1157,12 @@
             "title": "Manual del generador de modelos"
           }
         },
-        "prediction": "Linear Regression Prediction"
+        "predict": {
+          "title": "Predicción",
+          "entity": {
+            "__index__": "Entidad {{index}}"
+          }
+        }
       }
     },
     "manual": {
@@ -1420,7 +1430,11 @@
       "id-optimizer": "Optimizador",
       "id-loss": "Pérdida",
       "id-metrics": "Métrica",
-      "layers": "Capas"
+      "layers": "Capas",
+      "download": "Descargar",
+      "features": "Característica",
+      "open-visor": "Abrir visor",
+      "close-visor": "Cerrar visor"
     }
   },
   "form-dataframe": {
