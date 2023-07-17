@@ -136,12 +136,12 @@ export function LinearRegressionProvider ({ children }) {
     model               : new Sequential(),
     params_visor        : [],
     params_training     : {
-      learning_rate  : 0.01,
+      learning_rate  : 1,  // 1%
       n_of_epochs    : 20,
-      test_size      : 0.1,
-      id_optimizer   : 'rmsprop',
-      id_loss        : 'meanSquaredError',
-      list_id_metrics: ['meanSquaredError', 'meanAbsoluteError']
+      test_size      : 10, // 10%
+      id_optimizer   : 'train-sgd',
+      id_loss        : 'losses-meanSquaredError',
+      list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
     },
     feature_selector    : {
       X_features: new Set(),

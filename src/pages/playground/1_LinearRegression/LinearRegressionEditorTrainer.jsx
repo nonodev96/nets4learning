@@ -8,17 +8,17 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 export default function LinearRegressionEditorTrainer () {
 
   // 1 - Inf(1000)
-  const DEFAULT_NUMBER_OF_EPOCHS = 10
+  const DEFAULT_NUMBER_OF_EPOCHS = 20
   // 0 - 1 --> 0 - 100
   const DEFAULT_LEARNING_RATE = 1
   // 0 - 1 --> 0 - 100
   const DEFAULT_TEST_SIZE = 10
   // TYPE_OPTIMIZER.key
-  const DEFAULT_OPTIMIZER = 'rmsprop'
+  const DEFAULT_OPTIMIZER = 'train-adam'
   // TYPE_LOSSES.key
-  const DEFAULT_LOSS = 'meanSquaredError'
+  const DEFAULT_LOSS = 'losses-meanSquaredError'
   // TYPE_METRICS.key
-  // const DEFAULT_METRIC = "meanSquaredError"
+  // const DEFAULT_METRICS = ["metrics-meanSquaredError"]
 
   const prefix = 'pages.playground.generator.general-parameters.'
   const { t } = useTranslation()
@@ -63,7 +63,7 @@ export default function LinearRegressionEditorTrainer () {
   }
 
   const handlerClick_AddMetric_Start = () => {
-    const new_metric = 'meanSquaredError'
+    const new_metric = 'metrics-meanSquaredError'
     change_params_training('list_id_metrics', [...tmpModel.params_training.list_id_metrics, new_metric])
   }
 
@@ -73,8 +73,8 @@ export default function LinearRegressionEditorTrainer () {
         ...preState,
         params_training: {
           ...preState.params_training,
-          [_key]: _value
-        }
+          [_key]: _value,
+        },
       }
     })
   }
@@ -158,7 +158,7 @@ export default function LinearRegressionEditorTrainer () {
                        defaultValue={DEFAULT_OPTIMIZER}
                        onChange={(e) => handlerChange_IdOptimizer(e.target.value)}>
             {TYPE_OPTIMIZER.map(({ key, label }, index) => {
-              return (<option key={index} value={key}>{label}</option>)
+              return (<option key={index} value={'train-' + key}>{label}</option>)
             })}
           </Form.Select>
           <Form.Text className="text-muted">
@@ -176,7 +176,7 @@ export default function LinearRegressionEditorTrainer () {
                        defaultValue={DEFAULT_LOSS}
                        onChange={(e) => handlerChange_IdLoss(e.target.value)}>
             {TYPE_LOSSES.map(({ key, label }, index) => {
-              return (<option key={index} value={key}>{label}</option>)
+              return (<option key={index} value={'losses-' + key}>{label}</option>)
             })}
           </Form.Select>
           <Form.Text className="text-muted">
@@ -188,9 +188,7 @@ export default function LinearRegressionEditorTrainer () {
 
         <Accordion className={'mt-2'}>
           <>
-            {tmpModel
-              .params_training
-              .list_id_metrics
+            {tmpModel.params_training.list_id_metrics
               .map((metric, index) => {
                 return <Accordion.Item key={index} eventKey={index.toString()}>
                   <Accordion.Header>
@@ -213,7 +211,7 @@ export default function LinearRegressionEditorTrainer () {
                                    value={metric}
                                    onChange={(e) => handleChange_Metric(index, e.target.value)}>
                         {TYPE_METRICS.map(({ key, label }, index) => {
-                          return (<option key={index} value={key}>{label}</option>)
+                          return (<option key={index} value={'metrics-' + key}>{label}</option>)
                         })}
                       </Form.Select>
                       <Form.Text className="text-muted">

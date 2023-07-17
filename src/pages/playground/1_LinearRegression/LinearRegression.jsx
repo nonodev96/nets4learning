@@ -63,24 +63,31 @@ export default function LinearRegression ({ dataset_id }) {
     setIsTraining(true)
     console.log('handleSubmit_TrainModel')
 
-    const modelController = new LinearRegressionModelController(t, datasetLocal.dataframe_processed)
+    const modelController = new LinearRegressionModelController(t)
+    modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
       input : { units: 1, activation: 'relu' },
-      layers: [],
-      output: { units: 1, activation: 'relu' }
+      layers: [...tmpModel.list_layers.map(value => ({ activation: value.activation, units: value.units }))],
+      output: { units: 1, activation: 'relu' },
     })
     modelController.setCompile({
-
+      id_optimizer: tmpModel.params_training.id_optimizer,
+      id_loss     : tmpModel.params_training.id_loss,
+      id_metrics  : tmpModel.params_training.list_id_metrics,
+      params      : {
+        learningRate: tmpModel.params_training.learning_rate,
+      },
     })
     modelController.setFeatures({
       X_features: tmpModel.feature_selector.X_features,
-      y_target  : tmpModel.feature_selector.y_target
+      y_target  : tmpModel.feature_selector.y_target,
     })
     modelController.setFit({
+      testSize : tmpModel.params_training.test_size,
       epochs   : tmpModel.params_training.n_of_epochs,
       shuffle  : true,
       batchSize: 32,
-      metrics  : []
+      metrics  : [...tmpModel.params_training.list_id_metrics],
     })
 
     const { model } = await modelController.run()
@@ -89,7 +96,7 @@ export default function LinearRegression ({ dataset_id }) {
       const _prevState = Object.assign(prevState, {})
       return {
         ..._prevState,
-        model: model
+        model: model,
       }
     })
     setListModels((prevState) => ([...prevState, tmpModel]))
@@ -119,7 +126,7 @@ export default function LinearRegression ({ dataset_id }) {
       setTmpModel((prevState) => {
         return {
           ...prevState,
-          datasets: datasets
+          datasets: datasets,
         }
       })
     }

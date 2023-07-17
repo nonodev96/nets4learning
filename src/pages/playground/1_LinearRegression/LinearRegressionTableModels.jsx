@@ -60,13 +60,14 @@ export default function LinearRegressionTableModels () {
           {listModels.map((value, index) => {
             const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
             const list = formatter.format(value.feature_selector.X_features)
+            const list_metrics = formatter.format(value.params_training.list_id_metrics)
             return <tr key={index}>
-              <td>{value.params_training.learning_rate * 100}%</td>
-              <td>{value.params_training.test_size * 100}%</td>
+              <td>{value.params_training.learning_rate}%</td>
+              <td>{value.params_training.test_size}%</td>
               <td>{value.params_training.n_of_epochs}</td>
               <td>{value.params_training.id_optimizer}</td>
               <td>{value.params_training.id_loss}</td>
-              <td>{value.params_training.list_id_metrics.join(', ')}</td>
+              <td>{list_metrics}</td>
               <td>
                 {value
                   .list_layers
