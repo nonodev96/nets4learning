@@ -28,8 +28,8 @@ const trainLinearModel = async (xTrain, yTrain) => {
         trainLogs.push({
           rmse    : Math.sqrt(logs.loss),
           val_rmse: Math.sqrt(logs.val_loss),
-          mae     : logs.meanAbsoluteError,
-          val_mae : logs.val_meanAbsoluteError,
+          mae     : logs.meanAbsoluteError$1,
+          val_mae : logs.val_meanAbsoluteError$1,
         })
         await tfvis.show.history(lossContainer, trainLogs, ['rmse', 'val_rmse'])
         await tfvis.show.history(accContainer, trainLogs, ['mae', 'val_mae'])

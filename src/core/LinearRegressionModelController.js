@@ -22,7 +22,6 @@ import { DataFrame } from 'danfojs'
  * @typedef {{x: number, y: number}[]} Point_t
  */
 
-
 /**
  * @typedef ConfigLayers_t
  * @property {number} units - El número de unidades en la capa.
@@ -88,7 +87,7 @@ export default class LinearRegressionModelController {
     this.config = {
       columns: {
         x_name: '',
-        y_name: ''
+        y_name: '',
       },
       compile: {
         optimizer: 'adam',
@@ -100,7 +99,7 @@ export default class LinearRegressionModelController {
         epochs        : 50,
         shuffle       : true,
         metrics       : ['loss', 'mse'],
-        container_name: 'Training Performance'
+        container_name: 'Training Performance',
       },
       layers : {
         input : { units: 1, inputShape: [1] },
@@ -111,7 +110,7 @@ export default class LinearRegressionModelController {
           { units: 10, activation: 'relu' },
           { units: 10, activation: 'relu' },
         ],
-        output: { units: 1 }
+        output: { units: 1 },
       },
     }
   }
@@ -134,7 +133,7 @@ export default class LinearRegressionModelController {
     this.config.layers = {
       layers: layers,
       input : input,
-      output: output
+      output: output,
     }
   }
 
@@ -154,16 +153,17 @@ export default class LinearRegressionModelController {
 
     return await model.fit(tensorData.inputs, tensorData.labels,
       {
-        batchSize: this.config.fit.batchSize,
-        epochs   : this.config.fit.epochs,
-        shuffle  : this.config.fit.shuffle,
-        verbose  : 1,
-        callbacks: tfvis.show.fitCallbacks(
+        batchSize      : this.config.fit.batchSize,
+        epochs         : this.config.fit.epochs,
+        shuffle        : this.config.fit.shuffle,
+        validationSplit: 0.1,
+        verbose        : 1,
+        callbacks      : tfvis.show.fitCallbacks(
           { name: this.config.fit.container_name },
           [...this.config.fit.metrics],
-          { height: 200, callbacks: ['onEpochEnd'] }
-        )
-      }
+          { height: 200, callbacks: ['onEpochEnd'] },
+        ),
+      },
     )
   }
 
@@ -177,7 +177,7 @@ export default class LinearRegressionModelController {
     if (!this.dataframe.columns.includes(this.config.columns.y_name)) throw Error(`The dataset need to contain a column named ${this.config.columns.y_name}`)
     const columns = [
       this.config.columns.x_name,
-      this.config.columns.y_name
+      this.config.columns.y_name,
     ]
     return Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
   }
@@ -279,7 +279,7 @@ export default class LinearRegressionModelController {
     const predictedPoints = Array.from(xs).map((val, i) => {
       return {
         x: val,
-        y: preds[i]
+        y: preds[i],
       }
     })
 
@@ -294,8 +294,8 @@ export default class LinearRegressionModelController {
       {
         xLabel: 'Horsepower',
         yLabel: 'MPG',
-        height: 200
-      }
+        height: 200,
+      },
     )
 
     return { original: originalPoints, predicted: predictedPoints }
@@ -326,4 +326,117 @@ export default class LinearRegressionModelController {
       predicted,
     }
   }
+
+  /**
+   * @private
+   *
+   * @param value
+   * @param categoryCount
+   * @returns {number[]}
+   */
+  OneHot (value, categoryCount) {
+    return Array.from(tfjs.oneHot(value, categoryCount).dataSync())
+  }
+
+  /**
+   * Rescales the range of values in the range of [0, 1]
+   * @private
+   *
+   * @param tensor
+   * @returns {Tensor}
+   */
+  Normalize (tensor) {
+    return tfjs.div(
+      tfjs.sub(tensor,
+        tfjs.min(tensor),
+      ),
+      tfjs.sub(
+        tfjs.max(tensor),
+        tfjs.min(tensor),
+      ),
+    )
+  }
+
+  /**
+   *
+   * @param data
+   * @param {Array<string>} features
+   * @param {Set<string>} categoricalFeatures
+   * @param {number} testSize
+   * @param {string} COLUMN_NAME_TARGET
+   * @param {Map<string, number>} VARIABLE_CATEGORY_COUNT
+   * @returns {Tensor<Rank>[]}
+   */
+  CreateDataSets (data, features, categoricalFeatures, testSize, COLUMN_NAME_TARGET, VARIABLE_CATEGORY_COUNT) {
+    const X = data.map(r =>
+      features.flatMap(f => {
+        if (categoricalFeatures.has(f)) {
+          return this.OneHot(!r[f] ? 0 : r[f], VARIABLE_CATEGORY_COUNT[f])
+        }
+        return !r[f] ? 0 : r[f]
+      }),
+    )
+
+    const X_t = this.Normalize(tfjs.tensor2d(X))
+
+    const y = tfjs.tensor(data.map(r => (!r[COLUMN_NAME_TARGET] ? 0 : r[COLUMN_NAME_TARGET])))
+
+    const splitIdx = parseInt((1 - testSize) * data.length, 10)
+
+    const [xTrain, xTest] = tfjs.split(X_t, [splitIdx, data.length - splitIdx])
+    const [yTrain, yTest] = tfjs.split(y, [splitIdx, data.length - splitIdx])
+
+    return [xTrain, xTest, yTrain, yTest]
+  }
+
+  /**
+   *
+   * @param xTrain
+   * @param yTrain
+   * @returns {Promise<Sequential>}
+   * @constructor
+   */
+  async TrainLinearModel (xTrain, yTrain) {
+    const model = tfjs.sequential()
+    model.add(
+      tfjs.layers.dense({
+        inputShape: [xTrain.shape[1]],
+        units     : xTrain.shape[1],
+        activation: 'sigmoid',
+      }),
+    )
+    model.add(tfjs.layers.dense({ units: 10, activation: 'relu' }))
+    model.add(tfjs.layers.dense({ units: 1 }))
+
+    const list_metrics = ['meanAbsoluteError']
+
+    model.compile({
+      optimizer: tfjs.train.sgd(0.001),
+      loss     : 'meanSquaredError',
+      metrics  : list_metrics,
+    })
+
+    const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+    const fit_callbacks_container = {
+      name  : this.t('pages.playground.generator.models.history-train'),
+      tab   : this.t('pages.playground.generator.models.train'),
+      styles: { height: '1000px' },
+    }
+    const fit_callbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
+      callbacks: [
+        'onBatchEnd',
+        'onEpochEnd',
+      ],
+    })
+    await model.fit(xTrain, yTrain, {
+      batchSize      : 32,
+      epochs         : 100,
+      shuffle        : true,
+      validationSplit: 0.1,
+      callbacks      : fit_callbacks,
+    })
+
+    return model
+  };
+
 }
