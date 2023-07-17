@@ -1,8 +1,9 @@
 import * as tfjs from '@tensorflow/tfjs'
-import { Sequential } from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as dfd from 'danfojs'
 import { DataFrame } from 'danfojs'
+
+import { isProduction } from '@utils/utils'
 
 /**
  * @typedef TrainModelTensor_t
@@ -15,7 +16,14 @@ import { DataFrame } from 'danfojs'
  */
 
 /**
- * @typedef {{x_name: string, y_name: string}} Columns_t
+ * @typedef  LRConfigFeatures_t
+ * @property {Set<string>} X_features
+ * @property {string} y_target
+ */
+
+/**
+ * @typedef  LRConfigParams_t
+ * @property {number} n_of_epochs
  */
 
 /**
@@ -23,20 +31,22 @@ import { DataFrame } from 'danfojs'
  */
 
 /**
- * @typedef ConfigLayers_t
- * @property {number} units - El número de unidades en la capa.
- * @property {ActivationIdentifier_t} activation - La función de activación para la capa.
+ * @typedef ConfigLayerInput_t
+ * @property {number} [units=1] - El número de unidades en la capa de entrada.
+ * @property {ActivationIdentifier_t} [activation="relu"] - La función de activación para la capa.
+ * @property {number[]} [inputShape=[1]] - La forma de entrada.
  */
 
 /**
- * @typedef ConfigLayerInput_t
- * @property {number} units - El número de unidades en la capa de entrada.
- * @property {number[]} inputShape - La forma de entrada.
+ * @typedef ConfigLayers_t
+ * @property {number} [units=1] - El número de unidades en la capa.
+ * @property {ActivationIdentifier_t} [activation="relu"] - La función de activación para la capa.
  */
 
 /**
  * @typedef ConfigLayerOutput_t
- * @property {number} units - El número de unidades en la capa de salida.
+ * @property {number} [units=1] - El número de unidades en la capa de salida.
+ * @property {ActivationIdentifier_t} [activation="relu"] - La función de activación para la capa de salida.
  */
 
 /**
@@ -49,23 +59,24 @@ import { DataFrame } from 'danfojs'
 
 /**
  * @typedef LRConfigCompile_t
- * @property {string} optimizer
- * @property {string} loss
- * @property {string[]} metrics
+ * @property {string} id_optimizer
+ * @property {string} id_loss
+ * @property {string[]} id_metrics
+ * @property {object} params
  */
 
 /**
  * @typedef LRConfigLayers_t
- * @property {{units: number, inputShape: number[]}} input
+ * @property {{units: number, activation: ActivationIdentifier_t, inputShape: number[]}} input
  * @property {{units: number, activation: ActivationIdentifier_t}[]} layers
- * @property {{units: number}} output
+ * @property {{units: number, activation: ActivationIdentifier_t}} output
  */
 
 /**
  * @typedef  LRConfig_t
  * @property {LRConfigFit_t} fit
  * @property {LRConfigCompile_t} compile
- * @property {Columns_t} columns
+ * @property {LRConfigFeatures_t} features
  * @property {LRConfigLayers_t} layers
  */
 
@@ -85,246 +96,121 @@ export default class LinearRegressionModelController {
     this.t = t
     this.dataframe = new DataFrame(dfd.toJSON(dataframe))
     this.config = {
-      columns: {
-        x_name: '',
-        y_name: '',
+      features: {
+        X_features: new Set(),
+        y_target  : '',
       },
-      compile: {
-        optimizer: 'adam',
-        loss     : 'meanSquaredError',
-        metrics  : ['mse'],
+      compile : {
+        id_optimizer: 'adam',
+        id_loss     : 'losses-meanSquaredError',
+        id_metrics  : ['mse'],
+        params   : {
+          learningRate: 0.001,
+          momentum    : 1
+        }
       },
-      fit    : {
+      fit     : {
         batchSize     : 32,
         epochs        : 50,
         shuffle       : true,
         metrics       : ['loss', 'mse'],
         container_name: 'Training Performance',
       },
-      layers : {
-        input : { units: 1, inputShape: [1] },
+      layers  : {
+        input : { units: 1, activation: 'relu', inputShape: [1] },
         layers: [
           { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
-          { units: 10, activation: 'relu' },
         ],
-        output: { units: 1 },
+        output: { units: 1, activation: 'relu' },
       },
     }
   }
 
   /**
    *
-   * @param {{x_name: string, y_name: string}} columns
+   * @param {LRConfigFeatures_t} features
    **/
-  setColumns (columns) {
-    this.config.columns.x_name = columns.x_name
-    this.config.columns.y_name = columns.y_name
+  setFeatures (features) {
+    this.config.features.X_features = features.X_features
+    this.config.features.y_target = features.y_target
   }
 
   /**
-   * @param {ConfigLayers_t[]} layers
-   * @param {ConfigLayerInput_t} [input={ units: 1, inputShape: [1] }]
-   * @param {ConfigLayerOutput_t} [output={ units: 1 }]
+   *
+   * @param {LRConfigFit_t} configFit
+   **/
+  setFit (configFit) {
+    this.config.fit.epochs = configFit.epochs
+    this.config.fit.metrics = configFit.metrics
+    this.config.fit.batchSize = configFit.batchSize
+    this.config.fit.shuffle = configFit.shuffle
+  }
+
+  /**
+   *
+   * @param {LRConfigParams_t} configParams
    */
-  setLayers (layers, input = { units: 1, inputShape: [1] }, output = { units: 1 }) {
+  setParams (configParams) {
+
+  }
+
+  /**
+   *
+   * @param {LRConfigCompile_t} configCompile
+   */
+  setCompile (configCompile) {
+
+  }
+
+  /**
+   *
+   * @param configLayers
+   * @param {ConfigLayerInput_t} [configLayers.input={ units: number, activation: ActivationIdentifier_t, inputShape: number[] }]
+   * @param {ConfigLayers_t[]} [configLayers.layers=[]]
+   * @param {ConfigLayerOutput_t} [configLayers.output={ units: number, activation: ActivationIdentifier_t }]
+   **/
+  setLayers (configLayers) {
+    const {
+      input: {
+        units     : inputUnits = 1,
+        activation: inputActivation = 'relu',
+        inputShape: inputInputShape = [1]
+      } = {},
+      layers = [],
+      output: {
+        units     : outputUnits = 1,
+        activation: outputActivation = 'relu'
+      } = {},
+    } = configLayers
+
     this.config.layers = {
+      input : { units: inputUnits, activation: inputActivation, inputShape: inputInputShape },
       layers: layers,
-      input : input,
-      output: output,
+      output: { units: outputUnits, activation: outputActivation },
     }
   }
 
   /**
    * @private
    *
-   * @param model
-   * @param {TrainModelTensor_t} tensorData
-   * @return {Promise<*>}
-   */
-  async TrainModel (model, tensorData) {
-    model.compile({
-      optimizer: this.config.compile.optimizer,
-      loss     : this.config.compile.loss,
-      metrics  : this.config.compile.metrics,
-    })
-
-    return await model.fit(tensorData.inputs, tensorData.labels,
-      {
-        batchSize      : this.config.fit.batchSize,
-        epochs         : this.config.fit.epochs,
-        shuffle        : this.config.fit.shuffle,
-        validationSplit: 0.1,
-        verbose        : 1,
-        callbacks      : tfvis.show.fitCallbacks(
-          { name: this.config.fit.container_name },
-          [...this.config.fit.metrics],
-          { height: 200, callbacks: ['onEpochEnd'] },
-        ),
-      },
-    )
-  }
-
-  /**
-   * @private
-   *
-   * @return {Promise<unknown[]>}
+   * @return {Promise<object[]>}
    */
   async GetData () {
-    if (!this.dataframe.columns.includes(this.config.columns.x_name)) throw Error(`The dataset need to contain a column named ${this.config.columns.x_name}`)
-    if (!this.dataframe.columns.includes(this.config.columns.y_name)) throw Error(`The dataset need to contain a column named ${this.config.columns.y_name}`)
+    if (!this.dataframe.columns.includes(this.config.features.y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.y_target}`)
+
+    const missingColumns = []
+    const X_list = Array.from(this.config.features.X_features)
+    for (let i = 0; i < X_list.length; i++) {
+      if (!this.dataframe.columns.includes(X_list[i])) {
+        missingColumns.push(X_list[i])
+      }
+    }
+    if (missingColumns.length > 0) throw Error(`The dataset need to contain a column named ${missingColumns}`)
     const columns = [
-      this.config.columns.x_name,
-      this.config.columns.y_name,
+      ...this.config.features.X_features,
+      this.config.features.y_target,
     ]
     return Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
-  }
-
-  /**
-   * @private
-   *
-   * @return {Sequential} model
-   */
-  CreateModel () {
-    const model = new Sequential()
-    model.add(tfjs.layers.dense({ units: this.config.layers.input.units, inputShape: this.config.layers.input.inputShape, useBias: true }))
-
-    for (const layer of this.config.layers.layers) {
-      model.add(tfjs.layers.dense({ units: layer.units, activation: layer.activation, useBias: true }))
-    }
-
-    model.add(tfjs.layers.dense({ units: this.config.layers.output.units, useBias: true }))
-    return model
-  }
-
-  /**
-   * @private
-   *
-   * @return {{
-   * inputMax: Tensor<tfjs.Rank>,
-   * inputs: Tensor<tfjs.Rank>,
-   * inputMin: Tensor<tfjs.Rank>,
-   * labelMax: Tensor<tfjs.Rank>,
-   * labelMin: Tensor<tfjs.Rank>,
-   * labels: Tensor<tfjs.Rank>
-   * }}
-   * @constructor
-   */
-  ConvertDataFrameToTensor () {
-    /**
-     * @type {Array<Object> | Object}
-     */
-    const data_json = dfd.toJSON(this.dataframe)
-    return tfjs.tidy(() => {
-      // Step 1. Shuffle the data
-      tfjs.util.shuffle(data_json)
-
-      // Step 2. Convert data to Tensor
-      const inputs = data_json.map(d => d[this.config.columns.x_name])
-      const labels = data_json.map(d => d[this.config.columns.y_name])
-
-      const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
-      const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
-
-      //Step 3. Normalize the data to the range 0 - 1 using min-max scaling
-      const inputMax = inputTensor.max()
-      const inputMin = inputTensor.min()
-      const labelMax = labelTensor.max()
-      const labelMin = labelTensor.min()
-
-      const normalizedInputs = inputTensor.sub(inputMin).div(inputMax.sub(inputMin))
-      const normalizedLabels = labelTensor.sub(labelMin).div(labelMax.sub(labelMin))
-
-      return {
-        inputs: normalizedInputs,
-        labels: normalizedLabels,
-        // Return the min/max bounds, so we can use them later.
-        inputMax,
-        inputMin,
-        labelMax,
-        labelMin,
-      }
-    })
-  }
-
-  /**
-   *
-   * @param {tfjs.Sequential} model
-   * @param inputData
-   * @param normalizationData
-   * @return {Promise<{original: *, predicted: {x: *, y: *}[]}>}
-   * @constructor
-   */
-  async TestModel (model, inputData, normalizationData) {
-    const { inputMax, inputMin, labelMin, labelMax } = normalizationData
-
-    const [xs, preds] = tfjs.tidy(() => {
-
-      const xs = tfjs.linspace(0, 1, 100)
-      const preds = model.predict(xs.reshape([100, 1]))
-
-      const unNormXs = xs
-        .mul(inputMax.sub(inputMin))
-        .add(inputMin)
-
-      const unNormPreds = preds
-        .mul(labelMax.sub(labelMin))
-        .add(labelMin)
-
-      return [unNormXs.dataSync(), unNormPreds.dataSync()]
-    })
-
-    const predictedPoints = Array.from(xs).map((val, i) => {
-      return {
-        x: val,
-        y: preds[i],
-      }
-    })
-
-    const originalPoints = inputData.map(d => ({
-      x: d[this.config.columns.x_name],
-      y: d[this.config.columns.y_name],
-    }))
-
-    await tfvis.render.scatterplot(
-      { name: 'Model Predictions vs Original Data' },
-      { values: [originalPoints, predictedPoints], series: ['original', 'predicted'] },
-      {
-        xLabel: 'Horsepower',
-        yLabel: 'MPG',
-        height: 200,
-      },
-    )
-
-    return { original: originalPoints, predicted: predictedPoints }
-  }
-
-  /**
-   *
-   * @return {Promise<{original: Point_t, model: Sequential, predicted: Point_t}>}
-   */
-  async run () {
-
-    // 1. Generas los datos
-    const data = await this.GetData()
-    const tensorData = this.ConvertDataFrameToTensor()
-
-    // 2. Defines la estructura del modelo
-    const model = this.CreateModel()
-
-    // 3. Entrenas el modelo
-    await this.TrainModel(model, tensorData)
-
-    const { original, predicted } = await this.TestModel(model, data, tensorData)
-
-    return {
-      model,
-
-      original,
-      predicted,
-    }
   }
 
   /**
@@ -359,15 +245,15 @@ export default class LinearRegressionModelController {
 
   /**
    *
-   * @param data
+   * @param {object[]} data
    * @param {Array<string>} features
    * @param {Set<string>} categoricalFeatures
    * @param {number} testSize
-   * @param {string} COLUMN_NAME_TARGET
+   * @param {string} TARGET
    * @param {Map<string, number>} VARIABLE_CATEGORY_COUNT
-   * @returns {Tensor<Rank>[]}
+   * @returns {Tensor<tfjs.Rank>[]}
    */
-  CreateDataSets (data, features, categoricalFeatures, testSize, COLUMN_NAME_TARGET, VARIABLE_CATEGORY_COUNT) {
+  CreateDataSets (data, features, categoricalFeatures, testSize, TARGET, VARIABLE_CATEGORY_COUNT) {
     const X = data.map(r =>
       features.flatMap(f => {
         if (categoricalFeatures.has(f)) {
@@ -379,9 +265,9 @@ export default class LinearRegressionModelController {
 
     const X_t = this.Normalize(tfjs.tensor2d(X))
 
-    const y = tfjs.tensor(data.map(r => (!r[COLUMN_NAME_TARGET] ? 0 : r[COLUMN_NAME_TARGET])))
+    const y = tfjs.tensor(data.map(r => (!r[TARGET] ? 0 : r[TARGET])))
 
-    const splitIdx = parseInt((1 - testSize) * data.length, 10)
+    const splitIdx = parseInt(((1 - testSize) * data.length).toString(), 10)
 
     const [xTrain, xTest] = tfjs.split(X_t, [splitIdx, data.length - splitIdx])
     const [yTrain, yTest] = tfjs.split(y, [splitIdx, data.length - splitIdx])
@@ -391,29 +277,44 @@ export default class LinearRegressionModelController {
 
   /**
    *
-   * @param xTrain
-   * @param yTrain
-   * @returns {Promise<Sequential>}
+   * @param {Tensor | Tensor[] | {[inputName: string]: Tensor}} xTrain
+   * @param {Tensor | Tensor[] | {[inputName: string]: Tensor}} yTrain
+   * @returns {Promise<tfjs.Sequential>}
    * @constructor
    */
   async TrainLinearModel (xTrain, yTrain) {
     const model = tfjs.sequential()
+    // Input
     model.add(
       tfjs.layers.dense({
         inputShape: [xTrain.shape[1]],
         units     : xTrain.shape[1],
-        activation: 'sigmoid',
+        activation: this.config.layers.input.activation,
       }),
     )
-    model.add(tfjs.layers.dense({ units: 10, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1 }))
+    // Layers
+    for (const { units, activation } of this.config.layers.layers) {
+      model.add(tfjs.layers.dense({ units, activation }))
+    }
+    // Output
+    model.add(tfjs.layers.dense({
+      units     : this.config.layers.output.units,
+      activation: this.config.layers.output.activation
+    }))
 
-    const list_metrics = ['meanAbsoluteError']
+    const idOptimizer = this.config.compile.id_optimizer
+    const params = this.config.compile.params
+    const idLoss = this.config.compile.id_loss
+    const idMetrics = this.config.compile.id_metrics
+
+    const _optimizer = LinearRegressionModelController.CREATE_OPTIMIZER(idOptimizer, params)
+    const _loss = LinearRegressionModelController.CREATE_LOSS(idLoss)
+    const _metrics = LinearRegressionModelController.CREATE_METRICS(idMetrics)
 
     model.compile({
-      optimizer: tfjs.train.sgd(0.001),
-      loss     : 'meanSquaredError',
-      metrics  : list_metrics,
+      optimizer: _optimizer,
+      loss     : _loss,
+      metrics  : _metrics,
     })
 
     const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
@@ -430,7 +331,7 @@ export default class LinearRegressionModelController {
     })
     await model.fit(xTrain, yTrain, {
       batchSize      : 32,
-      epochs         : 100,
+      epochs         : 20,
       shuffle        : true,
       validationSplit: 0.1,
       callbacks      : fit_callbacks,
@@ -438,5 +339,88 @@ export default class LinearRegressionModelController {
 
     return model
   };
+
+  async run () {
+    const data = await this.GetData()
+
+    // TODO lista de características categoricas
+    const categoricalFeatures = new Set([])
+
+    const TARGET = 'Salary'
+    const X_features = ['YearsExperience']
+
+    /** @type Map<string, number> */
+    const VARIABLE_CATEGORY_COUNT = new Map()
+
+    // params
+    const testSize = 0.1
+
+    const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_features, categoricalFeatures, testSize, TARGET, VARIABLE_CATEGORY_COUNT)
+    const linearModel = await this.TrainLinearModel(xTrain, yTrain)
+
+    const original = yTest.dataSync()
+    const predicted = linearModel.predict(xTest).dataSync()
+
+    return { original, predicted }
+  }
+
+  static CREATE_OPTIMIZER (idOptimizer, params) {
+    if (!isProduction()) console.debug('>> createOptimizer', { idOptimizer, params })
+
+    let { learningRate = 0.01, momentum = 1 } = params
+    const optimizerMap = {
+      'sgd'     : (params) => tfjs.train.sgd(params.learningRate),
+      'momentum': (params) => tfjs.train.momentum(params.learningRate, params.momentum),
+      'adagrad' : (params) => tfjs.train.adagrad(params.learningRate),
+      'adadelta': (params) => tfjs.train.adadelta(params.learningRate),
+      'adam'    : (params) => tfjs.train.adam(params.learningRate),
+      'adamax'  : (params) => tfjs.train.adamax(params.learningRate),
+      'rmsprop' : (params) => tfjs.train.rmsprop(params.learningRate)
+    }
+    const optimizerFunction = optimizerMap[idOptimizer]
+    if (optimizerFunction) {
+      return optimizerFunction({ learningRate, momentum })
+    } else {
+      console.warn('createOptimizer()', { idOptimizer, params })
+      return tfjs.train.adam(params.learningRate)
+    }
+  }
+
+  static CREATE_LOSS (idLoss) {
+    if (!isProduction()) console.debug('>> createLoss', { idLoss })
+
+    const lossAndMetricFunctions = {
+      'losses-absoluteDifference' : tfjs.losses.absoluteDifference,
+      'losses-computeWeightedLoss': tfjs.losses.computeWeightedLoss,
+      'losses-cosineDistance'     : tfjs.losses.cosineDistance,
+      'losses-hingeLoss'          : tfjs.losses.hingeLoss,
+      'losses-huberLoss'          : tfjs.losses.huberLoss,
+      'losses-logLoss'            : tfjs.losses.logLoss,
+      'losses-meanSquaredError'   : tfjs.losses.meanSquaredError,
+      'losses-sigmoidCrossEntropy': tfjs.losses.sigmoidCrossEntropy,
+      'losses-softmaxCrossEntropy': tfjs.losses.softmaxCrossEntropy,
+    }
+
+    return lossAndMetricFunctions[idLoss] || 'categoricalCrossentropy'
+  }
+
+  static CREATE_METRICS (idMetrics) {
+    if (!isProduction()) console.debug('>> createMetrics', { idMetrics })
+    const metricMap = {
+      'metrics-binaryAccuracy'             : tfjs.metrics.binaryAccuracy,
+      'metrics-binaryCrossentropy'         : tfjs.metrics.binaryCrossentropy,
+      'metrics-categoricalAccuracy'        : tfjs.metrics.categoricalAccuracy,
+      'metrics-categoricalCrossentropy'    : tfjs.metrics.categoricalCrossentropy,
+      'metrics-cosineProximity'            : tfjs.metrics.cosineProximity,
+      'metrics-meanAbsoluteError'          : tfjs.metrics.meanAbsoluteError,
+      'metrics-meanAbsolutePercentageError': tfjs.metrics.meanAbsolutePercentageError,
+      'metrics-meanSquaredError'           : tfjs.metrics.meanSquaredError,
+      'metrics-precision'                  : tfjs.metrics.precision,
+      'metrics-recall'                     : tfjs.metrics.recall,
+      'metrics-sparseCategoricalAccuracy'  : tfjs.metrics.sparseCategoricalAccuracy,
+    }
+
+    return idMetrics.map((idMetric) => metricMap[idMetric] || 'accuracy')
+  }
 
 }

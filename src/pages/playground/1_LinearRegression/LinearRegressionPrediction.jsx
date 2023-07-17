@@ -7,12 +7,12 @@ import Plot from 'react-plotly.js'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
-import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
+// import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
 import DebugJSON from '@components/debug/DebugJSON'
 
 export default function LinearRegressionPrediction () {
   const prefix = 'pages.playground.1-linear-regression.predict.'
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
 
   const {
     dataPrediction,
@@ -23,32 +23,39 @@ export default function LinearRegressionPrediction () {
     datasetLocal
   } = useContext(LinearRegressionContext)
 
+  const [listFeaturesX, setListFeaturesX] = useState('')
   const [dynamicObject, setDynamicObject] = useState({})
   const [indexModel, setIndexModel] = useState(0)
+
+  useEffect(() => {
+    const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
+    const tmp = listModels[indexModel]?.feature_selector?.X_features
+    setListFeaturesX(formatter.format(tmp))
+  }, [i18n.language, indexModel, listModels, setListFeaturesX])
 
   const refPlotJS = useRef()
 
   const handleClick_Test = async () => {
     // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
     // const columns = { x_name: 'horsepower', y_name: 'mpg' }
-    const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
-    const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
-    const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
-    console.log({ original, predicted })
-
-    const original_x = original.map((v) => v.x)
-    const original_y = original.map((v) => v.y)
-    const predicted_x = predicted.map((v) => v.x)
-    const predicted_y = predicted.map((v) => v.y)
-
-    setDataPrediction({
-      dataOriginal_label : columns.x_name,
-      dataOriginal_x     : original_x,
-      dataOriginal_y     : original_y,
-      dataPredicted_label: columns.y_name,
-      dataPredicted_x    : predicted_x,
-      dataPredicted_y    : predicted_y
-    })
+    // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
+    // const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
+    // const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
+    // console.log({ original, predicted })
+    //
+    // const original_x = original.map((v) => v.x)
+    // const original_y = original.map((v) => v.y)
+    // const predicted_x = predicted.map((v) => v.x)
+    // const predicted_y = predicted.map((v) => v.y)
+    //
+    // setDataPrediction({
+    //   dataOriginal_label : columns.x_name,
+    //   dataOriginal_x     : original_x,
+    //   dataOriginal_y     : original_y,
+    //   dataPredicted_label: columns.y_name,
+    //   dataPredicted_x    : predicted_x,
+    //   dataPredicted_y    : predicted_y
+    // })
   }
 
   const handleChange_DynamicObject = (_newValue, _column_name) => {
@@ -178,7 +185,7 @@ export default function LinearRegressionPrediction () {
             <Form.Select aria-label={'model-selector'}
                          size={'sm'}
                          onChange={(e) => handleChange_Model(e)}>
-              <option disabled={true} value="__disabled__"><Trans i18nKey={'modelo no disponible'} /></option>
+              <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
               <>
                 {listModels
                   .map((_, index) => {
@@ -213,9 +220,8 @@ export default function LinearRegressionPrediction () {
       <Card.Body>
         <Row>
           <Col>
-            <h4>Información</h4>
-            <Card.Text><strong>X</strong> {listModels[indexModel]?.feature_selector.x_name ?? 'void'}</Card.Text>
-            <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_name ?? 'void'}</Card.Text>
+            <Card.Text><strong>X</strong> {listFeaturesX ?? ''}</Card.Text>
+            <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_target ?? ''}</Card.Text>
           </Col>
           <Col>
             <Button onClick={handleClick_Test}>Test</Button>
@@ -260,7 +266,7 @@ export default function LinearRegressionPrediction () {
 
       <Card.Footer>
         <DebugJSON obj={dynamicObject} />
-        <DebugJSON obj={Object.entries(listModels[indexModel]?.feature_selector ?? { })} />
+        <DebugJSON obj={Object.entries(listModels[indexModel]?.feature_selector ?? {})} />
       </Card.Footer>
     </Card>
   </>

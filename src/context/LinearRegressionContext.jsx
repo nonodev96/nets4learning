@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-import * as dfd from 'danfojs'
+import { DataFrame } from 'danfojs'
 import { Sequential } from '@tensorflow/tfjs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
@@ -17,8 +17,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {string} csv
  * @property {string} info
  * @property {string} path
- * @property {dfd.DataFrame} dataframe_original
- * @property {dfd.DataFrame} dataframe_processed
+ * @property {DataFrame} dataframe_original
+ * @property {DataFrame} dataframe_processed
  * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
  */
 
@@ -30,8 +30,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
 
 /**
  * @typedef CustomFeatureSelector_t
- * @property {string} x_name
- * @property {string} y_name
+ * @property {Set<string>} X_features
+ * @property {string} y_target
  */
 
 /**
@@ -66,10 +66,11 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
 
 /**
  * @typedef CustomDatasetLocal_t
- * @property {dfd.DataFrame} dataframe_original
- * @property {dfd.DataFrame} dataframe_processed
+ * @property {boolean} is_dataset_upload
+ * @property {boolean} is_dataset_processed
+ * @property {DataFrame} dataframe_original
+ * @property {DataFrame} dataframe_processed
  * @property {string} container_info
- * @property {Array<string>} attributes
  */
 
 /**
@@ -143,8 +144,8 @@ export function LinearRegressionProvider ({ children }) {
       list_id_metrics: ['meanSquaredError', 'meanAbsoluteError']
     },
     feature_selector    : {
-      x_name: '',
-      y_name: '',
+      X_features: new Set(),
+      y_target: '',
     }
   }
 
@@ -154,10 +155,9 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_DATASET_LOCAL = {
     is_dataset_upload   : false,
     is_dataset_processed: true,
-    dataframe_original  : new dfd.DataFrame(),
-    dataframe_processed : new dfd.DataFrame(),
+    dataframe_original  : new DataFrame(),
+    dataframe_processed : new DataFrame(),
     container_info      : '',
-    attributes          : []
   }
 
   /**

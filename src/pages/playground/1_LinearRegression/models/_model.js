@@ -1,4 +1,5 @@
-import { ACTIONS, EVENTS, LIFECYCLE, STATUS } from 'react-joyride'
+// eslint-disable-next-line no-unused-vars
+import { ACTIONS, EVENTS, LIFECYCLE, STATUS, CallBackProps } from 'react-joyride'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 
@@ -67,18 +68,25 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @return {{
    *    run                   : boolean,
    *    continuous            : boolean,
-   *    handleJoyrideCallback : (data) => void,
+   *    handleJoyrideCallback : (data: CallBackProps) => void,
    *    steps                 : Array<{content: string, target: string}>
    * }}
    * @constructor
    */
   JOYRIDE () {
+    /**
+     *
+     * @param {CallBackProps} data
+     * @return {Promise<void>}
+     */
     const handleJoyrideCallback = async (data) => {
       const { action, lifecycle, status, type, step } = data
       const { target } = step
       // const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
-      if (([ACTIONS.UPDATE]).includes(action) && ([LIFECYCLE.TOOLTIP]).includes(lifecycle)) {
+      if (
+        ([ACTIONS.UPDATE.toString()]).includes(action) &&
+        ([LIFECYCLE.TOOLTIP.toString()]).includes(lifecycle)) {
         switch (target) {
           case '.joyride-step-1-manual': {
             this.setAccordionActive(['manual'])
@@ -126,7 +134,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
             break
           }
           default: {
-            console.error('Error, option not valid')
+            console.warn('Error, option not valid')
             break
           }
         }
@@ -136,9 +144,9 @@ export default class I_MODEL_LINEAR_REGRESSION {
           Errors.notDispatchedEvent()
         }
 
-      } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
-
-      } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
+      // } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
+      //
+      // } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
 
       }
     }

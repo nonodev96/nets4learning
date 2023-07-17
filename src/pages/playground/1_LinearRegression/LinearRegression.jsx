@@ -22,7 +22,7 @@ const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatase
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
 const LinearRegressionEditorTrainer = lazy(() => import( './LinearRegressionEditorTrainer'))
-const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
+// const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
 const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
 // Models
 const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
@@ -64,7 +64,25 @@ export default function LinearRegression ({ dataset_id }) {
     console.log('handleSubmit_TrainModel')
 
     const modelController = new LinearRegressionModelController(t, datasetLocal.dataframe_processed)
-    modelController.setColumns({ x_name: 'Salary', y_name: 'YearsExperience' })
+    modelController.setLayers({
+      input : { units: 1, activation: 'relu' },
+      layers: [],
+      output: { units: 1, activation: 'relu' }
+    })
+    modelController.setCompile({
+
+    })
+    modelController.setFeatures({
+      X_features: tmpModel.feature_selector.X_features,
+      y_target  : tmpModel.feature_selector.y_target
+    })
+    modelController.setFit({
+      epochs   : tmpModel.params_training.n_of_epochs,
+      shuffle  : true,
+      batchSize: 32,
+      metrics  : []
+    })
+
     const { model } = await modelController.run()
 
     setTmpModel((prevState) => {
@@ -143,15 +161,18 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Información</span></div>
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
+          <span className={styles.n4l_hr_title}>
+            <Trans i18nKey={'hr.information'} />
+          </span>
+        </div>
 
 
         <Row>
           <Col>
 
             <Accordion defaultActiveKey={[]} activeKey={accordionActive}>
-              <Accordion.Item className={'joyride-step-1-manual'}
-                              eventKey={'manual'}>
+              <Accordion.Item className={'joyride-step-1-manual'} eventKey={'manual'}>
                 <Accordion.Header onClick={() => accordionToggle('manual')}>
                   <h3><Trans i18nKey={'pages.playground.1-linear-regression.generator.manual.title'} /></h3>
                 </Accordion.Header>
@@ -160,8 +181,7 @@ export default function LinearRegression ({ dataset_id }) {
                 </Accordion.Body>
               </Accordion.Item>
 
-              <Accordion.Item className={'joyride-step-2-dataset-info'}
-                              eventKey={'dataset_info'}>
+              <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
                   <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
@@ -175,8 +195,11 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Conjunto de datos</span></div>
-
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
+          <span className={styles.n4l_hr_title}>
+            <Trans i18nKey={'hr.dataset'} />
+          </span>
+        </div>
         <Row className={'joyride-step-3-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetShow /></Suspense>
@@ -191,7 +214,11 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Modelo</span></div>
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
+          <span className={styles.n4l_hr_title}>
+            <Trans i18nKey={'hr.model'} />
+          </span>
+        </div>
 
         <Row>
           <Col className={'joyride-step-5-layer'}>
@@ -203,16 +230,19 @@ export default function LinearRegression ({ dataset_id }) {
 
           <Row className={'mt-3'}>
             <Col className={'mb-3'}>
-              <div className={'joyride-step-6-editor-selector-features'}>
-                <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
-              </div>
-              <hr />
               <div className={'joyride-step-6-editor-layers'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               </div>
+
               <hr />
+
+              {/*
               <div className={'joyride-step-6-editor-visor'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorVisor /></Suspense>
+              </div>
+              */}
+              <div className={'joyride-step-6-editor-selector-features'}>
+                <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>
@@ -243,7 +273,11 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}><span className={styles.n4l_hr_title}>Predict</span></div>
+        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
+          <span className={styles.n4l_hr_title}>
+            <Trans i18nKey={'hr.predict'} />
+          </span>
+        </div>
 
 
         {/*<Row className={'mt-3'}>*/}
@@ -272,8 +306,8 @@ export default function LinearRegression ({ dataset_id }) {
                   <Col><DebugJSON obj={tmpModel.params_training} /></Col>
                   <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
                   <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
-                  <Col><DebugJSON obj={{ columns: datasetLocal.dataframe_processed.columns }} /></Col>
-                  <Col><DebugJSON obj={accordionActive} /></Col>
+                  <Col><DebugJSON obj={{ accordionActive }} /></Col>
+                  <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
                 </Row>
               </Card.Body>
             </Card>

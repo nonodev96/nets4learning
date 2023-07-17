@@ -132,7 +132,8 @@
     "model-selected": "Model selection error",
     "tensor-shape": "Incorrect tensioner shape",
     "tensor-shape-description": "Wrong tensor shape, you expected the shape [{{target_tensor_shape_0}},{{target_tensor_shape_1}}}], but you received a tensor with shape [{{tensor_shape_0}},{{tensor_shape_1}}}], possibly you should modify the last layer.",
-    "tensor-shape-change": "The output layer has the shape (*, {{last_layer_units}}). <br> must have the form (*, {{class_length}})"
+    "tensor-shape-change": "The output layer has the shape (*, {{last_layer_units}}). <br> must have the form (*, {{class_length}})",
+    "need-one-feature": "You need at least one feature."
   },
   "header": {
     "language": "Language",
@@ -147,7 +148,8 @@
     "developers": "Developers",
     "directors": "Directors",
     "maintainers": "Maintenance and improvements",
-    "terms": "Terms and conditions"
+    "terms": "Terms and conditions",
+    "version": "Version"
   },
   "drag-and-drop": {
     "label-files-one": "File:",
@@ -1050,7 +1052,7 @@
             "float32": "Decimal",
             "string": "Text",
             "label-encoder": "Label Encoder",
-            "one-hot-encoder": "ONE HOT Encoder",
+            "one-hot-encoder": "OneHot Encoder",
             "classes": "Classes"
           },
           "details": {
@@ -1083,8 +1085,10 @@
         },
         "editor-feature-selector": {
           "title": "Feature selector",
-          "feature-selector-x": "Feature selector / Axis X",
-          "feature-selector-y": "Feature selector / Axis Y"
+          "feature-selector-x": "Feature selector / Set (x)",
+          "feature-selector-y": "Feature selector / Target (Y)",
+          "add-feature": "Add feature",
+          "delete-feature": "Delete feature {{value}}"
         },
         "general-parameters": {
           "title": "Hyper parameter editor",
@@ -1155,13 +1159,17 @@
         "generator": {
           "manual": {
             "title": "Model generator manual"
-          }
+          },
+          "simple-linear-regression": "Simple linear regression",
+          "multiple-linear-regression": "Multiple linear regression"
         },
         "predict": {
-          "title": "Prediccoón de la regresión lineal",
+          "title": "Predict",
           "entity": {
             "__index__": "Entity {{index}}"
-          }
+          },
+          "button-submit": "Predict",
+          "list-models-generated": "List of models generated"
         }
       }
     },
@@ -1436,6 +1444,12 @@
       "open-visor": "Open visor",
       "close-visor": "Close visor"
     }
+  },
+  "hr": {
+    "information": "Information",
+    "dataset": "Data set",
+    "model": "Model",
+    "predict": "Predict"
   },
   "form-dataframe": {
     "int32": "Integer",

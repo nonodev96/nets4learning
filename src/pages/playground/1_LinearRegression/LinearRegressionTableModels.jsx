@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
-import { Table, Card , Button} from 'react-bootstrap'
-import { Trans } from 'react-i18next'
+import { Table, Card, Button } from 'react-bootstrap'
+import { Trans, useTranslation } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'
+  const { t, i18n } = useTranslation()
   const { listModels } = useContext(LinearRegressionContext)
 
   const handleClick_CloseVisor = () => {
@@ -15,7 +16,6 @@ export default function LinearRegressionTableModels () {
   const handleClick_OpenVisor = () => {
     tfvis.visor().open()
   }
-
 
   const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
     model.save('downloads://lr-model-' + idMODEL)
@@ -58,6 +58,8 @@ export default function LinearRegressionTableModels () {
 
           <tbody>
           {listModels.map((value, index) => {
+            const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
+            const list = formatter.format(value.feature_selector.X_features)
             return <tr key={index}>
               <td>{value.params_training.learning_rate * 100}%</td>
               <td>{value.params_training.test_size * 100}%</td>
@@ -77,8 +79,8 @@ export default function LinearRegressionTableModels () {
                   })}
               </td>
               <td>
-                <span style={{ fontFamily: 'monospace' }}>X:</span> {value.feature_selector.x_name} <br />
-                <span style={{ fontFamily: 'monospace' }}>Y:</span> {value.feature_selector.y_name}
+                <span style={{ fontFamily: 'monospace' }}>X:</span> {list} <br />
+                <span style={{ fontFamily: 'monospace' }}>Y:</span> {value.feature_selector.y_target}
               </td>
               <td>
                 <Button variant={'outline-primary'}

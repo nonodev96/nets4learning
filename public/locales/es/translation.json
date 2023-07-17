@@ -132,7 +132,8 @@
     "model-selected": "Error en la selección del modelo",
     "tensor-shape": "Forma del tensor incorrecta",
     "tensor-shape-description": "Forma del tensor incorrecta, se esperaba la forma [{{target_tensor_shape_0}},{{target_tensor_shape_1}}], pero se recibió un tensor con forma [{{tensor_shape_0}},{{tensor_shape_1}}], posiblemente debas modificar la última capa.",
-    "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})"
+    "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})",
+    "need-one-feature": "Necesitas al menos una característica."
   },
   "header": {
     "language": "Idioma",
@@ -147,7 +148,8 @@
     "developers": "Desarrolladores",
     "directors": "Directores",
     "maintainers": "Mantenimiento y mejoras",
-    "terms": "Términos y condiciones"
+    "terms": "Términos y condiciones",
+    "version": "Versión"
   },
   "drag-and-drop": {
     "label-files-one": "Fichero:",
@@ -1082,9 +1084,11 @@
           "activation-function-info": "Será el optimizador que se usará para activar la función"
         },
         "editor-feature-selector": {
-          "title": "Selector de caracteristicas",
-          "feature-selector-x": "Selector de caracteristicas / Eje X",
-          "feature-selector-y": "Selector de caracteristicas / Eje Y"
+          "title": "Selector de características",
+          "feature-selector-x": "Selector de características / Conjunto (X)",
+          "feature-selector-y": "Selector de características / Objetivo (Y)",
+          "add-feature": "Añadir característica",
+          "delete-feature": "Eliminar característica {{value}}"
         },
         "general-parameters": {
           "title": "Editor de hiperparámetros",
@@ -1155,13 +1159,17 @@
         "generator": {
           "manual": {
             "title": "Manual del generador de modelos"
-          }
+          },
+          "simple-linear-regression": "Regresión linear simple",
+          "multiple-linear-regression": "Regresión linear multiple"
         },
         "predict": {
           "title": "Predicción",
           "entity": {
             "__index__": "Entidad {{index}}"
-          }
+          },
+          "button-submit": "Predecir",
+          "list-models-generated": "Lista de modelos generados"
         }
       }
     },
@@ -1436,6 +1444,12 @@
       "open-visor": "Abrir visor",
       "close-visor": "Cerrar visor"
     }
+  },
+  "hr": {
+    "information": "Información",
+    "dataset": "Conjunto de datos",
+    "model": "Modelo",
+    "predict": "Predecir"
   },
   "form-dataframe": {
     "int32": "Entero",

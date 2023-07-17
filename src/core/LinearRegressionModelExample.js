@@ -9,14 +9,7 @@ import * as dfd from 'danfojs'
  */
 async function getData (filename, columns) {
   const df = await dfd.readCSV(filename)
-  if (df.columns.includes('x'))
-    throw Error('The dataset can\'t contain a column named x')
-  if (df.columns.includes('y'))
-    throw Error('The dataset can\'t contain column named y')
-
-  df.rename({ [columns.x_name]: 'x' }, { inplace: true })
-  df.rename({ [columns.y_name]: 'y' }, { inplace: true })
-  return Array.from(JSON.parse(JSON.stringify(dfd.toJSON(df.loc({ columns: ['x', 'y'] })))))
+  return Array.from(JSON.parse(JSON.stringify(dfd.toJSON(df.loc({ columns: [columns.x_name, columns.y_name] })))))
 }
 
 /*
@@ -40,15 +33,15 @@ function createModel () {
   return model
 }
 
-function convertToTensor (data) {
+function convertToTensor (data, columns) {
 
   return tfjs.tidy(() => {
     // Step 1. Shuffle the data
     tfjs.util.shuffle(data)
 
     // Step 2. Convert data to Tensor
-    const inputs = data.map(d => d['x'])
-    const labels = data.map(d => d['y'])
+    const inputs = data.map(d => d[columns.x_name])
+    const labels = data.map(d => d[columns.y_name])
 
     const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
     const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
@@ -100,7 +93,7 @@ async function trainModel (model, tensorData) {
   })
 }
 
-async function testModel (model, inputData, normalizationData) {
+async function testModel (model, inputData, normalizationData, columns) {
   const { inputMax, inputMin, labelMin, labelMax } = normalizationData
 
   const [xs, preds] = tfjs.tidy(() => {
@@ -127,8 +120,8 @@ async function testModel (model, inputData, normalizationData) {
   })
 
   const originalPoints = inputData.map(d => ({
-    x: d['x'],
-    y: d['y'],
+    x: d[columns.x_name],
+    y: d[columns.y_name],
   }))
 
   await tfvis.render.scatterplot(
@@ -170,7 +163,7 @@ export async function run (filename, columns) {
   await tfvis.show.modelSummary({ name: 'Model Summary' }, model)
 
   // Convert the data to a form we can use for training.
-  const tensorData = convertToTensor(data)
+  const tensorData = convertToTensor(data, columns)
 
   // Train the model
   await trainModel(model, tensorData)
