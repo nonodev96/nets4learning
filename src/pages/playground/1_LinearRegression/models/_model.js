@@ -80,7 +80,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
      * @return {Promise<void>}
      */
     const handleJoyrideCallback = async (data) => {
-      const { action, lifecycle, status, type, step } = data
+      const { action, lifecycle, step/*, status, type*/ } = data
       const { target } = step
       // const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1)
 
@@ -144,9 +144,9 @@ export default class I_MODEL_LINEAR_REGRESSION {
           Errors.notDispatchedEvent()
         }
 
-      // } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
-      //
-      // } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
+        // } else if (([STATUS.FINISHED, STATUS.SKIPPED]).includes(status)) {
+        //
+        // } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND]).includes(type)) {
 
       }
     }

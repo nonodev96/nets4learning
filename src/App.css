@@ -18,3 +18,7 @@
 .n4l-summary-1-25 {
   font-size: 1.25em
 }
+
+.overflow-x-scroll-inherit {
+  overflow-x: inherit;
+}

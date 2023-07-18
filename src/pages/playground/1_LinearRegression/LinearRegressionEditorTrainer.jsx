@@ -14,7 +14,7 @@ export default function LinearRegressionEditorTrainer () {
   // 0 - 1 --> 0 - 100
   const DEFAULT_TEST_SIZE = 10
   // TYPE_OPTIMIZER.key
-  const DEFAULT_OPTIMIZER = 'train-adam'
+  const DEFAULT_OPTIMIZER = 'train-sgd'
   // TYPE_LOSSES.key
   const DEFAULT_LOSS = 'losses-meanSquaredError'
   // TYPE_METRICS.key

@@ -15,9 +15,6 @@ export default function LinearRegressionPrediction () {
   const { t, i18n } = useTranslation()
 
   const {
-    dataPrediction,
-    setDataPrediction,
-
     listModels,
 
     datasetLocal
@@ -26,14 +23,66 @@ export default function LinearRegressionPrediction () {
   const [listFeaturesX, setListFeaturesX] = useState('')
   const [dynamicObject, setDynamicObject] = useState({})
   const [indexModel, setIndexModel] = useState(0)
+// [
+//   {
+//     name  : 'Original',
+//     x     : dataPrediction.dataOriginal_x,
+//     y     : dataPrediction.dataOriginal_y,
+//     type  : 'scatter',
+//     mode  : 'markers',
+//     marker: { color: 'blue' },
+//   }, {
+//     name  : 'Predicted',
+//     x     : dataPrediction.dataPredicted_x,
+//     y     : dataPrediction.dataPredicted_y,
+//     type  : 'scatter',
+//     mode  : 'lines+markers',
+//     marker: { color: 'red' },
+//   },
+// ]
+  const [dataPrediction, setDataPrediction] = useState([])
+  const refPlotJS = useRef()
 
   useEffect(() => {
     const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
-    const tmp = listModels[indexModel]?.feature_selector?.X_features
-    setListFeaturesX(formatter.format(tmp))
-  }, [i18n.language, indexModel, listModels, setListFeaturesX])
+    let list = []
+    if (listModels[indexModel]?.feature_selector?.X_features) {
+      list = [...listModels[indexModel]?.feature_selector?.X_features]
+    }
+    setListFeaturesX(formatter.format(list))
+    console.log()
+  }, [i18n.language, listModels, indexModel, setListFeaturesX])
 
-  const refPlotJS = useRef()
+  useEffect(() => {
+    if (listModels[indexModel]) {
+      const { original, predicted } = listModels[indexModel]
+      console.log('enter', { original: listModels[indexModel].original, predicted })
+
+      const trace = {
+        x      : [...Array(original.length).keys()],
+        y      : original,
+        name   : 'Original',
+        mode   : 'lines+markers',
+        type   : 'scatter',
+        opacity: 0.5,
+        marker : {
+          color: 'dodgerblue'
+        }
+      }
+      const lmTrace = {
+        x      : [...Array(original.length).keys()],
+        y      : predicted,
+        name   : 'Predicted',
+        mode   : 'lines+markers',
+        type   : 'scatter',
+        opacity: 0.5,
+        marker : {
+          color: 'forestgreen'
+        }
+      }
+      setDataPrediction([trace, lmTrace])
+    }
+  }, [listModels, indexModel, setDataPrediction])
 
   const handleClick_Test = async () => {
     // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
@@ -69,11 +118,19 @@ export default function LinearRegressionPrediction () {
   }
 
   const getColor = (column_name) => {
-    if (listModels[indexModel].feature_selector.x_name === column_name)
+    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name))
       return styles.border_blue
-    if (listModels[indexModel].feature_selector.y_name === column_name)
+    if (listModels[indexModel].feature_selector.y_target === column_name)
       return styles.border_green
     return styles.border_red
+  }
+
+  const isDisabled = (column_name) => {
+    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name))
+      return false
+    if (listModels[indexModel].feature_selector.y_target === column_name)
+      return true
+    return true
   }
 
   const LinearRegressionDataFrameProcessedDynamicForm = () => {
@@ -88,8 +145,8 @@ export default function LinearRegressionPrediction () {
               <Form.Control type="number"
                             size={'sm'}
                             className={getColor(column_name)}
+                            disabled={isDisabled(column_name)}
                             placeholder={'int32'}
-                            disabled={listModels[indexModel].feature_selector.x_name !== column_name}
                             step={1}
                             value={dynamicObject[column_name]}
                             onChange={(e) => handleChange_DynamicObject(e.target.value, column_name)} />
@@ -105,7 +162,7 @@ export default function LinearRegressionPrediction () {
               <Form.Control type="number"
                             size={'sm'}
                             className={getColor(column_name)}
-                            disabled={listModels[indexModel].feature_selector.x_name !== column_name}
+                            disabled={isDisabled(column_name)}
                             placeholder={'float32'}
                             value={dynamicObject[column_name]}
                             step={0.1}
@@ -218,50 +275,42 @@ export default function LinearRegressionPrediction () {
         </div>
       </Card.Header>
       <Card.Body>
-        <Row>
-          <Col>
-            <Card.Text><strong>X</strong> {listFeaturesX ?? ''}</Card.Text>
-            <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_target ?? ''}</Card.Text>
-          </Col>
-          <Col>
-            <Button onClick={handleClick_Test}>Test</Button>
-          </Col>
-        </Row>
-        <hr />
-
-        <Form onSubmit={handleSubmit_Predict}>
+        {listModels.length > 0 && <>
           <Row>
+            <Col>
+              <Card.Text><strong>X</strong> {listFeaturesX ?? ''}</Card.Text>
+              <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_target ?? ''}</Card.Text>
+            </Col>
+          </Row>
 
-            {listModels.length > 0 &&
+          <hr />
+
+          <Form onSubmit={handleSubmit_Predict}>
+            <Row>
               <LinearRegressionDataFrameProcessedDynamicForm />
-            }
-          </Row>
-          <Row>
-            <div className="d-grid gap-2">
-              <Button type={'submit'}
-                      size={'lg'}
-                      variant={'outline-primary'}>
-                <Trans i18nKey={prefix + 'button-submit'} />
-              </Button>
-            </div>
-          </Row>
-        </Form>
-
-        <Plot ref={refPlotJS}
-              data={[{
-                name  : 'Original',
-                x     : dataPrediction.dataOriginal_x,
-                y     : dataPrediction.dataOriginal_y,
-                type  : 'scatter',
-                mode  : 'markers',
-                marker: { color: 'blue' },
-              }, {
-                name: 'Predicted', x: dataPrediction.dataPredicted_x, y: dataPrediction.dataPredicted_y, type: 'scatter', mode: 'lines+markers', marker: { color: 'red' },
-              },]}
-              useResizeHandler={true}
-              style={PLOTLY_CONFIG_DEFAULT.STYLES}
-              layout={{ title: '', ...PLOTLY_CONFIG_DEFAULT.LAYOUT }}
-        />
+            </Row>
+            <Row>
+              <div className="d-grid gap-2">
+                <Button type={'submit'}
+                        size={'lg'}
+                        variant={'outline-primary'}>
+                  <Trans i18nKey={prefix + 'button-submit'} />
+                </Button>
+              </div>
+            </Row>
+            <Row>
+              <Col>
+                <Plot ref={refPlotJS}
+                      data={dataPrediction}
+                      useResizeHandler={true}
+                      style={PLOTLY_CONFIG_DEFAULT.STYLES}
+                      layout={{ title: '', ...PLOTLY_CONFIG_DEFAULT.LAYOUT }}
+                />
+              </Col>
+            </Row>
+          </Form>
+        </>
+        }
       </Card.Body>
 
       <Card.Footer>

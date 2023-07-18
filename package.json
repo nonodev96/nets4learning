@@ -18,7 +18,7 @@
     "build:android": "craco build --mode android"
   },
   "dependencies": {
-    "@faker-js/faker": "7.6.0",
+    "@faker-js/faker": "8.0.2",
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow-models/face-detection": "^1.0.1",
     "@tensorflow-models/face-landmarks-detection": "^1.0.1",

@@ -13,7 +13,6 @@ import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
 import DataFramePlotConfiguration from './DataFramePlotConfiguration'
 import DataFramePlotDescription from './DataFramePlotDescription'
-import DebugJSON from '../debug/DebugJSON'
 
 export default function DataFramePlot ({ dataframe }) {
 
@@ -212,9 +211,10 @@ export default function DataFramePlot ({ dataframe }) {
                          size={'sm'}
                          value={dataframePlotConfig.PLOT_ENABLE}>
               <>
-                {dataframePlotConfig.LIST_OF_AVAILABLE_PLOTS.map((value, index) =>
-                  (<option key={'option_' + index} value={value}><Trans i18nKey={`dataframe-plot.${value}.title`} /></option>)
-                )}
+                {dataframePlotConfig.LIST_OF_AVAILABLE_PLOTS
+                  .map((value, index) =>
+                    (<option key={'option_' + index} value={value}><Trans i18nKey={`dataframe-plot.${value}.title`} /></option>)
+                  )}
               </>
             </Form.Select>
           </Form.Group>

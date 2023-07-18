@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react'
+import * as tfjs from '@tensorflow/tfjs'
 import { DataFrame } from 'danfojs'
-import { Sequential } from '@tensorflow/tfjs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
 
@@ -48,7 +48,9 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @typedef CustomModel_t
  * @property {Array<CustomDataset_t>} datasets
  * @property {Array<CustomParamsLayerModel_t>} list_layers
- * @property {Sequential} model
+ * @property {tfjs.Sequential} model
+ * @property {Uint8Array | Int32Array | Float32Array} original
+ * @property {Uint8Array | Int32Array | Float32Array} predicted
  * @property {Array<string>} params_visor
  * @property {CustomParamsTrainModel_t} params_training
  * @property {CustomFeatureSelector_t} feature_selector
@@ -133,7 +135,9 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_CUSTOM_MODEL = {
     datasets            : [],
     list_layers         : DEFAULT_LAYERS,
-    model               : new Sequential(),
+    model               : tfjs.sequential(),
+    original            : new Float32Array(0),
+    predicted           : new Float32Array(0),
     params_visor        : [],
     params_training     : {
       learning_rate  : 1,  // 1%
@@ -177,8 +181,8 @@ export function LinearRegressionProvider ({ children }) {
   const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */ DEFAULT_CUSTOM_MODEL)
   const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
   const [isTraining, setIsTraining] = useState(false)
-  const [dataPrediction, setDataPrediction] = useState(/** @type CustomPredict_t */ DEFAULT_DATA_PREDICT)
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */ DEFAULT_DATASET_LOCAL)
+  // const [dataPrediction, setDataPrediction] = useState(/** @type CustomPredict_t */ DEFAULT_DATA_PREDICT)
 
   return (
     <LinearRegressionContext.Provider value={{
@@ -196,9 +200,6 @@ export function LinearRegressionProvider ({ children }) {
 
       i_model,
       setIModel,
-
-      dataPrediction,
-      setDataPrediction,
 
       datasetLocal,
       setDatasetLocal,

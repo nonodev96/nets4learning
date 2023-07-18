@@ -13,6 +13,7 @@ import { MAP_LR_MODEL } from './models'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
 import LinearRegressionModelController from '@core/LinearRegressionModelController'
+import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -44,9 +45,10 @@ export default function LinearRegression ({ dataset_id }) {
     isTraining,
     setIsTraining,
 
+    listModels,
+
     datasetLocal,
 
-    listModels,
     setListModels,
 
     accordionActive,
@@ -68,7 +70,7 @@ export default function LinearRegression ({ dataset_id }) {
     modelController.setLayers({
       input : { units: 1, activation: 'relu' },
       layers: [...tmpModel.list_layers.map(value => ({ activation: value.activation, units: value.units }))],
-      output: { units: 1, activation: 'relu' },
+      output: { units: 1 },
     })
     modelController.setCompile({
       id_optimizer: tmpModel.params_training.id_optimizer,
@@ -90,16 +92,19 @@ export default function LinearRegression ({ dataset_id }) {
       metrics  : [...tmpModel.params_training.list_id_metrics],
     })
 
-    const { model } = await modelController.run()
-
+    const { model, original, predicted } = await modelController.run()
+    console.warn({ original, predicted })
     setTmpModel((prevState) => {
-      const _prevState = Object.assign(prevState, {})
-      return {
-        ..._prevState,
-        model: model,
-      }
+      const _prevState = Object.assign({}, prevState)
+      _prevState.model = model
+      _prevState.original = new Float32Array(original)
+      _prevState.predicted = new Float32Array(predicted)
+      return _prevState
     })
-    setListModels((prevState) => ([...prevState, tmpModel]))
+    setListModels((prevState) => {
+      const _cloneTmpModel = cloneTmpModel(tmpModel)
+      return [...prevState, _cloneTmpModel]
+    })
     setIsTraining(false)
   }
 
@@ -315,6 +320,7 @@ export default function LinearRegression ({ dataset_id }) {
                   <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
                   <Col><DebugJSON obj={{ accordionActive }} /></Col>
                   <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
+                  <Col><DebugJSON obj={{ 'original, predicted': { o: listModels[0]?.original } }} /></Col>
                 </Row>
               </Card.Body>
             </Card>

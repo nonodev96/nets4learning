@@ -1,4 +1,5 @@
 import * as tfjs from '@tensorflow/tfjs'
+import { Sequential } from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as dfd from 'danfojs'
 import { DataFrame } from 'danfojs'
@@ -81,6 +82,13 @@ import { isProduction } from '@utils/utils'
  * @property {LRConfigLayers_t} layers
  */
 
+/**
+ * @typedef  CustomLRModel_t
+ * @property {Uint8Array | Int32Array | Float32Array} original
+ * @property {Uint8Array | Int32Array | Float32Array} predicted
+ * @property {Sequential} model
+ */
+
 export default class LinearRegressionModelController {
 
   /**
@@ -153,7 +161,7 @@ export default class LinearRegressionModelController {
     // this.config.fit.metrics = configFit.metrics
     this.config.fit.batchSize = configFit.batchSize
     this.config.fit.shuffle = configFit.shuffle
-    this.config.fit.testSize = parseInt(configFit.testSize)/100
+    this.config.fit.testSize = parseInt(configFit.testSize) / 100
   }
 
   /**
@@ -164,7 +172,7 @@ export default class LinearRegressionModelController {
     this.config.compile.id_optimizer = configCompile.id_optimizer
     this.config.compile.id_loss = configCompile.id_loss
     this.config.compile.id_metrics = configCompile.id_metrics
-    this.config.compile.params.learningRate = parseInt(configCompile.params.learningRate)/100
+    this.config.compile.params.learningRate = parseInt(configCompile.params.learningRate) / 100
   }
 
   /**
@@ -290,7 +298,7 @@ export default class LinearRegressionModelController {
   async TrainLinearModel (xTrain, yTrain) {
     // CREAR MODELO
 
-    const model = tfjs.sequential()
+    const model = new Sequential()
     // Input
     model.add(
       tfjs.layers.dense({
@@ -304,10 +312,10 @@ export default class LinearRegressionModelController {
       model.add(tfjs.layers.dense({ units, activation }))
     }
     // Output
-    // model.add(tfjs.layers.dense({
-    //   units     : this.config.layers.output.units,
-    //   activation: this.config.layers.output.activation,
-    // }))
+    model.add(tfjs.layers.dense({
+      units: this.config.layers.output.units,
+      // activation: this.config.layers.output.activation,
+    }))
 
     const idOptimizer = this.config.compile.id_optimizer
     const params = this.config.compile.params
@@ -347,12 +355,16 @@ export default class LinearRegressionModelController {
     })
 
     return model
-  };
+  }
 
+  /**
+   *
+   * @return {Promise<CustomLRModel_t>}
+   */
   async run () {
     const data = await this.GetData()
 
-    // TODO lista de características categoricas
+    // TODO lista de características categóricas
     const categoricalFeatures = new Set([])
 
     const TARGET = this.config.features.y_target
@@ -370,14 +382,13 @@ export default class LinearRegressionModelController {
     const original = yTest.dataSync()
     const predicted = linearModel.predict(xTest).dataSync()
 
-    return { original, predicted }
+    return { original, predicted, model: linearModel }
   }
 
   static CREATE_OPTIMIZER (idOptimizer, params) {
     if (!isProduction()) console.debug('>> createOptimizer', { idOptimizer, params })
 
     let { learningRate = 0.01, momentum = 1 } = params
-    /** @type { [key: string]: Optimizer } */
     const optimizerMap = {
       'train-adam'    : (params) => tfjs.train.adam(params.learningRate),
       'train-sgd'     : (params) => tfjs.train.sgd(params.learningRate),
