@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'
@@ -21,7 +22,7 @@ export default function LinearRegressionTableModels () {
     model.save('downloads://lr-model-' + idMODEL)
   }
 
-  console.debug('render LinearRegressionTableModels')
+  if(VERBOSE) console.debug('render LinearRegressionTableModels')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center'}>

@@ -7,10 +7,11 @@ import Glossary1Optimizers from './Glossary1Optimizers'
 import Glossary2ActivationFunctions from './Glossary2ActivationFunctions'
 import Glossary3LossFunctions from './Glossary3LossFunctions'
 import Glossary4MetricFunctions from './Glossary4MetricFunctions'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function Glossary () {
 
-  console.debug('render Glossary')
+  if(VERBOSE) console.debug('render Glossary')
   return <>
     <main className={'mb-3'} data-title={'Glossary'}>
       <Container>

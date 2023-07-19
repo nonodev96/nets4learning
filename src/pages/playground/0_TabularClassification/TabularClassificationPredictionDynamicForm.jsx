@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
 import { UPLOAD } from '@/DATA_MODEL'
 import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
+import { VERBOSE } from '@/CONSTANTS'
 
 /**
  *
@@ -103,7 +104,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
     })
   }
 
-  console.debug('Render TabularClassificationDynamicFormPrediction')
+  if(VERBOSE) console.debug('Render TabularClassificationDynamicFormPrediction')
   return <>
     <Form onSubmit={(e) => handleSubmit_PredictVector(e)}>
       <Container>

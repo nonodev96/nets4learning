@@ -5,6 +5,7 @@ import { Trans } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import ReactGA from 'react-ga4'
 
+import { VERBOSE } from '@/CONSTANTS'
 import withHooks from '@hooks/withHooks'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
@@ -287,7 +288,7 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   render () {
-    console.debug('render')
+    if(VERBOSE) console.debug('render ModelReviewObjectDetection')
     return (
       <Container id={'ModelReviewObjectDetection'}>
         <Row>

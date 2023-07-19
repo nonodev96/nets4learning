@@ -7,6 +7,7 @@ import { Trans } from 'react-i18next'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import N4LSummary from '@components/summary/N4LSummary'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionDatasetShow () {
 
@@ -61,7 +62,7 @@ export default function LinearRegressionDatasetShow () {
     setIndexDatasetSelected(index)
   }
 
-  console.debug('render LinearRegressionDatasetShow')
+  if(VERBOSE) console.debug('render LinearRegressionDatasetShow')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

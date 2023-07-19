@@ -2,6 +2,7 @@ import Joyride from 'react-joyride'
 import React, { useCallback, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionJoyride ({ refJoyrideButton }) {
 
@@ -64,7 +65,7 @@ export default function LinearRegressionJoyride ({ refJoyrideButton }) {
     joyrideRef.current?.store.start()
   }
 
-  console.debug('render LinearRegressionJoyride')
+  if(VERBOSE) console.debug('render LinearRegressionJoyride')
   return <>
     <Joyride ref={joyrideRef}
              style={joyride_style}

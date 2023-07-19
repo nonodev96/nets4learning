@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import alertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionEditorFeaturesSelector () {
 
@@ -83,6 +84,7 @@ export default function LinearRegressionEditorFeaturesSelector () {
       })
   }
 
+  if (VERBOSE) console.debug('render LinearRegressionEditorFeaturesSelector')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
@@ -96,7 +98,6 @@ export default function LinearRegressionEditorFeaturesSelector () {
         </div>
       </Card.Header>
       <Card.Body>
-
         <Form.Group controlId={'feature-selector-y'}>
           <Form.Label>
             <Trans i18nKey={prefix + 'feature-selector-y'} />
@@ -112,7 +113,6 @@ export default function LinearRegressionEditorFeaturesSelector () {
             </>
           </Form.Select>
         </Form.Group>
-
         <Accordion defaultActiveKey={[]} className={'mt-3'}>
           <>
             {Array.from(tmpModel.feature_selector.X_features)
@@ -151,8 +151,6 @@ export default function LinearRegressionEditorFeaturesSelector () {
               })}
           </>
         </Accordion>
-
-
       </Card.Body>
     </Card>
   </>

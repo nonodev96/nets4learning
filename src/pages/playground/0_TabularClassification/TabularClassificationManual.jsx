@@ -1,5 +1,6 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
+import { VERBOSE } from '@/CONSTANTS'
 
 /**
  *
@@ -9,7 +10,7 @@ import { Trans } from 'react-i18next'
 export default function TabularClassificationManual () {
   const prefix = 'pages.playground.0-tabular-classification.generator.manual.'
 
-  console.debug('render TabularClassificationCustomDatasetManual')
+  if(VERBOSE) console.debug('render TabularClassificationCustomDatasetManual')
   return <>
     <details>
       <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'details-edit-layers.title'} /></summary>

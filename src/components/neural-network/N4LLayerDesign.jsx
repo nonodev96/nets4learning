@@ -2,6 +2,7 @@ import { Card, Form } from 'react-bootstrap'
 import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
 import React, { useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function N4LLayerDesign ({ layers }) {
   const { t } = useTranslation()
@@ -13,7 +14,7 @@ export default function N4LLayerDesign ({ layers }) {
     setMode(e.target.value)
   }
 
-  console.debug('render N4LLayerDesign')
+  if(VERBOSE) console.debug('render N4LLayerDesign')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

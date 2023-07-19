@@ -25,6 +25,7 @@ import {
   MODEL_COCO_SSD,
   TASKS,
 } from '@/DATA_MODEL'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function MenuSelectModel (_props) {
 
@@ -87,7 +88,7 @@ export default function MenuSelectModel (_props) {
     }
   }
 
-  console.debug('render MenuSelectModel')
+  if(VERBOSE) console.debug('render MenuSelectModel')
   return (
     <>
       <Form onSubmit={($event) => handleSubmit($event)}>

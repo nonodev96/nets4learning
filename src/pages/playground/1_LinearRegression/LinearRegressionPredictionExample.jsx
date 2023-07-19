@@ -6,6 +6,7 @@ import Plot from 'react-plotly.js'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionPredictionExample () {
 
@@ -48,7 +49,7 @@ export default function LinearRegressionPredictionExample () {
     updateDataPrediction().then(_ => undefined)
   }, [])
 
-  console.debug('render LinearRegressionPrediction')
+  if(VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
     <Card>
       <Card.Header>

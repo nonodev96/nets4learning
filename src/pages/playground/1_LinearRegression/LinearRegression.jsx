@@ -14,6 +14,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
 import LinearRegressionModelController from '@core/LinearRegressionModelController'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
+import { VERBOSE } from '@/CONSTANTS'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -93,18 +94,18 @@ export default function LinearRegression ({ dataset_id }) {
     })
 
     const { model, original, predicted } = await modelController.run()
-    console.warn({ original, predicted })
-    setTmpModel((prevState) => {
-      const _prevState = Object.assign({}, prevState)
-      _prevState.model = model
-      _prevState.original = new Float32Array(original)
-      _prevState.predicted = new Float32Array(predicted)
-      return _prevState
-    })
-    setListModels((prevState) => {
-      const _cloneTmpModel = cloneTmpModel(tmpModel)
-      return [...prevState, _cloneTmpModel]
-    })
+
+    console.log('modelController.run()', { original })
+
+    const updatedTmpModel = {
+      ...tmpModel,
+      model    : model,
+      original : original.slice(0, original.length),
+      predicted: predicted.slice(0, original.length),
+    }
+
+    setTmpModel(updatedTmpModel)
+    setListModels((prevState) => [...prevState, cloneTmpModel(updatedTmpModel)])
     setIsTraining(false)
   }
 
@@ -153,7 +154,7 @@ export default function LinearRegression ({ dataset_id }) {
     setAccordionActive(copy)
   }
 
-  console.debug('render LinearRegression', { styles })
+  if (VERBOSE) console.debug('render LinearRegression')
   return (
     <>
       <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
@@ -321,6 +322,7 @@ export default function LinearRegression ({ dataset_id }) {
                   <Col><DebugJSON obj={{ accordionActive }} /></Col>
                   <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
                   <Col><DebugJSON obj={{ 'original, predicted': { o: listModels[0]?.original } }} /></Col>
+                  <Col><DebugJSON obj={{ 'original, predicted': { p: listModels[0]?.predicted } }} /></Col>
                 </Row>
               </Card.Body>
             </Card>

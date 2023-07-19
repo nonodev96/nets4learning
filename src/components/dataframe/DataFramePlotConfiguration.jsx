@@ -5,6 +5,7 @@ import React, { useContext } from 'react'
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/Constants'
 import { columnsTimeSeriesValidForIndex, isTimeSeriesDataFrameValidForIndex } from '@core/dataframe/DataFrameUtils'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFramePlotConfiguration () {
 
@@ -103,7 +104,7 @@ export default function DataFramePlotConfiguration () {
     return size.toString().padStart(4, '0')
   }
 
-  console.debug('render DataFramePlotConfiguration')
+  if(VERBOSE) console.debug('render DataFramePlotConfiguration')
   return <>
     <Modal show={showOptions} onHide={() => setShowOptions(false)} size={'xl'} fullscreen={'md-down'}>
       <Modal.Header closeButton>

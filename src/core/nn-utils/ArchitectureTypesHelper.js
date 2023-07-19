@@ -9,12 +9,12 @@ const TYPE_GRADIENTS = [
 
 const TYPE_OPTIMIZER = [
   { key: 'sgd', label: 'SGD' },
-  { key: 'momentum', label: 'Momentum' },
   { key: 'adagrad', label: 'Adagrad' },
   { key: 'adadelta', label: 'Adadelta' },
   { key: 'adam', label: 'Adam' },
   { key: 'adamax', label: 'Adamax' },
-  { key: 'rmsprop', label: 'RMSProp' }
+  { key: 'rmsprop', label: 'RMSProp' },
+  // { key: 'momentum', label: 'Momentum' },
 ]
 
 // tf.losses.absoluteDifference

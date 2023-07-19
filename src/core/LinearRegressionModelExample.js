@@ -140,11 +140,11 @@ async function testModel (model, inputData, normalizationData, columns) {
 export async function run (filename, columns) {
 
   const data = await getData(filename, columns)
-  console.log(data)
+  console.log(data, filename, columns)
 
   let values = data.map(d => ({
-    x: d['x'],
-    y: d['y'],
+    x: d[columns.x_name],
+    y: d[columns.y_name],
   }))
 
   await tfvis.render.scatterplot(
@@ -163,15 +163,15 @@ export async function run (filename, columns) {
   await tfvis.show.modelSummary({ name: 'Model Summary' }, model)
 
   // Convert the data to a form we can use for training.
-  const tensorData = convertToTensor(data, columns)
+  const normalizationTensorData = convertToTensor(data, columns)
 
   // Train the model
-  await trainModel(model, tensorData)
+  await trainModel(model, normalizationTensorData)
   console.log('Done trainModel')
 
   // Make some predictions using the model and compare them to the
   // original data
-  const original_and_predicted = await testModel(model, data, tensorData)
+  const original_and_predicted = await testModel(model, data, normalizationTensorData, columns)
   console.log('Done testModel', original_and_predicted)
 
   return original_and_predicted

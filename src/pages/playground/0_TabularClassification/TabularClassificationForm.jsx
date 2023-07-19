@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
 import alertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 export class Parser {
   /**
@@ -431,7 +432,7 @@ export default function TabularClassificationForm (props) {
     await alertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
   }
 
-  console.debug('render TabularClassificationCustomDatasetForm')
+  if(VERBOSE) console.debug('render TabularClassificationCustomDatasetForm')
   return <>
     <Form onSubmit={handleSubmit_ProcessDataFrame}>
 

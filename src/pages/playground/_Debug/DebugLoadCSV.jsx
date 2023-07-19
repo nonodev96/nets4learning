@@ -1,6 +1,7 @@
 import React from 'react'
 import * as tfVis from '@tensorflow/tfjs-vis'
 import { Button, Card, Col, Row } from 'react-bootstrap'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function DebugLoadCSV () {
   const _isDebug = process.env.REACT_APP_ENVIRONMENT !== 'production'
@@ -25,7 +26,7 @@ export default function DebugLoadCSV () {
 
   }
 
-  console.debug('render DebugLoadCSV')
+  if(VERBOSE) console.debug('render DebugLoadCSV')
   return <>
     {
       (_isDebug) &&

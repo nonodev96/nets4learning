@@ -3,12 +3,13 @@ import { Accordion, Card, Col, Container, Row } from 'react-bootstrap'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Latex from 'react-latex-next'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function Manual () {
 
   const { t } = useTranslation()
 
-  console.debug('render Manual')
+  if(VERBOSE) console.debug('render Manual')
   return (
     <>
       <main className={'mb-3'} data-title={'Manual'}>

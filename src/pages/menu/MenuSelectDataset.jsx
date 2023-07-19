@@ -19,6 +19,7 @@ import {
   MODEL_LYMPHOGRAPHY,
   MODEL_IMAGE_MNIST
 } from '@/DATA_MODEL'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function MenuSelectDataset () {
 
@@ -79,7 +80,7 @@ export default function MenuSelectDataset () {
     }
   }
 
-  console.debug('render MenuSelectDataset')
+  if(VERBOSE) console.debug('render MenuSelectDataset')
   return <>
     <Form onSubmit={($event) => handleSubmit($event)}>
       <Container id={'MenuSelectDataset'} data-testid={'Test-MenuSelectDataset'}>

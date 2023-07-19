@@ -26,6 +26,7 @@ import * as errorUtils from '@core/error-utils'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LTablePagination from '@components/table/N4LTablePagination'
+import { VERBOSE } from '@/CONSTANTS'
 
 const DEFAULT_LEARNING_RATE = 1
 const DEFAULT_NUMBER_EPOCHS = 20
@@ -674,7 +675,7 @@ export default function TabularClassification (props) {
     }
   }
 
-  console.debug('render TabularClassificationCustomDataset')
+  if(VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
       <Container className={'mb-3'}>

@@ -2,12 +2,13 @@ import 'katex/dist/katex.min.css'
 import React from 'react'
 import { Trans } from 'react-i18next'
 import Latex from 'react-latex-next'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionManual ({ i_model }) {
 
   const prefixManual = 'pages.playground.1-linear-regression.generator.'
 
-  console.debug('render LinearRegressionManual')
+  if(VERBOSE) console.debug('render LinearRegressionManual')
   return <>
     <details>
       <summary className={"n4l-summary"}>Info</summary>

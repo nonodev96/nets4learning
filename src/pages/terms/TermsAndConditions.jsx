@@ -1,10 +1,11 @@
 import React from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function TermsAndConditions () {
 
-  console.debug('render TermsAndConditions')
+  if(VERBOSE) console.debug('render TermsAndConditions')
   return <>
     <main className={'mb-3'} data-title={'TermsAndConditions'}>
       <Container>

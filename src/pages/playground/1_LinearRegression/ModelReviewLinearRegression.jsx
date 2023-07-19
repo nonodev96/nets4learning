@@ -12,6 +12,7 @@ import {
   MODEL_5_STUDENT_PERFORMANCE,
   MODEL_6_WINE,
 } from '@/DATA_MODEL'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   const { id } = useParams()
@@ -62,7 +63,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
     asyncFunction().then(_r => undefined)
   }, [iModel])
 
-  console.debug('render ModelReviewLinearRegression')
+  if(VERBOSE) console.debug('render ModelReviewLinearRegression')
   return (
     <>
       <Container>

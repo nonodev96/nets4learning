@@ -20,6 +20,7 @@ import { isProduction } from '@utils/utils'
  * @typedef  LRConfigFeatures_t
  * @property {Set<string>} X_features
  * @property {string} y_target
+ * @property {Map<string, number>} categorical
  */
 
 /**
@@ -64,7 +65,7 @@ import { isProduction } from '@utils/utils'
  * @property {string} [id_optimizer="train-sgd"]
  * @property {string} [id_loss="losses-meanSquaredError"]
  * @property {string[]} [id_metrics=['metrics-meanAbsoluteError']]
- * @property {{learningRate: number, momentum?: number}} [params={ learningRate: 0.001, momentum; 1 }]
+ * @property {{learningRate: number, momentum?: number}} [params={ learningRate: 0.0001, momentum; 1 }]
  */
 
 /**
@@ -105,15 +106,16 @@ export default class LinearRegressionModelController {
     this.dataframe = new DataFrame()
     this.config = {
       features: {
-        X_features: new Set(),
-        y_target  : '',
+        X_features : new Set(),
+        y_target   : '',
+        categorical: new Map()
       },
       compile : {
         id_optimizer: 'train-sgd',
         id_loss     : 'losses-meanSquaredError',
         id_metrics  : ['metrics-meanAbsoluteError'],
         params      : {
-          learningRate: 0.001,
+          learningRate: 0.0001,
           momentum    : 1,
         },
       },
@@ -126,11 +128,11 @@ export default class LinearRegressionModelController {
         container_name: 'Training Performance',
       },
       layers  : {
-        input : { units: 1, activation: 'relu', inputShape: [1] },
+        input : { units: 1, activation: 'linear', inputShape: [1] },
         layers: [
           { units: 10, activation: 'relu' },
         ],
-        output: { units: 1, activation: 'relu' },
+        output: { units: 1, activation: 'linear' },
       },
     }
   }
@@ -150,6 +152,7 @@ export default class LinearRegressionModelController {
   setFeatures (features) {
     this.config.features.X_features = features.X_features
     this.config.features.y_target = features.y_target
+    this.config.features.categorical = new Map()// features.categorical
   }
 
   /**
@@ -178,21 +181,21 @@ export default class LinearRegressionModelController {
   /**
    *
    * @param configLayers
-   * @param {ConfigLayerInput_t} [configLayers.input={ units: number, activation: ActivationIdentifier_t, inputShape: number[] }]
+   * @param {ConfigLayerInput_t} [configLayers.input={ units: number, activation: 'linear', inputShape: number[] }]
    * @param {ConfigLayers_t[]} [configLayers.layers=[]]
-   * @param {ConfigLayerOutput_t} [configLayers.output={ units: number, activation: ActivationIdentifier_t }]
+   * @param {ConfigLayerOutput_t} [configLayers.output={ units: number, activation: 'linear' }]
    **/
   setLayers (configLayers) {
     const {
       input: {
         units     : inputUnits = 1,
-        activation: inputActivation = 'relu',
+        activation: inputActivation = 'linear',
         inputShape: inputInputShape = [1],
       } = {},
       layers = [],
       output: {
         units     : outputUnits = 1,
-        activation: outputActivation = 'relu',
+        activation: outputActivation = 'linear',
       } = {},
     } = configLayers
 
@@ -241,7 +244,7 @@ export default class LinearRegressionModelController {
    * Rescales the range of values in the range of [0, 1]
    * @private
    *
-   * @param tensor
+   * @param {tfjs.Tensor2D} tensor
    * @returns {Tensor}
    */
   Normalize (tensor) {
@@ -259,45 +262,48 @@ export default class LinearRegressionModelController {
   /**
    *
    * @param {object[]} data
-   * @param {Array<string>} features
-   * @param {Set<string>} categoricalFeatures
-   * @param {number} testSize
-   * @param {string} TARGET
+   * @param {Array<string>} X_features
+   * @param {string} Y_TARGET
    * @param {Map<string, number>} VARIABLE_CATEGORY_COUNT
-   * @returns {Tensor<tfjs.Rank>[]}
+   * @param {number} testSize
+   * @returns {Tensor<Rank>[]}
    */
-  CreateDataSets (data, features, categoricalFeatures, testSize, TARGET, VARIABLE_CATEGORY_COUNT) {
-    const X = data.map(r =>
-      features.flatMap(f => {
-        if (categoricalFeatures.has(f)) {
-          return this.OneHot(!r[f] ? 0 : r[f], VARIABLE_CATEGORY_COUNT[f])
+  CreateDataSets (data, X_features, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize) {
+    const X = data.map((r) =>
+      X_features.flatMap((feature) => {
+        if (VARIABLE_CATEGORY_COUNT.has(feature)) {
+          return this.OneHot(!r[feature] ? 0 : r[feature], VARIABLE_CATEGORY_COUNT.get(feature))
         }
-        return !r[f] ? 0 : r[f]
+        return !r[feature] ? 0 : r[feature]
       }),
     )
 
+    //
     const X_t = this.Normalize(tfjs.tensor2d(X))
 
-    const y = tfjs.tensor(data.map(r => (!r[TARGET] ? 0 : r[TARGET])))
+    const y = tfjs.tensor(data.map(r => (!r[Y_TARGET] ? 0 : r[Y_TARGET])))
 
     const splitIdx = parseInt(((1 - testSize) * data.length).toString(), 10)
-
+    console.log({ X, X_t: X_t.dataSync(), y: y.dataSync() })
+    console.log(splitIdx, data.length - splitIdx)
     const [xTrain, xTest] = tfjs.split(X_t, [splitIdx, data.length - splitIdx])
-    const [yTrain, yTest] = tfjs.split(y, [splitIdx, data.length - splitIdx])
-
+    const _ = tfjs.split(y, [splitIdx, data.length - splitIdx])
+    console.log({ _ })
+    const [yTrain, yTest] = _
     return [xTrain, xTest, yTrain, yTest]
   }
 
   /**
    *
-   * @param {Tensor | Tensor[] | {[inputName: string]: Tensor}} xTrain
-   * @param {Tensor | Tensor[] | {[inputName: string]: Tensor}} yTrain
-   * @returns {Promise<tfjs.Sequential>}
+   * @param {Tensor<Rank>} xTrain
+   * @param {Tensor<Rank>} xTest
+   * @param {Tensor<Rank>} yTrain
+   * @param {Tensor<Rank>} yTest
+   * @returns {Promise<Sequential>}
    * @constructor
    */
-  async TrainLinearModel (xTrain, yTrain) {
+  async TrainLinearModel (xTrain, xTest, yTrain, yTest) {
     // CREAR MODELO
-
     const model = new Sequential()
     // Input
     model.add(
@@ -313,9 +319,14 @@ export default class LinearRegressionModelController {
     }
     // Output
     model.add(tfjs.layers.dense({
-      units: this.config.layers.output.units,
-      // activation: this.config.layers.output.activation,
+      units     : this.config.layers.output.units,
+      activation: this.config.layers.output.activation
     }))
+
+    await tfvis.show.modelSummary({
+      name: this.t('pages.playground.generator.visor.summary'),
+      tab : this.t('pages.playground.generator.visor.model'),
+    }, model)
 
     const idOptimizer = this.config.compile.id_optimizer
     const params = this.config.compile.params
@@ -336,8 +347,8 @@ export default class LinearRegressionModelController {
 
     const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
     const fit_callbacks_container = {
-      name  : this.t('pages.playground.generator.models.history-train'),
-      tab   : this.t('pages.playground.generator.models.train'),
+      name  : this.t('pages.playground.generator.visor.history-train'),
+      tab   : this.t('pages.playground.generator.visor.train'),
       styles: { height: '1000px' },
     }
     const fit_callbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
@@ -351,6 +362,9 @@ export default class LinearRegressionModelController {
       epochs         : this.config.fit.epochs,
       shuffle        : this.config.fit.shuffle,
       validationSplit: this.config.fit.testSize,
+      validationData : [xTest, yTest],
+      verbose        : true,
+      validationSteps: 10,
       callbacks      : fit_callbacks,
     })
 
@@ -364,43 +378,47 @@ export default class LinearRegressionModelController {
   async run () {
     const data = await this.GetData()
 
-    // TODO lista de características categóricas
-    const categoricalFeatures = new Set([])
-
-    const TARGET = this.config.features.y_target
-    const X_features = Array.from(this.config.features.X_features)
-
-    /** @type Map<string, number> */
-    const VARIABLE_CATEGORY_COUNT = new Map()
+    const X_FEATURES = Array.from(this.config.features.X_features)
+    const Y_TARGET = this.config.features.y_target
+    const VARIABLE_CATEGORY_COUNT = this.config.features.categorical
 
     // params
     const testSize = this.config.fit.testSize
 
-    const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_features, categoricalFeatures, testSize, TARGET, VARIABLE_CATEGORY_COUNT)
-    const linearModel = await this.TrainLinearModel(xTrain, yTrain)
-
+    const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_FEATURES, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize)
+    const linearModel = await this.TrainLinearModel(xTrain, xTest, yTrain, yTest)
+    console.log({ x: xTest.dataSync() })
     const original = yTest.dataSync()
     const predicted = linearModel.predict(xTest).dataSync()
 
+    console.log([xTrain, xTest, yTrain, yTest], predicted)
     return { original, predicted, model: linearModel }
   }
 
   static CREATE_OPTIMIZER (idOptimizer, params) {
-    if (!isProduction()) console.debug('>> createOptimizer', { idOptimizer, params })
-
-    let { learningRate = 0.01, momentum = 1 } = params
+    // if (!isProduction()) console.debug('>> createOptimizer', { idOptimizer, params })
+    const defaultParams = {
+      'train-adam'    : { learningRate: 0.01 },   // -
+      'train-sgd'     : { learningRate: 0.01 },   // -
+      'train-adagrad' : { learningRate: 0.001 },  // -
+      'train-adadelta': { learningRate: 0.001 },  // -
+      'train-adamax'  : { learningRate: 0.001 },  // -
+      'train-rmsprop' : { learningRate: 0.001 },  // -
+      // 'train-momentum': {learningRate: 0.01 , momentum: 0.0},
+    }
     const optimizerMap = {
       'train-adam'    : (params) => tfjs.train.adam(params.learningRate),
       'train-sgd'     : (params) => tfjs.train.sgd(params.learningRate),
-      'train-momentum': (params) => tfjs.train.momentum(params.learningRate, params.momentum),
       'train-adagrad' : (params) => tfjs.train.adagrad(params.learningRate),
       'train-adadelta': (params) => tfjs.train.adadelta(params.learningRate),
       'train-adamax'  : (params) => tfjs.train.adamax(params.learningRate),
       'train-rmsprop' : (params) => tfjs.train.rmsprop(params.learningRate),
+      // 'train-momentum': (params) => tfjs.train.momentum(params.learningRate, params.momentum),
     }
+    const { learningRate } = defaultParams[idOptimizer]
     const optimizerFunction = optimizerMap[idOptimizer]
     if (optimizerFunction) {
-      return optimizerFunction({ learningRate, momentum })
+      return optimizerFunction({ learningRate })
     } else {
       console.warn('createOptimizer()', { idOptimizer, params })
       return tfjs.train.adam(params.learningRate)
@@ -408,8 +426,7 @@ export default class LinearRegressionModelController {
   }
 
   static CREATE_LOSS (idLoss) {
-    if (!isProduction()) console.debug('>> createLoss', { idLoss })
-
+    // if (!isProduction()) console.debug('>> createLoss', { idLoss })
     const lossAndMetricFunctions = {
       'losses-absoluteDifference' : tfjs.losses.absoluteDifference,
       'losses-computeWeightedLoss': tfjs.losses.computeWeightedLoss,
@@ -426,7 +443,7 @@ export default class LinearRegressionModelController {
   }
 
   static CREATE_METRICS (idMetrics) {
-    if (!isProduction()) console.debug('>> createMetrics', { idMetrics })
+    // if (!isProduction()) console.debug('>> createMetrics', { idMetrics })
     const metricMap = {
       'metrics-binaryAccuracy'             : tfjs.metrics.binaryAccuracy,
       'metrics-binaryCrossentropy'         : tfjs.metrics.binaryCrossentropy,

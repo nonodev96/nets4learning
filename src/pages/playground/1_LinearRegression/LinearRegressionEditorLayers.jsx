@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+
+import { VERBOSE } from '@/CONSTANTS'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import alertHelper from '@utils/alertHelper'
@@ -13,7 +15,7 @@ export default function LinearRegressionEditorLayers () {
 
   const handlerClick_AddLayer_Start = async () => {
     if (tmpModel.list_layers.length <= 10) {
-      const nuevoArray = [{ units: 1, activation: 'sigmoid' }, ...tmpModel.list_layers]
+      const nuevoArray = [{ units: 1, activation: 'relu' }, ...tmpModel.list_layers]
       setTmpModel({ ...tmpModel, list_layers: nuevoArray })
     } else {
       await alertHelper.alertWarning(t('error.layers-length'))
@@ -22,7 +24,7 @@ export default function LinearRegressionEditorLayers () {
 
   const handlerClick_AddLayer_End = async () => {
     if (tmpModel.list_layers.length <= 10) {
-      const nuevoArray = [...tmpModel.list_layers, { units: 1, activation: 'softmax' }]
+      const nuevoArray = [...tmpModel.list_layers, { units: 1, activation: 'sigmoid' }]
       setTmpModel({ ...tmpModel, list_layers: nuevoArray })
     } else {
       await alertHelper.alertWarning(t('error.layers-length'))
@@ -45,7 +47,7 @@ export default function LinearRegressionEditorLayers () {
     setTmpModel({ ...tmpModel, list_layers: nuevoArray })
   }
 
-  console.debug('render LinearRegressionEditorLayers')
+  if(VERBOSE) console.debug('render LinearRegressionEditorLayers')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

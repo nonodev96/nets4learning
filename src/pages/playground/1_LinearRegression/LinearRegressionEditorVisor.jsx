@@ -3,6 +3,7 @@ import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionEditorVisor () {
 
@@ -35,7 +36,7 @@ export default function LinearRegressionEditorVisor () {
     })
   }
 
-  console.debug('render LinearRegressionVisor')
+  if(VERBOSE) console.debug('render LinearRegressionVisor')
   return <>
     <Card>
       <Card.Header>

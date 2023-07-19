@@ -4,6 +4,7 @@ import DataFramePlot from '@components/dataframe/DataFramePlot'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionDatasetPlot () {
 
@@ -13,7 +14,7 @@ export default function LinearRegressionDatasetPlot () {
     // console.debug("useEffect[datasetLocal]")
   }, [datasetLocal])
 
-  console.debug('render LinearRegressionDatasetPlot')
+  if(VERBOSE) console.debug('render LinearRegressionDatasetPlot')
   return <>
     <DataFramePlotProvider>
       <DataFramePlot dataframe={datasetLocal.dataframe_processed} />

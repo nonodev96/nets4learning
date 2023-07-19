@@ -9,6 +9,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 
 // import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
 import DebugJSON from '@components/debug/DebugJSON'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionPrediction () {
   const prefix = 'pages.playground.1-linear-regression.predict.'
@@ -22,93 +23,11 @@ export default function LinearRegressionPrediction () {
 
   const [listFeaturesX, setListFeaturesX] = useState('')
   const [dynamicObject, setDynamicObject] = useState({})
-  const [indexModel, setIndexModel] = useState(0)
-// [
-//   {
-//     name  : 'Original',
-//     x     : dataPrediction.dataOriginal_x,
-//     y     : dataPrediction.dataOriginal_y,
-//     type  : 'scatter',
-//     mode  : 'markers',
-//     marker: { color: 'blue' },
-//   }, {
-//     name  : 'Predicted',
-//     x     : dataPrediction.dataPredicted_x,
-//     y     : dataPrediction.dataPredicted_y,
-//     type  : 'scatter',
-//     mode  : 'lines+markers',
-//     marker: { color: 'red' },
-//   },
-// ]
+  const [indexModel, setIndexModel] = useState(-1)
   const [dataPrediction, setDataPrediction] = useState([])
   const refPlotJS = useRef()
 
-  useEffect(() => {
-    const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
-    let list = []
-    if (listModels[indexModel]?.feature_selector?.X_features) {
-      list = [...listModels[indexModel]?.feature_selector?.X_features]
-    }
-    setListFeaturesX(formatter.format(list))
-    console.log()
-  }, [i18n.language, listModels, indexModel, setListFeaturesX])
-
-  useEffect(() => {
-    if (listModels[indexModel]) {
-      const { original, predicted } = listModels[indexModel]
-      console.log('enter', { original: listModels[indexModel].original, predicted })
-
-      const trace = {
-        x      : [...Array(original.length).keys()],
-        y      : original,
-        name   : 'Original',
-        mode   : 'lines+markers',
-        type   : 'scatter',
-        opacity: 0.5,
-        marker : {
-          color: 'dodgerblue'
-        }
-      }
-      const lmTrace = {
-        x      : [...Array(original.length).keys()],
-        y      : predicted,
-        name   : 'Predicted',
-        mode   : 'lines+markers',
-        type   : 'scatter',
-        opacity: 0.5,
-        marker : {
-          color: 'forestgreen'
-        }
-      }
-      setDataPrediction([trace, lmTrace])
-    }
-  }, [listModels, indexModel, setDataPrediction])
-
-  const handleClick_Test = async () => {
-    // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
-    // const columns = { x_name: 'horsepower', y_name: 'mpg' }
-    // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
-    // const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
-    // const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
-    // console.log({ original, predicted })
-    //
-    // const original_x = original.map((v) => v.x)
-    // const original_y = original.map((v) => v.y)
-    // const predicted_x = predicted.map((v) => v.x)
-    // const predicted_y = predicted.map((v) => v.y)
-    //
-    // setDataPrediction({
-    //   dataOriginal_label : columns.x_name,
-    //   dataOriginal_x     : original_x,
-    //   dataOriginal_y     : original_y,
-    //   dataPredicted_label: columns.y_name,
-    //   dataPredicted_x    : predicted_x,
-    //   dataPredicted_y    : predicted_y
-    // })
-  }
-
   const handleChange_DynamicObject = (_newValue, _column_name) => {
-    // setIndexModel(p => p + 1)
     setDynamicObject((prevState) => {
       return {
         ...prevState,
@@ -118,18 +37,22 @@ export default function LinearRegressionPrediction () {
   }
 
   const getColor = (column_name) => {
-    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name))
+    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name)) {
       return styles.border_blue
-    if (listModels[indexModel].feature_selector.y_target === column_name)
+    }
+    if (listModels[indexModel].feature_selector.y_target === column_name) {
       return styles.border_green
+    }
     return styles.border_red
   }
 
   const isDisabled = (column_name) => {
-    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name))
+    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name)) {
       return false
-    if (listModels[indexModel].feature_selector.y_target === column_name)
+    }
+    if (listModels[indexModel].feature_selector.y_target === column_name) {
       return true
+    }
     return true
   }
 
@@ -181,7 +104,7 @@ export default function LinearRegressionPrediction () {
               <Form.Label><b>{column_name}</b></Form.Label>
               <Form.Select aria-label={t(prefix + 'metric-id-info')}
                            value={dynamicObject[column_name]}
-                           disabled={true}
+                           disabled={isDisabled(column_name)}
                            onChange={(e) => handleChange_DynamicObject(e.target.value, column_name)}>
                 <option value={'TODO'}>TODO</option>
               </Form.Select>
@@ -200,6 +123,42 @@ export default function LinearRegressionPrediction () {
   }
 
   useEffect(() => {
+    setIndexModel(listModels.length-1)
+  }, [listModels.length])
+
+  useEffect(() => {
+    console.log('useEffect [listModels, indexModel, setDataPrediction]', { listModels, indexModel, setDataPrediction })
+    if (listModels[indexModel]) {
+      const { original, predicted } = listModels[indexModel]
+      console.log('enter', { original: listModels[indexModel].original, predicted })
+
+      const trace = {
+        x      : [...Array(original.length).keys()],
+        y      : original,
+        name   : 'Original',
+        mode   : 'lines+markers',
+        type   : 'scatter',
+        opacity: 0.5,
+        marker : {
+          color: 'dodgerblue'
+        }
+      }
+      const lmTrace = {
+        x      : [...Array(original.length).keys()],
+        y      : predicted,
+        name   : 'Predicted',
+        mode   : 'lines+markers',
+        type   : 'scatter',
+        opacity: 0.5,
+        marker : {
+          color: 'forestgreen'
+        }
+      }
+      setDataPrediction([trace, lmTrace])
+    }
+  }, [listModels, indexModel, setDataPrediction])
+
+  useEffect(() => {
     const _dynamic_object = datasetLocal
       .dataframe_processed
       .columns
@@ -210,16 +169,25 @@ export default function LinearRegressionPrediction () {
     setDynamicObject(_dynamic_object)
   }, [datasetLocal.dataframe_processed])
 
+  useEffect(() => {
+    const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
+    let list = []
+    if (listModels[indexModel]?.feature_selector?.X_features) {
+      list = [...listModels[indexModel]?.feature_selector?.X_features]
+    }
+    setListFeaturesX(formatter.format(list))
+  }, [i18n.language, listModels, indexModel, setListFeaturesX])
+
   // TODO
   const handleSubmit_Predict = async (e) => {
     e.preventDefault()
-
     listModels[indexModel].model.predict()
   }
 
   const handleChange_Model = (e) => {
     setIndexModel(e.target.value)
   }
+
   const handleChange_Entity = (e) => {
     const index = e.target.value
     const _dynamic_object = datasetLocal
@@ -232,7 +200,7 @@ export default function LinearRegressionPrediction () {
     setDynamicObject(_dynamic_object)
   }
 
-  console.debug('render LinearRegressionPrediction')
+  if(VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center'}>
@@ -241,6 +209,7 @@ export default function LinearRegressionPrediction () {
           <Form.Group controlId={'model-selector'}>
             <Form.Select aria-label={'model-selector'}
                          size={'sm'}
+                         value={indexModel}
                          onChange={(e) => handleChange_Model(e)}>
               <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
               <>
@@ -275,7 +244,7 @@ export default function LinearRegressionPrediction () {
         </div>
       </Card.Header>
       <Card.Body>
-        {listModels.length > 0 && <>
+        {(listModels.length > 0 && indexModel >= 0) && <>
           <Row>
             <Col>
               <Card.Text><strong>X</strong> {listFeaturesX ?? ''}</Card.Text>

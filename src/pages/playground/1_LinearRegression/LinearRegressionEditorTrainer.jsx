@@ -4,6 +4,7 @@ import React, { useContext } from 'react'
 import alertHelper from '@utils/alertHelper'
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionEditorTrainer () {
 
@@ -79,7 +80,7 @@ export default function LinearRegressionEditorTrainer () {
     })
   }
 
-  console.debug('render LinearRegressionEditorTrainer')
+  if(VERBOSE) console.debug('render LinearRegressionEditorTrainer')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

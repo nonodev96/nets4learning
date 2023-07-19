@@ -9,7 +9,7 @@ import withHooks from '@hooks/withHooks'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
-import { CONSOLE_LOG_h3 } from '@/CONSTANTS'
+import { CONSOLE_LOG_h3, VERBOSE } from '@/CONSTANTS'
 import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import {
   UPLOAD,
@@ -379,7 +379,7 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   render () {
-    console.debug('render ModelReviewTabularClassification')
+    if(VERBOSE) console.debug('render ModelReviewTabularClassification')
     return (
       <>
         <Container>

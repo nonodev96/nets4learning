@@ -3,6 +3,7 @@ import * as tfjs from '@tensorflow/tfjs'
 import { DataFrame } from 'danfojs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
+import { Sequential } from '@tensorflow/tfjs'
 
 /**
  * @typedef CustomPreprocessDataset_t
@@ -48,9 +49,9 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @typedef CustomModel_t
  * @property {Array<CustomDataset_t>} datasets
  * @property {Array<CustomParamsLayerModel_t>} list_layers
- * @property {tfjs.Sequential} model
- * @property {Uint8Array | Int32Array | Float32Array} original
- * @property {Uint8Array | Int32Array | Float32Array} predicted
+ * @property {Sequential} model
+ * @property {Uint8Array | Int32Array | Float32Array | ArrayBuffer} original
+ * @property {Uint8Array | Int32Array | Float32Array | ArrayBuffer} predicted
  * @property {Array<string>} params_visor
  * @property {CustomParamsTrainModel_t} params_training
  * @property {CustomFeatureSelector_t} feature_selector
@@ -117,8 +118,7 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_LAYERS = [
     { units: 3,  activation: "relu" },
     { units: 7,  activation: "relu" },
-    { units: 10, activation: "relu" },
-    { units: 3,  activation: "relu" },
+    { units: 10,  activation: "sigmoid" },
   ]
   // const DEFAULT_DATASETS = {
   //   path               : "",
@@ -135,14 +135,14 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_CUSTOM_MODEL = {
     datasets            : [],
     list_layers         : DEFAULT_LAYERS,
-    model               : tfjs.sequential(),
+    model               : new Sequential(),
     original            : new Float32Array(0),
     predicted           : new Float32Array(0),
     params_visor        : [],
     params_training     : {
-      learning_rate  : 1,  // 1%
+      learning_rate  : 1,  // 1%  [0-100]
       n_of_epochs    : 20,
-      test_size      : 10, // 10%
+      test_size      : 10, // 10% [0-100]
       id_optimizer   : 'train-sgd',
       id_loss        : 'losses-meanSquaredError',
       list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
