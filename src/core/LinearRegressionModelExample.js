@@ -112,17 +112,17 @@ async function testModel (model, inputData, normalizationData, columns) {
     return [unNormXs.dataSync(), unNormPreds.dataSync()]
   })
 
-  const predictedPoints = Array.from(xs).map((val, i) => {
-    return {
-      x: val,
-      y: preds[i]
-    }
-  })
-
   const originalPoints = inputData.map(d => ({
     x: d[columns.x_name],
     y: d[columns.y_name],
   }))
+
+  const predictedPoints = Array.from(xs).map((value, i) => {
+    return {
+      x: value,
+      y: preds[i]
+    }
+  })
 
   await tfvis.render.scatterplot(
     { name: 'Model Predictions vs Original Data' },
@@ -138,7 +138,7 @@ async function testModel (model, inputData, normalizationData, columns) {
 }
 
 export async function run (filename, columns) {
-
+  tfvis.visor().open()
   const data = await getData(filename, columns)
   console.log(data, filename, columns)
 

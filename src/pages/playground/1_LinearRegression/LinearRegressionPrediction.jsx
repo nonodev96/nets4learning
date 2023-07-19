@@ -130,7 +130,7 @@ export default function LinearRegressionPrediction () {
     console.log('useEffect [listModels, indexModel, setDataPrediction]', { listModels, indexModel, setDataPrediction })
     if (listModels[indexModel]) {
       const { original, predicted } = listModels[indexModel]
-      console.log('enter', { original: listModels[indexModel].original, predicted })
+      console.log('enter', { original, predicted })
 
       const trace = {
         x      : [...Array(original.length).keys()],
@@ -138,9 +138,9 @@ export default function LinearRegressionPrediction () {
         name   : 'Original',
         mode   : 'lines+markers',
         type   : 'scatter',
-        opacity: 0.5,
+        opacity: 1,
         marker : {
-          color: 'dodgerblue'
+          color: 'blue'
         }
       }
       const lmTrace = {

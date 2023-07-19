@@ -69,7 +69,7 @@ export default function LinearRegression ({ dataset_id }) {
     const modelController = new LinearRegressionModelController(t)
     modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
-      input : { units: 1, activation: 'relu' },
+      input : { units: 1 },
       layers: [...tmpModel.list_layers.map(value => ({ activation: value.activation, units: value.units }))],
       output: { units: 1 },
     })
@@ -82,8 +82,9 @@ export default function LinearRegression ({ dataset_id }) {
       },
     })
     modelController.setFeatures({
-      X_features: tmpModel.feature_selector.X_features,
-      y_target  : tmpModel.feature_selector.y_target,
+      X_features : tmpModel.feature_selector.X_features,
+      y_target   : tmpModel.feature_selector.y_target,
+      categorical: new Map()
     })
     modelController.setFit({
       testSize : tmpModel.params_training.test_size,

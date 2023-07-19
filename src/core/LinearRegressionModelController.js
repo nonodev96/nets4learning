@@ -4,8 +4,6 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import * as dfd from 'danfojs'
 import { DataFrame } from 'danfojs'
 
-import { isProduction } from '@utils/utils'
-
 /**
  * @typedef TrainModelTensor_t
  * @property inputs: any
@@ -226,7 +224,27 @@ export default class LinearRegressionModelController {
       ...this.config.features.X_features,
       this.config.features.y_target,
     ]
-    return Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
+    const data = Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
+
+    for (const feature of [...this.config.features.X_features]) {
+      let values = data.map((d) => ({
+        x: d[feature],
+        y: d[this.config.features.y_target],
+      }))
+      await tfvis.render.scatterplot(
+        {
+          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, y_target: this.config.features.y_target }),
+          tab : this.t('pages.playground.generator.visor.dataset'),
+        },
+        { values },
+        {
+          xLabel: 'x',
+          yLabel: 'y',
+        }
+      )
+
+    }
+    return data
   }
 
   /**
@@ -266,7 +284,7 @@ export default class LinearRegressionModelController {
    * @param {string} Y_TARGET
    * @param {Map<string, number>} VARIABLE_CATEGORY_COUNT
    * @param {number} testSize
-   * @returns {Tensor<Rank>[]}
+   * @returns {[Tensor<Rank>, Tensor<Rank>, Tensor<Rank>, Tensor<Rank>, Tensor | Tensor[]]}
    */
   CreateDataSets (data, X_features, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize) {
     const X = data.map((r) =>
@@ -280,17 +298,13 @@ export default class LinearRegressionModelController {
 
     //
     const X_t = this.Normalize(tfjs.tensor2d(X))
-
     const y = tfjs.tensor(data.map(r => (!r[Y_TARGET] ? 0 : r[Y_TARGET])))
 
     const splitIdx = parseInt(((1 - testSize) * data.length).toString(), 10)
-    console.log({ X, X_t: X_t.dataSync(), y: y.dataSync() })
-    console.log(splitIdx, data.length - splitIdx)
     const [xTrain, xTest] = tfjs.split(X_t, [splitIdx, data.length - splitIdx])
-    const _ = tfjs.split(y, [splitIdx, data.length - splitIdx])
-    console.log({ _ })
-    const [yTrain, yTest] = _
-    return [xTrain, xTest, yTrain, yTest]
+    const [yTrain, yTest] = tfjs.split(y, [splitIdx, data.length - splitIdx])
+
+    return [xTrain, xTest, yTrain, yTest, X_t]
   }
 
   /**
@@ -328,6 +342,7 @@ export default class LinearRegressionModelController {
       tab : this.t('pages.playground.generator.visor.model'),
     }, model)
 
+    // COMPILA EL MODELO DEFINIDO ANTERIORMENTE
     const idOptimizer = this.config.compile.id_optimizer
     const params = this.config.compile.params
     const idLoss = this.config.compile.id_loss
@@ -344,17 +359,16 @@ export default class LinearRegressionModelController {
     })
 
     // ENTRENAR MODELO
-
     const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
     const fit_callbacks_container = {
       name  : this.t('pages.playground.generator.visor.history-train'),
       tab   : this.t('pages.playground.generator.visor.train'),
       styles: { height: '1000px' },
     }
-    const fit_callbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
+    const fit_callback = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
       callbacks: [
-        'onBatchEnd',
         'onEpochEnd',
+        'onBatchEnd',
       ],
     })
     await model.fit(xTrain, yTrain, {
@@ -365,7 +379,7 @@ export default class LinearRegressionModelController {
       validationData : [xTest, yTest],
       verbose        : true,
       validationSteps: 10,
-      callbacks      : fit_callbacks,
+      callbacks      : fit_callback
     })
 
     return model
@@ -386,13 +400,12 @@ export default class LinearRegressionModelController {
     const testSize = this.config.fit.testSize
 
     const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_FEATURES, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize)
-    const linearModel = await this.TrainLinearModel(xTrain, xTest, yTrain, yTest)
-    console.log({ x: xTest.dataSync() })
-    const original = yTest.dataSync()
-    const predicted = linearModel.predict(xTest).dataSync()
+    const model = await this.TrainLinearModel(xTrain, xTest, yTrain, yTest)
 
-    console.log([xTrain, xTest, yTrain, yTest], predicted)
-    return { original, predicted, model: linearModel }
+    const original = yTest.dataSync()
+    const predicted = model.predict(xTest).dataSync()
+
+    return { original, predicted, model }
   }
 
   static CREATE_OPTIMIZER (idOptimizer, params) {

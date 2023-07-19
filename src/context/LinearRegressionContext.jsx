@@ -118,7 +118,7 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_LAYERS = [
     { units: 3,  activation: "relu" },
     { units: 7,  activation: "relu" },
-    { units: 10,  activation: "sigmoid" },
+    { units: 10, activation: "sigmoid" },
   ]
   // const DEFAULT_DATASETS = {
   //   path               : "",
