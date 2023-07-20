@@ -3,15 +3,15 @@ import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
-import LinearRegressionContext from '@context/LinearRegressionContext'
 import alertHelper from '@utils/alertHelper'
 
 export default function LinearRegressionEditorLayers () {
 
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionContext)
+  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
 
   const handlerClick_AddLayer_Start = async () => {
     if (tmpModel.list_layers.length <= 10) {

@@ -32,6 +32,7 @@ import { Sequential } from '@tensorflow/tfjs'
 /**
  * @typedef CustomFeatureSelector_t
  * @property {Set<string>} X_features
+ * @property {string} X_feature
  * @property {string} y_target
  */
 
@@ -46,12 +47,16 @@ import { Sequential } from '@tensorflow/tfjs'
  */
 
 /**
+ * @typedef {{x: *, y: *}} Point_t
+ */
+
+/**
  * @typedef CustomModel_t
  * @property {Array<CustomDataset_t>} datasets
  * @property {Array<CustomParamsLayerModel_t>} list_layers
  * @property {Sequential} model
- * @property {Uint8Array | Int32Array | Float32Array | ArrayBuffer} original
- * @property {Uint8Array | Int32Array | Float32Array | ArrayBuffer} predicted
+ * @property {Point_t[]} original
+ * @property {Point_t[]} predicted
  * @property {Array<string>} params_visor
  * @property {CustomParamsTrainModel_t} params_training
  * @property {CustomFeatureSelector_t} feature_selector
@@ -78,9 +83,6 @@ import { Sequential } from '@tensorflow/tfjs'
 
 /**
  * @typedef  CustomLinearRegressionContext_t
- *
- * @property {CustomModel_t} tmpModel
- * @property {React.Dispatch<React.SetStateAction<CustomModel_t>>} setTmpModel
  *
  * @property {Array<CustomModel_t>} listModels
  * @property {React.Dispatch<React.SetStateAction<Array<CustomModel_t>>>} setListModels
@@ -113,46 +115,7 @@ export function LinearRegressionProvider ({ children }) {
 
   const { t } = useTranslation()
 
-  const [accordionActive, setAccordionActive] = useState([])
   // @formatter:off
-  const DEFAULT_LAYERS = [
-    { units: 3,  activation: "relu" },
-    { units: 7,  activation: "relu" },
-    { units: 10, activation: "sigmoid" },
-  ]
-  // const DEFAULT_DATASETS = {
-  //   path               : "",
-  //   info               : "",
-  //   csv                : "",
-  //   dataframe_original : new dfd.DataFrame(),
-  //   dataframe_processed: new dfd.DataFrame(),
-  //   isDatasetProcessed : false,
-  //   dataset_transforms : [],
-  // }
-  /**
-   * @type CustomModel_t
-   */
-  const DEFAULT_CUSTOM_MODEL = {
-    datasets            : [],
-    list_layers         : DEFAULT_LAYERS,
-    model               : new Sequential(),
-    original            : new Float32Array(0),
-    predicted           : new Float32Array(0),
-    params_visor        : [],
-    params_training     : {
-      learning_rate  : 1,  // 1%  [0-100]
-      n_of_epochs    : 20,
-      test_size      : 10, // 10% [0-100]
-      id_optimizer   : 'train-sgd',
-      id_loss        : 'losses-meanSquaredError',
-      list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
-    },
-    feature_selector    : {
-      X_features: new Set(),
-      y_target: '',
-    }
-  }
-
   /**
    * @type CustomDatasetLocal_t
    */
@@ -164,31 +127,16 @@ export function LinearRegressionProvider ({ children }) {
     container_info      : '',
   }
 
-  /**
-   * @type CustomPredict_t
-   */
-  const DEFAULT_DATA_PREDICT = {
-    dataOriginal_label : '',
-    dataOriginal_x     : [],
-    dataOriginal_y     : [],
-    dataPredicted_label: '',
-    dataPredicted_x    : [],
-    dataPredicted_y    : [],
-  }
   // @formatter:on
 
+  const [accordionActive, setAccordionActive] = useState([])
   const [i_model, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
-  const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */ DEFAULT_CUSTOM_MODEL)
   const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
   const [isTraining, setIsTraining] = useState(false)
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */ DEFAULT_DATASET_LOCAL)
-  // const [dataPrediction, setDataPrediction] = useState(/** @type CustomPredict_t */ DEFAULT_DATA_PREDICT)
 
   return (
     <LinearRegressionContext.Provider value={{
-      tmpModel,
-      setTmpModel,
-
       listModels,
       setListModels,
 

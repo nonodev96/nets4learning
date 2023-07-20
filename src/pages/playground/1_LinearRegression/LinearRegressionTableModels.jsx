@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
-import { Table, Card, Button, Col, Row, Container } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
+import { Table, Card, Button, Container } from 'react-bootstrap'
+import { Trans } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
@@ -8,7 +8,7 @@ import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'
-  const { i18n } = useTranslation()
+  // const { i18n } = useTranslation()
   const { listModels } = useContext(LinearRegressionContext)
 
   const handleClick_CloseVisor = () => {
@@ -18,11 +18,11 @@ export default function LinearRegressionTableModels () {
     tfvis.visor().open()
   }
 
-  const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
-    model.save('downloads://lr-model-' + idMODEL)
+  const handleClick_DownloadGeneratedModel = ({ model }, index) => {
+    model.save('downloads://lr-model-' + index)
   }
 
-  if(VERBOSE) console.debug('render LinearRegressionTableModels')
+  if (VERBOSE) console.debug('render LinearRegressionTableModels')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center'}>
@@ -60,9 +60,8 @@ export default function LinearRegressionTableModels () {
 
             <tbody>
             {listModels.map((value, index) => {
-              const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
-              const list_metrics = formatter.format(value.params_training.list_id_metrics)
-              const list = formatter.format([...value.feature_selector.X_features])
+              // const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
+              // const list = formatter.format([...value.feature_selector.X_features])
               return <tr key={index}>
                 <td>{value.params_training.learning_rate}%</td>
                 <td>{value.params_training.test_size}%</td>
@@ -95,13 +94,14 @@ export default function LinearRegressionTableModels () {
                     })}
                 </td>
                 <td>
-                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X:</span> {list} <br />
+                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X:</span> {value.feature_selector.X_feature}
+                  <br />
                   <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y:</span> {value.feature_selector.y_target}
                 </td>
                 <td>
                   <Button variant={'outline-primary'}
                           size={'sm'}
-                          onClick={() => handleClick_DownloadGeneratedModel(value)}>
+                          onClick={() => handleClick_DownloadGeneratedModel(value, index)}>
                     <Trans i18nKey={prefix + 'download'} />
                   </Button>
                 </td>

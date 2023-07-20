@@ -5,6 +5,7 @@ import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
 
@@ -13,7 +14,8 @@ import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
 export default function LinearRegressionDataset ({ dataset_id }) {
 
   const { t } = useTranslation()
-  const { i_model, tmpModel, setTmpModel } = useContext(LinearRegressionContext)
+  const { i_model } = useContext(LinearRegressionContext)
+  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
 
   const handleChange_FileUpload_CSV = async (files, event) => {
     if (files.length < 1) {

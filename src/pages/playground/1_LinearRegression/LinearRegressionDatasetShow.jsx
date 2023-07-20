@@ -8,14 +8,12 @@ import N4LTablePagination from '@components/table/N4LTablePagination'
 import N4LSummary from '@components/summary/N4LSummary'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import { VERBOSE } from '@/CONSTANTS'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 export default function LinearRegressionDatasetShow () {
 
-  const {
-    tmpModel,
-    datasetLocal,
-    setDatasetLocal
-  } = useContext(LinearRegressionContext)
+  const { datasetLocal, setDatasetLocal } = useContext(LinearRegressionContext)
+  const { tmpModel } = useContext(LinearRegressionDataContext)
 
   // i18n
   const prefix = 'pages.playground.generator.dataset.'
@@ -62,7 +60,7 @@ export default function LinearRegressionDatasetShow () {
     setIndexDatasetSelected(index)
   }
 
-  if(VERBOSE) console.debug('render LinearRegressionDatasetShow')
+  if (VERBOSE) console.debug('render LinearRegressionDatasetShow')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

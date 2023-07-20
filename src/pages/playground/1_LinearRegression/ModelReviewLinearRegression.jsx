@@ -63,7 +63,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
     asyncFunction().then(_r => undefined)
   }, [iModel])
 
-  if(VERBOSE) console.debug('render ModelReviewLinearRegression')
+  if (VERBOSE) console.debug('render ModelReviewLinearRegression')
   return (
     <>
       <Container>

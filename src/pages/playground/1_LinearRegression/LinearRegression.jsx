@@ -12,9 +12,10 @@ import { MAP_LR_MODEL } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
-import LinearRegressionModelController from '@core/LinearRegressionModelController'
+import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import { VERBOSE } from '@/CONSTANTS'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -40,9 +41,6 @@ export default function LinearRegression ({ dataset_id }) {
   const { t } = useTranslation()
 
   const {
-    tmpModel,
-    setTmpModel,
-
     isTraining,
     setIsTraining,
 
@@ -58,6 +56,7 @@ export default function LinearRegression ({ dataset_id }) {
     i_model,
     setIModel,
   } = useContext(LinearRegressionContext)
+  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
 
   const refJoyrideButton = useRef({})
 
@@ -66,7 +65,7 @@ export default function LinearRegression ({ dataset_id }) {
     setIsTraining(true)
     console.log('handleSubmit_TrainModel')
 
-    const modelController = new LinearRegressionModelController(t)
+    const modelController = new LinearRegressionModelController_Simple(t)
     modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
@@ -83,6 +82,7 @@ export default function LinearRegression ({ dataset_id }) {
     })
     modelController.setFeatures({
       X_features : tmpModel.feature_selector.X_features,
+      X_feature  : tmpModel.feature_selector.X_feature,
       y_target   : tmpModel.feature_selector.y_target,
       categorical: new Map()
     })
@@ -101,8 +101,8 @@ export default function LinearRegression ({ dataset_id }) {
     const updatedTmpModel = {
       ...tmpModel,
       model    : model,
-      original : original.slice(0, original.length),
-      predicted: predicted.slice(0, original.length),
+      original : Array.from(original),
+      predicted: Array.from(predicted),
     }
 
     setTmpModel(updatedTmpModel)
@@ -114,35 +114,34 @@ export default function LinearRegression ({ dataset_id }) {
     event.preventDefault()
     setIsTraining(true)
     console.log('handleSubmit_TrainModel_Upload')
-    setIsTraining((prevState) => false)
+    setIsTraining(false)
   }
-
-  const init = useCallback(async () => {
-    if (dataset_id === UPLOAD) {
-      // TODO
-      console.log('TODO')
-    } else {
-      let info_dataset
-      if (MAP_LR_MODEL.hasOwnProperty(dataset_id)) {
-        info_dataset = new MAP_LR_MODEL[dataset_id](t, setAccordionActive)
-      } else {
-        console.error('Error, option not valid')
-      }
-      const { datasets } = await info_dataset.DATASETS()
-      setIModel(info_dataset)
-      setTmpModel((prevState) => {
-        return {
-          ...prevState,
-          datasets: datasets,
-        }
-      })
-    }
-  }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
 
   useEffect(() => {
     console.debug('LinearRegression useEffect[init]')
+    const init = async () => {
+      if (dataset_id === UPLOAD) {
+        // TODO
+        console.log('TODO')
+      } else {
+        let info_dataset
+        if (MAP_LR_MODEL.hasOwnProperty(dataset_id)) {
+          info_dataset = new MAP_LR_MODEL[dataset_id](t, setAccordionActive)
+        } else {
+          console.error('Error, option not valid')
+        }
+        const { datasets } = await info_dataset.DATASETS()
+        setIModel(info_dataset)
+        setTmpModel((prevState) => {
+          return {
+            ...prevState,
+            datasets: datasets,
+          }
+        })
+      }
+    }
     init().then(() => undefined)
-  }, [init])
+  }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -155,7 +154,7 @@ export default function LinearRegression ({ dataset_id }) {
     setAccordionActive(copy)
   }
 
-  if (VERBOSE) console.debug('render LinearRegression')
+  console.debug('render LinearRegression')
   return (
     <>
       <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
@@ -184,7 +183,6 @@ export default function LinearRegression ({ dataset_id }) {
 
         <Row>
           <Col>
-
             <Accordion defaultActiveKey={[]} activeKey={accordionActive}>
               <Accordion.Item className={'joyride-step-1-manual'} eventKey={'manual'}>
                 <Accordion.Header onClick={() => accordionToggle('manual')}>

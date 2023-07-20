@@ -117,12 +117,10 @@ async function testModel (model, inputData, normalizationData, columns) {
     y: d[columns.y_name],
   }))
 
-  const predictedPoints = Array.from(xs).map((value, i) => {
-    return {
-      x: value,
-      y: preds[i]
-    }
-  })
+  const predictedPoints = Array.from(xs).map((value, i) => ({
+    x: value,
+    y: preds[i]
+  }))
 
   await tfvis.render.scatterplot(
     { name: 'Model Predictions vs Original Data' },

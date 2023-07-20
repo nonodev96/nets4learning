@@ -2,15 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
-import LinearRegressionContext from '@context/LinearRegressionContext'
 import { VERBOSE } from '@/CONSTANTS'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 export default function LinearRegressionEditorVisor () {
 
   const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
 
-  const { setTmpModel } = useContext(LinearRegressionContext)
+  const {  setTmpModel } = useContext(LinearRegressionDataContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)

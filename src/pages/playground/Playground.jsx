@@ -17,6 +17,7 @@ import ModelReviewImageClassification from './3_ImageClassification/ModelReviewI
 
 import { LinearRegressionProvider } from '@context/LinearRegressionContext'
 import { TASKS } from '@/DATA_MODEL'
+import { LinearRegressionDataProvider } from '@context/LinearRegressionDataContext'
 
 export default function Playground () {
   const { id, option, example } = useParams()
@@ -35,7 +36,13 @@ export default function Playground () {
         if (option === 'model') {
           return <ModelReviewLinearRegression dataset={example} />
         } else if (option === 'dataset') {
-          return <LinearRegressionProvider><LinearRegression dataset_id={example} /></LinearRegressionProvider>
+          return <>
+            <LinearRegressionProvider>
+              <LinearRegressionDataProvider>
+                <LinearRegression dataset_id={example} />
+              </LinearRegressionDataProvider>
+            </LinearRegressionProvider>
+          </>
         }
         break
       }

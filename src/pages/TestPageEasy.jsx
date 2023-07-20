@@ -15,10 +15,14 @@ export default function TestPageEasy () {
   const handleClick_init = async () => {
     // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
     // const columns = { x_name: 'horsepower', y_name: 'mpg' }
+    // const columns = { x_name: 'cylinders', y_name: 'mpg' }
+
     const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
     const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
+
     // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/boston-housing/housing.csv'
     // const columns = { x_name: 'LSTAT', y_name: 'MEDV' } // features = ['LSTAT', 'RM']
+
     const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
     console.log({ original, predicted })
 

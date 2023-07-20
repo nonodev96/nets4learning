@@ -1,10 +1,11 @@
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useContext } from 'react'
+
+import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
-import LinearRegressionContext from '@context/LinearRegressionContext'
-import { VERBOSE } from '@/CONSTANTS'
+import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 export default function LinearRegressionEditorTrainer () {
 
@@ -15,7 +16,7 @@ export default function LinearRegressionEditorTrainer () {
   // 0 - 1 --> 0 - 100
   const DEFAULT_TEST_SIZE = 10
   // TYPE_OPTIMIZER.key
-  const DEFAULT_OPTIMIZER = 'train-sgd'
+  const DEFAULT_OPTIMIZER = 'train-adam'
   // TYPE_LOSSES.key
   const DEFAULT_LOSS = 'losses-meanSquaredError'
   // TYPE_METRICS.key
@@ -23,7 +24,7 @@ export default function LinearRegressionEditorTrainer () {
 
   const prefix = 'pages.playground.generator.general-parameters.'
   const { t } = useTranslation()
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionContext)
+  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
 
   // 1 - 100
   const handlerChange_TestSize = (_test_size) => {

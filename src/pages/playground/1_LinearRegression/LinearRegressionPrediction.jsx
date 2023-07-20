@@ -1,27 +1,21 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './LinearRegression.module.css'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
+import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
-// import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
 import DebugJSON from '@components/debug/DebugJSON'
-import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionPrediction () {
   const prefix = 'pages.playground.1-linear-regression.predict.'
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
-  const {
-    listModels,
+  const { listModels, datasetLocal } = useContext(LinearRegressionContext)
 
-    datasetLocal
-  } = useContext(LinearRegressionContext)
-
-  const [listFeaturesX, setListFeaturesX] = useState('')
   const [dynamicObject, setDynamicObject] = useState({})
   const [indexModel, setIndexModel] = useState(-1)
   const [dataPrediction, setDataPrediction] = useState([])
@@ -37,7 +31,7 @@ export default function LinearRegressionPrediction () {
   }
 
   const getColor = (column_name) => {
-    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name)) {
+    if (listModels[indexModel].feature_selector.X_feature === column_name) {
       return styles.border_blue
     }
     if (listModels[indexModel].feature_selector.y_target === column_name) {
@@ -47,7 +41,7 @@ export default function LinearRegressionPrediction () {
   }
 
   const isDisabled = (column_name) => {
-    if (Array.from(listModels[indexModel].feature_selector.X_features).includes(column_name)) {
+    if (listModels[indexModel].feature_selector.X_feature === column_name) {
       return false
     }
     if (listModels[indexModel].feature_selector.y_target === column_name) {
@@ -123,20 +117,20 @@ export default function LinearRegressionPrediction () {
   }
 
   useEffect(() => {
-    setIndexModel(listModels.length-1)
+    setIndexModel(listModels.length - 1)
   }, [listModels.length])
 
   useEffect(() => {
-    console.log('useEffect [listModels, indexModel, setDataPrediction]', { listModels, indexModel, setDataPrediction })
+    console.log('useEffect [listModels, indexModel, setDataPrediction]')
     if (listModels[indexModel]) {
-      const { original, predicted } = listModels[indexModel]
-      console.log('enter', { original, predicted })
-
+      const { original, predicted, feature_selector } = listModels[indexModel]
+      const { X_feature, y_target } = feature_selector
+      console.log({ original, predicted })
       const trace = {
-        x      : [...Array(original.length).keys()],
-        y      : original,
-        name   : 'Original',
-        mode   : 'lines+markers',
+        x      : original.map((v) => v.x),
+        y      : original.map((v) => v.y),
+        name   : t('{{X_feature}} x {{y_target}}', { X_feature, y_target }),
+        mode   : 'markers',
         type   : 'scatter',
         opacity: 1,
         marker : {
@@ -144,8 +138,8 @@ export default function LinearRegressionPrediction () {
         }
       }
       const lmTrace = {
-        x      : [...Array(original.length).keys()],
-        y      : predicted,
+        x      : predicted.map((v) => v.x),
+        y      : predicted.map((v) => v.y),
         name   : 'Predicted',
         mode   : 'lines+markers',
         type   : 'scatter',
@@ -156,7 +150,7 @@ export default function LinearRegressionPrediction () {
       }
       setDataPrediction([trace, lmTrace])
     }
-  }, [listModels, indexModel, setDataPrediction])
+  }, [listModels, indexModel, setDataPrediction, t])
 
   useEffect(() => {
     const _dynamic_object = datasetLocal
@@ -169,19 +163,10 @@ export default function LinearRegressionPrediction () {
     setDynamicObject(_dynamic_object)
   }, [datasetLocal.dataframe_processed])
 
-  useEffect(() => {
-    const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
-    let list = []
-    if (listModels[indexModel]?.feature_selector?.X_features) {
-      list = [...listModels[indexModel]?.feature_selector?.X_features]
-    }
-    setListFeaturesX(formatter.format(list))
-  }, [i18n.language, listModels, indexModel, setListFeaturesX])
-
   // TODO
   const handleSubmit_Predict = async (e) => {
     e.preventDefault()
-    listModels[indexModel].model.predict()
+    // listModels[indexModel].model.predict()
   }
 
   const handleChange_Model = (e) => {
@@ -200,7 +185,7 @@ export default function LinearRegressionPrediction () {
     setDynamicObject(_dynamic_object)
   }
 
-  if(VERBOSE) console.debug('render LinearRegressionPrediction')
+  if (VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center'}>
@@ -247,7 +232,7 @@ export default function LinearRegressionPrediction () {
         {(listModels.length > 0 && indexModel >= 0) && <>
           <Row>
             <Col>
-              <Card.Text><strong>X</strong> {listFeaturesX ?? ''}</Card.Text>
+              <Card.Text><strong>X</strong> {listModels[indexModel]?.feature_selector.X_feature ?? ''}</Card.Text>
               <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_target ?? ''}</Card.Text>
             </Col>
           </Row>
@@ -273,7 +258,10 @@ export default function LinearRegressionPrediction () {
                       data={dataPrediction}
                       useResizeHandler={true}
                       style={PLOTLY_CONFIG_DEFAULT.STYLES}
-                      layout={{ title: '', ...PLOTLY_CONFIG_DEFAULT.LAYOUT }}
+                      layout={{
+                        title: '',
+                        ...PLOTLY_CONFIG_DEFAULT.LAYOUT
+                      }}
                 />
               </Col>
             </Row>

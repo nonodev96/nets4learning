@@ -6,12 +6,11 @@ import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionJoyride ({ refJoyrideButton }) {
 
+  const { t } = useTranslation()
   const { i_model } = useContext(LinearRegressionContext)
 
-  const { t } = useTranslation()
-
-  const joyrideRef = useRef()
   const [joyride, setJoyride] = useState(i_model.JOYRIDE())
+  const joyrideRef = useRef()
 
   const joyride_locale = {
     back : t('joyride.back'),
