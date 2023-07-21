@@ -24,7 +24,6 @@ export default function TestPageEasy () {
     // const columns = { x_name: 'LSTAT', y_name: 'MEDV' } // features = ['LSTAT', 'RM']
 
     const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
-    console.log({ original, predicted })
 
     const original_x = original.map((v) => v.x)
     const original_y = original.map((v) => v.y)
@@ -49,13 +48,15 @@ export default function TestPageEasy () {
         marker: { color: 'red' },
       },
     ]
-    setDataPredictionList((prevState)=>[...prevState, ...newPrediction_group])
+    setDataPredictionList((prevState) => [...prevState, ...newPrediction_group])
   }
 
   const handleClick_toggle = () => {
     tfvis.visor().toggle()
   }
+  const [counter, setCounter] = useState(0)
 
+  console.debug('render TestPageEasy')
   return <>
     <Container className={'mt-3'}>
       <Row>
@@ -64,6 +65,9 @@ export default function TestPageEasy () {
           <Card>
             <Card.Header><h3>TestPage-Easy</h3></Card.Header>
             <Card.Body>
+
+              <Button onClick={() => setCounter(c => c + 1)}>Counter {counter}</Button>
+              <hr />
               <TestComponentEasy />
 
               <Button onClick={handleClick_init} size={'sm'} variant={'outline-primary'}>Init</Button>

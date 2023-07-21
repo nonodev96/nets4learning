@@ -8,7 +8,6 @@ import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionTableModels () {
   const prefix = 'generator.table-models.'
-  // const { i18n } = useTranslation()
   const { listModels } = useContext(LinearRegressionContext)
 
   const handleClick_CloseVisor = () => {
@@ -25,21 +24,22 @@ export default function LinearRegressionTableModels () {
   if (VERBOSE) console.debug('render LinearRegressionTableModels')
   return <>
     <Card>
-      <Card.Header className={'d-flex align-items-center'}>
+      <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'list-models-generated'} /> | {listModels.length}</h3>
-
-        <Button variant={'outline-primary'}
-                className={'ms-3'}
-                size={'sm'}
-                onClick={handleClick_OpenVisor}>
-          <Trans i18nKey={prefix + 'open-visor'} />
-        </Button>
-        <Button variant={'outline-primary'}
-                className={'ms-1'}
-                size={'sm'}
-                onClick={handleClick_CloseVisor}>
-          <Trans i18nKey={prefix + 'close-visor'} />
-        </Button>
+        <div className="d-flex">
+          <Button variant={'outline-primary'}
+                  className={'ms-3'}
+                  size={'sm'}
+                  onClick={handleClick_OpenVisor}>
+            <Trans i18nKey={prefix + 'open-visor'} />
+          </Button>
+          <Button variant={'outline-primary'}
+                  className={'ms-1'}
+                  size={'sm'}
+                  onClick={handleClick_CloseVisor}>
+            <Trans i18nKey={prefix + 'close-visor'} />
+          </Button>
+        </div>
       </Card.Header>
       <Card.Body>
         <Container fluid={true}>
@@ -49,11 +49,11 @@ export default function LinearRegressionTableModels () {
               <th><Trans i18nKey={prefix + 'learning-rate'} /></th>
               <th><Trans i18nKey={prefix + 'test-size'} /></th>
               <th><Trans i18nKey={prefix + 'n-of-epochs'} /></th>
+              <th><Trans i18nKey={prefix + 'layers'} /></th>
+              <th><Trans i18nKey={prefix + 'features'} /></th>
               <th><Trans i18nKey={prefix + 'id-optimizer'} /></th>
               <th><Trans i18nKey={prefix + 'id-loss'} /></th>
               <th><Trans i18nKey={prefix + 'id-metrics'} /></th>
-              <th><Trans i18nKey={prefix + 'layers'} /></th>
-              <th><Trans i18nKey={prefix + 'features'} /></th>
               <th><Trans i18nKey={prefix + 'download'} /></th>
             </tr>
             </thead>
@@ -66,6 +66,21 @@ export default function LinearRegressionTableModels () {
                 <td>{value.params_training.learning_rate}%</td>
                 <td>{value.params_training.test_size}%</td>
                 <td>{value.params_training.n_of_epochs}</td>
+                <td>
+                  {value.params_layers
+                    .map((value, index2) => {
+                      return (
+                        <span key={index2} style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
+                        <small>{value.units.toString().padStart(2, '0')} - {value.activation}</small><br />
+                      </span>
+                      )
+                    })}
+                </td>
+                <td>
+                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X: {value.params_features.X_feature}</span>
+                  <br />
+                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y: {value.params_features.y_target}</span>
+                </td>
                 <td>{value.params_training.id_optimizer}</td>
                 <td>
                   <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
@@ -82,21 +97,6 @@ export default function LinearRegressionTableModels () {
                       )
                     })
                   }
-                </td>
-                <td>
-                  {value.list_layers
-                    .map((value, index2) => {
-                      return (
-                        <span key={index2} style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
-                        <small>{value.units.toString().padStart(2, '0')} - {value.activation}</small><br />
-                      </span>
-                      )
-                    })}
-                </td>
-                <td>
-                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X:</span> {value.feature_selector.X_feature}
-                  <br />
-                  <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y:</span> {value.feature_selector.y_target}
                 </td>
                 <td>
                   <Button variant={'outline-primary'}

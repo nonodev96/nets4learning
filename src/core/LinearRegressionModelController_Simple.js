@@ -207,14 +207,23 @@ export default class LinearRegressionModelController_Simple {
    * @return {Promise<object[]>}
    */
   async GetData () {
-
-    if (!this.dataframe.columns.includes(this.config.features.y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.y_target}`)
     if (!this.dataframe.columns.includes(this.config.features.X_feature)) throw Error(`The dataset need to contain a column named ${this.config.features.X_feature}`)
+    if (!this.dataframe.columns.includes(this.config.features.y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.y_target}`)
+
     const columns = [
       this.config.features.X_feature,
       this.config.features.y_target,
     ]
+
+    if(this.dataframe[this.config.features.X_feature].dtype ==="string") {
+      const encode = new dfd.LabelEncoder()
+      encode.fit(this.dataframe[this.config.features.X_feature])
+      const new_serie = encode.transform(this.dataframe[this.config.features.X_feature].values)
+      this.dataframe.asType(this.config.features.X_feature, 'string', { inplace: true })
+      this.dataframe.addColumn(this.config.features.X_feature, new_serie, { inplace: true })
+    }
     const data = Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
+
     // Draw dataset
     let values = data.map((d) => ({
       x: d[this.config.features.X_feature],
@@ -354,7 +363,7 @@ export default class LinearRegressionModelController_Simple {
 
       return [unNormXs.dataSync(), unNormPreds.dataSync()]
     })
-    console.log({xs, preds})
+    console.log({ xs, preds })
     const feature = this.config.features.X_feature
     const y_target = this.config.features.y_target
 

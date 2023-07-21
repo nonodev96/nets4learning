@@ -1,19 +1,21 @@
-import { Card, Col, Form, Row } from 'react-bootstrap'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-
-import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
-
+import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
+
+import { VERBOSE } from '@/CONSTANTS'
+import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import N4LSummary from '@components/summary/N4LSummary'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import { VERBOSE } from '@/CONSTANTS'
-import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 export default function LinearRegressionDatasetShow () {
 
-  const { datasetLocal, setDatasetLocal } = useContext(LinearRegressionContext)
-  const { tmpModel } = useContext(LinearRegressionDataContext)
+  const {
+    datasets,
+
+    datasetLocal,
+    setDatasetLocal,
+  } = useContext(LinearRegressionContext)
 
   // i18n
   const prefix = 'pages.playground.generator.dataset.'
@@ -46,19 +48,20 @@ export default function LinearRegressionDatasetShow () {
     })
   }, [setDatasetLocal])
 
-  useEffect(() => {
-    const init = async () => {
-      if (tmpModel.datasets?.length >= 1) {
-        await updateDataFrameLocal(tmpModel?.datasets[indexDatasetSelected])
-      }
-    }
-    init().then(() => undefined)
-  }, [tmpModel, indexDatasetSelected, updateDataFrameLocal])
-
   const handleChange_dataset = async (e) => {
     const { index } = JSON.parse(e.target.value)
     setIndexDatasetSelected(index)
   }
+
+  useEffect(() => {
+    console.debug('useEffect [datasets, indexDatasetSelected, updateDataFrameLocal]')
+    const init = async () => {
+      if (datasets?.length >= 1) {
+        await updateDataFrameLocal(datasets[indexDatasetSelected])
+      }
+    }
+    init().then(() => undefined)
+  }, [datasets, indexDatasetSelected, updateDataFrameLocal])
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetShow')
   return <>
@@ -70,8 +73,7 @@ export default function LinearRegressionDatasetShow () {
             <Form.Select aria-label={'dataset'}
                          size={'sm'}
                          onChange={(e) => handleChange_dataset(e)}>
-              {tmpModel
-                .datasets
+              {datasets
                 .map(({ csv, info }, index) => {
                   return <option key={'option_' + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
                 })}

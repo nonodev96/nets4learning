@@ -5,14 +5,14 @@ import React, { useContext } from 'react'
 import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
-import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionEditorTrainer () {
 
-  // 1 - Inf(1000)
-  const DEFAULT_NUMBER_OF_EPOCHS = 20
   // 0 - 1 --> 0 - 100
   const DEFAULT_LEARNING_RATE = 1
+  // 1 - Inf(1000)
+  const DEFAULT_NUMBER_OF_EPOCHS = 20
   // 0 - 1 --> 0 - 100
   const DEFAULT_TEST_SIZE = 10
   // TYPE_OPTIMIZER.key
@@ -24,7 +24,7 @@ export default function LinearRegressionEditorTrainer () {
 
   const prefix = 'pages.playground.generator.general-parameters.'
   const { t } = useTranslation()
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
+  const { params, setParams } = useContext(LinearRegressionContext)
 
   // 1 - 100
   const handlerChange_TestSize = (_test_size) => {
@@ -50,7 +50,7 @@ export default function LinearRegressionEditorTrainer () {
   }
 
   const handlerClick_RemoveMetric = async (index) => {
-    const new_list_id_metrics = [...tmpModel.params_training.list_id_metrics]
+    const new_list_id_metrics = [...params.params_training.list_id_metrics]
     if (new_list_id_metrics.length > 1) {
       new_list_id_metrics.splice(index, 1)
       change_params_training('list_id_metrics', new_list_id_metrics)
@@ -60,28 +60,28 @@ export default function LinearRegressionEditorTrainer () {
   }
 
   const handleChange_Metric = (_index, _value) => {
-    tmpModel.params_training.list_id_metrics[_index] = _value
-    change_params_training('list_id_metrics', [...tmpModel.params_training.list_id_metrics])
+    params.params_training.list_id_metrics[_index] = _value
+    change_params_training('list_id_metrics', [...params.params_training.list_id_metrics])
   }
 
   const handlerClick_AddMetric_Start = () => {
     const new_metric = 'metrics-meanSquaredError'
-    change_params_training('list_id_metrics', [...tmpModel.params_training.list_id_metrics, new_metric])
+    change_params_training('list_id_metrics', [...params.params_training.list_id_metrics, new_metric])
   }
 
   const change_params_training = (_key, _value) => {
-    setTmpModel((preState) => {
+    setParams((prevState) => {
       return {
-        ...preState,
+        ...prevState,
         params_training: {
-          ...preState.params_training,
+          ...prevState.params_training,
           [_key]: _value,
         },
       }
     })
   }
 
-  if(VERBOSE) console.debug('render LinearRegressionEditorTrainer')
+  if (VERBOSE) console.debug('render LinearRegressionEditorTrainer')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
@@ -190,7 +190,7 @@ export default function LinearRegressionEditorTrainer () {
 
         <Accordion className={'mt-2'}>
           <>
-            {tmpModel.params_training.list_id_metrics
+            {params.params_training.list_id_metrics
               .map((metric, index) => {
                 return <Accordion.Item key={index} eventKey={index.toString()}>
                   <Accordion.Header>

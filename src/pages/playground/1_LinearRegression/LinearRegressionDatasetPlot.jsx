@@ -1,18 +1,13 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 
-import DataFramePlot from '@components/dataframe/DataFramePlot'
-
+import { VERBOSE } from '@/CONSTANTS'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
-import { VERBOSE } from '@/CONSTANTS'
+import DataFramePlot from '@components/dataframe/DataFramePlot'
 
 export default function LinearRegressionDatasetPlot () {
 
   const { datasetLocal } = useContext(LinearRegressionContext)
-
-  useEffect(() => {
-    // console.debug("useEffect[datasetLocal]")
-  }, [datasetLocal])
 
   if(VERBOSE) console.debug('render LinearRegressionDatasetPlot')
   return <>

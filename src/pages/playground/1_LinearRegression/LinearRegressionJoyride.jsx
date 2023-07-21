@@ -7,9 +7,9 @@ import { VERBOSE } from '@/CONSTANTS'
 export default function LinearRegressionJoyride ({ refJoyrideButton }) {
 
   const { t } = useTranslation()
-  const { i_model } = useContext(LinearRegressionContext)
+  const { iModel } = useContext(LinearRegressionContext)
 
-  const [joyride, setJoyride] = useState(i_model.JOYRIDE())
+  const [joyride, setJoyride] = useState(iModel.JOYRIDE())
   const joyrideRef = useRef()
 
   const joyride_locale = {
@@ -46,14 +46,14 @@ export default function LinearRegressionJoyride ({ refJoyrideButton }) {
   }, [updateScreenJoyride])
 
   useEffect(() => {
-    setJoyride(i_model.JOYRIDE())
+    setJoyride(iModel.JOYRIDE())
 
-    if (localStorage.getItem('linear-regression.joyride-' + i_model._KEY) !== null) {
-      localStorage.setItem('linear-regression.joyride-' + i_model._KEY, JSON.stringify({ run: true }))
+    if (localStorage.getItem('linear-regression.joyride-' + iModel._KEY) !== null) {
+      localStorage.setItem('linear-regression.joyride-' + iModel._KEY, JSON.stringify({ run: true }))
     } else {
-      console.debug('else linear-regression.joyride-' + i_model._KEY)
+      console.debug('else linear-regression.joyride-' + iModel._KEY)
     }
-  }, [i_model])
+  }, [iModel])
 
   useImperativeHandle(refJoyrideButton, () => ({
     handleClick_StartJoyride

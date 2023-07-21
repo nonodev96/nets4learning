@@ -1,9 +1,8 @@
 import { createContext, useState } from 'react'
-import * as tfjs from '@tensorflow/tfjs'
+import { Sequential } from '@tensorflow/tfjs'
 import { DataFrame } from 'danfojs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
-import { Sequential } from '@tensorflow/tfjs'
 
 /**
  * @typedef CustomPreprocessDataset_t
@@ -30,7 +29,7 @@ import { Sequential } from '@tensorflow/tfjs'
  */
 
 /**
- * @typedef CustomFeatureSelector_t
+ * @typedef CustomParamsFeaturesSelector_t
  * @property {Set<string>} X_features
  * @property {string} X_feature
  * @property {string} y_target
@@ -52,14 +51,22 @@ import { Sequential } from '@tensorflow/tfjs'
 
 /**
  * @typedef CustomModel_t
- * @property {Array<CustomDataset_t>} datasets
- * @property {Array<CustomParamsLayerModel_t>} list_layers
  * @property {Sequential} model
  * @property {Point_t[]} original
  * @property {Point_t[]} predicted
- * @property {Array<string>} params_visor
+ */
+
+/**
+ * @typedef CustomDataset_t
+ * @property {Array<CustomDataset_t>} datasets
+ */
+
+/**
+ * @typedef CustomParams_t
+ * @property {Array<CustomParamsLayerModel_t>} params_layers
+ * @property {CustomParamsFeaturesSelector_t} params_features
  * @property {CustomParamsTrainModel_t} params_training
- * @property {CustomFeatureSelector_t} feature_selector
+ * @property {Array<string>} params_visor
  */
 
 /**
@@ -82,10 +89,26 @@ import { Sequential } from '@tensorflow/tfjs'
  */
 
 /**
+ * @typedef {CustomModel_t & CustomParams_t & {dataframe: DataFrame}} CustomModelGenerated_t
+ */
+
+/**
  * @typedef  CustomLinearRegressionContext_t
  *
- * @property {Array<CustomModel_t>} listModels
- * @property {React.Dispatch<React.SetStateAction<Array<CustomModel_t>>>} setListModels
+ * @property {CustomDataset_t[]} datasets
+ * @property {React.Dispatch<React.SetStateAction<CustomDataset_t[]>>} setDatasets
+ *
+ * @property {CustomDatasetLocal_t} datasetLocal
+ * @property {React.Dispatch<React.SetStateAction<CustomDatasetLocal_t>>} setDatasetLocal
+ *
+ * @property {CustomParams_t} params
+ * @property {React.Dispatch<React.SetStateAction<CustomParams_t>>} setParams
+ *
+ * @property {CustomModel_t} tmpModel
+ * @property {React.Dispatch<React.SetStateAction<CustomModel_t>>} setTmpModel
+ *
+ * @property {Array<CustomModelGenerated_t>} listModels
+ * @property {React.Dispatch<React.SetStateAction<Array<CustomModelGenerated_t>>>} setListModels
  *
  * @property {boolean} isTraining
  * @property {React.Dispatch<React.SetStateAction<boolean>>} setIsTraining
@@ -93,17 +116,9 @@ import { Sequential } from '@tensorflow/tfjs'
  * @property {Array<string>} accordionActive
  * @property {React.Dispatch<React.SetStateAction<Array<string>>>} setAccordionActive
  *
- * @property {Array<string>} accordionActive
- * @property {React.Dispatch<React.SetStateAction<Array<string>>>} setAccordionActive
- *
- * @property {I_MODEL_LINEAR_REGRESSION} i_model
+ * @property {I_MODEL_LINEAR_REGRESSION} iModel
  * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModel
  *
- * @property {Object} dataPrediction
- * @property {React.Dispatch<React.SetStateAction<Object>>} setDataPrediction
- *
- * @property {CustomDatasetLocal_t} datasetLocal
- * @property {React.Dispatch<React.SetStateAction<CustomDatasetLocal_t>>} setDatasetLocal
  *
  */
 const LinearRegressionContext = createContext(
@@ -127,16 +142,65 @@ export function LinearRegressionProvider ({ children }) {
     container_info      : '',
   }
 
+  // @formatter:off
+  /** @type CustomDataset_t[] */
+  const DEFAULT_CUSTOM_DATASETS = []
+  /** @type CustomParams_t */
+  const DEFAULT_CUSTOM_PARAMS = {
+    params_training     : {
+      learning_rate  : 1,  // 1%  [0-100]
+      n_of_epochs    : 20,
+      test_size      : 10, // 10% [0-100]
+      id_optimizer   : 'train-adam',
+      id_loss        : 'losses-meanSquaredError',
+      list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
+    },
+    params_layers       : [
+      { units: 10,  activation: "relu" },
+      { units: 20, activation: "relu" },
+      { units: 20, activation: "relu" },
+      { units: 20, activation: "relu" },
+      { units: 20, activation: "sigmoid" },
+    ],
+    params_visor        : [],
+    params_features     : {
+      X_features: new Set(),
+      X_feature : '',
+      y_target  : '',
+    }
+  }
+  /** @type CustomModel_t */
+  const DEFAULT_CUSTOM_MODEL = {
+    model    : new Sequential(),
+    original : [],
+    predicted: [],
+  }
   // @formatter:on
 
-  const [accordionActive, setAccordionActive] = useState([])
-  const [i_model, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
-  const [listModels, setListModels] = useState(/** @type Array<CustomModel_t> */[])
-  const [isTraining, setIsTraining] = useState(false)
+  const [datasets, setDatasets] = useState(/** @type CustomDataset_t[] */ DEFAULT_CUSTOM_DATASETS)
   const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */ DEFAULT_DATASET_LOCAL)
+  const [params, setParams] = useState(/** @type CustomParams_t */ DEFAULT_CUSTOM_PARAMS)
+  const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */ DEFAULT_CUSTOM_MODEL)
+  const [listModels, setListModels] = useState(/** @type Array<CustomModelGenerated_t> */[])
+
+  const [isTraining, setIsTraining] = useState(false)
+  const [accordionActive, setAccordionActive] = useState([])
+  const [iModel, setIModel] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
 
   return (
     <LinearRegressionContext.Provider value={{
+      datasets,
+      setDatasets,
+
+      datasetLocal,
+      setDatasetLocal,
+
+      params,
+      setParams,
+
+      tmpModel,
+      setTmpModel,
+
       listModels,
       setListModels,
 
@@ -146,11 +210,8 @@ export function LinearRegressionProvider ({ children }) {
       accordionActive,
       setAccordionActive,
 
-      i_model,
+      iModel,
       setIModel,
-
-      datasetLocal,
-      setDatasetLocal,
     }}>
       {children}
     </LinearRegressionContext.Provider>

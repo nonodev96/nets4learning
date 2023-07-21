@@ -10,7 +10,6 @@ import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionPredictionExample () {
 
-
   const refPlotJS = useRef()
 
   const [dataPredictionExample, setDataPredictionExample] = useState({
@@ -18,7 +17,7 @@ export default function LinearRegressionPredictionExample () {
     dataOriginal_x     : [],
     dataOriginal_y     : [],
     dataPredicted_label: '',
-    dataPredicted_x    :  [],
+    dataPredicted_x    : [],
     dataPredicted_y    : []
   })
 
@@ -28,7 +27,6 @@ export default function LinearRegressionPredictionExample () {
     const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
     const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
     const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
-    console.log({ original, predicted })
 
     const original_x = original.map((v) => v.x)
     const original_y = original.map((v) => v.y)
@@ -49,7 +47,7 @@ export default function LinearRegressionPredictionExample () {
     updateDataPrediction().then(_ => undefined)
   }, [])
 
-  if(VERBOSE) console.debug('render LinearRegressionPrediction')
+  if (VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
     <Card>
       <Card.Header>

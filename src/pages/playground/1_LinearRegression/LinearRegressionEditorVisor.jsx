@@ -3,14 +3,14 @@ import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
-import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
+import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionEditorVisor () {
 
   const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
 
-  const {  setTmpModel } = useContext(LinearRegressionDataContext)
+  const { params, setParams } = useContext(LinearRegressionContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)
@@ -22,11 +22,11 @@ export default function LinearRegressionEditorVisor () {
     if (visorOptions.mae) params_visor.push('mae')
     if (visorOptions.val_mae) params_visor.push('val_mae')
 
-    setTmpModel((oldTmpModel) => ({
-      ...oldTmpModel,
+    setParams((prevState) => ({
+      ...prevState,
       params_visor
     }))
-  }, [visorOptions, setTmpModel])
+  }, [visorOptions, setParams])
 
   const updateVisorOptions = (key, value) => {
     setVisorOptions((prevState) => {
@@ -36,7 +36,7 @@ export default function LinearRegressionEditorVisor () {
     })
   }
 
-  if(VERBOSE) console.debug('render LinearRegressionVisor')
+  if (VERBOSE) console.debug('render LinearRegressionVisor')
   return <>
     <Card>
       <Card.Header>
@@ -47,14 +47,14 @@ export default function LinearRegressionEditorVisor () {
           <Col>
             <Form.Check type={'checkbox'}
                         label={t(prefix + 'rmse')}
-                        checked={visorOptions.rmse}
+                        checked={params.params_visor.includes('rmse')}
                         onChange={() => updateVisorOptions('rmse', !visorOptions.rmse)}
                         id={'rmse'}
             />
             <Form.Check type={'checkbox'}
 
                         label={t(prefix + 'val_rmse')}
-                        checked={visorOptions.val_rmse}
+                        checked={params.params_visor.includes('val_rmse')}
                         onChange={() => updateVisorOptions('val_rmse', !visorOptions.val_rmse)}
                         id={'val_rmse'}
             />
@@ -62,14 +62,14 @@ export default function LinearRegressionEditorVisor () {
           <Col>
             <Form.Check type={'checkbox'}
                         label={t(prefix + 'mae')}
-                        checked={visorOptions.mae}
+                        checked={params.params_visor.includes('mae')}
                         onChange={() => updateVisorOptions('mae', !visorOptions.mae)}
                         id={'mae'}
             />
 
             <Form.Check type={'checkbox'}
                         label={t(prefix + 'val_mae')}
-                        checked={visorOptions.val_mae}
+                        checked={params.params_visor.includes('val_mae')}
                         onChange={() => updateVisorOptions('val_mae', !visorOptions.val_mae)}
                         id={'val_mae'}
             />

@@ -1,5 +1,4 @@
-import styles from './LinearRegression.module.css'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useId, useRef, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
@@ -7,125 +6,83 @@ import Plot from 'react-plotly.js'
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-
-import DebugJSON from '@components/debug/DebugJSON'
+import N4LSummary from '@components/summary/N4LSummary'
+import LinearRegressionPredictionDynamicForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionDynamicForm'
+import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 
 export default function LinearRegressionPrediction () {
   const prefix = 'pages.playground.1-linear-regression.predict.'
   const { t } = useTranslation()
 
-  const { listModels, datasetLocal } = useContext(LinearRegressionContext)
+  const { listModels } = useContext(LinearRegressionContext)
 
-  const [dynamicObject, setDynamicObject] = useState({})
   const [indexModel, setIndexModel] = useState(-1)
   const [dataPrediction, setDataPrediction] = useState([])
+  const [dynamicObject, setDynamicObject] = useState({})
   const refPlotJS = useRef()
+  const idDataFrameDescribe = useId()
 
-  const handleChange_DynamicObject = (_newValue, _column_name) => {
+  const handleChange_DynamicObject = (_newValue, column_name) => {
     setDynamicObject((prevState) => {
       return {
         ...prevState,
-        [_column_name]: _newValue
+        [column_name]: _newValue
       }
     })
   }
 
-  const getColor = (column_name) => {
-    if (listModels[indexModel].feature_selector.X_feature === column_name) {
-      return styles.border_blue
-    }
-    if (listModels[indexModel].feature_selector.y_target === column_name) {
-      return styles.border_green
-    }
-    return styles.border_red
+  // TODO
+  const handleSubmit_Predict = async (e) => {
+    e.preventDefault()
+    // listModels[indexModel].model.predict()
   }
 
-  const isDisabled = (column_name) => {
-    if (listModels[indexModel].feature_selector.X_feature === column_name) {
-      return false
-    }
-    if (listModels[indexModel].feature_selector.y_target === column_name) {
-      return true
-    }
-    return true
+  const handleChange_Model = (e) => {
+    setIndexModel(e.target.value)
   }
 
-  const LinearRegressionDataFrameProcessedDynamicForm = () => {
-    const _dataframe = datasetLocal.dataframe_processed
-    return _dataframe.columns.map((column_name, index) => {
-      const column_type = _dataframe[column_name].dtype
-      switch (column_type) {
-        case 'int32': {
-          return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-            <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
-              <Form.Control type="number"
-                            size={'sm'}
-                            className={getColor(column_name)}
-                            disabled={isDisabled(column_name)}
-                            placeholder={'int32'}
-                            step={1}
-                            value={dynamicObject[column_name]}
-                            onChange={(e) => handleChange_DynamicObject(e.target.value, column_name)} />
-              <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
-            </Form.Group>
-          </Col>
-
-        }
-        case 'float32': {
-          return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-            <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
-              <Form.Control type="number"
-                            size={'sm'}
-                            className={getColor(column_name)}
-                            disabled={isDisabled(column_name)}
-                            placeholder={'float32'}
-                            value={dynamicObject[column_name]}
-                            step={0.1}
-                            onChange={(e) => handleChange_DynamicObject(e.target.value, column_name)} />
-              <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
-            </Form.Group>
-          </Col>
-        }
-        case 'string': {
-          /**
-           * TODO
-           * Se debe hacer un label encoder de los posibles strings de un modelo
-           **/
-          return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-            <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
-              <Form.Select aria-label={t(prefix + 'metric-id-info')}
-                           value={dynamicObject[column_name]}
-                           disabled={isDisabled(column_name)}
-                           onChange={(e) => handleChange_DynamicObject(e.target.value, column_name)}>
-                <option value={'TODO'}>TODO</option>
-              </Form.Select>
-              <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
-
-            </Form.Group>
-          </Col>
-        }
-        default: {
-          return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
-            Error, option not valid
-          </Col>
-        }
-      }
-    })
+  const handleChange_Entity = (e) => {
+    const index = e.target.value
+    const _dynamic_object = listModels[indexModel]
+      .dataframe
+      .columns
+      .reduce((o, column_name) => {
+        let new_value = listModels[indexModel].dataframe[column_name].values[index]
+        return Object.assign(o, { [column_name]: new_value })
+      }, {})
+    setDynamicObject(_dynamic_object)
   }
 
   useEffect(() => {
+    console.debug('useEffect [listModels.length]')
     setIndexModel(listModels.length - 1)
   }, [listModels.length])
 
   useEffect(() => {
-    console.log('useEffect [listModels, indexModel, setDataPrediction]')
-    if (listModels[indexModel]) {
-      const { original, predicted, feature_selector } = listModels[indexModel]
-      const { X_feature, y_target } = feature_selector
-      console.log({ original, predicted })
+    console.debug('useEffect [listModels, indexModel]')
+    if (listModels.length > 0 && indexModel >= 0) {
+      listModels[indexModel].dataframe
+        .describe()
+        .T
+        .plot(idDataFrameDescribe)
+        .table({ config: TABLE_PLOT_STYLE_CONFIG })
+
+      const _dynamic_object = listModels[indexModel]
+        .dataframe
+        .columns
+        .reduce((o, column_name) => {
+          let new_value = listModels[indexModel].dataframe[column_name].values[0]
+          return Object.assign(o, { [column_name]: new_value })
+        }, {})
+      setDynamicObject(_dynamic_object)
+    }
+  }, [listModels, indexModel])
+
+  useEffect(() => {
+    console.debug('useEffect [listModels, indexModel, setDataPrediction]')
+    if (listModels.length > 0 && indexModel >= 0 && listModels[indexModel]) {
+      const { original, predicted, params_features } = listModels[indexModel]
+      const { X_feature, y_target } = params_features
       const trace = {
         x      : original.map((v) => v.x),
         y      : original.map((v) => v.y),
@@ -152,96 +109,72 @@ export default function LinearRegressionPrediction () {
     }
   }, [listModels, indexModel, setDataPrediction, t])
 
-  useEffect(() => {
-    const _dynamic_object = datasetLocal
-      .dataframe_processed
-      .columns
-      .reduce((o, column_name) => {
-        let new_value = datasetLocal.dataframe_processed[column_name].values[0]
-        return Object.assign(o, { [column_name]: new_value })
-      }, {})
-    setDynamicObject(_dynamic_object)
-  }, [datasetLocal.dataframe_processed])
-
-  // TODO
-  const handleSubmit_Predict = async (e) => {
-    e.preventDefault()
-    // listModels[indexModel].model.predict()
-  }
-
-  const handleChange_Model = (e) => {
-    setIndexModel(e.target.value)
-  }
-
-  const handleChange_Entity = (e) => {
-    const index = e.target.value
-    const _dynamic_object = datasetLocal
-      .dataframe_processed
-      .columns
-      .reduce((o, column_name) => {
-        let new_value = datasetLocal.dataframe_processed[column_name].values[index]
-        return Object.assign(o, { [column_name]: new_value })
-      }, {})
-    setDynamicObject(_dynamic_object)
-  }
-
   if (VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
     <Card>
-      <Card.Header className={'d-flex align-items-center'}>
+      <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
-        <div className={'ms-3'}>
-          <Form.Group controlId={'model-selector'}>
-            <Form.Select aria-label={'model-selector'}
-                         size={'sm'}
-                         value={indexModel}
-                         onChange={(e) => handleChange_Model(e)}>
-              <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
-              <>
-                {listModels
-                  .map((_, index) => {
-                    return <option key={index} value={index}>
-                      <Trans i18nKey={prefix + 'model.__index__'}
-                             values={{ index: index + 1 }} />
-                    </option>
-                  })}
-              </>
-            </Form.Select>
-          </Form.Group>
-        </div>
-        <div className={'ms-3'}>
-          <Form.Group controlId={'dataframe-selector-value'}>
-            <Form.Select aria-label={'dataframe-selector-value'}
-                         size={'sm'}
-                         onChange={(e) => handleChange_Entity(e)}>
-              <>
-                {Array(datasetLocal.dataframe_processed.values.length)
-                  .fill(0)
-                  .map((value, index) => {
-                    return <option key={index} value={index}>
-                      <Trans i18nKey={prefix + 'entity.__index__'}
-                             values={{ index: index + 1 }} />
-                    </option>
-                  })}
-              </>
-            </Form.Select>
-          </Form.Group>
+        <div className="d-flex">
+          <div className={'ms-3'}>
+            <Form.Group controlId={'model-selector'}>
+              <Form.Select aria-label={'model-selector'}
+                           size={'sm'}
+                           value={indexModel}
+                           onChange={(e) => handleChange_Model(e)}>
+                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
+                <>
+                  {listModels
+                    .map((_, index) => {
+                      return <option key={index} value={index}>
+                        <Trans i18nKey={prefix + 'model.__index__'}
+                               values={{ index: index + 1 }} />
+                      </option>
+                    })}
+                </>
+              </Form.Select>
+            </Form.Group>
+          </div>
+          <div className={'ms-3'}>
+            <Form.Group controlId={'dataframe-selector-value'}>
+              <Form.Select aria-label={'dataframe-selector-value'}
+                           size={'sm'}
+                           onChange={(e) => handleChange_Entity(e)}>
+                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-entities'} /></option>
+                {/*{listModels.length > 0 && <>
+                  {Array(listModels[indexModel].dataframe.values.length)
+                    .fill(0)
+                    .map((value, index) => {
+                      return <option key={index} value={index}>
+                        <Trans i18nKey={prefix + 'entity.__index__'}
+                               values={{ index: index + 1 }} />
+                      </option>
+                    })}
+                </>}*/}
+              </Form.Select>
+            </Form.Group>
+          </div>
         </div>
       </Card.Header>
       <Card.Body>
         {(listModels.length > 0 && indexModel >= 0) && <>
           <Row>
-            <Col>
-              <Card.Text><strong>X</strong> {listModels[indexModel]?.feature_selector.X_feature ?? ''}</Card.Text>
-              <Card.Text><strong>Y</strong> {listModels[indexModel]?.feature_selector.y_target ?? ''}</Card.Text>
-            </Col>
+            <N4LSummary title={t('DataFrame')}>
+              <div id={idDataFrameDescribe}></div>
+            </N4LSummary>
+            <N4LSummary title={t('Features')}>
+              <Card.Text><strong>X</strong> {listModels[indexModel]?.params_features.X_feature ?? ''}</Card.Text>
+              <Card.Text><strong>Y</strong> {listModels[indexModel]?.params_features.y_target ?? ''}</Card.Text>
+            </N4LSummary>
           </Row>
 
           <hr />
 
           <Form onSubmit={handleSubmit_Predict}>
             <Row>
-              <LinearRegressionDataFrameProcessedDynamicForm />
+              <LinearRegressionPredictionDynamicForm generatedModel={listModels[indexModel]}
+                                                     dynamicObject={dynamicObject}
+                                                     handleChange_DynamicObject={handleChange_DynamicObject}
+              />
             </Row>
             <Row>
               <div className="d-grid gap-2">
@@ -266,14 +199,14 @@ export default function LinearRegressionPrediction () {
               </Col>
             </Row>
           </Form>
-        </>
-        }
+        </>}
+        {listModels.length === 0 && <>
+          <p className="placeholder-glow">
+            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-models')}</small>
+            <span className="placeholder col-12"></span>
+          </p>
+        </>}
       </Card.Body>
-
-      <Card.Footer>
-        <DebugJSON obj={dynamicObject} />
-        <DebugJSON obj={Object.entries(listModels[indexModel]?.feature_selector ?? {})} />
-      </Card.Footer>
     </Card>
   </>
 }

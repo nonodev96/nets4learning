@@ -5,17 +5,22 @@ import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
 
 import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function LinearRegressionDataset ({ dataset_id }) {
 
   const { t } = useTranslation()
-  const { i_model } = useContext(LinearRegressionContext)
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
+  const {
+    setDatasets,
+
+    datasetLocal,
+
+    iModel,
+  } = useContext(LinearRegressionContext)
 
   const handleChange_FileUpload_CSV = async (files, event) => {
     if (files.length < 1) {
@@ -27,19 +32,18 @@ export default function LinearRegressionDataset ({ dataset_id }) {
 
       dfd.readCSV(file_csv).then((_dataframe) => {
 
-        setTmpModel((prevState) => ({
-          ...prevState,
-          datasets: [{
-            is_dataset_upload     : true,
-            csv                 : files[0].name,
-            info                : '',
-            path                : '',
-            dataframe_original  : _dataframe,
-            dataframe_processed : _dataframe,
-            isDatasetProcessed  : false,
-            dataframe_transforms: []
-          }]
-        }))
+        setDatasets((prevState) => ([...prevState,
+            {
+              is_dataset_upload   : true,
+              is_dataset_processed: false,
+              csv                 : files[0].name,
+              info                : '',
+              path                : '',
+              dataframe_original  : _dataframe,
+              dataframe_processed : _dataframe,
+              dataframe_transforms: []
+            }]
+        ))
       })
       await alertHelper.alertSuccess(t('alert.file-upload-success'))
     } catch (error) {
@@ -55,6 +59,7 @@ export default function LinearRegressionDataset ({ dataset_id }) {
 
   }
 
+  if (VERBOSE) console.debug('render LinearRegressionDataset')
   return <>
     {dataset_id === UPLOAD && <>
       <DragAndDrop name={'csv'}
@@ -64,12 +69,12 @@ export default function LinearRegressionDataset ({ dataset_id }) {
                    function_DropAccepted={handleChange_FileUpload_CSV}
                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
-      {tmpModel.dataframeOriginal && <>
+      {datasetLocal.dataframe_original && <>
         <Form onSubmit={handleSubmit_ProcessDataset}>
           <LinearRegressionDatasetForm />
         </Form>
       </>}
-      {!tmpModel.dataframeOriginal && <>
+      {!datasetLocal.dataframe_original && <>
         <p className="placeholder-glow">
           <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-file')}</small>
           <span className="placeholder col-12"></span>
@@ -77,7 +82,7 @@ export default function LinearRegressionDataset ({ dataset_id }) {
       </>}
     </>}
     {dataset_id !== UPLOAD && <>
-      {i_model.DESCRIPTION()}
+      {iModel.DESCRIPTION()}
     </>}
   </>
 }

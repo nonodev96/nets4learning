@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useCallback, useContext, useEffect, useRef } from 'react'
 import styles from './LinearRegression.module.css'
+import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
+import { VERBOSE } from '@/CONSTANTS'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import DebugJSON from '@components/debug/DebugJSON'
 
@@ -14,8 +15,6 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
-import { VERBOSE } from '@/CONSTANTS'
-import LinearRegressionDataContext from '@context/LinearRegressionDataContext'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -24,9 +23,9 @@ const LinearRegressionDatasetShow = lazy(() => import( './LinearRegressionDatase
 const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatasetPlot'))
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
+const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
 const LinearRegressionEditorTrainer = lazy(() => import( './LinearRegressionEditorTrainer'))
 // const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
-const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
 // Models
 const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
 // const LinearRegressionPredictionExample = lazy(() => import( './LinearRegressionPredictionExample'))
@@ -41,6 +40,13 @@ export default function LinearRegression ({ dataset_id }) {
   const { t } = useTranslation()
 
   const {
+    setDatasets,
+
+    tmpModel,
+    setTmpModel,
+
+    params,
+
     isTraining,
     setIsTraining,
 
@@ -53,10 +59,9 @@ export default function LinearRegression ({ dataset_id }) {
     accordionActive,
     setAccordionActive,
 
-    i_model,
+    iModel,
     setIModel,
   } = useContext(LinearRegressionContext)
-  const { tmpModel, setTmpModel } = useContext(LinearRegressionDataContext)
 
   const refJoyrideButton = useRef({})
 
@@ -69,29 +74,29 @@ export default function LinearRegression ({ dataset_id }) {
     modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
-      layers: [...tmpModel.list_layers.map(value => ({ activation: value.activation, units: value.units }))],
+      layers: [...params.params_layers.map(value => ({ activation: value.activation, units: value.units }))],
       output: { units: 1 },
     })
     modelController.setCompile({
-      id_optimizer: tmpModel.params_training.id_optimizer,
-      id_loss     : tmpModel.params_training.id_loss,
-      id_metrics  : tmpModel.params_training.list_id_metrics,
+      id_optimizer: params.params_training.id_optimizer,
+      id_loss     : params.params_training.id_loss,
+      id_metrics  : params.params_training.list_id_metrics,
       params      : {
-        learningRate: tmpModel.params_training.learning_rate,
+        learningRate: params.params_training.learning_rate,
       },
     })
     modelController.setFeatures({
-      X_features : tmpModel.feature_selector.X_features,
-      X_feature  : tmpModel.feature_selector.X_feature,
-      y_target   : tmpModel.feature_selector.y_target,
+      X_features : params.params_features.X_features,
+      X_feature  : params.params_features.X_feature,
+      y_target   : params.params_features.y_target,
       categorical: new Map()
     })
     modelController.setFit({
-      testSize : tmpModel.params_training.test_size,
-      epochs   : tmpModel.params_training.n_of_epochs,
+      testSize : params.params_training.test_size,
+      epochs   : params.params_training.n_of_epochs,
       shuffle  : true,
       batchSize: 32,
-      metrics  : [...tmpModel.params_training.list_id_metrics],
+      metrics  : [...params.params_training.list_id_metrics],
     })
 
     const { model, original, predicted } = await modelController.run()
@@ -99,14 +104,19 @@ export default function LinearRegression ({ dataset_id }) {
     console.log('modelController.run()', { original })
 
     const updatedTmpModel = {
-      ...tmpModel,
       model    : model,
       original : Array.from(original),
       predicted: Array.from(predicted),
     }
 
     setTmpModel(updatedTmpModel)
-    setListModels((prevState) => [...prevState, cloneTmpModel(updatedTmpModel)])
+    setListModels((prevState) => [...prevState, {
+      ...cloneTmpModel(updatedTmpModel),
+      params_layers  : [...params.params_layers],
+      params_training: { ...params.params_training },
+      params_features: { ...params.params_features },
+      dataframe      : datasetLocal.dataframe_processed
+    }])
     setIsTraining(false)
   }
 
@@ -132,16 +142,11 @@ export default function LinearRegression ({ dataset_id }) {
         }
         const { datasets } = await info_dataset.DATASETS()
         setIModel(info_dataset)
-        setTmpModel((prevState) => {
-          return {
-            ...prevState,
-            datasets: datasets,
-          }
-        })
+        setDatasets(datasets)
       }
     }
     init().then(() => undefined)
-  }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive])
+  }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive, setDatasets])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -195,7 +200,7 @@ export default function LinearRegression ({ dataset_id }) {
 
               <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
-                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? i_model.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModel.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body id={'info_model'}>
                   <Suspense fallback={<></>}><LinearRegressionDataset dataset_id={dataset_id} /></Suspense>
@@ -234,7 +239,7 @@ export default function LinearRegression ({ dataset_id }) {
 
         <Row>
           <Col className={'joyride-step-5-layer'}>
-            <N4LLayerDesign layers={tmpModel.list_layers} />
+            <N4LLayerDesign layers={params.params_layers} />
           </Col>
         </Row>
 
