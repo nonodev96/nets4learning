@@ -1,4 +1,5 @@
 import * as dfd from 'danfojs'
+import { E_PLOTS, LIST_PLOTS } from '@components/_context/Constants'
 
 /**
  * @typedef {Object} ConfigLayoutPlots_t
@@ -39,6 +40,19 @@ export function isTimeSeriesDataFrameValidForIndex (_dataFrameLocal, _columns) {
   return columnsTimeSeriesValidForIndex(_dataFrameLocal, _columns).length > 0
 }
 
+export function listPlotsAvailable (_dataframeLocal, _columns) {
+  const list_of_available_plots = []
+  for (const plot_id of LIST_PLOTS) {
+    let available = true
+    if (E_PLOTS.TIME_SERIES_PLOTS === plot_id) {
+      available = isTimeSeriesDataFrameValidForIndex(_dataframeLocal, _columns)
+    }
+    if (available) list_of_available_plots.push(plot_id)
+  }
+  console.log('list', list_of_available_plots)
+  return list_of_available_plots
+}
+
 /**
  * @typedef {Object} DataframePlotConfig_t
  * @property {ConfigLayoutPlots_t} LAYOUT
@@ -74,7 +88,7 @@ export function pieChartsValidConfig (dataframe, dataframePlotConfig) {
 
 export function lineChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
   const config_LineCharts = {
-    columns: columnsToShow
+    columns: columnsToShow,
   }
 
   const isValidConfig_LineCharts = true

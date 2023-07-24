@@ -254,7 +254,7 @@ export default class LinearRegressionModelController_Simple {
    * @constructor
    */
   async CreateModel () {
-    const model = tfjs.sequential()
+    const model = new Sequential()
     // Add a single input layer
     model.add(tfjs.layers.dense({ units: this.config.layers.input.units, activation: this.config.layers.input.activation, inputShape: this.config.layers.input.inputShape }))
     // Add layers

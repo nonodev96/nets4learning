@@ -3,7 +3,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 
-export default function DataFramePlotDescription () {
+export default function DataFramePlotModalDescription () {
   const {
     dataframePlotConfig,
 

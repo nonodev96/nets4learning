@@ -26,6 +26,10 @@ export default function N4LNavbar () {
     history.push('/datasets/')
   }
 
+  const handleClick_GoDataFrame = () => {
+    history.push('/dataframe/')
+  }
+
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -55,6 +59,9 @@ export default function N4LNavbar () {
               </Nav.Link>
               <Nav.Link onClick={() => handleClick_GoDatasets()}>
                 {t('header.datasets')}
+              </Nav.Link>
+              <Nav.Link onClick={() => handleClick_GoDataFrame()}>
+                {t('header.dataframe')}
               </Nav.Link>
             </Nav>
             <NavDropdown title={t('header.language')} id="change-language-nav-dropdown">

@@ -4,7 +4,6 @@ import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { VERBOSE } from '@/CONSTANTS'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import DebugJSON from '@components/debug/DebugJSON'
 
@@ -49,8 +48,6 @@ export default function LinearRegression ({ dataset_id }) {
 
     isTraining,
     setIsTraining,
-
-    listModels,
 
     datasetLocal,
 
@@ -319,14 +316,11 @@ export default function LinearRegression ({ dataset_id }) {
               </Card.Header>
               <Card.Body>
                 <Row lg={3}>
-                  <Col><DebugJSON obj={tmpModel.feature_selector} /></Col>
                   <Col><DebugJSON obj={tmpModel.params_training} /></Col>
                   <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
                   <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
                   <Col><DebugJSON obj={{ accordionActive }} /></Col>
                   <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
-                  <Col><DebugJSON obj={{ 'original, predicted': { o: listModels[0]?.original } }} /></Col>
-                  <Col><DebugJSON obj={{ 'original, predicted': { p: listModels[0]?.predicted } }} /></Col>
                 </Row>
               </Card.Body>
             </Card>

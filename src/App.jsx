@@ -12,17 +12,18 @@ import TestPageAdvanced from '@pages/TestPageAdvanced'
 
 import './ConfigChartJS'
 
-const Home = lazy(() => import( './pages/_home/Home'))
-const MenuSelectModel = lazy(() => import( './pages/menu/MenuSelectModel'))
-const MenuSelectDataset = lazy(() => import( './pages/menu/MenuSelectDataset'))
-const Playground = lazy(() => import( './pages/playground/Playground'))
-const DescriptionLinearRegression = lazy(() => import( './pages/playground/1_LinearRegression/description/DescriptionLinearRegression'))
-const Manual = lazy(() => import( './pages/manual/Manual'))
-const Glossary = lazy(() => import( './pages/glossary/Glossary'))
-const Datasets = lazy(() => import( './pages/datasets/Datasets'))
-const TermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
-const NotFoundPage = lazy(() => import( './pages/notFound/NotFoundPage'))
-const Version = lazy(() => import( './pages/version/Version'))
+const PageHome = lazy(() => import( './pages/_home/Home'))
+const PageMenuSelectModel = lazy(() => import( './pages/menu/MenuSelectModel'))
+const PageMenuSelectDataset = lazy(() => import( './pages/menu/MenuSelectDataset'))
+const PagePlayground = lazy(() => import( './pages/playground/Playground'))
+const PageDescriptionLinearRegression = lazy(() => import( './pages/playground/1_LinearRegression/description/DescriptionLinearRegression'))
+const PageManual = lazy(() => import( './pages/manual/Manual'))
+const PageGlossary = lazy(() => import( './pages/glossary/Glossary'))
+const PageDatasets = lazy(() => import( './pages/datasets/Datasets'))
+const PageDataFrame = lazy(() => import( './pages/dataframe/DataFrame'))
+const PageTermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
+const PageNotFoundPage = lazy(() => import( './pages/notFound/NotFoundPage'))
+const PageVersion = lazy(() => import( './pages/version/Version'))
 // __TESTS__
 const TestPageEasy_lazy = lazy(() => import( '@pages/TestPageEasy'))
 const TestPageAdvanced_lazy = lazy(() => import( '@pages/TestPageAdvanced'))
@@ -42,23 +43,24 @@ function App () {
         </Suspense>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route exact path={'/'} component={Home}></Route>
-            <Route exact path={'/select-dataset/:id'} component={MenuSelectDataset}></Route>
-            <Route exact path={'/select-model/:id'} component={MenuSelectModel}></Route>
-            <Route exact path={'/playground/:id/:option/:example'} component={Playground}></Route>
-            <Route exact path={'/playground/description-linear-regression'} component={DescriptionLinearRegression}></Route>
-            <Route exact path={'/manual/'} component={Manual}></Route>
-            <Route exact path={'/glossary/'} component={Glossary}></Route>
-            <Route exact path={'/datasets/'} component={Datasets}></Route>
-            <Route exact path={'/terms-and-conditions/'} component={TermsAndConditions}></Route>
-            <Route exact path={'/version/'} component={Version}></Route>
+            <Route exact path={'/'} component={PageHome}></Route>
+            <Route exact path={'/select-dataset/:id'} component={PageMenuSelectDataset}></Route>
+            <Route exact path={'/select-model/:id'} component={PageMenuSelectModel}></Route>
+            <Route exact path={'/playground/:id/:option/:example'} component={PagePlayground}></Route>
+            <Route exact path={'/playground/description-linear-regression'} component={PageDescriptionLinearRegression}></Route>
+            <Route exact path={'/manual/'} component={PageManual}></Route>
+            <Route exact path={'/glossary/'} component={PageGlossary}></Route>
+            <Route exact path={'/datasets/'} component={PageDatasets}></Route>
+            <Route exact path={'/dataframe/'} component={PageDataFrame}></Route>
+            <Route exact path={'/terms-and-conditions/'} component={PageTermsAndConditions}></Route>
+            <Route exact path={'/version/'} component={PageVersion}></Route>
 
             <Route exact path={'/test-page-easy'} component={TestPageEasy}></Route>
             <Route exact path={'/test-page-advanced/:id/:option/:example'} component={TestPageAdvanced}></Route>
             <Route exact path={'/test-page-easy-lazy'} component={TestPageEasy_lazy}></Route>
             <Route exact path={'/test-page-advanced-lazy/:id/:option/:example'} component={TestPageAdvanced_lazy}></Route>
 
-            <Route path="/404" component={NotFoundPage} />
+            <Route path="/404" component={PageNotFoundPage} />
             <Redirect to="/404"></Redirect>
           </Switch>
         </Suspense>

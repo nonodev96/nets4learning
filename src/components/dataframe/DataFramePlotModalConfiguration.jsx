@@ -4,10 +4,10 @@ import React, { useContext } from 'react'
 
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/Constants'
-import { columnsTimeSeriesValidForIndex, isTimeSeriesDataFrameValidForIndex } from '@core/dataframe/DataFrameUtils'
+import { columnsTimeSeriesValidForIndex, isTimeSeriesDataFrameValidForIndex, listPlotsAvailable } from '@core/dataframe/DataFrameUtils'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function DataFramePlotConfiguration () {
+export default function DataFramePlotModalConfiguration () {
 
   const {
     dataFrameLocal,
@@ -16,7 +16,7 @@ export default function DataFramePlotConfiguration () {
     setDataframePlotConfig,
 
     showOptions,
-    setShowOptions
+    setShowOptions,
   } = useContext(DataFramePlotContext)
 
   const prefix = 'dataframe-plot.configuration.'
@@ -52,6 +52,7 @@ export default function DataFramePlotConfiguration () {
       if (isTimeSeriesDataFrameValidForIndex(dataFrameLocal, resetState.COLUMNS)) {
         resetState.TIME_SERIES_PLOTS.config.index = columnsTimeSeriesValidForIndex(dataFrameLocal, resetState.COLUMNS)[0]
       }
+      resetState.LIST_OF_AVAILABLE_PLOTS = listPlotsAvailable(dataFrameLocal, resetState.COLUMNS)
       return resetState
     })
   }
@@ -104,7 +105,7 @@ export default function DataFramePlotConfiguration () {
     return size.toString().padStart(4, '0')
   }
 
-  if(VERBOSE) console.debug('render DataFramePlotConfiguration')
+  if (VERBOSE) console.debug('render DataFramePlotConfiguration')
   return <>
     <Modal show={showOptions} onHide={() => setShowOptions(false)} size={'xl'} fullscreen={'md-down'}>
       <Modal.Header closeButton>

@@ -12,13 +12,17 @@ export function DataFramePlotProvider ({ children }) {
   const [showOptions, setShowOptions] = useState(false)
 
   return (<DataFramePlotContext.Provider value={{
-    dataFrameLocal, setDataFrameLocal,
+    dataFrameLocal,
+    setDataFrameLocal,
 
-    dataframePlotConfig, setDataframePlotConfig,
+    dataframePlotConfig,
+    setDataframePlotConfig,
 
-    showDescription, setShowDescription,
+    showDescription,
+    setShowDescription,
 
-    showOptions, setShowOptions,
+    showOptions,
+    setShowOptions,
   }}>
     {children}
   </DataFramePlotContext.Provider>)

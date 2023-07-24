@@ -76,7 +76,7 @@ export default function LinearRegressionPrediction () {
         }, {})
       setDynamicObject(_dynamic_object)
     }
-  }, [listModels, indexModel])
+  }, [listModels, indexModel, idDataFrameDescribe])
 
   useEffect(() => {
     console.debug('useEffect [listModels, indexModel, setDataPrediction]')

@@ -3,7 +3,7 @@ import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-async function alertError (text, params = { title: 'Opps...' }) {
+async function alertError (text, params = { title: 'Error' }) {
   MySwal.fire({
     didOpen: () => {
       MySwal.clickConfirm()
