@@ -243,7 +243,6 @@ export default class LinearRegressionModelController {
           yLabel: 'y',
         }
       )
-
     }
     return data
   }

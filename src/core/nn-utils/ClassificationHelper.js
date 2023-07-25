@@ -19,9 +19,6 @@ export function transform_datasetJSON_To_DataFrame (dataset_JSON) {
   })
   let df = new dfd.DataFrame(data_parsed)
 
-  console.log({ columns_number, columns_float, columns_select })
-  console.log({ data_parsed, df })
-
   for (const column of columns_number) {
     let index_column = column?.index_column.toString()
     let value_to_fill = parseInt(df[index_column].median())

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 import { ArrowRight } from 'react-bootstrap-icons'
@@ -14,11 +14,18 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [graphState, setGraphState] = useState({ nodes: [], edges: [] })
   const [options, setOptions] = useState({ height: 250, width: 300 })
+  const networkRef = useRef()
 
   const events = {
     select: () => {
 
     },
+    zoom  : (e) => {
+      // console.log(e)
+      // e.preventDefault()
+      // e.stopPropagation()
+      // e.stopImmediatePropagation()
+    }
   }
 
   const handleResize = () => {
@@ -42,11 +49,17 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
         width : Math.max(350, (elementWidth))
       }
     })
+    const dom = document.querySelectorAll('#vis-network canvas')[0]
+    console.log(dom)
+    if (dom) {
+      const listener = dom.getEventListeners('wheel')[0].listener
+      dom.removeEventListener('wheel', listener)
+    }
 
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [windowWidth, id_parent])
+  }, [windowWidth, id_parent, networkRef])
 
   const modeCompact = useCallback(() => {
     const nodes = [], edges = []
@@ -140,10 +153,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
                     // width     : options.width + "px"
                   }}
                   events={events}
-                  // zoomKey={'shiftKey'}
-                  ref={(_network) => {
-
-                  }} />
+                  ref={networkRef} />
       </Col>
       <Col xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}
            style={{

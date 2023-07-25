@@ -1,6 +1,6 @@
 import { Col, Container, Form, Modal, Row, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/Constants'
@@ -18,9 +18,15 @@ export default function DataFramePlotModalConfiguration () {
     showOptions,
     setShowOptions,
   } = useContext(DataFramePlotContext)
+  const [listColumns, setListColumns] = useState([])
 
   const prefix = 'dataframe-plot.configuration.'
   const { t } = useTranslation()
+
+  useEffect(() => {
+    console.debug('useEffect [dataFrameLocal.columns]')
+    setListColumns(dataFrameLocal.columns)
+  }, [dataFrameLocal.columns])
 
   const handleChangeCheckbox_Column = (e) => {
     const columnName = e.target.value
@@ -59,15 +65,17 @@ export default function DataFramePlotModalConfiguration () {
 
   const handleChange_PlotConfig_LAYOUT = (e, key) => {
     setDataframePlotConfig((prevState) => {
-      prevState.LAYOUT[key] = e.target.value
-      return { ...prevState }
+      const _prevState = Object.assign({}, prevState)
+      _prevState.LAYOUT[key] = e.target.value
+      return _prevState
     })
   }
 
   const handleChange_PlotConfig_PieCharts = (e, key) => {
     setDataframePlotConfig((prevState) => {
-      prevState.PIE_CHARTS.config[key] = e.target.value
-      return prevState
+      const _prevState = Object.assign({}, prevState)
+      _prevState.PIE_CHARTS.config[key] = e.target.value
+      return _prevState
     })
   }
 
@@ -81,9 +89,9 @@ export default function DataFramePlotModalConfiguration () {
       dataframePlotConfig.COLUMNS = copyColumns
     }
     setDataframePlotConfig((prevState) => {
-      // const _prevState = Object.assign({}, prevState)
-      prevState.TIME_SERIES_PLOTS.config[key] = e.target.value
-      return prevState
+      const _prevState = Object.assign({}, prevState)
+      _prevState.TIME_SERIES_PLOTS.config[key] = e.target.value
+      return _prevState
     })
   }
 
@@ -94,9 +102,17 @@ export default function DataFramePlotModalConfiguration () {
 
   const handleClick_SelectAllColumns = () => {
     setDataframePlotConfig((prevState) => {
-      // const _prevState = Object.assign({}, prevState)
-      prevState.COLUMNS = dataFrameLocal.columns
-      return prevState
+      const _prevState = Object.assign({}, prevState)
+      _prevState.COLUMNS = dataFrameLocal.columns
+      return _prevState
+    })
+  }
+
+  const handleClick_DeleteAllColumns = () => {
+    setDataframePlotConfig((prevState) => {
+      const _prevState = Object.assign({}, prevState)
+      _prevState.COLUMNS = []
+      return _prevState
     })
   }
 
@@ -113,11 +129,23 @@ export default function DataFramePlotModalConfiguration () {
           <Trans i18nKey={`dataframe-plot.${dataframePlotConfig.PLOT_ENABLE}.title`} /> | <Trans i18nKey={'dataframe-plot.configuration.title'} />
         </Modal.Title>
         <div className={'d-flex'}>
-          <Button className={'ms-3'} size={'sm'} variant={'outline-warning'} onClick={handleClick_reset}>
+          <Button className={'ms-3'}
+                  variant={'outline-warning'}
+                  size={'sm'}
+                  onClick={handleClick_reset}>
             <Trans i18nKey={'dataframe-plot.configuration.reset'} />
           </Button>
-          <Button className={'ms-3'} size={'sm'} variant={'outline-primary'} onClick={handleClick_SelectAllColumns}>
+          <Button className={'ms-3'}
+                  variant={'outline-primary'}
+                  size={'sm'}
+                  onClick={handleClick_SelectAllColumns}>
             <Trans i18nKey={'dataframe-plot.configuration.select-all-columns'} />
+          </Button>
+          <Button className={'ms-3'}
+                  variant={'outline-primary'}
+                  size={'sm'}
+                  onClick={handleClick_DeleteAllColumns}>
+            <Trans i18nKey={'dataframe-plot.configuration.delete-all-columns'} />
           </Button>
         </div>
       </Modal.Header>
@@ -165,15 +193,14 @@ export default function DataFramePlotModalConfiguration () {
                 <h4><Trans i18nKey={prefix + 'columns.title'} /></h4>
                 <div className={'overflow-y-scroll n4l-scroll-style-1'} style={{ maxHeight: '13em' }}>
                   <ol>
-                    {dataFrameLocal.columns.map((value, index) => {
+                    {listColumns.map((value, index) => {
                       return <li key={index}>
-                        <Form.Check
-                          type={'checkbox'}
-                          label={value}
-                          onChange={(e) => handleChangeCheckbox_Column(e)}
-                          checked={dataframePlotConfig.COLUMNS.includes(value)}
-                          value={value}
-                          id={`dataframe-checkbox-${index}`}
+                        <Form.Check type={'checkbox'}
+                                    label={value}
+                                    onChange={(e) => handleChangeCheckbox_Column(e)}
+                                    checked={dataframePlotConfig.COLUMNS.includes(value)}
+                                    value={value}
+                                    id={`dataframe-checkbox-${index}`}
                         />
                       </li>
                     })}

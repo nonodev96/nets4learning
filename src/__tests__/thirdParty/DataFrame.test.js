@@ -25,7 +25,6 @@ describe('DataFrame', () => {
     ]
     let columns = ['Name', 'Count', 'Date']
     let df = new dfd.DataFrame(data, { columns: columns })
-    console.log(df["Date"].values)
     expect(df['Date'].dt.hours().values).toStrictEqual([1, 0, 1, 2])
     // expect([5,5]).toStrictEqual([6,5]);
   })

@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './globals.css'
+import './polyfills'
 import { createRoot } from 'react-dom/client'
 import App from './App'
 import reportWebVitals from './reportWebVitals'

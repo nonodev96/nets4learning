@@ -71,11 +71,19 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
  */
 
 /**
+ * @typedef LRConfigVisor_t
+ * @property {boolean} scatterplot
+ * @property {boolean} linechart
+ * @property {boolean} confusion_matrix
+ */
+
+/**
  * @typedef  LRConfig_t
  * @property {LRConfigFit_t} fit
  * @property {LRConfigCompile_t} compile
  * @property {LRConfigFeatures_t} features
  * @property {LRConfigLayers_t} layers
+ * @property {LRConfigVisor_t} visor
  */
 
 /**
@@ -121,6 +129,11 @@ export default class LinearRegressionModelController_Simple {
         shuffle       : true,
         metrics       : ['loss', 'mse'],
         container_name: 'Training Performance',
+      },
+      visor   : {
+        scatterplot     : true,
+        linechart       : true,
+        confusion_matrix: false,
       },
       layers  : {
         input : { units: 1, activation: 'linear', inputShape: [1] },
@@ -215,7 +228,7 @@ export default class LinearRegressionModelController_Simple {
       this.config.features.y_target,
     ]
 
-    if(this.dataframe[this.config.features.X_feature].dtype ==="string") {
+    if (this.dataframe[this.config.features.X_feature].dtype === 'string') {
       const encode = new dfd.LabelEncoder()
       encode.fit(this.dataframe[this.config.features.X_feature])
       const new_serie = encode.transform(this.dataframe[this.config.features.X_feature].values)
@@ -225,24 +238,66 @@ export default class LinearRegressionModelController_Simple {
     const data = Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
 
     // Draw dataset
-    let values = data.map((d) => ({
-      x: d[this.config.features.X_feature],
-      y: d[this.config.features.y_target],
-    }))
-    await tfvis.render.scatterplot(
-      {
-        name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, {
-          feature : this.config.features.X_feature,
-          y_target: this.config.features.y_target
-        }),
-        tab : this.t('pages.playground.generator.visor.dataset'),
-      },
-      { values },
-      {
-        xLabel: 'x',
-        yLabel: 'y',
+    if (this.config.visor.scatterplot) {
+      let values = data.map((d) => ({
+        x: d[this.config.features.X_feature],
+        y: d[this.config.features.y_target],
+      }))
+      await tfvis.render.scatterplot(
+        {
+          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, {
+            feature: this.config.features.X_feature,
+            target : this.config.features.y_target
+          }),
+          tab : this.t('pages.playground.generator.visor.dataset'),
+        },
+        { values },
+        {
+          xLabel: 'x',
+          yLabel: 'y',
+        }
+      )
+    }
+    if (this.config.visor.linechart) {
+      const series = []
+      const series_values = []
+      for (const serie_name of [this.config.features.X_feature, this.config.features.y_target]) {
+        series.push(serie_name)
+        const serie_value = data
+          .map((d) => d[serie_name])
+          .map((y, x) => ({ x, y, }))
+        series_values.push(serie_value)
       }
-    )
+      const data_histogram = { values: series_values, series }
+      const surface = {
+        name: this.t('pages.playground.generator.visor.line-chart'),
+        tab : this.t('pages.playground.generator.visor.dataset'),
+      }
+      await tfvis.render.linechart(surface, data_histogram, { zoomToFit: false,  })
+    }
+
+    if (this.config.visor.confusion_matrix) {
+      const rows = 5
+      const cols = 5
+      const _values = []
+      for (let i = 0; i < rows; i++) {
+        const row = []
+        for (let j = 0; j < cols; j++) {
+          row.push(/**/)
+        }
+        _values.push(row)
+      }
+      await tfvis.render.confusionMatrix({
+          name: this.t('pages.playground.generator.visor.confusion-matrix.title'),
+          tab : this.t('pages.playground.generator.visor.dataset')
+        },
+        { values: _values },
+        {
+          xLabel: 'x',
+          yLabel: 'y',
+        }
+      )
+    }
 
     return data
   }
@@ -363,7 +418,6 @@ export default class LinearRegressionModelController_Simple {
 
       return [unNormXs.dataSync(), unNormPreds.dataSync()]
     })
-    console.log({ xs, preds })
     const feature = this.config.features.X_feature
     const y_target = this.config.features.y_target
 

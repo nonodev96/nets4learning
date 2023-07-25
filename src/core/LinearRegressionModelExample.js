@@ -138,7 +138,6 @@ async function testModel (model, inputData, normalizationData, columns) {
 export async function run (filename, columns) {
   tfvis.visor().open()
   const data = await getData(filename, columns)
-  console.log(data, filename, columns)
 
   let values = data.map(d => ({
     x: d[columns.x_name],
@@ -165,12 +164,10 @@ export async function run (filename, columns) {
 
   // Train the model
   await trainModel(model, normalizationTensorData)
-  console.log('Done trainModel')
 
   // Make some predictions using the model and compare them to the
   // original data
   const original_and_predicted = await testModel(model, data, normalizationTensorData, columns)
-  console.log('Done testModel', original_and_predicted)
 
   return original_and_predicted
 }

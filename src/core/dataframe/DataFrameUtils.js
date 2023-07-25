@@ -49,7 +49,6 @@ export function listPlotsAvailable (_dataframeLocal, _columns) {
     }
     if (available) list_of_available_plots.push(plot_id)
   }
-  console.log('list', list_of_available_plots)
   return list_of_available_plots
 }
 

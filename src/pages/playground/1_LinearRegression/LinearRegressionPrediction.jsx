@@ -22,11 +22,13 @@ export default function LinearRegressionPrediction () {
   const refPlotJS = useRef()
   const idDataFrameDescribe = useId()
 
-  const handleChange_DynamicObject = (_newValue, column_name) => {
+  const handleChange_DynamicObject = (e) => {
+    const _new_value = e.target.value
+    const _column_name = e.target.getAttribute("data-column_name")
     setDynamicObject((prevState) => {
       return {
         ...prevState,
-        [column_name]: _newValue
+        [_column_name]: _new_value
       }
     })
   }
@@ -41,7 +43,7 @@ export default function LinearRegressionPrediction () {
     setIndexModel(e.target.value)
   }
 
-  const handleChange_Entity = (e) => {
+  const handleChange_Instance = (e) => {
     const index = e.target.value
     const _dynamic_object = listModels[indexModel]
       .dataframe
@@ -138,18 +140,18 @@ export default function LinearRegressionPrediction () {
             <Form.Group controlId={'dataframe-selector-value'}>
               <Form.Select aria-label={'dataframe-selector-value'}
                            size={'sm'}
-                           onChange={(e) => handleChange_Entity(e)}>
-                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-entities'} /></option>
-                {/*{listModels.length > 0 && <>
+                           onChange={(e) => handleChange_Instance(e)}>
+                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-instances'} /></option>
+                {listModels.length > 0 && indexModel >= 0 && <>
                   {Array(listModels[indexModel].dataframe.values.length)
                     .fill(0)
                     .map((value, index) => {
                       return <option key={index} value={index}>
-                        <Trans i18nKey={prefix + 'entity.__index__'}
+                        <Trans i18nKey={prefix + 'instance.__index__'}
                                values={{ index: index + 1 }} />
                       </option>
                     })}
-                </>}*/}
+                </>}
               </Form.Select>
             </Form.Group>
           </div>
