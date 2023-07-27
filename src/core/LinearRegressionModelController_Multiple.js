@@ -234,7 +234,7 @@ export default class LinearRegressionModelController {
       }))
       await tfvis.render.scatterplot(
         {
-          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, y_target: this.config.features.y_target }),
+          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: this.config.features.y_target }),
           tab : this.t('pages.playground.generator.visor.dataset'),
         },
         { values },

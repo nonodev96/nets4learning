@@ -24,7 +24,7 @@ export default function LinearRegressionPrediction () {
 
   const handleChange_DynamicObject = (e) => {
     const _new_value = e.target.value
-    const _column_name = e.target.getAttribute("data-column_name")
+    const _column_name = e.target.getAttribute('data-column_name')
     setDynamicObject((prevState) => {
       return {
         ...prevState,
@@ -88,7 +88,7 @@ export default function LinearRegressionPrediction () {
       const trace = {
         x      : original.map((v) => v.x),
         y      : original.map((v) => v.y),
-        name   : t('{{X_feature}} x {{y_target}}', { X_feature, y_target }),
+        name   : t('{{X_feature}} x {{target}}', { X_feature, target: y_target }),
         mode   : 'markers',
         type   : 'scatter',
         opacity: 1,
@@ -99,7 +99,7 @@ export default function LinearRegressionPrediction () {
       const lmTrace = {
         x      : predicted.map((v) => v.x),
         y      : predicted.map((v) => v.y),
-        name   : 'Predicted',
+        name   : t('Predicted'),
         mode   : 'lines+markers',
         type   : 'scatter',
         opacity: 0.5,

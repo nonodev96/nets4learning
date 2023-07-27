@@ -11,6 +11,9 @@
   "wait-document": "Esperando documento",
   "references": "Referencias",
   "download": "Descargar",
+  "DataFrame": "DataFrame",
+  "Features": "Características",
+  "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -133,14 +136,17 @@
     "tensor-shape": "Forma del tensor incorrecta",
     "tensor-shape-description": "Forma del tensor incorrecta, se esperaba la forma [{{target_tensor_shape_0}},{{target_tensor_shape_1}}], pero se recibió un tensor con forma [{{tensor_shape_0}},{{tensor_shape_1}}], posiblemente debas modificar la última capa.",
     "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})",
-    "need-one-feature": "Necesitas al menos una característica."
+    "need-one-feature": "Necesitas al menos una característica.",
+    "new-element-need-to-be-unique": "El elemento del conjunto X debe ser único.",
+    "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de actvación"
   },
   "header": {
     "language": "Idioma",
     "manual": "Manual",
     "glossary": "Glosario",
     "home": "Inicio",
-    "datasets": "Conjuntos de datos"
+    "datasets": "Conjuntos de datos",
+    "dataframe": "DataFrame"
   },
   "footer": {
     "description-app": "Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo.",
@@ -703,6 +709,7 @@
       "title": "Configuración",
       "reset": "Reiniciar",
       "select-all-columns": "Seleccionar todos las columnas",
+      "delete-all-columns": "Descartar todos las columnas",
       "layout": {
         "plot": {
           "title": "Titulo del gráfico",
@@ -1152,8 +1159,22 @@
           "rmse": "RMSE",
           "val_rmse": "VAL RMSE",
           "mae": "MAE",
-          "val_mae": "VAL MAE"
-        }
+          "val_mae": "VAL MAE",
+          "history-train": "Historial del entrenamiento",
+          "train": "Entrenamiento",
+          "summary": "Resumen",
+          "scatterplot": {
+            "__feature____target__": "{{feature}} x {{target}}"
+          },
+          "original-vs-predictions": "Datos originales / predicción",
+          "model": "Modelo",
+          "dataset": "Conjunto de datos",
+          "predictions": "Predicción",
+          "predicted": "Predicho",
+          "confusion-matrix": "Matriz de confusión",
+          "line-chart": "Gráfico de líneas"
+        },
+        "waiting-for-models": "Esperando a la creación de un modelo"
       },
       "1-linear-regression": {
         "generator": {
@@ -1165,13 +1186,21 @@
         },
         "predict": {
           "title": "Predicción",
-          "entity": {
-            "__index__": "Entidad {{index}}"
+          "instance": {
+            "__index__": "Instancia {{index}}"
+          },
+          "model": {
+            "__index__": "Modelo {{index}}"
           },
           "button-submit": "Predecir",
-          "list-models-generated": "Lista de modelos generados"
+          "list-models-generated": "Lista de modelos generados",
+          "list-instances": "Lsta de instancias"
         }
       }
+    },
+    "dataframe": {
+      "title": "Analizar conjunto de datos",
+      "upload-csv": "Subir conjunto de datos"
     },
     "manual": {
       "app": {
@@ -1440,7 +1469,7 @@
       "id-metrics": "Métrica",
       "layers": "Capas",
       "download": "Descargar",
-      "features": "Característica",
+      "features": "Características",
       "open-visor": "Abrir visor",
       "close-visor": "Cerrar visor"
     }

@@ -279,7 +279,7 @@ export default function ImageClassification (props) {
         kernelInitializer: 'varianceScaling',
       }, ...oldLayers])
     } else {
-      await alertHelper.alertWarning('No se pueden añadir más capas')
+      await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
   }
   const handleClick_AddLayer_End = async () => {
@@ -293,7 +293,7 @@ export default function ImageClassification (props) {
         kernelInitializer: 'varianceScaling',
       }])
     } else {
-      await alertHelper.alertWarning('No se pueden añadir más capas')
+      await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
   }
 
@@ -301,7 +301,7 @@ export default function ImageClassification (props) {
     let array = Layers
     let array2 = []
     if (array.length === 1) {
-      await alertHelper.alertWarning('No puedes eliminar la última capa')
+      await alertHelper.alertWarning(t('warning.error-layers'))
     } else {
       for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])

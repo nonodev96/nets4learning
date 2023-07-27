@@ -11,7 +11,7 @@ i18n
     preload    : ['en'],
     load       : 'languageOnly',
     fallbackLng: 'en',
-    debug        : process.env.REACT_APP_ENVIRONMENT !== "development",
+    debug        : process.env.REACT_APP_ENVIRONMENT === "development",
     backend      : {
       loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json'
     },

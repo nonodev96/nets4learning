@@ -14,6 +14,7 @@ import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
 import DataFramePlotModalConfiguration from './DataFramePlotModalConfiguration'
 import DataFramePlotModalDescription from './DataFramePlotModalDescription'
 import { VERBOSE } from '@/CONSTANTS'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function DataFramePlot ({ dataframe }) {
 
@@ -101,7 +102,7 @@ export default function DataFramePlot ({ dataframe }) {
         yaxis: { title: dataframePlotConfig.LAYOUT.y_axis },
       }
       const list_warnings = []
-      if (dataframePlotConfig.COLUMNS !== []) {
+      if (dataframePlotConfig.COLUMNS !== [] && dataFrameLocal.columns.length > 0) {
         const columnsToShow = dataframePlotConfig.COLUMNS.filter(value => dataFrameLocal.columns.includes(value))
         const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
         switch (dataframePlotConfig.PLOT_ENABLE) {
@@ -164,21 +165,24 @@ export default function DataFramePlot ({ dataframe }) {
     dataframePlotConfig.COLUMNS,
     dataframePlotConfig.TIME_SERIES_PLOTS.config.index,
     dataframePlotConfig.PIE_CHARTS.config.labels,
-    dataframe_plot_id, dataFrameLocal,
+    dataFrameLocal,
+    dataframe_plot_id,
   ])
 
   useEffect(() => {
-    console.debug('useEffect[ dataframe, setDataFrameLocal ]')
-    setDataFrameLocal(dataframe)
+    console.debug('useEffect [ dataframe, setDataFrameLocal ]')
+    if (dataframe.columns.length > 0) {
+      setDataFrameLocal(dataframe)
+    }
   }, [dataframe, setDataFrameLocal])
 
   useEffect(() => {
-    console.debug('useEffect[ init() ]')
+    console.debug('useEffect [ init() ]')
     init()
   }, [init])
 
   useEffect(() => {
-    console.debug('useEffect[ updateUI() ]')
+    console.debug('useEffect [ updateUI() ]')
     updateUI()
   }, [updateUI])
 
@@ -229,19 +233,23 @@ export default function DataFramePlot ({ dataframe }) {
         </div>
       </Card.Header>
       <Card.Body>
-        <Container>
-          <Row>
-            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+        <Row>
+          <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            {dataFrameLocal.columns.length === 0 &&
+              <WaitingPlaceholder title={t('Waiting')} />
+            }
+            {dataFrameLocal.columns.length > 0 &&
               <div id={dataframe_plot_id}></div>
-            </Col>
-          </Row>
-        </Container>
+            }
+          </Col>
+        </Row>
       </Card.Body>
 
-      <Card.Footer>
-        <p className={'mb-2'}><Trans i18nKey={'dataframe-plot.info'} /></p>
-        <DFPListWarnings />
-      </Card.Footer>
+      {listWarning.length !== 0 &&
+        <Card.Footer>
+          {/*<p className={'mb-2'}><Trans i18nKey={'dataframe-plot.info'} /></p>*/}
+          <DFPListWarnings />
+        </Card.Footer>}
     </Card>
 
 

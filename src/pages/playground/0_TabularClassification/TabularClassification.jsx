@@ -269,14 +269,14 @@ export default function TabularClassification (props) {
         setDataframeOriginal(_dataframe)
         setObjectToPredict({})
       })
-      await alertHelper.alertSuccess(t('alert.file-upload-success'))
+      await alertHelper.alertSuccess(t('success.file-upload'))
     } catch (error) {
       console.error(error)
     }
   }
 
   const handleChange_FileUpload_CSV_reject = async (_files, _event) => {
-    await alertHelper.alertError(t('alert.file-upload-error-incorrect-format'))
+    await alertHelper.alertError(t('error.file-not-valid'))
   }
   // endregion
 
@@ -288,7 +288,7 @@ export default function TabularClassification (props) {
         activation: 'sigmoid',
       }, ...oldLayers])
     } else {
-      await alertHelper.alertWarning(t('alert.0-tabular-classification.not-more-layers'))
+      await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
   }
 
@@ -301,11 +301,15 @@ export default function TabularClassification (props) {
         activation: 'softmax',
       }])
     } else {
-      await alertHelper.alertWarning('No se pueden añadir más capas')
+      await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
   }
 
   const handlerClick_RemoveLayer = async (_idLayer) => {
+    if (layers.length === 1) {
+      await alertHelper.alertWarning(t('warning.error-layers'))
+      return
+    }
     const newArray = layers.filter((item, index) => (index !== _idLayer))
     setLayers(newArray)
   }
@@ -625,7 +629,7 @@ export default function TabularClassification (props) {
       }
 
       if (input[0].some((tag) => tag === undefined)) {
-        await alertHelper.alertInfo('Valor indefinido', 'Error, input no válido')
+        await alertHelper.alertInfo('Valor indefinido', { text: 'Error, input no válido' })
         return
       }
 
@@ -675,7 +679,7 @@ export default function TabularClassification (props) {
     }
   }
 
-  if(VERBOSE) console.debug('render TabularClassificationCustomDataset')
+  if (VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
       <Container className={'mb-3'}>

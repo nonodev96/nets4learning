@@ -5,6 +5,8 @@ import Plot from 'react-plotly.js'
 
 import TestComponentEasy from '@components/TestComponentEasy'
 import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
+import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
+import AlertHelper from '@utils/alertHelper'
 
 export default function TestPageEasy () {
 
@@ -61,6 +63,21 @@ export default function TestPageEasy () {
     <Container className={'mt-3'}>
       <Row>
         <Col>
+          <Card>
+            <Card.Header>
+              <h3>Alerts</h3>
+            </Card.Header>
+            <Card.Body>
+              <Button onClick={async () => await AlertHelper.alertError('Error')}>Error</Button>
+              <Button onClick={async () => await AlertHelper.alertWarning('Waring')}>Waring</Button>
+              <Button onClick={async () => await AlertHelper.alertInfo('Info')}>Info</Button>
+              <Button onClick={async () => await AlertHelper.alertSuccess('Success')}>Success</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
 
           <Card>
             <Card.Header><h3>TestPage-Easy</h3></Card.Header>
@@ -79,7 +96,7 @@ export default function TestPageEasy () {
                     <Plot ref={refPlotly}
                           data={dataPredictionList}
                           useResizeHandler={true}
-                          style={{ width: '100%', height: '100' }}
+                          style={PLOTLY_CONFIG_DEFAULT.STYLES}
                           layout={{ title: 'A Fancy Plot', autoSize: true, height: undefined, width: undefined }}
                     />
                   </Col>

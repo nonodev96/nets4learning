@@ -239,7 +239,7 @@ export default class LinearRegressionModelController_Simple {
 
     // Draw dataset
     if (this.config.visor.scatterplot) {
-      let values = data.map((d) => ({
+      let series_values = data.map((d) => ({
         x: d[this.config.features.X_feature],
         y: d[this.config.features.y_target],
       }))
@@ -251,10 +251,12 @@ export default class LinearRegressionModelController_Simple {
           }),
           tab : this.t('pages.playground.generator.visor.dataset'),
         },
-        { values },
         {
-          xLabel: 'x',
-          yLabel: 'y',
+          values: series_values
+        },
+        {
+          xLabel: this.config.features.X_feature,
+          yLabel: this.config.features.y_target,
         }
       )
     }
@@ -268,12 +270,19 @@ export default class LinearRegressionModelController_Simple {
           .map((y, x) => ({ x, y, }))
         series_values.push(serie_value)
       }
-      const data_histogram = { values: series_values, series }
-      const surface = {
-        name: this.t('pages.playground.generator.visor.line-chart'),
-        tab : this.t('pages.playground.generator.visor.dataset'),
-      }
-      await tfvis.render.linechart(surface, data_histogram, { zoomToFit: false,  })
+      await tfvis.render.linechart({
+          name: this.t('pages.playground.generator.visor.line-chart'),
+          tab : this.t('pages.playground.generator.visor.dataset'),
+        },
+        {
+          values: series_values,
+          series: series
+        },
+        {
+          zoomToFit: false,
+
+        }
+      )
     }
 
     if (this.config.visor.confusion_matrix) {
@@ -288,13 +297,13 @@ export default class LinearRegressionModelController_Simple {
         _values.push(row)
       }
       await tfvis.render.confusionMatrix({
-          name: this.t('pages.playground.generator.visor.confusion-matrix.title'),
+          name: this.t('pages.playground.generator.visor.confusion-matrix'),
           tab : this.t('pages.playground.generator.visor.dataset')
         },
         { values: _values },
         {
-          xLabel: 'x',
-          yLabel: 'y',
+          xLabel: this.config.features.X_feature,
+          yLabel: this.config.features.y_target,
         }
       )
     }
@@ -441,14 +450,13 @@ export default class LinearRegressionModelController_Simple {
       {
         values: [originalPoints, predictedPoints],
         series: [
-          this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, y_target }),
+          this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: y_target }),
           this.t(`pages.playground.generator.visor.predicted`),
         ]
       },
       {
         xLabel: this.config.features.X_feature,
         yLabel: this.config.features.y_target,
-        height: 200
       }
     )
 
