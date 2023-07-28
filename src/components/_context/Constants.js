@@ -11,6 +11,28 @@ export const E_PLOTS = {
 }
 
 export const LIST_PLOTS = Object.entries(E_PLOTS).map(([_key, value]) => value)
+/**
+ *
+ * @typedef DataframePlotConfig_t
+ * @property {string} PLOT_ENABLE
+ * @property {string[]} LIST_OF_AVAILABLE_PLOTS
+ * @property {{y_axis: string, x_axis: string, title: string}} LAYOUT,
+ * @property {string[]} COLUMNS
+ *
+ * @property {any} BAR_CHARTS
+ * @property {any} BOX_PLOTS
+ * @property {any} HISTOGRAMS
+ * @property {any} LINE_CHARTS
+ * @property {{config: {labels: string}}} PIE_CHARTS
+ * @property {any} SCATTER_PLOTS
+ * @property {{config: {index: string}}} TIME_SERIES_PLOTS
+ * @property {any} VIOLIN_PLOTS
+ * @property {{config: {x: string, y: string}}} _DEFAULT_
+ */
+/**
+ *
+ * @type {DataframePlotConfig_t}
+ */
 export const DEFAULT_DATAFRAME_PLOT_CONFIG = {
   PLOT_ENABLE            : E_PLOTS.BOX_PLOTS,
   LIST_OF_AVAILABLE_PLOTS: [],

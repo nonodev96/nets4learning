@@ -42,6 +42,8 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
         const column_name_y = columns_Y[j]
         _matrix[i][j] = pearsonCorrelation(dataframe, column_name_x, column_name_y)
 
+        let currentValue = _matrix[i][j]
+        const textColor = (currentValue <= 0.0) ? 'white' : 'black'
         let result = {
           xref     : 'x1',
           yref     : 'y1',
@@ -51,7 +53,7 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
           font     : {
             family: 'Arial',
             size  : 12,
-            color : 'rgb(85,255,0)'
+            color : textColor
           },
           showarrow: false,
         }

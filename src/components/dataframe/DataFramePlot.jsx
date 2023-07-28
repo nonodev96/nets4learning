@@ -1,20 +1,20 @@
 import '@styles/ScrollBar.css'
 import React, { useCallback, useContext, useEffect, useId, useState } from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
 import {
   lineChartsValidConfig,
   pieChartsValidConfig,
-  timeSeriesPlotsValidConfig,
+  timeSeriesPlotsValidConfig, violinPlotsValidConfig,
 } from '@core/dataframe/DataFrameUtils'
 
+import { VERBOSE } from '@/CONSTANTS'
 import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import DataFramePlotModalConfiguration from './DataFramePlotModalConfiguration'
 import DataFramePlotModalDescription from './DataFramePlotModalDescription'
-import { VERBOSE } from '@/CONSTANTS'
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function DataFramePlot ({ dataframe }) {
 
@@ -35,7 +35,6 @@ export default function DataFramePlot ({ dataframe }) {
   const dataframe_plot_id = useId()
 
   const init = useCallback(() => {
-
     // Funciones para inicializar TIME_SERIES_PLOTS
     const _columnsValidFor_TimeSeriesPlots_Index = (_dataframe) => {
       return _dataframe.columns.filter((column) => {
@@ -104,7 +103,7 @@ export default function DataFramePlot ({ dataframe }) {
       const list_warnings = []
       if (dataframePlotConfig.COLUMNS !== [] && dataFrameLocal.columns.length > 0) {
         const columnsToShow = dataframePlotConfig.COLUMNS.filter(value => dataFrameLocal.columns.includes(value))
-        const sub_df = dataFrameLocal.loc({ columns: columnsToShow })
+        let sub_df = dataFrameLocal.loc({ columns: columnsToShow })
         switch (dataframePlotConfig.PLOT_ENABLE) {
           case E_PLOTS.BAR_CHARTS:
             // TODO
@@ -147,7 +146,14 @@ export default function DataFramePlot ({ dataframe }) {
             }
             break
           case E_PLOTS.VIOLIN_PLOTS:
-            sub_df.plot(dataframe_plot_id).violin({ layout })
+            const { isValidConfig_ViolinPlots, config_ViolinPlots } = violinPlotsValidConfig(dataFrameLocal, dataframePlotConfig)
+            if (isValidConfig_ViolinPlots) {
+              sub_df = dataFrameLocal.loc({ columns: config_ViolinPlots.columns })
+              sub_df.plot(dataframe_plot_id).violin({ layout })
+            } else {
+              list_warnings.push('dataframe-plot.violin-plots.warning.index')
+              console.log('Error, option not valid E_PLOTS.VIOLIN_PLOTS', { isValidConfig_ViolinPlots, config_ViolinPlots })
+            }
             break
           default: {
             console.error('Error, option not valid')

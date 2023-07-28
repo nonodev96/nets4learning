@@ -79,6 +79,21 @@ export function timeSeriesPlotsValidConfig (dataframe, dataframePlotConfig) {
   return { isValidConfig_TimeSeries, config_TimeSeries, index }
 }
 
+/**
+ *
+ * @param dataframe
+ * @param dataframePlotConfig
+ * @return {{config_ViolinPlots: {columns: string[]}, isValidConfig_ViolinPlots: boolean}}
+ */
+export function violinPlotsValidConfig (dataframe, dataframePlotConfig) {
+  /** @type {string[]} */
+  const valid_columns_to_display = (dataframePlotConfig.COLUMNS).filter((column) => (dataframe[column].dtype !== 'string'))
+  const config_ViolinPlots = { columns: valid_columns_to_display }
+  const isValidConfig_ViolinPlots = true
+
+  return { isValidConfig_ViolinPlots, config_ViolinPlots }
+}
+
 export function pieChartsValidConfig (dataframe, dataframePlotConfig) {
   const isValidConfig_PieCharts = true
   const config_PieCharts = { labels: dataframePlotConfig.PIE_CHARTS.config.labels }

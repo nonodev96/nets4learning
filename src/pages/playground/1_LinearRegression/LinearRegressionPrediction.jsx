@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useId, useRef, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
+import * as tfjs from '@tensorflow/tfjs'
 
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
@@ -36,7 +37,9 @@ export default function LinearRegressionPrediction () {
   // TODO
   const handleSubmit_Predict = async (e) => {
     e.preventDefault()
-    // listModels[indexModel].model.predict()
+    // const tensor = tfjs.tensor1d([165]).reshape([100, 1])
+    // console.log(listModels[indexModel].model.predict(tensor).dataSync())
+    console.log(listModels[indexModel].p)
   }
 
   const handleChange_Model = (e) => {

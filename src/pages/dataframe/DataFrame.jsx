@@ -3,15 +3,18 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
+import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
+import AlertHelper from '@utils/alertHelper'
+
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
+import WaitingCircle from '@components/loading/WaitingCircle'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
+
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
 import DataFramePlot from '@components/dataframe/DataFramePlot'
 import DataFrameCorrelationMatrix from '@components/dataframe/DataFrameCorrelationMatrix'
+import DataFrameQuery from '@components/dataframe/DataFrameQuery'
 
-import AlertHelper from '@utils/alertHelper'
-import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
-import WaitingCircle from '@components/loading/WaitingCircle'
 
 export default function DataFrame () {
   const prefix = 'pages.dataframe.'
@@ -55,7 +58,7 @@ export default function DataFrame () {
 
   useEffect(() => {
     if (dataframe.columns.length > 0) {
-      dataframe.describe().T.plot(dataframeID).table({ config: TABLE_PLOT_STYLE_CONFIG })
+      dataframe.describe().T.plot(dataframeID).table({ config: TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 })
     }
   }, [dataframe, dataframeID])
 
@@ -94,12 +97,12 @@ export default function DataFrame () {
         <Col>
           <Card>
             <Card.Header className={'d-flex align-items-center justify-content-between'}>
-              <h3><Trans i18nKey={'DataFrame Describe'} /></h3>
+              <h3><Trans i18nKey={'dataframe-describe.title'} /></h3>
               <div className="d-flex">
                 <Button onClick={handleClick_OpenModal_Describe}
                         size={'sm'}
                         variant={'outline-primary'}>
-                  Descripción {/*<Trans i18nKey={''} />*/}
+                   <Trans i18nKey={'Description'} />
                 </Button>
               </div>
             </Card.Header>
@@ -123,9 +126,13 @@ export default function DataFrame () {
 
       <Row className={'mt-3'}>
         <Col>
-
           <DataFrameCorrelationMatrix dataframe={dataframe} />
+        </Col>
+      </Row>
 
+      <Row className={'mt-3'}>
+        <Col>
+          <DataFrameQuery dataframe={dataframe} />
         </Col>
       </Row>
     </Container>

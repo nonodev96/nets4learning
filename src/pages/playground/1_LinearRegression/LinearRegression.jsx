@@ -96,7 +96,7 @@ export default function LinearRegression ({ dataset_id }) {
       metrics  : [...params.params_training.list_id_metrics],
     })
 
-    const { model, original, predicted } = await modelController.run()
+    const { model, original, predicted, p } = await modelController.run()
 
     console.log('modelController.run()', { original })
 
@@ -109,6 +109,7 @@ export default function LinearRegression ({ dataset_id }) {
     setTmpModel(updatedTmpModel)
     setListModels((prevState) => [...prevState, {
       ...cloneTmpModel(updatedTmpModel),
+      p,
       params_layers  : [...params.params_layers],
       params_training: { ...params.params_training },
       params_features: { ...params.params_features },

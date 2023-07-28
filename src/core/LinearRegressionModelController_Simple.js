@@ -463,6 +463,21 @@ export default class LinearRegressionModelController_Simple {
     return { original: originalPoints, predicted: predictedPoints }
   }
 
+  async predictSingleValue (model, normalizationData, inputValue) {
+    const { inputMax, inputMin, labelMin, labelMax } = normalizationData
+
+    // Normalización del valor de entrada
+    const normalizedInput = (inputValue - inputMin) / (inputMax - inputMin)
+    console.log(normalizedInput)
+    // Desnormalización del resultado de la predicción
+    return tfjs.tidy(() => {
+      const xs = tfjs.tensor1d([normalizedInput])
+      const preds = model.predict(xs)
+      const unNormPred = preds.mul(labelMax.sub(labelMin)).add(labelMin)
+      return unNormPred.dataSync()[0]
+    })
+  }
+
   /**
    *
    * @return {Promise<{original: Point_t[], model: Sequential, predicted: Point_t[]}>}
@@ -473,7 +488,7 @@ export default class LinearRegressionModelController_Simple {
     const normalizationTensorData = this.ConvertToTensor(data)
     await this.TrainModel(model, normalizationTensorData)
     const { original, predicted } = await this.TestModel(model, data, normalizationTensorData)
-
-    return { model, original, predicted }
+    const p = await this.predictSingleValue(model, normalizationTensorData, 130)
+    return { model, original, predicted, p }
   }
 }
