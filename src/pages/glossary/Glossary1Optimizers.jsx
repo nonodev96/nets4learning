@@ -66,7 +66,6 @@ export default function Glossary1Optimizers () {
         </Accordion.Body>
       </Accordion.Item>
 
-      {process.env.REACT_APP_ENVIRONMENT === 'development' && <>
         <Accordion.Item eventKey={'equations-optimization'}>
           <Accordion.Header>
             <h3><Trans i18nKey={'equations.title-optimization'} /></h3>
@@ -96,7 +95,6 @@ export default function Glossary1Optimizers () {
             </Row>
           </Accordion.Body>
         </Accordion.Item>
-      </>}
 
     </Accordion>
   </>

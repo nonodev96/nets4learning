@@ -163,33 +163,31 @@ export default function Datasets () {
                     </tbody>
                   </Table>
                 </Tab>
-                {process.env.REACT_APP_ENVIRONMENT === 'development' &&
-                  <Tab eventKey="linear-regression" title={t('pages.index.linear-regression.1-title')}>
-                    <Table className={'mt-3'} responsive={true}>
-                      <thead>
-                      <tr>
-                        <th>{t('datasets.dataset-name')}</th>
-                        <th>{t('datasets.dataset-size')}</th>
-                        <th>{t('datasets.dataset-web')}</th>
-                        <th>{t('download')}</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      {linear_regression_datasets_list.map(({ title, url_download, url_original, size, i18n }, index) => <tr key={index}>
-                        <td>{t(i18n)}</td>
-                        <td>{size}</td>
-                        <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
-                        <td>
-                          <a download href={process.env.REACT_APP_PATH + '/datasets/linear-regression/' + url_download}
-                             className={'btn btn-outline-primary btn-sm mt-2'}>
-                            {t('download')}
-                          </a>
-                        </td>
-                      </tr>)}
-                      </tbody>
-                    </Table>
-                  </Tab>
-                }
+                <Tab eventKey="linear-regression" title={t('pages.index.linear-regression.1-title')}>
+                  <Table className={'mt-3'} responsive={true}>
+                    <thead>
+                    <tr>
+                      <th>{t('datasets.dataset-name')}</th>
+                      <th>{t('datasets.dataset-size')}</th>
+                      <th>{t('datasets.dataset-web')}</th>
+                      <th>{t('download')}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {linear_regression_datasets_list.map(({ title, url_download, url_original, size, i18n }, index) => <tr key={index}>
+                      <td>{t(i18n)}</td>
+                      <td>{size}</td>
+                      <td><a className="link-secondary" href={url_original} rel="noreferrer" target="_blank">web</a></td>
+                      <td>
+                        <a download href={process.env.REACT_APP_PATH + '/datasets/linear-regression/' + url_download}
+                           className={'btn btn-outline-primary btn-sm mt-2'}>
+                          {t('download')}
+                        </a>
+                      </td>
+                    </tr>)}
+                    </tbody>
+                  </Table>
+                </Tab>
                 {/*<Tab eventKey="object-detection" title={t("pages.index.object-detection.1-title")}>*/}
                 {/*</Tab>*/}
                 {/*<Tab eventKey="object-detection" title={t("pages.index.image-classification.1-title")}>*/}

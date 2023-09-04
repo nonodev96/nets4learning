@@ -10,6 +10,63 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   i18n_TITLE = 'datasets-models.1-linear-regression.auto-mpg.title'
   _KEY = 'AUTO_MPG'
 
+  DESCRIPTION () {
+    const prefix = 'datasets-models.1-linear-regression.auto-mpg.description.'
+    return <>
+      <p><Trans i18nKey={prefix + 'text-0'} /></p>
+      <p><Trans i18nKey={prefix + 'text-1'} /></p>
+      <p>
+        <Trans i18nKey={prefix + 'text-link'}
+               components={{
+                 link1: <a href={'https://archive.ics.uci.edu/ml/datasets/auto+mpg'} target={'_blank'} rel="noreferrer">link</a>,
+               }} />
+      </p>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-0.title'} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + 'details-0.list.0'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.2'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.3'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.4'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.5'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.6'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.7'} /></li>
+          <li><Trans i18nKey={prefix + 'details-0.list.8'} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-1.title'} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + 'details-1.list.0'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.2'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.3'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.4'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.5'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.6'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.7'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1.list.8'} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-2.title'} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + 'details-2.list.0'} /></li>
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-3.title'} /></summary>
+        <ol>
+          <li><Trans i18nKey={prefix + 'details-3.list.0'}
+                     components={{
+                       link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                     }} /></li>
+        </ol>
+      </details>
+    </>
+  }
+
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
@@ -40,54 +97,6 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
       metrics  : ['mean_squared_error', 'mean_absolute_error']
     })
     return model
-  }
-
-  DESCRIPTION () {
-    const prefix = 'datasets-models.1-linear-regression.auto-mpg.description.'
-    return <>
-      <p><Trans i18nKey={prefix + 'text-1'} /></p>
-      <p><Trans i18nKey={prefix + 'text-2'} /></p>
-      <p>
-        <Trans i18nKey={prefix + 'text-link'}
-               components={{
-                 link1: <a href={'https://archive.ics.uci.edu/ml/datasets/auto+mpg'} target={'_blank'} rel="noreferrer">link</a>,
-               }} />
-      </p>
-      <details>
-        <summary><Trans i18nKey={prefix + 'details-1.title'} /></summary>
-        <ol>
-          <li><Trans i18nKey={prefix + 'details-1.list.1'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.2'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.3'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.4'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.5'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.6'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.7'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.8'} /></li>
-          <li><Trans i18nKey={prefix + 'details-1.list.9'} /></li>
-        </ol>
-      </details>
-      <details>
-        <summary><Trans i18nKey={prefix + 'details-2.title'} /></summary>
-        <ol>
-          <li><Trans i18nKey={prefix + 'details-2.list.1'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.2'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.3'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.4'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.5'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.6'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.7'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.8'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2.list.9'} /></li>
-        </ol>
-      </details>
-      <details>
-        <summary><Trans i18nKey={prefix + 'details-3.title'} /></summary>
-        <ol>
-          <li><Trans i18nKey={prefix + 'details-3.list.1'} /></li>
-        </ol>
-      </details>
-    </>
   }
 
   ATTRIBUTE_INFORMATION () {

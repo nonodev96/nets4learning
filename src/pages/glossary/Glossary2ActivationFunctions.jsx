@@ -22,14 +22,14 @@ export default function Glossary2ActivationFunctions () {
   const activationsFunctions = [
     // Linear Layers
     {
-      i18n_title_section: 'Linear Layers',
+      i18n_title_section: 'pages.glossary.activation-functions.sub-title-1',
       layers            : [
         { i18n_title: 'Linear', img: IMGLinear, latex: '$$ \\begin{split} R(z,m) = \\begin{Bmatrix} z*m \\end{Bmatrix} \\end{split} $$' },
       ]
     },
-    // Non-linear Activations (weighted sum, nonlinearity)
+    // Non-linear Activations (weighted sum, non linearity)
     {
-      i18n_title_section: 'Non-linear Activations (weighted sum, nonlinearity)',
+      i18n_title_section: 'pages.glossary.activation-functions.sub-title-2',
       layers            : [
         {
           i18n_title: 'ELU',
@@ -95,7 +95,7 @@ export default function Glossary2ActivationFunctions () {
     },
     // Non-linear Activations
     {
-      i18n_title_section: 'Non-linear Activations (other)',
+      i18n_title_section: 'pages.glossary.activation-functions.sub-title-3',
       layers            : [
         {
           i18n_title: 'Softmax',
@@ -164,52 +164,51 @@ export default function Glossary2ActivationFunctions () {
 
         </Accordion.Body>
       </Accordion.Item>
-      {process.env.REACT_APP_ENVIRONMENT === 'development' && <>
-        <Accordion.Item eventKey={'equations-activation'}>
-          <Accordion.Header><h3>{t('equations.title-activation')}</h3></Accordion.Header>
-          <Accordion.Body>
-            <>
-              {activationsFunctions.map((section, index) => {
-                return <div key={index}>
-                  <h4 className={'text-center text-muted'}>{section.i18n_title_section}</h4>
-                  <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3} className={'mb-3'}>
-                    <>
-                      {section.layers.map((value, index) => {
-                        return <Col key={index}>
-                          <Row>
-                            <Col>
-                              <h4 className={'text-lg-center'}>{value.i18n_title}</h4>
-                              {value.img &&
-                                <div>
-                                  {value.ref ?
-                                    <a href={value.ref} target="_blank" rel="noreferrer" className="link-secondary">
-                                      <img src={value.img} alt="linear-activation-function" className={'img-n4l-glossary img-thumbnail d-block mx-auto'} />
-                                    </a>
-                                    :
+      <Accordion.Item eventKey={'equations-activation'}>
+        <Accordion.Header><h3>{t('equations.title-activation')}</h3></Accordion.Header>
+        <Accordion.Body>
+          <>
+            {activationsFunctions.map((section, index) => {
+              return <div key={index}>
+                <h4 className={'text-center text-muted'}>{section.i18n_title_section}</h4>
+                <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3} className={'mb-3'}>
+                  <>
+                    {section.layers.map((value, index) => {
+                      return <Col key={index}>
+                        <Row>
+                          <Col>
+                            <h4 className={'text-lg-center'}>{value.i18n_title}</h4>
+                            {value.img &&
+                              <div>
+                                {value.ref ?
+                                  <a href={value.ref} target="_blank" rel="noreferrer" className="link-secondary">
                                     <img src={value.img} alt="linear-activation-function" className={'img-n4l-glossary img-thumbnail d-block mx-auto'} />
-                                  }
-                                </div>
-                              }
-                              {!value.img && <div className="img-n4l-glossary"></div>}
+                                  </a>
+                                  :
+                                  <img src={value.img} alt="linear-activation-function" className={'img-n4l-glossary img-thumbnail d-block mx-auto'} />
+                                }
+                              </div>
+                            }
+                            {!value.img && <div className="img-n4l-glossary"></div>}
 
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col><p><Latex>{value.latex}</Latex></p></Col>
-                          </Row>
-                        </Col>
-                      })}
-                    </>
-                  </Row>
-                  {activationsFunctions.length - 1 !== index && <hr />}
-                </div>
-              })}
-            </>
-            <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col><p><Latex>{value.latex}</Latex></p></Col>
+                        </Row>
+                      </Col>
+                    })}
+                  </>
+                </Row>
+                {activationsFunctions.length - 1 !== index && <hr />}
+              </div>
+            })}
+          </>
+          <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>
 
-            </Row>
+          </Row>
 
-            {/*
+          {/*
             <Row xs={1} sm={1} md={2} lg={4} xl={4} xxl={4}>
               <Col>
                 <Row>
@@ -338,9 +337,8 @@ export default function Glossary2ActivationFunctions () {
               </Col>
             </Row>
             */}
-          </Accordion.Body>
-        </Accordion.Item>
-      </>}
+        </Accordion.Body>
+      </Accordion.Item>
     </Accordion>
   </>
 }

@@ -14,6 +14,8 @@
   "DataFrame": "DataFrame",
   "Features": "Características",
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
+  "Predicted": "Predicción",
+  "Waiting": "Esperando",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -138,7 +140,37 @@
     "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})",
     "need-one-feature": "Necesitas al menos una característica.",
     "new-element-need-to-be-unique": "El elemento del conjunto X debe ser único.",
-    "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de actvación"
+    "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de actvación",
+    "parsing-csv": "Error en la preparación del conjunto de datos",
+    "file-not-valid": "Error, fichero no válido"
+  },
+  "warning": {
+    "not-more-layers": "Advertencia, no se pueden añadir más capas",
+    "error-layers": "Advertencia, se debe tener entre 1 y 10 capas"
+  },
+  "success": {
+    "file-upload": "Archivo cargado correctamente"
+  },
+  "info": {
+    "": null
+  },
+  "alert": {
+    "menu": {
+      "need-select-dataset": "Debes de seleccionar un conjunto de datos",
+      "need-select-model": "Debes de seleccionar un modelo"
+    },
+    "0-tabular-classification": {
+      "not-more-layers": "No se pueden añadir más capas"
+    },
+    "model-load-success": "Modelo cargado",
+    "error": "Error",
+    "warning": "Advertencia",
+    "success": "Correcto",
+    "info": "Información",
+    "model-train-success": "Modelo entrenado con éxito",
+    "prediction": "La predicción es: {{index}}",
+    "file-upload-success": "Fichero cargado con éxito",
+    "file-upload-error-incorrect-format": "El fichero no se ha podido cargar, no es el formato correcto"
   },
   "header": {
     "language": "Idioma",
@@ -169,23 +201,6 @@
   "custom-canvas-drawer": {
     "validate": "Validar",
     "clear": "Limpiar"
-  },
-  "alert": {
-    "menu": {
-      "need-select-dataset": "Debes de seleccionar un conjunto de datos",
-      "need-select-model": "Debes de seleccionar un modelo"
-    },
-    "0-tabular-classification": {
-      "not-more-layers": "No se pueden añadir más capas"
-    },
-    "model-load-success": "Modelo cargado",
-    "error": "Error",
-    "warning": "Advertencia",
-    "success": "Correcto",
-    "model-train-success": "Modelo entrenado con éxito",
-    "prediction": "La predicción es: {{index}}",
-    "file-upload-success": "Fichero cargado con éxito",
-    "file-upload-error-incorrect-format": "El fichero no se ha podido cargar, no es el formato correcto"
   },
   "table": {
     "dataset": "Conjunto de datos"
@@ -364,20 +379,20 @@
           "text-0": "El conjunto de datos \"Salary\" es una colección de información que relaciona la cantidad de años de experiencia laboral de un individuo con su salario correspondiente.",
           "text-1": "Cada entrada en el conjunto de datos consta de dos variables principales: \"Years of Experience\" (Años de experiencia) y \"Salary\" (Salario). La variable \"Years of Experience\" representa la cantidad de años que un empleado ha trabajado en su campo específico, mientras que la variable \"Salary\" representa la cantidad de dinero que dicho empleado gana anualmente.",
           "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>www.kaggle.com</link1>.",
-          "details-input": {
+          "details-1-input": {
             "title": "Detalles de los datos de entrada del modelo",
             "list": {
-              "0": "Años de experiencia (YearsExperience)",
-              "1": "Salary - (Salary)"
+              "0": "Years of experience - Años de experiencia",
+              "1": "Salary - Salario"
             }
           },
-          "details-output": {
+          "details-2-output": {
             "title": "Detalles de los datos de salida del modelo",
             "list": {
               "0": "Salary"
             }
           },
-          "details-references": {
+          "details-3-references": {
             "title": "Referencias",
             "list": {
               "0": "Conjunto de datos"
@@ -388,56 +403,219 @@
       "auto-mpg": {
         "title": "Rendimiento de combustible",
         "description": {
-          "text-1": "El conjunto de datos <i>AUTO MPG</i> se tomó de la biblioteca StatLib que se mantiene en la Universidad Carnegie Mellon. El conjunto de datos se utilizó en la Exposición de la Asociación Estadounidense de Estadística de 1983.",
-          "text-2": "El término \"Auto MPG\" se refiere a las millas por galón, una unidad de medida de eficiencia de combustible utilizada comúnmente en los Estados Unidos. Esta medida indica cuántas millas puede recorrer un vehículo con un galón de combustible. Sin embargo, \"Auto MPG\" es un término en inglés y no hay una traducción directa en español.\n\nEn español, para referirse a la eficiencia de combustible de un automóvil, se suelen utilizar términos como \"consumo de combustible\" o \"rendimiento de combustible\". Estos términos indican cuántos kilómetros o millas puede recorrer un vehículo con un litro o galón de combustible, respectivamente.\n\nEs importante tener en cuenta que en diferentes países se utilizan unidades de medida distintas para el consumo de combustible. Por ejemplo, en algunos lugares se utiliza el litro por cada 100 kilómetros recorridos (L/100 km) para indicar la eficiencia de combustible.",
+          "text-0": "El conjunto de datos <i>AUTO MPG</i> se tomó de la biblioteca StatLib que se mantiene en la Universidad Carnegie Mellon. El conjunto de datos se utilizó en la Exposición de la Asociación Estadounidense de Estadística de 1983.",
+          "text-1": "El término \"Auto MPG\" se refiere a las millas por galón, una unidad de medida de eficiencia de combustible utilizada comúnmente en los Estados Unidos. Esta medida indica cuántas millas puede recorrer un vehículo con un galón de combustible. Sin embargo, \"Auto MPG\" es un término en inglés y no hay una traducción directa en español.\n\nEn español, para referirse a la eficiencia de combustible de un automóvil, se suelen utilizar términos como \"consumo de combustible\" o \"rendimiento de combustible\". Estos términos indican cuántos kilómetros o millas puede recorrer un vehículo con un litro o galón de combustible, respectivamente.\n\nEs importante tener en cuenta que en diferentes países se utilizan unidades de medida distintas para el consumo de combustible. Por ejemplo, en algunos lugares se utiliza el litro por cada 100 kilómetros recorridos (L/100 km) para indicar la eficiencia de combustible.",
           "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>ics.uci.edu</link1>.",
           "details-1": {
             "title": "Información",
             "list": {
-              "1": "<b>MPG</b>: MPG son las siglas en inglés de Millas por Galón. Es la cantidad de combustible consumido por el vehículo particular de una instancia. Esta variable también se puede utilizar como la variable a predecir para cualquier coche.",
-              "2": "<b>cylinders</b>: Este atributo describe el número de cilindros de cada coche. Se trata de un atributo de valor discreto",
-              "3": "<b>displacement</b>: Este es otro atributo del vehículo que tiene un valor cuantitativo continuo que describe el desplazamiento del motor",
-              "4": "<b>horsepower</b>: Este atributo informa sobre los caballos de un coche y es una variable de valor continuo",
-              "5": "<b>weight</b>: Se refiere al peso de cada coche que es una variable cuantitativa de valor continuo",
-              "6": "<b>acceleration</b>: La aceleración del coche",
-              "7": "<b>model year</b>: El año de lanzamiento del modelo",
-              "8": "<b>origin</b>: El atributo origen tiene 3 valores discretos. 1 se refiere a coches fabricados en EE.UU., 2 para Europa y 3 para Asia",
-              "9": "<b>car name</b>: Es el nombre del coche en cadena."
+              "0": "<b>MPG</b>: MPG son las siglas en inglés de Millas por Galón. Es la cantidad de combustible consumido por el vehículo particular de una instancia. Esta variable también se puede utilizar como la variable a predecir para cualquier coche.",
+              "1": "<b>cylinders</b>: Este atributo describe el número de cilindros de cada coche. Se trata de un atributo de valor discreto",
+              "2": "<b>displacement</b>: Este es otro atributo del vehículo que tiene un valor cuantitativo continuo que describe el desplazamiento del motor",
+              "3": "<b>horsepower</b>: Este atributo informa sobre los caballos de un coche y es una variable de valor continuo",
+              "4": "<b>weight</b>: Se refiere al peso de cada coche que es una variable cuantitativa de valor continuo",
+              "5": "<b>acceleration</b>: La aceleración del coche",
+              "6": "<b>model year</b>: El año de lanzamiento del modelo",
+              "7": "<b>origin</b>: El atributo origen tiene 3 valores discretos. 1 se refiere a coches fabricados en EE.UU., 2 para Europa y 3 para Asia",
+              "8": "<b>car name</b>: Es el nombre del coche en cadena."
             }
           },
           "details-2": {
             "title": "Datos de entrada",
             "list": {
-              "1": "<b>MPG</b>: continuo",
-              "2": "<b>cylinders</b>: discreto multivalor, 4, 6, 8",
-              "3": "<b>displacement</b>: continuo",
-              "4": "<b>horsepower</b>: continua",
-              "5": "<b>weight</b>: continuo",
-              "6": "<b>acceleration</b>: continua",
-              "7": "<b>model Year</b>: discreto de varios valores",
-              "8": "<b>origin</b>: discreto multivalor, 1 se refiere a automóviles fabricados en EE. UU., 2 para Europa y 3 para Asia",
-              "9": "<b>car name</b>: texto (única para cada instancia)"
+              "0": "<b>MPG</b>: continuo",
+              "1": "<b>cylinders</b>: discreto multivalor, 4, 6, 8",
+              "2": "<b>displacement</b>: continuo",
+              "3": "<b>horsepower</b>: continua",
+              "4": "<b>weight</b>: continuo",
+              "5": "<b>acceleration</b>: continua",
+              "6": "<b>model Year</b>: discreto de varios valores",
+              "7": "<b>origin</b>: discreto multivalor, 1 se refiere a automóviles fabricados en EE. UU., 2 para Europa y 3 para Asia",
+              "8": "<b>car name</b>: texto (única para cada instancia)"
             }
           },
           "details-3": {
             "title": "Datos de salida",
             "list": {
-              "1": "<b>MPG</b>: continuo"
+              "0": "<b>MPG</b>: continuo"
+            }
+          }
+        }
+      },
+      "boston-housing": {
+        "title": "Las viviendas en Boston",
+        "description": {
+          "text-0": "El conjunto de datos de viviendas de Boston se deriva de la información recopilada por el Servicio del Censo de EE. UU. sobre viviendas en el área de Boston.",
+          "text-1": "El conjunto de datos está diseñado para abordar problemas de regresión y modelado de precios de viviendas en diferentes vecindarios de Boston, Massachusetts, Estados Unidos. Este conjunto de datos es comúnmente utilizado para ejemplos y prácticas en la educación y la investigación.",
+          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "details-1-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "<strong>CRIM</strong> Tasa de criminalidad del crimen per cápita por ciudad",
+              "1": "<strong>Zn</strong> Proporción de tierras residenciales zonas por lotes de más de 25,000 pies cuadrados.",
+              "2": "<strong>INDUS</strong> Proporción de acres comerciales no reales por ciudad",
+              "3": "<strong>CHAS</strong> Charles River Variable Dummy (= 1 if tract bounds river; 0 en otro caso)",
+              "4": "<strong>NOX</strong> Concentración de óxidos nítricos (partes por 10 millones)",
+              "5": "<strong>RM</strong> Número promedio de habitaciones por vivienda",
+              "6": "<strong>AGE</strong> Proporción de unidades ocupadas por los propietarios construidas antes de 1940",
+              "7": "<strong>DIS</strong> Distancias ponderadas a cinco centros de empleo de Boston",
+              "8": "<strong>RAD</strong> Índice de accesibilidad a carreteras radiales",
+              "9": "<strong>TAX</strong> Impuesto a la propiedad de la propiedad de valor completo por cada $ 10,000",
+              "10": "<strong>PRATIO</strong> Ratio alumnos-profesor por ciudad",
+              "11": "<strong>B</strong> 1000 (BK - 0.63)^2 donde BK es la proporción de negros por ciudad",
+              "12": "<strong>LSTAT</strong> LSTAT % más bajo estado de la población",
+              "13": "<strong>MEDV</strong>Valor mediano de las casas ocupadas por el propietario en $ 1000"
+            }
+          },
+          "details-2-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Gráfico de dispersión y línea de regresión: Estos gráficos visuales muestran cómo se ajusta la línea de regresión a los datos observados. La pendiente y la intersección de la línea se basan en los coeficientes calculados."
+            }
+          },
+          "details-3-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Entrada del conjunto de datos UCI</link1>"
             }
           }
         }
       },
       "breast-cancer": {
-        "title": "Cáncer de mama Wisconsin (pronóstico)"
-      },
-      "diabetes": {
-        "title": "Diabetes"
+        "title": "Cáncer de mama Wisconsin (pronóstico)",
+        "description": {
+          "text-0": "Es un conjunto de datos del Hospital de la universidad de wisconsin relacionados con el cancer de mama. Dicho conjunto de datos es útil para la predicción y discriminación de un tumor de cancer de mama, diferenciando si es benigno o no.",
+          "text-1": "Cada registro representa los datos de seguimiento de un caso de cáncer de mama. Estos son caso atendidos desde 1984 por el Dr. Wolberg, solo incluye aquellos casos que presentan cáncer de mama invasivo y sin evidencia de metástasis.",
+          "text-2": "Las primeras 30 características se calculan a partir de una imagen digitalizada de una aspiración con aguja fina (PAAF) de la masa mamaria, dichos datos describen las características de los núcleos celulares presentes en la imagen, algunas imágenes se pueden encontrar en <link1>cs wisc</link1>",
+          "text-3": "El fichero <kbd>wdbc.csv</kbd> corresponde al conjunto de datos de diagnostico y <kbd>wpbc.csv</kbd> corresponde al conjunto de datos de pronostico.",
+          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "details-1-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "<strong>Número de identificación</strong>",
+              "1": "<strong>Resultado</strong> (R = recurrente, N = no recurrente)",
+              "2": "<strong>Tiempo</strong> (tiempo de recurrencia si el campo 2 = R, tiempo libre de enfermedad si el campo 2 = N)",
+              "3": "4-33 Se calculan diez características de valor real para cada núcleo celular:",
+              "4": "<strong>radio</strong> (media de distancias desde el centro a puntos del perímetro)",
+              "5": "<strong>textura</strong> (desviación estándar de los valores de escala de grises)",
+              "6": "<strong>perímetro</strong>",
+              "7": "<strong>área</strong>",
+              "8": "<strong>suavidad</strong> (variación local en la longitud del radio)",
+              "9": "<strong>compacidad</strong> (perímetro^2 / área - 1,0)",
+              "10": "<strong>concavidad</strong> (severidad de las porciones cóncavas del contorno)",
+              "11": "<strong>puntos cóncavos</strong> (número de porciones cóncavas del contorno)",
+              "12": "<strong>simetría</strong>",
+              "13": "<strong>dimensión fractal</strong> (\"aproximación de la línea costera\" - 1)"
+            }
+          },
+          "details-2-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Regresión lineal calculada"
+            }
+          },
+          "details-3-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Breast Cancer Wisconsin (Prognostic)</link1>",
+              "1": "<link1>Breast Cancer Wisconsin (Diagnostic)</link1>"
+            }
+          }
+        }
       },
       "student-performance": {
-        "title": "Rendimiento de estudiantes"
+        "title": "Rendimiento de estudiantes",
+        "description": {
+          "text-0": "El conjunto de datos incluye datos del rendimiento académico de alumnos de dos centros escolares portugueses. Los datos incluyen características demográficas, sociales, calificaciones de los estudiantes, etc. Se incluyen dos conjuntos de datos uno con el desempeño de dos materias distintas: Matemáticas (mat) y lengua portuguesa (por).",
+          "text-1": "Nota importante: el atributo objetivo G3 tiene una fuerte correlación con los atributos G2 y G1. Esto ocurre porque G3 es la calificación del último año (emitida en el 3er período), mientras que G1 y G2 corresponden a las calificaciones del 1er y 2do período. Es más difícil predecir G3 sin G2 y G1, pero dicha predicción es mucho más útil.",
+          "text-2": "El fichero <kbd>student-por.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de portugués y <kbd>student-mat.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de matemáticas.",
+          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "details-1-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "<strong>school</strong> - escuela del estudiante (binario: 'GP' - Gabriel Pereira o 'MS' - Mousinho da Silveira)",
+              "1": "<strong>sex</strong> - sexo del estudiante (binario: 'F' - femenino o 'M' - masculino)",
+              "2": "<strong>age</strong> - edad del estudiante (numérica: de 15 a 22)",
+              "3": "<strong>address</strong>: tipo de dirección particular del estudiante (binario: 'U' - urbana o 'R' - rural)",
+              "4": "<strong>famsize</strong> - tamaño de la familia (binario: 'LE3' - menor o igual a 3 o 'GT3' - mayor que 3)",
+              "5": "<strong>Pstatus</strong> - estado de convivencia de los padres (binario: 'T' - viviendo juntos o 'A' - separados)",
+              "6": "<strong>Medu</strong> - educación de la madre (numérica: 0 - ninguna, 1 - educación primaria (4º grado), 2 - 5º a 9º grado, 3 - educación secundaria o 4 - educación superior)",
+              "7": "<strong>Fedu</strong> - educación del padre (numérica: 0 - ninguna, 1 - educación primaria (4º grado), 2 - 5º a 9º grado, 3 - educación secundaria o 4 - educación superior)",
+              "8": "<strong>Mjob</strong> - trabajo de la madre (nominal: 'maestra', 'relacionado con la atención sanitaria', 'servicios' civiles (por ejemplo, administrativos o policiales), 'en_casa' u 'otros')",
+              "9": "<strong>Fjob</strong> - trabajo del padre (nominal: 'maestro', 'relacionado con la atención sanitaria', 'servicios' civiles (por ejemplo, administrativos o policiales), 'en_casa' u 'otros')",
+              "10": "<strong>razón</strong>: motivo para elegir esta escuela (nominal: cerca de \"casa\", \"reputación\" de la escuela, preferencia de \"curso\" u \"otro\")",
+              "11": "<strong>tutor</strong> - tutor del estudiante (nominal: 'madre', 'padre' u 'otro')",
+              "12": "<strong>tiempo de viaje</strong>: tiempo de viaje de casa a la escuela (numérico: 1 - <15 min., 2 - 15 a 30 min., 3 - 30 min. a 1 hora, o 4 - >1 hora)",
+              "13": "<strong>tiempo de estudio</strong>: tiempo de estudio semanal (numérico: 1 - <2 horas, 2 - 2 a 5 horas, 3 - 5 a 10 horas o 4 - >10 horas)",
+              "14": "<strong>reprobados</strong>: número de reprobados en clases anteriores (numérico: n si 1 &lg;=n &lg;3, en caso contrario 4)",
+              "15": "<strong>schoolsup</strong> - apoyo educativo adicional (binario: sí o no)",
+              "16": "<strong>famsup</strong> - apoyo educativo familiar (binario: sí o no)",
+              "17": "<strong>pagado</strong> - clases extra pagadas dentro de la materia del curso (Matemáticas o Portugués) (binario: sí o no)",
+              "18": "<strong>actividades</strong> - actividades extracurriculares (binario: sí o no)",
+              "19": "<strong>guardería</strong>: asistió a la guardería (binario: sí o no)",
+              "20": "<strong>superior</strong> - quiere cursar estudios superiores (binario: sí o no)",
+              "21": "<strong>internet</strong> - Acceso a Internet en casa (binario: sí o no)",
+              "22": "<strong>romántico</strong> - con una relación romántica (binario: sí o no)",
+              "23": "<strong>famrel</strong> - calidad de las relaciones familiares (numérica: de 1 - muy mala a 5 - excelente)",
+              "24": "<strong>tiempo libre</strong>: tiempo libre después de la escuela (numérico: de 1 - muy bajo a 5 - muy alto)",
+              "25": "<strong>goout</strong> - salir con amigos (numérico: de 1 - muy bajo a 5 - muy alto)",
+              "26": "<strong>Dalc</strong> - consumo de alcohol en jornada laboral (numérico: de 1 - muy bajo a 5 - muy alto)",
+              "27": "<strong>Walc</strong> - consumo de alcohol durante el fin de semana (numérico: de 1 - muy bajo a 5 - muy alto)",
+              "28": "<strong>salud</strong>: estado de salud actual (numérico: de 1: muy malo a 5: muy bueno)",
+              "29": "<strong>ausencias</strong> - número de ausencias escolares (numérico: de 0 a 93)"
+            }
+          },
+          "details-2-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Regresión lineal calculada"
+            }
+          },
+          "details-3-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Student Performance</link1>"
+            }
+          }
+        }
       },
       "wine": {
-        "title": "Calidad del vino"
+        "title": "Calidad del vino",
+        "description": {
+          "text-0": "Los dos conjuntos de datos están relacionados, pues incluyen las variantes de vino tinto y vino blanco portugués. Dicho conjunto de datos solo incluye variables fisicoquímicas (entradas) y sensoriales (salidas), el conjunto de datos no incluye datos de tipos de uva, marca de vino o precio de venta del vino.",
+          "text-1": "El conjunto de datos contiene datos de tipo multivariado, atributos de tipo reales, 4898 instancias y 12 atributos distintos.",
+          "text-2": "Dicho conjunto de datos puede ser usado para tareas de clasificación o de regresión. Las clases están ordenadas, aunque el conjunto de datos se encuentra desbalanceado.",
+          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>archive.ics.uci.edu</link1>.",
+          "details-1-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "<strong>Fixed Acidity (Acidez Fija)</strong>: La acidez fija se refiere a la concentración de ácidos no volátiles en el vino, principalmente ácido tartárico. Contribuye a la frescura y estabilidad del vino.",
+              "1": "<strong>Volatile Acidity (Acidez Volátil)</strong>: La acidez volátil se refiere a la concentración de ácidos volátiles, como el ácido acético, que pueden dar un sabor desagradable si están presentes en exceso.",
+              "2": "<strong>Citric Acid (Ácido Cítrico)</strong>: El ácido cítrico es uno de los ácidos orgánicos naturales presentes en el vino. Puede influir en el sabor y la frescura del vino.",
+              "3": "<strong>Residual Sugar (Azúcar Residual)</strong>: Es la cantidad de azúcar que queda en el vino después de la fermentación. Un vino puede ser seco (poco azúcar residual) o dulce (más azúcar residual).",
+              "4": "<strong>Chlorides (Cloruros)</strong>: La concentración de cloruros en el vino puede afectar su sabor y aroma, y niveles altos pueden indicar problemas en la producción.",
+              "5": "<strong>Free Sulfur Dioxide (Dióxido de Azufre Libre)</strong>: El dióxido de azufre es un conservante común en el vino que ayuda a prevenir la oxidación y el crecimiento de microorganismos no deseados.",
+              "6": "<strong>Total Sulfur Dioxide (Dióxido de Azufre Total)</strong>: Representa la suma de dióxido de azufre libre y dióxido de azufre unido a otras moléculas en el vino. También se relaciona con la conservación del vino.",
+              "7": "<strong>Density (Densidad)</strong>: La densidad se refiere a la masa del vino por unidad de volumen. Puede proporcionar información sobre la concentración de alcohol y azúcar.",
+              "8": "<strong>pH</strong>: El pH mide la acidez o alcalinidad del vino. Un pH bajo indica acidez, mientras que un pH alto indica alcalinidad. Puede influir en la percepción del sabor.",
+              "9": "<strong>Sulphates (Sulfatos)</strong>: Los sulfatos son aditivos que se utilizan a veces en la producción de vino. Pueden influir en la estabilidad y el aroma del vino.",
+              "10": "<strong>Alcohol</strong>: La concentración de alcohol en el vino puede variar y afecta tanto el sabor como la sensación en boca.",
+              "11": "<strong>Quality (Calidad)</strong>: Esta es la puntuación general de calidad del vino, generalmente en una escala de 0 a 10, donde valores más altos indican vinos de mejor calidad según la evaluación de los catadores."
+            }
+          },
+          "details-2-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Regresión lineal calculada"
+            }
+          },
+          "details-3-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Calidad del vino</link1>"
+            }
+          }
+        }
       },
       "list-datasets": {
         "salary": "Conjunto de datos - Salary",
@@ -898,6 +1076,9 @@
     }
   },
   "pages": {
+    "version": {
+      "title": "Versión"
+    },
     "index": {
       "tabular-classification": {
         "1-title": "Clasificación tabular",
@@ -1282,6 +1463,13 @@
         "text-3": "Una vez que se tiene un conjunto de datos etiquetados, se utiliza un algoritmo de aprendizaje automático para entrenar un modelo que pueda predecir la etiqueta de nuevos conjuntos de datos. Este modelo puede ser utilizado para realizar predicciones precisas y rápidas sobre nuevas instancias de datos.",
         "text-4": "La clasificación tabular es una técnica muy útil para resolver problemas de clasificación en una amplia variedad de campos, como la medicina, el comercio electrónico, la banca, la seguridad y muchos otros."
       },
+      "linear-regression": {
+        "title": "Regresión lineal",
+        "text-1": "La regresión lineal es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación entre una variable independiente (o predictor) y una variable dependiente (o respuesta). A través de la regresión lineal, se busca encontrar la línea recta que mejor se ajuste a los datos, de modo que se pueda predecir la respuesta en función de los valores de la variable independiente.",
+        "text-2": "En la regresión lineal, los datos se representan generalmente como puntos dispersos en un plano cartesiano, donde la variable independiente se coloca en el eje X y la variable dependiente en el eje Y. El objetivo es encontrar la ecuación de una línea recta (y = mx + b) que minimice la distancia entre esta línea y los puntos de datos. Una vez que se ha obtenido esta ecuación, se puede utilizar para hacer predicciones sobre valores futuros de la variable dependiente en función de los valores de la variable independiente.",
+        "text-3": "Por ejemplo, si estamos analizando la relación entre la cantidad de publicidad en un sitio web y las ventas de un producto, la cantidad de publicidad sería la variable independiente, y las ventas del producto serían la variable dependiente. La regresión lineal nos ayudaría a determinar si existe una relación lineal entre la inversión en publicidad y las ventas, y si es así, nos permitiría predecir las ventas futuras en función del gasto en publicidad.",
+        "text-4": "La regresión lineal es una herramienta poderosa en el análisis de datos y se utiliza en una variedad de campos, incluyendo la economía, la ciencia social, la investigación médica y muchas otras disciplinas para comprender y predecir relaciones entre variables."
+      },
       "object-identification": {
         "title": "Identificación de objetos",
         "text-1": "La identificación de objetos en redes neuronales es una técnica utilizada en el campo del aprendizaje automático y la visión por computador para detectar y reconocer objetos en imágenes o videos. Es una tarea importante en el análisis de imágenes y es utilizada en aplicaciones como el reconocimiento de rostros, el seguimiento de objetos en tiempo real, la clasificación de objetos en imágenes médicas y la detección de objetos en vehículos autónomos.",
@@ -1299,6 +1487,9 @@
       },
       "activation-functions": {
         "title": "Funciones de activación",
+        "sub-title-1": "Capas lineales",
+        "sub-title-2": "Activaciones no lineales (suma ponderada, no linealidad)",
+        "sub-title-3": "Activaciones no lineales (otras)",
         "text-1": "Una función de activación es una función matemática utilizada en una red neuronal artificial para determinar la salida de una neurona o de un conjunto de neuronas en función de la entrada recibida. La función de activación introduce no linealidad en la red neuronal, lo que permite a la red aprender patrones más complejos en los datos de entrada. Ejemplos comunes de funciones de activación son:",
         "table": {
           "softmax": {

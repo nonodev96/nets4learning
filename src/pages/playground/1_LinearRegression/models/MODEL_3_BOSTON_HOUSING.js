@@ -13,8 +13,8 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.salary.description.'
     return <>
+      <p><Trans i18nKey={prefix + 'text-0'} /></p>
       <p><Trans i18nKey={prefix + 'text-1'} /></p>
-      <p><Trans i18nKey={prefix + 'text-2'} /></p>
       <p>
         <Trans i18nKey={prefix + 'text-link'}
                components={{
@@ -24,21 +24,24 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
       <details>
         <summary><Trans i18nKey={prefix + 'details-1-input.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-1-input.list.1'} /></li>
-        </ol>
+          {Object.entries(this.t(prefix + 'details-1-input.list', { returnObjects: true, defaultValue: [] }))
+            .map((value, index) => {
+              return <li key={index}><Trans i18nKey={prefix + 'details-1-input.list.' + index} /></li>
+            })}        </ol>
       </details>
       <details>
         <summary><Trans i18nKey={prefix + 'details-2-output.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-2-output.list.1'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2-output.list.2'} /></li>
-          <li><Trans i18nKey={prefix + 'details-2-output.list.3'} /></li>
+          {Object.entries(this.t(prefix + 'details-2-output.list', { returnObjects: true, defaultValue: [] }))
+            .map((value, index) => {
+              return <li key={index}><Trans i18nKey={prefix + 'details-2-output.list.' + index} /></li>
+            })}
         </ol>
       </details>
       <details>
         <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-3-references.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-3-references.list.0'} /></li>
         </ol>
       </details>
 

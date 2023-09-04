@@ -18,7 +18,7 @@ i18n
     react        : {
       useSuspense               : true,
       transSupportBasicHtmlNodes: true,
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b']
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b', 'kbd']
     },
     interpolation: {
       escapeValue: false, // not needed for react!!

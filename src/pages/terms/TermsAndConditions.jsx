@@ -7,7 +7,7 @@ export default function TermsAndConditions () {
 
   if(VERBOSE) console.debug('render TermsAndConditions')
   return <>
-    <main className={'mb-3'} data-title={'TermsAndConditions'}>
+    <main className={'mt-3 mb-3'} data-title={'TermsAndConditions'}>
       <Container>
         <Row>
           <Col><h1><Trans i18nKey={'pages.terms.title'} /></h1></Col>

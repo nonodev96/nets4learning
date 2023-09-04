@@ -14,6 +14,8 @@
   "DataFrame": "DataFrame",
   "Features": "Features",
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
+  "Predicted": "Predicted",
+  "Waiting": "Waiting",
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -138,7 +140,37 @@
     "tensor-shape-change": "The output layer has the shape (*, {{last_layer_units}}). <br> must have the form (*, {{class_length}})",
     "need-one-feature": "You need at least one feature.",
     "new-element-need-to-be-unique": "The element of set X must be unique.",
-    "layers-length": "You must have at least one layer with the number of neurons and their actvation function"
+    "layers-length": "You must have at least one layer with the number of neurons and their actvation function",
+    "parsing-csv": "Error, parsing data set",
+    "file-not-valid": "Error, file not valid"
+  },
+  "warning": {
+    "not-more-layers": "Warning, no more layers can be added",
+    "error-layers": "Warning, you must have between 1 and 10 layers"
+  },
+  "success": {
+    "file-upload": "File upload successful"
+  },
+  "info": {
+    "": null
+  },
+  "alert": {
+    "menu": {
+      "need-select-dataset": "You must select a data set",
+      "need-select-model": "You must select a model"
+    },
+    "0-tabular-classification": {
+      "not-more-layers": "No more layers can be added"
+    },
+    "model-load-success": "Loaded model",
+    "error": "Error",
+    "warning": "Warning",
+    "success": "Success",
+    "info": "Info",
+    "model-train-success": "model trained successfully",
+    "prediction": "The prediction is: {{index}}",
+    "file-upload-success": "Successfully loaded file",
+    "file-upload-error-incorrect-format": "The file could not be loaded, it is not the correct format"
   },
   "header": {
     "language": "Language",
@@ -169,23 +201,6 @@
   "custom-canvas-drawer": {
     "validate": "Validate",
     "clear": "Clean"
-  },
-  "alert": {
-    "menu": {
-      "need-select-dataset": "You must select a data set",
-      "need-select-model": "You must select a model"
-    },
-    "0-tabular-classification": {
-      "not-more-layers": "No more layers can be added"
-    },
-    "model-load-success": "Loaded model",
-    "error": "Error",
-    "warning": "Warning",
-    "success": "Success",
-    "model-train-success": "model trained successfully",
-    "prediction": "The prediction is: {{index}}",
-    "file-upload-success": "Successfully loaded file",
-    "file-upload-error-incorrect-format": "The file could not be loaded, it is not the correct format"
   },
   "table": {
     "dataset": "Dataset"
@@ -364,20 +379,20 @@
           "text-0": "The \"Salary\" data set is a collection of information that relates the number of years of work experience of an individual with their corresponding salary.",
           "text-1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the number of years that an employee has worked in its specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually.",
           "text-link": "For more information about this data set, visit the repository <link1>www.kaggy.com</link1>",
-          "details-input": {
+          "details-1-input": {
             "title": "Model entry data details",
             "list": {
-              "0": "Years of experience (Yearsexperience)",
-              "1": "SALARY - (SALARY)"
+              "0": "Years of Experience - Years of Experience",
+              "1": "Salary - Salary"
             }
           },
-          "details-output": {
+          "details-2-output": {
             "title": "Model output data details",
             "list": {
               "0": "Salary"
             }
           },
-          "details-references": {
+          "details-3-references": {
             "title": "References",
             "list": {
               "0": "Data set"
@@ -388,56 +403,219 @@
       "auto-mpg": {
         "title": "Auto MPG",
         "description": {
-          "text-1": "The <i>AUTO MPG</i> dataset was taken from the StatLib library maintained at Carnegie Mellon University. The dataset was used at the 1983 American Statistical Association Exposition.",
-          "text-2": "The term \"Auto MPG\" refers to miles per gallon, a unit of fuel efficiency measurement commonly used in the United States. This measure indicates how many miles a vehicle can travel on one gallon of fuel. However, \"Auto MPG\" is an English term and there is no direct translation in Spanish.\n\nIn Spanish, terms such as \"consumo de combustible\" or \"rendimiento de combustible\" are often used to refer to the fuel efficiency of a car. These terms indicate how many kilometres or miles a vehicle can travel on one litre or gallon of fuel, respectively.\n\nIt is important to note that different countries use different units of measurement for fuel consumption. For example, in some places the litre per 100 kilometres travelled (L/100 km) is used to indicate fuel efficiency.",
+          "text-0": "The <i>AUTO MPG</i> dataset was taken from the StatLib library maintained at Carnegie Mellon University. The dataset was used at the 1983 American Statistical Association Exposition.",
+          "text-1": "The term \"Auto MPG\" refers to miles per gallon, a unit of fuel efficiency measurement commonly used in the United States. This measure indicates how many miles a vehicle can travel on one gallon of fuel. However, \"Auto MPG\" is an English term and there is no direct translation in Spanish.\n\nIn Spanish, terms such as \"consumo de combustible\" or \"rendimiento de combustible\" are often used to refer to the fuel efficiency of a car. These terms indicate how many kilometres or miles a vehicle can travel on one litre or gallon of fuel, respectively.\n\nIt is important to note that different countries use different units of measurement for fuel consumption. For example, in some places the litre per 100 kilometres travelled (L/100 km) is used to indicate fuel efficiency.",
           "text-link": "For more information about this dataset, visit the <link1>ICS.UCI.edu repository.</link1>",
           "details-1": {
             "title": "Information",
             "list": {
-              "1": "<b>MPG</b>: MPG is Miles Per Gallon. This is the amount of fuel consumed by the particular vehicle of an instance. This varable can also be used as the variable to be predicted for any car",
-              "2": "<b>cylinders</b>: This attribute describes the number of cylinders of each car. This is a discrete valued attribute",
-              "3": "<b>displacement</b>: This is another attibute of the vehicle which has a quantitative continous value describing the engine displacement",
-              "4": "<b>horsepower</b>: This attribute tells about the horsepower of a car and is a continous valued variable",
-              "5": "<b>weight</b>: This refers to the weight of each car which is a continous valued quantitative variable",
-              "6": "<b>acceleration</b>: The acceleration of the car",
-              "7": "<b>model year</b>: The year the model was released is mentioned in this attribute",
-              "8": "<b>origin</b>: The origin attribute has 3 discrete values. 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
-              "9": "<b>car name</b>: This is the name of the car in string"
+              "0": "<b>MPG</b>: MPG is Miles Per Gallon. This is the amount of fuel consumed by the particular vehicle of an instance. This varable can also be used as the variable to be predicted for any car",
+              "1": "<b>cylinders</b>: This attribute describes the number of cylinders of each car. This is a discrete valued attribute",
+              "2": "<b>displacement</b>: This is another attibute of the vehicle which has a quantitative continous value describing the engine displacement",
+              "3": "<b>horsepower</b>: This attribute tells about the horsepower of a car and is a continous valued variable",
+              "4": "<b>weight</b>: This refers to the weight of each car which is a continous valued quantitative variable",
+              "5": "<b>acceleration</b>: The acceleration of the car",
+              "6": "<b>model year</b>: The year the model was released is mentioned in this attribute",
+              "7": "<b>origin</b>: The origin attribute has 3 discrete values. 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
+              "8": "<b>car name</b>: This is the name of the car in string"
             }
           },
           "details-2": {
             "title": "Input data",
             "list": {
-              "1": "<b>MPG</b>: continuous",
-              "2": "<b>cylinders</b>: multi-valued discrete, 4, 6, 8",
-              "3": "<b>displacement</b>: continuous",
-              "4": "<b>horsepower</b>: continuous",
-              "5": "<b>weight</b>: continuous",
-              "6": "<b>acceleration</b>: continuous",
-              "7": "<b>model Year</b>: multi-valued discrete",
-              "8": "<b>origin</b>: multi-valued discrete, 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
-              "9": "<b>car name</b>: string (unique for each instance)"
+              "0": "<b>MPG</b>: continuous",
+              "1": "<b>cylinders</b>: multi-valued discrete, 4, 6, 8",
+              "2": "<b>displacement</b>: continuous",
+              "3": "<b>horsepower</b>: continuous",
+              "4": "<b>weight</b>: continuous",
+              "5": "<b>acceleration</b>: continuous",
+              "6": "<b>model Year</b>: multi-valued discrete",
+              "7": "<b>origin</b>: multi-valued discrete, 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
+              "8": "<b>car name</b>: string (unique for each instance)"
             }
           },
           "details-3": {
             "title": "Output data",
             "list": {
-              "1": "<b>MPG</b>: continuous"
+              "0": "<b>MPG</b>: continuous"
+            }
+          }
+        }
+      },
+      "boston-housing": {
+        "title": "The Boston Housing",
+        "description": {
+          "text-0": null,
+          "text-1": "The data set is designed to address regression and modeling problems of housing prices in different neighborhoods of Boston, Massachusetts, United States. This data set is commonly used for examples and practices in education and research.",
+          "text-link": "<link1>UCI data set info</link1>",
+          "details-1-input": {
+            "title": "Input",
+            "list": {
+              "0": "<strong>CRIM</strong> per capita crime rate by town",
+              "1": "<strong>ZN</strong> proportion of residential land zoned for lots over 25,000 sq.ft.",
+              "2": "<strong>INDUS</strong> proportion of non-retail business acres per town",
+              "3": "<strong>CHAS</strong> Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)",
+              "4": "<strong>NOX</strong> nitric oxides concentration (parts per 10 million)",
+              "5": "<strong>RM</strong> average number of rooms per dwelling",
+              "6": "<strong>AGE</strong> proportion of owner-occupied units built prior to 1940",
+              "7": "<strong>DIS</strong> weighted distances to five Boston employment centres",
+              "8": "<strong>RAD</strong> index of accessibility to radial highways",
+              "9": "<strong>TAX</strong> full-value property-tax rate per $10,000",
+              "10": "<strong>PTRATIO</strong> pupil-teacher ratio by town",
+              "11": "<strong>B</strong> 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town",
+              "12": "<strong>LSTAT</strong> % lower status of the population",
+              "13": "<strong>MEDV</strong> Median value of owner-occupied homes in $1000's"
+            }
+          },
+          "details-2-output": {
+            "title": "Output",
+            "list": {
+              "0": "Dispersion graph and regression line: These visual graphics show how the regression line is adjusted to the observed data. The slope and intersection of the line are based on the calculated coefficients."
+            }
+          },
+          "details-3-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1>UCI data set info</link1>"
             }
           }
         }
       },
       "breast-cancer": {
-        "title": "Breast Cancer Wisconsin (Prognostic)"
-      },
-      "diabetes": {
-        "title": "Diabetes"
+        "title": "Breast Cancer Wisconsin (Prognostic)",
+        "description": {
+          "text-0": "It is a data set of the Hospital of the University of Wisconsin related to breast cancer. This data set is useful for the prediction and discrimination of a breast cancer tumor, differentiating whether it is benign or not.",
+          "text-1": "Each record represents the monitoring data of a breast cancer case. These are a case attended since 1984 by Dr. Wolberg, only includes those cases that have invasive breast cancer and without evidence of metastases.",
+          "text-2": "The first 30 characteristics are calculated from a digitized image of a fine needle aspiration (FNAB) of the breast mass, these data describe the characteristics of the cell nuclei present in the image, some images can be found in <link2>cs wisc<link2>",
+          "text-3": "The file <kbd>wdbc.csv</kbd> corresponds to the diagnostic data set and <kbd>wpbc.csv</kbd> corresponds to the prognostic data set.",
+          "text-link": "<link1>UCI data set input </link1>",
+          "details-1-input": {
+            "title": "Input",
+            "list": {
+              "0": "<strong>ID number</strong>",
+              "1": "<strong>Outcome</strong> (R = recur, N = nonrecur)",
+              "2": "<strong>Time</strong> (recurrence time if field 2 = R, disease-free time if field 2 = N)",
+              "3": "4-33 Ten real-valued features are computed for each cell nucleus:",
+              "4": "<strong>radius</strong> (mean of distances from center to points on the perimeter)",
+              "5": "<strong>texture</strong> (standard deviation of gray-scale values)",
+              "6": "<strong>perimeter</strong>",
+              "7": "<strong>area</strong>",
+              "8": "<strong>smoothness</strong> (local variation in radius lengths)",
+              "9": "<strong>compactness</strong> (perimeter^2 / area - 1.0)",
+              "10": "<strong>concavity</strong> (severity of concave portions of the contour)",
+              "11": "<strong>concave points</strong> (number of concave portions of the contour)",
+              "12": "<strong>symmetry</strong>",
+              "13": "<strong>fractal dimension</strong> (\"coastline approximation\" - 1)"
+            }
+          },
+          "details-2-output": {
+            "title": "Output",
+            "list": {
+              "0": "Calculated linear regression"
+            }
+          },
+          "details-3-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1>Breast Cancer Wisconsin (Prognostic)</link1>",
+              "1": "<link1>Breast Cancer Wisconsin (Diagnostic)</link1>"
+            }
+          }
+        }
       },
       "student-performance": {
-        "title": "Student Performance"
+        "title": "Student Performance",
+        "description": {
+          "text-0": null,
+          "text-1": null,
+          "text-2": null,
+          "text-link": "<link1>UCI data set input </link1>",
+          "details-1-input": {
+            "title": "Input",
+            "list": {
+              "0": "<strong>school</strong> - student's school (binary: 'GP' - Gabriel Pereira or 'MS' - Mousinho da Silveira)",
+              "1": "<strong>sex</strong> - student's sex (binary: 'F' - female or 'M' - male)",
+              "2": "<strong>age</strong> - student's age (numeric: from 15 to 22)",
+              "3": "<strong>address</strong> - student's home address type (binary: 'U' - urban or 'R' - rural)",
+              "4": "<strong>famsize</strong> - family size (binary: 'LE3' - less or equal to 3 or 'GT3' - greater than 3)",
+              "5": "<strong>Pstatus</strong> - parent's cohabitation status (binary: 'T' - living together or 'A' - apart)",
+              "6": "<strong>Medu</strong> - mother's education (numeric: 0 - none,  1 - primary education (4th grade), 2 â€“ 5th to 9th grade, 3 â€“ secondary education or 4 â€“ higher education)",
+              "7": "<strong>Fedu</strong> - father's education (numeric: 0 - none,  1 - primary education (4th grade), 2 â€“ 5th to 9th grade, 3 â€“ secondary education or 4 â€“ higher education)",
+              "8": "<strong>Mjob</strong> - mother's job (nominal: 'teacher', 'health' care related, civil 'services' (e.g. administrative or police), 'at_home' or 'other')",
+              "9": "<strong>Fjob</strong> - father's job (nominal: 'teacher', 'health' care related, civil 'services' (e.g. administrative or police), 'at_home' or 'other')",
+              "10": "<strong>reason</strong> - reason to choose this school (nominal: close to 'home', school 'reputation', 'course' preference or 'other')",
+              "11": "<strong>guardian</strong> - student's guardian (nominal: 'mother', 'father' or 'other')",
+              "12": "<strong>traveltime</strong> - home to school travel time (numeric: 1 - <15 min., 2 - 15 to 30 min., 3 - 30 min. to 1 hour, or 4 - >1 hour)",
+              "13": "<strong>studytime</strong> - weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)",
+              "14": "<strong>failures</strong> - number of past class failures (numeric: n if 1 &lg;=n &lg;3, else 4)",
+              "15": "<strong>schoolsup</strong> - extra educational support (binary: yes or no)",
+              "16": "<strong>famsup</strong> - family educational support (binary: yes or no)",
+              "17": "<strong>paid</strong> - extra paid classes within the course subject (Math or Portuguese) (binary: yes or no)",
+              "18": "<strong>activities</strong> - extra-curricular activities (binary: yes or no)",
+              "19": "<strong>nursery</strong> - attended nursery school (binary: yes or no)",
+              "20": "<strong>higher</strong> - wants to take higher education (binary: yes or no)",
+              "21": "<strong>internet</strong> - Internet access at home (binary: yes or no)",
+              "22": "<strong>romantic</strong> - with a romantic relationship (binary: yes or no)",
+              "23": "<strong>famrel</strong> - quality of family relationships (numeric: from 1 - very bad to 5 - excellent)",
+              "24": "<strong>freetime</strong> - free time after school (numeric: from 1 - very low to 5 - very high)",
+              "25": "<strong>goout</strong> - going out with friends (numeric: from 1 - very low to 5 - very high)",
+              "26": "<strong>Dalc</strong> - workday alcohol consumption (numeric: from 1 - very low to 5 - very high)",
+              "27": "<strong>Walc</strong> - weekend alcohol consumption (numeric: from 1 - very low to 5 - very high)",
+              "28": "<strong>health</strong> - current health status (numeric: from 1 - very bad to 5 - very good)",
+              "29": "<strong>absences</strong> - number of school absences (numeric: from 0 to 93)"
+            }
+          },
+          "details-2-output": {
+            "title": "Output",
+            "list": {
+              "0": "Calculated linear regression"
+            }
+          },
+          "details-3-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1>Student Performance</link1>"
+            }
+          }
+        }
       },
       "wine": {
-        "title": "Wine Quality"
+        "title": "Wine Quality",
+        "description": {
+          "text-0": "The two data sets are related, as they include the variants of red wine and Portuguese white wine. This data set only includes physicochemical variables (inputs) and sensory (outputs), the data set does not include grape types data, wine brand or wine sale price.",
+          "text-1": "The data set contains multivariate data, real -type attributes, 4898 instances and 12 different attributes.",
+          "text-2": "Said data set can be used for classification or regression tasks. The classes are ordered, although the data set is unbalanced.",
+          "text-link": "For more information about this data set, visit the <link1> archive.ics.uci.edu </link1> repository.",
+          "details-1-input": {
+            "title": "Input",
+            "list": {
+              "0": "<strong>Fixed Acidity</strong>: Fixed acidity refers to the concentration of non-volatile acids in wine, mainly tartaric acid. It contributes to the freshness and stability of the wine.",
+              "1": "<strong>Volatile Acidity</strong>: Volatile acidity refers to the concentration of volatile acids, such as acetic acid, which can give an unpleasant taste if present in excess.",
+              "2": "<strong>Citric Acid</strong>: Citric acid is one of the natural organic acids present in wine. It can influence the flavor and freshness of the wine.",
+              "3": "<strong>Residual Sugar</strong>: It is the amount of sugar that remains in the wine after fermentation. A wine can be dry (little residual sugar) or sweet (more residual sugar).",
+              "4": "<strong>Chlorides</strong>: The concentration of chlorides in wine can affect its flavor and aroma, and high levels can indicate problems in production.",
+              "5": "<strong>Free Sulfur Dioxide</strong>: Sulfur dioxide is a common preservative in wine that helps prevent oxidation and the growth of unwanted microorganisms.",
+              "6": "<strong>Total Sulfur Dioxide</strong>: Represents the sum of free sulfur dioxide and sulfur dioxide bound to other molecules in the wine. It is also related to the conservation of wine.",
+              "7": "<strong>Density</strong>: Density refers to the mass of the wine per unit of volume. It can provide information on alcohol and sugar concentration.",
+              "8": "<strong>pH</strong>: The pH measures the acidity or alkalinity of the wine. A low pH indicates acidity, while a high pH indicates alkalinity. It can influence flavor perception.",
+              "9": "<strong>Sulphates</strong>: Sulfates are additives that are sometimes used in wine production. They can influence the stability and aroma of the wine.",
+              "10": "<strong>Alcohol</strong>: The concentration of alcohol in wine can vary and affects both the flavor and mouthfeel.",
+              "11": "<strong>Quality</strong>: This is the overall quality score of the wine, generally on a scale of 0 to 10, with higher values indicating better quality wines as assessed by tasters."
+            }
+          },
+          "details-2-output": {
+            "title": "Output",
+            "list": {
+              "0": "Calculated linear regression"
+            }
+          },
+          "details-3-references": {
+            "title": "References",
+            "list": {
+              "0": "<link1>Wine quality</link1>"
+            }
+          }
+        }
       },
       "list-datasets": {
         "salary": "Data set - Salary",
@@ -898,6 +1076,9 @@
     }
   },
   "pages": {
+    "version": {
+      "title": "Version"
+    },
     "index": {
       "tabular-classification": {
         "1-title": "Tabular classification",
@@ -1282,6 +1463,13 @@
         "text-3": "Once you have a set of data labeled, an automatic learning algorithm is used to train a model that can predict the label of new data sets. This model can be used to perform precise and fast predictions on new data instances.",
         "text-4": "Tabular classification is a very useful technique to solve classification problems in a wide variety of fields, such as medicine, electronic commerce, banking, safety and many others."
       },
+      "linear-regression": {
+        "title": "Linear regression",
+        "text-1": "Linear regression is a statistical analysis method used in automatic learning to model the relationship between an independent (or predictor) variable and a dependent variable (or response). Through linear regression, it seeks to find the straight line that best suits the data, so that the answer can be predicted based on the values ​​of the independent variable.",
+        "text-2": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values ​​of the dependent variable depending on the values ​​of the independent variable.",
+        "text-3": "For example, if we are analyzing the relationship between the amount of advertising on a website and the sales of a product, the amount of advertising would be the independent variable, and the sales of the product would be the dependent variable. Linear regression would help us determine if there is a linear relationship between investment in advertising and sales, and if so, it would allow us to predict future sales based on advertising spending.",
+        "text-4": "Linear regression is a powerful tool in data analysis and is used in a variety of fields, including economy, social science, medical research and many other disciplines to understand and predict relationships between variables."
+      },
       "object-identification": {
         "title": "Object identification",
         "text-1": "The identification of objects in neuronal networks is a technique used in the field of automatic learning and computer vision to detect and recognize objects in images or videos. It is an important task in image analysis and is used in applications such as faces recognition, real -time objects, the classification of objects in medical images and the detection of objects in autonomous vehicles.",
@@ -1299,6 +1487,9 @@
       },
       "activation-functions": {
         "title": "Activation functions",
+        "sub-title-1": "Linear Layers",
+        "sub-title-2": "Non-linear Activations (weighted sum, nonlinearity)",
+        "sub-title-3": "Non-linear Activations (other)",
         "text-1": "An activation function is a mathematical function used in an artificial neuronal network to determine the output of a neuron or a set of neurons based on the entry received. The activation function introduces non -linearity in the neuronal network, allowing the network to learn more complex patterns in the input data. Common examples of activation functions are:",
         "table": {
           "softmax": {

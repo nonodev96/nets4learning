@@ -24,26 +24,26 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
                }} />
       </p>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-input.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-1-input.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-input.list.0'} /></li>
-          <li><Trans i18nKey={prefix + 'details-input.list.1'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1-input.list.0'} /></li>
+          <li><Trans i18nKey={prefix + 'details-1-input.list.1'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-output.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-2-output.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-output.list.0'} /></li>
+          <li><Trans i18nKey={prefix + 'details-2-output.list.0'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-references.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
         <ol>
           <li>
             <a href="https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook"
                target="_blank"
                rel="noreferrer">
-              <Trans i18nKey={prefix + 'details-references.list.0'} />
+              <Trans i18nKey={prefix + 'details-3-references.list.0'} />
             </a>
           </li>
         </ol>

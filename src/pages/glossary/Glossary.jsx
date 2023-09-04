@@ -37,7 +37,6 @@ export default function Glossary () {
                   <p><Trans i18nKey={'pages.glossary.linear-regression.text-2'} /></p>
                   <p><Trans i18nKey={'pages.glossary.linear-regression.text-3'} /></p>
                   <p><Trans i18nKey={'pages.glossary.linear-regression.text-4'} /></p>
-                  <p><Trans i18nKey={'pages.glossary.linear-regression.text-5'} /></p>
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey={'classification-imagen'}>
