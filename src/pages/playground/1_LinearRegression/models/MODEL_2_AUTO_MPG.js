@@ -13,10 +13,10 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.auto-mpg.description.'
     return <>
-      <p><Trans i18nKey={prefix + 'text-0'} /></p>
-      <p><Trans i18nKey={prefix + 'text-1'} /></p>
+      <p><Trans i18nKey={prefix + 'text.0'} /></p>
+      <p><Trans i18nKey={prefix + 'text.1'} /></p>
       <p>
-        <Trans i18nKey={prefix + 'text-link'}
+        <Trans i18nKey={prefix + 'link'}
                components={{
                  link1: <a href={'https://archive.ics.uci.edu/ml/datasets/auto+mpg'} target={'_blank'} rel="noreferrer">link</a>,
                }} />

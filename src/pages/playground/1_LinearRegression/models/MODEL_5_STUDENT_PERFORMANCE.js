@@ -12,11 +12,12 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.student-performance.description.'
     return <>
-      <p><Trans i18nKey={prefix + 'text-0'} /></p>
-      <p><Trans i18nKey={prefix + 'text-1'} /></p>
-      <p><Trans i18nKey={prefix + 'text-2'} /></p>
+      <p><Trans i18nKey={prefix + 'text.0'} /></p>
+      <p><Trans i18nKey={prefix + 'text.1'} /></p>
+      <p><Trans i18nKey={prefix + 'text.2'} /></p>
+      <p><Trans i18nKey={prefix + 'text.3'} /></p>
       <p>
-        <Trans i18nKey={prefix + 'text-link'}
+        <Trans i18nKey={prefix + 'link'}
                components={{
                  link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
                }} />

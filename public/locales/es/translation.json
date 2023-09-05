@@ -1,4 +1,5 @@
 {
+  "-latex-": "<com>{{data}}</com>",
   "welcome": "Bienvenido a Nets4Learning",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
   "list_map": "<1></1>",
@@ -376,20 +377,22 @@
       "salary": {
         "title": "Salario por años de experiencia",
         "description": {
-          "text-0": "El conjunto de datos \"Salary\" es una colección de información que relaciona la cantidad de años de experiencia laboral de un individuo con su salario correspondiente.",
-          "text-1": "Cada entrada en el conjunto de datos consta de dos variables principales: \"Years of Experience\" (Años de experiencia) y \"Salary\" (Salario). La variable \"Years of Experience\" representa la cantidad de años que un empleado ha trabajado en su campo específico, mientras que la variable \"Salary\" representa la cantidad de dinero que dicho empleado gana anualmente.",
-          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>www.kaggle.com</link1>.",
+          "text": {
+            "0": "El conjunto de datos \"Salary\" es una colección de información que relaciona la cantidad de años de experiencia laboral de un individuo con su salario correspondiente.",
+            "1": "Cada entrada en el conjunto de datos consta de dos variables principales: \"Years of Experience\" (Años de experiencia) y \"Salary\" (Salario). La variable \"Years of Experience\" representa la cantidad de años que un empleado ha trabajado en su campo específico, mientras que la variable \"Salary\" representa la cantidad de dinero que dicho empleado gana anualmente."
+          },
+          "link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>www.kaggle.com</link1>.",
           "details-1-input": {
-            "title": "Detalles de los datos de entrada del modelo",
+            "title": "Datos de entrada",
             "list": {
               "0": "Years of experience - Años de experiencia",
               "1": "Salary - Salario"
             }
           },
           "details-2-output": {
-            "title": "Detalles de los datos de salida del modelo",
+            "title": "Datos de salida",
             "list": {
-              "0": "Salary"
+              "0": "Regresión lineal calculada (<b>Salary</b>)"
             }
           },
           "details-3-references": {
@@ -403,10 +406,12 @@
       "auto-mpg": {
         "title": "Rendimiento de combustible",
         "description": {
-          "text-0": "El conjunto de datos <i>AUTO MPG</i> se tomó de la biblioteca StatLib que se mantiene en la Universidad Carnegie Mellon. El conjunto de datos se utilizó en la Exposición de la Asociación Estadounidense de Estadística de 1983.",
-          "text-1": "El término \"Auto MPG\" se refiere a las millas por galón, una unidad de medida de eficiencia de combustible utilizada comúnmente en los Estados Unidos. Esta medida indica cuántas millas puede recorrer un vehículo con un galón de combustible. Sin embargo, \"Auto MPG\" es un término en inglés y no hay una traducción directa en español.\n\nEn español, para referirse a la eficiencia de combustible de un automóvil, se suelen utilizar términos como \"consumo de combustible\" o \"rendimiento de combustible\". Estos términos indican cuántos kilómetros o millas puede recorrer un vehículo con un litro o galón de combustible, respectivamente.\n\nEs importante tener en cuenta que en diferentes países se utilizan unidades de medida distintas para el consumo de combustible. Por ejemplo, en algunos lugares se utiliza el litro por cada 100 kilómetros recorridos (L/100 km) para indicar la eficiencia de combustible.",
-          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>ics.uci.edu</link1>.",
-          "details-1": {
+          "text": {
+            "0": "El conjunto de datos <i>AUTO MPG</i> se tomó de la biblioteca StatLib que se mantiene en la Universidad Carnegie Mellon. El conjunto de datos se utilizó en la Exposición de la Asociación Estadounidense de Estadística de 1983.",
+            "1": "El término \"Auto MPG\" se refiere a las millas por galón, una unidad de medida de eficiencia de combustible utilizada comúnmente en los Estados Unidos. Esta medida indica cuántas millas puede recorrer un vehículo con un galón de combustible. Sin embargo, \"Auto MPG\" es un término en inglés y no hay una traducción directa en español.\n\nEn español, para referirse a la eficiencia de combustible de un automóvil, se suelen utilizar términos como \"consumo de combustible\" o \"rendimiento de combustible\". Estos términos indican cuántos kilómetros o millas puede recorrer un vehículo con un litro o galón de combustible, respectivamente.\n\nEs importante tener en cuenta que en diferentes países se utilizan unidades de medida distintas para el consumo de combustible. Por ejemplo, en algunos lugares se utiliza el litro por cada 100 kilómetros recorridos (L/100 km) para indicar la eficiencia de combustible."
+          },
+          "link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>ics.uci.edu</link1>.",
+          "details-0": {
             "title": "Información",
             "list": {
               "0": "<b>MPG</b>: MPG son las siglas en inglés de Millas por Galón. Es la cantidad de combustible consumido por el vehículo particular de una instancia. Esta variable también se puede utilizar como la variable a predecir para cualquier coche.",
@@ -420,7 +425,7 @@
               "8": "<b>car name</b>: Es el nombre del coche en cadena."
             }
           },
-          "details-2": {
+          "details-1": {
             "title": "Datos de entrada",
             "list": {
               "0": "<b>MPG</b>: continuo",
@@ -434,10 +439,16 @@
               "8": "<b>car name</b>: texto (única para cada instancia)"
             }
           },
-          "details-3": {
+          "details-2": {
             "title": "Datos de salida",
             "list": {
-              "0": "<b>MPG</b>: continuo"
+              "0": "Regresión lineal calculada (<b>MPG</b>)"
+            }
+          },
+          "details-3": {
+            "title": "Referencias",
+            "list": {
+              "0": "<link1>Auto MPG</link1>"
             }
           }
         }
@@ -445,9 +456,11 @@
       "boston-housing": {
         "title": "Las viviendas en Boston",
         "description": {
-          "text-0": "El conjunto de datos de viviendas de Boston se deriva de la información recopilada por el Servicio del Censo de EE. UU. sobre viviendas en el área de Boston.",
-          "text-1": "El conjunto de datos está diseñado para abordar problemas de regresión y modelado de precios de viviendas en diferentes vecindarios de Boston, Massachusetts, Estados Unidos. Este conjunto de datos es comúnmente utilizado para ejemplos y prácticas en la educación y la investigación.",
-          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "text": {
+            "0": "El conjunto de datos de viviendas de Boston se deriva de la información recopilada por el Servicio del Censo de EE. UU. sobre viviendas en el área de Boston.",
+            "1": "El conjunto de datos está diseñado para abordar problemas de regresión y modelado de precios de viviendas en diferentes vecindarios de Boston, Massachusetts, Estados Unidos. Este conjunto de datos es comúnmente utilizado para ejemplos y prácticas en la educación y la investigación."
+          },
+          "link": "<link1>Entrada del conjunto de datos UCI</link1>",
           "details-1-input": {
             "title": "Datos de entrada",
             "list": {
@@ -470,7 +483,7 @@
           "details-2-output": {
             "title": "Datos de salida",
             "list": {
-              "0": "Gráfico de dispersión y línea de regresión: Estos gráficos visuales muestran cómo se ajusta la línea de regresión a los datos observados. La pendiente y la intersección de la línea se basan en los coeficientes calculados."
+              "0": "Regresión lineal calculada"
             }
           },
           "details-3-references": {
@@ -484,11 +497,13 @@
       "breast-cancer": {
         "title": "Cáncer de mama Wisconsin (pronóstico)",
         "description": {
-          "text-0": "Es un conjunto de datos del Hospital de la universidad de wisconsin relacionados con el cancer de mama. Dicho conjunto de datos es útil para la predicción y discriminación de un tumor de cancer de mama, diferenciando si es benigno o no.",
-          "text-1": "Cada registro representa los datos de seguimiento de un caso de cáncer de mama. Estos son caso atendidos desde 1984 por el Dr. Wolberg, solo incluye aquellos casos que presentan cáncer de mama invasivo y sin evidencia de metástasis.",
-          "text-2": "Las primeras 30 características se calculan a partir de una imagen digitalizada de una aspiración con aguja fina (PAAF) de la masa mamaria, dichos datos describen las características de los núcleos celulares presentes en la imagen, algunas imágenes se pueden encontrar en <link1>cs wisc</link1>",
-          "text-3": "El fichero <kbd>wdbc.csv</kbd> corresponde al conjunto de datos de diagnostico y <kbd>wpbc.csv</kbd> corresponde al conjunto de datos de pronostico.",
-          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "text": {
+            "0": "Es un conjunto de datos del Hospital de la Universidad de Wisconsin relacionados con el cáncer de mama. Dicho conjunto de datos es útil para la predicción y discriminación de un tumor de cancer de mama, diferenciando si es benigno o no.",
+            "1": "Cada registro representa los datos de seguimiento de un caso de cáncer de mama. Estos son casos atendidos desde 1984 por el Dr. Wolberg, solo incluye aquellos casos que presentan cáncer de mama invasivo y sin evidencia de metástasis.",
+            "2": "Las primeras 30 características se calculan a partir de una imagen digitalizada de una aspiración con aguja fina (PAAF) de la masa mamaria, dichos datos describen las características de los núcleos celulares presentes en la imagen, algunas imágenes se pueden encontrar en <link1>cs wisc</link1>.",
+            "3": "El fichero <kbd>wdbc.csv</kbd> corresponde al conjunto de datos de diagnóstico y <kbd>wpbc.csv</kbd> corresponde al conjunto de datos de pronóstico."
+          },
+          "link": "<link1>Entrada del conjunto de datos UCI</link1>",
           "details-1-input": {
             "title": "Datos de entrada",
             "list": {
@@ -526,10 +541,13 @@
       "student-performance": {
         "title": "Rendimiento de estudiantes",
         "description": {
-          "text-0": "El conjunto de datos incluye datos del rendimiento académico de alumnos de dos centros escolares portugueses. Los datos incluyen características demográficas, sociales, calificaciones de los estudiantes, etc. Se incluyen dos conjuntos de datos uno con el desempeño de dos materias distintas: Matemáticas (mat) y lengua portuguesa (por).",
-          "text-1": "Nota importante: el atributo objetivo G3 tiene una fuerte correlación con los atributos G2 y G1. Esto ocurre porque G3 es la calificación del último año (emitida en el 3er período), mientras que G1 y G2 corresponden a las calificaciones del 1er y 2do período. Es más difícil predecir G3 sin G2 y G1, pero dicha predicción es mucho más útil.",
-          "text-2": "El fichero <kbd>student-por.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de portugués y <kbd>student-mat.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de matemáticas.",
-          "text-link": "<link1>Entrada del conjunto de datos UCI</link1>",
+          "text": {
+            "0": "El conjunto de datos incluye datos del rendimiento académico de alumnos de dos centros escolares portugueses. Los datos incluyen características demográficas, sociales, calificaciones de los estudiantes, etc. Se incluyen dos conjuntos de datos uno con el desempeño de dos materias distintas: Matemáticas (mat) y lengua portuguesa (por).",
+            "1": "El conjunto de datos contiene datos de tipo multivariado, atributos de tipo reales, 649 instancias y 12 atributos distintos.",
+            "2": "Nota importante: el atributo objetivo G3 tiene una fuerte correlación con los atributos G2 y G1. Esto ocurre porque G3 es la calificación del último año (emitida en el 3er período), mientras que G1 y G2 corresponden a las calificaciones del 1er y 2do período. Es más difícil predecir G3 sin G2 y G1, pero dicha predicción es mucho más útil.",
+            "3": "El fichero <kbd>student-por.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de portugués y <kbd>student-mat.csv</kbd> corresponde al conjunto de datos de calificaciones de estudiantes de matemáticas."
+          },
+          "link": "<link1>Entrada del conjunto de datos UCI</link1>",
           "details-1-input": {
             "title": "Datos de entrada",
             "list": {
@@ -582,10 +600,13 @@
       "wine": {
         "title": "Calidad del vino",
         "description": {
-          "text-0": "Los dos conjuntos de datos están relacionados, pues incluyen las variantes de vino tinto y vino blanco portugués. Dicho conjunto de datos solo incluye variables fisicoquímicas (entradas) y sensoriales (salidas), el conjunto de datos no incluye datos de tipos de uva, marca de vino o precio de venta del vino.",
-          "text-1": "El conjunto de datos contiene datos de tipo multivariado, atributos de tipo reales, 4898 instancias y 12 atributos distintos.",
-          "text-2": "Dicho conjunto de datos puede ser usado para tareas de clasificación o de regresión. Las clases están ordenadas, aunque el conjunto de datos se encuentra desbalanceado.",
-          "text-link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>archive.ics.uci.edu</link1>.",
+          "text": {
+            "0": "Los dos conjuntos de datos están relacionados, pues incluyen las variantes de vino tinto y vino blanco portugués. Dicho conjunto de datos solo incluye variables fisicoquímicas (entradas) y sensoriales (salidas), el conjunto de datos no incluye datos de tipos de uva, marca de vino o precio de venta del vino.",
+            "1": "El conjunto de datos contiene datos de tipo multivariado, atributos de tipo reales, 4898 instancias y 12 atributos distintos.",
+            "2": "Dicho conjunto de datos puede ser usado para tareas de clasificación o de regresión. Las clases están ordenadas, aunque el conjunto de datos se encuentra desbalanceado.",
+            "3": "El fichero <kbd>wine-quality-red.csv</kbd> corresponde al conjunto de datos de vino tinto y <kbd>wine-quality-white.csv</kbd> corresponde al conjunto de datos de vino blanco."
+          },
+          "link": "Para obtener más información acerca de este conjunto de datos visita el repositorio <link1>archive.ics.uci.edu</link1>.",
           "details-1-input": {
             "title": "Datos de entrada",
             "list": {
@@ -874,6 +895,35 @@
         "3-option-1": "Modelo - MNIST - Clasificación de números",
         "3-option-2": "Modelo - MobileNet - Clasificación de imágenes",
         "3-option-3": "Modelo - ResNet - Clasificación de imágenes"
+      }
+    }
+  },
+  "dataframe": {
+    "correlation-matrix": {
+      "title": "Matriz de correlación",
+      "description": {
+        "0": "El coeficiente de correlación de Pearson, también conocido como correlación lineal o coeficiente de correlación producto-momento, es una medida estadística utilizada para cuantificar la relación lineal entre dos variables cuantitativas. Es uno de los estadísticos de correlación más comúnmente utilizados y proporciona información sobre la fuerza y la dirección de la relación entre las variables.",
+        "1": "El coeficiente de correlación de Pearson varía entre -1 y 1:",
+        "2": "Un valor de -1 indica una correlación lineal perfectamente negativa, lo que significa que a medida que aumenta una variable, la otra disminuye en una relación lineal inversa.",
+        "3": "Un valor de 1 indica una correlación lineal perfectamente positiva, lo que significa que a medida que aumenta una variable, la otra también aumenta en una relación lineal directa.",
+        "4": "Un valor de 0 indica que no hay una correlación lineal entre las variables, lo que implica que no hay una relación lineal entre ellas.",
+        "5": "El cálculo del coeficiente de correlación de Pearson se basa en las covarianzas y las desviaciones estándar de las dos variables. Matemáticamente, se calcula de la siguiente manera:",
+        "6": "Donde:",
+        "7": "<xi>PEPE</xi>{{pepe}} y <yi>n</yi> son los valores de las dos variables en cada observación.",
+        "8": "<0></0> y <1></1> son las medias de las dos variables, respectivamente.",
+        "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables."
+      }
+    },
+    "describe": {
+      "title": "Descripción del DataFrame",
+      "description": {
+        "title": "Descripción"
+      }
+    },
+    "query": {
+      "title": "Consulta",
+      "description": {
+        "title": "Descripción"
       }
     }
   },

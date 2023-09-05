@@ -11,12 +11,12 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   _KEY = 'BOSTON_HOUSING'
 
   DESCRIPTION () {
-    const prefix = 'datasets-models.1-linear-regression.salary.description.'
+    const prefix = 'datasets-models.1-linear-regression.boston-housing.description.'
     return <>
-      <p><Trans i18nKey={prefix + 'text-0'} /></p>
-      <p><Trans i18nKey={prefix + 'text-1'} /></p>
+      <p><Trans i18nKey={prefix + 'text.0'} /></p>
+      <p><Trans i18nKey={prefix + 'text.1'} /></p>
       <p>
-        <Trans i18nKey={prefix + 'text-link'}
+        <Trans i18nKey={prefix + 'link'}
                components={{
                  link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
                }} />
@@ -41,7 +41,12 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
       <details>
         <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-3-references.list.0'} /></li>
+          <li>
+            <Trans i18nKey={prefix + 'details-3-references.list.0'}
+                   components={{
+                     link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                   }}/>
+          </li>
         </ol>
       </details>
 

@@ -309,32 +309,26 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <Row className={'mt-3'}>
-          <Col>
-            <Card>
-              <Card.Header>
-                <h3>Debug</h3>
-              </Card.Header>
-              <Card.Body>
-                <Row lg={3}>
-                  <Col><DebugJSON obj={tmpModel.params_training} /></Col>
-                  <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
-                  <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
-                  <Col><DebugJSON obj={{ accordionActive }} /></Col>
-                  <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        <hr />
-
-        <Row className={'mt-3 text-center'}>
-          <Col className={'my-step-1'}><h1>hello world</h1></Col>
-          <Col className={'my-step-2'}><h1>hello world</h1></Col>
-          <Col className={'my-step-3'}><h1>hello world</h1></Col>
-        </Row>
+        {process.env.REACT_APP_ENVIRONMENT === 'development' &&
+          <Row className={'mt-3'}>
+            <Col>
+              <Card>
+                <Card.Header>
+                  <h3>Debug</h3>
+                </Card.Header>
+                <Card.Body>
+                  <Row lg={3}>
+                    <Col><DebugJSON obj={tmpModel.params_training} /></Col>
+                    <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
+                    <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
+                    <Col><DebugJSON obj={{ accordionActive }} /></Col>
+                    <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        }
 
       </Container>
     </>

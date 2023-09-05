@@ -211,39 +211,39 @@ export default class I_MODEL_LINEAR_REGRESSION {
           target   : '.joyride-step-9-predict-visualization',
           placement: 'top'
         },
-        {
-          target : '.my-step-1',
-          locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          content: <>
-            <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
-              <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
-                <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-              </audio>
-            </div>
-          </>,
-        },
-        {
-          target : '.my-step-2',
-          locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          content: <>
-            <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
-              <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
-                <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-              </audio>
-            </div>
-          </>,
-        },
-        {
-          target : '.my-step-3',
-          locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          content: <>
-            <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
-              <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
-                <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-              </audio>
-            </div>
-          </>,
-        },
+        // {
+        //   target : '.my-step-1',
+        //   locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        //   content: <>
+        //     <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
+        //       <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
+        //         <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+        //       </audio>
+        //     </div>
+        //   </>,
+        // },
+        // {
+        //   target : '.my-step-2',
+        //   locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        //   content: <>
+        //     <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
+        //       <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
+        //         <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+        //       </audio>
+        //     </div>
+        //   </>,
+        // },
+        // {
+        //   target : '.my-step-3',
+        //   locale : { skip: <strong aria-label="skip">S-K-I-P</strong> },
+        //   content: <>
+        //     <div className="col-sm-4 col-sm-offset-4 embed-responsive embed-responsive-4by3">
+        //       <audio controls className="embed-responsive-item" controlsList="nofullscreen nodownload noremoteplayback">
+        //         <source src="https://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
+        //       </audio>
+        //     </div>
+        //   </>,
+        // },
       ]
     }
     // return {

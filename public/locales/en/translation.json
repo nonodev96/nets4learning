@@ -376,20 +376,22 @@
       "salary": {
         "title": "Salary for years of experience",
         "description": {
-          "text-0": "The \"Salary\" data set is a collection of information that relates the number of years of work experience of an individual with their corresponding salary.",
-          "text-1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the number of years that an employee has worked in its specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually.",
-          "text-link": "For more information about this data set, visit the repository <link1>www.kaggy.com</link1>",
+          "text": {
+            "0": "The \"Salary\" data set is a collection of information that relates the number of years of work experience of an individual with their corresponding salary.",
+            "1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the number of years that an employee has worked in its specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually."
+          },
+          "link": "For more information about this data set, visit the repository <link1>www.kaggy.com</link1>",
           "details-1-input": {
-            "title": "Model entry data details",
+            "title": "Input",
             "list": {
               "0": "Years of Experience - Years of Experience",
               "1": "Salary - Salary"
             }
           },
           "details-2-output": {
-            "title": "Model output data details",
+            "title": "Output",
             "list": {
-              "0": "Salary"
+              "0": "Calculated linear regression (<b>Salary</b>)"
             }
           },
           "details-3-references": {
@@ -403,10 +405,12 @@
       "auto-mpg": {
         "title": "Auto MPG",
         "description": {
-          "text-0": "The <i>AUTO MPG</i> dataset was taken from the StatLib library maintained at Carnegie Mellon University. The dataset was used at the 1983 American Statistical Association Exposition.",
-          "text-1": "The term \"Auto MPG\" refers to miles per gallon, a unit of fuel efficiency measurement commonly used in the United States. This measure indicates how many miles a vehicle can travel on one gallon of fuel. However, \"Auto MPG\" is an English term and there is no direct translation in Spanish.\n\nIn Spanish, terms such as \"consumo de combustible\" or \"rendimiento de combustible\" are often used to refer to the fuel efficiency of a car. These terms indicate how many kilometres or miles a vehicle can travel on one litre or gallon of fuel, respectively.\n\nIt is important to note that different countries use different units of measurement for fuel consumption. For example, in some places the litre per 100 kilometres travelled (L/100 km) is used to indicate fuel efficiency.",
-          "text-link": "For more information about this dataset, visit the <link1>ICS.UCI.edu repository.</link1>",
-          "details-1": {
+          "text": {
+            "0": "The <i>AUTO MPG</i> dataset was taken from the StatLib library maintained at Carnegie Mellon University. The dataset was used at the 1983 American Statistical Association Exposition.",
+            "1": "The term \"Auto MPG\" refers to miles per gallon, a unit of fuel efficiency measurement commonly used in the United States. This measure indicates how many miles a vehicle can travel on one gallon of fuel. However, \"Auto MPG\" is an English term and there is no direct translation in Spanish.\n\nIn Spanish, terms such as \"consumo de combustible\" or \"rendimiento de combustible\" are often used to refer to the fuel efficiency of a car. These terms indicate how many kilometres or miles a vehicle can travel on one litre or gallon of fuel, respectively.\n\nIt is important to note that different countries use different units of measurement for fuel consumption. For example, in some places the litre per 100 kilometres travelled (L/100 km) is used to indicate fuel efficiency."
+          },
+          "link": "For more information about this dataset, visit the <link1>ICS.UCI.edu repository.</link1>",
+          "details-0": {
             "title": "Information",
             "list": {
               "0": "<b>MPG</b>: MPG is Miles Per Gallon. This is the amount of fuel consumed by the particular vehicle of an instance. This varable can also be used as the variable to be predicted for any car",
@@ -420,7 +424,7 @@
               "8": "<b>car name</b>: This is the name of the car in string"
             }
           },
-          "details-2": {
+          "details-1": {
             "title": "Input data",
             "list": {
               "0": "<b>MPG</b>: continuous",
@@ -434,10 +438,16 @@
               "8": "<b>car name</b>: string (unique for each instance)"
             }
           },
-          "details-3": {
+          "details-2": {
             "title": "Output data",
             "list": {
-              "0": "<b>MPG</b>: continuous"
+              "0": "Calculated linear regression (<b>MPG/b>)"
+            }
+          },
+          "details-3": {
+            "title": "References",
+            "list": {
+              "0": "<link1>Auto MPG</link1>"
             }
           }
         }
@@ -445,9 +455,11 @@
       "boston-housing": {
         "title": "The Boston Housing",
         "description": {
-          "text-0": null,
-          "text-1": "The data set is designed to address regression and modeling problems of housing prices in different neighborhoods of Boston, Massachusetts, United States. This data set is commonly used for examples and practices in education and research.",
-          "text-link": "<link1>UCI data set info</link1>",
+          "text": {
+            "0": null,
+            "1": "The data set is designed to address regression and modeling problems of housing prices in different neighborhoods of Boston, Massachusetts, United States. This data set is commonly used for examples and practices in education and research."
+          },
+          "link": "<link1>UCI data set info</link1>",
           "details-1-input": {
             "title": "Input",
             "list": {
@@ -470,7 +482,7 @@
           "details-2-output": {
             "title": "Output",
             "list": {
-              "0": "Dispersion graph and regression line: These visual graphics show how the regression line is adjusted to the observed data. The slope and intersection of the line are based on the calculated coefficients."
+              "0": "Calculated linear regression"
             }
           },
           "details-3-references": {
@@ -484,11 +496,13 @@
       "breast-cancer": {
         "title": "Breast Cancer Wisconsin (Prognostic)",
         "description": {
-          "text-0": "It is a data set of the Hospital of the University of Wisconsin related to breast cancer. This data set is useful for the prediction and discrimination of a breast cancer tumor, differentiating whether it is benign or not.",
-          "text-1": "Each record represents the monitoring data of a breast cancer case. These are a case attended since 1984 by Dr. Wolberg, only includes those cases that have invasive breast cancer and without evidence of metastases.",
-          "text-2": "The first 30 characteristics are calculated from a digitized image of a fine needle aspiration (FNAB) of the breast mass, these data describe the characteristics of the cell nuclei present in the image, some images can be found in <link2>cs wisc<link2>",
-          "text-3": "The file <kbd>wdbc.csv</kbd> corresponds to the diagnostic data set and <kbd>wpbc.csv</kbd> corresponds to the prognostic data set.",
-          "text-link": "<link1>UCI data set input </link1>",
+          "text": {
+            "0": "It is a data set of the Hospital of the University of Wisconsin related to breast cancer. This data set is useful for the prediction and discrimination of a breast cancer tumor, differentiating whether it is benign or not.",
+            "1": "Each record represents the monitoring data of a breast cancer case. These are cases attended since 1984 by Dr. Wolberg, only includes those cases that have invasive breast cancer and without evidence of metastases.",
+            "2": "The first 30 characteristics are calculated from a digitized image of a fine needle aspiration (FNAB) of the breast mass, these data describe the characteristics of the cell nuclei present in the image, some images can be found in <link2>cs wisc<link2>",
+            "3": "The file <kbd>wdbc.csv</kbd> corresponds to the diagnostic data set and <kbd>wpbc.csv</kbd> corresponds to the prognostic data set."
+          },
+          "link": "<link1>UCI data set input </link1>",
           "details-1-input": {
             "title": "Input",
             "list": {
@@ -526,10 +540,13 @@
       "student-performance": {
         "title": "Student Performance",
         "description": {
-          "text-0": null,
-          "text-1": null,
-          "text-2": null,
-          "text-link": "<link1>UCI data set input </link1>",
+          "text": {
+            "0": null,
+            "1": null,
+            "2": null,
+            "3": null
+          },
+          "link": "<link1>UCI data set input </link1>",
           "details-1-input": {
             "title": "Input",
             "list": {
@@ -582,10 +599,13 @@
       "wine": {
         "title": "Wine Quality",
         "description": {
-          "text-0": "The two data sets are related, as they include the variants of red wine and Portuguese white wine. This data set only includes physicochemical variables (inputs) and sensory (outputs), the data set does not include grape types data, wine brand or wine sale price.",
-          "text-1": "The data set contains multivariate data, real -type attributes, 4898 instances and 12 different attributes.",
-          "text-2": "Said data set can be used for classification or regression tasks. The classes are ordered, although the data set is unbalanced.",
-          "text-link": "For more information about this data set, visit the <link1> archive.ics.uci.edu </link1> repository.",
+          "text": {
+            "0": "The two data sets are related, as they include the variants of red wine and Portuguese white wine. This data set only includes physicochemical variables (inputs) and sensory (outputs), the data set does not include grape types data, wine brand or wine sale price.",
+            "1": "The data set contains multivariate data, real -type attributes, 4898 instances and 12 different attributes.",
+            "2": "Said data set can be used for classification or regression tasks. The classes are ordered, although the data set is unbalanced.",
+            "3": "The <kbd> wine-qualy-red.csv </kbd> file corresponds to the red wine data set and <kbd> wine-qualy-white.csv </kbd> corresponds to the white wine data set."
+          },
+          "link": "For more information about this data set, visit the <link1> archive.ics.uci.edu </link1> repository.",
           "details-1-input": {
             "title": "Input",
             "list": {
@@ -877,6 +897,35 @@
       }
     }
   },
+  "dataframe": {
+    "correlation-matrix": {
+      "title": "Correlation matrix",
+      "description": {
+        "0": "Pearson's correlation coefficient, also known as a linear correlation or product-moment correlation coefficient, is a statistical measure used to quantify the linear relationship between two quantitative variables. It is one of the most commonly used correlation statistics and provides information about the strength and direction of the relationship between the variables.",
+        "1": "Pearson's correlation coefficient varies between -1 and 1:",
+        "2": "A value of -1 indicates a perfectly negative linear correlation, which means that as one variable increases, the other decreases in a reverse linear relationship.",
+        "3": "A value of 1 indicates a perfectly positive linear correlation, which means that as one variable increases, the other also increases in a direct linear relationship.",
+        "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
+        "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
+        "6": "Where:",
+        "7": "<xi> a</xi> and <yi> s</yi> are the values of the two variables in each observation.",
+        "8": "<0> </0> and <1> </1> are the means of the two variables, respectively.",
+        "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables."
+      }
+    },
+    "describe": {
+      "title": "DataFrame description",
+      "description": {
+        "title": "Description"
+      }
+    },
+    "query": {
+      "title": "Query",
+      "description": {
+        "title": "Description"
+      }
+    }
+  },
   "dataframe-plot": {
     "title": "DataFrame Plot",
     "info": "Information",
@@ -941,7 +990,7 @@
           "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
         },
         "end": {
-          "0": "Box type graphics are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
         }
       }
     },

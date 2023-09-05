@@ -1,12 +1,10 @@
-import React, { useEffect, useId, useState } from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
-import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
 import AlertHelper from '@utils/alertHelper'
 
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import WaitingCircle from '@components/loading/WaitingCircle'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
@@ -14,13 +12,13 @@ import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext
 import DataFramePlot from '@components/dataframe/DataFramePlot'
 import DataFrameCorrelationMatrix from '@components/dataframe/DataFrameCorrelationMatrix'
 import DataFrameQuery from '@components/dataframe/DataFrameQuery'
+import DataFrameDescribe from '@components/dataframe/DataFrameDescribe'
 
 
 export default function DataFrame () {
   const prefix = 'pages.dataframe.'
   const { t } = useTranslation()
 
-  const dataframeID = useId()
   const [dataframe, setDataFrame] = useState(/**@type dfd.DataFrame*/ new dfd.DataFrame())
   const [waiting, setWaiting] = useState(true)
 
@@ -44,9 +42,6 @@ export default function DataFrame () {
     await AlertHelper.alertError(t('error.file-not-valid', { title: 'Error' }))
   }
 
-  const handleClick_OpenModal_Describe = () => {
-
-  }
 
   /**
    *
@@ -56,14 +51,8 @@ export default function DataFrame () {
    * @return {number}
    */
 
-  useEffect(() => {
-    if (dataframe.columns.length > 0) {
-      dataframe.describe().T.plot(dataframeID).table({ config: TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 })
-    }
-  }, [dataframe, dataframeID])
-
   return <>
-    <Container className={'mb-3'}>
+    <Container className={'mt-3 mb-3'}>
       <h1><Trans i18nKey={prefix + 'title'} /></h1>
       <Row className={'mt-3'}>
         <Col>
@@ -95,24 +84,7 @@ export default function DataFrame () {
 
       <Row className={'mt-3'}>
         <Col>
-          <Card>
-            <Card.Header className={'d-flex align-items-center justify-content-between'}>
-              <h3><Trans i18nKey={'dataframe-describe.title'} /></h3>
-              <div className="d-flex">
-                <Button onClick={handleClick_OpenModal_Describe}
-                        size={'sm'}
-                        variant={'outline-primary'}>
-                   <Trans i18nKey={'Description'} />
-                </Button>
-              </div>
-            </Card.Header>
-            <Card.Body>
-              {dataframe.columns.length === 0 &&
-                <WaitingPlaceholder title={t('Waiting')} />
-              }
-              <div id={dataframeID}></div>
-            </Card.Body>
-          </Card>
+          <DataFrameDescribe dataframe={dataframe} />
         </Col>
       </Row>
 

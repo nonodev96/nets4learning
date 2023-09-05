@@ -73,7 +73,7 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={'Matriz de correlación'} /></h3>
+        <h3><Trans i18nKey={'dataframe.correlation-matrix.title'} /></h3>
         <div className="d-flex">
           <Button onClick={handleClick_OpenModal_CorrelationMatrix}
                   size={'sm'}
