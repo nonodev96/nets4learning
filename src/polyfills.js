@@ -50,7 +50,7 @@ Element.prototype.removeEventListener = function (type, listener, useCapture = f
 
 /**
  * [getEventListeners description]
- * @param  {[type]} type [description]
+ * @param  {string} type [description]
  * @return {[type]}      [description]
  */
 Element.prototype.getEventListeners = function (type) {

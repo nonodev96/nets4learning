@@ -22,3 +22,8 @@
 .border_red {
   border: 1px solid red;
 }
+
+.table-scroll {
+  max-height: clamp(20em, 10vh, 250px);
+  overflow: auto;
+}

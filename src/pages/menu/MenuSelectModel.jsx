@@ -88,7 +88,7 @@ export default function MenuSelectModel (_props) {
     }
   }
 
-  if(VERBOSE) console.debug('render MenuSelectModel')
+  if (VERBOSE) console.debug('render MenuSelectModel')
   return (
     <>
       <Form onSubmit={($event) => handleSubmit($event)}>
@@ -110,7 +110,10 @@ export default function MenuSelectModel (_props) {
                     <Form.Select aria-label={t('pages.menu-selection-model.form-label')}
                                  defaultValue={'select-model'}
                                  data-testid={'Test-MenuSelectModel-Select'}
-                                 onChange={(e) => setModelKey(e.target.value)}>
+                                 onChange={(e) => {
+                                   console.log({ e })
+                                   setModelKey(e.target.value)
+                                 }}>
                       <option value={'select-model'} disabled>{t('pages.menu-selection-model.form-option-_-1')}</option>
 
                       <PrintFormSelectOptions />

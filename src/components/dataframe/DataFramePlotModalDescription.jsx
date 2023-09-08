@@ -10,6 +10,7 @@ export default function DataFramePlotModalDescription () {
     showDescription,
     setShowDescription,
   } = useContext(DataFramePlotContext)
+  const URL = 'https://danfo.jsdata.org/api-reference/plotting'
 
   const [plotDescription, setPlotDescription] = useState({
     plot_intro: [],
@@ -60,6 +61,14 @@ export default function DataFramePlotModalDescription () {
 
 
       </Modal.Body>
+      <Modal.Footer>
+        <p className={'text-muted'}>
+          <Trans i18nKey={'dataframe.plot.link'}
+                 components={{
+                   link1: <a href={URL} target={'_blank'} rel="noreferrer" className={'text-info'}>link</a>
+                 }} />
+        </p>
+      </Modal.Footer>
     </Modal>
   </>
 }

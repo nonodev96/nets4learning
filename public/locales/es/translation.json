@@ -1,5 +1,4 @@
 {
-  "-latex-": "<com>{{data}}</com>",
   "welcome": "Bienvenido a Nets4Learning",
   "welcome-2": "Para continuar selecciona una de estas disciplinas",
   "list_map": "<1></1>",
@@ -17,6 +16,7 @@
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
   "Predicted": "Predicción",
   "Waiting": "Esperando",
+  "and": "y",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -900,7 +900,7 @@
   },
   "dataframe": {
     "correlation-matrix": {
-      "title": "Matriz de correlación",
+      "title": "DataFrame | Matriz de correlación",
       "description": {
         "0": "El coeficiente de correlación de Pearson, también conocido como correlación lineal o coeficiente de correlación producto-momento, es una medida estadística utilizada para cuantificar la relación lineal entre dos variables cuantitativas. Es uno de los estadísticos de correlación más comúnmente utilizados y proporciona información sobre la fuerza y la dirección de la relación entre las variables.",
         "1": "El coeficiente de correlación de Pearson varía entre -1 y 1:",
@@ -909,26 +909,38 @@
         "4": "Un valor de 0 indica que no hay una correlación lineal entre las variables, lo que implica que no hay una relación lineal entre ellas.",
         "5": "El cálculo del coeficiente de correlación de Pearson se basa en las covarianzas y las desviaciones estándar de las dos variables. Matemáticamente, se calcula de la siguiente manera:",
         "6": "Donde:",
-        "7": "<xi>PEPE</xi>{{pepe}} y <yi>n</yi> son los valores de las dos variables en cada observación.",
-        "8": "<0></0> y <1></1> son las medias de las dos variables, respectivamente.",
-        "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables."
-      }
+        "7": "son los valores de las dos variables en cada observación.",
+        "8": "son las medias de las dos variables, respectivamente.",
+        "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables.",
+        "title": "Descripción"
+      },
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
     },
     "describe": {
-      "title": "Descripción del DataFrame",
+      "title": "DataFrame | Describe",
       "description": {
+        "0": "Esta función se utiliza para generar un resumen estadístico de las columnas numéricas de un DataFrame. Proporciona estadísticas descriptivas clave, como la media, la desviación estándar, el mínimo, el máximo y varios cuantiles de las columnas numéricas. Esto es útil para obtener una comprensión rápida de la distribución y las tendencias de los datos.",
+        "1": "Esta función es útil para obtener una idea rápida de la distribución de los datos y puede ayudarte a identificar valores atípicos o anomalías en tus datos.",
         "title": "Descripción"
-      }
+      },
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
     },
     "query": {
-      "title": "Consulta",
+      "title": "DataFrame | Consulta",
       "description": {
+        "0": "Consulta el DataFrame por el resultado de una comparación lógica o máscara booleana.",
+        "1": "Puedes realizar tus propias consultas concatenando comparaciones lógicas, aquí tienes algunos ejemplos de como realizar las comparaciones.",
         "title": "Descripción"
-      }
+      },
+      "query": "Consulta",
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+    },
+    "plot": {
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
     }
   },
   "dataframe-plot": {
-    "title": "Graficos del DataFrame",
+    "title": "DataFrame | Graficos",
     "info": "Información",
     "description": {
       "title": "Descripción del tipo de gráfica"
@@ -1410,7 +1422,63 @@
       "1-linear-regression": {
         "generator": {
           "manual": {
-            "title": "Manual del generador de modelos"
+            "title": "Manual del generador de modelos",
+            "simple-linear-regression": "Regresión linear simple",
+            "multiple-linear-regression": "Regresión linear multiple",
+            "details-edit-layers": {
+              "title": "Editor de las capas",
+              "text": {
+                "0": "Se pueden editar las capas de la red neuronal, puedes agregar tantas como desees pulsando el botón \"Añadir capa\" al inicio o al final."
+              },
+              "list": {
+                "0": "<b>Neuronas de la capa</b>:<br /> Cada neurona en una capa está conectada a todas las neuronas de la capa anterior y de la capa siguiente. <br /> Cada neurona en una capa tiene un conjunto de pesos asociados que ponderan su valor de salida. <br /> Podemos editar el número de neuronas de la capa.",
+                "1": "<b>Función de activación</b>:<br />La función de activación de una neurona se refiere a la función matemática que calcula su salida. Podemos editar la función de activación de las neuronas de cada capa."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Editor de hiperparámetros",
+              "text": {
+                "0": "Se pueden editar los parámetros generales necesarios para la creación del modelo. <br />Estos parámetros son:"
+              },
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br />Valor entre 0 y 100 el cual indica el porcentaje de cambio de los pesos de la red.",
+                "1": "<b>Número de iteraciones</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
+                "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
+                "5": "<b>Función de métrica</b>:<br />Es la media de evaluación que se utiliza para valorar el rendimiento de un modelo de aprendizaje automático con los datos de prueba."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Información de hiperparámetros",
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br /> La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.",
+                "1": "<b>Número de iteraciones</b>:<br /> El número de iteraciones se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br /> El tamaño del conjunto de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.",
+                "3": "<b>Optimizador</b>:<br /> El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente Estocástico (SGD), el Adam y el Adagrad.",
+                "4": "<b>Función de pérdida</b>:<br /> La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de pérdida, como la Entropía Cruzada y el Error Cuadrático Medio."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Crear y entrenar modelo",
+              "text": {
+                "0": "Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón \"Crear y entrenar modelo\".",
+                "1": "Si se pulsa el botón \"Abrir Visor\" se muestran dos gráficas. La gráfica superior muestra la evolución de la función de pérdida durante el entrenamiento. La gráfica inferior muestra la evolución de la métrica de evaluación <i>accuracy<i>. En las gráficas el color azul representa la evolución de los valores en el conjunto de entrenamiento y el color naranja representa las medidas para el conjunto de prueba.",
+                "2": "La precisión de validación es importante para detectar el sobre ajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos."
+              }
+            },
+            "details-export-models": {
+              "title": "Exportar modelo",
+              "text": {
+                "0": "Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados. La aplicación permite exportar los modelos generados y guardarlos localmente."
+              }
+            },
+            "details-plot-models": {
+              "title": "Graficado de predicciones",
+              "text": {
+                "0": "Podemos usar un gráfico disperso para dicha tarea, de forma que representemos los datos originales en una nube de puntos y usamos una línea para trazar las predicciones del modelo, en función de la arquitectura que usemos nos dará una línea recta con cierta pendiente o una línea que se ajustará y curvará más a los datos. Para ello se hacen 100 predicciones <i>x</i> distantes, desde primer valor al último valor."
+              }
+            }
           },
           "simple-linear-regression": "Regresión linear simple",
           "multiple-linear-regression": "Regresión linear multiple"
@@ -1434,6 +1502,7 @@
       "upload-csv": "Subir conjunto de datos"
     },
     "manual": {
+      "title": "Manual",
       "app": {
         "title": "Objetivos de la herramienta",
         "description-1": "Esta aplicación muestra algunas de las tareas más importantes que pueden realizar las redes neuronales artificiales, como son: clasificación tabular, clasificación de imágenes e Identificación de objetos.  Las redes son técnicas de inteligencia artificial pertenecientes al campo del aprendizaje automático, en el cual se desarrollan modelos que se entrenan (o aprenden) a partir de conjuntos de datos.",
@@ -1460,7 +1529,7 @@
         "1-title": "Modelos pre-entrenados",
         "1-description-1": "Debemos acceder a la sección de modelos pre-entrenados y seleccionar uno de los disponibles.",
         "1-description-2": "La herramienta cuenta con una lista de ejemplos representativos que permiten alterar el formulario de características.",
-        "1-description-3": "Al acceder a la sección de la herramienta en los modelos podremos editar las características de los elemento a predecir. La herramienta cuenta con formulario dinámico que permite cambiar los tipos de datos de entrada de la red neuronal.",
+        "1-description-3": "Al acceder a la sección de la herramienta en los modelos podremos editar las características de los elementos a predecir. La herramienta cuenta con formulario dinámico que permite cambiar los tipos de datos de entrada de la red neuronal.",
         "2-title": "Entrenar modelos",
         "2-description-1": "La herramienta cuenta con un visualizador de datos que permite mostrar las clases y los atributos del conjunto de datos. Así como un gestor para crear, diseñar, entrenar y exportar un modelo de datos.",
         "2-description-2": "A la izquierda contamos con un editor de las distintas capas que tiene la red neuronal. Se debe dejar que la ultima capa de la red tenga el mismo numero de neuronas que clases a predecir.",
@@ -1469,7 +1538,21 @@
         "2-description-5": "Una vez entrenado un modelo a partir de los datos podremos realizar predicciones, para ello se incluye un formulario dinámico con las características del conjunto de datos. La precisión del modelo en la predicción podrá ser mayor o menor en función del entrenamiento y las opciones seleccionadas."
       },
       "1-linear-regression": {
-        "title": "Regresión lineal"
+        "title": "Regresión lineal",
+        "1-title": "Modelos pre-entrenados",
+        "1-description": {
+          "0": "Debemos acceder a la sección de modelos pre-entrenados y seleccionar uno de los disponibles.",
+          "1": null,
+          "2": null
+        },
+        "2-title": "Entrenar modelos",
+        "2-description": {
+          "0": "La sección cuenta con la posibilidad subir tus conjuntos de datos, conjuntos de datos preparados, descripciones, herramientas de visualización gráficas y de estadísticas.",
+          "1": "Cuenta con un generador de modelos de regresión lineal. Gestiona capas de la red neuronal, hiperparámetros, funciones de optimización, funciones de perdida y de métricas. así como el selector de características.",
+          "2": "Debemos pulsar el botón de \"Crear y entrenar modelo\" para que se inicie el proceso de entrenamiento de la red neuronal. Si toda la configuración y selección de las funciones es correcta entonces se añadirá en la la lista una entrada con el modelos entrenado.",
+          "3": "Para la predicción se usa el grafico de dispersión creando una linea"
+        },
+        "2-link": "Consulta más información en el siguiente <link1>enlace</link1>"
       },
       "2-object-identification": {
         "title": "Identificación de objetos",
@@ -1515,10 +1598,12 @@
       },
       "linear-regression": {
         "title": "Regresión lineal",
-        "text-1": "La regresión lineal es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación entre una variable independiente (o predictor) y una variable dependiente (o respuesta). A través de la regresión lineal, se busca encontrar la línea recta que mejor se ajuste a los datos, de modo que se pueda predecir la respuesta en función de los valores de la variable independiente.",
-        "text-2": "En la regresión lineal, los datos se representan generalmente como puntos dispersos en un plano cartesiano, donde la variable independiente se coloca en el eje X y la variable dependiente en el eje Y. El objetivo es encontrar la ecuación de una línea recta (y = mx + b) que minimice la distancia entre esta línea y los puntos de datos. Una vez que se ha obtenido esta ecuación, se puede utilizar para hacer predicciones sobre valores futuros de la variable dependiente en función de los valores de la variable independiente.",
-        "text-3": "Por ejemplo, si estamos analizando la relación entre la cantidad de publicidad en un sitio web y las ventas de un producto, la cantidad de publicidad sería la variable independiente, y las ventas del producto serían la variable dependiente. La regresión lineal nos ayudaría a determinar si existe una relación lineal entre la inversión en publicidad y las ventas, y si es así, nos permitiría predecir las ventas futuras en función del gasto en publicidad.",
-        "text-4": "La regresión lineal es una herramienta poderosa en el análisis de datos y se utiliza en una variedad de campos, incluyendo la economía, la ciencia social, la investigación médica y muchas otras disciplinas para comprender y predecir relaciones entre variables."
+        "text": {
+          "0": "La regresión lineal es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación lineal entre una variable independiente y una variable dependiente, buscando encontrar la mejor línea recta que ajuste los datos y permita hacer predicciones.",
+          "1": "En la regresión lineal, los datos se representan generalmente como puntos dispersos en un plano cartesiano, donde la variable independiente se coloca en el eje X y la variable dependiente en el eje Y. El objetivo es encontrar la ecuación de una línea recta (y = mx + b) que minimice la distancia entre esta línea y los puntos de datos. Una vez que se ha obtenido esta ecuación, se puede utilizar para hacer predicciones sobre valores futuros de la variable dependiente en función de los valores de la variable independiente.",
+          "2": "Por ejemplo, si estamos analizando la relación entre la cantidad de publicidad en un sitio web y las ventas de un producto, la cantidad de publicidad sería la variable independiente, y las ventas del producto serían la variable dependiente. La regresión lineal nos ayudaría a determinar si existe una relación lineal entre la inversión en publicidad y las ventas, y si es así, nos permitiría predecir las ventas futuras en función del gasto en publicidad.",
+          "3": "La regresión lineal es una herramienta poderosa en el análisis de datos y se utiliza en una variedad de campos, incluyendo la economía, la ciencia social, la investigación médica y muchas otras disciplinas para comprender y predecir relaciones entre variables."
+        }
       },
       "object-identification": {
         "title": "Identificación de objetos",

@@ -54,6 +54,7 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {Sequential} model
  * @property {Point_t[]} original
  * @property {Point_t[]} predicted
+ * @property {Point_t[]} predictedLinear
  */
 
 /**
@@ -156,7 +157,7 @@ export function LinearRegressionProvider ({ children }) {
       list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
     },
     params_layers       : [
-      { units: 10,  activation: "relu" },
+      { units: 10, activation: "relu" },
       { units: 20, activation: "relu" },
       { units: 20, activation: "relu" },
       { units: 20, activation: "relu" },
@@ -171,9 +172,10 @@ export function LinearRegressionProvider ({ children }) {
   }
   /** @type CustomModel_t */
   const DEFAULT_CUSTOM_MODEL = {
-    model    : new Sequential(),
-    original : [],
-    predicted: [],
+    model          : new Sequential(),
+    original       : [],
+    predicted      : [],
+    predictedLinear: []
   }
   // @formatter:on
 

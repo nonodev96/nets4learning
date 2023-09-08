@@ -387,6 +387,9 @@ export default class LinearRegressionModelController {
 
   /**
    *
+   * TODO
+   * El método no está probado completamente y puede fallar.
+   *
    * @return {Promise<CustomLRModel_t>}
    */
   async run () {

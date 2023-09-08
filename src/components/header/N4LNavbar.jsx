@@ -57,11 +57,11 @@ export default function N4LNavbar () {
               <Nav.Link onClick={() => handleClick_GoGlossaryPage()}>
                 {t('header.glossary')}
               </Nav.Link>
-              <Nav.Link onClick={() => handleClick_GoDatasets()}>
-                {t('header.datasets')}
-              </Nav.Link>
               <Nav.Link onClick={() => handleClick_GoDataFrame()}>
                 {t('header.dataframe')}
+              </Nav.Link>
+              <Nav.Link onClick={() => handleClick_GoDatasets()}>
+                {t('header.datasets')}
               </Nav.Link>
             </Nav>
             <NavDropdown title={t('header.language')} id="change-language-nav-dropdown">

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useId, useRef, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
-import * as tfjs from '@tensorflow/tfjs'
 
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
@@ -86,7 +85,7 @@ export default function LinearRegressionPrediction () {
   useEffect(() => {
     console.debug('useEffect [listModels, indexModel, setDataPrediction]')
     if (listModels.length > 0 && indexModel >= 0 && listModels[indexModel]) {
-      const { original, predicted, params_features } = listModels[indexModel]
+      const { original, predicted, predictedLinear, params_features } = listModels[indexModel]
       const { X_feature, y_target } = params_features
       const trace = {
         x      : original.map((v) => v.x),
@@ -99,7 +98,7 @@ export default function LinearRegressionPrediction () {
           color: 'blue'
         }
       }
-      const lmTrace = {
+      const rTrace = {
         x      : predicted.map((v) => v.x),
         y      : predicted.map((v) => v.y),
         name   : t('Predicted'),
@@ -110,7 +109,18 @@ export default function LinearRegressionPrediction () {
           color: 'forestgreen'
         }
       }
-      setDataPrediction([trace, lmTrace])
+      // const lrTrace = {
+      //   x      : predictedLinear.map((v) => v.x),
+      //   y      : predictedLinear.map((v) => v.y),
+      //   name   : t('Predicted linear'),
+      //   mode   : 'lines+markers',
+      //   type   : 'scatter',
+      //   opacity: 0.5,
+      //   marker : {
+      //     color: 'orange'
+      //   }
+      // }
+      setDataPrediction([trace, rTrace])
     }
   }, [listModels, indexModel, setDataPrediction, t])
 
@@ -139,7 +149,7 @@ export default function LinearRegressionPrediction () {
               </Form.Select>
             </Form.Group>
           </div>
-          <div className={'ms-3'}>
+          <div className={'ms-3'} style={{ display: 'none' }}>
             <Form.Group controlId={'dataframe-selector-value'}>
               <Form.Select aria-label={'dataframe-selector-value'}
                            size={'sm'}
@@ -175,13 +185,13 @@ export default function LinearRegressionPrediction () {
           <hr />
 
           <Form onSubmit={handleSubmit_Predict}>
-            <Row>
+            <Row style={{ display: 'none' }}>
               <LinearRegressionPredictionDynamicForm generatedModel={listModels[indexModel]}
                                                      dynamicObject={dynamicObject}
                                                      handleChange_DynamicObject={handleChange_DynamicObject}
               />
             </Row>
-            <Row>
+            <Row style={{ display: 'none' }}>
               <div className="d-grid gap-2">
                 <Button type={'submit'}
                         size={'lg'}

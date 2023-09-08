@@ -1,21 +1,25 @@
 import 'katex/dist/katex.min.css'
 import { Accordion, Card, Col, Container, Row } from 'react-bootstrap'
 import React from 'react'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 
 export default function Manual () {
+
+  const { t } = useTranslation()
 
   if (VERBOSE) console.debug('render Manual')
   return (
     <>
       <main className={'mb-3'} data-title={'Manual'}>
         <Container>
-          <Row className={'mt-2'}>
-            <Col xl={12}>
-              <h1>Manual</h1>
+          <Row className={'mt-3'}>
+            <Col>
+              <h1><Trans i18nKey={'pages.manual.title'} t={t} /></h1>
             </Col>
-            <Col xl={12} className={'mt-3'}>
+          </Row>
+          <Row className={'mt-3'}>
+            <Col>
               <Card border={'primary'}>
                 <Card.Header><h3><Trans i18nKey={'pages.manual.app.title'} /></h3></Card.Header>
                 <Card.Body>
@@ -52,14 +56,23 @@ export default function Manual () {
                   <Accordion.Header><h3><Trans i18nKey={'pages.manual.1-linear-regression.title'} /></h3></Accordion.Header>
                   <Accordion.Body>
                     <h4><Trans i18nKey={'pages.manual.1-linear-regression.1-title'} /></h4>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.1-description-1'} /></p>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.1-description-2'} /></p>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.1-description-3'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.1-description.0'} /></p>
+                    {/*TODO*/}
+                    {/*<p><Trans i18nKey={'pages.manual.1-linear-regression.1-description.1'} /></p>*/}
+                    {/*<p><Trans i18nKey={'pages.manual.1-linear-regression.1-description.2'} /></p>*/}
                     <hr />
                     <h4><Trans i18nKey={'pages.manual.1-linear-regression.2-title'} /></h4>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description-1'} /></p>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description-2'} /></p>
-                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description-3'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description.0'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description.1'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description.2'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-description.3'} /></p>
+                    <p><Trans i18nKey={'pages.manual.1-linear-regression.2-link'}
+                              components={{
+                                link1: <a href={'https://www.ugr.es/~jsalinas/apuntes/C5.pdf'}
+                                          target={'_blank'}
+                                          rel={'noreferrer'}
+                                          className={'text-info'}>link</a>
+                              }} /></p>
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey={'manual-2-object-identification'}>

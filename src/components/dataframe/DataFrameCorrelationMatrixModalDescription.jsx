@@ -1,11 +1,11 @@
 import 'katex/dist/katex.min.css'
 import Latex from 'react-latex-next'
 import { Modal } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
-import { useState } from 'react'
+import { Trans } from 'react-i18next'
+import React from 'react'
 
 export default function DataFrameCorrelationMatrixModalDescription ({ showDescription, setShowDescription }) {
-  const { t } = useTranslation()
+  const URL = 'https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html'
 
   return <>
     <Modal show={showDescription}
@@ -28,18 +28,18 @@ export default function DataFrameCorrelationMatrixModalDescription ({ showDescri
           '        \\sqrt{\\sum_{i=1}^{n}(x_i-\\bar{x})^2}\\sqrt{\\sum_{i=1}^{n}(y_i-\\bar{y})^2}} $$'}</Latex>
 
         <p><Trans i18nKey={'dataframe.correlation-matrix.description.6'} /></p>
-        {/*<p><Trans i18nKey={'dataframe.correlation-matrix.description.7'} /></p>*/}
-        {/*'$ x_i $'*/}
-        <p>
-          <Trans i18nKey={'-latex-'}
-                 components={{ com: <Latex /> }}
-                 values={{ data: '$ PEPE $' }} />
-        </p>
-        {/*<p><Trans i18nKey={'dataframe.correlation-matrix.description.8'}*/}
-        {/*          components={[<Latex>{'$ \\bar{x} $'}</Latex>, <Latex>{'$ \\bar{y} $'}</Latex>]} /></p>*/}
+        <p><Latex>{'$ x_i $'}</Latex> <Trans i18nKey={'and'} /> <Latex>{'$ y_i $'}</Latex> <Trans i18nKey={'dataframe.correlation-matrix.description.7'} /></p>
+        <p><Latex>{'$ \\bar{x} $'}</Latex> <Trans i18nKey={'and'} /> <Latex>{'$ \\bar{y} $'}</Latex> <Trans i18nKey={'dataframe.correlation-matrix.description.8'} /></p>
         <p><Trans i18nKey={'dataframe.correlation-matrix.description.9'} /></p>
-
       </Modal.Body>
+      <Modal.Footer>
+        <p className={'text-muted'}>
+          <Trans i18nKey={'dataframe.correlation-matrix.link'}
+                 components={{
+                   link1: <a href={URL} target={'_blank'} rel="noreferrer" className={'text-info'}>link</a>
+                 }} />
+        </p>
+      </Modal.Footer>
     </Modal>
   </>
 }

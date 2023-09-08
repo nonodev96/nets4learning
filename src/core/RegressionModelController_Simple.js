@@ -93,7 +93,7 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
  * @property {Sequential} model
  */
 
-export default class LinearRegressionModelController_Simple {
+export default class RegressionModelController_Simple {
 
   /**
    * @type {LRConfig_t}
@@ -320,20 +320,13 @@ export default class LinearRegressionModelController_Simple {
   async CreateModel () {
     const model = new Sequential()
     // Add a single input layer
-    model.add(tfjs.layers.dense({
-      units     : this.config.layers.input.units,
-      activation: this.config.layers.input.activation,
-      inputShape: this.config.layers.input.inputShape
-    }))
+    model.add(tfjs.layers.dense({ units: this.config.layers.input.units, activation: this.config.layers.input.activation, inputShape: this.config.layers.input.inputShape }))
     // Add layers
     for (const { units, activation } of this.config.layers.layers) {
       model.add(tfjs.layers.dense({ units, activation }))
     }
     // Add an output layer
-    model.add(tfjs.layers.dense({
-      units     : this.config.layers.output.units,
-      activation: this.config.layers.output.activation
-    }))
+    model.add(tfjs.layers.dense({ units: this.config.layers.output.units, activation: this.config.layers.output.activation }))
 
     const idOptimizer = this.config.compile.id_optimizer
     const params = this.config.compile.params
@@ -420,20 +413,16 @@ export default class LinearRegressionModelController_Simple {
    * @param {Sequential} model
    * @param {Object[]} inputData
    * @param {any} normalizationData
-   * @return {Promise<{original: Point_t[], predicted: Point_t[], predictedLinear: Point_t[]}>}
+   * @return {Promise<{original: Point_t[], predicted: Point_t[]}>}
    */
   async TestModel (model, inputData, normalizationData) {
     const { inputMax, inputMin, labelMin, labelMax } = normalizationData
 
-    // Crea un tensor xs que contiene 100 valores equidistantes en el rango de 0 a 1.
-    // Estos valores se utilizan como datos de entrada para hacer predicciones con un modelo de aprendizaje automático
-    // El modelo toma xs como entrada y produce un tensor preds que contiene las predicciones correspondientes.
     const [xs, preds] = tfjs.tidy(() => {
       const xs = tfjs.linspace(0, 1, 100)
       const preds = model.predict(xs.reshape([100, 1]))
-      // Realiza una operación de desnormalización en los datos de entrada xs
+
       const unNormXs = xs.mul(inputMax.sub(inputMin)).add(inputMin)
-      // Realiza una operación de desnormalización en las predicciones preds
       const unNormPreds = preds.mul(labelMax.sub(labelMin)).add(labelMin)
 
       return [unNormXs.dataSync(), unNormPreds.dataSync()]
@@ -471,23 +460,35 @@ export default class LinearRegressionModelController_Simple {
       }
     )
 
-    return {
-      original       : originalPoints,
-      predicted      : predictedPoints,
-      predictedLinear: []
-    }
+    return { original: originalPoints, predicted: predictedPoints }
+  }
+
+  async predictSingleValue (model, normalizationData, inputValue) {
+    const { inputMax, inputMin, labelMin, labelMax } = normalizationData
+
+    // Normalización del valor de entrada
+    const normalizedInput = (inputValue - inputMin) / (inputMax - inputMin)
+    console.log(normalizedInput)
+    // Desnormalización del resultado de la predicción
+    return tfjs.tidy(() => {
+      const xs = tfjs.tensor1d([normalizedInput])
+      const preds = model.predict(xs)
+      const unNormPred = preds.mul(labelMax.sub(labelMin)).add(labelMin)
+      return unNormPred.dataSync()[0]
+    })
   }
 
   /**
    *
-   * @return {Promise<{original: Point_t[], model: Sequential, predicted: Point_t[], predictedLinear: Point_t[]}>}
+   * @return {Promise<{original: Point_t[], model: Sequential, predicted: Point_t[]}>}
    */
   async run () {
     const data = await this.GetData()
     const model = await this.CreateModel()
     const normalizationTensorData = this.ConvertToTensor(data)
     await this.TrainModel(model, normalizationTensorData)
-    const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
-    return { model, original, predicted, predictedLinear }
+    const { original, predicted } = await this.TestModel(model, data, normalizationTensorData)
+    const p = await this.predictSingleValue(model, normalizationTensorData, 130)
+    return { model, original, predicted, p }
   }
 }

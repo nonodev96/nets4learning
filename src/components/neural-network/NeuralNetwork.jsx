@@ -50,10 +50,12 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
       }
     })
     const dom = document.querySelectorAll('#vis-network canvas')[0]
-    console.log(dom)
     if (dom) {
-      const listener = dom.getEventListeners('wheel')[0].listener
-      dom.removeEventListener('wheel', listener)
+      const wheel = dom.getEventListeners('wheel')
+      if (wheel) {
+        const listener = wheel[0].listener
+        dom.removeEventListener('wheel', listener)
+      }
     }
 
     return () => {

@@ -16,6 +16,7 @@
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
   "Predicted": "Predicted",
   "Waiting": "Waiting",
+  "and": "and",
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -899,7 +900,7 @@
   },
   "dataframe": {
     "correlation-matrix": {
-      "title": "Correlation matrix",
+      "title": "Dataframe | Correlation matrix",
       "description": {
         "0": "Pearson's correlation coefficient, also known as a linear correlation or product-moment correlation coefficient, is a statistical measure used to quantify the linear relationship between two quantitative variables. It is one of the most commonly used correlation statistics and provides information about the strength and direction of the relationship between the variables.",
         "1": "Pearson's correlation coefficient varies between -1 and 1:",
@@ -908,26 +909,38 @@
         "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
         "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
         "6": "Where:",
-        "7": "<xi> a</xi> and <yi> s</yi> are the values of the two variables in each observation.",
-        "8": "<0> </0> and <1> </1> are the means of the two variables, respectively.",
-        "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables."
-      }
+        "7": "are the values ​​of the two variables in each observation.",
+        "8": "are the stockings of the two variables, respectively.",
+        "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
+        "title": "Description"
+      },
+      "link": "Consult more information in the following <link1> link </link1>"
     },
     "describe": {
-      "title": "DataFrame description",
+      "title": "DataFrame | Describe",
       "description": {
+        "0": "This function is used to generate a statistical summary of the numerical columns of a dataframe. It provides key descriptive statistics, such as average, standard deviation, minimum, maximum and several quantiles of numerical columns. This is useful to obtain a rapid understanding of the distribution and data trends.",
+        "1": "This function is useful to obtain a quick idea of ​​data distribution and can help you identify atypical values ​​or anomalies in your data.",
         "title": "Description"
-      }
+      },
+      "link": "Consult more information in the following <link1> link </link1>"
     },
     "query": {
-      "title": "Query",
+      "title": "DataFrame | Query",
       "description": {
+        "0": "Query the DataFrame by the result of a logical comparison or boolean mask.",
+        "1": "Query the DataFrame by the result of a logical comparison or boolean mask.",
         "title": "Description"
-      }
+      },
+      "query": "Query",
+      "link": "Consult more information in the following <link1>link</link1>"
+    },
+    "plot": {
+      "link": "Consult more information in the following <link1> link </link1>"
     }
   },
   "dataframe-plot": {
-    "title": "DataFrame Plot",
+    "title": "DataFrame | Plot",
     "info": "Information",
     "description": {
       "title": "Description of the type of graphics"
@@ -1232,30 +1245,30 @@
               "title": "Editor of the Layers",
               "text-0": "You can edit the layers of the neuronal network, you can add as many as you want by pressing the \"Add layer\" button at the start or at the end.",
               "list": {
-                "0": "<b> Layer neurons <br /> Each neuron in a layer has a set of associated weights that weigh its output value. <br /> We can edit the number of neurons in the layer.",
-                "1": "<b> Activation function </b>: <br /> The activation function of a neuron refers to the mathematical function that calculates its output. We can edit the activation function of the neurons of each layer."
+                "0": "<b>Layer neurons</b>: <br /> Each neuron in a layer has a set of associated weights that weigh its output value. <br /> We can edit the number of neurons in the layer.",
+                "1": "<b>Activation function</b>: <br /> The activation function of a neuron refers to the mathematical function that calculates its output. We can edit the activation function of the neurons of each layer."
               }
             },
             "details-hyper-parameters-editor": {
               "title": "Hyper parameter editor",
               "text-0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:",
               "list": {
-                "0": "<b> Learning rate </b>: <br /> Value between 0 and 100 which indicates the percentage of the weight weights.",
-                "1": "<b> Number of iterations </b>: <br /> Number of times the network training set (the greatest number, it takes longer to train).",
-                "2": "<b> Test set size </b>: <br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
-                "3": "<b> Optimizer </b>: <br /> It is a function that is used to adjust the weights of the network.",
-                "4": "<b> loss function </b>: <br /> It is a error calculation method to measure model efficiency during training.",
-                "5": "<b> Metric function </b>: <br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+                "0": "<b>Learning rate</b>: <br /> Value between 0 and 100 which indicates the percentage of the weight weights.",
+                "1": "<b>Number of iterations</b>: <br /> Number of times the network training set (the greatest number, it takes longer to train).",
+                "2": "<b>Test set size</b>: <br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
+                "3": "<b>Optimizer</b>: <br /> It is a function that is used to adjust the weights of the network.",
+                "4": "<b>loss function</b>: <br /> It is a error calculation method to measure model efficiency during training.",
+                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
               }
             },
             "details-hyper-parameters-info": {
               "title": "Hyper parameters information",
               "list": {
-                "0": "<b> Learning rate </b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
-                "1": "<b> Number of iterations </b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
-                "2": "<b> Test set size </b>: <br /> The size of the test set refers to the amount of data used to evaluate the performance of the neuronal network after training. This dataset is not used in the training of the neuronal network and is used to measure the network capacity to generalize new data.",
-                "3": "<b> Optimizer </b>: <br /> The optimizer is an algorithm used to update the weights of the neuronal network depending on the error calculated during training. Some examples of optimizers are the descent of the stochastic gradient (SGD), the ADAM and the ADAM.",
-                "4": "<b> loss function </b>: <br /> The loss function is a measure of the error between the neuronal network predictions and the real outputs. It is used to optimize the neuronal network during training and there are different loss functions, such as cross entropy and middle quadratic error."
+                "0": "<b>Learning rate</b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
+                "1": "<b>Number of iterations</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
+                "2": "<b>Test set size</b>: <br /> The size of the test set refers to the amount of data used to evaluate the performance of the neuronal network after training. This dataset is not used in the training of the neuronal network and is used to measure the network capacity to generalize new data.",
+                "3": "<b>Optimizer</b>: <br /> The optimizer is an algorithm used to update the weights of the neuronal network depending on the error calculated during training. Some examples of optimizers are the descent of the stochastic gradient (SGD), the ADAM and the ADAM.",
+                "4": "<b>Loss function</b>: <br /> The loss function is a measure of the error between the neuronal network predictions and the real outputs. It is used to optimize the neuronal network during training and there are different loss functions, such as cross entropy and middle quadratic error."
               }
             },
             "details-create-and-train-models": {
@@ -1409,7 +1422,63 @@
       "1-linear-regression": {
         "generator": {
           "manual": {
-            "title": "Model generator manual"
+            "title": "Model generator manual",
+            "simple-linear-regression": "Simple linear regression",
+            "multiple-linear-regression": "Multiple linear regression",
+            "details-edit-layers": {
+              "title": "Editor of the Layers",
+              "text": {
+                "0": "You can edit the layers of the neuronal network, you can add as many as you want by pressing the \"Add layer\" button at the start or at the end."
+              },
+              "list": {
+                "0": "<b>Layer neurons</b>: <br /> Each neuron in a layer has a set of associated weights that weigh its output value. <br /> We can edit the number of neurons in the layer.",
+                "1": "<b>Activation function</b>: <br /> The activation function of a neuron refers to the mathematical function that calculates its output. We can edit the activation function of the neurons of each layer."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Hyper parameter editor",
+              "text": {
+                "0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:"
+              },
+              "list": {
+                "0": "<b>Learning rate</b>:<br /> Value between 0 and 100 which indicates the percentage of the weight weights.",
+                "1": "<b>Number of iterations</b>:<br /> Number of times the network training set (the greatest number, it takes longer to train).",
+                "2": "<b>Test set size</b>:<br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
+                "3": "<b>Optimizer</b>:<br /> It is a function that is used to adjust the weights of the network.",
+                "4": "<b>loss function</b>:<br /> It is a error calculation method to measure model efficiency during training.",
+                "5": "<b>Metric function</b>:<br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Hyper parameters information",
+              "list": {
+                "0": "<b>Learning rate</b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
+                "1": "<b>Number of iterations</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
+                "2": "<b>Test set size</b>: <br /> The size of the test set refers to the amount of data used to evaluate the performance of the neuronal network after training. This dataset is not used in the training of the neuronal network and is used to measure the network capacity to generalize new data.",
+                "3": "<b>Optimizer</b>: <br /> The optimizer is an algorithm used to update the weights of the neuronal network depending on the error calculated during training. Some examples of optimizers are the descent of the stochastic gradient (SGD), the ADAM and the ADAM.",
+                "4": "<b>Loss function</b>: <br /> The loss function is a measure of the error between the neuronal network predictions and the real outputs. It is used to optimize the neuronal network during training and there are different loss functions, such as cross entropy and middle quadratic error."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Create and train model",
+              "text": {
+                "0": "Once all previous fields have been filled we can create the model by pressing the \"Create and train model\" button.",
+                "1": "If we have trained the model with the metric function <i> Accuracy </i> two graphs will appear in the visor. The most relevant to us is that below, since at tensorflow.js, <i> ac </i> and <i> Val_acc </i> are evaluation metrics commonly used in training models of neural networks. <br /> <i> Acc </i> represents the precision (Accuracy) of the model in the training dataset. The precision is defined as the number of correct predictions divided by the total number of predictions. <br /> <i> Val_acc </i> represents the precision of the model in the validation dataset. Validation is used to evaluate the model capacity to generalize new data that has not been seen during training.",
+                "2": "The validation precision is important to detect the over juste (<i> over fitting </i>) of the model, which occurs when the model fits too much to training data and does not generalize well to new data."
+              }
+            },
+            "details-export-models": {
+              "title": "Export model",
+              "text": {
+                "0": "If we have created the model correctly an entry will be added to the table of models generated, we are allowed to export the models generated and save them locally."
+              }
+            },
+            "details-plot-models": {
+              "title": "Plot of predictions",
+              "text": {
+                "0": "We can use a sparse graph for this task, so that we represent the original data in a cloud of points and we use a line to draw the predictions of the model, depending on the architecture we use it will give us a straight line with a certain slope or a line which will fit and curve more to the data. To do this, 100 distant <i>x</i> predictions are made, from the first value to the last value."
+              }
+            }
           },
           "simple-linear-regression": "Simple linear regression",
           "multiple-linear-regression": "Multiple linear regression"
@@ -1433,6 +1502,7 @@
       "upload-csv": "Upload data set"
     },
     "manual": {
+      "title": "Manual",
       "app": {
         "title": "Tool objectives",
         "description-1": "This application shows some of the most important tasks that artificial neural networks can perform, such as: tabular classification, image classification and object identification. Networks are artificial intelligence techniques belonging to the field of automatic learning, in which models that train (or learn) are developed from data sets.",
@@ -1459,7 +1529,7 @@
         "1-title": "Pre-trained models",
         "1-description-1": "We must access the pre-questioned models section and select one of the available ones.",
         "1-description-2": "The tool has a list of representative examples that allow to alter the characteristics form.",
-        "1-description-3": "When accessing the tool section on the models we can edit the characteristics of the element to predict. The tool has a dynamic form that allows changing the types of neuronal network input data.",
+        "1-description-3": "By accessing the section section on the models we can edit the characteristics of the elements to be predicted. The tool has a dynamic form that allows changing the types of neuronal network input data.",
         "2-title": "Train models",
         "2-description-1": "The tool has a data display that allows you to show the classes and attributes of the dataset. As well as a manager to create, design, train and export a data model.",
         "2-description-2": "On the left we have an editor of the different layers that the neuronal network has. It should be allowed the last network layer to have the same number of neurons as classes to predict.",
@@ -1468,7 +1538,21 @@
         "2-description-5": "Once a model is trained from the data we can make predictions, for this a dynamic form is included with the characteristics of the data set. The precision of the model in the prediction may be greater or less depending on the training and the selected options."
       },
       "1-linear-regression": {
-        "title": "Linear regression"
+        "title": "Linear regression",
+        "1-title": "Pre-trained models",
+        "1-description": {
+          "0": "We must access the pre-questioned models section and select one of the available ones.",
+          "1": null,
+          "2": null
+        },
+        "2-title": "Train models",
+        "2-description": {
+          "0": "The section has the possibility to raise your data sets, prepared data sets, descriptions, graphic and statistical visualization tools.",
+          "1": "It has a generator of linear regression models. It manages layers of the neuronal network, hyperparameters, optimization functions, loss and metric functions. as well as the characteristics selector.",
+          "2": "We must press the \"Create and train model\" button to start the training process of the neuronal network. If all the configuration and selection of the functions are correct then an entry with the trained models will be added in the list.",
+          "3": null
+        },
+        "2-link": "Consult more information in the following <link1> link </link1>"
       },
       "2-object-identification": {
         "title": "Object identification",
@@ -1514,10 +1598,12 @@
       },
       "linear-regression": {
         "title": "Linear regression",
-        "text-1": "Linear regression is a statistical analysis method used in automatic learning to model the relationship between an independent (or predictor) variable and a dependent variable (or response). Through linear regression, it seeks to find the straight line that best suits the data, so that the answer can be predicted based on the values ​​of the independent variable.",
-        "text-2": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values ​​of the dependent variable depending on the values ​​of the independent variable.",
-        "text-3": "For example, if we are analyzing the relationship between the amount of advertising on a website and the sales of a product, the amount of advertising would be the independent variable, and the sales of the product would be the dependent variable. Linear regression would help us determine if there is a linear relationship between investment in advertising and sales, and if so, it would allow us to predict future sales based on advertising spending.",
-        "text-4": "Linear regression is a powerful tool in data analysis and is used in a variety of fields, including economy, social science, medical research and many other disciplines to understand and predict relationships between variables."
+        "text": {
+          "0": "Linear regression is a statistical analysis method used in automatic learning to model the linear relationship between an independent variable and a dependent variable, seeking to find the best straight line that adjusts the data and allows predictions to be made.",
+          "1": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values ​​of the dependent variable depending on the values ​​of the independent variable.",
+          "2": "For example, if we are analyzing the relationship between the amount of advertising on a website and the sales of a product, the amount of advertising would be the independent variable, and the sales of the product would be the dependent variable. Linear regression would help us determine if there is a linear relationship between investment in advertising and sales, and if so, it would allow us to predict future sales based on advertising spending.",
+          "3": "Linear regression is a powerful tool in data analysis and is used in a variety of fields, including economy, social science, medical research and many other disciplines to understand and predict relationships between variables."
+        }
       },
       "object-identification": {
         "title": "Object identification",

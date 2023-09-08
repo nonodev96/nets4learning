@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useId, useRef, useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
@@ -78,7 +78,7 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
           <Button onClick={handleClick_OpenModal_CorrelationMatrix}
                   size={'sm'}
                   variant={'outline-primary'}>
-            Descripción
+            <Trans i18nKey={'dataframe.correlation-matrix.description.title'} />
           </Button>
         </div>
       </Card.Header>

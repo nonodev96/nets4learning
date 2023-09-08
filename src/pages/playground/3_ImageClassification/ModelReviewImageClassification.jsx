@@ -772,7 +772,7 @@ class ModelReviewImageClassification extends React.Component {
                onHide={this.handleModal_Close}
                onEntered={this.handleModal_Entered}
                onExited={this.handleModal_Exited}
-               size="lg"
+               size={'xl'}
                aria-labelledby="contained-modal-title-vcenter"
                centered>
           <Modal.Header closeButton>
