@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+Default_CodeStyle.xml
 
 # testing
 /coverage
@@ -30,6 +31,6 @@ package-lock.json
 .env.simidat-beta
 
 deploy.sh
-deploy.zip
+deploy-beta.sh
+
 build.zip
-Default_CodeStyle.xml
