@@ -27,6 +27,7 @@ package-lock.json
 .env.development
 .env.production
 .env.simidat
+.env.simidat-beta
 
 deploy.sh
 deploy.zip

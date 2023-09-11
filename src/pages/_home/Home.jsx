@@ -217,24 +217,16 @@ export default function Home () {
                 </Button>
               </div>
             </Col>
-            {
-              /**
-               * TODO
-               * Esto se debe eliminar en la versión estable de la regresión lineal
-               */
-            }
-            {process.env.REACT_APP_ENVIRONMENT === 'development' &&
-              <Col className={'mt-3'}>
-                <div className="d-grid gap-2">
-                  <Button onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}
-                          data-testid={'Test-InitialMenu-LinearRegression'}
-                          variant={'danger'}
-                          size={'lg'}>
-                    <Trans i18nKey={'pages.index.linear-regression.1-title'} />
-                  </Button>
-                </div>
-              </Col>
-            }
+            <Col className={'mt-3'}>
+              <div className="d-grid gap-2">
+                <Button onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}
+                        data-testid={'Test-InitialMenu-LinearRegression'}
+                        variant={'danger'}
+                        size={'lg'}>
+                  <Trans i18nKey={'pages.index.linear-regression.1-title'} />
+                </Button>
+              </div>
+            </Col>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}

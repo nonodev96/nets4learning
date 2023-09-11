@@ -11,11 +11,14 @@
     "start:development": "craco start --verbose --mode development",
     "start:production": "craco start --verbose --mode production",
     "start:simidat": "craco start --verbose --mode simidat",
+    "start:simidat-beta": "craco start --verbose --mode simidat-beta",
     "start:android": "craco start --verbose --mode android",
     "build:development": "craco build --mode development",
     "build:production": "craco build --mode production",
     "build:simidat": "craco build --mode simidat",
-    "build:android": "craco build --mode android"
+    "build:simidat-beta": "craco build --mode simidat-beta",
+    "build:android": "craco build --mode android",
+    "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
     "@faker-js/faker": "8.0.2",
@@ -31,6 +34,7 @@
     "bootstrap": "^5.3.0",
     "brace": "^0.11.1",
     "chart.js": "^4.3.0",
+    "conventional-changelog-cli": "^4.1.0",
     "danfojs": "^1.1.2",
     "fabric": "^5.3.0",
     "history": "^5.3.0",
