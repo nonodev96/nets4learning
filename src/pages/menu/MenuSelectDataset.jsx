@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import alertHelper from '@utils/alertHelper'
 import {
   TASKS,
@@ -28,6 +28,7 @@ export default function MenuSelectDataset () {
   const history = useHistory()
 
   const [dataset_id, setDatasetId] = useState('select-dataset')
+  const [options, setOptions] = useState([])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -38,74 +39,65 @@ export default function MenuSelectDataset () {
     }
   }
 
-  const PrintFormSelectOptions = () => {
-    switch (id) {
-      case TASKS.TABULAR_CLASSIFICATION: {
-        // tabular-classification
-        return <>
-          <option value={UPLOAD}>{t('pages.menu-selection-dataset.0-tabular-classification.csv')}</option>
-          <option value={MODEL_CAR.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-1')}</option>
-          <option value={MODEL_IRIS.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-2')}</option>
-          <option value={MODEL_LYMPHOGRAPHY.KEY}>{t('datasets-models.0-tabular-classification.list-datasets.0-option-3')}</option>
-        </>
-      }
-      case TASKS.LINEAR_REGRESSION: {
-        // linear-regression
-        return <>
-          <option value={UPLOAD}>{t('pages.menu-selection-dataset.1-linear-regression.csv')}</option>
-          <option value={MODEL_1_SALARY.KEY}>{t('datasets-models.1-linear-regression.list-datasets.salary')}</option>
-          <option value={MODEL_2_AUTO_MPG.KEY}>{t('datasets-models.1-linear-regression.list-datasets.auto-mpg')}</option>
-          <option value={MODEL_3_BOSTON_HOUSING.KEY}>{t('datasets-models.1-linear-regression.list-datasets.boston-housing')}</option>
-          <option value={MODEL_4_BREAST_CANCER.KEY}>{t('datasets-models.1-linear-regression.list-datasets.breast-cancer')}</option>
-          <option value={MODEL_5_STUDENT_PERFORMANCE.KEY}>{t('datasets-models.1-linear-regression.list-datasets.student-performance')}</option>
-          <option value={MODEL_6_WINE.KEY}>{t('datasets-models.1-linear-regression.list-datasets.wine')}</option>
-        </>
-      }
-      case TASKS.OBJECT_DETECTION: {
-        // object-detection
-        console.warn('TODO')
-        return <>
-        </>
-      }
-      case TASKS.IMAGE_CLASSIFICATION: {
-        // image-classifier
-        console.warn('TODO')
-        return <>
-          <option value={MODEL_IMAGE_MNIST.KEY}>{t('pages.menu-selection-dataset.1-image-classifier')}</option>
-        </>
-      }
-      default: {
-        console.error('Opción no disponible')
-      }
+  useEffect(() => {
+    let _options = []
+    const taskOptions = {
+      [TASKS.TABULAR_CLASSIFICATION]: [
+        { i18n: 'pages.menu-selection-dataset.0-tabular-classification.csv', value: UPLOAD },
+        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-1', value: MODEL_CAR.KEY },
+        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-2', value: MODEL_IRIS.KEY },
+        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-3', value: MODEL_LYMPHOGRAPHY.KEY },
+      ],
+      [TASKS.LINEAR_REGRESSION]     : [
+        { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.boston-housing', value: MODEL_3_BOSTON_HOUSING.KEY },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY },
+        { i18n: 'datasets-models.1-linear-regression.list-datasets.wine', value: MODEL_6_WINE.KEY },
+      ],
+      [TASKS.OBJECT_DETECTION]      : [],
+      [TASKS.IMAGE_CLASSIFICATION]  : [
+        { i18n: 'pages.menu-selection-dataset.1-image-classifier', value: MODEL_IMAGE_MNIST.KEY },
+      ],
     }
-  }
 
-  if(VERBOSE) console.debug('render MenuSelectDataset')
+    if (taskOptions.hasOwnProperty(id)) {
+      _options = taskOptions[id]
+    } else {
+      console.error('Error, option not valid')
+    }
+    setOptions(_options)
+  }, [id])
+
+  if (VERBOSE) console.debug('render MenuSelectDataset')
   return <>
     <Form onSubmit={($event) => handleSubmit($event)}>
       <Container id={'MenuSelectDataset'} data-testid={'Test-MenuSelectDataset'}>
         <Row className="mt-3 mb-3">
           <Col>
             <Card>
-              <Card.Header><h3>{t('modality.' + id)}</h3></Card.Header>
+              <Card.Header><h3><Trans i18nKey={'modality.' + id} /></h3></Card.Header>
               <Card.Body>
                 <Card.Text>
-                  {t('pages.menu-selection-dataset.form-description-1')}
+                  <Trans i18nKey={'pages.menu-selection-dataset.form-description-1'} />
                 </Card.Text>
                 <Form.Group className="mb-3" controlId="FormDataSet">
-                  <Form.Label>{t('pages.menu-selection-dataset.form-label')}</Form.Label>
+                  <Form.Label><Trans i18nKey={'pages.menu-selection-dataset.form-label'} /></Form.Label>
                   <Form.Select aria-label={t('pages.menu-selection-dataset.form-label')}
                                defaultValue={'select-dataset'}
                                onChange={(e) => setDatasetId(e.target.value)}>
                     <option value={'select-dataset'} disabled>{t('pages.menu-selection-dataset.form-option-_-1')}</option>
-                    <PrintFormSelectOptions />
+                    {options.map(({ value, i18n }, index) => {
+                      return <option value={value} key={index}>{t(i18n)}</option>
+                    })}
                   </Form.Select>
                 </Form.Group>
-
                 <Button className={'mt-3'}
                         type="submit"
                         data-testid={'Test-MenuSelectDataset-Submit'}>
-                  {t('pages.menu-selection-dataset.form-submit')}
+                  <Trans i18nKey={'pages.menu-selection-dataset.form-submit'} />
                 </Button>
               </Card.Body>
             </Card>

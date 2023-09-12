@@ -359,17 +359,19 @@ export default class LinearRegressionModelController_Simple {
   /**
    *
    * @param {Object[]} data
+   * @param X_feature
+   * @param y_target
    * @return {{inputMax: Tensor<Rank>, inputs: Tensor<Rank>, inputMin: Tensor<Rank>, labelMax: Tensor<Rank>, labelMin: Tensor<Rank>, labels: Tensor<Rank>}}
    * @constructor
    */
-  ConvertToTensor (data) {
+  static ConvertToTensor (data, X_feature, y_target) {
     return tfjs.tidy(() => {
       // Step 1. Shuffle the data
       tfjs.util.shuffle(data)
 
       // Step 2. Convert data to Tensor
-      const inputs = data.map(d => d[this.config.features.X_feature])
-      const labels = data.map(d => d[this.config.features.y_target])
+      const inputs = data.map(d => d[X_feature])
+      const labels = data.map(d => d[y_target])
 
       const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
       const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
@@ -485,7 +487,7 @@ export default class LinearRegressionModelController_Simple {
   async run () {
     const data = await this.GetData()
     const model = await this.CreateModel()
-    const normalizationTensorData = this.ConvertToTensor(data)
+    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.y_target)
     await this.TrainModel(model, normalizationTensorData)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
     return { model, original, predicted, predictedLinear }

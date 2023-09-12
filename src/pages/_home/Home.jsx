@@ -111,7 +111,7 @@ export default function Home () {
               </Card.Body>
             </Card>
 
-            <Card className={'border-primary mt-3'}>
+            <Card className={'border-danger mt-3'}>
               <Card.Header>
                 <h3><Trans i18nKey={'pages.index.linear-regression.2-title'} /></h3>
               </Card.Header>

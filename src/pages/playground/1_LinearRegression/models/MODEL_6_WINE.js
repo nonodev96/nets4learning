@@ -5,9 +5,11 @@ import { Trans } from 'react-i18next'
 export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'WINE'
-  _KEY = 'WINE'
-  i18n_TITLE = 'datasets-models.1-linear-regression.wine.title'
+  static URL = 'https://archive.ics.uci.edu/dataset/186/wine+quality'
+
   URL = 'https://archive.ics.uci.edu/dataset/186/wine+quality'
+  i18n_TITLE = 'datasets-models.1-linear-regression.wine.title'
+  _KEY = 'WINE'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.wine.description.'

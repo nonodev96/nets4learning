@@ -7,11 +7,15 @@ import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'BREAST_CANCER'
+  static URL = 'https://archive-beta.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  static URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
+
   URL = 'https://archive-beta.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
   URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
+  URL_IMAGE = 'https://www.cs.wisc.edu/~street/images/'
+
   i18n_TITLE = 'datasets-models.1-linear-regression.breast-cancer.title'
   _KEY = 'BREAST_CANCER'
-  URL_IMAGE = 'https://www.cs.wisc.edu/~street/images/'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.breast-cancer.description.'

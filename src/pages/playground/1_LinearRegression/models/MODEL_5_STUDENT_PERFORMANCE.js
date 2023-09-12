@@ -5,9 +5,11 @@ import { Trans } from 'react-i18next'
 export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'STUDENT_PERFORMANCE'
-  _KEY = 'STUDENT_PERFORMANCE'
-  i18n_TITLE = 'datasets-models.1-linear-regression.student-performance.title'
+  static URL = 'https://archive.ics.uci.edu/dataset/320/student+performance'
+
   URL = 'https://archive.ics.uci.edu/dataset/320/student+performance'
+  i18n_TITLE = 'datasets-models.1-linear-regression.student-performance.title'
+  _KEY = 'STUDENT_PERFORMANCE'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.student-performance.description.'

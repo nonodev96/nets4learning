@@ -10,9 +10,9 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
 import DataFramePlot from '@components/dataframe/DataFramePlot'
-import DataFrameCorrelationMatrix from '@components/dataframe/DataFrameCorrelationMatrix'
-import DataFrameQuery from '@components/dataframe/DataFrameQuery'
-import DataFrameDescribe from '@components/dataframe/DataFrameDescribe'
+import DataFrameCorrelationMatrixCard from '@components/dataframe/DataFrameCorrelationMatrixCard'
+import DataFrameDescribeCard from '@components/dataframe/DataFrameDescribeCard'
+import DataFrameQueryCard from '@components/dataframe/DataFrameQueryCard'
 import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFrame () {
@@ -81,7 +81,7 @@ export default function DataFrame () {
 
         <Row className={'mt-3'}>
           <Col>
-            <DataFrameDescribe dataframe={dataframe} />
+            <DataFrameDescribeCard dataframe={dataframe} />
           </Col>
         </Row>
 
@@ -95,13 +95,13 @@ export default function DataFrame () {
 
         <Row className={'mt-3'}>
           <Col>
-            <DataFrameCorrelationMatrix dataframe={dataframe} />
+            <DataFrameCorrelationMatrixCard dataframe={dataframe} />
           </Col>
         </Row>
 
         <Row className={'mt-3'}>
           <Col>
-            <DataFrameQuery dataframe={dataframe} />
+            <DataFrameQueryCard dataframe={dataframe} />
           </Col>
         </Row>
       </Container>

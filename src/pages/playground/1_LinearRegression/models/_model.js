@@ -54,6 +54,19 @@ export default class I_MODEL_LINEAR_REGRESSION {
   }
 
   /**
+   * @typedef {Object} CustomModel_t
+   * @property {string} column_name_X
+   * @property {string} column_name_Y
+   * @property {string} model_path
+   *
+   * @return {Promise<CustomModel_t[]>}
+   * @constructor
+   */
+  async MODELS () {
+    return []
+  }
+
+  /**
    *
    * callback: (e) => {
    *   e.action    : "start" | "update",

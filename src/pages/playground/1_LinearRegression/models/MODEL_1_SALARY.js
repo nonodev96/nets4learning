@@ -9,6 +9,8 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'SALARY'
   static URL = 'https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook'
+
+  URL = 'https://www.kaggle.com/code/snehapatil01/linear-regression-on-salary-dataset/notebook'
   i18n_TITLE = 'datasets-models.1-linear-regression.salary.title'
   _KEY = 'SALARY'
 
@@ -20,7 +22,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
       <p>
         <Trans i18nKey={prefix + 'link'}
                components={{
-                 link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                 link1: <a href={this.URL} target={'_blank'} rel="noreferrer" className={'text-info'}>link</a>,
                }} />
       </p>
       <details>
@@ -71,6 +73,14 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         is_dataset_processed: true,
       }]
     }
+  }
+
+  async MODELS () {
+    const path = process.env.REACT_APP_PATH + '/models/linear-regression/salary'
+    return [
+      { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
+      { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
+    ]
   }
 
   COMPILE () {

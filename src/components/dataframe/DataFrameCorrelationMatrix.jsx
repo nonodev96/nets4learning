@@ -1,16 +1,12 @@
 import React, { useEffect, useId, useRef, useState } from 'react'
-import { Card, Button } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 import math from '@utils/math'
 import { pearsonCorrelation } from '@utils/stadistics'
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
-import DataFrameCorrelationMatrixModalDescription from '@components/dataframe/DataFrameCorrelationMatrixModalDescription'
 
 export default function DataFrameCorrelationMatrix ({ dataframe }) {
 
-  const [showDescription, setShowDescription] = useState(false)
   const [correlationMatrix, setCorrelationMatrix] = useState({
     xValues    : [],
     yValues    : [],
@@ -20,10 +16,6 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
   const dataframeID = useId()
   const refPlotly = useRef()
   const { t } = useTranslation()
-
-  const handleClick_OpenModal_CorrelationMatrix = () => {
-    setShowDescription(true)
-  }
 
   useEffect(() => {
     const columns = dataframe.columns.filter((column_name) => {
@@ -71,59 +63,38 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
   }, [dataframe, dataframeID])
 
   return <>
-    <Card>
-      <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={'dataframe.correlation-matrix.title'} /></h3>
-        <div className="d-flex">
-          <Button onClick={handleClick_OpenModal_CorrelationMatrix}
-                  size={'sm'}
-                  variant={'outline-primary'}>
-            <Trans i18nKey={'dataframe.correlation-matrix.description.title'} />
-          </Button>
-        </div>
-      </Card.Header>
-      <Card.Body>
-        {dataframe.columns.length === 0 &&
-          <WaitingPlaceholder title={t('Waiting')} />
-        }
-        {dataframe.columns.length > 1 &&
-          <>
-            <Plot ref={refPlotly}
-                  data={[{
-                    x        : correlationMatrix.xValues,
-                    y        : correlationMatrix.yValues,
-                    z        : correlationMatrix.zValues,
-                    type     : 'heatmap',
-                    showscale: true
-                  }]}
-                  useResizeHandler={true}
-                  style={{ width: '100%', height: '100%' }}
-                  layout={{
-                    title      : 'Correlation',
-                    autoSize   : true,
-                    height     : undefined,
-                    width      : undefined,
-                    xaxis      : {
-                      ticks     : '',
-                      ticksuffix: ' ',
-                      side      : 'top',
-                      autosize  : true
-                    },
-                    yaxis      : {
-                      ticks     : '',
-                      ticksuffix: ' ',
-                      autosize  : true
-                    },
-                    annotations: correlationMatrix.annotations
-                  }}
-            />
-          </>
-        }
-      </Card.Body>
-    </Card>
-
-    <DataFrameCorrelationMatrixModalDescription showDescription={showDescription}
-                                                setShowDescription={setShowDescription}
-    />
+    {dataframe.columns.length > 1 &&
+      <>
+        <Plot ref={refPlotly}
+              data={[{
+                x        : correlationMatrix.xValues,
+                y        : correlationMatrix.yValues,
+                z        : correlationMatrix.zValues,
+                type     : 'heatmap',
+                showscale: true
+              }]}
+              useResizeHandler={true}
+              style={{ width: '100%', height: '100%' }}
+              layout={{
+                title      : t('Correlation'),
+                autoSize   : true,
+                height     : undefined,
+                width      : undefined,
+                xaxis      : {
+                  ticks     : '',
+                  ticksuffix: ' ',
+                  side      : 'top',
+                  autosize  : true
+                },
+                yaxis      : {
+                  ticks     : '',
+                  ticksuffix: ' ',
+                  autosize  : true
+                },
+                annotations: correlationMatrix.annotations
+              }}
+        />
+      </>
+    }
   </>
 }

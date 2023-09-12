@@ -7,6 +7,8 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'AUTO_MPG'
   static URL = 'https://archive.ics.uci.edu/ml/datasets/auto+mpg'
+
+  URL = 'https://archive.ics.uci.edu/ml/datasets/auto+mpg'
   i18n_TITLE = 'datasets-models.1-linear-regression.auto-mpg.title'
   _KEY = 'AUTO_MPG'
 
@@ -18,7 +20,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
       <p>
         <Trans i18nKey={prefix + 'link'}
                components={{
-                 link1: <a href={'https://archive.ics.uci.edu/ml/datasets/auto+mpg'} target={'_blank'} rel="noreferrer">link</a>,
+                 link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
                }} />
       </p>
       <details>
