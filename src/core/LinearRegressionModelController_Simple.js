@@ -75,6 +75,7 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
  * @property {boolean} scatterplot
  * @property {boolean} linechart
  * @property {boolean} confusion_matrix
+ * @property {boolean} description_model
  */
 
 /**
@@ -161,6 +162,17 @@ export default class LinearRegressionModelController_Simple {
     this.config.features.X_feature = features.X_feature
     this.config.features.y_target = features.y_target
     this.config.features.categorical = new Map()// features.categorical
+  }
+
+  /**
+   *
+   * @param {LRConfigVisor_t} visor
+   **/
+  setVisor (visor) {
+    this.config.visor.description_model = visor.description_model ?? this.config.visor.description_model
+    this.config.visor.confusion_matrix = visor.confusion_matrix ?? this.config.visor.confusion_matrix
+    this.config.visor.linechart = visor.linechart ?? this.config.visor.linechart
+    this.config.visor.scatterplot = visor.scatterplot ?? this.config.visor.scatterplot
   }
 
   /**
@@ -349,10 +361,11 @@ export default class LinearRegressionModelController_Simple {
     })
 
     // Muestra el modelo en el visor
-    await tfvis.show.modelSummary({
-      name: this.t('pages.playground.generator.visor.summary'),
-      tab : this.t('pages.playground.generator.visor.model'),
-    }, model)
+    if (this.config.visor.description_model) {
+      const name = this.t('pages.playground.generator.visor.summary')
+      const tab = this.t('pages.playground.generator.visor.model')
+      await tfvis.show.modelSummary({ name, tab }, model)
+    }
     return model
   }
 
@@ -455,23 +468,25 @@ export default class LinearRegressionModelController_Simple {
       y: preds[i]
     }))
 
-    await tfvis.render.scatterplot(
-      {
-        name: this.t('pages.playground.generator.visor.original-vs-predictions'),
-        tab : this.t('pages.playground.generator.visor.predictions')
-      },
-      {
-        values: [originalPoints, predictedPoints],
-        series: [
-          this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: y_target }),
-          this.t(`pages.playground.generator.visor.predicted`),
-        ]
-      },
-      {
-        xLabel: this.config.features.X_feature,
-        yLabel: this.config.features.y_target,
-      }
-    )
+    if (this.config.visor.scatterplot) {
+      await tfvis.render.scatterplot(
+        {
+          name: this.t('pages.playground.generator.visor.original-vs-predictions'),
+          tab : this.t('pages.playground.generator.visor.predictions')
+        },
+        {
+          values: [originalPoints, predictedPoints],
+          series: [
+            this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: y_target }),
+            this.t(`pages.playground.generator.visor.predicted`),
+          ]
+        },
+        {
+          xLabel: this.config.features.X_feature,
+          yLabel: this.config.features.y_target,
+        }
+      )
+    }
 
     return {
       original       : originalPoints,
@@ -490,6 +505,18 @@ export default class LinearRegressionModelController_Simple {
     const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.y_target)
     await this.TrainModel(model, normalizationTensorData)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
-    return { model, original, predicted, predictedLinear }
+    return { original, model, predicted, predictedLinear }
+  }
+
+  /**
+   *
+   * @param model
+   * @return {Promise<{original: Point_t[], model: Sequential, predicted: Point_t[], predictedLinear: Point_t[]}>}
+   */
+  async runModel (model) {
+    const data = await this.GetData()
+    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.y_target)
+    const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
+    return { original, model, predicted, predictedLinear }
   }
 }

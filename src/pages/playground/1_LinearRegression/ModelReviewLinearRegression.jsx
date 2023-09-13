@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { Trans, useTranslation } from 'react-i18next'
 import { Card, Col, Container, Row, Form } from 'react-bootstrap'
+import Plot from 'react-plotly.js'
 import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
@@ -15,16 +16,19 @@ import {
   MODEL_6_WINE,
 } from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
+import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
-import DataFrameDescribeCard from '@components/dataframe/DataFrameDescribeCard'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
+import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
+import DataFramePlot from '@components/dataframe/DataFramePlot'
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   const { id } = useParams()
 
   const prefix = ''
   const { t } = useTranslation()
+  const refPlotJS = useRef()
 
   const [iModel, setIModel] = useState(null)
 
@@ -32,9 +36,9 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const [datasets_Index, setDatasets_Index] = useState(0)
   const [datasets_DataFrame, setDatasets_DataFrame] = useState(new dfd.DataFrame())
 
-  const [listModels, setListModels] = useState([])
+  const [listModels, setListModels] = useState(/**@type []*/[])
   const [listModels_Index, setListModels_Index] = useState('select-model')
-  const [listModels_Model, setListModels_Model] = useState(null)
+  const [dataPlot, setDataPlot] = useState({ original: [], predicted: [], column_name_X: '', column_name_Y: '' })
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewLinearRegression/' + dataset, title: dataset, })
@@ -80,39 +84,33 @@ export default function ModelReviewLinearRegression ({ dataset }) {
       if (listModels_Index !== 'select-model') {
         const { model_path, column_name_X, column_name_Y } = listModels[listModels_Index]
         const model = await tfjs.loadLayersModel(model_path)
-        console.log('model', model)
-
-        const _tensors = tfjs.tensor([0, 2, 4, 8, 16, 32, 64, 128, 256, 512])
-        console.log('_tensors', _tensors)
-        _tensors.print()
-
-        const _predict = model.predict(_tensors)
-        console.log('_predict', _predict)
-        _predict.print()
-
-
-
+        console.log('model_path', model_path)
         const linear = new LinearRegressionModelController_Simple(t)
         linear.setDataFrame(datasets_DataFrame)
-        linear.setFeatures({ X_feature: column_name_X, y_target: column_name_Y, categorical: new Map() })
+        linear.setFeatures({
+          X_feature  : column_name_X,
+          y_target   : column_name_Y,
+          categorical: new Map()
+        })
+        linear.setVisor({
+          description_model: false,
+          scatterplot      : false,
+          confusion_matrix : false,
+          linechart        : false
+        })
+        const { original, predicted } = await linear.runModel(model)
 
-        const data = await linear.GetData()
-        const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, linear.config.features.X_feature, linear.config.features.y_target)
-        console.log("normalizationTensorData", normalizationTensorData)
-
-
-
-        const xs = tfjs.linspace(0, 1, 100)
-        const preds = model.predict(xs.reshape([100, 1]))
-        console.log('_preds', preds)
-        preds.print()
-
-        setListModels_Model(model)
+        setDataPlot({
+          original,
+          predicted,
+          column_name_X,
+          column_name_Y
+        })
       }
     }
 
     init().then(_r => undefined)
-  }, [listModels, listModels_Index])
+  }, [datasets_DataFrame, listModels, listModels_Index, t])
 
   useEffect(() => {
     console.debug('useEffect[datasets_Index]')
@@ -126,7 +124,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }
 
   const handleChange_ListModels_Index = async (event) => {
-    setListModels_Index(parseInt(event.target.value))
+    setListModels_Index(event.target.value)
   }
 
   if (VERBOSE) console.debug('render ModelReviewLinearRegression')
@@ -153,6 +151,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
                     <Form.Label><Trans i18nKey={prefix + 'form.select-dataset.title'} /></Form.Label>
                     <Form.Select aria-label="form.select-dataset.title"
+                                 size={'sm'}
                                  value={datasets_Index}
                                  onChange={handleChange_Datasets_Index}>
                       {datasets.map(({ csv }, index) => {
@@ -173,21 +172,21 @@ export default function ModelReviewLinearRegression ({ dataset }) {
 
               <DataFrameDatasetCard dataframe={datasets_DataFrame} />
 
-              <DataFrameDescribeCard dataframe={datasets_DataFrame} />
+              <DataFrameScatterPlotCard dataframe={datasets_DataFrame} />
 
               <Card className={'mt-3'}>
                 <Card.Header className={'d-flex justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'model-selector.title'} /></h3>
                   <div className="d-flex">
                     <Form.Group controlId={'FormModelSelector_X'}>
-                      <Form.Select onChange={handleChange_ListModels_Index}
-                                   aria-label={'plot'}
+                      <Form.Select aria-label={'plot'}
                                    size={'sm'}
-                                   value={listModels_Index}>
+                                   defaultValue={'select-model'}
+                                   onChange={handleChange_ListModels_Index}>
                         <option value={'select-model'} disabled={true}><Trans i18nKey={'Select model'} /></option>
                         {listModels.map((value, index) => {
                           return <option key={index} value={index}>
-                            <Trans i18nKey={'model.' + index} values={{ index: index }} />
+                            <Trans i18nKey={'model.__index__'} values={{ index: index }} />
                           </option>
                         })}
                       </Form.Select>
@@ -196,7 +195,39 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 </Card.Header>
                 <Card.Body>
 
-                  {JSON.stringify(listModels)}
+                  <Plot ref={refPlotJS}
+                        data={[...(() => {
+                          const traceOriginal = {
+                            x      : dataPlot.original.map((v) => v.x),
+                            y      : dataPlot.original.map((v) => v.y),
+                            name   : t('{{X_feature}} x {{target}}', { X_feature: dataPlot.column_name_X, target: dataPlot.column_name_Y }),
+                            mode   : 'markers',
+                            type   : 'scatter',
+                            opacity: 1,
+                            marker : {
+                              color: 'blue'
+                            }
+                          }
+                          const tracePredicted = {
+                            x      : dataPlot.predicted.map((v) => v.x),
+                            y      : dataPlot.predicted.map((v) => v.y),
+                            name   : t('Predicted'),
+                            mode   : 'lines+markers',
+                            type   : 'scatter',
+                            opacity: 0.5,
+                            marker : {
+                              color: 'forestgreen'
+                            }
+                          }
+                          return [traceOriginal, tracePredicted]
+                        })()]}
+                        useResizeHandler={true}
+                        style={PLOTLY_CONFIG_DEFAULT.STYLES}
+                        layout={{
+                          title: '',
+                          ...PLOTLY_CONFIG_DEFAULT.LAYOUT
+                        }}
+                  />
 
                 </Card.Body>
               </Card>

@@ -74,6 +74,14 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
     }
   }
 
+  async MODELS () {
+    const path = process.env.REACT_APP_PATH + '/models/linear-regression/boston-housing'
+    return [
+      { column_name_X: 'LSTAT', column_name_Y: 'MEDV', model_path: path + '/0/lr-model-0.json' },
+      { column_name_X: 'RM', column_name_Y: 'MEDV', model_path: path + '/1/lr-model-1.json' },
+    ]
+  }
+
   LAYERS () {
     const inputShape = 7
     const model = tfjs.sequential()

@@ -126,6 +126,12 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     }
   }
 
+  async MODELS () {
+    const path = process.env.REACT_APP_PATH + '/models/linear-regression/breast-cancer'
+    return [
+      { column_name_X: 'area_mean', column_name_Y: 'perimeter_mean', model_path: path + '/0/lr-model-0.json' },
+    ]
+  }
   ATTRIBUTE_INFORMATION () {
     return <></>
   }

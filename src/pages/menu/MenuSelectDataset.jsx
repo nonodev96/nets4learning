@@ -83,7 +83,7 @@ export default function MenuSelectDataset () {
                 <Card.Text>
                   <Trans i18nKey={'pages.menu-selection-dataset.form-description-1'} />
                 </Card.Text>
-                <Form.Group className="mb-3" controlId="FormDataSet">
+                <Form.Group controlId="FormDataSet">
                   <Form.Label><Trans i18nKey={'pages.menu-selection-dataset.form-label'} /></Form.Label>
                   <Form.Select aria-label={t('pages.menu-selection-dataset.form-label')}
                                defaultValue={'select-dataset'}
