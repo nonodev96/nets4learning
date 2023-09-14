@@ -75,7 +75,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     }
   }
 
-  async MODELS () {
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/linear-regression/salary'
     return [
       { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },

@@ -70,9 +70,9 @@ export default function DataFrameQuery ({ dataframe }) {
       </Col>
       <Col sm={2}>
         <div className="d-grid gap-2">
-          <Button onClick={handleClick_UpdateQuery}
+          <Button variant={'outline-primary'}
                   size={'sm'}
-                  variant={'outline-primary'}>
+                  onClick={handleClick_UpdateQuery} >
             <Trans i18nKey={'dataframe.query.query'} />
           </Button>
         </div>

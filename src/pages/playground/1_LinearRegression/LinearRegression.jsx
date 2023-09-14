@@ -198,7 +198,7 @@ export default function LinearRegression ({ dataset_id }) {
 
               <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
-                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModel.i18n_TITLE : 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModel.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body id={'info_model'}>
                   <Suspense fallback={<></>}><LinearRegressionDataset dataset_id={dataset_id} /></Suspense>

@@ -476,10 +476,10 @@ export default function ObjectDetection (props) {
               {/* TODO: falta el foreach */}
               {/* ADD LAYER */}
               <div className="d-grid gap-2">
-                <Button type="button"
-                        onClick={() => handlerAddLayer()}
+                <Button variant={'primary'}
                         size={'lg'}
-                        variant="primary">
+                        type={'button'}
+                        onClick={() => handlerAddLayer()}>
                   Añadir capa
                 </Button>
               </div>
@@ -617,9 +617,9 @@ export default function ObjectDetection (props) {
             {/* BLOCK  BUTTON */}
             <Col xl={12}>
               <div className="d-grid gap-2">
-                <Button type="submit"
+                <Button variant={'primary'}
                         size={'lg'}
-                        variant="primary">
+                        type={'submit'}>
                   Crear y entrenar modelo
                 </Button>
               </div>
@@ -654,10 +654,10 @@ export default function ObjectDetection (props) {
             <Row className={'mt-3'}>
               <Col xl={12}>
                 <div className="d-grid gap-2">
-                  <Button type="button"
-                          onClick={handleDownloadModel}
+                  <Button variant={'primary'}
+                          type={'button'}
                           size={'lg'}
-                          variant="primary">
+                          onClick={handleDownloadModel}>
                     Exportar modelo
                   </Button>
                 </div>
@@ -690,9 +690,9 @@ export default function ObjectDetection (props) {
                            name="doc"
                            onChange={handleChange_FileUpload}></input>
                     <canvas height="200" width="200" id="imageCanvas"></canvas>
-                    <button type="button"
-                            onClick={handleVectorTestImageUpload}
-                            className="btn-custom-canvas green">
+                    <button className={'btn-custom-canvas green'}
+                            type={'button'}
+                            onClick={handleVectorTestImageUpload}>
                       Validar
                     </button>
                   </Col>

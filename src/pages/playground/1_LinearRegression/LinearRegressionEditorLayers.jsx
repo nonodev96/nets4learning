@@ -69,15 +69,15 @@ export default function LinearRegressionEditorLayers () {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
         <div className={'d-flex'}>
-          <Button onClick={() => handlerClick_AddLayer_Start()}
+          <Button variant={'outline-primary'}
                   size={'sm'}
-                  variant="outline-primary">
+                  onClick={() => handlerClick_AddLayer_Start()}>
             <Trans i18nKey={prefix + 'add-layer-start'} />
           </Button>
-          <Button onClick={() => handlerClick_AddLayer_End()}
+          <Button variant={'outline-primary'}
                   size={'sm'}
-                  variant="outline-primary"
-                  className={'ms-3'}>
+                  className={'ms-3'}
+                  onClick={() => handlerClick_AddLayer_End()}>
             <Trans i18nKey={prefix + 'add-layer-end'} />
           </Button>
         </div>
@@ -95,8 +95,8 @@ export default function LinearRegressionEditorLayers () {
                   </Accordion.Header>
                   <Accordion.Body>
                     <div className="d-grid gap-2">
-                      <Button onClick={() => handlerClick_RemoveLayer(index)}
-                              variant={'outline-danger'}>
+                      <Button variant={'outline-danger'}
+                              onClick={() => handlerClick_RemoveLayer(index)}>
                         <Trans i18nKey={prefix + 'delete-layer'}
                                values={{ index: index + 1 }} />
                       </Button>

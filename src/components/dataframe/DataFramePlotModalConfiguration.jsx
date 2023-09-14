@@ -129,20 +129,20 @@ export default function DataFramePlotModalConfiguration () {
           <Trans i18nKey={`dataframe-plot.${dataframePlotConfig.PLOT_ENABLE}.title`} /> | <Trans i18nKey={'dataframe-plot.configuration.title'} />
         </Modal.Title>
         <div className={'d-flex'}>
-          <Button className={'ms-3'}
-                  variant={'outline-warning'}
+          <Button variant={'outline-warning'}
+                  className={'ms-3'}
                   size={'sm'}
                   onClick={handleClick_reset}>
             <Trans i18nKey={'dataframe-plot.configuration.reset'} />
           </Button>
-          <Button className={'ms-3'}
-                  variant={'outline-primary'}
+          <Button variant={'outline-primary'}
                   size={'sm'}
+                  className={'ms-3'}
                   onClick={handleClick_SelectAllColumns}>
             <Trans i18nKey={'dataframe-plot.configuration.select-all-columns'} />
           </Button>
-          <Button className={'ms-3'}
-                  variant={'outline-primary'}
+          <Button variant={'outline-primary'}
+                  className={'ms-3'}
                   size={'sm'}
                   onClick={handleClick_DeleteAllColumns}>
             <Trans i18nKey={'dataframe-plot.configuration.delete-all-columns'} />

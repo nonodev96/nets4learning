@@ -54,7 +54,8 @@ export default function CookiesModal () {
           <Trans i18nKey={'cookies-policies.text-1'} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleAccept}>
+          <Button variant={'primary'}
+                  onClick={handleAccept}>
             <Trans i18nKey={'cookies-policies.accept'} />
           </Button>
         </Modal.Footer>

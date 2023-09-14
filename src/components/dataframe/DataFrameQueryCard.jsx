@@ -21,9 +21,9 @@ export default function DataFrameQueryCard ({ dataframe }) {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={'dataframe.query.title'} /></h3>
         <div className={'d-flex'}>
-          <Button onClick={handleClick_OpenModal_Query}
+          <Button variant={'outline-primary'}
                   size={'sm'}
-                  variant={'outline-primary'}>
+                  onClick={handleClick_OpenModal_Query}>
             <Trans i18nKey={'dataframe.query.description.title'} />
           </Button>
         </div>

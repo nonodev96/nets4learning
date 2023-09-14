@@ -68,10 +68,14 @@ export default function TestPageEasy () {
               <h3>Alerts</h3>
             </Card.Header>
             <Card.Body>
-              <Button onClick={async () => await AlertHelper.alertError('Error')}>Error</Button>
-              <Button onClick={async () => await AlertHelper.alertWarning('Waring')}>Waring</Button>
-              <Button onClick={async () => await AlertHelper.alertInfo('Info')}>Info</Button>
-              <Button onClick={async () => await AlertHelper.alertSuccess('Success')}>Success</Button>
+              <Button variant={'danger'}
+                      onClick={async () => await AlertHelper.alertError('Error')}>Error</Button>
+              <Button variant={'warning'}
+                      onClick={async () => await AlertHelper.alertWarning('Waring')}>Waring</Button>
+              <Button variant={'info'}
+                      onClick={async () => await AlertHelper.alertInfo('Info')}>Info</Button>
+              <Button variant={'success'}
+                      onClick={async () => await AlertHelper.alertSuccess('Success')}>Success</Button>
             </Card.Body>
           </Card>
         </Col>
@@ -82,13 +86,24 @@ export default function TestPageEasy () {
           <Card>
             <Card.Header><h3>TestPage-Easy</h3></Card.Header>
             <Card.Body>
-
-              <Button onClick={() => setCounter(c => c + 1)}>Counter {counter}</Button>
+              <Button variant={'primary'}
+                      onClick={() => setCounter(c => c + 1)}>
+                Counter {counter}
+              </Button>
               <hr />
               <TestComponentEasy />
 
-              <Button onClick={handleClick_init} size={'sm'} variant={'outline-primary'}>Init</Button>
-              <Button onClick={handleClick_toggle} size={'sm'} variant={'outline-primary'} className={'ms-3'}>Toggle visor</Button>
+              <Button variant={'outline-primary'}
+                      size={'sm'}
+                      onClick={handleClick_init}>
+                Init
+              </Button>
+              <Button variant={'outline-primary'}
+                      size={'sm'}
+                      className={'ms-3'}
+                      onClick={handleClick_toggle}>
+                Toggle visor
+              </Button>
 
               <Container>
                 <Row>

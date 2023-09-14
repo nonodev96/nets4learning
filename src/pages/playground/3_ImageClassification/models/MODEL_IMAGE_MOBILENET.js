@@ -1,9 +1,10 @@
-import { MODEL_IMAGE_CLASSIFICATION } from './_model'
+import { I_MODEL_IMAGE_CLASSIFICATION } from './_model'
 import { Trans } from 'react-i18next'
 
-export default class MODEL_IMAGE_MOBILENET extends MODEL_IMAGE_CLASSIFICATION {
+export default class MODEL_IMAGE_MOBILENET extends I_MODEL_IMAGE_CLASSIFICATION {
   static KEY = 'IMAGE-MOBILENET'
   TITLE = 'datasets-models.3-image-classifier.mobilenet.title'
+  i18n_TITLE = 'datasets-models.3-image-classifier.mobilenet.title'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.3-image-classifier.mobilenet.description.'

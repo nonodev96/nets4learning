@@ -19,7 +19,7 @@ import {
   MODEL_IMAGE_RESNET,
 } from '@/DATA_MODEL'
 
-import { MODEL_IMAGE_CLASSIFICATION } from './models/_model'
+import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -117,7 +117,7 @@ class ModelReviewImageClassification extends React.Component {
     this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
     this.handleFileUpload_Image = this.handleFileUpload_Image.bind(this)
 
-    this._model = new MODEL_IMAGE_CLASSIFICATION(props.t)
+    this._model = new I_MODEL_IMAGE_CLASSIFICATION(props.t)
     switch (this.dataset) {
       case MODEL_IMAGE_MNIST.KEY: {
         this._model = new MODEL_IMAGE_MNIST(props.t)
@@ -691,7 +691,7 @@ class ModelReviewImageClassification extends React.Component {
                                    function_DropAccepted={this.handleFileUpload_Image} />
 
                       <div className="d-flex gap-2 justify-content-center mx-auto">
-                        <Button type="button"
+                        <Button type={'button'}
                                 onClick={this.handleClick_ImageUploaded_Predict}
                                 variant={'primary'}>
                           <Trans i18nKey={'datasets-models.3-image-classifier.interface.process-image.validate'} />

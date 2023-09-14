@@ -26,7 +26,7 @@ export default function DebugLoadCSV () {
 
   }
 
-  if(VERBOSE) console.debug('render DebugLoadCSV')
+  if (VERBOSE) console.debug('render DebugLoadCSV')
   return <>
     {
       (_isDebug) &&
@@ -39,53 +39,54 @@ export default function DebugLoadCSV () {
 
 
               <div className="d-grid gap-2 mt-3">
-                <Button type="button"
+                <Button variant="primary"
+                        size={'sm'}
+                        type={'button'}
                         onClick={async () => {
                           console.log('TODO')
-                        }}
-                        size={'sm'}
-                        variant="primary">
+                        }}>
                   Debug
                 </Button>
-                <Button type="button"
+                <Button variant="primary"
+                        type={'button'}
                         onClick={async () => {
                           console.log('TODO')
                           await handleClick_debug_ALL()
                         }}
-                        size={'sm'}
-                        variant="primary">
+                        size={'sm'}>
                   CLEAR DATA
                 </Button>
                 <hr />
 
-                <Button type="button"
-                        onClick={() => tfVis.visor().toggle()}
+                <Button variant={'outline-primary'}
                         size={'sm'}
-                        variant="outline-primary">
+                        type={'button'}
+                        onClick={() => tfVis.visor().toggle()}
+                >
                   Conmutar visor
                 </Button>
-                <Button type="button"
-                        onClick={() => handleClick_Layers}
+                <Button variant={'outline-secondary'}
                         size={'sm'}
-                        variant="outline-secondary">
+                        type={'button'}
+                        onClick={() => handleClick_Layers}>
                   Definir capas
                 </Button>
-                <Button type="button"
-                        onClick={() => handleClick_Compile}
+                <Button variant={'outline-warning'}
                         size={'sm'}
-                        variant="outline-warning">
+                        type="button"
+                        onClick={() => handleClick_Compile}>
                   Compilar
                 </Button>
-                <Button type="button"
-                        onClick={() => handleClick_Fit}
-                        size={'sm'}
-                        variant="outline-danger">
+                <Button size={'sm'}
+                        variant={'outline-danger'}
+                        type={'button'}
+                        onClick={() => handleClick_Fit}>
                   Entrenar
                 </Button>
-                <Button type="button"
-                        onClick={() => handleClick_Download}
+                <Button variant={'outline-success'}
                         size={'sm'}
-                        variant="outline-success">
+                        type={'button'}
+                        onClick={() => handleClick_Download}>
                   Descargar
                 </Button>
               </div>

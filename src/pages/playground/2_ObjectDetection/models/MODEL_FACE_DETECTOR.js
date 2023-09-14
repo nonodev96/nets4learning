@@ -1,10 +1,10 @@
-import { MODEL_OBJECT_DETECTION } from "./_model";
+import { I_MODEL_OBJECT_DETECTION } from "./_model";
 import * as faceDetection from "@tensorflow-models/face-detection";
 import { Trans } from "react-i18next";
 
-export class MODEL_FACE_DETECTOR extends MODEL_OBJECT_DETECTION {
-  TITLE = "datasets-models.2-object-detection.face-detection.title"
+export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
   static KEY = "FACE-DETECTOR"
+  TITLE = "datasets-models.2-object-detection.face-detection.title"
 
   DESCRIPTION() {
     const prefix = "datasets-models.2-object-detection.face-detection.description."

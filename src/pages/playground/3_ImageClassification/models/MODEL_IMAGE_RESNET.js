@@ -1,8 +1,9 @@
-import { MODEL_IMAGE_CLASSIFICATION } from './_model'
+import { I_MODEL_IMAGE_CLASSIFICATION } from './_model'
 
-export default class MODEL_IMAGE_RESNET extends MODEL_IMAGE_CLASSIFICATION {
+export default class MODEL_IMAGE_RESNET extends I_MODEL_IMAGE_CLASSIFICATION {
   static KEY = 'IMAGE-RESNET'
   TITLE = ''
+  i18n_TITLE = ''
 
   DESCRIPTION () {
     return <>

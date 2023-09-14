@@ -17,6 +17,9 @@
   "Predicted": "Predicción",
   "Waiting": "Esperando",
   "and": "y",
+  "model": {
+    "__index__": "Model {{index}}"
+  },
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -85,6 +88,7 @@
   },
   "datasets": {
     "title": "Conjuntos de datos",
+    "upload-dataset": null,
     "text-0": "Descargar conjuntos de datos para la clasificación tabular",
     "dataset-name": "Nombre del conjunto de datos",
     "dataset-size": "Número de muestras",
@@ -115,6 +119,62 @@
   "dataframe-form": "Formulario DataFrame",
   "dataframe-original": "DataFrame original",
   "dataframe-processed": "DataFrame procesado",
+  "dataframe": {
+    "dataset": {
+      "title": "Conjunto de datos"
+    },
+    "correlation-matrix": {
+      "title": "DataFrame | Matriz de correlación",
+      "description": {
+        "0": "El coeficiente de correlación de Pearson, también conocido como correlación lineal o coeficiente de correlación producto-momento, es una medida estadística utilizada para cuantificar la relación lineal entre dos variables cuantitativas. Es uno de los estadísticos de correlación más comúnmente utilizados y proporciona información sobre la fuerza y la dirección de la relación entre las variables.",
+        "1": "El coeficiente de correlación de Pearson varía entre -1 y 1:",
+        "2": "Un valor de -1 indica una correlación lineal perfectamente negativa, lo que significa que a medida que aumenta una variable, la otra disminuye en una relación lineal inversa.",
+        "3": "Un valor de 1 indica una correlación lineal perfectamente positiva, lo que significa que a medida que aumenta una variable, la otra también aumenta en una relación lineal directa.",
+        "4": "Un valor de 0 indica que no hay una correlación lineal entre las variables, lo que implica que no hay una relación lineal entre ellas.",
+        "5": "El cálculo del coeficiente de correlación de Pearson se basa en las covarianzas y las desviaciones estándar de las dos variables. Matemáticamente, se calcula de la siguiente manera:",
+        "6": "Donde:",
+        "7": "son los valores de las dos variables en cada observación.",
+        "8": "son las medias de las dos variables, respectivamente.",
+        "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables.",
+        "title": "Descripción"
+      },
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+    },
+    "describe": {
+      "title": "DataFrame | Describe",
+      "description": {
+        "0": "Esta función se utiliza para generar un resumen estadístico de las columnas numéricas de un DataFrame. Proporciona estadísticas descriptivas clave, como la media, la desviación estándar, el mínimo, el máximo y varios cuantiles de las columnas numéricas. Esto es útil para obtener una comprensión rápida de la distribución y las tendencias de los datos.",
+        "1": "Esta función es útil para obtener una idea rápida de la distribución de los datos y puede ayudarte a identificar valores atípicos o anomalías en tus datos.",
+        "title": "Descripción"
+      },
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+    },
+    "query": {
+      "title": "DataFrame | Consulta",
+      "description": {
+        "0": "Consulta el DataFrame por el resultado de una comparación lógica o máscara booleana.",
+        "1": "Puedes realizar tus propias consultas concatenando comparaciones lógicas, aquí tienes algunos ejemplos de como realizar las comparaciones.",
+        "title": "Descripción"
+      },
+      "query": "Consulta",
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+    },
+    "plot": {
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+    }
+  },
+  "dataframe-scatterplot": {
+    "title": "Gráfico de dispersión"
+  },
+  "model-selector": {
+    "title": "Selector de modelos"
+  },
+  "form": {
+    "select-dataset": {
+      "title": "Selecciona el conjunto de datos",
+      "info": "Selecciona el conjunto de datos"
+    }
+  },
   "preprocessing": {
     "title": "Preprocesamiento",
     "transformations-columns": "Transformaciones por columnas",
@@ -495,7 +555,7 @@
         }
       },
       "breast-cancer": {
-        "title": "Cáncer de mama Wisconsin (pronóstico)",
+        "title": "Cáncer de mama Wisconsin (diagnóstico y pronóstico)",
         "description": {
           "text": {
             "0": "Es un conjunto de datos del Hospital de la Universidad de Wisconsin relacionados con el cáncer de mama. Dicho conjunto de datos es útil para la predicción y discriminación de un tumor de cancer de mama, diferenciando si es benigno o no.",
@@ -898,47 +958,6 @@
       }
     }
   },
-  "dataframe": {
-    "correlation-matrix": {
-      "title": "DataFrame | Matriz de correlación",
-      "description": {
-        "0": "El coeficiente de correlación de Pearson, también conocido como correlación lineal o coeficiente de correlación producto-momento, es una medida estadística utilizada para cuantificar la relación lineal entre dos variables cuantitativas. Es uno de los estadísticos de correlación más comúnmente utilizados y proporciona información sobre la fuerza y la dirección de la relación entre las variables.",
-        "1": "El coeficiente de correlación de Pearson varía entre -1 y 1:",
-        "2": "Un valor de -1 indica una correlación lineal perfectamente negativa, lo que significa que a medida que aumenta una variable, la otra disminuye en una relación lineal inversa.",
-        "3": "Un valor de 1 indica una correlación lineal perfectamente positiva, lo que significa que a medida que aumenta una variable, la otra también aumenta en una relación lineal directa.",
-        "4": "Un valor de 0 indica que no hay una correlación lineal entre las variables, lo que implica que no hay una relación lineal entre ellas.",
-        "5": "El cálculo del coeficiente de correlación de Pearson se basa en las covarianzas y las desviaciones estándar de las dos variables. Matemáticamente, se calcula de la siguiente manera:",
-        "6": "Donde:",
-        "7": "son los valores de las dos variables en cada observación.",
-        "8": "son las medias de las dos variables, respectivamente.",
-        "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables.",
-        "title": "Descripción"
-      },
-      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
-    },
-    "describe": {
-      "title": "DataFrame | Describe",
-      "description": {
-        "0": "Esta función se utiliza para generar un resumen estadístico de las columnas numéricas de un DataFrame. Proporciona estadísticas descriptivas clave, como la media, la desviación estándar, el mínimo, el máximo y varios cuantiles de las columnas numéricas. Esto es útil para obtener una comprensión rápida de la distribución y las tendencias de los datos.",
-        "1": "Esta función es útil para obtener una idea rápida de la distribución de los datos y puede ayudarte a identificar valores atípicos o anomalías en tus datos.",
-        "title": "Descripción"
-      },
-      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
-    },
-    "query": {
-      "title": "DataFrame | Consulta",
-      "description": {
-        "0": "Consulta el DataFrame por el resultado de una comparación lógica o máscara booleana.",
-        "1": "Puedes realizar tus propias consultas concatenando comparaciones lógicas, aquí tienes algunos ejemplos de como realizar las comparaciones.",
-        "title": "Descripción"
-      },
-      "query": "Consulta",
-      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
-    },
-    "plot": {
-      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
-    }
-  },
   "dataframe-plot": {
     "title": "DataFrame | Graficos",
     "info": "Información",
@@ -1293,6 +1312,12 @@
         "prediction": {
           "class_id_name": "El identificador del target <strong>{{class_target_id}}</strong> corresponde a la clase <strong>{{name}}</strong>"
         },
+        "layer-design": "Diseño de capas",
+        "neural_network_modes": {
+          "title": "Modos de visualización",
+          "compact": "Modo compacto",
+          "extend": "Modo extendido"
+        },
         "dataset": {
           "title": "Conjunto de datos",
           "upload-dataset": "Subir conjunto de datos",
@@ -1311,12 +1336,6 @@
             "data": "Información del conjunto de datos",
             "info": "Información"
           }
-        },
-        "layer-design": "Diseño de capas",
-        "neural_network_modes": {
-          "title": "Modos de visualización",
-          "compact": "Modo compacto",
-          "extend": "Modo extendido"
         },
         "layers": {
           "title": "Diseño de capas",
@@ -1776,6 +1795,14 @@
         }
       }
     },
+    "menu": {
+      "select-model": {
+        "description": "Descripción"
+      },
+      "select-dataset": {
+        "description": "Descripción"
+      }
+    },
     "terms": {
       "title": "Políticas de privacidad y cookies",
       "privacy-title": "Políticas de privacidad",
@@ -1823,5 +1850,7 @@
     "next": "Siguiente",
     "open": "Abrir",
     "skip": "Saltar"
-  }
+  },
+  "upload-dataset-info": "Debes subir un conjunto de datos para realizar la tarea.",
+  "upload-model-info": "Debes subir un modelo para realizar la tarea."
 }

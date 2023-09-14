@@ -1,5 +1,6 @@
-export class MODEL_OBJECT_DETECTION {
+export class I_MODEL_OBJECT_DETECTION {
   TITLE = ""
+  i18n_TITLE = ""
 
   constructor(_t) {
     this.t = _t

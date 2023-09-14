@@ -8,6 +8,7 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   static URL = 'https://archive.ics.uci.edu/ml/datasets/iris'
   static URL_MODEL = '/public/models/classification/iris/my-model-iris.json'
   TITLE = 'datasets-models.0-tabular-classification.iris.title'
+  i18n_TITLE = 'datasets-models.0-tabular-classification.iris.title'
 
   NUM_CLASSES = 3
   CLASSES = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']

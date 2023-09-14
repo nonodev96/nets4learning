@@ -59,10 +59,11 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @property {string} column_name_Y
    * @property {string} model_path
    *
+   * @param {string} [dataset='']
    * @return {Promise<CustomModel_t[]>}
    * @constructor
    */
-  async MODELS () {
+  async MODELS (dataset = '') {
     return []
   }
 

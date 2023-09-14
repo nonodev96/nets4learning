@@ -17,6 +17,9 @@
   "Predicted": "Predicted",
   "Waiting": "Waiting",
   "and": "and",
+  "model": {
+    "__index__": "Model {{index}}"
+  },
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -85,6 +88,7 @@
   },
   "datasets": {
     "title": "Data sets",
+    "upload-dataset": null,
     "text-0": "Download data sets for tabular classification",
     "dataset-name": "Data set name",
     "dataset-size": "Number of samples",
@@ -115,6 +119,62 @@
   "dataframe-form": "Dataframe form",
   "dataframe-original": "Original dataframe",
   "dataframe-processed": "Processed dataframe",
+  "dataframe": {
+    "dataset": {
+      "title": "Data set"
+    },
+    "correlation-matrix": {
+      "title": "Dataframe | Correlation matrix",
+      "description": {
+        "0": "Pearson's correlation coefficient, also known as a linear correlation or product-moment correlation coefficient, is a statistical measure used to quantify the linear relationship between two quantitative variables. It is one of the most commonly used correlation statistics and provides information about the strength and direction of the relationship between the variables.",
+        "1": "Pearson's correlation coefficient varies between -1 and 1:",
+        "2": "A value of -1 indicates a perfectly negative linear correlation, which means that as one variable increases, the other decreases in a reverse linear relationship.",
+        "3": "A value of 1 indicates a perfectly positive linear correlation, which means that as one variable increases, the other also increases in a direct linear relationship.",
+        "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
+        "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
+        "6": "Where:",
+        "7": "are the values ​​of the two variables in each observation.",
+        "8": "are the stockings of the two variables, respectively.",
+        "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
+        "title": "Description"
+      },
+      "link": "Consult more information in the following <link1> link </link1>"
+    },
+    "describe": {
+      "title": "DataFrame | Describe",
+      "description": {
+        "0": "This function is used to generate a statistical summary of the numerical columns of a dataframe. It provides key descriptive statistics, such as average, standard deviation, minimum, maximum and several quantiles of numerical columns. This is useful to obtain a rapid understanding of the distribution and data trends.",
+        "1": "This function is useful to obtain a quick idea of ​​data distribution and can help you identify atypical values ​​or anomalies in your data.",
+        "title": "Description"
+      },
+      "link": "Consult more information in the following <link1> link </link1>"
+    },
+    "query": {
+      "title": "DataFrame | Query",
+      "description": {
+        "0": "Query the DataFrame by the result of a logical comparison or boolean mask.",
+        "1": "Query the DataFrame by the result of a logical comparison or boolean mask.",
+        "title": "Description"
+      },
+      "query": "Query",
+      "link": "Consult more information in the following <link1>link</link1>"
+    },
+    "plot": {
+      "link": "Consult more information in the following <link1> link </link1>"
+    }
+  },
+  "dataframe-scatterplot": {
+    "title": "Scatter plot"
+  },
+  "model-selector": {
+    "title": "Model selector"
+  },
+  "form": {
+    "select-dataset": {
+      "title": "Select the data set",
+      "info": "Select the data set"
+    }
+  },
   "preprocessing": {
     "title": "Preprocessing",
     "transformations-columns": "Column transformations",
@@ -495,7 +555,7 @@
         }
       },
       "breast-cancer": {
-        "title": "Breast Cancer Wisconsin (Prognostic)",
+        "title": "Breast Cancer Wisconsin (Diagnostic and prognostic)",
         "description": {
           "text": {
             "0": "It is a data set of the Hospital of the University of Wisconsin related to breast cancer. This data set is useful for the prediction and discrimination of a breast cancer tumor, differentiating whether it is benign or not.",
@@ -898,47 +958,6 @@
       }
     }
   },
-  "dataframe": {
-    "correlation-matrix": {
-      "title": "Dataframe | Correlation matrix",
-      "description": {
-        "0": "Pearson's correlation coefficient, also known as a linear correlation or product-moment correlation coefficient, is a statistical measure used to quantify the linear relationship between two quantitative variables. It is one of the most commonly used correlation statistics and provides information about the strength and direction of the relationship between the variables.",
-        "1": "Pearson's correlation coefficient varies between -1 and 1:",
-        "2": "A value of -1 indicates a perfectly negative linear correlation, which means that as one variable increases, the other decreases in a reverse linear relationship.",
-        "3": "A value of 1 indicates a perfectly positive linear correlation, which means that as one variable increases, the other also increases in a direct linear relationship.",
-        "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
-        "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
-        "6": "Where:",
-        "7": "are the values ​​of the two variables in each observation.",
-        "8": "are the stockings of the two variables, respectively.",
-        "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
-        "title": "Description"
-      },
-      "link": "Consult more information in the following <link1> link </link1>"
-    },
-    "describe": {
-      "title": "DataFrame | Describe",
-      "description": {
-        "0": "This function is used to generate a statistical summary of the numerical columns of a dataframe. It provides key descriptive statistics, such as average, standard deviation, minimum, maximum and several quantiles of numerical columns. This is useful to obtain a rapid understanding of the distribution and data trends.",
-        "1": "This function is useful to obtain a quick idea of ​​data distribution and can help you identify atypical values ​​or anomalies in your data.",
-        "title": "Description"
-      },
-      "link": "Consult more information in the following <link1> link </link1>"
-    },
-    "query": {
-      "title": "DataFrame | Query",
-      "description": {
-        "0": "Query the DataFrame by the result of a logical comparison or boolean mask.",
-        "1": "Query the DataFrame by the result of a logical comparison or boolean mask.",
-        "title": "Description"
-      },
-      "query": "Query",
-      "link": "Consult more information in the following <link1>link</link1>"
-    },
-    "plot": {
-      "link": "Consult more information in the following <link1> link </link1>"
-    }
-  },
   "dataframe-plot": {
     "title": "DataFrame | Plot",
     "info": "Information",
@@ -1293,6 +1312,12 @@
         "prediction": {
           "class_id_name": "The id of target <strong>{{class_target_id}}</strong> corresponds to the class <strong>{{name}}</strong>"
         },
+        "layer-design": "Layer design",
+        "neural_network_modes": {
+          "title": "Visualization modes",
+          "compact": "Compact mode",
+          "extend": "Extended mode"
+        },
         "dataset": {
           "title": "Data set",
           "upload-dataset": "Upload data set",
@@ -1311,12 +1336,6 @@
             "data": "Data set information",
             "info": "Information"
           }
-        },
-        "layer-design": "Layer design",
-        "neural_network_modes": {
-          "title": "Visualization modes",
-          "compact": "Compact mode",
-          "extend": "Extended mode"
         },
         "layers": {
           "title": "Layer design",
@@ -1776,6 +1795,14 @@
         }
       }
     },
+    "menu": {
+      "select-model": {
+        "description": "Description"
+      },
+      "select-dataset": {
+        "description": "Description"
+      }
+    },
     "terms": {
       "title": "Privacy Policies and Cookies",
       "privacy-title": "Privacy policies",
@@ -1790,7 +1817,7 @@
       "learning-rate": "Learning rate",
       "test-size": "Test size",
       "n-of-epochs": "Nº of epochs",
-      "id-optimizer": "Ootimizer",
+      "id-optimizer": "Optimizer",
       "id-loss": "Loss",
       "id-metrics": "Métric",
       "layers": "Layers",
@@ -1823,5 +1850,7 @@
     "next": "Next",
     "open": "Open",
     "skip": "Skip"
-  }
+  },
+  "upload-dataset-info": "You must upload a dataset to perform the task.",
+  "upload-model-info": "You must upload a model to perform the task."
 }

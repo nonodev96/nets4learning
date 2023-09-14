@@ -1,10 +1,11 @@
-import { MODEL_OBJECT_DETECTION } from "./_model";
+import { I_MODEL_OBJECT_DETECTION } from "./_model";
 import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
 import { Trans } from "react-i18next";
 
-export class MODEL_FACE_MESH extends MODEL_OBJECT_DETECTION {
-  TITLE = "datasets-models.2-object-detection.face-mesh.title"
+export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
   static KEY = "FACE-MESH"
+  TITLE = "datasets-models.2-object-detection.face-mesh.title"
+  i18n_TITLE = "datasets-models.2-object-detection.face-mesh.title"
 
   DESCRIPTION() {
     const prefix = "datasets-models.2-object-detection.face-mesh.description."

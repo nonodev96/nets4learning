@@ -49,10 +49,6 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
                      components={{
                        link1: <a href={this.URL} target={'_blank'} rel={'noreferrer'}>TEXT</a>
                      }} /></li>
-          <li><Trans i18nKey={prefix + 'details-3-references.list.1'}
-                     components={{
-                       link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
-                     }} /></li>
         </ol>
       </details>
     </>
@@ -87,7 +83,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     }
   }
 
-  async MODELS () {
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/linear-regression/student-performance'
     return [
       { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },

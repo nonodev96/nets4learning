@@ -5,7 +5,6 @@ import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from 'react-ga4'
 
-
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import alertHelper from '@utils/alertHelper'
 import {
@@ -19,7 +18,7 @@ import CustomCanvasDrawer from './components/customCanvasDrawer'
 import LayerEdit from './LayerEdit'
 import * as ImageClassificationUtils from './utils/utils'
 import * as TrainMNIST from './custom/Train_MNIST'
-import { MODEL_IMAGE_CLASSIFICATION } from './models/_model'
+import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1
@@ -31,7 +30,7 @@ const DEFAULT_ID_METRICS = 'accuracy'
 export default function ImageClassification (props) {
   const { dataset } = props
   const { t } = useTranslation()
-  const [modelInfo, set_ModelInfo] = useState(new MODEL_IMAGE_CLASSIFICATION(t))
+  const [modelInfo, set_ModelInfo] = useState(new I_MODEL_IMAGE_CLASSIFICATION(t))
 
   const prefix = 'pages.playground.generator.'
 
@@ -540,15 +539,15 @@ export default function ImageClassification (props) {
                 <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'editor-layers.title'} /></h3>
                   <div className={'d-flex'}>
-                    <Button onClick={() => handleClick_AddLayer_Start()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary">
+                            onClick={() => handleClick_AddLayer_Start()}>
                       <Trans i18nKey={prefix + 'editor-layers.add-layer-start'} />
                     </Button>
-                    <Button onClick={() => handleClick_AddLayer_End()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary"
-                            className={'ms-3'}>
+                            className={'ms-3'}
+                            onClick={() => handleClick_AddLayer_End()}>
                       <Trans i18nKey={prefix + 'editor-layers.add-layer-end'} />
                     </Button>
                   </div>
@@ -563,8 +562,8 @@ export default function ImageClassification (props) {
                         </Accordion.Header>
                         <Accordion.Body>
                           <div className="d-grid gap-2">
-                            <Button onClick={() => handleClick_RemoveLayer(index)}
-                                    variant={'outline-danger'}>
+                            <Button variant={'outline-danger'}
+                                    onClick={() => handleClick_RemoveLayer(index)}>
                               <Trans i18nKey={prefix + 'editor-layers.delete-layer'}
                                      values={{ index: index + 1 }} />
                             </Button>
@@ -689,8 +688,8 @@ export default function ImageClassification (props) {
             <Col>
               {/* BLOCK  BUTTON */}
               <div className="d-grid gap-2">
-                <Button type={'submit'}
-                        variant="primary"
+                <Button variant={'primary'}
+                        type={'submit'}
                         onClick={() => {
                           console.log('TODO')
                         }}>
@@ -711,27 +710,27 @@ export default function ImageClassification (props) {
                 <h3><Trans i18nKey={prefix + 'models.title'} /> | {GeneratedModels.length + 1}</h3>
                 <div className={'d-flex'}>
                   <Button variant={'outline-primary'}
-                          className={'ms-3'}
                           size={'sm'}
+                          className={'ms-3'}
                           onClick={() => {
                             tfvis.visor().open()
                           }}>
                     <Trans i18nKey={prefix + 'models.open-visor'} />
                   </Button>
                   <Button variant={'outline-primary'}
-                          className={'ms-1'}
                           size={'sm'}
+                          className={'ms-1'}
                           onClick={() => {
                             tfvis.visor().close()
                           }}>
                     <Trans i18nKey={prefix + 'models.close-visor'} />
                   </Button>
                   {(Model !== undefined) &&
-                    <Button className={'ms-1'}
-                            disabled={isDisabledDownloadModel()}
-                            onClick={() => handleClick_DownloadModel()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary">
+                            className={'ms-1'}
+                            disabled={isDisabledDownloadModel()}
+                            onClick={() => handleClick_DownloadModel()}>
                       <Trans i18nKey={prefix + 'models.export-current-model'} />
                     </Button>
                   }
@@ -787,7 +786,7 @@ export default function ImageClassification (props) {
 
 
                     <div className="d-grid gap-2 mt-3">
-                      <Button variant="primary"
+                      <Button variant={'primary'}
                               onClick={handleVectorTestImageUpload}>
                         Validar
                       </Button>

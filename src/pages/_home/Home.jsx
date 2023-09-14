@@ -103,8 +103,8 @@ export default function Home () {
               <Card.Body>
                 <Card.Text><Trans i18nKey={'pages.index.linear-regression.1-description-1'} /></Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
-                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}
-                          data-testid={'Test-GoTo-SelectModel-LinearRegression'}>
+                  <Button data-testid={'Test-GoTo-SelectModel-LinearRegression'}
+                          onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
                     <Trans i18nKey={'pages.index.linear-regression.1-button'} />
                   </Button>
                 </div>
@@ -210,28 +210,28 @@ export default function Home () {
           <Row className={'row-cols-1 row-cols-md-3 row-cols-xl-3'}>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
-                <Button onClick={() => handleClick_OpenCardModel(TASKS.TABULAR_CLASSIFICATION)}
-                        variant={'primary'}
-                        size={'lg'}>
+                <Button variant={'primary'}
+                        size={'lg'}
+                        onClick={() => handleClick_OpenCardModel(TASKS.TABULAR_CLASSIFICATION)}>
                   <Trans i18nKey={'pages.index.tabular-classification.1-title'} />
                 </Button>
               </div>
             </Col>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
-                <Button onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}
+                <Button variant={'danger'}
+                        size={'lg'}
                         data-testid={'Test-InitialMenu-LinearRegression'}
-                        variant={'danger'}
-                        size={'lg'}>
+                        onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
                   <Trans i18nKey={'pages.index.linear-regression.1-title'} />
                 </Button>
               </div>
             </Col>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
-                <Button onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}
-                        variant={'info'}
-                        size={'lg'}>
+                <Button variant={'info'}
+                        size={'lg'}
+                        onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}>
                   <Trans i18nKey={'pages.index.image-classification.1-title'} />
                 </Button>
               </div>
@@ -239,9 +239,9 @@ export default function Home () {
 
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
-                <Button onClick={() => handleClick_OpenCardModel(TASKS.OBJECT_DETECTION)}
-                        variant={'warning'}
-                        size={'lg'}>
+                <Button variant={'warning'}
+                        size={'lg'}
+                        onClick={() => handleClick_OpenCardModel(TASKS.OBJECT_DETECTION)}>
                   <Trans i18nKey={'pages.index.object-detection.1-title'} />
                 </Button>
               </div>

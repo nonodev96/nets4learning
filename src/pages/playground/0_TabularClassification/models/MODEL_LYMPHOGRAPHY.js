@@ -8,6 +8,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   static URL_MODEL = '/public/models/classification/car/my-model-lymphography.json'
   static URL_DATASET = 'https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/'
   TITLE = 'datasets-models.0-tabular-classification.lymphography.title'
+  i18n_TITLE = 'datasets-models.0-tabular-classification.lymphography.title'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.lymphography.description.'

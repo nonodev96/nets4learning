@@ -1,12 +1,13 @@
 import { Trans } from 'react-i18next'
-import { MODEL_OBJECT_DETECTION } from './_model'
+import { I_MODEL_OBJECT_DETECTION } from './_model'
 import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
 
-export class MODEL_COCO_SSD extends MODEL_OBJECT_DETECTION {
-  TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
+export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'COCO-SSD'
   static URL = ''
   static URL_MODEL = ''
+  TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
+  i18n_TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.coco-ssd.description.'

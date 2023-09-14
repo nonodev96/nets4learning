@@ -8,6 +8,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
   static URL_MODEL = '/public/models/classification/car/my-model-car.json'
   TITLE = 'datasets-models.0-tabular-classification.car.title'
+  i18n_TITLE = 'datasets-models.0-tabular-classification.car.title'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.car.description.'

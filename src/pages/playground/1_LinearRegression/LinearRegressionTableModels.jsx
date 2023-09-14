@@ -44,14 +44,14 @@ export default function LinearRegressionTableModels ({ rowsPerPage = 3 }) {
         <h3><Trans i18nKey={prefix + 'list-models-generated'} /> | {listModels.length}</h3>
         <div className="d-flex">
           <Button variant={'outline-primary'}
-                  className={'ms-3'}
                   size={'sm'}
+                  className={'ms-3'}
                   onClick={handleClick_OpenVisor}>
             <Trans i18nKey={prefix + 'open-visor'} />
           </Button>
           <Button variant={'outline-primary'}
-                  className={'ms-1'}
                   size={'sm'}
+                  className={'ms-1'}
                   onClick={handleClick_CloseVisor}>
             <Trans i18nKey={prefix + 'close-visor'} />
           </Button>

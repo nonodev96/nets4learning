@@ -21,9 +21,9 @@ export default function DataFrameDescribeCard ({ dataframe }) {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={'dataframe.describe.title'} /></h3>
         <div className="d-flex">
-          <Button onClick={handleClick_OpenModal_Describe}
+          <Button variant={'outline-primary'}
                   size={'sm'}
-                  variant={'outline-primary'}>
+                  onClick={handleClick_OpenModal_Describe}>
             <Trans i18nKey={'dataframe.describe.description.title'} />
           </Button>
         </div>

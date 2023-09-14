@@ -87,8 +87,8 @@ export default function LinearRegressionEditorTrainer () {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
         <div className={'d-flex'}>
-          <Button size={'sm'}
-                  variant={'outline-primary'}
+          <Button variant={'outline-primary'}
+                  size={'sm'}
                   onClick={handlerClick_AddMetric_Start}>
             <Trans i18nKey={prefix + 'add-metric'} />
           </Button>
@@ -198,8 +198,8 @@ export default function LinearRegressionEditorTrainer () {
                   </Accordion.Header>
                   <Accordion.Body>
                     <div className="d-grid gap-2">
-                      <Button onClick={() => handlerClick_RemoveMetric(index)}
-                              variant={'outline-danger'}>
+                      <Button variant={'outline-danger'}
+                              onClick={() => handlerClick_RemoveMetric(index)}>
                         <Trans i18nKey={prefix + 'delete-metric'}
                                values={{ index: index + 1 }} />
                       </Button>

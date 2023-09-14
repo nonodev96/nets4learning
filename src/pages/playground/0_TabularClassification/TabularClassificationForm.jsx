@@ -522,7 +522,7 @@ export default function TabularClassificationForm (props) {
             <Row>
               <Col>
                 <div className="d-grid gap-2">
-                  <Button type="submit"
+                  <Button type={'submit'}
                           className={'mt-3'}>
                     <Trans i18nKey={prefix + 'submit'} />
                   </Button>

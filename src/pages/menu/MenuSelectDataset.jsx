@@ -4,22 +4,10 @@ import { useParams, useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import alertHelper from '@utils/alertHelper'
 import {
-  TASKS,
-  UPLOAD,
-
-  MODEL_1_SALARY,
-  MODEL_2_AUTO_MPG,
-  MODEL_3_BOSTON_HOUSING,
-  MODEL_4_BREAST_CANCER,
-  MODEL_5_STUDENT_PERFORMANCE,
-  MODEL_6_WINE,
-
-  MODEL_CAR,
-  MODEL_IRIS,
-  MODEL_LYMPHOGRAPHY,
-  MODEL_IMAGE_MNIST
+  TASK_DATASET_OPTIONS, TASK_MODEL_OPTIONS_CLASS
 } from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
+import N4LModal from '@components/modal/N4LModal'
 
 export default function MenuSelectDataset () {
 
@@ -27,49 +15,53 @@ export default function MenuSelectDataset () {
   const { t } = useTranslation()
   const history = useHistory()
 
-  const [dataset_id, setDatasetId] = useState('select-dataset')
+  const prefix = 'pages.menu.select-dataset.'
+  const [datasetKey, setDatasetKey] = useState('select-dataset')
   const [options, setOptions] = useState([])
+  const [showDescription, setShowDescription] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (dataset_id === 'select-dataset') {
+    if (datasetKey === 'select-dataset') {
       await alertHelper.alertWarning(t('alert.menu.need-select-dataset'))
     } else {
-      history.push('/playground/' + id + '/dataset/' + dataset_id)
+      history.push('/playground/' + id + '/dataset/' + datasetKey)
     }
   }
 
   useEffect(() => {
     let _options = []
-    const taskOptions = {
-      [TASKS.TABULAR_CLASSIFICATION]: [
-        { i18n: 'pages.menu-selection-dataset.0-tabular-classification.csv', value: UPLOAD },
-        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-1', value: MODEL_CAR.KEY },
-        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-2', value: MODEL_IRIS.KEY },
-        { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-3', value: MODEL_LYMPHOGRAPHY.KEY },
-      ],
-      [TASKS.LINEAR_REGRESSION]     : [
-        { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.boston-housing', value: MODEL_3_BOSTON_HOUSING.KEY },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY },
-        { i18n: 'datasets-models.1-linear-regression.list-datasets.wine', value: MODEL_6_WINE.KEY },
-      ],
-      [TASKS.OBJECT_DETECTION]      : [],
-      [TASKS.IMAGE_CLASSIFICATION]  : [
-        { i18n: 'pages.menu-selection-dataset.1-image-classifier', value: MODEL_IMAGE_MNIST.KEY },
-      ],
-    }
-
-    if (taskOptions.hasOwnProperty(id)) {
-      _options = taskOptions[id]
+    if (TASK_DATASET_OPTIONS.hasOwnProperty(id)) {
+      _options = TASK_DATASET_OPTIONS[id]
     } else {
       console.error('Error, option not valid')
     }
     setOptions(_options)
   }, [id])
+
+  const Dataset_Title = () => {
+    if (!id) return <></>
+    if (datasetKey === 'select-model') return <></>
+    if (datasetKey === 'UPLOAD') return t('upload-dataset')
+    if (!TASK_MODEL_OPTIONS_CLASS.hasOwnProperty(id)) return <></>
+    if (!TASK_MODEL_OPTIONS_CLASS[id].hasOwnProperty(datasetKey)) return <></>
+
+    const _model = (new TASK_MODEL_OPTIONS_CLASS[id][datasetKey]._class_(t))
+    return t(_model.i18n_TITLE)
+  }
+
+  const Dataset_Body = () => {
+    if (!id) return <></>
+    if (datasetKey === 'select-model') return <></>
+    if (datasetKey === 'UPLOAD') return <>{t('upload-dataset-info')}</>
+    if (!TASK_MODEL_OPTIONS_CLASS.hasOwnProperty(id)) return <></>
+    if (!TASK_MODEL_OPTIONS_CLASS[id].hasOwnProperty(datasetKey)) return <></>
+
+    const _model = (new TASK_MODEL_OPTIONS_CLASS[id][datasetKey]._class_(t))
+    return <>
+      {_model.DESCRIPTION()}
+    </>
+  }
 
   if (VERBOSE) console.debug('render MenuSelectDataset')
   return <>
@@ -83,28 +75,76 @@ export default function MenuSelectDataset () {
                 <Card.Text>
                   <Trans i18nKey={'pages.menu-selection-dataset.form-description-1'} />
                 </Card.Text>
-                <Form.Group controlId="FormDataSet">
-                  <Form.Label><Trans i18nKey={'pages.menu-selection-dataset.form-label'} /></Form.Label>
-                  <Form.Select aria-label={t('pages.menu-selection-dataset.form-label')}
-                               defaultValue={'select-dataset'}
-                               onChange={(e) => setDatasetId(e.target.value)}>
-                    <option value={'select-dataset'} disabled>{t('pages.menu-selection-dataset.form-option-_-1')}</option>
-                    {options.map(({ value, i18n }, index) => {
-                      return <option value={value} key={index}>{t(i18n)}</option>
-                    })}
-                  </Form.Select>
-                </Form.Group>
-                <Button className={'mt-3'}
-                        type="submit"
-                        data-testid={'Test-MenuSelectDataset-Submit'}>
-                  <Trans i18nKey={'pages.menu-selection-dataset.form-submit'} />
-                </Button>
+                <Row>
+                  <Col xs={12}
+                       sm={12}
+                       md={12}
+                       lg={10}
+                       xl={10}
+                       xxl={10}>
+
+                    <Form.Group controlId="FormDataSet">
+                      <Form.Label><Trans i18nKey={'pages.menu-selection-dataset.form-label'} /></Form.Label>
+                      <Form.Select aria-label={t('pages.menu-selection-dataset.form-label')}
+                                   defaultValue={'select-dataset'}
+                                   onChange={(e) => setDatasetKey(e.target.value)}>
+                        <option value={'select-dataset'} disabled>{t('pages.menu-selection-dataset.form-option-_-1')}</option>
+                        {options.map(({ value, i18n }, index) => {
+                          return <option value={value} key={index}>{t(i18n)}</option>
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col className={'d-flex flex-column-reverse'}
+                       xs={12}
+                       sm={12}
+                       md={12}
+                       lg={2}
+                       xl={2}
+                       xxl={2}>
+                    <div className="d-grid gap-2">
+                      <Button variant={'outline-info'}
+                              className={'mt-3'}
+                              disabled={datasetKey === 'select-dataset'}
+                              onClick={() => {setShowDescription(true)}}>
+                        <Trans i18nKey={prefix + 'description'} />
+                      </Button>
+                    </div>
+                  </Col>
+
+                  <Col className={'mx-auto'}
+                       xs={12}
+                       sm={12}
+                       md={12}
+                       lg={6}
+                       xl={6}
+                       xxl={6}>
+                    <div className="d-grid gap-2">
+                      <Button variant={'outline-primary'}
+                              size={'lg'}
+                              className={'mt-3'}
+                              type={'submit'}
+                              disabled={datasetKey === 'select-dataset'}
+                              data-testid={'Test-MenuSelectDataset-Submit'}>
+                        <Trans i18nKey={'pages.menu-selection-dataset.form-submit'} />
+                      </Button>
+                    </div>
+                  </Col>
+
+                </Row>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
     </Form>
+
+    <N4LModal showModal={showDescription}
+              setShowModal={setShowDescription}
+              title={Dataset_Title()}
+              ComponentBody={Dataset_Body()}
+              ComponentFooter={<></>} />
+
   </>
 
 }

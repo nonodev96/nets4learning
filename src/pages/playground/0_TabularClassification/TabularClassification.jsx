@@ -807,15 +807,15 @@ export default function TabularClassification (props) {
                 <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'editor-layers.title'} /></h3>
                   <div className={'d-flex'}>
-                    <Button onClick={() => handlerClick_AddLayer_Start()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary">
+                            onClick={() => handlerClick_AddLayer_Start()}>
                       <Trans i18nKey={prefix + 'editor-layers.add-layer-start'} />
                     </Button>
-                    <Button onClick={() => handlerClick_AddLayer_End()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary"
-                            className={'ms-3'}>
+                            className={'ms-3'}
+                            onClick={() => handlerClick_AddLayer_End()}>
                       <Trans i18nKey={prefix + 'editor-layers.add-layer-end'} />
                     </Button>
                   </div>
@@ -832,8 +832,8 @@ export default function TabularClassification (props) {
 
                           <Accordion.Body>
                             <div className="d-grid gap-2">
-                              <Button onClick={() => handlerClick_RemoveLayer(index)}
-                                      variant={'outline-danger'}>
+                              <Button variant={'outline-danger'}
+                                      onClick={() => handlerClick_RemoveLayer(index)}>
                                 <Trans i18nKey={prefix + 'editor-layers.delete-layer'}
                                        values={{ index: index + 1 }} />
                               </Button>
@@ -999,10 +999,10 @@ export default function TabularClassification (props) {
           <Row className={'mt-3'}>
             <Col xl={12}>
               <div className="d-grid gap-2">
-                <Button type="submit"
-                        disabled={isTraining || !isDatasetProcessed}
+                <Button variant={'primary'}
                         size={'lg'}
-                        variant="primary">
+                        type={'submit'}
+                        disabled={isTraining || !isDatasetProcessed}>
                   <Trans i18nKey={prefix + 'models.button-submit'} />
                 </Button>
               </div>
@@ -1020,27 +1020,27 @@ export default function TabularClassification (props) {
                 <h3><Trans i18nKey={prefix + 'models.title'} /> | {generatedModelsIndex + 1}</h3>
                 <div className={'d-flex'}>
                   <Button variant={'outline-primary'}
-                          className={'ms-3'}
                           size={'sm'}
+                          className={'ms-3'}
                           onClick={() => {
                             tfvis.visor().open()
                           }}>
                     <Trans i18nKey={prefix + 'models.open-visor'} />
                   </Button>
                   <Button variant={'outline-primary'}
-                          className={'ms-1'}
                           size={'sm'}
+                          className={'ms-1'}
                           onClick={() => {
                             tfvis.visor().close()
                           }}>
                     <Trans i18nKey={prefix + 'models.close-visor'} />
                   </Button>
                   {(Model !== undefined) &&
-                    <Button className={'ms-1'}
-                            disabled={isDisabledDownloadModel}
-                            onClick={() => handleClick_DownloadLastModel()}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant="outline-primary">
+                            className={'ms-1'}
+                            disabled={isDisabledDownloadModel}
+                            onClick={() => handleClick_DownloadLastModel()}>
                       <Trans i18nKey={prefix + 'models.export-current-model'} />
                     </Button>
                   }
@@ -1138,10 +1138,10 @@ export default function TabularClassification (props) {
                 <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3>Debug</h3>
                   <div className="d-flex">
-                    <Button onClick={() => debug()}
-                            className={'ms-3'}
+                    <Button variant={'outline-primary'}
                             size={'sm'}
-                            variant={'outline-primary'}>
+                            className={'ms-3'}
+                            onClick={() => debug()}>
                       Debug
                     </Button>
                   </div>

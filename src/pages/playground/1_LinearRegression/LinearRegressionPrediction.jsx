@@ -193,9 +193,9 @@ export default function LinearRegressionPrediction () {
             </Row>
             <Row style={{ display: 'none' }}>
               <div className="d-grid gap-2">
-                <Button type={'submit'}
+                <Button variant={'outline-primary'}
                         size={'lg'}
-                        variant={'outline-primary'}>
+                        type={'submit'}>
                   <Trans i18nKey={prefix + 'button-submit'} />
                 </Button>
               </div>

@@ -17,7 +17,7 @@ import {
   MODEL_COCO_SSD,
   UPLOAD,
 } from '@/DATA_MODEL'
-import { MODEL_OBJECT_DETECTION } from './models/_model'
+import { I_MODEL_OBJECT_DETECTION } from './models/_model'
 // import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
 // tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
@@ -57,7 +57,7 @@ class ModelReviewObjectDetection extends React.Component {
     this.onUserMediaErrorEvent = this.onUserMediaErrorEvent.bind(this)
     this.animation_id = 0
 
-    this._model = new MODEL_OBJECT_DETECTION(props.t)
+    this._model = new I_MODEL_OBJECT_DETECTION(props.t)
     switch (this.dataset) {
       case MODEL_FACE_MESH.KEY: {
         this._model = new MODEL_FACE_MESH(props.t)

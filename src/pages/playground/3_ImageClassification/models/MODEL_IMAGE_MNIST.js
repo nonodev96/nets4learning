@@ -1,9 +1,10 @@
-import { MODEL_IMAGE_CLASSIFICATION } from './_model'
+import { I_MODEL_IMAGE_CLASSIFICATION } from './_model'
 import { Trans } from 'react-i18next'
 
-export default class MODEL_IMAGE_MNIST extends MODEL_IMAGE_CLASSIFICATION {
+export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
   static KEY = 'IMAGE-MNIST'
   TITLE = 'datasets-models.3-image-classifier.mnist.title'
+  i18n_TITLE = 'datasets-models.3-image-classifier.mnist.title'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.3-image-classifier.mnist.description.'

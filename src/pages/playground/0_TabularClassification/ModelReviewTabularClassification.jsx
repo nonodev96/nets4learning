@@ -379,7 +379,7 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   render () {
-    if(VERBOSE) console.debug('render ModelReviewTabularClassification')
+    if (VERBOSE) console.debug('render ModelReviewTabularClassification')
     return (
       <>
         <Container>
@@ -434,11 +434,11 @@ class ModelReviewTabularClassification extends React.Component {
                         </Col>
                         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
                           <div className="d-grid gap-2">
-                            <Button type="button"
-                                    onClick={this.handleClick_LoadModel}
+                            <Button variant={'primary'}
                                     size={'lg'}
+                                    type={'button'}
                                     disabled={this.state.filesUpload}
-                                    variant="primary">
+                                    onClick={this.handleClick_LoadModel}>
                               <Trans i18nKey={''} />
                             </Button>
                           </div>
@@ -623,11 +623,11 @@ class ModelReviewTabularClassification extends React.Component {
                       <Col>
                         {/* SUBMIT BUTTON */}
                         <div className="d-grid gap-2 mt-3">
-                          <Button type="button"
-                                  onClick={this.handleClick_TestVector}
-                                  disabled={this.state.isButtonDisabled}
+                          <Button variant={'primary'}
                                   size={'lg'}
-                                  variant="primary">
+                                  type={'button'}
+                                  disabled={this.state.isButtonDisabled}
+                                  onClick={this.handleClick_TestVector}>
                             {(this.state.isButtonDisabled) ?
                               <>
                                 <span className="spinner-border spinner-border-sm"

@@ -68,9 +68,6 @@ export default function ModelReviewLinearRegression ({ dataset }) {
       if (iModel !== null) {
         const _datasets = (await iModel.DATASETS()).datasets
         setDatasets(_datasets)
-
-        const _listModels = (await iModel.MODELS())
-        setListModels(_listModels)
       }
     }
 
@@ -78,10 +75,21 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [iModel])
 
   useEffect(() => {
+    async function init () {
+      if (iModel !== null && datasets.length > 0) {
+        const _listModels = (await iModel.MODELS(datasets[datasets_Index].csv))
+        setListModels(_listModels)
+      }
+    }
+
+    init().then(_r => undefined)
+  }, [datasets, datasets_Index, iModel])
+
+  useEffect(() => {
     console.debug('useEffect[ listModels, listModels_Index ]')
 
     async function init () {
-      if (listModels_Index !== 'select-model') {
+      if (listModels_Index !== 'select-model' && listModels.length > 0) {
         const { model_path, column_name_X, column_name_Y } = listModels[listModels_Index]
         const model = await tfjs.loadLayersModel(model_path)
         console.log('model_path', model_path)

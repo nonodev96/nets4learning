@@ -230,10 +230,16 @@ export default function DataFramePlot ({ dataframe }) {
             </Form.Select>
           </Form.Group>
 
-          <Button variant="outline-primary" size={'sm'} className={'ms-3'} onClick={() => setShowOptions(true)}>
+          <Button variant={'outline-primary'}
+                  size={'sm'}
+                  className={'ms-3'}
+                  onClick={() => setShowOptions(true)}>
             <Trans i18nKey={'dataframe-plot.buttons.configuration'} />
           </Button>
-          <Button variant="outline-primary" size={'sm'} className={'ms-3'} onClick={() => setShowDescription(true)}>
+          <Button variant={'outline-primary'}
+                  size={'sm'}
+                  className={'ms-3'}
+                  onClick={() => setShowDescription(true)}>
             <Trans i18nKey={'dataframe-plot.buttons.description'} />
           </Button>
         </div>
