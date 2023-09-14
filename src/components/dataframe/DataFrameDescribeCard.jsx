@@ -9,7 +9,6 @@ import DataFrameDescribeModalDescription from '@components/dataframe/DataFrameDe
 export default function DataFrameDescribeCard ({ dataframe }) {
 
   const { t } = useTranslation()
-
   const [showDescription, setShowDescription] = useState(false)
 
   const handleClick_OpenModal_Describe = () => {
@@ -20,7 +19,7 @@ export default function DataFrameDescribeCard ({ dataframe }) {
     <Card className={'mt-3'}>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={'dataframe.describe.title'} /></h3>
-        <div className="d-flex">
+        <div className={'d-flex'}>
           <Button variant={'outline-primary'}
                   size={'sm'}
                   onClick={handleClick_OpenModal_Describe}>

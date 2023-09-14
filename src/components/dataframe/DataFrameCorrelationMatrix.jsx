@@ -76,7 +76,7 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
               useResizeHandler={true}
               style={{ width: '100%', height: '100%' }}
               layout={{
-                title      : t('Correlation'),
+                title      : t('dataframe.correlation-matrix.plot'),
                 autoSize   : true,
                 height     : undefined,
                 width      : undefined,

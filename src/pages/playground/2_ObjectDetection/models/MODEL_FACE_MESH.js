@@ -1,35 +1,35 @@
-import { I_MODEL_OBJECT_DETECTION } from "./_model";
-import * as faceLandmarksDetection from "@tensorflow-models/face-landmarks-detection";
-import { Trans } from "react-i18next";
+import { I_MODEL_OBJECT_DETECTION } from './_model'
+import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
+import { Trans } from 'react-i18next'
 
 export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
-  static KEY = "FACE-MESH"
-  TITLE = "datasets-models.2-object-detection.face-mesh.title"
-  i18n_TITLE = "datasets-models.2-object-detection.face-mesh.title"
+  static KEY = 'FACE-MESH'
+  TITLE = 'datasets-models.2-object-detection.face-mesh.title'
+  i18n_TITLE = 'datasets-models.2-object-detection.face-mesh.title'
 
-  DESCRIPTION() {
-    const prefix = "datasets-models.2-object-detection.face-mesh.description."
+  DESCRIPTION () {
+    const prefix = 'datasets-models.2-object-detection.face-mesh.description.'
     return <>
-      <p><Trans i18nKey={prefix + "text-0"} /></p>
+      <p><Trans i18nKey={prefix + 'text-0'} /></p>
       <details>
-        <summary><Trans i18nKey={prefix + "details-input.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-input.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + "details-input.list.0"} /></li>
+          <li><Trans i18nKey={prefix + 'details-input.list.0'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-output.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-output.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + "details-output.list.0"} /></li>
+          <li><Trans i18nKey={prefix + 'details-output.list.0'} /></li>
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + "details-references.title"} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-references.title'} /></summary>
         <ol>
           <li>
-            <Trans i18nKey={prefix + "details-references.list.0"}
+            <Trans i18nKey={prefix + 'details-references.list.0'}
                    components={{
-                     link1: <a href={"https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1"} target={"_blank"} rel="noreferrer">link</a>,
+                     link1: <a href={'https://tfhub.dev/mediapipe/tfjs-model/facemesh/1/default/1'} target={'_blank'} rel="noreferrer">link</a>,
                    }} />
           </li>
         </ol>
@@ -37,24 +37,24 @@ export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
-  async enable_Model() {
-    const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
+  async enable_Model () {
+    const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
     const mediaPipeFaceMeshMediaPipeModelConfig = {
-      runtime        : "mediapipe",
+      runtime        : 'mediapipe',
       refineLandmarks: true,
-      solutionPath   : "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh",
+      solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
       maxFaces       : 4,
-    };
+    }
     return await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
   }
 
-  render(ctx, faces) {
+  render (ctx, faces) {
     faces.forEach((face) => {
-      ctx.strokeStyle = "#FF0902";
+      ctx.strokeStyle = '#FF0902'
       face.keypoints.forEach((element) => {
-        ctx.strokeRect(element.x, element.y, 1, 1);
-      });
-    });
+        ctx.strokeRect(element.x, element.y, 1, 1)
+      })
+    })
   }
 
 }

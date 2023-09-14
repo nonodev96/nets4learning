@@ -138,7 +138,8 @@
         "9": "El coeficiente de correlación de Pearson es una herramienta útil para analizar la relación lineal entre dos variables y determinar si existe una asociación entre ellas. Se utiliza ampliamente en diversas áreas, como la investigación científica, la economía, la psicología, la sociología y muchas otras, para entender cómo se comportan dos variables en conjunto. Sin embargo, es importante destacar que el coeficiente de correlación de Pearson solo mide la relación lineal y no captura otros tipos de relaciones no lineales entre las variables.",
         "title": "Descripción"
       },
-      "link": "Consulta más información en el siguiente <link1>enlace</link1>"
+      "link": "Consulta más información en el siguiente <link1>enlace</link1>",
+      "plot": "Matriz de correlación"
     },
     "describe": {
       "title": "DataFrame | Describe",
@@ -1513,6 +1514,10 @@
           "button-submit": "Predecir",
           "list-models-generated": "Lista de modelos generados",
           "list-instances": "Lsta de instancias"
+        },
+        "model-selector": {
+          "title": "Selector de modelos",
+          "option": "Seleciona un modelo"
         }
       }
     },
@@ -1852,5 +1857,7 @@
     "skip": "Saltar"
   },
   "upload-dataset-info": "Debes subir un conjunto de datos para realizar la tarea.",
-  "upload-model-info": "Debes subir un modelo para realizar la tarea."
+  "upload-model-info": "Debes subir un modelo para realizar la tarea.",
+  "select-attr": "Selecciona atributo",
+  "upload-dataset": "Subir conjunto de datos"
 }

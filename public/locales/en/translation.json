@@ -138,7 +138,8 @@
         "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
         "title": "Description"
       },
-      "link": "Consult more information in the following <link1> link </link1>"
+      "link": "Consult more information in the following <link1> link </link1>",
+      "plot": "Correlation matrix"
     },
     "describe": {
       "title": "DataFrame | Describe",
@@ -1513,6 +1514,10 @@
           "button-submit": "Predict",
           "list-models-generated": "List of models generated",
           "list-instances": "Lista of instancies"
+        },
+        "model-selector": {
+          "title": "Model selector",
+          "option": "Select a model"
         }
       }
     },
@@ -1852,5 +1857,7 @@
     "skip": "Skip"
   },
   "upload-dataset-info": "You must upload a dataset to perform the task.",
-  "upload-model-info": "You must upload a model to perform the task."
+  "upload-model-info": "You must upload a model to perform the task.",
+  "select-attr": "Select attribute",
+  "upload-dataset": "Upload dataset"
 }

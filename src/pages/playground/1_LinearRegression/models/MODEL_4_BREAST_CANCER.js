@@ -128,9 +128,12 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/linear-regression/breast-cancer'
-    return [
-      { model_path: path + '/0/lr-model-0.json', column_name_X: 'area_mean', column_name_Y: 'perimeter_mean' },
-    ]
+    const models = {
+      'breast-cancer-wisconsin.csv': [],
+      'wdbc.csv'                   : [{ model_path: path + '/0/lr-model-0.json', column_name_X: 'area_mean', column_name_Y: 'perimeter_mean' },],
+      'wpbc.csv'                   : []
+    }
+    return models[dataset]
   }
 
   ATTRIBUTE_INFORMATION () {

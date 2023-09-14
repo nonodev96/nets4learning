@@ -21,12 +21,11 @@ import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
-import DataFramePlot from '@components/dataframe/DataFramePlot'
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   const { id } = useParams()
 
-  const prefix = ''
+  const prefix = 'pages.playground.1-linear-regression.'
   const { t } = useTranslation()
   const refPlotJS = useRef()
 
@@ -86,13 +85,19 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [datasets, datasets_Index, iModel])
 
   useEffect(() => {
+    if (listModels.length === 0) {
+      setListModels_Index('select-model')
+      setDataPlot({ original: [], predicted: [], column_name_X: '', column_name_Y: '' })
+    }
+  }, [listModels])
+
+  useEffect(() => {
     console.debug('useEffect[ listModels, listModels_Index ]')
 
     async function init () {
       if (listModels_Index !== 'select-model' && listModels.length > 0) {
         const { model_path, column_name_X, column_name_Y } = listModels[listModels_Index]
         const model = await tfjs.loadLayersModel(model_path)
-        console.log('model_path', model_path)
         const linear = new LinearRegressionModelController_Simple(t)
         linear.setDataFrame(datasets_DataFrame)
         linear.setFeatures({
@@ -157,8 +162,8 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 </Card.Header>
                 <Card.Body>
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
-                    <Form.Label><Trans i18nKey={prefix + 'form.select-dataset.title'} /></Form.Label>
-                    <Form.Select aria-label="form.select-dataset.title"
+                    <Form.Label><Trans i18nKey={'form.select-dataset.title'} /></Form.Label>
+                    <Form.Select aria-label={'form.select-dataset.title'}
                                  size={'sm'}
                                  value={datasets_Index}
                                  onChange={handleChange_Datasets_Index}>
@@ -167,7 +172,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                       })}
                     </Form.Select>
                     <Form.Text className="text-muted">
-                      <Trans i18nKey={prefix + 'form.select-dataset.info'} />
+                      <Trans i18nKey={'form.select-dataset.info'} />
                     </Form.Text>
                   </Form.Group>
 
@@ -185,13 +190,13 @@ export default function ModelReviewLinearRegression ({ dataset }) {
               <Card className={'mt-3'}>
                 <Card.Header className={'d-flex justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'model-selector.title'} /></h3>
-                  <div className="d-flex">
+                  <div className={'d-flex'}>
                     <Form.Group controlId={'FormModelSelector_X'}>
                       <Form.Select aria-label={'plot'}
                                    size={'sm'}
-                                   defaultValue={'select-model'}
+                                   value={listModels_Index}
                                    onChange={handleChange_ListModels_Index}>
-                        <option value={'select-model'} disabled={true}><Trans i18nKey={'Select model'} /></option>
+                        <option value={'select-model'} disabled={true}><Trans i18nKey={prefix + 'model-selector.option'} /></option>
                         {listModels.map((value, index) => {
                           return <option key={index} value={index}>
                             <Trans i18nKey={'model.__index__'} values={{ index: index }} />

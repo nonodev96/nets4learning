@@ -7,13 +7,14 @@ import { Trans, useTranslation } from 'react-i18next'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import DebugJSON from '@components/debug/DebugJSON'
 
-import { UPLOAD } from '@/DATA_MODEL'
+import { LIST_MODELS_LINEAR_REGRESSION, LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
 import { MAP_LR_MODEL } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionJoyride from './LinearRegressionJoyride'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
+import alertHelper from '@utils/alertHelper'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -62,11 +63,7 @@ export default function LinearRegression ({ dataset_id }) {
 
   const refJoyrideButton = useRef({})
 
-  const handleSubmit_TrainModel = async (event) => {
-    event.preventDefault()
-    setIsTraining(true)
-    console.log('handleSubmit_TrainModel')
-
+  const TrainModel = async () => {
     const modelController = new LinearRegressionModelController_Simple(t)
     modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
@@ -95,18 +92,14 @@ export default function LinearRegression ({ dataset_id }) {
       batchSize: 32,
       metrics  : [...params.params_training.list_id_metrics],
     })
-
     const { model, original, predicted, predictedLinear } = await modelController.run()
-
     console.log('modelController.run()', { original })
-
     const updatedTmpModel = {
       model          : model,
       original       : Array.from(original),
       predicted      : Array.from(predicted),
       predictedLinear: Array.from(predictedLinear)
     }
-
     setTmpModel(updatedTmpModel)
     setListModels((prevState) => [...prevState, {
       ...cloneTmpModel(updatedTmpModel),
@@ -115,22 +108,36 @@ export default function LinearRegression ({ dataset_id }) {
       params_features: { ...params.params_features },
       dataframe      : datasetLocal.dataframe_processed
     }])
+  }
+
+  const handleSubmit_TrainModel = async (event) => {
+    event.preventDefault()
+    console.log('handleSubmit_TrainModel')
+    setIsTraining(true)
+    await TrainModel()
     setIsTraining(false)
   }
 
   const handleSubmit_TrainModel_Upload = async (event) => {
     event.preventDefault()
-    setIsTraining(true)
     console.log('handleSubmit_TrainModel_Upload')
+    setIsTraining(true)
+    await TrainModel()
     setIsTraining(false)
   }
 
   useEffect(() => {
     console.debug('LinearRegression useEffect[init]')
     const init = async () => {
+      const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset_id)
+      if (!isValid) {
+        await alertHelper.alertError('Error in selection of model')
+        return
+      }
+
       if (dataset_id === UPLOAD) {
         // TODO
-        console.log('TODO')
+        // console.log('TODO')
       } else {
         let info_dataset
         if (MAP_LR_MODEL.hasOwnProperty(dataset_id)) {
