@@ -185,6 +185,22 @@ export default function Home () {
                 </div>
               </Card.Body>
             </Card>
+
+            <Card className={'mt-3 border-info'}>
+              <Card.Header>
+                <h3><Trans i18nKey={'pages.index.image-classification.2-title'} /></h3>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  <Trans i18nKey={'pages.index.image-classification.2-description-1'} />
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
+                    <Trans i18nKey={'pages.index.image-classification.2-button'} />
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
           </>
         )
       default:

@@ -171,6 +171,12 @@ export default function LinearRegressionPrediction () {
         </div>
       </Card.Header>
       <Card.Body>
+        {listModels.length === 0 && <>
+          <p className="placeholder-glow">
+            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-models')}</small>
+            <span className="placeholder col-12"></span>
+          </p>
+        </>}
         {(listModels.length > 0 && indexModel >= 0) && <>
           <Row>
             <N4LSummary title={t('DataFrame')}>
@@ -181,9 +187,7 @@ export default function LinearRegressionPrediction () {
               <Card.Text><strong>Y</strong> {listModels[indexModel]?.params_features.y_target ?? ''}</Card.Text>
             </N4LSummary>
           </Row>
-
           <hr />
-
           <Form onSubmit={handleSubmit_Predict}>
             <Row style={{ display: 'none' }}>
               <LinearRegressionPredictionDynamicForm generatedModel={listModels[indexModel]}
@@ -214,12 +218,6 @@ export default function LinearRegressionPrediction () {
               </Col>
             </Row>
           </Form>
-        </>}
-        {listModels.length === 0 && <>
-          <p className="placeholder-glow">
-            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-models')}</small>
-            <span className="placeholder col-12"></span>
-          </p>
         </>}
       </Card.Body>
     </Card>

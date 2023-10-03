@@ -66,9 +66,15 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const modeCompact = useCallback(() => {
     const nodes = [], edges = []
     for (let [index, element] of Object.entries(layers)) {
+      let label = ''
+      if (element?._class) {
+        // label = `L${index + 1}\n K:${element.kernel} - ${element.activation}`
+      } else {
+        label = `L${index + 1}\n U:${element.units} - F:${element.activation}`
+      }
       nodes.push({
         id   : index,
-        label: `${index + 1} \n ${element.units} - ${element.activation}`,
+        label: label,
         title: '' + (index + 1)
       })
     }

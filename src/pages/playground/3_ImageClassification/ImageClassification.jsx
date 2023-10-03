@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
@@ -6,6 +6,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from 'react-ga4'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import N4LJoyride from "@components/joyride/N4LJoyride";
 import alertHelper from '@utils/alertHelper'
 import {
   MODEL_IMAGE_MNIST,
@@ -26,6 +27,44 @@ const LearningRate_default = 1
 const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'
 const DEFAULT_ID_METRICS = 'accuracy'
+
+const DEFAULT_LAYER = {
+  _class           : 'Conv2D',
+  kernelSize       : 0,
+  filters          : 0,
+  strides          : 0,
+  activation       : 'sigmoid',
+  kernelInitializer: 'varianceScaling',
+}
+
+const DEFAULT_LAYERS = [
+  {
+    _class           : 'Conv2D',
+    kernelSize       : 5,
+    filters          : 10,
+    strides          : 1,
+    activation       : 'Sigmoid',
+    kernelInitializer: 'varianceScaling',
+  },
+  {
+    _class  : 'MaxPooling2D',
+    poolSize: [2, 2],
+    strides2: [2, 2]
+  },
+  {
+    _class           : 'Conv2D',
+    kernelSize       : 5,
+    filters          : 16,
+    strides          : 1,
+    activation       : 'relu',
+    kernelInitializer: 'varianceScaling',
+  },
+  {
+    _class  : 'MaxPooling2D',
+    poolSize: [2, 2],
+    strides2: [2, 2]
+  },
+]
 
 export default function ImageClassification (props) {
   const { dataset } = props
@@ -56,6 +95,7 @@ export default function ImageClassification (props) {
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS)
   const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
   const [LearningRate, setLearningRate] = useState(LearningRate_default)
+  const refJoyrideButton = useRef({})
   /**
    * @typedef {tf.Sequential} Model_t
    */
@@ -96,78 +136,24 @@ export default function ImageClassification (props) {
     if (!Recarga) {
       const uploadedArchitecture = localStorage.getItem('custom-architecture-IMG')
       if (uploadedArchitecture !== '{}') {
-        setLayers([
-          {
-            class            : 'Conv2D',
-            kernelSize       : 5,
-            filters          : 10,
-            strides          : 1,
-            activation       : 'Sigmoid',
-            kernelInitializer: 'varianceScaling',
-          },
-          {
-            class   : 'MaxPooling2D',
-            poolSize: [2, 2],
-            strides2: [2, 2]
-          },
-          {
-            class            : 'Conv2D',
-            kernelSize       : 5,
-            filters          : 16,
-            strides          : 1,
-            activation       : 'relu',
-            kernelInitializer: 'varianceScaling',
-          },
-          {
-            class   : 'MaxPooling2D',
-            poolSize: [2, 2],
-            strides2: [2, 2]
-          },
-        ])
+        setLayers(DEFAULT_LAYERS)
         setRecarga(true)
         setActiveLayer(0)
       } else {
-        setLayers([
-          {
-            class            : 'Conv2D',
-            kernelSize       : 5,
-            filters          : 10,
-            strides          : 1,
-            activation       : 'Sigmoid',
-            kernelInitializer: 'varianceScaling',
-          },
-          {
-            class   : 'MaxPooling2D',
-            poolSize: [2, 2],
-            strides2: [2, 2]
-          },
-          {
-            class            : 'Conv2D',
-            kernelSize       : 5,
-            filters          : 16,
-            strides          : 1,
-            activation       : 'relu',
-            kernelInitializer: 'varianceScaling',
-          },
-          {
-            class   : 'MaxPooling2D',
-            poolSize: [2, 2],
-            strides2: [2, 2]
-          },
-        ])
+        setLayers(DEFAULT_LAYERS)
         setRecarga(true)
         setActiveLayer(0)
       }
     }
   }, [Contador, Recarga])
 
-  // CREACIÓN DEL MODELO Y TESTEO
+  // region CREACIÓN DEL MODELO
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
     const params = {
       LearningRate
     }
-    if (Layers[0].class === 'Conv2D') {
+    if (Layers[0]._class === 'Conv2D') {
       const model = await TrainMNIST.MNIST_run({
         numberOfEpoch: NumberEpochs,
         idLoss       : idLoss,
@@ -188,7 +174,9 @@ export default function ImageClassification (props) {
       await alertHelper.alertWarning('La primera capa debe de ser tel tipo Conv2D',)
     }
   }
+  // endregion
 
+  // region PRUEBA DEL MODELO
   const handleVectorTest = async () => {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
@@ -259,38 +247,19 @@ export default function ImageClassification (props) {
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
     }
   }
+  // endregion
 
-  const handleClick_DownloadModel = () => {
-    Model.save('downloads://my-model').then(() => {
-      console.log('downloaded my-model')
-    })
-  }
-
-  // CONTROL DE LAS CAPAS
+  // region CONTROL DE LAS CAPAS
   const handleClick_AddLayer_Start = async () => {
     if (Layers.length < 10) {
-      setLayers(oldLayers => [{
-        class            : 'Conv2D',
-        kernelSize       : 0,
-        filters          : 0,
-        strides          : 0,
-        activation       : 'sigmoid',
-        kernelInitializer: 'varianceScaling',
-      }, ...oldLayers])
+      setLayers(oldLayers => [DEFAULT_LAYER, ...oldLayers])
     } else {
       await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
   }
   const handleClick_AddLayer_End = async () => {
     if (Layers.length < 10) {
-      setLayers(oldLayers => [...oldLayers, {
-        class            : 'Conv2D',
-        kernelSize       : 0,
-        filters          : 0,
-        strides          : 0,
-        activation       : 'sigmoid',
-        kernelInitializer: 'varianceScaling',
-      }])
+      setLayers(oldLayers => [...oldLayers, DEFAULT_LAYER])
     } else {
       await alertHelper.alertWarning(t('warning.not-more-layers'))
     }
@@ -314,11 +283,10 @@ export default function ImageClassification (props) {
     const option = e.target.value
     let a = Contador
     a = a + 1
-    let array = Layers
-    array[ActiveLayer].class = option
+    Layers[ActiveLayer]._class = option
     if (option === 'Conv2D') {
-      array[ActiveLayer] = {
-        class            : 'Conv2D',
+      Layers[ActiveLayer] = {
+        _class           : 'Conv2D',
         kernelSize       : 5,
         filters          : 10,
         strides          : 1,
@@ -326,17 +294,18 @@ export default function ImageClassification (props) {
         kernelInitializer: 'varianceScaling',
       }
     } else {
-      array[ActiveLayer] = {
-        class   : 'MaxPooling2D',
+      Layers[ActiveLayer] = {
+        _class  : 'MaxPooling2D',
         poolSize: [2, 2],
         strides2: [2, 2],
       }
     }
     setContador(a)
-    setLayers(array)
+    setLayers(Layers)
   }
-  //PARÁMETROS DE LAS CAPAS
+  // endregion
 
+  // region PARÁMETROS DE LAS CAPAS
   const handleChange_Kernel = (index, e) => {
     Layers[index].kernelSize = parseInt(e.target.value)
     setLayers(Layers)
@@ -366,8 +335,9 @@ export default function ImageClassification (props) {
     Layers[index].activation = e.target.value
     setLayers(Layers)
   }
+  // endregion
 
-  // PARÁMETROS GENERALES
+  // region PARÁMETROS GENERALES
   const handleChange_LearningRate = (e) => {
     setLearningRate(parseInt(e.target.value))
   }
@@ -385,9 +355,10 @@ export default function ImageClassification (props) {
 
   const handleChange_Metrics = (e) => {
     setIdMetrics(e.target.value)
-
   }
+  // endregion
 
+  // region UTILS
   const handleChange_FileUpload = async (e) => {
     const tgt = e.target || window.event.srcElement
     const files = tgt.files
@@ -411,15 +382,34 @@ export default function ImageClassification (props) {
     img.src = URL.createObjectURL(files[0])
   }
 
-  const isDisabledDownloadModel = () => {
-    return GeneratedModels.length === 0
+  const handleClick_DownloadModel = (index) => {
+    GeneratedModels[index].model.save('downloads://my-model').then(() => {
+      console.log('downloaded my-model')
+    })
   }
+  // endregion
 
   return (
     <>
+      <N4LJoyride refJoyrideButton={refJoyrideButton}
+      />
+
       {/* MANUAL */}
       <Container>
-        <Row>
+        <Row className={'mt-3'}>
+          <Col xl={12}>
+            <div className="d-flex justify-content-between">
+              <h1><Trans i18nKey={'modality.3'} /></h1>
+              <Button size={'sm'}
+                      variant={'outline-primary'}
+                      onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                <Trans i18nKey={'datasets-models.3-image-classification.joyride.title'} />
+              </Button>
+            </div>
+          </Col>
+        </Row>
+
+        <Row className={'mt-3'}>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Accordion>
               <Accordion.Item eventKey={'manual'}>
@@ -520,21 +510,19 @@ export default function ImageClassification (props) {
             </Accordion>
           </Col>
         </Row>
-      </Container>
 
-      {/* EDITOR */}
-      <Form onSubmit={handleSubmit_Play} id={'ImageClassification'}>
-        <Container className={'mt-3'}>
+        {/* EDITOR */}
+        <Form onSubmit={handleSubmit_Play} id={'ImageClassification'}>
 
-          <Row>
+          <Row className={'mt-3'}>
             <Col xl={12}>
-              <N4LLayerDesign layers={[]} />
+              <N4LLayerDesign layers={Layers} />
             </Col>
           </Row>
 
-          <Row>
+          <Row className={'mt-3'}>
             {/* Layers PARAMETERS */}
-            <Col className={'mt-3'} xl={6}>
+            <Col xl={6}>
               <Card>
                 <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'editor-layers.title'} /></h3>
@@ -574,13 +562,16 @@ export default function ImageClassification (props) {
                                       controlId={'formClass' + index}>
                             <Form.Label>Clase de la capa</Form.Label>
                             <Form.Select aria-label="Selecciona la clase de la capa"
-                                         defaultValue={Layers[index].class}
+                                         defaultValue={Layers[index]._class}
                                          onChange={handleChange_Class}>
                               {TYPE_CLASS.map(({ key, label }, index) => {
                                 return (<option key={index} value={key}>{label}</option>)
                               })}
                             </Form.Select>
                           </Form.Group>
+
+                          <hr />
+
                           <LayerEdit index={index}
                                      item={Layers[index]}
                                      handler_RemoveLayer={handleClick_RemoveLayer}
@@ -599,7 +590,7 @@ export default function ImageClassification (props) {
             </Col>
 
             {/* GENERAL PARAMETERS */}
-            <Col className={'mt-3'} xl={6}>
+            <Col xl={6}>
               <Card className={'sticky-top'} style={{ zIndex: 10 }}>
                 <Card.Header><h3><Trans i18nKey={prefix + 'general-parameters.title'} /></h3></Card.Header>
 
@@ -625,7 +616,7 @@ export default function ImageClassification (props) {
                                   onChange={(e) => handleChange_NumberEpochs(e)}
                     />
                     <Form.Text className="text-muted">
-                      *Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
+                      Mientras más alto sea, mas tardará en ejecutarse el entrenamiento
                     </Form.Text>
                   </Form.Group>
 
@@ -689,21 +680,17 @@ export default function ImageClassification (props) {
               {/* BLOCK  BUTTON */}
               <div className="d-grid gap-2">
                 <Button variant={'primary'}
-                        type={'submit'}
-                        onClick={() => {
-                          console.log('TODO')
-                        }}>
+                        type={'submit'}>
                   <Trans i18nKey={prefix + 'models.button-submit'} />
                 </Button>
               </div>
             </Col>
           </Row>
-        </Container>
-      </Form>
 
-      {/* GENERATED MODELS */}
-      <Container className={'mt-3'}>
-        <Row>
+        </Form>
+
+        {/* GENERATED MODELS */}
+        <Row className={'mt-3'}>
           <Col>
             <Card>
               <Card.Header className={'d-flex align-items-center'}>
@@ -725,15 +712,6 @@ export default function ImageClassification (props) {
                           }}>
                     <Trans i18nKey={prefix + 'models.close-visor'} />
                   </Button>
-                  {(Model !== undefined) &&
-                    <Button variant={'outline-primary'}
-                            size={'sm'}
-                            className={'ms-1'}
-                            disabled={isDisabledDownloadModel()}
-                            onClick={() => handleClick_DownloadModel()}>
-                      <Trans i18nKey={prefix + 'models.export-current-model'} />
-                    </Button>
-                  }
                 </div>
               </Card.Header>
               <Card.Body>
@@ -746,11 +724,9 @@ export default function ImageClassification (props) {
             </Card>
           </Col>
         </Row>
-      </Container>
 
-      {/* BLOCK 2 */}
-      <Container className={'mt-3'}>
-        <Row>
+        {/* BLOCK 2 */}
+        <Row className={'mt-3'}>
           <Col>
             <Card className="mt-3">
               <Card.Header><h3>Resultado</h3></Card.Header>
@@ -784,7 +760,7 @@ export default function ImageClassification (props) {
                       </Col>
                     </Row>
 
-
+                    {/* SUBMIT BUTTON */}
                     <div className="d-grid gap-2 mt-3">
                       <Button variant={'primary'}
                               onClick={handleVectorTestImageUpload}>
@@ -794,15 +770,11 @@ export default function ImageClassification (props) {
                   </Col>
                 </Row>
 
-
-                {/* SUBMIT BUTTON */}
-
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
-
     </>
   )
 }

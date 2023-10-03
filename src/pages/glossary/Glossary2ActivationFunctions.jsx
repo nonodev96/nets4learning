@@ -170,7 +170,7 @@ export default function Glossary2ActivationFunctions () {
           <>
             {activationsFunctions.map((section, index) => {
               return <div key={index}>
-                <h4 className={'text-center text-muted'}>{section.i18n_title_section}</h4>
+                <h4 className={'text-center text-muted'}>{t(section.i18n_title_section)}</h4>
                 <Row xs={1} sm={1} md={2} lg={3} xl={3} xxl={3} className={'mb-3'}>
                   <>
                     {section.layers.map((value, index) => {

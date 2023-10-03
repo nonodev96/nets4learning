@@ -5,13 +5,13 @@ import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootst
 import { Trans, useTranslation } from 'react-i18next'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import N4LJoyride from "@components/joyride/N4LJoyride";
 import DebugJSON from '@components/debug/DebugJSON'
 
-import { LIST_MODELS_LINEAR_REGRESSION, LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
+import { LIST_MODELS_LINEAR_REGRESSION, UPLOAD } from '@/DATA_MODEL'
 import { MAP_LR_MODEL } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import LinearRegressionJoyride from './LinearRegressionJoyride'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
@@ -167,8 +167,9 @@ export default function LinearRegression ({ dataset_id }) {
   console.debug('render LinearRegression')
   return (
     <>
-      <LinearRegressionJoyride refJoyrideButton={refJoyrideButton} />
-
+      <N4LJoyride refJoyrideButton={refJoyrideButton}
+                  JOYRIDE_state={iModel.JOYRIDE()}
+                  KEY={'LinearRegression'} />
 
       <Container>
         <Row className={'mt-2 mb-3'}>
