@@ -11,7 +11,6 @@ export default function LinearRegressionEditorFeaturesSelector () {
   const prefix = 'pages.playground.generator.editor-feature-selector.'
   const {
     datasetLocal,
-
     params,
     setParams
   } = useContext(LinearRegressionContext)

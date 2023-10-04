@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { useParams, useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
+import N4LModal from '@components/modal/N4LModal'
 import alertHelper from '@utils/alertHelper'
 import {
-  TASK_DATASET_OPTIONS, TASK_MODEL_OPTIONS_CLASS
+  TASK_DATASET_OPTIONS,
+  TASK_MODEL_OPTIONS_CLASS
 } from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
-import N4LModal from '@components/modal/N4LModal'
 
 export default function MenuSelectDataset () {
 
@@ -76,12 +77,7 @@ export default function MenuSelectDataset () {
                   <Trans i18nKey={'pages.menu-selection-dataset.form-description-1'} />
                 </Card.Text>
                 <Row>
-                  <Col xs={12}
-                       sm={12}
-                       md={12}
-                       lg={10}
-                       xl={10}
-                       xxl={10}>
+                  <Col xs={12} sm={12} md={12} lg={10} xl={10} xxl={10}>
 
                     <Form.Group controlId="FormDataSet">
                       <Form.Label><Trans i18nKey={'pages.menu-selection-dataset.form-label'} /></Form.Label>
@@ -96,12 +92,7 @@ export default function MenuSelectDataset () {
                     </Form.Group>
                   </Col>
                   <Col className={'d-flex flex-column-reverse'}
-                       xs={12}
-                       sm={12}
-                       md={12}
-                       lg={2}
-                       xl={2}
-                       xxl={2}>
+                       xs={12} sm={12} md={12} lg={2} xl={2} xxl={2}>
                     <div className="d-grid gap-2">
                       <Button variant={'outline-info'}
                               className={'mt-3'}
@@ -113,12 +104,7 @@ export default function MenuSelectDataset () {
                   </Col>
 
                   <Col className={'mx-auto'}
-                       xs={12}
-                       sm={12}
-                       md={12}
-                       lg={6}
-                       xl={6}
-                       xxl={6}>
+                       xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
                     <div className="d-grid gap-2">
                       <Button variant={'outline-primary'}
                               size={'lg'}

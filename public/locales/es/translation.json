@@ -20,6 +20,7 @@
   "model": {
     "__index__": "Model {{index}}"
   },
+  "more-information-in-link": "Más información en el siguiente <link1>enlace</link1>",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -957,6 +958,11 @@
         "3-option-2": "Modelo - MobileNet - Clasificación de imágenes",
         "3-option-3": "Modelo - ResNet - Clasificación de imágenes"
       }
+    },
+    "3-image-classification": {
+      "list-datasets": {
+        "mnist": "Conjunto de datos - MNIST"
+      }
     }
   },
   "dataframe-plot": {
@@ -1836,7 +1842,8 @@
     "information": "Información",
     "dataset": "Conjunto de datos",
     "model": "Modelo",
-    "predict": "Predecir"
+    "generated-models": "Modelos generados",
+    "predict": "Clasificar"
   },
   "form-dataframe": {
     "int32": "Entero",

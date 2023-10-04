@@ -32,6 +32,22 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
     setWindowWidth(window.innerWidth)
   }
 
+  const getElementText = (index, element) => {
+    let label = ''
+    let title = ''
+    if (element?._class && element?._class === 'Conv2D') {
+      label = `Layer: ${index}\nK: ${element.kernelSize}\nF: ${element.filters}\nS: ${element.strides}\nK.I: ${element.kernelInitializer}\nF.A: ${element.activation}`
+      title = `Layer: ${index}\nKernelSize: ${element.kernelSize}\nFilters: ${element.filters}\nStrides: ${element.strides}\nKernelInitializer: ${element.kernelInitializer}\nF. Activation: ${element.activation}`
+    } else if (element?._class && element?._class === 'MaxPooling2D') {
+      label = `Layer: ${index}\nP.S: [${element.poolSize[0]}, ${element.poolSize[1]}]\nS.2: [${element.strides2[0]}, ${element.strides2[1]}]`
+      title = `Layer: ${index}\nPool Size: [${element.poolSize[0]}, ${element.poolSize[1]}]\nStrides 2: [${element.strides2[0]}, ${element.strides2[1]}]`
+    } else {
+      label = `Layer: ${index}\nU: ${element.units}\nF.A: ${element.activation}`
+      title = `Layer: ${index}\nUnits: ${element.units}\nF.Activation: ${element.activation}`
+    }
+    return { label, title }
+  }
+
   useEffect(() => {
     window.addEventListener('resize', handleResize)
     const element = document.getElementById(id_parent)
@@ -66,16 +82,11 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const modeCompact = useCallback(() => {
     const nodes = [], edges = []
     for (let [index, element] of Object.entries(layers)) {
-      let label = ''
-      if (element?._class) {
-        // label = `L${index + 1}\n K:${element.kernel} - ${element.activation}`
-      } else {
-        label = `L${index + 1}\n U:${element.units} - F:${element.activation}`
-      }
+      const { label, title } = getElementText(index, element)
       nodes.push({
         id   : index,
         label: label,
-        title: '' + (index + 1)
+        title: title
       })
     }
 
@@ -88,13 +99,14 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const modeExtend = useCallback(() => {
     const nodes = [], edges = []
     for (let index = 0; index < layers.length; index++) {
+      let element = layers[index]
+      const { label, title} = getElementText(index, element)
       for (let unit = 0; unit < layers[index].units; unit++) {
         let key_id = index + ' - ' + unit
         nodes.push({
           id: key_id,
-          // ${(index + 1) + " - " + unit}
-          label: `L${index + 1} - ${unit} \n ${layers[index].activation}`,
-          title: 'h' + (index),
+          label: label,
+          title: title,
           level: index
         })
         if (index < layers.length - 1) {

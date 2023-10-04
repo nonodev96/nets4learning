@@ -28,6 +28,7 @@ import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import N4LJoyride from "@components/joyride/N4LJoyride";
 import { VERBOSE } from '@/CONSTANTS'
+import { Link } from 'react-router-dom'
 
 const DEFAULT_LEARNING_RATE = 1
 const DEFAULT_NUMBER_EPOCHS = 20
@@ -144,7 +145,6 @@ export default function TabularClassification (props) {
   /**
    * @typedef {Object} GeneratedModel_t
    * @property {number} idMODEL
-   * @property {boolean} isLoad
    * @property {any} model
    * @property {any} TARGET_SET_CLASSES
    * @property {any} DATA_SET_CLASSES
@@ -176,7 +176,7 @@ export default function TabularClassification (props) {
   const [customDataSet_JSON, setCustomDataSet_JSON] = useState(/** @type CustomDataset_t */   null)
 
   // Class && Controllers
-  const [modelInfo, set_ModelInfo] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
+  const [iModelInfo, set_IModelInfo] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
 
   // Prediction
   const [predictionBar, setPredictionBar] = useState({
@@ -219,7 +219,8 @@ export default function TabularClassification (props) {
       }
       case MODEL_CAR.KEY: {
         const _model = new MODEL_CAR(t)
-        set_ModelInfo(_model)
+        set_IModelInfo(_model)
+        console.log("json_cars", {json_cars})
         setCustomDataSet_JSON(json_cars)
         setIsDatasetProcessed(true)
         setLayers([
@@ -230,7 +231,7 @@ export default function TabularClassification (props) {
       }
       case MODEL_IRIS.KEY: {
         const _model = new MODEL_IRIS(t)
-        set_ModelInfo(_model)
+        set_IModelInfo(_model)
         setCustomDataSet_JSON(json_iris)
         setIsDatasetProcessed(true)
         setLayers([
@@ -241,7 +242,7 @@ export default function TabularClassification (props) {
       }
       case MODEL_LYMPHOGRAPHY.KEY: {
         const _model = new MODEL_LYMPHOGRAPHY(t)
-        set_ModelInfo(_model)
+        set_IModelInfo(_model)
         setCustomDataSet_JSON(json_lymphatics)
         setIsDatasetProcessed(true)
         setLayers([
@@ -252,7 +253,7 @@ export default function TabularClassification (props) {
         break
       }
       default: {
-        console.error('Error, opción no permitida')
+        console.error('Error, opción not valid')
       }
     }
     return () => {
@@ -384,7 +385,6 @@ export default function TabularClassification (props) {
           return { ...oldModel, isLoad: false }
         }), {
           idMODEL           : oldArray.length,
-          isLoad            : true,
           model             : model,
           TARGET_SET_CLASSES: TARGET_SET_CLASSES,
           DATA_SET_CLASSES  : DATA_SET_CLASSES,
@@ -446,7 +446,6 @@ export default function TabularClassification (props) {
             // New element
             {
               idMODEL      : generatedModels.length,
-              isLoad       : true,
               model        : model,
               learningRate : _learningRate,
               testSize     : _testSize,
@@ -482,24 +481,8 @@ export default function TabularClassification (props) {
     }
   }
 
-  const handleClick_LoadGeneratedModel = ({ model, idMODEL }) => {
-    const newList = generatedModels.map((item) => {
-      if (item.idMODEL === idMODEL) {
-        return { ...item, isLoad: true }
-      }
-      return { ...item, isLoad: false }
-    })
-    setGeneratedModelsIndex(idMODEL - 1)
-    setGeneratedModels(newList)
-    setModel(model)
-  }
-
   const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
     model.save('downloads://my-model-' + idMODEL)
-  }
-
-  const handleClick_DownloadLastModel = () => {
-    Model.save('downloads://my-model')
   }
   // endregion
 
@@ -675,20 +658,13 @@ export default function TabularClassification (props) {
   // endregion
 
   // Comprueba si se han ejecutado los pasos previos
-  const canRender_PredictDynamicForm = () => {
-    if (dataset === UPLOAD) {
-      return (customDataSet_JSON || dataProcessed) && Model
-    } else {
-      return (customDataSet_JSON) && Model
-    }
-  }
+
 
   if (VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
-
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={{}}
+                  JOYRIDE_state={iModelInfo.JOYRIDE()}
                   KEY={'tabular'} />
 
       <Container className={'mb-3'}>
@@ -705,12 +681,12 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
+        {/* INFORMACIÓN */}
         <div className={`mt-3 mb-4 n4l-hr-row`}>
           <span className={'n4l-hr-title'}>
             <Trans i18nKey={'hr.information'} />
           </span>
         </div>
-
         <Row className={'mt-3'}>
           <Col xl={12}>
             <Accordion defaultActiveKey={dataset === UPLOAD ? 'description_dataset' : ''}>
@@ -724,7 +700,7 @@ export default function TabularClassification (props) {
               <Accordion.Item key={'1'} eventKey={'description_dataset'}>
                 <Accordion.Header>
                   <h3>
-                    <Trans i18nKey={dataset !== UPLOAD ? modelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
+                    <Trans i18nKey={dataset !== UPLOAD ? iModelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
                   </h3>
                 </Accordion.Header>
                 <Accordion.Body>
@@ -754,7 +730,7 @@ export default function TabularClassification (props) {
                     </>,
                   }[dataset]}
                   {dataset !== UPLOAD ? (
-                    modelInfo.DESCRIPTION()
+                    iModelInfo.DESCRIPTION()
                   ) : ('')}
                 </Accordion.Body>
               </Accordion.Item>
@@ -762,12 +738,12 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
+        {/* CONJUNTO DE DATOS */}
         <div className={`mt-3 mb-4 n4l-hr-row`}>
             <span className={'n4l-hr-title'}>
               <Trans i18nKey={'hr.dataset'} />
             </span>
         </div>
-
         <Row className={'mt-3'}>
           <Col xl={12}>
             <Card>
@@ -832,7 +808,6 @@ export default function TabularClassification (props) {
               <Trans i18nKey={'hr.model'} />
             </span>
         </div>
-
         <Form id={'TabularClassificationCustomDataset'} onSubmit={dataset === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
           {/* BLOCK 1 */}
           <Row className={'mt-3'}>
@@ -919,6 +894,14 @@ export default function TabularClassification (props) {
                     })}
                   </Accordion>
                 </Card.Body>
+                <Card.Footer className={'d-flex justify-content-end'}>
+                  <p className={"text-muted mb-0 pb-0"}>
+                    <Trans i18nKey={'more-information-in-link'}
+                        components={{
+                            link1: <Link to={'/glossary/'} className={"text-info"}>link</Link>
+                        }} />
+                  </p>
+                </Card.Footer>
               </Card>
             </Col>
 
@@ -1031,6 +1014,14 @@ export default function TabularClassification (props) {
                     </Form.Text>
                   </Form.Group>
                 </Card.Body>
+                <Card.Footer className={'d-flex justify-content-end'}>
+                  <p className={"text-muted mb-0 pb-0"}>
+                    <Trans i18nKey={'more-information-in-link'}
+                         components={{
+                             link1: <Link to={'/glossary/'} className={"text-info"}>link</Link>
+                         }} />
+                  </p>
+                </Card.Footer>
               </Card>
             </Col>
           </Row>
@@ -1051,11 +1042,16 @@ export default function TabularClassification (props) {
         </Form>
 
         {/* SALIDA */}
+        <div className={`mt-3 mb-4 n4l-hr-row`}>
+          <span className={'n4l-hr-title'}>
+            <Trans i18nKey={'hr.generated-models'} />
+          </span>
+        </div>
         <Row className={'mt-3'}>
           <Col xl={12}>
             <Card>
-              <Card.Header className={'d-flex align-items-center'}>
-                <h3><Trans i18nKey={prefix + 'models.title'} /> | {generatedModelsIndex + 1}</h3>
+              <Card.Header className={'d-flex align-items-center justify-content-between'}>
+                <h3><Trans i18nKey={prefix + 'models.title'} /></h3>
                 <div className={'d-flex'}>
                   <Button variant={'outline-primary'}
                           size={'sm'}
@@ -1073,15 +1069,6 @@ export default function TabularClassification (props) {
                           }}>
                     <Trans i18nKey={prefix + 'models.close-visor'} />
                   </Button>
-                  {(Model !== undefined) &&
-                    <Button variant={'outline-primary'}
-                            size={'sm'}
-                            className={'ms-1'}
-                            disabled={isDisabledDownloadModel}
-                            onClick={() => handleClick_DownloadLastModel()}>
-                      <Trans i18nKey={prefix + 'models.export-current-model'} />
-                    </Button>
-                  }
                 </div>
               </Card.Header>
               <Card.Body className={'overflow-x-scroll'}>
@@ -1089,7 +1076,7 @@ export default function TabularClassification (props) {
                   <thead>
                   <tr>
                     <th><Trans i18nKey={prefix + 'table.id'} /></th>
-                    <th><Trans i18nKey={prefix + 'table.load'} /></th>
+                    {/*<th><Trans i18nKey={prefix + 'table.load'} /></th>*/}
                     <th><Trans i18nKey={prefix + 'table.learning-rate'} /></th>
                     <th><Trans i18nKey={prefix + 'table.number-of-epochs'} /></th>
                     <th><Trans i18nKey={prefix + 'table.train-rate'} /></th>
@@ -1104,15 +1091,7 @@ export default function TabularClassification (props) {
                   {generatedModels.map((value, index) => {
                     return (
                       <tr key={'model_list_row_' + index}>
-                        <td>{value.idMODEL + 1}</td>
-                        <td>
-                          <Button variant={value.isLoad ? 'outline-success' : 'outline-info'}
-                                  size={'sm'}
-                                  disabled={value.isLoad}
-                                  onClick={() => handleClick_LoadGeneratedModel(value)}>
-                            {value.isLoad ? t('pages.playground.generator.loaded') : t('pages.playground.generator.load')}
-                          </Button>
-                        </td>
+                        <td>{index + 1}</td>
                         <td>{value.learningRate * 100}%</td>
                         <td>{value.numberOfEpoch}</td>
                         <td>{value.testSize * 100}%</td>
@@ -1155,24 +1134,34 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
+        {/* Prediction */}
         <div className={`mt-3 mb-4 n4l-hr-row`}>
             <span className={'n4l-hr-title'}>
               <Trans i18nKey={'hr.predict'} />
             </span>
         </div>
-
-        {/* Prediction */}
         <Row className={'mt-3'}>
           <Col xl={12}>
-            <TabularClassificationPrediction dataset_JSON={customDataSet_JSON}
-                                             dataset={dataset}
-                                             stringToPredict={stringToPredict}
-                                             setStringToPredict={setStringToPredict}
-                                             objectToPredict={objectToPredict}
-                                             setObjectToPredict={setObjectToPredict}
-                                             predictionBar={predictionBar}
-                                             generatedModels={generatedModels}
-                                             handleSubmit_PredictVector={dataset === UPLOAD ? handleSubmit_PredictVector_upload : handleSubmit_PredictVector} />
+              <TabularClassificationPrediction dataset={dataset}
+                                               dataset_JSON={customDataSet_JSON}
+                                               dataProcessed={dataProcessed}
+                                               predictionBar={predictionBar}
+                                               generatedModels={generatedModels}
+
+                                               Model={Model}
+                                               setModel={setModel}
+
+                                               generatedModelsIndex={generatedModelsIndex}
+                                               setGeneratedModelsIndex={setGeneratedModelsIndex}
+
+                                               stringToPredict={stringToPredict}
+                                               setStringToPredict={setStringToPredict}
+
+                                               objectToPredict={objectToPredict}
+                                               setObjectToPredict={setObjectToPredict}
+
+
+                                               handleSubmit_PredictVector={dataset === UPLOAD ? handleSubmit_PredictVector_upload : handleSubmit_PredictVector} />
           </Col>
         </Row>
       </Container>

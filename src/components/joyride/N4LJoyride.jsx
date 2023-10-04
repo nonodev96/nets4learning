@@ -1,6 +1,7 @@
-import Joyride from 'react-joyride'
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import Joyride from 'react-joyride'
+
 import { VERBOSE } from '@/CONSTANTS'
 import { DEFAULT_JOYRIDE_STYLE } from "@/CONSTANTS_JOYRIDE";
 
@@ -8,7 +9,7 @@ export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, KEY 
 
   const { t } = useTranslation()
 
-  const [joyride, setJoyride] = useState(JOYRIDE_state)
+  const [joyride, setJoyride] = useState({  })
   const joyrideRef = useRef()
 
   const joyride_locale = {
@@ -34,6 +35,7 @@ export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, KEY 
   }, [updateScreenJoyride])
 
   useEffect(() => {
+
     setJoyride(JOYRIDE_state)
 
     if (localStorage.getItem('linear-regression.joyride-' + KEY) !== null) {
@@ -41,16 +43,16 @@ export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, KEY 
     } else {
       console.debug('else linear-regression.joyride-' + KEY)
     }
-  }, [JOYRIDE_state])
-
-  useImperativeHandle(refJoyrideButton, () => ({
-    handleClick_StartJoyride
-  }), [])
+  }, [JOYRIDE_state, KEY])
 
   const handleClick_StartJoyride = () => {
     joyrideRef.current?.store.reset()
     joyrideRef.current?.store.start()
   }
+
+  useImperativeHandle(refJoyrideButton, () => ({
+    handleClick_StartJoyride
+  }), [])
 
   if(VERBOSE) console.debug('render N4LJoyride')
   return <>

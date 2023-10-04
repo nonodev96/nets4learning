@@ -15,18 +15,18 @@ import {
 } from '@/DATA_MODEL'
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 
-import CustomCanvasDrawer from './components/customCanvasDrawer'
 import LayerEdit from './LayerEdit'
 import * as ImageClassificationUtils from './utils/utils'
 import * as TrainMNIST from './custom/Train_MNIST'
 import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
+import ImageClassificationClassify from '@pages/playground/3_ImageClassification/ImageClassificationClassify'
 
 const NumberEpochs_default = 5
 const LearningRate_default = 1
 
 const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'
-const DEFAULT_ID_METRICS = 'accuracy'
+const DEFAULT_ID_METRICS = 'categoricalCrossentropy'
 
 const DEFAULT_LAYER = {
   _class           : 'Conv2D',
@@ -35,6 +35,9 @@ const DEFAULT_LAYER = {
   strides          : 0,
   activation       : 'sigmoid',
   kernelInitializer: 'varianceScaling',
+  // Not used because the class is Conv2D
+  poolSize: [2, 2],
+  strides2: [2, 2]
 }
 
 const DEFAULT_LAYERS = [
@@ -45,11 +48,20 @@ const DEFAULT_LAYERS = [
     strides          : 1,
     activation       : 'Sigmoid',
     kernelInitializer: 'varianceScaling',
+    // Not used because the class is Conv2D
+    poolSize: [2, 2],
+    strides2: [2, 2]
   },
   {
     _class  : 'MaxPooling2D',
     poolSize: [2, 2],
-    strides2: [2, 2]
+    strides2: [2, 2],
+    // Not used because the class is MaxPooling2D
+    kernelSize       : 5,
+    filters          : 10,
+    strides          : 1,
+    activation       : 'Sigmoid',
+    kernelInitializer: 'varianceScaling',
   },
   {
     _class           : 'Conv2D',
@@ -58,18 +70,27 @@ const DEFAULT_LAYERS = [
     strides          : 1,
     activation       : 'relu',
     kernelInitializer: 'varianceScaling',
+    // Not used because the class is Conv2D
+    poolSize: [2, 2],
+    strides2: [2, 2]
   },
   {
     _class  : 'MaxPooling2D',
     poolSize: [2, 2],
-    strides2: [2, 2]
+    strides2: [2, 2],
+    // Not used because the class is MaxPooling2D
+    kernelSize       : 5,
+    filters          : 16,
+    strides          : 1,
+    activation       : 'relu',
+    kernelInitializer: 'varianceScaling',
   },
 ]
 
 export default function ImageClassification (props) {
   const { dataset } = props
   const { t } = useTranslation()
-  const [modelInfo, set_ModelInfo] = useState(new I_MODEL_IMAGE_CLASSIFICATION(t))
+  const [iModelInfo, set_IModelInfo] = useState(new I_MODEL_IMAGE_CLASSIFICATION(t))
 
   const prefix = 'pages.playground.generator.'
 
@@ -77,7 +98,7 @@ export default function ImageClassification (props) {
 
   /**
    * @typedef {Object} Layer_t
-   * @property {string} class
+   * @property {string} _class
    * @property {string} activation
    * @property {string} kernelInitializer
    * @property {[number, number]} poolSize
@@ -114,15 +135,15 @@ export default function ImageClassification (props) {
     ReactGA.send({ hitType: 'pageview', page: '/ImageClassification/' + dataset, title: dataset })
     switch (dataset) {
       case MODEL_IMAGE_MNIST.KEY: {
-        set_ModelInfo(new MODEL_IMAGE_MNIST(t))
+        set_IModelInfo(new MODEL_IMAGE_MNIST(t))
         break
       }
       case MODEL_IMAGE_MOBILENET.KEY: {
-        set_ModelInfo(new MODEL_IMAGE_MOBILENET(t))
+        set_IModelInfo(new MODEL_IMAGE_MOBILENET(t))
         break
       }
       case MODEL_IMAGE_RESNET.KEY: {
-        set_ModelInfo(new MODEL_IMAGE_RESNET(t))
+        set_IModelInfo(new MODEL_IMAGE_RESNET(t))
         break
       }
       default: {
@@ -134,16 +155,8 @@ export default function ImageClassification (props) {
 
   useEffect(() => {
     if (!Recarga) {
-      const uploadedArchitecture = localStorage.getItem('custom-architecture-IMG')
-      if (uploadedArchitecture !== '{}') {
-        setLayers(DEFAULT_LAYERS)
-        setRecarga(true)
-        setActiveLayer(0)
-      } else {
-        setLayers(DEFAULT_LAYERS)
-        setRecarga(true)
-        setActiveLayer(0)
-      }
+      setLayers(DEFAULT_LAYERS)
+      setRecarga(true)
     }
   }, [Contador, Recarga])
 
@@ -177,7 +190,7 @@ export default function ImageClassification (props) {
   // endregion
 
   // region PRUEBA DEL MODELO
-  const handleVectorTest = async () => {
+  const handleSubmit_VectorTest = async () => {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
@@ -212,7 +225,7 @@ export default function ImageClassification (props) {
     }
   }
 
-  const handleVectorTestImageUpload = async () => {
+  const handleSubmit_VectorTestImageUpload = async () => {
     if (Model === undefined) {
       await alertHelper.alertWarning('Antes debes de crear y entrenar el modelo.')
     } else {
@@ -274,34 +287,29 @@ export default function ImageClassification (props) {
       for (let i = 0; i < array.length; i++) {
         if (i !== idLayer) array2.push(array[i])
       }
-      if (ActiveLayer === idLayer && idLayer > 0) setActiveLayer(idLayer - 1)
       setLayers(array2)
     }
   }
 
-  const handleChange_Class = (e) => {
+  const handleChange_Class = (e, indexLayer) => {
     const option = e.target.value
-    let a = Contador
-    a = a + 1
-    Layers[ActiveLayer]._class = option
-    if (option === 'Conv2D') {
-      Layers[ActiveLayer] = {
-        _class           : 'Conv2D',
+      Layers[indexLayer] = {
+        // Conv2D
+        //_class           : 'Conv2D',
         kernelSize       : 5,
         filters          : 10,
         strides          : 1,
         activation       : 'Sigmoid',
         kernelInitializer: 'varianceScaling',
-      }
-    } else {
-      Layers[ActiveLayer] = {
-        _class  : 'MaxPooling2D',
+
+        // MaxPooling2D
+        // _class  : 'MaxPooling2D',
         poolSize: [2, 2],
         strides2: [2, 2],
       }
-    }
-    setContador(a)
+    Layers[indexLayer]._class = option
     setLayers(Layers)
+    setContador(Contador + 1)
   }
   // endregion
 
@@ -389,9 +397,12 @@ export default function ImageClassification (props) {
   }
   // endregion
 
+  console.log("render ImageClassification")
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
+                  JOYRIDE_state={iModelInfo.JOYRIDE()}
+                  KEY={'ImageClassification'}
       />
 
       {/* MANUAL */}
@@ -409,10 +420,16 @@ export default function ImageClassification (props) {
           </Col>
         </Row>
 
+        <div className={'mt-2 mb-4 n4l-hr-row'}>
+          <span className={'n4l-hr-title'}>
+            <Trans i18nKey={'hr.information'} />
+          </span>
+        </div>
+
         <Row className={'mt-3'}>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Accordion>
-              <Accordion.Item eventKey={'manual'}>
+              <Accordion.Item className={'joyride-step-1-manual'}  eventKey={'manual'}>
                 <Accordion.Header><h3>Manual</h3></Accordion.Header>
                 <Accordion.Body>
                   <ul>
@@ -481,11 +498,11 @@ export default function ImageClassification (props) {
               <Accordion.Item eventKey={'description-dataset'}>
                 <Accordion.Header>
                   <h3>
-                    <Trans i18nKey={dataset !== '0' ? modelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
+                    <Trans i18nKey={dataset !== '0' ? iModelInfo.TITLE : prefix + 'dataset.upload-dataset'} />
                   </h3>
                 </Accordion.Header>
                 <Accordion.Body>
-                  {modelInfo.DESCRIPTION()}
+                  {iModelInfo.DESCRIPTION()}
                 </Accordion.Body>
               </Accordion.Item>
 
@@ -511,6 +528,12 @@ export default function ImageClassification (props) {
           </Col>
         </Row>
 
+        <div className={`mt-3 mb-4 n4l-hr-row`}>
+          <span className={'n4l-hr-title'}>
+            <Trans i18nKey={'hr.model'} />
+          </span>
+        </div>
+
         {/* EDITOR */}
         <Form onSubmit={handleSubmit_Play} id={'ImageClassification'}>
 
@@ -520,9 +543,9 @@ export default function ImageClassification (props) {
             </Col>
           </Row>
 
-          <Row className={'mt-3'}>
+          <Row>
             {/* Layers PARAMETERS */}
-            <Col xl={6}>
+            <Col xl={6} className={'mt-3'}>
               <Card>
                 <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3><Trans i18nKey={prefix + 'editor-layers.title'} /></h3>
@@ -557,13 +580,13 @@ export default function ImageClassification (props) {
                             </Button>
                           </div>
 
-                          {/* UNITS */}
+                          {/* CLASS */}
                           <Form.Group className="mt-3"
                                       controlId={'formClass' + index}>
                             <Form.Label>Clase de la capa</Form.Label>
                             <Form.Select aria-label="Selecciona la clase de la capa"
-                                         defaultValue={Layers[index]._class}
-                                         onChange={handleChange_Class}>
+                                         value={Layers[index]._class}
+                                         onChange={(e) => handleChange_Class(e, index)}>
                               {TYPE_CLASS.map(({ key, label }, index) => {
                                 return (<option key={index} value={key}>{label}</option>)
                               })}
@@ -586,14 +609,16 @@ export default function ImageClassification (props) {
                     })}
                   </Accordion>
                 </Card.Body>
+                <Card.Footer>
+
+                </Card.Footer>
               </Card>
             </Col>
 
             {/* GENERAL PARAMETERS */}
-            <Col xl={6}>
+            <Col xl={6} className={'mt-3'}>
               <Card className={'sticky-top'} style={{ zIndex: 10 }}>
                 <Card.Header><h3><Trans i18nKey={prefix + 'general-parameters.title'} /></h3></Card.Header>
-
                 <Card.Body>
                   {/* LEARNING RATE */}
                   <Form.Group className="mb-3" controlId="formTrainRate">
@@ -671,6 +696,9 @@ export default function ImageClassification (props) {
                     </Form.Text>
                   </Form.Group>
                 </Card.Body>
+                <Card.Footer>
+
+                </Card.Footer>
               </Card>
             </Col>
           </Row>
@@ -680,6 +708,7 @@ export default function ImageClassification (props) {
               {/* BLOCK  BUTTON */}
               <div className="d-grid gap-2">
                 <Button variant={'primary'}
+                        size={'lg'}
                         type={'submit'}>
                   <Trans i18nKey={prefix + 'models.button-submit'} />
                 </Button>
@@ -689,11 +718,17 @@ export default function ImageClassification (props) {
 
         </Form>
 
+        <div className={'mt-4 mb-4 n4l-hr-row'}>
+          <span className={'n4l-hr-title'}>
+            <Trans i18nKey={'hr.generated-models'} />
+          </span>
+        </div>
+
         {/* GENERATED MODELS */}
         <Row className={'mt-3'}>
           <Col>
             <Card>
-              <Card.Header className={'d-flex align-items-center'}>
+                <Card.Header className={'d-flex align-items-center justify-content-between'}>
                 <h3><Trans i18nKey={prefix + 'models.title'} /> | {GeneratedModels.length + 1}</h3>
                 <div className={'d-flex'}>
                   <Button variant={'outline-primary'}
@@ -725,53 +760,18 @@ export default function ImageClassification (props) {
           </Col>
         </Row>
 
+        <div className={'mt-4 mb-4 n4l-hr-row'}>
+          <span className={'n4l-hr-title'}>
+            <Trans i18nKey={'hr.classify'} />
+          </span>
+        </div>
+
         {/* BLOCK 2 */}
         <Row className={'mt-3'}>
           <Col>
-            <Card className="mt-3">
-              <Card.Header><h3>Resultado</h3></Card.Header>
-              <Card.Body>
-                {/* VECTOR TEST */}
-                <Row>
-                  <Col>
-                    <CustomCanvasDrawer submitFunction={handleVectorTest}
-                                        clearFunction={() => {
-                                        }}
-                    />
-                  </Col>
-                  <Col>
-                    <input style={{ marginBottom: '2rem' }}
-                           type="file"
-                           name="doc"
-                           onChange={handleChange_FileUpload} />
-
-                    <Row>
-                      <Col className={'d-flex justify-content-center'}>
-                        <canvas id="imageCanvas"
-                                height="100"
-                                width="100"
-                                className={'nets4-border-1'}></canvas>
-                      </Col>
-                      <Col className={'d-flex justify-content-center'}>
-                        <canvas id="smallcanvas"
-                                width="28"
-                                height="28"
-                                className={'nets4-border-1'}></canvas>
-                      </Col>
-                    </Row>
-
-                    {/* SUBMIT BUTTON */}
-                    <div className="d-grid gap-2 mt-3">
-                      <Button variant={'primary'}
-                              onClick={handleVectorTestImageUpload}>
-                        Validar
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-
-              </Card.Body>
-            </Card>
+            <ImageClassificationClassify handleSubmit_VectorTest={handleSubmit_VectorTest}
+                                         handleChange_FileUpload={handleChange_FileUpload}
+                                         handleSubmit_VectorTestImageUpload={handleSubmit_VectorTestImageUpload}/>
           </Col>
         </Row>
       </Container>

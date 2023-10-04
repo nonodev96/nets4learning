@@ -497,7 +497,7 @@ export default function ObjectDetection (props) {
                                   controlId={'formClass' + ActiveLayer}>
                         <Form.Label>Clase de la capa</Form.Label>
                         <Form.Select aria-label="Default select example"
-                                     defaultValue={Layer[ActiveLayer].class}
+                                     value={Layer[ActiveLayer]._class}
                                      onChange={handleChange_Class}>
                           {TYPE_CLASS.map(({ key, label }, index) => {
                             return (<option key={index} value={key}>{<label for=""></label>}</option>)

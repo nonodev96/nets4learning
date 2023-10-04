@@ -2,7 +2,9 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 
 export default function LayerEdit ({
-  index, item,
+  index,
+  item,
+
   handleChange_Kernel,
   handleChange_Activation,
   handleChange_Filters,
@@ -41,7 +43,7 @@ export default function LayerEdit ({
           <Form.Label>Strides</Form.Label>
           <Form.Control type="number"
                         placeholder="Introduce el strides de la capa"
-                        defaultValue={item.strides}
+                        value={item.strides}
                         onChange={(e) => handleChange_Strides(index, e)} />
         </Form.Group>
       </Col>
@@ -57,9 +59,6 @@ export default function LayerEdit ({
               return (<option key={indexAct} value={key}>{label}</option>)
             })}
           </Form.Select>
-          <Form.Text className="text-muted">
-            Será la función de activación
-          </Form.Text>
         </Form.Group>
       </Col>
     </Row>}
@@ -72,7 +71,7 @@ export default function LayerEdit ({
           <Form.Label>POOL SIZE 0 de la capa</Form.Label>
           <Form.Control type="number"
                         placeholder="Introduce el número de POOLSIZE de la capa"
-                        defaultValue={item.poolSize[0]}
+                        value={item.poolSize[0]}
                         onChange={(e) => handleChange_PoolSize(index, 0, e)} />
         </Form.Group>
       </Col>
@@ -84,7 +83,7 @@ export default function LayerEdit ({
           <Form.Label>POOL SIZE 1 de la capa</Form.Label>
           <Form.Control type="number"
                         placeholder="Introduce el número de POOLSIZE2 de la capa"
-                        defaultValue={item.poolSize[1]}
+                        value={item.poolSize[1]}
                         onChange={(e) => handleChange_PoolSize(index, 1, e)} />
         </Form.Group>
       </Col>
@@ -95,7 +94,7 @@ export default function LayerEdit ({
           <Form.Label>Strides 0 de la capa</Form.Label>
           <Form.Control type="number"
                         placeholder="Introduce el número de strides de la capa"
-                        defaultValue={item.strides2[0]}
+                        value={item.strides2[0]}
                         onChange={(e) => handleChange_StridesMax(index, 0, e)} />
         </Form.Group>
       </Col>
@@ -105,7 +104,7 @@ export default function LayerEdit ({
           <Form.Label>Strides 1 de la capa</Form.Label>
           <Form.Control type="number"
                         placeholder="Introduce el número de strides 2 de la capa"
-                        defaultValue={item.strides2[1]}
+                        value={item.strides2[1]}
                         onChange={(e) => handleChange_StridesMax(index, 1, e)} />
         </Form.Group>
       </Col>

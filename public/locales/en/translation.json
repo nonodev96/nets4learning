@@ -20,6 +20,7 @@
   "model": {
     "__index__": "Model {{index}}"
   },
+  "more-information-in-link": "More information in the following <link1> Link </link1>",
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -957,6 +958,11 @@
         "3-option-2": "Model - MobileNet - Image Classifier",
         "3-option-3": "Model - ResNet - Image classifier"
       }
+    },
+    "3-image-classification": {
+      "list-datasets": {
+        "mnist": "Data set - Wine"
+      }
     }
   },
   "dataframe-plot": {
@@ -1023,7 +1029,7 @@
           "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
         },
         "end": {
-          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+          "0": "Box type graphics are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
         }
       }
     },
@@ -1270,7 +1276,7 @@
               }
             },
             "details-hyper-parameters-editor": {
-              "title": "Hyper parameter editor",
+              "title": "Hyperparameter editor",
               "text-0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:",
               "list": {
                 "0": "<b>Learning rate</b>: <br /> Value between 0 and 100 which indicates the percentage of the weight weights.",
@@ -1282,7 +1288,7 @@
               }
             },
             "details-hyper-parameters-info": {
-              "title": "Hyper parameters information",
+              "title": "Hyperparameters information",
               "list": {
                 "0": "<b>Learning rate</b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
                 "1": "<b>Number of iterations</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
@@ -1361,7 +1367,7 @@
           "delete-feature": "Delete feature {{value}}"
         },
         "general-parameters": {
-          "title": "Hyper parameter editor",
+          "title": "Hyperparameter editor",
           "learning-rate": "Learning rate",
           "learning-rate-placeholder": "Enter the learning rate",
           "learning-rate-info": "A value between 0 and 100 (it is a percentage)",
@@ -1414,7 +1420,7 @@
           "text-0": "Enter the values of each entry feature of the example to predict",
           "select-option": "Select an option",
           "input-vector": "Enter the vector to try",
-          "test-vector": "Vector to try"
+          "test-vector": "Vector to test"
         },
         "list-models-generated": "List generated models",
         "visor": {
@@ -1456,7 +1462,7 @@
               }
             },
             "details-hyper-parameters-editor": {
-              "title": "Hyper parameter editor",
+              "title": "Hyperparameter editor",
               "text": {
                 "0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:"
               },
@@ -1470,7 +1476,7 @@
               }
             },
             "details-hyper-parameters-info": {
-              "title": "Hyper parameters information",
+              "title": "Hyperparameters information",
               "list": {
                 "0": "<b>Learning rate</b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
                 "1": "<b>Number of iterations</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
@@ -1836,7 +1842,8 @@
     "information": "Information",
     "dataset": "Data set",
     "model": "Model",
-    "predict": "Predict"
+    "generated-models": "Modelos generados",
+    "predict": "Classify"
   },
   "form-dataframe": {
     "int32": "Integer",

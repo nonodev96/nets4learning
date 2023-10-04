@@ -8,13 +8,23 @@ import { VERBOSE } from '@/CONSTANTS'
 import TabularClassificationPredictionDynamicForm from '@pages/playground/0_TabularClassification/TabularClassificationPredictionDynamicForm'
 
 export default function TabularClassificationPrediction ({
-  dataset_JSON,
   dataset,
-  stringToPredict = '',
-  setStringToPredict,
-  setObjectToPredict,
+  dataset_JSON,
+  dataProcessed,
   predictionBar,
   generatedModels,
+
+  Model,
+  setModel,
+
+  generatedModelsIndex,
+  setGeneratedModelsIndex,
+
+  stringToPredict = '',
+  setStringToPredict,
+
+  setObjectToPredict,
+
   handleSubmit_PredictVector,
 }) {
 
@@ -35,16 +45,18 @@ export default function TabularClassificationPrediction ({
   }
 
   useEffect(() => {
-    const rowDefault = dataset_JSON.data[0]
-    const defaultString = rowDefault.slice(0, -1).join(';')
-    setStringToPredict(defaultString)
+    if (dataset_JSON?.data?.length > 0) {
+      const rowDefault = dataset_JSON.data[0]
+      const defaultString = rowDefault.slice(0, -1).join(';')
+      setStringToPredict(defaultString)
 
-    dataset_JSON.attributes.forEach((att) => {
-      setObjectToPredict(oldState => ({
-        ...oldState,
-        [att.name]: rowDefault[att.index_column],
-      }))
-    })
+      dataset_JSON.attributes.forEach((att) => {
+          setObjectToPredict(oldState => ({
+              ...oldState,
+              [att.name]: rowDefault[att.index_column],
+          }))
+      })
+    }
   }, [dataset_JSON, setStringToPredict, setObjectToPredict])
 
   const handleChange_ROW = (e) => {
@@ -61,25 +73,52 @@ export default function TabularClassificationPrediction ({
         dataset_JSON.data[row_index][att?.index_column]
     })
   }
+  const handleChange_Model = (e)=>{
+    const index = e.target.value
+    setModel(generatedModels[index].model)
+    setGeneratedModelsIndex(index)
+  }
 
-  if (VERBOSE) console.debug('Render TabularClassificationPrediction')
+  const canRender_PredictDynamicForm = () => {
+    if (dataset === UPLOAD) {
+        return (dataset_JSON || dataProcessed) && Model
+    } else {
+        return (dataset_JSON) && Model
+    }
+  }
+
+  if (VERBOSE) console.debug('render TabularClassificationPrediction')
   return <>
     <Card>
-      <Card.Header className={'d-flex align-items-center'}>
-        <h3><Trans i18nKey={prefix + 'title'} /></h3>
-        <div className={'ms-3'}>
+      <Card.Header className={'d-flex align-items-center justify-content-between'}>
+        <h3><Trans i18nKey={prefix + 'title'} /> {generatedModelsIndex!==-1 && <>| <Trans i18nKey={'model.__index__'} values={{ index: generatedModelsIndex  }} /></> }</h3>
+        <div className={'d-flex'}>
+          {(generatedModels.length !== 0 && dataset_JSON?.data?.length > 0) && <>
+            <Form.Group controlId={'DATA'}>
+              <Form.Select aria-label={t(prefix + 'selector-entity')}
+                           size={'sm'}
+                           onChange={(e) => handleChange_ROW(e)}>
+                {dataset_JSON.data.map((row, index) => {
+                  return <option key={'option_' + index} value={index}>
+                      Id row: {index.toString().padStart(3, '0')} - Target: {row.slice(-1)}
+                  </option>
+                })}
+              </Form.Select>
+            </Form.Group>
+          </>}
           {generatedModels.length !== 0 && <>
-          <Form.Group controlId={'DATA'}>
-            {/*<Form.Label>Carga una fila del dataset</Form.Label>*/}
-            <Form.Select aria-label={t(prefix + 'title')}
-                         size={'sm'}
-                         onChange={(e) => handleChange_ROW(e)}>
-              {dataset_JSON.data.map((row, index) => {
-                return <option key={'option_' + index} value={index}>Id row: {index.toString().padStart(3, '0')} - Target: {row.slice(-1)}</option>
-              })}
-            </Form.Select>
-          </Form.Group>
-        </>}
+            <Form.Group controlId={'MODEL'} className={'ms-3'}>
+              <Form.Select aria-label={t(prefix + 'selector-model')}
+                           size={'sm'}
+                           onChange={(e) => handleChange_Model(e)}>
+                {generatedModels.map((row, index) => {
+                    return <option key={'option_' + index} value={index}>
+                       <Trans i18nKey={'model.__index__'} values={{ index: index }} />
+                    </option>
+                })}
+              </Form.Select>
+            </Form.Group>
+          </>}
         </div>
       </Card.Header>
       <Card.Body>
@@ -92,7 +131,7 @@ export default function TabularClassificationPrediction ({
         </>}
 
 
-        {(generatedModels.length > 0 && generatedModels >= 0) && <>
+        {(canRender_PredictDynamicForm()) && <>
           <Form onSubmit={(e) => handleSubmit_PredictVector(e)}>
             <Card.Text>
               <Trans i18nKey={prefix + 'text-0'} /><br />
@@ -133,6 +172,7 @@ export default function TabularClassificationPrediction ({
                 </Col>
               </Row>
             </>}
+            <hr />
             <Bar options={bar_options}
                  data={{
                    labels  : [...predictionBar.labels],

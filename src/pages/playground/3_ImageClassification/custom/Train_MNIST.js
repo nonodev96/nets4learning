@@ -122,12 +122,9 @@ function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
   const IMAGE_WIDTH = 28
   const IMAGE_HEIGHT = 28
   const IMAGE_CHANNELS = 1
-  const optimizer =
-    createOptimizer(idOptimizer, { learningRate: (LearningRate / 100), momentum: 0.99 })
-  const loss
-    = createLoss(idLoss, {})
-  const metrics =
-    createMetrics(idMetrics, {})
+  const optimizer = createOptimizer(idOptimizer, { learningRate: (LearningRate / 100), momentum: 0.99 })
+  const loss = createLoss(idLoss, {})
+  const metrics = createMetrics(idMetrics, {})
 
   layerList.forEach((element, index) => {
     if (index === 0) {
@@ -142,7 +139,7 @@ function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
         }),
       )
     } else {
-      if (element.class === 'Conv2D') {
+      if (element._class === 'Conv2D') {
         model.add(
           tf.layers.conv2d({
             kernelSize       : element.kernelSize,
@@ -152,7 +149,7 @@ function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
             kernelInitializer: element.kernelInitializer,
           }),
         )
-      } else {
+      } else if(element._class === 'MaxPooling2D') {
         model.add(
           tf.layers.maxPooling2d({
             poolSize: element.poolSize,

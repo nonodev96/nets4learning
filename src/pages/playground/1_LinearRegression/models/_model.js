@@ -138,15 +138,6 @@ export default class I_MODEL_LINEAR_REGRESSION {
             this.setAccordionActive(['manual', 'dataset_info'])
             break
           }
-          case '.my-step-1': {
-            break
-          }
-          case '.my-step-2': {
-            break
-          }
-          case '.my-step-3': {
-            break
-          }
           default: {
             console.warn('Error, option not valid')
             break

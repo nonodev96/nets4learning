@@ -168,7 +168,7 @@ const TASK_DATASET_OPTIONS = {
   ],
   [TASKS.OBJECT_DETECTION]      : [],
   [TASKS.IMAGE_CLASSIFICATION]  : [
-    { i18n: 'pages.menu-selection-dataset.1-image-classifier', value: MODEL_IMAGE_MNIST.KEY },
+    { i18n: 'datasets-models.3-image-classification.list-datasets.mnist', value: MODEL_IMAGE_MNIST.KEY },
   ],
 }
 

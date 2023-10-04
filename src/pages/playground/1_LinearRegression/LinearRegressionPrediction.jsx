@@ -141,7 +141,7 @@ export default function LinearRegressionPrediction () {
                   {listModels
                     .map((_, index) => {
                       return <option key={index} value={index}>
-                        <Trans i18nKey={prefix + 'model.__index__'}
+                        <Trans i18nKey={'model.__index__'}
                                values={{ index: index + 1 }} />
                       </option>
                     })}

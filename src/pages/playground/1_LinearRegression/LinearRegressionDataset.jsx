@@ -16,10 +16,8 @@ export default function LinearRegressionDataset ({ dataset_id }) {
   const { t } = useTranslation()
   const {
     setDatasets,
-
     datasetLocal,
-
-    iModel,
+    iModelInfo,
   } = useContext(LinearRegressionContext)
 
   const handleChange_FileUpload_CSV = async (files, event) => {
@@ -29,9 +27,7 @@ export default function LinearRegressionDataset ({ dataset_id }) {
     }
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
-
       dfd.readCSV(file_csv).then((_dataframe) => {
-
         setDatasets((prevState) => ([...prevState,
             {
               is_dataset_upload   : true,
@@ -82,7 +78,7 @@ export default function LinearRegressionDataset ({ dataset_id }) {
       </>}
     </>}
     {dataset_id !== UPLOAD && <>
-      {iModel.DESCRIPTION()}
+      {iModelInfo.DESCRIPTION()}
     </>}
   </>
 }

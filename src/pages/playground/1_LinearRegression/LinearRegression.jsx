@@ -57,8 +57,8 @@ export default function LinearRegression ({ dataset_id }) {
     accordionActive,
     setAccordionActive,
 
-    iModel,
-    setIModel,
+    iModelInfo,
+    setIModelInfo,
   } = useContext(LinearRegressionContext)
 
   const refJoyrideButton = useRef({})
@@ -146,12 +146,12 @@ export default function LinearRegression ({ dataset_id }) {
           console.error('Error, option not valid')
         }
         const { datasets } = await info_dataset.DATASETS()
-        setIModel(info_dataset)
+        setIModelInfo(info_dataset)
         setDatasets(datasets)
       }
     }
     init().then(() => undefined)
-  }, [dataset_id, t, setIModel, setTmpModel, setAccordionActive, setDatasets])
+  }, [dataset_id, t, setIModelInfo, setTmpModel, setAccordionActive, setDatasets])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -168,7 +168,7 @@ export default function LinearRegression ({ dataset_id }) {
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModel.JOYRIDE()}
+                  JOYRIDE_state={iModelInfo.JOYRIDE()}
                   KEY={'LinearRegression'} />
 
       <Container>
@@ -185,12 +185,11 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
-          <span className={styles.n4l_hr_title}>
+        <div className={'mt-2 mb-4 n4l-hr-row'}>
+          <span className={'n4l-hr-title'}>
             <Trans i18nKey={'hr.information'} />
           </span>
         </div>
-
 
         <Row>
           <Col>
@@ -206,7 +205,7 @@ export default function LinearRegression ({ dataset_id }) {
 
               <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
-                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModel.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModelInfo.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body id={'info_model'}>
                   <Suspense fallback={<></>}><LinearRegressionDataset dataset_id={dataset_id} /></Suspense>
@@ -223,6 +222,7 @@ export default function LinearRegression ({ dataset_id }) {
             <Trans i18nKey={'hr.dataset'} />
           </span>
         </div>
+
         <Row className={'joyride-step-3-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetShow /></Suspense>
@@ -296,20 +296,11 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
-          <span className={styles.n4l_hr_title}>
+        <div className={'mt-2 mb-4 n4l-hr-row'}>
+          <span className={'n4l-hr-title'}>
             <Trans i18nKey={'hr.predict'} />
           </span>
         </div>
-
-
-        {/*<Row className={'mt-3'}>*/}
-        {/*  <Col className={'joyride-step-8-list-of-models'}>*/}
-        {/*    <Suspense fallback={<></>}><LinearRegressionPredictionExample /></Suspense>*/}
-        {/*  </Col>*/}
-        {/*</Row>*/}
-
-        {/*<hr />*/}
 
         <Row className={'mt-3'}>
           <Col className={'joyride-step-9-predict-visualization'}>

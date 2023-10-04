@@ -2,21 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
-
+import N4LModal from '@components/modal/N4LModal'
 import alertHelper from '@utils/alertHelper'
+
 import {
   TASK_MODEL_OPTIONS,
   TASK_MODEL_OPTIONS_CLASS
 } from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
 
-import N4LModal from '@components/modal/N4LModal'
 
 export default function MenuSelectModel (_props) {
 
   const { id } = useParams()
-  const prefix = 'pages.menu.select-model.'
   const { t } = useTranslation()
+  const prefix = 'pages.menu.select-model.'
   const history = useHistory()
 
   const [modelKey, setModelKey] = useState('select-model')
@@ -82,12 +82,7 @@ export default function MenuSelectModel (_props) {
                     <Trans i18nKey={'pages.menu-selection-model.form-description-1'} />
                   </Card.Text>
                   <Row>
-                    <Col xs={12}
-                         sm={12}
-                         md={12}
-                         lg={10}
-                         xl={10}
-                         xxl={10}>
+                    <Col xs={12} sm={12} md={12} lg={10} xl={10} xxl={10}>
                       <Form.Group controlId="FormModel">
                         <Form.Label><Trans i18nKey={'pages.menu-selection-model.form-label'} /></Form.Label>
                         <Form.Select aria-label={t('pages.menu-selection-model.form-label')}
@@ -104,12 +99,7 @@ export default function MenuSelectModel (_props) {
                       </Form.Group>
                     </Col>
                     <Col className={'d-flex flex-column-reverse'}
-                         xs={12}
-                         sm={12}
-                         md={12}
-                         lg={2}
-                         xl={2}
-                         xxl={2}>
+                         xs={12} sm={12} md={12} lg={2} xl={2} xxl={2}>
                       <div className="d-grid gap-2">
                         <Button variant={'outline-info'}
                                 className={'mt-3'}
@@ -120,12 +110,7 @@ export default function MenuSelectModel (_props) {
                       </div>
                     </Col>
                     <Col className={'mx-auto'}
-                         xs={12}
-                         sm={12}
-                         md={12}
-                         lg={6}
-                         xl={6}
-                         xxl={6}>
+                         xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
                       <div className="d-grid gap-2">
                         <Button variant={'outline-primary'}
                                 className={'mt-3'}
