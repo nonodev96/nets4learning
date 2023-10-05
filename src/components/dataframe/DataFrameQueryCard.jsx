@@ -1,9 +1,8 @@
-import React, { useEffect, useId, useState } from 'react'
-import { Card, Col, InputGroup, Row, Form, Button } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Card, Button } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
-import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1 } from '@/CONSTANTS_DanfoJS'
 import DataFrameQueryModalDescription from '@components/dataframe/DataFrameQueryModalDescription'
 import DataFrameQuery from '@components/dataframe/DataFrameQuery'
 

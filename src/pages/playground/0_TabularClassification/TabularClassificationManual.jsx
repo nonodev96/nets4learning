@@ -2,11 +2,6 @@ import React from 'react'
 import { Trans } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 
-/**
- *
- * @return {JSX.Element}
- * @constructor
- */
 export default function TabularClassificationManual () {
   const prefix = 'pages.playground.0-tabular-classification.generator.manual.'
 

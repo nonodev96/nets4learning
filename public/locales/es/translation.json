@@ -433,6 +433,47 @@
         "0-option-1": "Modelo - Clasificación de coches",
         "0-option-2": "Modelo - Clasificación de flor iris",
         "0-option-3": "Modelo - Clasificación de linfomas"
+      },
+      "joyride": {
+        "title": "Activar el tutorial",
+        "steps": {
+          "manual": {
+            "title": "Manual",
+            "content": "Puedes consultar el manual en busqueda de información"
+          },
+          "dataset-info": {
+            "title": "Información del conjunto de datos",
+            "content": "Consulta la información del conjunto de datos"
+          },
+          "dataset": {
+            "title": "Conjuto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+          },
+          "dataset-plot": {
+            "title": "Graficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+          },
+          "layer-visualizer": {
+            "title": "Visualizador de las capas de la red neuronal",
+            "content": "Puedes visualizar las capas, funciones de activación en dos formatos, modo compacto y modo extendido"
+          },
+          "layer-editor": {
+            "title": "Editor de capas",
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+          },
+          "params-editor": {
+            "title": "Editor de hiperparametros",
+            "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
+          },
+          "list-of-models": {
+            "title": "Lista de modelos",
+            "content": "Una vez generado el modelo puedes cargar o descargar el modelo, para probar cada modelo y realizar la clasificación."
+          },
+          "classify-and-visualizer": {
+            "title": "Clasificar y visualizar",
+            "content": "Una vez cargado nuestro modelo para la clasificación tabular puedes realizar la clasificación y visualizar los resultados"
+          }
+        }
       }
     },
     "1-linear-regression": {
@@ -1179,7 +1220,7 @@
         "2-description-list": {
           "1": "Definir el número de capas, sus funciones de activación.",
           "2": "Definir la tasa de entrenamiento.",
-          "3": "Definir el número de iteraciones.",
+          "3": "Definir el número de épocas.",
           "4": "Definir el optimizador.",
           "5": "Definir la función de perdida.",
           "6": "Definir la métrica para la evaluación."
@@ -1198,7 +1239,7 @@
         "2-description-list": {
           "1": "Establecer una función de activación o una función lineal para las capas de la regresión lineal.",
           "2": "Definir el valor de la tasa de aprendizaje.",
-          "3": "Definir el número de iteraciones o épocas.",
+          "3": "Definir el número de épocas.",
           "4": "Definir el optimizador.",
           "5": "Definir la función de perdida",
           "6": "Defininir la métrica para la evaluación",
@@ -1280,7 +1321,7 @@
               "text-0": "Se pueden editar los parámetros generales necesarios para la creación del modelo. <br />Estos parámetros son:",
               "list": {
                 "0": "<b>Tasa de aprendizaje</b>:<br />Valor entre 0 y 100 el cual indica el porcentaje de cambio de los pesos de la red.",
-                "1": "<b>Número de iteraciones</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
+                "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
                 "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
                 "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
@@ -1291,7 +1332,7 @@
               "title": "Información de hiperparámetros",
               "list": {
                 "0": "<b>Tasa de aprendizaje</b>:<br /> La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.",
-                "1": "<b>Número de iteraciones</b>:<br /> El número de iteraciones se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
+                "1": "<b>Número de épocas</b>:<br /> El número de épocas se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br /> El tamaño del conjunto de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.",
                 "3": "<b>Optimizador</b>:<br /> El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente Estocástico (SGD), el Adam y el Adagrad.",
                 "4": "<b>Función de pérdida</b>:<br /> La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de pérdida, como la Entropía Cruzada y el Error Cuadrático Medio."
@@ -1371,8 +1412,8 @@
           "learning-rate": "Tasa de aprendizaje",
           "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
           "learning-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
-          "number-of-epochs": "Número de iteraciones",
-          "number-of-epochs-placeholder": "Número de iteraciones",
+          "number-of-epochs": "N. Épocas",
+          "number-of-epochs-placeholder": "Número de épocas",
           "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
           "train-rate": "Tamaño del conjunto de pruebas",
           "train-rate-placeholder": "Introduce el tamaño del banco de pruebas",
@@ -1406,9 +1447,9 @@
         "table": {
           "id": "ID",
           "load": "Cargar",
-          "learning-rate": "Aprendizaje",
-          "number-of-epochs": "Nª de iteraciones",
-          "train-rate": "Pruebas",
+          "learning-rate": "Tasa de aprendizaje",
+          "number-of-epochs": "N. Épocas",
+          "train-rate": "Tamaño del conjunto de pruebas",
           "layers": "Capas",
           "optimizer-id": "Optimizador",
           "loss-id": "Perdida",
@@ -1468,7 +1509,7 @@
               },
               "list": {
                 "0": "<b>Tasa de aprendizaje</b>:<br />Valor entre 0 y 100 el cual indica el porcentaje de cambio de los pesos de la red.",
-                "1": "<b>Número de iteraciones</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
+                "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
                 "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
                 "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
@@ -1479,7 +1520,7 @@
               "title": "Información de hiperparámetros",
               "list": {
                 "0": "<b>Tasa de aprendizaje</b>:<br /> La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.",
-                "1": "<b>Número de iteraciones</b>:<br /> El número de iteraciones se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
+                "1": "<b>Número de épocas</b>:<br /> El número de épocas se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br /> El tamaño del conjunto de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.",
                 "3": "<b>Optimizador</b>:<br /> El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente Estocástico (SGD), el Adam y el Adagrad.",
                 "4": "<b>Función de pérdida</b>:<br /> La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de pérdida, como la Entropía Cruzada y el Error Cuadrático Medio."
@@ -1563,7 +1604,7 @@
         "2-title": "Entrenar modelos",
         "2-description-1": "La herramienta cuenta con un visualizador de datos que permite mostrar las clases y los atributos del conjunto de datos. Así como un gestor para crear, diseñar, entrenar y exportar un modelo de datos.",
         "2-description-2": "A la izquierda contamos con un editor de las distintas capas que tiene la red neuronal. Se debe dejar que la ultima capa de la red tenga el mismo numero de neuronas que clases a predecir.",
-        "2-description-3": "A la derecha contamos con un editor de los distintos tipos de datos para el entrenamiento, tasa de aprendizaje, numero de iteraciones, tamaño del banco de pruebas, función del optimizador, función de pérdida, función de la métrica.",
+        "2-description-3": "<b>Number of epochs</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
         "2-description-4": "Debemos pulsar el botón de \"Crear y entrenar modelo\" para que se inicie el proceso de entrenamiento de la red neuronal. Si toda la configuración y selección de las funciones es correcta entonces se añadirá en la tabla de abajo una entrada con el modelos entrenado.",
         "2-description-5": "Una vez entrenado un modelo a partir de los datos podremos realizar predicciones, para ello se incluye un formulario dinámico con las características del conjunto de datos. La precisión del modelo en la predicción podrá ser mayor o menor en función del entrenamiento y las opciones seleccionadas."
       },
@@ -1827,7 +1868,7 @@
       "list-models-generated": "Lista modelos generados",
       "learning-rate": "Tasa de aprendizaje",
       "test-size": "Tamaño del conjunto de pruebas",
-      "n-of-epochs": "Número de épocas",
+      "n-of-epochs": "N. Épocas",
       "id-optimizer": "Optimizador",
       "id-loss": "Pérdida",
       "id-metrics": "Métrica",

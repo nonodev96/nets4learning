@@ -12,7 +12,7 @@ There are some classical problems prepared and reviewed to make predictions, the
 
 ## Architecture Playground
 
-![Architecture Playground](docs/n4l.svg)
+![Architecture Playground](public/docs/n4l.svg)
 
 ## MODELS
 

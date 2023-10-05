@@ -1,5 +1,5 @@
 import '@styles/ScrollBar.css'
-import React, { useEffect, useId, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'

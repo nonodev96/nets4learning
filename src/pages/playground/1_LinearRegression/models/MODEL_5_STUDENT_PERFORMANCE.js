@@ -51,6 +51,20 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
                      }} /></li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@misc{misc_student_performance_320,
+  author       = {Cortez,Paulo},
+  title        = {{Student Performance}},
+  year         = {2014},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5TG7T}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 

@@ -297,8 +297,6 @@ const cellStyle = {
  *   setCustomDataSet_JSON: Function,
  *   setLayers            : Function
  * }} props
- * @return {JSX.Element}
- * @constructor
  */
 export default function TabularClassificationForm (props) {
   const {

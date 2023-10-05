@@ -44,6 +44,20 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@misc{misc_lymphography_63,
+  author       = {Zwitter,M. and Soklic,M.},
+  title        = {{Lymphography}},
+  year         = {1988},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C54598}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 

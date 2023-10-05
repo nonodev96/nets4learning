@@ -1,12 +1,81 @@
 import 'katex/dist/katex.min.css'
-import { Accordion, Card, Col, Container, Row } from 'react-bootstrap'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
+import { Accordion, Col, Container, Row } from 'react-bootstrap'
+
+import ManualDescription from '@pages/manual/ManualDescription'
 import { VERBOSE } from '@/CONSTANTS'
+import N4LMarkdown from '@components/markdown/N4LMarkdown'
 
 export default function Manual () {
 
-  const { t } = useTranslation()
+  const history = useHistory()
+  const { t, i18n } = useTranslation()
+  const [filesData, setFilesData] = useState({
+    '01. Tool Objectives.md': 'DOWNLOAD',
+    '02. Glossary.md'       : 'DOWNLOAD'
+  })
+  const [accordionActiveManual, setAccordionActiveManual] = useState([])
+
+  useEffect(() => {
+
+    const fetchFile = async (fileName) => {
+      try {
+        const response = await fetch(process.env.REACT_APP_PATH + `/docs/${i18n.language}/${fileName}`) // Reemplaza con la ruta correcta
+        if (response.ok) {
+          const fileContent = await response.text()
+          setFilesData((prevData) => ({
+            ...prevData,
+            [fileName]: fileContent,
+          }))
+        } else {
+          console.error(`No se pudo descargar ${fileName}`)
+        }
+      } catch (error) {
+        console.error(`Error al descargar ${fileName}`, error)
+      }
+    }
+    const fileNames = ['01. Tool Objectives.md', '02. Glossary.md']
+    for (const fileName of fileNames) {
+      fetchFile(fileName).then(() => {
+        console.debug('end')
+      })
+    }
+  }, [i18n.language])
+
+  useEffect(() => {
+    if (history.location.state?.action) {
+      openManualInSection(history.location.state.action)
+    }
+  }, [history])
+
+  const toggleAccordionActiveManual = (itemActive) => {
+    const copy = JSON.parse(JSON.stringify(accordionActiveManual))
+    let index = copy.indexOf(itemActive)
+    if (index === -1) {
+      copy.push(itemActive)
+    } else {
+      copy.splice(index, 1)
+    }
+    setAccordionActiveManual(copy)
+  }
+
+  const openManualInSection = (action) => {
+    switch (action) {
+      case 'open-layer-editor-tabular-classification': {
+        toggleAccordionActiveManual('tabular-classification-layer-editor')
+        break
+      }
+      case 'open-hyperparameters-editor-tabular-classification': {
+        toggleAccordionActiveManual('tabular-classification-hyperparameters-editor')
+        break
+      }
+      default: {
+        console.log('Error, action not valid')
+      }
+    }
+  }
 
   if (VERBOSE) console.debug('render Manual')
   return (
@@ -20,20 +89,7 @@ export default function Manual () {
           </Row>
           <Row className={'mt-3'}>
             <Col>
-              <Card border={'primary'}>
-                <Card.Header><h3><Trans i18nKey={'pages.manual.app.title'} /></h3></Card.Header>
-                <Card.Body>
-                  <Card.Text><Trans i18nKey={'pages.manual.app.description-1'} /></Card.Text>
-                  <Card.Text><Trans i18nKey={'pages.manual.app.description-2'} /></Card.Text>
-                  <ol>
-                    <li><b><Trans i18nKey={'pages.manual.app.list.0.title'} />: </b> <Trans i18nKey={'pages.manual.app.list.0.description'} /></li>
-                    <li><b><Trans i18nKey={'pages.manual.app.list.1.title'} />: </b> <Trans i18nKey={'pages.manual.app.list.1.description'} /></li>
-                    <li><b><Trans i18nKey={'pages.manual.app.list.2.title'} />: </b> <Trans i18nKey={'pages.manual.app.list.2.description'} /></li>
-                  </ol>
-                  <Card.Text><Trans i18nKey={'pages.manual.app.description-3'} /></Card.Text>
-                  <Card.Text><Trans i18nKey={'pages.manual.app.description-4'} /></Card.Text>
-                </Card.Body>
-              </Card>
+              <ManualDescription />
 
               <Accordion className={'mt-3'}>
                 <Accordion.Item eventKey={'manual-0-tabular-classification'}>
@@ -102,6 +158,28 @@ export default function Manual () {
                     <p><Trans i18nKey={'pages.manual.3-image-classification.1-description-2'} /></p>
                     <p><Trans i18nKey={'pages.manual.3-image-classification.1-description-3'} /></p>
                     <p><Trans i18nKey={'pages.manual.3-image-classification.1-description-4'} /></p>
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
+
+              <hr />
+
+              <Accordion className={'mt-3'} defaultActiveKey={[]} activeKey={accordionActiveManual}>
+                <Accordion.Item eventKey={'tabular-classification-layer-editor'}>
+                  <Accordion.Header onClick={() => toggleAccordionActiveManual('tabular-classification-layer-editor')}>
+                    <h3><Trans i18nKey={'pages.manual.layer-editor.title'} /></h3>
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <N4LMarkdown>{filesData['01. Tool Objectives.md']}</N4LMarkdown>
+                  </Accordion.Body>
+                </Accordion.Item>
+
+                <Accordion.Item eventKey={'tabular-classification-hyperparameters-editor'}>
+                  <Accordion.Header onClick={() => toggleAccordionActiveManual('tabular-classification-hyperparameters-editor')}>
+                    <h3><Trans i18nKey={'pages.manual.hyperparameters-editor.title'} /></h3>
+                  </Accordion.Header>
+                  <Accordion.Body>
+                    <N4LMarkdown>{filesData['02. Glossary.md']}</N4LMarkdown>
                   </Accordion.Body>
                 </Accordion.Item>
               </Accordion>

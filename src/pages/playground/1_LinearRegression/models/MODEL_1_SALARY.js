@@ -50,6 +50,14 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+
+`}
+        </pre>
+      </details>
     </>
   }
 

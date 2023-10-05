@@ -50,6 +50,20 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
                      }} /></li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@misc{misc_wine_quality_186,
+  author       = {Cortez,Paulo, Cerdeira,A., Almeida,F., Matos,T., and Reis,J.},
+  title        = {{Wine Quality}},
+  year         = {2009},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C56S3T}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 

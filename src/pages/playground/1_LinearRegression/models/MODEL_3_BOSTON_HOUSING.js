@@ -6,9 +6,9 @@ import I_MODEL_LINEAR_REGRESSION from './_model'
 export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'BOSTON_HOUSING'
-  static URL = 'https://archive.ics.uci.edu/ml/datasets/Housing'
+  static URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
 
-  URL = 'https://archive.ics.uci.edu/ml/datasets/Housing'
+  URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
   i18n_TITLE = 'datasets-models.1-linear-regression.boston-housing.title'
   _KEY = 'BOSTON_HOUSING'
 
@@ -51,7 +51,14 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
 
+`}
+        </pre>
+      </details>
     </>
   }
 

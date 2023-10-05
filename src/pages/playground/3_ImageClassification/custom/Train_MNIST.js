@@ -149,7 +149,7 @@ function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
             kernelInitializer: element.kernelInitializer,
           }),
         )
-      } else if(element._class === 'MaxPooling2D') {
+      } else if (element._class === 'MaxPooling2D') {
         model.add(
           tf.layers.maxPooling2d({
             poolSize: element.poolSize,

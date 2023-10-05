@@ -7,10 +7,10 @@ import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'BREAST_CANCER'
-  static URL = 'https://archive-beta.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  static URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
   static URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
 
-  URL = 'https://archive-beta.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
   URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
   URL_IMAGE = 'https://www.cs.wisc.edu/~street/images/'
 
@@ -63,6 +63,29 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
                        link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
                      }} /></li>
         </ol>
+      </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@misc{misc_breast_cancer_wisconsin_(prognostic)_16,
+  author       = {Wolberg,William, Street,W., and Mangasarian,Olvi},
+  title        = {{Breast Cancer Wisconsin (Prognostic)}},
+  year         = {1995},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5GK50}
+}
+`}
+{`
+@misc{misc_breast_cancer_wisconsin_(diagnostic)_17,
+  author       = {Wolberg,William, Mangasarian,Olvi, Street,Nick, and Street,W.},
+  title        = {{Breast Cancer Wisconsin (Diagnostic)}},
+  year         = {1995},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5DW2B}
+}
+`}
+        </pre>
       </details>
     </>
   }

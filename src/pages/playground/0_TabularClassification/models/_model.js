@@ -42,28 +42,28 @@ export class I_MODEL_TABULAR_CLASSIFICATION {
         ([ACTIONS.UPDATE.toString()]).includes(action) &&
         ([LIFECYCLE.TOOLTIP.toString()]).includes(lifecycle)) {
         switch (target) {
-          case '.joyride-step-1-manual': {
+          case '.joyride-step-manual': {
             break
           }
-          case '.joyride-step-2-dataset-info': {
+          case '.joyride-step-dataset-info': {
             break
           }
-          case '.joyride-step-3-dataset': {
+          case '.joyride-step-dataset': {
             break
           }
-          case '.joyride-step-4-dataset-plot': {
+          case '.joyride-step-layer': {
             break
           }
-          case '.joyride-step-5-layer': {
+          case '.joyride-step-editor-layers': {
             break
           }
-          case '.joyride-step-6-editor-layers': {
+          case '.joyride-step-editor-trainer': {
             break
           }
-          case '.joyride-step-7-editor-trainer': {
+          case '.joyride-step-list-of-models': {
             break
           }
-          case '.joyride-step-8-list-of-models': {
+          case '.joyride-step-classify-visualization': {
             break
           }
           default: {
@@ -88,55 +88,49 @@ export class I_MODEL_TABULAR_CLASSIFICATION {
         {
           title    : this.t(prefix + 'manual.title'),
           content  : this.t(prefix + 'manual.content'),
-          target   : '.joyride-step-1-manual',
+          target   : '.joyride-step-manual',
           placement: 'top',
         },
         {
           title    : this.t(prefix + 'dataset-info.title'),
           content  : this.t(prefix + 'dataset-info.content'),
-          target   : '.joyride-step-2-dataset-info',
+          target   : '.joyride-step-dataset-info',
           placement: 'top',
         },
         {
           title    : this.t(prefix + 'dataset.title'),
           content  : this.t(prefix + 'dataset.content'),
-          target   : '.joyride-step-3-dataset',
-          placement: 'top',
-        },
-        {
-          title    : this.t(prefix + 'dataset-plot.title'),
-          content  : this.t(prefix + 'dataset-plot.content'),
-          target   : '.joyride-step-4-dataset-plot',
+          target   : '.joyride-step-dataset',
           placement: 'top',
         },
         {
           title    : this.t(prefix + 'layer-visualizer.title'),
           content  : this.t(prefix + 'layer-visualizer.content'),
-          target   : '.joyride-step-5-layer',
+          target   : '.joyride-step-layer',
           placement: 'top',
         },
         {
           title    : this.t(prefix + 'layer-editor.title'),
           content  : this.t(prefix + 'layer-editor.content'),
-          target   : '.joyride-step-6-editor-layers',
+          target   : '.joyride-step-editor-layers',
           placement: 'right'
         },
         {
           title    : this.t(prefix + 'params-editor.title'),
           content  : this.t(prefix + 'params-editor.content'),
-          target   : '.joyride-step-7-editor-trainer',
+          target   : '.joyride-step-editor-trainer',
           placement: 'left-start'
         },
         {
           title    : this.t(prefix + 'list-of-models.title'),
           content  : this.t(prefix + 'list-of-models.content'),
-          target   : '.joyride-step-8-list-of-models',
+          target   : '.joyride-step-list-of-models',
           placement: 'bottom'
         },
         {
-          title    : this.t(prefix + 'predict-and-visualizer.title'),
-          content  : this.t(prefix + 'predict-and-visualizer.content'),
-          target   : '.joyride-step-9-predict-visualization',
+          title    : this.t(prefix + 'classify-and-visualizer.title'),
+          content  : this.t(prefix + 'classify-and-visualizer.content'),
+          target   : '.joyride-step-classify-visualization',
           placement: 'top'
         },
       ]

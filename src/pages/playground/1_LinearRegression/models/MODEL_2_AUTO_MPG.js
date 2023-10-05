@@ -66,6 +66,20 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
                      }} /></li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@misc{misc_auto_mpg_9,
+  author       = {Quinlan,R.},
+  title        = {{Auto MPG}},
+  year         = {1993},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C5859H}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 

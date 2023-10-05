@@ -10,8 +10,6 @@ import N4LJoyride from "@components/joyride/N4LJoyride";
 import alertHelper from '@utils/alertHelper'
 import {
   MODEL_IMAGE_MNIST,
-  MODEL_IMAGE_MOBILENET,
-  MODEL_IMAGE_RESNET
 } from '@/DATA_MODEL'
 import { TYPE_CLASS, TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 
@@ -21,8 +19,8 @@ import * as TrainMNIST from './custom/Train_MNIST'
 import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
 import ImageClassificationClassify from '@pages/playground/3_ImageClassification/ImageClassificationClassify'
 
-const NumberEpochs_default = 5
-const LearningRate_default = 1
+const DEFAULT_NUMBER_EPOCHS = 5
+const DEFAULT_LEARNING_RATE = 1
 
 const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'
@@ -98,24 +96,25 @@ export default function ImageClassification (props) {
 
   /**
    * @typedef {Object} Layer_t
-   * @property {string} _class
-   * @property {string} activation
-   * @property {string} kernelInitializer
-   * @property {[number, number]} poolSize
-   * @property {[number, number]} strides2
+   * @property {string} _class // MaxPooling2D or Conv2D
+   * // if _class === Conv2D
    * @property {number} kernelSize
    * @property {number} filters
    * @property {number} strides
+   * @property {string} activation
+   *
+   * @property {string} kernelInitializer
+   * @property {[number, number]} poolSize
+   * @property {[number, number]} strides2
    */
   const [Layers, setLayers] = useState(/**@type Array<Layer_t>*/[])
-  const [ActiveLayer, setActiveLayer] = useState()
   const [Contador, setContador] = useState(0)
 
   const [idOptimizer, setIdOptimizer] = useState(DEFAULT_ID_OPTIMIZATION)
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS)
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS)
-  const [NumberEpochs, setNumberEpochs] = useState(NumberEpochs_default)
-  const [LearningRate, setLearningRate] = useState(LearningRate_default)
+  const [NumberEpochs, setNumberEpochs] = useState(DEFAULT_NUMBER_EPOCHS)
+  const [LearningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE)
   const refJoyrideButton = useRef({})
   /**
    * @typedef {tf.Sequential} Model_t
@@ -138,16 +137,8 @@ export default function ImageClassification (props) {
         set_IModelInfo(new MODEL_IMAGE_MNIST(t))
         break
       }
-      case MODEL_IMAGE_MOBILENET.KEY: {
-        set_IModelInfo(new MODEL_IMAGE_MOBILENET(t))
-        break
-      }
-      case MODEL_IMAGE_RESNET.KEY: {
-        set_IModelInfo(new MODEL_IMAGE_RESNET(t))
-        break
-      }
       default: {
-        console.error('Error, opción no disponible')
+        console.error('Error, option not valid')
       }
     }
 
@@ -218,7 +209,7 @@ export default function ImageClassification (props) {
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.log('Predicción', mayorIndice)
+      console.log('Predicción', { resultados, mayorIndice })
       // document.getElementById('demo').innerHTML = mayorIndice
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -314,35 +305,25 @@ export default function ImageClassification (props) {
   // endregion
 
   // region PARÁMETROS DE LAS CAPAS
-  const handleChange_Kernel = (index, e) => {
-    Layers[index].kernelSize = parseInt(e.target.value)
-    setLayers(Layers)
+  const handleChange_Attr = (e, indexLayer, _param_name_) => {
+    const updatedLayers = [...Layers];
+    updatedLayers[indexLayer] = {
+      ...updatedLayers[indexLayer],
+      [_param_name_]: parseInt(e.target.value)
+    };
+    setLayers(updatedLayers);
   }
 
-  const handleChange_Filters = (index, e) => {
-    Layers[index].filters = parseInt(e.target.value)
-    setLayers(Layers)
+  const handleChange_AttrArray = (e, indexLayer, _param_name_, id) => {
+    const updatedLayers = [...Layers];
+    updatedLayers[indexLayer] = {
+      ...updatedLayers[indexLayer],
+      [_param_name_]: [...updatedLayers[indexLayer][_param_name_]]
+    };
+    updatedLayers[indexLayer][_param_name_][id] = parseInt(e.target.value);
+    setLayers(updatedLayers);
   }
 
-  const handleChange_Strides = (index, e) => {
-    Layers[index].strides = parseInt(e.target.value)
-    setLayers(Layers)
-  }
-
-  const handleChange_PoolSize = (index, id, e) => {
-    Layers[index].poolSize[id] = parseInt(e.target.value)
-    setLayers(Layers)
-  }
-
-  const handleChange_StridesMax = (index, id, e) => {
-    Layers[index].strides[id] = parseInt(e.target.value)
-    setLayers(Layers)
-  }
-
-  const handleChange_Activation = (index, e) => {
-    Layers[index].activation = e.target.value
-    setLayers(Layers)
-  }
   // endregion
 
   // region PARÁMETROS GENERALES
@@ -595,15 +576,11 @@ export default function ImageClassification (props) {
 
                           <hr />
 
-                          <LayerEdit index={index}
-                                     item={Layers[index]}
-                                     handler_RemoveLayer={handleClick_RemoveLayer}
-                                     handleChange_Kernel={handleChange_Kernel}
-                                     handleChange_Activation={handleChange_Activation}
-                                     handleChange_Filters={handleChange_Filters}
-                                     handleChange_Strides={handleChange_Strides}
-                                     handleChange_PoolSize={handleChange_PoolSize}
-                                     handleChange_StridesMax={handleChange_StridesMax} />
+                          <LayerEdit item={Layers[index]}
+                                     indexLayer={index}
+                                     handleChange_Attr={handleChange_Attr}
+                                     handleChange_AttrArray={handleChange_AttrArray}
+                          />
                         </Accordion.Body>
                       </Accordion.Item>
                     })}
@@ -625,7 +602,7 @@ export default function ImageClassification (props) {
                     <Form.Label>Tasa de entrenamiento</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce la tasa de entrenamiento"
-                                  defaultValue={LearningRate_default}
+                                  defaultValue={DEFAULT_LEARNING_RATE}
                                   onChange={(e) => handleChange_LearningRate(e)} />
                     <Form.Text className="text-muted">
                       Recuerda que debe ser un valor entre 0 y 100 (es un porcentaje)
@@ -637,7 +614,7 @@ export default function ImageClassification (props) {
                     <Form.Label>Número de iteraciones</Form.Label>
                     <Form.Control type="number"
                                   placeholder="Introduce el número de iteraciones"
-                                  defaultValue={NumberEpochs_default}
+                                  defaultValue={DEFAULT_NUMBER_EPOCHS}
                                   onChange={(e) => handleChange_NumberEpochs(e)}
                     />
                     <Form.Text className="text-muted">

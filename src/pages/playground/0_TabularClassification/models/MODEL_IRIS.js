@@ -79,6 +79,22 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{
+  `
+@misc{misc_iris_53,
+  author       = {Fisher,R. A.},
+  title        = {{Iris}},
+  year         = {1988},
+  howpublished = {UCI Machine Learning Repository},
+  note         = {{DOI}: https://doi.org/10.24432/C56C76}
+}
+  `
+}
+        </pre>
+      </details>
     </>
   }
 

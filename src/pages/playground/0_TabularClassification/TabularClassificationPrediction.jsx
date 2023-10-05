@@ -51,10 +51,10 @@ export default function TabularClassificationPrediction ({
       setStringToPredict(defaultString)
 
       dataset_JSON.attributes.forEach((att) => {
-          setObjectToPredict(oldState => ({
-              ...oldState,
-              [att.name]: rowDefault[att.index_column],
-          }))
+        setObjectToPredict(oldState => ({
+          ...oldState,
+          [att.name]: rowDefault[att.index_column],
+        }))
       })
     }
   }, [dataset_JSON, setStringToPredict, setObjectToPredict])
@@ -73,7 +73,7 @@ export default function TabularClassificationPrediction ({
         dataset_JSON.data[row_index][att?.index_column]
     })
   }
-  const handleChange_Model = (e)=>{
+  const handleChange_Model = (e) => {
     const index = e.target.value
     setModel(generatedModels[index].model)
     setGeneratedModelsIndex(index)
@@ -81,9 +81,9 @@ export default function TabularClassificationPrediction ({
 
   const canRender_PredictDynamicForm = () => {
     if (dataset === UPLOAD) {
-        return (dataset_JSON || dataProcessed) && Model
+      return (dataset_JSON || dataProcessed) && Model
     } else {
-        return (dataset_JSON) && Model
+      return (dataset_JSON) && Model
     }
   }
 
@@ -91,16 +91,16 @@ export default function TabularClassificationPrediction ({
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={prefix + 'title'} /> {generatedModelsIndex!==-1 && <>| <Trans i18nKey={'model.__index__'} values={{ index: generatedModelsIndex  }} /></> }</h3>
+        <h3><Trans i18nKey={prefix + 'title'} /> {generatedModelsIndex !== -1 && <>| <Trans i18nKey={'model.__index__'} values={{ index: generatedModelsIndex }} /></>}</h3>
         <div className={'d-flex'}>
           {(generatedModels.length !== 0 && dataset_JSON?.data?.length > 0) && <>
-            <Form.Group controlId={'DATA'}>
+            <Form.Group controlId={'DATA'} className={'joyride-step-select-instance'}>
               <Form.Select aria-label={t(prefix + 'selector-entity')}
                            size={'sm'}
                            onChange={(e) => handleChange_ROW(e)}>
                 {dataset_JSON.data.map((row, index) => {
                   return <option key={'option_' + index} value={index}>
-                      Id row: {index.toString().padStart(3, '0')} - Target: {row.slice(-1)}
+                    Id row: {index.toString().padStart(3, '0')} - Target: {row.slice(-1)}
                   </option>
                 })}
               </Form.Select>
@@ -108,13 +108,13 @@ export default function TabularClassificationPrediction ({
           </>}
           {generatedModels.length !== 0 && <>
             <Form.Group controlId={'MODEL'} className={'ms-3'}>
-              <Form.Select aria-label={t(prefix + 'selector-model')}
+              <Form.Select aria-label={t(prefix + 'selector-model joyride-step-select-model')}
                            size={'sm'}
                            onChange={(e) => handleChange_Model(e)}>
                 {generatedModels.map((row, index) => {
-                    return <option key={'option_' + index} value={index}>
-                       <Trans i18nKey={'model.__index__'} values={{ index: index }} />
-                    </option>
+                  return <option key={'option_' + index} value={index}>
+                    <Trans i18nKey={'model.__index__'} values={{ index: index }} />
+                  </option>
                 })}
               </Form.Select>
             </Form.Group>
@@ -165,8 +165,8 @@ export default function TabularClassificationPrediction ({
                 <Col>
                   <ul start="0">
                     {predictionBar
-                        .list_encoded_classes
-                        .map((item, index) => <li key={index}>{item}</li>)
+                      .list_encoded_classes
+                      .map((item, index) => <li key={index}>{item}</li>)
                     }
                   </ul>
                 </Col>
@@ -190,6 +190,5 @@ export default function TabularClassificationPrediction ({
         </>}
       </Card.Body>
     </Card>
-
   </>
 }

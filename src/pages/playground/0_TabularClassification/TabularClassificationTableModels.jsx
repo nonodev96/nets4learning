@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
+
 import { Table, Card, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function TabularClassificationTableModels ({ listModels = [], rowsPerPage = 3 }) {
-  const prefix = 'generator.table-models.';
+export default function TabularClassificationTableModels ({
+  listModels = [],
+  rowsPerPage = 3,
+  isTraining
+}) {
+  const prefix = 'generator.table-models.'
 
   const [activePage, setActivePage] = useState(0)
   const [pageCount, setPageCount] = useState(0)
@@ -32,7 +37,7 @@ export default function TabularClassificationTableModels ({ listModels = [], row
   }
 
   const handleClick_DownloadGeneratedModel = ({ model }, index) => {
-    model.save('downloads://lr-model-' + index)
+    model.save('downloads://cl-model-' + index)
   }
 
   if (VERBOSE) console.debug('render TabularClassificationTableModels')
@@ -64,10 +69,9 @@ export default function TabularClassificationTableModels ({ listModels = [], row
                 <tr>
                   <th>ID</th>
                   <th><Trans i18nKey={prefix + 'learning-rate'} /></th>
-                  <th><Trans i18nKey={prefix + 'test-size'} /></th>
                   <th><Trans i18nKey={prefix + 'n-of-epochs'} /></th>
+                  <th><Trans i18nKey={prefix + 'test-size'} /></th>
                   <th><Trans i18nKey={prefix + 'layers'} /></th>
-                  <th><Trans i18nKey={prefix + 'features'} /></th>
                   <th><Trans i18nKey={prefix + 'id-optimizer'} /></th>
                   <th><Trans i18nKey={prefix + 'id-loss'} /></th>
                   <th><Trans i18nKey={prefix + 'id-metrics'} /></th>
@@ -80,35 +84,24 @@ export default function TabularClassificationTableModels ({ listModels = [], row
                   .from(listModels)
                   .slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage)
                   .map((value, index) => {
-                    // const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
-                    // const list = formatter.format([...value.feature_selector.X_features])
                     return <tr key={index}>
                       <th>{(activePage * rowsPerPage) + index + 1}</th>
-                      <td>{value.params_training.learning_rate}%</td>
-                      <td>{value.params_training.test_size}%</td>
-                      <td>{value.params_training.n_of_epochs}</td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.learningRate * 100}%</span></td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.numberOfEpoch}%</span></td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.testSize * 100}%</span></td>
                       <td>
-                        {value.params_layers
+                        {value.layerList
                           .map((value, index2) => {
-                            return (<span key={index2} style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
-                        <small>{value.units.toString().padStart(2, '0')} - {value.activation}</small><br />
-                      </span>)
+                            return (
+                              <span key={index2} style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
+                                <small>{value.units.toString().padStart(2, '0')} - {value.activation}</small><br />
+                              </span>
+                            )
                           })}
                       </td>
-                      <td>
-                        <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X: {value.params_features.X_feature}</span><br />
-                        <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y: {value.params_features.y_target}</span>
-                      </td>
-                      <td>{value.params_training.id_optimizer}</td>
-                      <td>
-                        <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.params_training.id_loss}</span>
-                      </td>
-                      <td>
-                        {value.params_training.list_id_metrics
-                          .map((metric, index2) => {
-                            return <span key={index2} style={{ fontFamily: 'monospace' }} className={'text-nowrap'}><small>{metric}</small><br /></span>
-                          })}
-                      </td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.idOptimizer}</span></td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.idLoss}</span></td>
+                      <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.idMetrics}</span></td>
                       <td>
                         <Button variant={'outline-primary'}
                                 size={'sm'}
@@ -120,6 +113,7 @@ export default function TabularClassificationTableModels ({ listModels = [], row
                   })}
                 </tbody>
               </Table>
+              {isTraining && <p className="placeholder-glow"><span className="placeholder col-12"></span></p>}
             </Col>
           </Row>
           <Row>
