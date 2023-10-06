@@ -4,7 +4,7 @@ import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
 
 export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'COCO-SSD'
-  static URL = ''
+  static URL = 'https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd'
   static URL_MODEL = ''
   TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
   i18n_TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
@@ -48,6 +48,32 @@ export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
                    }} />
           </li>
         </ol>
+      </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@article{DBLP:journals/corr/LiuAESR15,
+  author       = {Wei Liu and
+                  Dragomir Anguelov and
+                  Dumitru Erhan and
+                  Christian Szegedy and
+                  Scott E. Reed and
+                  Cheng{-}Yang Fu and
+                  Alexander C. Berg},
+  title        = {{SSD:} Single Shot MultiBox Detector},
+  journal      = {CoRR},
+  volume       = {abs/1512.02325},
+  year         = {2015},
+  url          = {http://arxiv.org/abs/1512.02325},
+  eprinttype    = {arXiv},
+  eprint       = {1512.02325},
+  timestamp    = {Wed, 12 Feb 2020 08:32:49 +0100},
+  biburl       = {https://dblp.org/rec/journals/corr/LiuAESR15.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+`}
+        </pre>
       </details>
     </>
   }

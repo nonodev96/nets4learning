@@ -82,8 +82,7 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
       <details>
         <summary>BibTeX</summary>
         <pre>
-{
-  `
+{`
 @misc{misc_iris_53,
   author       = {Fisher,R. A.},
   title        = {{Iris}},
@@ -91,8 +90,7 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   howpublished = {UCI Machine Learning Repository},
   note         = {{DOI}: https://doi.org/10.24432/C56C76}
 }
-  `
-}
+`}
         </pre>
       </details>
     </>
@@ -102,11 +100,9 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     const prefix = 'datasets-models.0-tabular-classification.iris.html-example.'
     return <>
       <p>
-        <Trans i18nKey={prefix + 'text'} />
-        <br />
+        <Trans i18nKey={prefix + 'text'} /><br />
         <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-      <p><Trans i18nKey={prefix + 'examples'} /></p>
     </>
   }
 

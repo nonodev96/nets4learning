@@ -64,8 +64,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       <details>
         <summary>BibTeX</summary>
         <pre>
-{
-  `
+{`
 @misc{misc_car_evaluation_19,
   author       = {Bohanec,Marko},
   title        = {{Car Evaluation}},
@@ -73,8 +72,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   howpublished = {UCI Machine Learning Repository},
   note         = {{DOI}: https://doi.org/10.24432/C5JP48}
 }
-  `
-}
+`}
         </pre>
       </details>
     </>
@@ -84,11 +82,9 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     const prefix = 'datasets-models.0-tabular-classification.car.html-example.'
     return <>
       <p>
-        <Trans i18nKey={prefix + 'text'} />
-        <br />
+        <Trans i18nKey={prefix + 'text'} /><br />
         <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-      <p><Trans i18nKey={prefix + 'examples'} /></p>
     </>
   }
 

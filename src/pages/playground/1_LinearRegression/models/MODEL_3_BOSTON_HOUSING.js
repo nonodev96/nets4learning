@@ -9,6 +9,7 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   static URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
 
   URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
+  URL_MEDIUM = 'https://medium.com/@docintangible/racist-data-destruction-113e3eff54a8'
   i18n_TITLE = 'datasets-models.1-linear-regression.boston-housing.title'
   _KEY = 'BOSTON_HOUSING'
 
@@ -47,6 +48,12 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
             <Trans i18nKey={prefix + 'details-3-references.list.0'}
                    components={{
                      link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                   }}/>
+          </li>
+          <li>
+            <Trans i18nKey={prefix + 'details-3-references.list.1'}
+                   components={{
+                     link1: <a href={this.URL_MEDIUM} target={'_blank'} rel="noreferrer">link</a>,
                    }}/>
           </li>
         </ol>

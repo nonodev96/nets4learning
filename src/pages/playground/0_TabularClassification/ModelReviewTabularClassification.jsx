@@ -96,7 +96,6 @@ class ModelReviewTabularClassification extends React.Component {
     this.handleFileUpload_JSON = this.handleFileUpload_JSON.bind(this)
     this.handleFileUpload_Binary = this.handleFileUpload_Binary.bind(this)
     this.handleFileUpload_CSV = this.handleFileUpload_CSV.bind(this)
-
   }
 
   componentDidMount () {
@@ -108,7 +107,6 @@ class ModelReviewTabularClassification extends React.Component {
   }
 
   async init () {
-
     const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === this.dataset)
     if (!isValid) {
       await alertHelper.alertError('Error en la selección del modelo')
@@ -249,44 +247,13 @@ class ModelReviewTabularClassification extends React.Component {
   // endregion
 
   Print_HTML_InfoDataset () {
-    switch (this.dataset) {
-      case UPLOAD:
-        return <>
-          <p>
-            <Trans i18nKey={'datasets-models.0-tabular-classification.upload.html-example.text'} />
-            <br />
-            <b><Trans i18nKey={'datasets-models.0-tabular-classification.upload.html-example.items'} /></b>
-          </p>
-        </>
-      case MODEL_CAR.KEY:
-      case MODEL_IRIS.KEY:
-      case MODEL_LYMPHOGRAPHY.KEY:
-        return this._model.HTML_EXAMPLE()
-      default:
-        return <><p>DEFAULT</p></>
+    if (this.dataset === UPLOAD) {
+      return <p>
+        <Trans i18nKey={'datasets-models.0-tabular-classification.upload.html-example.text'} /><br />
+        <b><Trans i18nKey={'datasets-models.0-tabular-classification.upload.html-example.items'} /></b>
+      </p>
     }
-  }
-
-  Print_HTML_EXAMPLES () {
-    switch (this.dataset) {
-      case UPLOAD:
-        return <></>
-      case MODEL_CAR.KEY:
-      case MODEL_IRIS.KEY:
-      case MODEL_LYMPHOGRAPHY.KEY:
-        return <>
-          <div className="d-flex gap-2">
-            {this._model.LIST_EXAMPLES.map((example, index) => {
-              return <Button key={'example_' + index}
-                             onClick={() => this.setExample(example)}>
-                <Trans i18nKey={'example-i'} values={{ i: index + 1 + '<br /> ' + this._model.LIST_EXAMPLES_RESULTS[index] }} />
-              </Button>
-            })}
-          </div>
-        </>
-      default:
-        return <><p>DEFAULT</p></>
-    }
+    return this._model.HTML_EXAMPLE()
   }
 
   Print_HTML_TABLE_DATASET () {
@@ -378,6 +345,11 @@ class ModelReviewTabularClassification extends React.Component {
     })
   }
 
+  handleChange_Example (e) {
+    const example = JSON.parse(e.target.value)
+    this.setExample(example)
+  }
+
   render () {
     if (VERBOSE) console.debug('render ModelReviewTabularClassification')
     return (
@@ -464,21 +436,30 @@ class ModelReviewTabularClassification extends React.Component {
             </Col>
 
             <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
+              {this.Print_HTML_TABLE_DATASET()}
               <Card className={'mt-3'}>
                 <Card.Header><h3>{this.translate('pages.playground.0-tabular-classification.general.description-input')}</h3></Card.Header>
                 <Card.Body>
                   {this.Print_HTML_InfoDataset()}
-                  {this.Print_HTML_EXAMPLES()}
                 </Card.Body>
               </Card>
 
-              {this.Print_HTML_TABLE_DATASET()}
-
               <Card className={'mt-3'}>
-                <Card.Header>
-                  <h3>
-                    <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-features'} />
-                  </h3>
+                <Card.Header className={'d-flex align-items-center justify-content-between'}>
+                  <h3><Trans i18nKey={'pages.playground.0-tabular-classification.general.description-features'} /></h3>
+                  <div className="d-flex">
+                    <Form.Group controlId={'plot'}>
+                      <Form.Select onChange={(e) => this.handleChange_Example(e)}
+                                   aria-label={'example'}
+                                   size={'sm'}>
+                        {this._model.LIST_EXAMPLES.map((value, index) => {
+                          return <option key={'option_' + index} value={JSON.stringify(value)}>
+                            <Trans i18nKey={'example-i'} values={{ i: this._model.LIST_EXAMPLES_RESULTS[index] }} />
+                          </option>
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                  </div>
                 </Card.Header>
                 <Card.Body>
                   <div>

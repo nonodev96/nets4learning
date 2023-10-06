@@ -65,11 +65,9 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     const prefix = 'datasets-models.0-tabular-classification.lymphography.html-example.'
     return <>
       <p>
-        <Trans i18nKey={prefix + 'text'} />
-        <br />
+        <Trans i18nKey={prefix + 'text'} /><br />
         <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-      <p><Trans i18nKey={prefix + 'examples'} /></p>
     </>
   }
 

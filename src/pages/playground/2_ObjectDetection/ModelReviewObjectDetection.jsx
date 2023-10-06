@@ -288,7 +288,7 @@ class ModelReviewObjectDetection extends React.Component {
   }
 
   render () {
-    if(VERBOSE) console.debug('render ModelReviewObjectDetection')
+    if (VERBOSE) console.debug('render ModelReviewObjectDetection')
     return (
       <Container id={'ModelReviewObjectDetection'}>
         <Row>
@@ -337,59 +337,56 @@ class ModelReviewObjectDetection extends React.Component {
             {/*Es necesario un "Col" 9 y otro dentro*/}
             <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
               <Card className={'mt-3'}>
-                <Card.Header>
+                <Card.Header className={'d-flex align-items-center justify-content-between'}>
                   <h3><Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.title'} /></h3>
+                  <div className="d-flex">
+                    <Form className={'fs-5'} id={'FORM-SWITCH'}>
+                      <div key={'default-switch'}>
+                        <Form.Check type="switch"
+                                    id={'default-switch'}
+                                    reverse={true}
+                                    name={"switch-webcam"}
+                                    label={this.props.t('datasets-models.2-object-detection.interface.process-webcam.button')}
+                                    value={this.state.isCameraEnable ? 'true' : 'false'}
+                                    onChange={this.handleChangeCamera} />
+                      </div>
+                    </Form>
+                  </div>
                 </Card.Header>
                 <Card.Body>
                   <Card.Title><Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.sub-title'} /></Card.Title>
-
-                  <Container fluid={true}>
-                    <Row className={'mt-3'}>
-                      <Form>
-                        <div key={`default-checkbox`}
-                             className="mb-3">
-                          <Form.Check type="checkbox"
-                                      id={'default-checkbox'}
-                                      label={this.props.t('datasets-models.2-object-detection.interface.process-webcam.button')}
-                                      value={this.state.isCameraEnable ? 'true' : 'false'}
-                                      onChange={this.handleChangeCamera} />
+                  <Row className={'mt-3'}>
+                    <Col className={'d-flex justify-content-center'}>
+                      {this.state.isCameraEnable &&
+                        <div id={'webcamContainer'}
+                             className={'nets4-border-1'}
+                             style={{
+                               position: 'relative',
+                               overflow: 'hidden',
+                             }}>
+                          <Webcam ref={this.webcamRef}
+                                  onUserMedia={this.onUserMediaEvent}
+                                  onUserMediaError={this.onUserMediaErrorEvent}
+                                  width={250}
+                                  height={250}
+                                  style={{
+                                    position: 'relative',
+                                    display : 'block',
+                                  }} />
+                          <canvas ref={this.canvasRef}
+                                  width={250}
+                                  height={250}
+                                  style={{
+                                    position: 'absolute',
+                                    display : 'block',
+                                    left    : 0,
+                                    top     : 0,
+                                    zIndex  : 10,
+                                  }}></canvas>
                         </div>
-                      </Form>
-                    </Row>
-                    <hr />
-                    <Row className={'mt-3'}>
-                      <Col className={'d-flex justify-content-center'}>
-                        {this.state.isCameraEnable &&
-                          <div id={'webcamContainer'}
-                               className={'nets4-border-1'}
-                               style={{
-                                 position: 'relative',
-                                 overflow: 'hidden',
-                               }}>
-                            <Webcam ref={this.webcamRef}
-                                    onUserMedia={this.onUserMediaEvent}
-                                    onUserMediaError={this.onUserMediaErrorEvent}
-                                    width={250}
-                                    height={250}
-                                    style={{
-                                      position: 'relative',
-                                      display : 'block',
-                                    }} />
-                            <canvas ref={this.canvasRef}
-                                    width={250}
-                                    height={250}
-                                    style={{
-                                      position: 'absolute',
-                                      display : 'block',
-                                      left    : 0,
-                                      top     : 0,
-                                      zIndex  : 10,
-                                    }}></canvas>
-                          </div>
-                        }
-                      </Col>
-                    </Row>
-                  </Container>
+                      }
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>

@@ -6,6 +6,7 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'FACE-DETECTOR'
   TITLE = 'datasets-models.2-object-detection.face-detection.title'
   i18n_TITLE = 'datasets-models.2-object-detection.face-detection.title'
+  URL = ''
 
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.face-detection.description.'
@@ -34,6 +35,31 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@article{DBLP:journals/corr/abs-2006-10204,
+  author       = {Valentin Bazarevsky and
+                  Ivan Grishchenko and
+                  Karthik Raveendran and
+                  Tyler Zhu and
+                  Fan Zhang and
+                  Matthias Grundmann},
+  title        = {BlazePose: On-device Real-time Body Pose tracking},
+  journal      = {CoRR},
+  volume       = {abs/2006.10204},
+  year         = {2020},
+  url          = {https://arxiv.org/abs/2006.10204},
+  eprinttype    = {arXiv},
+  eprint       = {2006.10204},
+  timestamp    = {Tue, 23 Jun 2020 17:57:22 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2006-10204.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 
@@ -42,8 +68,9 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
     const mediaPipeFaceDetectorMediaPipeModelConfig = {
       runtime     : 'mediapipe',
       solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
-      modelType   : 'short',
-      maxFaces    : 4,
+      // runtime  : 'tfjs', // this is a bug  tfjs is too fast that can't render correct
+      modelType       : 'short',
+      maxFaces        : 4,
     }
     return await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
   }
@@ -53,14 +80,14 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
     ctx.lineWidth = 5
     ctx.strokeStyle = '#FF0902'
     // ctx.strokeRect(element.x, element.y, 5, 5)
-    faces.forEach((face) => {
-      face.keypoints.forEach((element) => {
+    for (const face of faces) {
+      for (const element of face.keypoints) {
         ctx.beginPath()
         ctx.arc(element.x, element.y, 2, 0, (Math.PI / 180) * 360)
         ctx.stroke()
         ctx.fillText(`${element.name}`, element.x, element.y)
-      })
-    })
+      }
+    }
   }
 
 }

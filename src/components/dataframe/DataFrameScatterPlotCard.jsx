@@ -10,7 +10,6 @@ export default function DataFrameScatterPlotCard ({ dataframe }) {
 
   const DEFAULT_SELECTOR = 'select-attr'
 
-  const { t } = useTranslation()
   const [selector, setSelector] = useState({
     selector_x: DEFAULT_SELECTOR,
     selector_y: DEFAULT_SELECTOR

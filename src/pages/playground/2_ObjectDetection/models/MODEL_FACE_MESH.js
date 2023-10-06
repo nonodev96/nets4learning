@@ -6,6 +6,7 @@ export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'FACE-MESH'
   TITLE = 'datasets-models.2-object-detection.face-mesh.title'
   i18n_TITLE = 'datasets-models.2-object-detection.face-mesh.title'
+  URL = 'https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.face-mesh.description.'
@@ -34,6 +35,30 @@ export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
           </li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@article{DBLP:journals/corr/abs-2006-10962,
+  author       = {Ivan Grishchenko and
+                  Artsiom Ablavatski and
+                  Yury Kartynnik and
+                  Karthik Raveendran and
+                  Matthias Grundmann},
+  title        = {Attention Mesh: High-fidelity Face Mesh Prediction in Real-time},
+  journal      = {CoRR},
+  volume       = {abs/2006.10962},
+  year         = {2020},
+  url          = {https://arxiv.org/abs/2006.10962},
+  eprinttype    = {arXiv},
+  eprint       = {2006.10962},
+  timestamp    = {Tue, 23 Jun 2020 17:57:22 +0200},
+  biburl       = {https://dblp.org/rec/journals/corr/abs-2006-10962.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 
@@ -41,20 +66,21 @@ export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
     const mediaPipeFaceMeshMediaPipeModelConfig = {
       runtime        : 'mediapipe',
-      refineLandmarks: true,
       solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
+      // runtime        : 'tfjs',
+      refineLandmarks: true,
       maxFaces       : 4,
     }
     return await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
   }
 
   render (ctx, faces) {
-    faces.forEach((face) => {
+    for (const face of faces) {
       ctx.strokeStyle = '#FF0902'
-      face.keypoints.forEach((element) => {
+      for (const element of face.keypoints) {
         ctx.strokeRect(element.x, element.y, 1, 1)
-      })
-    })
+      }
+    }
   }
 
 }
