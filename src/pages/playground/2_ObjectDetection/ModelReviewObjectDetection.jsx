@@ -1,237 +1,261 @@
-import React from 'react'
-import { Card, Col, Container, Form, Row } from 'react-bootstrap'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Card, Col, Container, Form, ProgressBar, Row } from 'react-bootstrap'
 import Webcam from 'react-webcam'
-import { Trans } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import ReactGA from 'react-ga4'
 
 import { VERBOSE } from '@/CONSTANTS'
-import withHooks from '@hooks/withHooks'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
-import {
-  LIST_MODELS_OBJECT_DETECTION,
-  MODEL_FACE_MESH,
-  MODEL_FACE_DETECTOR,
-  MODEL_MOVE_NET_POSE_NET,
-  MODEL_COCO_SSD,
-  UPLOAD,
-} from '@/DATA_MODEL'
+import { LIST_MODELS_OBJECT_DETECTION, MODEL_COCO_SSD, MODEL_FACE_DETECTOR, MODEL_FACE_MESH, MODEL_MOVE_NET_POSE_NET, UPLOAD } from '@/DATA_MODEL'
 import { I_MODEL_OBJECT_DETECTION } from './models/_model'
-// import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
-// tfjsWasm.setWasmPaths(process.env.PUBLIC_URL + "/wasm/tfjs-backend-wasm.wasm")
+tfjs.setBackend('webgl').then((r) => {
+  console.log('setBackend', { r })
+})
 
-class ModelReviewObjectDetection extends React.Component {
+export default function ModelReviewObjectDetection (props) {
+  const dataset = props.dataset
 
-  constructor (props) {
-    super(props)
-    this.translate = props.t
-    this.dataset = props.dataset
-    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + this.dataset, title: this.dataset })
+  const { t } = useTranslation()
 
-    this.state = {
-      isCameraEnable  : false,
-      isProcessedImage: false,
-      dataset         : props.dataset,
-      isShowedAlert   : false,
-      modelDetector   : null,
-      loading         :
-        <>
-          <div className="spinner-border"
-               role="status"
-               style={{
-                 fontSize: '0.5em',
-                 height  : '1rem',
-                 width   : '1rem',
-               }}>
-            <span className="sr-only"></span>
-          </div>
-        </>,
-    }
-    this.webcamRef = React.createRef()
-    this.canvasRef = React.createRef()
-    this.handleChangeCamera = this.handleChangeCamera.bind(this)
-    this.handleChangeFileUpload = this.handleChangeFileUpload.bind(this)
-    this.onUserMediaEvent = this.onUserMediaEvent.bind(this)
-    this.onUserMediaErrorEvent = this.onUserMediaErrorEvent.bind(this)
-    this.animation_id = 0
+  const [isLoading, setLoading] = useState(true)
+  const [progress, setProgress] = useState(0)
+  const [isCameraEnable, setCameraEnable] = useState(false)
+  const [isProcessedImage, setIsProcessedImage] = useState(false)
 
-    this._model = new I_MODEL_OBJECT_DETECTION(props.t)
-    switch (this.dataset) {
-      case MODEL_FACE_MESH.KEY: {
-        this._model = new MODEL_FACE_MESH(props.t)
-        break
+  const [deviceId, setDeviceId] = useState('default')
+  const [devices, setDevices] = useState([])
+
+  const [iModel, setIModel] = useState(new I_MODEL_OBJECT_DETECTION(t))
+  const [modelDetector, setModelDetector] = useState(null)
+
+  const requestRef = useRef()
+  const webcamRef = useRef(null)
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
+  }, [])
+
+  useEffect(() => {
+    console.log('useEffect [dataset]')
+    const interval = setInterval(() => {
+      if (progress < 90) {
+        setProgress(progress + 1)
+      } else {
+        clearInterval(interval)
       }
-      case MODEL_FACE_DETECTOR.KEY: {
-        this._model = new MODEL_FACE_DETECTOR(props.t)
-        break
-      }
-      case MODEL_MOVE_NET_POSE_NET.KEY: {
-        this._model = new MODEL_MOVE_NET_POSE_NET(props.t)
-        break
-      }
-      case MODEL_COCO_SSD.KEY: {
-        this._model = new MODEL_COCO_SSD(props.t)
-        break
-      }
-      default: {
-        console.error('Error, option not valid')
-      }
-    }
-  }
+    }, 10)
+    return () => clearInterval(interval)
+  }, [progress])
 
-  componentDidMount () {
-    // tfjsWasm.setWasmPaths(process.env.REACT_APP_PATH + "/wasm/");
-    // tfjsWasm.setThreadsCount(4);
-    // tfjs.setBackend("wasm").then(() => {
-    //   tfjs.ready().then(async () => {
-    //     if (tfjs.getBackend() !== "wasm") {
-    //       await alertHelper.alertError("Backend of tensorflow not installed");
-    //       return
-    //     }
-    //     await this.init();
-    //   });
-    // });
+  useEffect(() => {
+    console.log('useEffect [dataset]')
 
-    tfjs.setBackend('webgl').then(() => {
-      tfjs.ready().then(async () => {
+    async function init () {
+      const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataset)
+      if (!isValid) {
+        await alertHelper.alertError('Error in selection of model')
+        return
+      }
+
+      if (dataset === UPLOAD) {
+        console.error('Error, data set not valid')
+      }
+
+      let _iModel = new I_MODEL_OBJECT_DETECTION(t)
+
+      switch (dataset) {
+        case MODEL_FACE_MESH.KEY:
+          _iModel = new MODEL_FACE_MESH(t)
+          break
+        case MODEL_FACE_DETECTOR.KEY:
+          _iModel = new MODEL_FACE_DETECTOR(t)
+          break
+        case MODEL_MOVE_NET_POSE_NET.KEY:
+          _iModel = new MODEL_MOVE_NET_POSE_NET(t)
+          break
+        case MODEL_COCO_SSD.KEY:
+          _iModel = new MODEL_COCO_SSD(t)
+          break
+        default:
+          console.error('Error, option not valid')
+      }
+      setIModel(_iModel)
+
+      try {
+        await tfjs.ready()
+        console.log('ready', {
+          kernel        : tfjs.getKernel(),
+          backend       : tfjs.getBackend(),
+          kernel_backend: tfjs.getKernelsForBackend(),
+        })
         if (tfjs.getBackend() !== 'webgl') {
           await alertHelper.alertError('Backend of tensorflow not installed')
           return
         }
-        await this.init()
-      })
+
+        const _modelDetector = await _iModel.enable_Model()
+        setModelDetector(_modelDetector)
+        setLoading(false)
+        setProgress(100)
+        await alertHelper.alertSuccess(t('model-loaded-successfully'))
+      } catch (error) {
+        console.error('Error initializing TensorFlow', error)
+      }
+    }
+
+    init().then((r) => {
+      console.log('endInit')
     })
-  }
 
-  async init () {
-    const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === this.dataset)
+    return () => {}
+  }, [dataset])
 
-    if (!isValid) {
-      await alertHelper.alertError('Error in selection of model')
-      return
-    }
-
-    switch (this.dataset) {
-      case UPLOAD: {
-        // TODO
-        break
-      }
-      case MODEL_FACE_DETECTOR.KEY:
-      case MODEL_FACE_MESH.KEY:
-      case MODEL_MOVE_NET_POSE_NET.KEY:
-      case MODEL_COCO_SSD.KEY:
-        const modelDetector = await this._model.enable_Model()
-        this.setState({
-          modelDetector: modelDetector
-        })
-        await alertHelper.alertSuccess(this.translate('model-loaded-successfully'))
-        this.setState({ isShowedAlert: true })
-        this.setState({ loading: '' })
-        break
-
-      default: {
-        console.error('Error, conjunto de datos no reconocido')
-        break
-      }
-    }
-  }
-
-  runModelWithDetector () {
-    try {
-      const frame = async () => {
-        if (this.state.isCameraEnable) {
-          this.animation_id = requestAnimationFrame(frame)
-          await this.processWebcam(this.state.modelDetector)
-        }
-      }
-      this.animation_id = requestAnimationFrame(frame)
-    } catch (e) {
-      console.log(`catch cancelAnimationFrame(${this.animation_id});`)
-      cancelAnimationFrame(this.animation_id)
-    }
-  }
-
-  async processWebcam (model) {
-    if (typeof this.webcamRef.current === 'undefined'
-      || this.webcamRef.current === null
-      || this.webcamRef.current.video.readyState !== 4) {
-      return
+  const processWebcam = () => {
+    if (webcamRef.current === null
+      || typeof webcamRef.current === 'undefined'
+      || webcamRef.current.video.readyState !== 4) {
+      return null
     }
     // Get Video Properties
-    const video = this.webcamRef.current.video
-    const videoWidth = this.webcamRef.current.video.videoWidth
-    const videoHeight = this.webcamRef.current.video.videoHeight
+    const video = webcamRef.current.video
+    const videoWidth = webcamRef.current.video.videoWidth
+    const videoHeight = webcamRef.current.video.videoHeight
 
     // Set video width
-    this.webcamRef.current.video.width = videoWidth
-    this.webcamRef.current.video.height = videoHeight
+    webcamRef.current.video.width = videoWidth
+    webcamRef.current.video.height = videoHeight
 
     // Set canvas width
-    this.canvasRef.current.width = videoWidth
-    this.canvasRef.current.height = videoHeight
-    const img_or_video = video
+    canvasRef.current.width = videoWidth
+    canvasRef.current.height = videoHeight
 
-    const ctx = this.canvasRef.current.getContext('2d')
-    // ctx.scale(-1, 1)
-    // ctx.translate(videoWidth, 0);
-    // ctx.scale(-1, 1);
+    const ctx = canvasRef.current.getContext('2d')
 
-    await this.processData(model, ctx, img_or_video)
+    return { video, ctx }
   }
 
-  async processData (model, ctx, img_or_video) {
-    switch (this.dataset) {
-      case UPLOAD: {
+  useEffect(() => {
+    console.log('useEffect[isCameraEnable]', { isCameraEnable })
+    if (isCameraEnable === false) {
+      console.log(`stop AnimationFrame(${requestRef.current});`)
+      cancelAnimationFrame(requestRef.current)
+    }
+    try {
+      let stop = false
+      let frameCount = 0
+      let fps = 20
+      let fpsInterval, startTime, now, then, elapsed
+
+      const animate = async () => {
+        if (isCameraEnable) {
+          console.log('frame')
+          requestRef.current = requestAnimationFrame(animate)
+          now = Date.now()
+          elapsed = now - then
+          if (elapsed > fpsInterval) {
+            then = now - (elapsed % fpsInterval)
+            // Put your drawing code here
+            const _processWebcam = processWebcam()
+            if (_processWebcam !== null) await processData(_processWebcam.ctx, _processWebcam.video)
+
+            // end
+            // TESTING...Report #seconds since start and achieved fps.
+            // let sinceStart = now - startTime
+            // let currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100
+            // console.debug('Elapsed time= ' + Math.round(sinceStart / 1000 * 100) / 100 + ' secs @ ' + currentFps + ' fps.')
+          }
+        }
+      }
+
+      // Comienza la animación al cargar el componente
+      const startAnimating = (fps) => {
+        fpsInterval = 1000 / fps
+        then = Date.now()
+        startTime = then
+        animate().then(r => {
+          console.log('start animation')
+        })
+      }
+      startAnimating(fps)
+    } catch (e) {
+      console.log(`catch cancelAnimationFrame(${requestRef.current});`)
+      cancelAnimationFrame(requestRef.current)
+    }
+    // Limpia la animación cuando el componente se desmonta
+    return () => {
+      console.log(`delete AnimationFrame(${requestRef.current});`)
+      cancelAnimationFrame(requestRef.current)
+    }
+  }, [isCameraEnable])
+
+  const handleDevices = useCallback((mediaDevices) => {
+    console.log('useCallback[handleDevices]')
+    setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'))
+  }, [setDevices])
+
+  useEffect(() => {
+    console.log('useEffect[handleDevices]')
+    if (!navigator.mediaDevices?.enumerateDevices) {
+      console.error('enumerateDevices() not supported.')
+    } else {
+      navigator.mediaDevices.enumerateDevices().then(handleDevices)
+    }
+  }, [handleDevices])
+
+  const processData = async (ctx, img_or_video) => {
+    switch (dataset) {
+      case UPLOAD:
         // TODO
         break
-      }
       case MODEL_FACE_DETECTOR.KEY: {
-        const faces = await model.estimateFaces(img_or_video)
-        this._model.render(ctx, faces)
+        const faces = await modelDetector.estimateFaces(img_or_video)
+        iModel.render(ctx, faces)
         break
       }
-      case MODEL_FACE_MESH.KEY: {
-        const faces = await model.estimateFaces(img_or_video)
-        this._model.render(ctx, faces)
+      case MODEL_FACE_MESH.KEY:
+        const faces = await modelDetector.estimateFaces(img_or_video)
+        iModel.render(ctx, faces)
         break
-      }
-      case MODEL_MOVE_NET_POSE_NET.KEY: {
-        const poses = await model.estimatePoses(img_or_video)
-        this._model.render(ctx, poses)
+      case MODEL_MOVE_NET_POSE_NET.KEY:
+        const poses = await modelDetector.estimatePoses(img_or_video)
+        iModel.render(ctx, poses)
         break
-      }
-      case MODEL_COCO_SSD.KEY: {
-        const predictions = await model.detect(img_or_video)
-        this._model.render(ctx, predictions)
+      case MODEL_COCO_SSD.KEY:
+        const predictions = await modelDetector.detect(img_or_video)
+        iModel.render(ctx, predictions)
         break
-      }
-      default: {
+      default:
         console.error('Error, conjunto de datos no reconocido')
         break
-      }
     }
   }
 
-  async handleChangeCamera (event) {
-    const webcamChecked = event.target.checked
-    this.setState({ isCameraEnable: !!webcamChecked })
-    if (webcamChecked === true) {
-      this.runModelWithDetector()
-    }
+  const handleChange_Camera = (e) => {
+    console.log('handleChange_Camera')
+    const webcamChecked = e.target.checked
+    setCameraEnable(!!webcamChecked)
   }
 
-  onUserMediaEvent (mediaStream) {
+  const handleChange_Device = (e) => {
+    const _deviceId = e.target.value
+    setDeviceId(_deviceId)
+  }
+
+  const onUserMediaEvent = (mediaStream) => {
+    console.log({ mediaStream })
     // mediaStream.scale(-1, 1)
   }
 
-  onUserMediaErrorEvent (error) {
+  const onUserMediaErrorEvent = (error) => {
     console.log({ error })
-    cancelAnimationFrame(this.animation_id)
+    // cancelAnimationFrame(animation_id)
   }
 
-  async handleChangeFileUpload (_files) {
+  const handleChangeFileUpload = async (_files) => {
     // let tgt = e.target || window.event.srcElement
     console.log('ModelReviewObjectDetection -> handleChangeFileUpload', { _files })
     let files = _files
@@ -245,7 +269,6 @@ class ModelReviewObjectDetection extends React.Component {
     const resultCanvas = document.getElementById('resultCanvas')
     const resultCanvas_ctx = resultCanvas.getContext('2d')
     const container_w = document.getElementById('container-canvas').getBoundingClientRect().width
-    let that = this
 
     let designer_width = container_w * 0.75
     let designer_height = container_w * 0.50
@@ -271,10 +294,10 @@ class ModelReviewObjectDetection extends React.Component {
 
       originalImageCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
       const imgData = originalImageCanvas_ctx.getImageData(0, 0, originalImageCanvas.height, originalImageCanvas.width)
-      await that.processData(that.state.modelDetector, processImageCanvas_ctx, imgData)
+      await processData(processImageCanvas_ctx, imgData)
       resultCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
-      await that.processData(that.state.modelDetector, resultCanvas_ctx, imgData)
-      that.setState({ isProcessedImage: true })
+      await processData(resultCanvas_ctx, imgData)
+      setIsProcessedImage(true)
     }
 
     function failed () {
@@ -287,162 +310,184 @@ class ModelReviewObjectDetection extends React.Component {
     img.onerror = failed
   }
 
-  render () {
-    if (VERBOSE) console.debug('render ModelReviewObjectDetection')
-    return (
-      <Container id={'ModelReviewObjectDetection'}>
-        <Row>
-          <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
-            <Card className={'sticky-top mt-3 mb-3 border-info'}>
-              <Card.Body>
-                <Card.Title>
-                  <Trans i18nKey={this._model.TITLE} /> {this.state.loading}
-                </Card.Title>
-                {this.dataset === UPLOAD ?
-                  <>
-                    <Card.Subtitle className="mb-3 text-muted">Carga tu propio Modelo.</Card.Subtitle>
-                    <Card.Text>
-                      Ten en cuenta que tienes que subir primero el archivo .json y después el fichero .bin
-                    </Card.Text>
-                    <Container fluid={true}>
-                      <Row>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                          {/*TODO*/}
-                          <DragAndDrop name={'bin'}
-                                       accept={{ 'application/octet-stream': ['.bin'] }}
-                                       text={'Añada el fichero binario'}
-                                       labelFiles={'Fichero:'} />
-                        </Col>
-                        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                          <DragAndDrop name={'json'}
-                                       accept={{ 'application/json': ['.json'] }}
-                                       text={'Añada el fichero JSON'}
-                                       labelFiles={'Fichero:'} />
-                        </Col>
-                      </Row>
-                    </Container>
-                  </>
-                  :
-                  <>
-                    {this._model.DESCRIPTION()}
+  if (VERBOSE) console.debug('render ModelReviewObjectDetection')
+  return <>
+    <Container>
+      <Row className={'mt-2'}>
+        <Col xl={12}>
+          <div className="d-flex justify-content-between">
+            <h1><Trans i18nKey={'modality.2'} /></h1>
+          </div>
+        </Col>
+      </Row>
+    </Container>
 
-                    {/*{getHTML_DATASET_DESCRIPTION(2, this.state.dataset)}*/}
-                  </>
-                }
+    <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
+      <Row>
+        <Col>
+
+          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
+                                     striped={true}
+                                     animated={true}
+                                     now={progress} />}
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
+          <Card className={'sticky-top mt-3 mb-3 border-info'}>
+            <Card.Body>
+              <Card.Title>
+                <Trans i18nKey={iModel.TITLE} />
+              </Card.Title>
+              {dataset !== UPLOAD && <>{iModel.DESCRIPTION()}</>}
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
+          <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+            <Card className={'mt-3'}>
+              <Card.Header>
+                <div className="d-flex align-items-center justify-content-between">
+                  <h3><Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.title'} /></h3>
+                  <div className={'d-flex align-items-center justify-content-end'}>
+                    <div key={'default-switch'}>
+                      <Form.Check type="switch"
+                                  id={'default-switch'}
+                                  reverse={true}
+                                  size={'sm'}
+                                  name={'switch-webcam'}
+                                  label={t('datasets-models.2-object-detection.interface.process-webcam.button')}
+                                  defaultValue={isCameraEnable}
+                                  onChange={(e) => handleChange_Camera(e)}
+                      />
+                    </div>
+                    <Form.Group controlId={'select-device'} className={'ms-3 w-50'}>
+                      <Form.Select aria-label={'select-device'}
+                                   size={'sm'}
+                                   value={deviceId}
+                                   disabled={isCameraEnable}
+                                   onChange={(e) => handleChange_Device(e)}>
+                        <option value={'default'} disabled>Default</option>
+                        {devices.map((device, index) => {
+                          return <option key={'device-id-' + index}
+                                         value={device.deviceId}>
+                            {device.label}
+                          </option>
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                  </div>
+                </div>
+              </Card.Header>
+              <Card.Body>
+                <Card.Title className={'text-center'}>
+                  <Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.sub-title'} />
+                </Card.Title>
+                <Row className={'mt-3'}>
+                  <Col className={'d-flex justify-content-center'}>
+                    {isCameraEnable && (
+                      <div id={'webcamContainer'}
+                           className={'nets4-border-1'}
+                           style={{
+                             position: 'relative',
+                             overflow: 'hidden',
+                           }}>
+                        <Webcam ref={webcamRef}
+                                onUserMedia={onUserMediaEvent}
+                                onUserMediaError={onUserMediaErrorEvent}
+                                videoConstraints={{
+                                  facingMode: 'environment',
+                                  deviceId  : deviceId,
+                                }}
+
+                                mirrored={false}
+                                width={250}
+                                height={250}
+                                style={{
+                                  position: 'relative',
+                                  display : 'block',
+                                }}
+                        />
+                        <canvas ref={canvasRef}
+                                width={250}
+                                height={250}
+                                style={{
+                                  position: 'absolute',
+                                  display : 'block',
+                                  left    : 0,
+                                  top     : 0,
+                                  zIndex  : 10,
+                                }}></canvas>
+                      </div>
+                    )}
+                  </Col>
+                </Row>
               </Card.Body>
+              <Card.Footer>
+                <details>
+                  <summary>Device info</summary>
+                  <ol>
+                    {devices.map((device, index) => {
+                      return <li key={index}>{device.kind} | {device.label}</li>
+                    })}
+                  </ol>
+                </details>
+              </Card.Footer>
             </Card>
           </Col>
 
-          <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
-            {/*Es necesario un "Col" 9 y otro dentro*/}
-            <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-              <Card className={'mt-3'}>
-                <Card.Header className={'d-flex align-items-center justify-content-between'}>
-                  <h3><Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.title'} /></h3>
-                  <div className="d-flex">
-                    <Form className={'fs-5'} id={'FORM-SWITCH'}>
-                      <div key={'default-switch'}>
-                        <Form.Check type="switch"
-                                    id={'default-switch'}
-                                    reverse={true}
-                                    name={"switch-webcam"}
-                                    label={this.props.t('datasets-models.2-object-detection.interface.process-webcam.button')}
-                                    value={this.state.isCameraEnable ? 'true' : 'false'}
-                                    onChange={this.handleChangeCamera} />
-                      </div>
-                    </Form>
-                  </div>
-                </Card.Header>
-                <Card.Body>
-                  <Card.Title><Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.sub-title'} /></Card.Title>
+          <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
+            <Card className={'mt-3'}>
+              <Card.Header>
+                <h3><Trans i18nKey={'datasets-models.2-object-detection.interface.process-image.title'} /></h3>
+              </Card.Header>
+              <Card.Body>
+                <Card.Title>
+                  <Trans i18nKey={'datasets-models.2-object-detection.interface.process-image.sub-title'} />
+                </Card.Title>
+                <Container fluid={true} id={'container-canvas'}>
                   <Row className={'mt-3'}>
-                    <Col className={'d-flex justify-content-center'}>
-                      {this.state.isCameraEnable &&
-                        <div id={'webcamContainer'}
-                             className={'nets4-border-1'}
-                             style={{
-                               position: 'relative',
-                               overflow: 'hidden',
-                             }}>
-                          <Webcam ref={this.webcamRef}
-                                  onUserMedia={this.onUserMediaEvent}
-                                  onUserMediaError={this.onUserMediaErrorEvent}
-                                  width={250}
-                                  height={250}
-                                  style={{
-                                    position: 'relative',
-                                    display : 'block',
-                                  }} />
-                          <canvas ref={this.canvasRef}
-                                  width={250}
-                                  height={250}
-                                  style={{
-                                    position: 'absolute',
-                                    display : 'block',
-                                    left    : 0,
-                                    top     : 0,
-                                    zIndex  : 10,
-                                  }}></canvas>
-                        </div>
-                      }
+                    <Col>
+                      <DragAndDrop name={'doc'}
+                                   text={t('drag-and-drop.image')}
+                                   labelFiles={t('drag-and-drop.label-files-one')}
+                                   accept={{
+                                     'image/png': ['.png'],
+                                     'image/jpg': ['.jpg'],
+                                   }}
+                                   function_DropAccepted={handleChangeFileUpload}
+                      />
                     </Col>
                   </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
-              <Card className={'mt-3'}>
-                <Card.Header>
-                  <h3><Trans i18nKey={'datasets-models.2-object-detection.interface.process-image.title'} /></h3>
-                </Card.Header>
-                <Card.Body>
-                  <Card.Title>
-                    <Trans i18nKey={'datasets-models.2-object-detection.interface.process-image.sub-title'} />
-                  </Card.Title>
-                  <Container fluid={true} id={'container-canvas'}>
-                    <Row className={'mt-3'}>
-                      <Col>
-                        <DragAndDrop name={'doc'}
-                                     text={this.props.t('drag-and-drop.image')}
-                                     labelFiles={this.props.t('drag-and-drop.label-files-one')}
-                                     accept={{
-                                       'image/png': ['.png'],
-                                       'image/jpg': ['.jpg'],
-                                     }}
-                                     function_DropAccepted={this.handleChangeFileUpload} />
-                      </Col>
-                    </Row>
-                    <hr />
-                    <Row className={'mt-3'}
-                         style={this.state.isProcessedImage ? {} : { display: 'none' }}>
-                      <Col className={'col-12 d-flex justify-content-center'}>
-                        <canvas id="originalImageCanvas"
-                                className={'nets4-border-1'}
-                                width={250} height={250}></canvas>
-                      </Col>
-                      <Col className={'col-12 d-flex justify-content-center'}>
-                        <canvas id="processImageCanvas"
-                                className={'nets4-border-1'}
-                                width={250} height={250}></canvas>
-                      </Col>
-                      <Col className={'col-12 d-flex justify-content-center'}>
-                        <canvas id="resultCanvas"
-                                className={'nets4-border-1'}
-                                width={250} height={250}></canvas>
-                      </Col>
-                    </Row>
-                  </Container>
-                </Card.Body>
-              </Card>
-            </Col>
-
+                  <hr />
+                  <Row className={'mt-3'} style={isProcessedImage ? {} : { display: 'none' }}>
+                    <Col className={'col-12 d-flex justify-content-center'}>
+                      <canvas id="originalImageCanvas"
+                              className={'nets4-border-1 d-none'}
+                              width={250}
+                              height={250}></canvas>
+                    </Col>
+                    <Col className={'col-12 d-flex justify-content-center'}>
+                      <canvas id="processImageCanvas"
+                              className={'nets4-border-1 d-none'}
+                              width={250}
+                              height={250}></canvas>
+                    </Col>
+                    <Col className={'col-12 d-flex justify-content-center'}>
+                      <canvas id="resultCanvas"
+                              className={'nets4-border-1'}
+                              width={250}
+                              height={250}></canvas>
+                    </Col>
+                  </Row>
+                </Container>
+              </Card.Body>
+            </Card>
           </Col>
-        </Row>
-
-      </Container>
-    )
-  }
+        </Col>
+      </Row>
+    </Container>
+  </>
 }
 
-export default withHooks(ModelReviewObjectDetection)

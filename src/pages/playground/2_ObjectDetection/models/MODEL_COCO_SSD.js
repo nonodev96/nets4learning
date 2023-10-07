@@ -16,13 +16,13 @@ export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
       <p>
         <Trans i18nKey={prefix + 'text-1'}
                components={{
-                 link1: <a href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd" target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                 link1: <a href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd" target={'_blank'} rel={'noreferrer'}>TEXT</a>,
                }} />
       </p>
       <p>
         <Trans i18nKey={prefix + 'text-2'}
                components={{
-                 link1: <a href="https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts" target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                 link1: <a href="https://github.com/tensorflow/tfjs-models/blob/master/coco-ssd/src/classes.ts" target={'_blank'} rel={'noreferrer'}>TEXT</a>,
                }} />
       </p>
       <p><Trans i18nKey={prefix + 'text-3'} /></p>
@@ -44,7 +44,7 @@ export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
           <li>
             <Trans i18nKey={prefix + 'details-references.list.0'}
                    components={{
-                     link1: <a href="https://cocodataset.org/" target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                     link1: <a href="https://cocodataset.org/" target={'_blank'} rel={'noreferrer'}>TEXT</a>,
                    }} />
           </li>
         </ol>

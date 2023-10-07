@@ -1,4 +1,3 @@
-import '@/stylesheet.scss'
 import './App.css'
 import React, { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
