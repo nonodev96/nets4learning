@@ -24,7 +24,7 @@ const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatase
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
 const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
-const LinearRegressionEditorTrainer = lazy(() => import( './LinearRegressionEditorTrainer'))
+const LinearRegressionEditorHyperparameters = lazy(() => import( './LinearRegressionEditorHyperparameters'))
 // const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
 // Models
 const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
@@ -269,7 +269,7 @@ export default function LinearRegression ({ dataset_id }) {
               </div>
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>
-              <Suspense fallback={<></>}><LinearRegressionEditorTrainer /></Suspense>
+              <Suspense fallback={<></>}><LinearRegressionEditorHyperparameters /></Suspense>
             </Col>
           </Row>
 

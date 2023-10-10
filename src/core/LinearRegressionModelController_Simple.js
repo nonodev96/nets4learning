@@ -161,7 +161,8 @@ export default class LinearRegressionModelController_Simple {
   setFeatures (features) {
     this.config.features.X_feature = features.X_feature
     this.config.features.y_target = features.y_target
-    this.config.features.categorical = new Map()// features.categorical
+    // features.categorical
+    this.config.features.categorical = new Map()
   }
 
   /**

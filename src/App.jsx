@@ -32,6 +32,7 @@ function App () {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
 
   useEffect(() => {
+    console.log(process.env)
     ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID)
   }, [])
 

@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
-import { I_MODEL_TABULAR_CLASSIFICATION } from './_model'
+import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 
 export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
@@ -9,6 +9,77 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   static URL_MODEL = '/public/models/classification/car/my-model-car.json'
   TITLE = 'datasets-models.0-tabular-classification.car.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.car.title'
+
+  TABLE_HEADER = [
+    "00-tc.car.buying",
+    "00-tc.car.maint",
+    "00-tc.car.doors",
+    "00-tc.car.persons",
+    "00-tc.car.lug_boot",
+    "00-tc.car.safety",
+  ]
+  CLASSES = [
+    '00-tc.car.unacc',
+    '00-tc.car.acc',
+    '00-tc.car.good',
+    '00-tc.car.vgood',
+  ]
+  NUM_CLASSES = 4
+  // @formatter:off
+  DATA_CLASSES     = [
+    ["vhigh", "high", "med", "low"   ],
+    ["vhigh", "high", "med", "low"   ],
+    ["2",     "3",    "4",   "5more" ],
+    ["2",     "4",    "more"         ],
+    ["small", "med",  "big"          ],
+    ["low",   "med",  "high"         ]
+  ]
+  DATA_OBJECT      = {
+    buying  : ["vhigh", "high", "med", "low"   ],
+    maint   : ["vhigh", "high", "med", "low"   ],
+    doors   : ["2",     "3",    "4",   "5more" ],
+    persons : ["2",     "4",    "more"         ],
+    lug_boot: ["small", "med",  "big"          ],
+    safety  : ["low",   "med",  "high"         ]
+  }
+  DATA_OBJECT_KEYS = [ "buying", "maint", "doors", "persons", "lug_boot", "safety" ]
+  DATA_DEFAULT = {
+    buying  : "vhigh",
+    maint   : "vhigh",
+    doors   : "2",
+    persons : "2",
+    lug_boot: "small",
+    safety  : "low",
+  }
+  DATA_CLASSES_KEYS = [
+    "Precio de compra",
+    "Precio del mantenimiento",
+    "Número de puertas",
+    "Capacidad de personas",
+    "Tamaño del maletero",
+    "Seguridad estimada"
+  ]
+  LIST_EXAMPLES_RESULTS = [
+    "unacc",
+    "acc",
+    "good",
+    "vgood"
+  ]
+  LIST_EXAMPLES = [
+    { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "small", safety: "low" },
+    { buying: "low",   maint: "vhigh", doors: "4",     persons: "2",    lug_boot: "small", safety: "low" },
+    { buying: "med",   maint: "low",   doors: "5more", persons: "more", lug_boot: "med",   safety: "med" },
+    { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" }
+  ]
+  FORM = [
+    { type: "label-encoder", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "label-encoder", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "label-encoder", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
+    { type: "label-encoder", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
+    { type: "label-encoder", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
+    { type: "label-encoder", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
+  ]
+  // @formatter:on
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.car.description.'
@@ -88,72 +159,14 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  TABLE_HEADER = ['Buying', 'Maint', 'Doors', 'Persons', 'Lug boot', 'Safety', 'Results']
-
   async loadModel () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/car/my-model-car.json')
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json')
   }
 
   async function_v_input (element, index, param = '') {
     return this.DATA_CLASSES[index].findIndex((data_class) => data_class === element)
   }
 
-  CLASSES = ['unacc', 'acc', 'good', 'vgood']
-  NUM_CLASSES = 4
-  // @formatter:off
-  DATA_CLASSES     = [
-    ["vhigh", "high", "med", "low"   ],
-    ["vhigh", "high", "med", "low"   ],
-    ["2",     "3",    "4",   "5more" ],
-    ["2",     "4",    "more"         ],
-    ["small", "med",  "big"          ],
-    ["low",   "med",  "high"         ]
-  ]
-  DATA_OBJECT      = {
-    buying  : ["vhigh", "high", "med", "low"   ],
-    maint   : ["vhigh", "high", "med", "low"   ],
-    doors   : ["2",     "3",    "4",   "5more" ],
-    persons : ["2",     "4",    "more"         ],
-    lug_boot: ["small", "med",  "big"          ],
-    safety  : ["low",   "med",  "high"         ]
-  }
-  DATA_OBJECT_KEYS = [ "buying", "maint", "doors", "persons", "lug_boot", "safety" ]
-  DATA_DEFAULT = {
-    buying  : "vhigh",
-    maint   : "vhigh",
-    doors   : "2",
-    persons : "2",
-    lug_boot: "small",
-    safety  : "low",
-  }
-  DATA_CLASSES_KEYS = [
-    "Precio de compra",
-    "Precio del mantenimiento",
-    "Número de puertas",
-    "Capacidad de personas",
-    "Tamaño del maletero",
-    "Seguridad estimada"
-  ]
-  LIST_EXAMPLES_RESULTS = [
-    "unacc",
-    "acc",
-    "good",
-    "vgood"
-  ]
-  LIST_EXAMPLES = [
-    { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "small", safety: "low" },
-    { buying: "low",   maint: "vhigh", doors: "4",     persons: "2",    lug_boot: "small", safety: "low" },
-    { buying: "med",   maint: "low",   doors: "5more", persons: "more", lug_boot: "med",   safety: "med" },
-    { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" }
-  ]
-  FORM = [
-    { type: "label-encoder", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
-    { type: "label-encoder", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
-    { type: "label-encoder", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
-    { type: "label-encoder", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
-  ]
   // @formatter:on
   DATA = [
     ['vhigh', 'vhigh', '2', '2', 'small', 'low', 'unacc'],
@@ -1885,4 +1898,5 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     ['low', 'low', '5more', 'more', 'big', 'med', 'good'],
     ['low', 'low', '5more', 'more', 'big', 'high', 'vgood']
   ]
+  // @formatter:on
 }

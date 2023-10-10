@@ -1,6 +1,6 @@
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tf from '@tensorflow/tfjs'
-import { MnistData } from '../models/MODEL_MNIST_Data'
+import { MnistData } from '../models/MODEL_IMAGE_MNIST_Data'
 import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
 const classNames = [
@@ -139,23 +139,32 @@ function getModel (idOptimizer, layerList, idLoss, idMetrics, params) {
         }),
       )
     } else {
-      if (element._class === 'Conv2D') {
-        model.add(
-          tf.layers.conv2d({
-            kernelSize       : element.kernelSize,
-            filters          : element.filters,
-            strides          : element.strides,
-            activation       : element.activation.toLowerCase(),
-            kernelInitializer: element.kernelInitializer,
-          }),
-        )
-      } else if (element._class === 'MaxPooling2D') {
-        model.add(
-          tf.layers.maxPooling2d({
-            poolSize: element.poolSize,
-            strides : element.strides,
-          }),
-        )
+      switch (element._class) {
+        case 'Conv2D': {
+          model.add(
+            tf.layers.conv2d({
+              kernelSize       : element.kernelSize,
+              filters          : element.filters,
+              strides          : element.strides,
+              activation       : element.activation.toLowerCase(),
+              kernelInitializer: element.kernelInitializer,
+            }),
+          )
+          break
+        }
+        case 'MaxPooling2D': {
+          model.add(
+            tf.layers.maxPooling2d({
+              poolSize: element.poolSize,
+              strides : element.strides,
+            }),
+          )
+          break
+        }
+        default: {
+          console.error('Error, Class not valid')
+          break
+        }
       }
     }
   })
@@ -207,14 +216,6 @@ export async function MNIST_run (params_data) {
     layerList,
     params
   } = params_data
-
-  document.getElementById('salida').innerHTML += `
-<p>MODELO CREADO A PARTIR DE: 
-<b>numberOfEpoch:</b> ${numberOfEpoch.toString()} 
-<b>idOptimizer:</b> ${idOptimizer} 
-<b>idLoss:</b> ${idLoss} 
-<b>idMetrics:</b> ${idMetrics}</p>
-`
 
   const data = new MnistData()
   await data.load()

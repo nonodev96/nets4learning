@@ -11,8 +11,8 @@ export default function N4LMarkdown (_props_) {
     <Markdown remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeKatex]}
               components={{
-                h1: 'h2',
-                h2: 'h3',
+                h1: 'h4',
+                h2: 'h4',
                 h3: 'h4',
                 h4: 'h5',
                 h5: 'h6',

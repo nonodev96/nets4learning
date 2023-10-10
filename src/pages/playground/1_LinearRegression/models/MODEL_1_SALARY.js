@@ -50,19 +50,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
           </li>
         </ol>
       </details>
-      <details>
-        <summary>BibTeX</summary>
-        <pre>
-{`
-
-`}
-        </pre>
-      </details>
     </>
   }
 
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/'
+    const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'salary.csv')
     const dataframe_transforms = []
     const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + 'salary.csv'), dataframe_transforms)
@@ -84,7 +76,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/linear-regression/salary'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
     return [
       { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
     ]

@@ -57,9 +57,11 @@ export default function N4LNavbar () {
               <Nav.Link onClick={() => handleClick_GoGlossaryPage()}>
                 {t('header.glossary')}
               </Nav.Link>
-              <Nav.Link onClick={() => handleClick_GoDataFrame()}>
-                {t('header.dataframe')}
-              </Nav.Link>
+              {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
+                <Nav.Link onClick={() => handleClick_GoDataFrame()}>
+                  {t('header.dataframe')}
+                </Nav.Link>
+              }
               <Nav.Link onClick={() => handleClick_GoDatasets()}>
                 {t('header.datasets')}
               </Nav.Link>

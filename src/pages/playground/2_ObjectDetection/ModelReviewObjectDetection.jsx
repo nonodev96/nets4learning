@@ -37,10 +37,10 @@ export default function ModelReviewObjectDetection (props) {
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
-  }, [])
+  }, [dataset])
 
   useEffect(() => {
-    console.log('useEffect [dataset]')
+    console.log('useEffect [progress]')
     const interval = setInterval(() => {
       if (progress < 90) {
         setProgress(progress + 1)
@@ -112,7 +112,7 @@ export default function ModelReviewObjectDetection (props) {
     })
 
     return () => {}
-  }, [dataset])
+  }, [dataset, t])
 
   const processWebcam = () => {
     if (webcamRef.current === null
@@ -145,8 +145,6 @@ export default function ModelReviewObjectDetection (props) {
       cancelAnimationFrame(requestRef.current)
     }
     try {
-      let stop = false
-      let frameCount = 0
       let fps = 20
       let fpsInterval, startTime, now, then, elapsed
 
@@ -325,11 +323,11 @@ export default function ModelReviewObjectDetection (props) {
     <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
       <Row>
         <Col>
-
-          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
-                                     striped={true}
-                                     animated={true}
-                                     now={progress} />}
+          {isLoading &&
+            <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
+                         striped={true}
+                         animated={true}
+                         now={progress} />}
         </Col>
       </Row>
       <Row>

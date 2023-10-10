@@ -5,7 +5,7 @@ import { VERBOSE } from '@/CONSTANTS'
 export default function TabularClassificationManual () {
   const prefix = 'pages.playground.0-tabular-classification.generator.manual.'
 
-  if(VERBOSE) console.debug('render TabularClassificationCustomDatasetManual')
+  if(VERBOSE) console.debug('render TabularClassificationManual')
   return <>
     <details>
       <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'details-edit-layers.title'} /></summary>
@@ -15,21 +15,6 @@ export default function TabularClassificationManual () {
         <li><Trans i18nKey={prefix + 'details-edit-layers.list.1'} /></li>
       </ul>
     </details>
-
-    {/*
-    <details>
-      <summary className={"n4l-summary"}><Trans i18nKey={prefix + "details-hyper-parameters-editor.title"} /></summary>
-      <p><Trans i18nKey={prefix + "details-hyper-parameters-editor.text-0"} /></p>
-      <ul>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.0"} /></li>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.1"} /></li>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.2"} /></li>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.3"} /></li>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.4"} /></li>
-        <li><Trans i18nKey={prefix + "details-hyper-parameters-editor.list.5"} /></li>
-      </ul>
-    </details>
-    */}
 
     <details>
       <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'details-hyper-parameters-editor.title'} /></summary>
@@ -47,10 +32,6 @@ export default function TabularClassificationManual () {
       <p><Trans i18nKey={prefix + 'details-create-and-train-models.text-0'} /></p>
       <p><Trans i18nKey={prefix + 'details-create-and-train-models.text-1'} /></p>
       <p><Trans i18nKey={prefix + 'details-create-and-train-models.text-2'} /></p>
-      {/*
-      <p><Trans i18nKey={prefix + "details-create-and-train-models.text-3"} /></p>
-      <p><Trans i18nKey={prefix + "details-create-and-train-models.text-4"} /></p>
-      */}
     </details>
 
     <details>

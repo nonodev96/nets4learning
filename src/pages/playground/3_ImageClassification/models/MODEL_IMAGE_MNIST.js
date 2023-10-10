@@ -25,6 +25,23 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
           <li><Trans i18nKey={prefix + 'details-output.list.0'} /></li>
         </ol>
       </details>
+      <details>
+        <summary>BibTeX</summary>
+        <pre>
+{`
+@article{deng2012mnist,
+  title={The mnist database of handwritten digit images for machine learning research},
+  author={Deng, Li},
+  journal={IEEE Signal Processing Magazine},
+  volume={29},
+  number={6},
+  pages={141--142},
+  year={2012},
+  publisher={IEEE}
+}
+`}
+        </pre>
+      </details>
     </>
   }
 }

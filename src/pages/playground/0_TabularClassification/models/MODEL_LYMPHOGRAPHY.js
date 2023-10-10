@@ -1,14 +1,14 @@
 import * as tf from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
-import { I_MODEL_TABULAR_CLASSIFICATION } from './_model'
+import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 
 export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   static KEY = 'LYMPHOGRAPHY'
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Lymphography'
   static URL_MODEL = '/public/models/classification/car/my-model-lymphography.json'
-  static URL_DATASET = 'https://archive.ics.uci.edu/ml/machine-learning-databases/lymphography/'
   TITLE = 'datasets-models.0-tabular-classification.lymphography.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.lymphography.title'
+  URL_DATASET = 'https://archive.ics.uci.edu/dataset/63/lymphography'
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.lymphography.description.'
@@ -36,7 +36,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
         </summary>
         <ol>
           <li>
-            <a href="https://archive.ics.uci.edu/ml/datasets/Lymphography"
+            <a href={this.URL_DATASET}
                target="_blank"
                rel="noreferrer">
               <Trans i18nKey={prefix + 'details-references.list.0'} />
@@ -61,6 +61,13 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
+  loadModel = async () => {
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json')
+  }
+  function_v_input = async function (element, index, param = '') {
+    return parseInt(element)
+  }
+
   HTML_EXAMPLE () {
     const prefix = 'datasets-models.0-tabular-classification.lymphography.html-example.'
     return <>
@@ -71,37 +78,34 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  TABLE_HEADER = [
-    'lymphatics',
-    'block of affere',
-    'bl. of lymph. c',
-    'bl. of lymph. s',
-    'by pass',
-    'extravasates',
-    'regeneration',
-    'early uptake in',
-    'lym.nodes dimin',
-    'lym.nodes enlar',
-    'changes in lym',
-    'defect in node',
-    'changes in node',
-    'changes in stru',
-    'special forms',
-    'dislocation of',
-    'exclusion of',
-    'no. of nodes in',
-    'Category'
+  CLASSES = [
+    '00-tc.lymphography.normal find',
+    '00-tc.lymphography.metastases',
+    '00-tc.lymphography.malign lymph',
+    '00-tc.lymphography.fibrosis',
   ]
-  loadModel = async () => {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/lymphography/my-model-lymphography.json')
-  }
-  function_v_input = async function (element, index, param = '') {
-    return parseInt(element)
-  }
-  CONFIGURATION = <></>
-  EXAMPLES = []
-  CLASSES = ['normal find', 'metastases', 'malign lymph', 'fibrosis']
-  NUM_CLASSES = 4
+  TABLE_HEADER = [
+    '00-tc.lymphography.lymphatics',
+    '00-tc.lymphography.block of affere',
+    '00-tc.lymphography.bl. of lymph. c',
+    '00-tc.lymphography.bl. of lymph. s',
+    '00-tc.lymphography.by pass',
+    '00-tc.lymphography.extravasates',
+    '00-tc.lymphography.regeneration',
+    '00-tc.lymphography.early uptake in',
+    '00-tc.lymphography.lym.nodes dimin',
+    '00-tc.lymphography.lym.nodes enlar',
+    '00-tc.lymphography.changes in lym',
+    '00-tc.lymphography.defect in node',
+    '00-tc.lymphography.changes in node',
+    '00-tc.lymphography.changes in stru',
+    '00-tc.lymphography.special forms',
+    '00-tc.lymphography.dislocation of',
+    '00-tc.lymphography.exclusion of',
+    '00-tc.lymphography.no. of nodes in',
+    '00-tc.lymphography.Category',
+  ]
+
   DATA_OBJECT = {
     'lymphatics'     : ['1', '2', '3', '4'],
     'block of affere': ['1', '2'],
@@ -183,7 +187,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     ['No', 'Yes'],
     ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '=>70']
   ]
-  DATA_CLASSES_KEYS = []
+
   // @formatter:off
   LIST_EXAMPLES_RESULTS = [
     "normal",

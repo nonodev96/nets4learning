@@ -79,18 +79,18 @@ export class I_MODEL_IMAGE_CLASSIFICATION {
           target   : '.joyride-step-2-dataset-info',
           placement: 'top',
         },
-        {
-          title    : this.t(prefix + 'dataset.title'),
-          content  : this.t(prefix + 'dataset.content'),
-          target   : '.joyride-step-3-dataset',
-          placement: 'top',
-        },
-        {
-          title    : this.t(prefix + 'dataset-plot.title'),
-          content  : this.t(prefix + 'dataset-plot.content'),
-          target   : '.joyride-step-4-dataset-plot',
-          placement: 'top',
-        },
+        // {
+        //   title    : this.t(prefix + 'dataset.title'),
+        //   content  : this.t(prefix + 'dataset.content'),
+        //   target   : '.joyride-step-3-dataset',
+        //   placement: 'top',
+        // },
+        // {
+        //   title    : this.t(prefix + 'dataset-plot.title'),
+        //   content  : this.t(prefix + 'dataset-plot.content'),
+        //   target   : '.joyride-step-4-dataset-plot',
+        //   placement: 'top',
+        // },
         {
           title    : this.t(prefix + 'layer-visualizer.title'),
           content  : this.t(prefix + 'layer-visualizer.content'),
@@ -116,9 +116,9 @@ export class I_MODEL_IMAGE_CLASSIFICATION {
           placement: 'bottom'
         },
         {
-          title    : this.t(prefix + 'predict-and-visualizer.title'),
-          content  : this.t(prefix + 'predict-and-visualizer.content'),
-          target   : '.joyride-step-9-predict-visualization',
+          title    : this.t(prefix + 'classify.title'),
+          content  : this.t(prefix + 'classify.content'),
+          target   : '.joyride-step-9-classify',
           placement: 'top'
         },
       ]

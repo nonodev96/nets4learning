@@ -17,13 +17,18 @@ export default function Glossary () {
   return <>
     <main className={'mb-3'} data-title={'Glossary'}>
       <Container>
-        <Row className={"mt-3"}>
+        <Row className={'mt-3'}>
           <Col>
             <h1><Trans i18nKey={'pages.glossary.title'} t={t} /></h1>
           </Col>
         </Row>
-        <Row className={"mt-3"}>
+
+        {/* INFORMACIÓN */}
+        <Row className={'mt-3'}>
           <Col>
+            <div className={`mt-3 mb-4 n4l-hr-row`}>
+              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.tasks'} /></span></p>
+            </div>
             <Accordion defaultValue={'classification-tabular'}>
               <Accordion.Item eventKey={'classification-tabular'}>
                 <Accordion.Header><h3><Trans i18nKey={'pages.glossary.tabular-classification.title'} /></h3></Accordion.Header>
@@ -34,15 +39,17 @@ export default function Glossary () {
                   <p><Trans i18nKey={'pages.glossary.tabular-classification.text-4'} /></p>
                 </Accordion.Body>
               </Accordion.Item>
-              <Accordion.Item eventKey={'linear-regression'}>
-                <Accordion.Header><h3><Trans i18nKey={'pages.glossary.linear-regression.title'} /></h3></Accordion.Header>
-                <Accordion.Body>
-                  <p><Trans i18nKey={'pages.glossary.linear-regression.text.0'} /></p>
-                  <p><Trans i18nKey={'pages.glossary.linear-regression.text.1'} /></p>
-                  <p><Trans i18nKey={'pages.glossary.linear-regression.text.2'} /></p>
-                  <p><Trans i18nKey={'pages.glossary.linear-regression.text.3'} /></p>
-                </Accordion.Body>
-              </Accordion.Item>
+              {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
+                <Accordion.Item eventKey={'linear-regression'}>
+                  <Accordion.Header><h3><Trans i18nKey={'pages.glossary.linear-regression.title'} /></h3></Accordion.Header>
+                  <Accordion.Body>
+                    <p><Trans i18nKey={'pages.glossary.linear-regression.text.0'} /></p>
+                    <p><Trans i18nKey={'pages.glossary.linear-regression.text.1'} /></p>
+                    <p><Trans i18nKey={'pages.glossary.linear-regression.text.2'} /></p>
+                    <p><Trans i18nKey={'pages.glossary.linear-regression.text.3'} /></p>
+                  </Accordion.Body>
+                </Accordion.Item>
+              }
               <Accordion.Item eventKey={'classification-imagen'}>
                 <Accordion.Header><h3><Trans i18nKey={'pages.glossary.image-classification.title'} /></h3></Accordion.Header>
                 <Accordion.Body>
@@ -64,24 +71,33 @@ export default function Glossary () {
               </Accordion.Item>
             </Accordion>
 
-            <hr />
-            {/*/!* Funciones de optimización *!/*/}
+            {/* INFORMACIÓN */}
+            <div className={`mt-3 mb-4 n4l-hr-row`}>
+              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.optimization-function'} /></span></p>
+            </div>
+            {/* Funciones de optimización */}
             <Glossary1Optimizers />
 
-            <hr />
-            {/*/!* Funciones de activación *!/*/}
+            <div className={`mt-3 mb-4 n4l-hr-row`}>
+              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.activation-functions'} /></span></p>
+            </div>
+            {/* Funciones de activación */}
             <Glossary2ActivationFunctions />
 
-            <hr />
-            {/*/!* Funciones de perdida *!/*/}
+            <div className={`mt-3 mb-4 n4l-hr-row`}>
+              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.loss-functions'} /></span></p>
+            </div>
+            {/* Funciones de perdida */}
             <Glossary3LossFunctions />
 
-            <hr />
-            {/*/!* Funciones de métricas *!/*/}
+            <div className={`mt-3 mb-4 n4l-hr-row`}>
+              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.metric-function'} /></span></p>
+            </div>
+            {/* Funciones de métricas */}
             <Glossary4MetricFunctions />
 
             {/*<hr />*/}
-            {/*/!* Layers *!/*/}
+            {/* Layers */}
             {/*<Glossary5Layers />*/}
           </Col>
         </Row>

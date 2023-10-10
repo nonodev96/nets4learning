@@ -70,7 +70,7 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/boston-housing/'
+    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/boston-housing/'
     const dataframe_original = await dfd.readCSV(datasets_path + 'housing.csv')
     const dataframe_processed = await dfd.readCSV(datasets_path + 'housing.csv')
 
@@ -89,7 +89,7 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/linear-regression/boston-housing'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/boston-housing'
     return [
       { column_name_X: 'LSTAT', column_name_Y: 'MEDV', model_path: path + '/0/lr-model-0.json' },
       { column_name_X: 'RM', column_name_Y: 'MEDV', model_path: path + '/1/lr-model-1.json' },

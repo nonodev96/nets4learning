@@ -61,6 +61,11 @@ code {
   }
 }
 
+.n4l-table-list {
+  margin-bottom: 0;
+  font-family: monospace;
+  white-space: nowrap;
+}
 
 .n4l-hr-container {
   width: 100%;
@@ -88,8 +93,23 @@ pre.highlight {
   padding: 5px;
   margin: 5px;
 }
-.highlight_string { color: green; }
-.highlight_number { color: darkorange; }
-.highlight_boolean { color: blue; }
-.highlight_null { color: magenta; }
-.highlight_key { color: red; }
+
+.highlight_string {
+  color: green;
+}
+
+.highlight_number {
+  color: darkorange;
+}
+
+.highlight_boolean {
+  color: blue;
+}
+
+.highlight_null {
+  color: magenta;
+}
+
+.highlight_key {
+  color: red;
+}

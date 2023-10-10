@@ -84,7 +84,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/'
+    const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
     const dataframe_processed_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
     return {
@@ -102,7 +102,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/linear-regression/auto-mpg'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/auto-mpg'
     return [
       { column_name_X: 'horsepower', column_name_Y: 'mpg', model_path: path + '/0/lr-model-0.json' },
     ]

@@ -159,7 +159,7 @@ class ModelReviewImageClassification extends React.Component {
           break
         }
         case MODEL_IMAGE_MNIST.KEY: {
-          this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/keras-mnist/model.json')
+          this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/03-image-classification/keras-mnist/model.json')
           //this.model = await tf.loadLayersModel(process.env.REACT_APP_PATH + "/models/classification-image/mnist/mymodel.json")
           break
         }
@@ -651,8 +651,16 @@ class ModelReviewImageClassification extends React.Component {
   render () {
     return (
       <>
+        <Container>
+          <Row className={'mt-2'}>
+            <Col>
+              <div className="d-flex justify-content-between">
+                <h1><Trans i18nKey={`modality.3`} /></h1>
+              </div>
+            </Col>
+          </Row>
+        </Container>
         <Container id={'ModelReviewClassicImageClassification'}>
-
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top mt-3 border-info'}>

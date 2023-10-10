@@ -69,7 +69,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   }
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/student-performance/'
+    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
     const dataframe_original_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
     const dataframe_processed_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
     const dataframe_original_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
@@ -98,7 +98,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/linear-regression/student-performance'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
     return [
       { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
     ]

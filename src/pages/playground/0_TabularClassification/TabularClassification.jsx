@@ -23,7 +23,7 @@ import TabularClassificationPrediction from '@pages/playground/0_TabularClassifi
 import TabularClassificationTableModels from '@pages/playground/0_TabularClassification/TabularClassificationTableModels'
 
 import { isProduction } from '@utils/utils'
-import { I_MODEL_TABULAR_CLASSIFICATION } from './models/_model'
+import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
 import * as errorUtils from '@core/error-utils'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
@@ -159,7 +159,6 @@ export default function TabularClassification (props) {
    */
   const [generatedModels, setGeneratedModels] = useState(/** @type Array<GeneratedModel_t> */[])
   const [generatedModelsIndex, setGeneratedModelsIndex] = useState(-1)
-  const [isDisabledDownloadModel, setIsDisabledDownloadModel] = useState(true)
   // Model review
   const [Model, setModel] = useState(null)
   const [DataSetClasses, setDataSetClasses] = useState([])
@@ -399,7 +398,6 @@ export default function TabularClassification (props) {
         }],
       )
       setIsTraining(false)
-      setIsDisabledDownloadModel(false)
       setDataSetClasses(DATA_SET_CLASSES)
       setTargetSetClasses(TARGET_SET_CLASSES)
 
@@ -482,9 +480,9 @@ export default function TabularClassification (props) {
     }
   }
 
-  const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
-    model.save('downloads://my-model-' + idMODEL)
-  }
+  // const handleClick_DownloadGeneratedModel = ({ model, idMODEL }) => {
+  //   model.save('downloads://tabular-classification-model-' + idMODEL)
+  // }
   // endregion
 
   // region Prediction

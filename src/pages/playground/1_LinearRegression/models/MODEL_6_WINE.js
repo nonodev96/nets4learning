@@ -68,7 +68,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/linear-regression/wine-quality/'
+    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
     const dataframe_original = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
     const dataframe_processed = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
     const dataframe_original_2 = await dfd.readCSV(datasets_path + 'wine-quality-white.csv')
@@ -98,7 +98,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/linear-regression/wine'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/wine'
     const models = {
       'wine-quality-red.csv'  : [
         { model_path: path + '/0/lr-model-0.json', column_name_X: 'fixed acidity', column_name_Y: 'density' },

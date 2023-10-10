@@ -22,9 +22,9 @@ export default function LinearRegressionPredictionExample () {
   })
 
   const updateDataPrediction = async () => {
-    // const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/auto-mpg/auto-mpg.csv'
+    // const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/auto-mpg.csv'
     // const columns = { x_name: 'horsepower', y_name: 'mpg' }
-    const filename = process.env.REACT_APP_PATH + '/datasets/linear-regression/salary/salary.csv'
+    const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/salary.csv'
     const columns = { x_name: 'YearsExperience', y_name: 'Salary' }
     const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
 

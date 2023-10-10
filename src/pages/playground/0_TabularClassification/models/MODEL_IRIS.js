@@ -1,6 +1,6 @@
 import * as tf from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
-import { I_MODEL_TABULAR_CLASSIFICATION } from './_model'
+import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 
 export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
 
@@ -10,41 +10,48 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   TITLE = 'datasets-models.0-tabular-classification.iris.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.iris.title'
 
-  NUM_CLASSES = 3
-  CLASSES = ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']
-
   DATA_OBJECT = {
-    longitud_sepalo: 5.1,
-    anchura_sepalo : 3.5,
-    longitud_petalo: 1.4,
-    anchura_petalo : 0.2
+    sepal_length: 5.1,
+    sepal_width : 3.5,
+    petal_length: 1.4,
+    petal_width : 0.2
   }
   DATA_DEFAULT = {
-    longitud_sepalo: 5.1,
-    anchura_sepalo : 3.5,
-    longitud_petalo: 1.4,
-    anchura_petalo : 0.2
+    sepal_length: 5.1,
+    sepal_width : 3.5,
+    petal_length: 1.4,
+    petal_width : 0.2
   }
-  DATA_OBJECT_KEYS = ['longitud_sepalo', 'anchura_sepalo', 'longitud_petalo', 'anchura_petalo']
-
-  TABLE_HEADER = ['Longitud sépalo', 'Anchura sépalo', 'Longitud petalo', 'Anchura petalo', 'Tipo']
-  DATA_CLASSES_KEYS = [
-    'Longitud sépalo',
-    'Anchura sépalo',
-    'Longitud petalo',
-    'Anchura petalo'
+  DATA_OBJECT_KEYS = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
+  FORM = [
+    { type: 'float32', name: 'sepal_length' },
+    { type: 'float32', name: 'sepal_width' },
+    { type: 'float32', name: 'petal_length' },
+    { type: 'float32', name: 'petal_width' },
+  ]
+  LIST_EXAMPLES = [
+    { sepal_length: 5.1, sepal_width: 3.5, petal_length: 1.4, petal_width: 0.2 },
+    { sepal_length: 6.1, sepal_width: 3.0, petal_length: 4.6, petal_width: 1.4 },
+    { sepal_length: 5.8, sepal_width: 2.7, petal_length: 5.1, petal_width: 1.9 },
   ]
   LIST_EXAMPLES_RESULTS = [
     '0 Iris-setosa',
     '1 Iris-versicolor',
     '2 Iris-virginica',
   ]
-  LIST_EXAMPLES = [
-    { longitud_sepalo: 5.1, anchura_sepalo: 3.5, longitud_petalo: 1.4, anchura_petalo: 0.2 },
-    { longitud_sepalo: 6.1, anchura_sepalo: 3.0, longitud_petalo: 4.6, anchura_petalo: 1.4 },
-    { longitud_sepalo: 5.8, anchura_sepalo: 2.7, longitud_petalo: 5.1, anchura_petalo: 1.9 },
+
+  CLASSES = [
+    '00-tc.iris.Iris-setosa',
+    '00-tc.iris.Iris-versicolor',
+    '00-tc.iris.Iris-virginica',
   ]
-  FORM = []
+  TABLE_HEADER = [
+    '00-tc.iris.sepal_length',
+    '00-tc.iris.sepal_width',
+    '00-tc.iris.petal_length',
+    '00-tc.iris.petal_width',
+    '00-tc.iris.class'
+  ]
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.iris.description.'
@@ -107,7 +114,7 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   loadModel = async function () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/classification/iris/my-model-iris.json')
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json')
   }
   function_v_input = async function (element, _index, _param = '') {
     return parseFloat(element)

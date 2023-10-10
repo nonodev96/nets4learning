@@ -208,14 +208,16 @@
     "file-not-valid": "Error, file not valid"
   },
   "warning": {
+    "the-first-layer-need-to-be-__value__": "Warning, the first layer must be of type {{value}}",
     "not-more-layers": "Warning, no more layers can be added",
-    "error-layers": "Warning, you must have between 1 and 10 layers"
+    "error-layers": "Warning, you must have between 1 and 10 layers",
+    "need-a-model": "Warning, you must first create and train the model."
   },
   "success": {
     "file-upload": "File upload successful"
   },
   "info": {
-    "": null
+    "the-class-is-__value__": "Does the class have the index {{value}}?"
   },
   "alert": {
     "menu": {
@@ -443,7 +445,7 @@
           },
           "dataset-info": {
             "title": "Data set information",
-            "content": "Check the information set information"
+            "content": "Analyze the data set"
           },
           "dataset": {
             "title": "Data set",
@@ -592,7 +594,8 @@
           "details-3-references": {
             "title": "References",
             "list": {
-              "0": "<link1>UCI data set info</link1>"
+              "0": "<link1>UCI data set info</link1>",
+              "1": "<link1>a Boston housing dataset controversy</link1>"
             }
           }
         }
@@ -804,7 +807,7 @@
         "process-webcam": {
           "title": "Realtime recognition",
           "sub-title": "Webcam",
-          "button": "Use Webcam"
+          "button": "Webcam"
         },
         "process-image": {
           "title": "Images processing",
@@ -1002,7 +1005,48 @@
     },
     "3-image-classification": {
       "list-datasets": {
-        "mnist": "Data set - Wine"
+        "mnist": "Data set - MNIST"
+      },
+      "joyride": {
+        "title": "Activate the tutorial",
+        "steps": {
+          "manual": {
+            "title": "Manual",
+            "content": "You can check the information search manual"
+          },
+          "dataset-info": {
+            "title": "Data set information",
+            "content": "Check the information set information"
+          },
+          "dataset": {
+            "title": "Data set",
+            "content": "You can see the data set and extract statistics from your descriptions"
+          },
+          "dataset-plot": {
+            "title": "Data set plot",
+            "content": "You can extract very relevant information by analyzing the data set using the different graphics, bars diagram, sectors diagrams, etc."
+          },
+          "layer-visualizer": {
+            "title": "Visualizer of the layers of the neuronal network",
+            "content": "You can visualize the layers, activation functions in two formats, compact mode and extended mode"
+          },
+          "layer-editor": {
+            "title": "Layer editor",
+            "content": "You can edit the layers of the neuronal network, modify the units of each layer, the activation function, add new layers or eliminate them."
+          },
+          "params-editor": {
+            "title": "Hyperparameter editor",
+            "content": "You can configure the hyperparameters of your neuronal network so that the training is customized for the data set."
+          },
+          "list-of-models": {
+            "title": "Model list",
+            "content": "Once the model can be generated, you can load or download the model, to test each model and perform the predictions."
+          },
+          "classify": {
+            "title": "Prediction and visualization",
+            "content": "Once our model for linear regression can be loaded you can make predictions and visualize the results"
+          }
+        }
       }
     }
   },
@@ -1256,7 +1300,19 @@
       "image-classification": {
         "1-title": "Image classification",
         "1-description-1": "The classification of images in the same way that the classical classification helps us to determine the class to which the dependent belongs according to one or more independent variables.",
-        "1-button": "Pre-trained models"
+        "1-button": "Pre-trained models",
+        "2-title": "Design, create and edit an architecture network for classifying images.",
+        "2-description-1": "Through this tool we can create a neuronal network to classify multi-label data.",
+        "2-description-2": "To design, create, train and evaluate a personalized architecture, we must:",
+        "2-description-list": {
+          "1": "Define the number of layers, their activation functions.",
+          "2": "Define the training rate.",
+          "3": "Define the number of epochs.",
+          "4": "Define the optimizer.",
+          "5": "Define the loss function.",
+          "6": "Define the metric function."
+        },
+        "2-button": "Train a model"
       }
     },
     "menu-selection-dataset": {
@@ -1290,7 +1346,7 @@
         "parameter-float": "Simple precision floating parameter",
         "parameter-double": "Double precision floating parameter",
         "parameter-categorical": "Categorical parameter",
-        "vector-to-check": "Vector to try",
+        "vector-to-check": "Vector to test",
         "button-check-result": "Predict"
       },
       "0-tabular-classification": {
@@ -1395,10 +1451,18 @@
           "add-layer-end": "Add a layer to the end",
           "delete-layer": "Delete layer {{index}}",
           "layer-id": "Layer {{index}}",
+          "kernel-size": "Kernel size",
+          "kernel-size-placeholder": "Enter the kernel size of the layer.",
+          "filters-size": "Filter size",
+          "filters-size-placeholder": "Enter the filter of the layer.",
           "units": "Layer neurons",
           "units-placeholder": "Enter the number of cape neurons",
           "activation-function-select": "Select the activation function",
-          "activation-function-info": "It will be the optimizer that will be used to activate the function"
+          "activation-function-info": "It will be the optimizer that will be used to activate the function",
+          "strides": "Strides",
+          "strides-placeholder": "Enter the strides of the layer",
+          "pool-size": "Pool size",
+          "pool-size-placeholder": "Enter the pool size of the layer"
         },
         "editor-feature-selector": {
           "title": "Feature selector",
@@ -1566,6 +1630,72 @@
           "title": "Model selector",
           "option": "Select a model"
         }
+      },
+      "3-image-classification": {
+        "generator": {
+          "manual": {
+            "title": "Model Generator Manual",
+            "details-edit-layers": {
+              "title": "Editor of the Layers",
+              "text-0": "You can edit the layers of the neuronal network, you can add as many as you want by pressing the \"Add layer\" button at the start or at the end.",
+              "list": {
+                "0": "<b>Layer neurons</b>: <br /> Each neuron in a layer has a set of associated weights that weigh its output value. <br /> We can edit the number of neurons in the layer.",
+                "1": "<b>Activation function</b>: <br /> The activation function of a neuron refers to the mathematical function that calculates its output. We can edit the activation function of the neurons of each layer."
+              }
+            },
+            "details-edit-layers-more-info": {
+              "title": "Additional information Layers",
+              "text-0": "Additionally there are two more layers that are common to other automatic learning networks focused on image classification",
+              "list": {
+                "0": "<b>dense</b><br />Creates a dense (fully connected) layer.",
+                "1": "<b>dropout</b><br />Dropout consists in randomly setting a fraction rate of input units to 0 at each update during training time, which helps prevent overfitting.",
+                "2": "<b>embedding</b><br />Maps positive integers (indices) into dense vectors of fixed size. eg. [[4], [20]] -> [[0.25, 0.1], [0.6, -0.2]]",
+                "3": "<b>flatten</b><br />A Flatten layer flattens each batch in its inputs to 1D (making the output 2D).",
+                "4": "<b>permute</b><br />Permutes the dimensions of the input according to a given pattern.",
+                "5": "<b>repeatVector</b><br />Repeats the input n times in a new dimension.",
+                "6": "<b>reshape</b><br />Reshapes an input to a certain shape.",
+                "7": "<b>spatialDropout1d</b><br />Spatial 1D version of Dropout."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Hyperparameter editor",
+              "text-0": "The necessary general parameters can be edited for the creation of the model. <br /> These parameters are:",
+              "list": {
+                "0": "<b>Learning rate</b>: <br /> Value between 0 and 100 which indicates the percentage of the weight weights.",
+                "1": "<b>Number of epochs</b>: <br /> Number of times the network training set (the greatest number, it takes longer to train).",
+                "2": "<b>Test set size</b>: <br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
+                "3": "<b>Optimizer</b>: <br /> It is a function that is used to adjust the weights of the network.",
+                "4": "<b>loss function</b>: <br /> It is a error calculation method to measure model efficiency during training.",
+                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Hyperparameters information",
+              "list": {
+                "0": "<b>Learning rate</b>: <br /> The learning rate is a parameter that determines how much the weights of the neuronal network should be updated depending on the error calculated during training.",
+                "1": "<b>Number of epochs</b>: <br /> The number of epochs refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
+                "2": "<b>Test set size</b>: <br /> The size of the test set refers to the amount of data used to evaluate the performance of the neuronal network after training. This dataset is not used in the training of the neuronal network and is used to measure the network capacity to generalize new data.",
+                "3": "<b>Optimizer</b>: <br /> The optimizer is an algorithm used to update the weights of the neuronal network depending on the error calculated during training. Some examples of optimizers are the descent of the stochastic gradient (SGD), the ADAM and the ADAM.",
+                "4": "<b>Loss function</b>: <br /> The loss function is a measure of the error between the neuronal network predictions and the real outputs. It is used to optimize the neuronal network during training and there are different loss functions, such as cross entropy and middle quadratic error."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Create and train model",
+              "text-0": "Once all previous fields have been filled we can create the model by pressing the \"Create and train model\" button.",
+              "text-1": "If we have trained the model with the metric function <i> Accuracy </i> two graphs will appear in the visor. The most relevant to us is that below, since at tensorflow.js, <i> ac </i> and <i> Val_acc </i> are evaluation metrics commonly used in training models of neural networks. <br /> <i> Acc </i> represents the precision (Accuracy) of the model in the training dataset. The precision is defined as the number of correct predictions divided by the total number of predictions. <br /> <i> Val_acc </i> represents the precision of the model in the validation dataset. Validation is used to evaluate the model capacity to generalize new data that has not been seen during training.",
+              "text-2": "The validation precision is important to detect the over juste (<i> over fitting </i>) of the model, which occurs when the model fits too much to training data and does not generalize well to new data."
+            },
+            "details-export-models": {
+              "title": "Export model",
+              "text-0": "If we have created the model correctly an entry will be added to the table of models generated, we are allowed to export the models generated and save them locally."
+            },
+            "details-prediction": {
+              "title": "Clasification",
+              "text-0": "The final form allows us to select the main characteristics used to determine the class.",
+              "text-1": "By pressing the \"See Result\" button, from the input features of the element you get the prediction of its output class."
+            }
+          }
+        }
       }
     },
     "dataframe": {
@@ -1649,6 +1779,12 @@
         "1-description-2": "In the MNIST model it is allowed to select from a list of images that contain a number, draw in a dog the number to predict or upload an image of a number.",
         "1-description-3": "In the Mobilenet model a list of example images that can be selected or we can upload an image that the neuronal network will classify have been included.",
         "1-description-4": "For both models the system will show the prediction with the percentage of calculated precision."
+      },
+      "layer-editor": {
+        "title": "Layer editor"
+      },
+      "hyperparameters-editor": {
+        "title": "Hyperparameter editor"
       }
     },
     "glossary": {
@@ -1868,10 +2004,11 @@
       "list-models-generated": "List generated models",
       "learning-rate": "Learning rate",
       "test-size": "Test set size",
-      "n-of-epochs": "N. Epochs",
+      "n-of-epochs": "N. epochs",
+      "n-epochs": "N. epochs",
       "id-optimizer": "Optimizer",
       "id-loss": "Loss",
-      "id-metrics": "Métric",
+      "id-metrics": "Metric",
       "layers": "Layers",
       "download": "Download",
       "features": "Features",
@@ -1884,7 +2021,17 @@
     "dataset": "Data set",
     "model": "Model",
     "generated-models": "Modelos generados",
-    "predict": "Classify"
+    "predict": "Predict",
+    "classify": "Classify",
+    "tasks": "Tasks",
+    "00-tabular-classification": "Tabular Classification",
+    "01-linear-regression": "Linear Regression",
+    "02-object-detection": "Object Detection",
+    "03-image-classification": "Image Classification",
+    "optimization-function": "Optimization functions",
+    "activation-functions": "Activation functions",
+    "loss-functions": "Loss functions",
+    "metric-function": "Metric functions"
   },
   "form-dataframe": {
     "int32": "Integer",
@@ -1907,5 +2054,62 @@
   "upload-dataset-info": "You must upload a dataset to perform the task.",
   "upload-model-info": "You must upload a model to perform the task.",
   "select-attr": "Select attribute",
-  "upload-dataset": "Upload dataset"
+  "upload-dataset": "Upload dataset",
+  "00-tc": {
+    "car": {
+      "buying": "Buying price",
+      "maint": "Price of the maintenance",
+      "doors": "number of doors",
+      "persons": "Capacity in terms of persons to carry",
+      "lug_boot": "The size of luggage boot",
+      "safety": "Estimated safety of the car",
+      "unacc": "Unacceptable",
+      "acc": "Aceptable",
+      "good": "Good",
+      "vgood": "Very good"
+    },
+    "iris": {
+      "sepal_length": "Sepal length",
+      "sepal_width": "Sepal width",
+      "petal_length": "Petal length",
+      "petal_width": "Petal width",
+      "class": "Class",
+      "Iris-setosa": "Iris setosa",
+      "Iris-versicolor": "Iris versicolor",
+      "Iris-virginica": "Iris virginica"
+    },
+    "lymphography": {
+      "lymphatics": "lymphatics",
+      "block of affere": "block of affere",
+      "bl": {
+        " of lymph": {
+          " c": "bl. of lymph. c",
+          " s": "bl. of lymph. s"
+        }
+      },
+      "by pass": "by pass",
+      "extravasates": "extravasates",
+      "regeneration": "regeneration",
+      "early uptake in": "early uptake in",
+      "lym": {
+        "nodes dimin": "lym.nodes dimin",
+        "nodes enlar": "lym.nodes enlar"
+      },
+      "changes in lym": "changes in lym",
+      "defect in node": "defect in node",
+      "changes in node": "changes in node",
+      "changes in stru": "changes in stru",
+      "special forms": "special forms",
+      "dislocation of": "dislocation of",
+      "exclusion of": "exclusion of",
+      "no": {
+        " of nodes in": "no. of nodes in"
+      },
+      "Category": "Category",
+      "normal find": "normal find",
+      "metastases": "metastases",
+      "malign lymph": "malign lymph",
+      "fibrosis": "fibrosis"
+    }
+  }
 }

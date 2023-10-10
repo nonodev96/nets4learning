@@ -208,14 +208,16 @@
     "file-not-valid": "Error, fichero no válido"
   },
   "warning": {
+    "the-first-layer-need-to-be-__value__": "Advertencia, la primera capa debe ser de tipo {{value}}",
     "not-more-layers": "Advertencia, no se pueden añadir más capas",
-    "error-layers": "Advertencia, se debe tener entre 1 y 10 capas"
+    "error-layers": "Advertencia, se debe tener entre 1 y 10 capas",
+    "need-a-model": "Advertencia, antes debes de crear y entrenar el modelo."
   },
   "success": {
     "file-upload": "Archivo cargado correctamente"
   },
   "info": {
-    "": null
+    "the-class-is-__value__": "¿La clase tiene el indice {{value}}?"
   },
   "alert": {
     "menu": {
@@ -443,7 +445,7 @@
           },
           "dataset-info": {
             "title": "Información del conjunto de datos",
-            "content": "Consulta la información del conjunto de datos"
+            "content": "Analiza el conjunto de datos"
           },
           "dataset": {
             "title": "Conjuto de datos",
@@ -592,7 +594,8 @@
           "details-3-references": {
             "title": "Referencias",
             "list": {
-              "0": "<link1>Entrada del conjunto de datos UCI</link1>"
+              "0": "<link1>Entrada del conjunto de datos UCI</link1>",
+              "1": "<link1>Controversia sobre el conjunto de datos de vivienda de Boston</link1>"
             }
           }
         }
@@ -804,7 +807,7 @@
         "process-webcam": {
           "title": "Reconocimiento en tiempo real",
           "sub-title": "Webcam",
-          "button": "Usar webcam"
+          "button": "Webcam"
         },
         "process-image": {
           "title": "Procesamiento de images",
@@ -1003,6 +1006,47 @@
     "3-image-classification": {
       "list-datasets": {
         "mnist": "Conjunto de datos - MNIST"
+      },
+      "joyride": {
+        "title": "Activar el tutorial",
+        "steps": {
+          "manual": {
+            "title": "Manual",
+            "content": "Puedes consultar el manual en busqueda de información"
+          },
+          "dataset-info": {
+            "title": "Información del conjunto de datos",
+            "content": "Consulta la información del conjunto de datos"
+          },
+          "dataset": {
+            "title": "Conjuto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+          },
+          "dataset-plot": {
+            "title": "Graficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+          },
+          "layer-visualizer": {
+            "title": "Visualizador de las capas de la red neuronal",
+            "content": "Puedes visualizar las capas, funciones de activación en dos formatos, modo compacto y modo extendido"
+          },
+          "layer-editor": {
+            "title": "Editor de capas",
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+          },
+          "params-editor": {
+            "title": "Editor de hiperparametros",
+            "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
+          },
+          "list-of-models": {
+            "title": "Lista de modelos",
+            "content": "Una vez generado el modelo puedes cargar o descargar el modelo, para probar cada modelo y realizar las predicciones."
+          },
+          "classify": {
+            "title": "Predicción y visualización",
+            "content": "Una vez cargado nuestro modelo para la regresión lineal puedes realizar predicciones y visualizar los resultados"
+          }
+        }
       }
     }
   },
@@ -1256,7 +1300,19 @@
       "image-classification": {
         "1-title": "Clasificación de imágenes",
         "1-description-1": "La clasificación de imágenes de igual forma que la clasificación tabular sirve para determinar la clase a la que pertenece la imagen dependiendo de los elementos que la forman.",
-        "1-button": "Modelos pre-entrenados"
+        "1-button": "Modelos pre-entrenados",
+        "2-title": "Diseñar, crear y editar una arquitectura para clasificar imágenes",
+        "2-description-1": "A través de esta herramienta podemos crear una red neuronal para clasificar datos multiclase.",
+        "2-description-2": "Para diseñar, crear, entrenar y evaluar una arquitectura personalizada, debemos:",
+        "2-description-list": {
+          "1": "Definir el número de capas, sus funciones de activación.",
+          "2": "Definir la tasa de entrenamiento.",
+          "3": "Definir el número de épocas.",
+          "4": "Definir el optimizador.",
+          "5": "Definir la función de perdida.",
+          "6": "Definir la métrica para la evaluación."
+        },
+        "2-button": "Entrenar un modelo"
       }
     },
     "menu-selection-dataset": {
@@ -1395,10 +1451,18 @@
           "add-layer-end": "Añadir capa al final",
           "delete-layer": "Eliminar capa {{index}}",
           "layer-id": "Capa {{index}}",
+          "kernel-size": "Tamaño del Kernel",
+          "kernel-size-placeholder": "Introduce el tamaño del kernel de la capa",
+          "filters-size": "Tamaño del filtro",
+          "filters-size-placeholder": "Introduce el filtro de la capa",
           "units": "Neuronas de la capa",
           "units-placeholder": "Introduce el número de neuronas de la capa",
           "activation-function-select": "Selecciona la función de activación",
-          "activation-function-info": "Será el optimizador que se usará para activar la función"
+          "activation-function-info": "Será el optimizador que se usará para activar la función",
+          "strides": "Strides",
+          "strides-placeholder": "Introduce el strides de la capa",
+          "pool-size": "Pool size",
+          "pool-size-placeholder": "Introduce el pool size de la capa"
         },
         "editor-feature-selector": {
           "title": "Selector de características",
@@ -1412,7 +1476,7 @@
           "learning-rate": "Tasa de aprendizaje",
           "learning-rate-placeholder": "Introduce la tasa de aprendizaje",
           "learning-rate-info": "Valor entre 0 y 100 (es un porcentaje)",
-          "number-of-epochs": "N. Épocas",
+          "number-of-epochs": "N. épocas",
           "number-of-epochs-placeholder": "Número de épocas",
           "number-of-epochs-info": "Mientras más alto sea, mas tardará en ejecutarse el entrenamiento",
           "train-rate": "Tamaño del conjunto de pruebas",
@@ -1566,6 +1630,72 @@
           "title": "Selector de modelos",
           "option": "Seleciona un modelo"
         }
+      },
+      "3-image-classification": {
+        "generator": {
+          "manual": {
+            "title": "Manual del generador de modelos",
+            "details-edit-layers": {
+              "title": "Editor de las capas",
+              "text-0": "Se pueden editar las capas de la red neuronal, puedes agregar tantas como desees pulsando el botón \"Añadir capa\" al inicio o al final.",
+              "list": {
+                "0": "<b>Neuronas de la capa</b>:<br /> Cada neurona en una capa está conectada a todas las neuronas de la capa anterior y de la capa siguiente. <br /> Cada neurona en una capa tiene un conjunto de pesos asociados que ponderan su valor de salida. <br /> Podemos editar el número de neuronas de la capa.",
+                "1": "<b>Función de activación</b>:<br />La función de activación de una neurona se refiere a la función matemática que calcula su salida. Podemos editar la función de activación de las neuronas de cada capa."
+              }
+            },
+            "details-edit-layers-more-info": {
+              "title": "Información adicional capas",
+              "text-0": "Adicionalmente hay dos capas más que son comunes al resto de redes de aprendizaje automático enfocadas en la clasificación de imágenes",
+              "list": {
+                "0": "<b>dense</b> <br /> Crea una capa densa (completamente conectada).",
+                "1": "<b>dropout</b> <br /> El abandono consiste en establecer aleatoriamente una tasa de fracción de unidades de entrada a 0 en cada actualización durante el tiempo de entrenamiento, lo que ayuda a prevenir el sobreajuste.",
+                "2": "<b>embedding</b><br />Asigna números enteros positivos (índices) a vectores densos de tamaño fijo. p.ej. [[4], [20]] -> [[0.25, 0.1], [0.6, -0.2]]",
+                "3": "<b>flatten</b> <br /> Una capa aplanada aplana cada lote en sus entradas a 1D (haciendo la salida 2D).",
+                "4": "<b>permute</b> <br /> Permuta las dimensiones de la entrada de acuerdo con un patrón dado.",
+                "5": "<b>repetVector</b> <br /> repite la entrada n veces en una nueva dimensin.",
+                "6": "<b>reshape</b> <br /> Revita una entrada a una determinada forma.",
+                "7": "<b>spatialDropout1d</b> <br /> Versión 1D espacial de dropout."
+              }
+            },
+            "details-hyper-parameters-editor": {
+              "title": "Editor de hiperparámetros",
+              "text-0": "Se pueden editar los parámetros generales necesarios para la creación del modelo. <br />Estos parámetros son:",
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br />Valor entre 0 y 100 el cual indica el porcentaje de cambio de los pesos de la red.",
+                "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
+                "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
+                "5": "<b>Función de métrica</b>:<br />Es la media de evaluación que se utiliza para valorar el rendimiento de un modelo de aprendizaje automático con los datos de prueba."
+              }
+            },
+            "details-hyper-parameters-info": {
+              "title": "Información de hiperparámetros",
+              "list": {
+                "0": "<b>Tasa de aprendizaje</b>:<br /> La tasa de aprendizaje es un parámetro que determina cuánto se deben actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento.",
+                "1": "<b>Número de épocas</b>:<br /> El número de épocas se refiere al número de veces que se presentan los datos de entrenamiento a la red neuronal durante el proceso de entrenamiento. Cada iteración implica una actualización de los pesos de la red en función del error calculado.",
+                "2": "<b>Tamaño del conjunto de pruebas</b>:<br /> El tamaño del conjunto de pruebas se refiere a la cantidad de datos utilizados para evaluar el rendimiento de la red neuronal después del entrenamiento. Este conjunto de datos no se utiliza en el entrenamiento de la red neuronal y se utiliza para medir la capacidad de la red de generalizar a datos nuevos.",
+                "3": "<b>Optimizador</b>:<br /> El optimizador es un algoritmo utilizado para actualizar los pesos de la red neuronal en función del error calculado durante el entrenamiento. Algunos ejemplos de optimizadores son el Descenso del Gradiente Estocástico (SGD), el Adam y el Adagrad.",
+                "4": "<b>Función de pérdida</b>:<br /> La función de pérdida es una medida del error entre las predicciones de la red neuronal y las salidas reales. Se utiliza para optimizar la red neuronal durante el entrenamiento y existen diferentes funciones de pérdida, como la Entropía Cruzada y el Error Cuadrático Medio."
+              }
+            },
+            "details-create-and-train-models": {
+              "title": "Crear y entrenar modelo",
+              "text-0": "Una vez se han rellenado todos los campos anteriores podemos crear el modelo pulsando el botón \"Crear y entrenar modelo\".",
+              "text-1": "Si se pulsa el botón \"Abrir Visor\" se muestran dos gráficas. La gráfica superior muestra la evolución de la función de pérdida durante el entrenamiento. La gráfica inferior muestra la evolución de la métrica de evaluación <i>accuracy<i>. En las gráficas el color azul representa la evolución de los valores en el conjunto de entrenamiento y el color naranja representa las medidas para el conjunto de prueba.",
+              "text-2": "La precisión de validación es importante para detectar el sobre ajuste (<i>overfitting</i>) del modelo, que se produce cuando el modelo se ajusta demasiado a los datos de entrenamiento y no generaliza bien a nuevos datos."
+            },
+            "details-export-models": {
+              "title": "Exportar modelo",
+              "text-0": "Si hemos creado el modelo correctamente se añadirá una entrada en la tabla de modelos generados. La aplicación permite exportar los modelos generados y guardarlos localmente."
+            },
+            "details-prediction": {
+              "title": "Clasificación",
+              "text-0": "El formulario final nos permite dibujar o subir una imagen para determinar la clase.",
+              "text-1": "Al pulsar el botón \"Ver resultado\",  a partir de las características de entrada del elemento se obtiene la predicción de su clase de salida."
+            }
+          }
+        }
       }
     },
     "dataframe": {
@@ -1649,6 +1779,12 @@
         "1-description-2": "En el modelo de MNIST se permite seleccionar entre una lista de imágenes que contienen un número, dibujar en un canvas el número a predecir o subir una imagen de un número.",
         "1-description-3": "En el modelo de MobileNet se han incluido una lista de imágenes de ejemplo que pueden ser seleccionadas o podemos subir una imagen que la red neuronal clasificará.",
         "1-description-4": "Para ambos modelos el sistema mostrará la predicción con el porcentaje de precisión calculado."
+      },
+      "layer-editor": {
+        "title": "Editor de capas"
+      },
+      "hyperparameters-editor": {
+        "title": "Editor de hiperparámetros"
       }
     },
     "glossary": {
@@ -1868,7 +2004,8 @@
       "list-models-generated": "Lista modelos generados",
       "learning-rate": "Tasa de aprendizaje",
       "test-size": "Tamaño del conjunto de pruebas",
-      "n-of-epochs": "N. Épocas",
+      "n-of-epochs": "N. épocas",
+      "n-epochs": "N. épocas",
       "id-optimizer": "Optimizador",
       "id-loss": "Pérdida",
       "id-metrics": "Métrica",
@@ -1884,7 +2021,17 @@
     "dataset": "Conjunto de datos",
     "model": "Modelo",
     "generated-models": "Modelos generados",
-    "predict": "Clasificar"
+    "predict": "Predecir",
+    "classify": "Clasificar",
+    "tasks": "Tareas",
+    "00-tabular-classification": "Clasificación Tabular",
+    "01-linear-regression": "Regresión Lineal",
+    "02-object-detection": "Detección de objetos",
+    "03-image-classification": "Clasificación de imágenes",
+    "optimization-function": "Funciones de optimización",
+    "activation-functions": "Funciones de activación",
+    "loss-functions": "Funciones de pérdida",
+    "metric-function": "Funciones de métrica"
   },
   "form-dataframe": {
     "int32": "Entero",
@@ -1907,5 +2054,62 @@
   "upload-dataset-info": "Debes subir un conjunto de datos para realizar la tarea.",
   "upload-model-info": "Debes subir un modelo para realizar la tarea.",
   "select-attr": "Selecciona atributo",
-  "upload-dataset": "Subir conjunto de datos"
+  "upload-dataset": "Subir conjunto de datos",
+  "00-tc": {
+    "car": {
+      "buying": "Precio de compra",
+      "maint": "Precio del mantenimiento",
+      "doors": "Número de puertas",
+      "persons": "Capacidad de personas",
+      "lug_boot": "Tamaño del maletero",
+      "safety": "Seguridad estimada del coche.",
+      "unacc": "Inaceptable",
+      "acc": "Aceptable",
+      "good": "Bueno",
+      "vgood": "Muy bueno"
+    },
+    "iris": {
+      "sepal_length": "Longitud sépalo",
+      "sepal_width": "Anchura sépalo",
+      "petal_length": "Longitud petalo",
+      "petal_width": "Anchura petalo",
+      "class": "Clase",
+      "Iris-setosa": "Iris setosa",
+      "Iris-versicolor": "Iris versicolor",
+      "Iris-virginica": "Iris virginica"
+    },
+    "lymphography": {
+      "lymphatics": "lymphatics",
+      "block of affere": "block of affere",
+      "bl": {
+        " of lymph": {
+          " c": "bl. of lymph. c",
+          " s": "bl. of lymph. s"
+        }
+      },
+      "by pass": "by pass",
+      "extravasates": "extravasates",
+      "regeneration": "regeneration",
+      "early uptake in": "early uptake in",
+      "lym": {
+        "nodes dimin": "lym.nodes dimin",
+        "nodes enlar": "lym.nodes enlar"
+      },
+      "changes in lym": "changes in lym",
+      "defect in node": "defect in node",
+      "changes in node": "changes in node",
+      "changes in stru": "changes in stru",
+      "special forms": "special forms",
+      "dislocation of": "dislocation of",
+      "exclusion of": "exclusion of",
+      "no": {
+        " of nodes in": "no. of nodes in"
+      },
+      "Category": "Category",
+      "normal find": "Normal",
+      "metastases": "Metastasis",
+      "malign lymph": "Linfoma maligno",
+      "fibrosis": "Fibrosis"
+    }
+  }
 }

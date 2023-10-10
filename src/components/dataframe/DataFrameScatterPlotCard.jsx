@@ -1,7 +1,7 @@
 import '@styles/ScrollBar.css'
 import React, { useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
 import DataFrameScatterPlot from '@components/dataframe/DataFrameScatterPlot'

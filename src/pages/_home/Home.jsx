@@ -233,16 +233,18 @@ export default function Home () {
                 </Button>
               </div>
             </Col>
-            <Col className={'mt-3'}>
-              <div className="d-grid gap-2">
-                <Button variant={'danger'}
-                        size={'lg'}
-                        data-testid={'Test-InitialMenu-LinearRegression'}
-                        onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
-                  <Trans i18nKey={'pages.index.linear-regression.1-title'} />
-                </Button>
-              </div>
-            </Col>
+            {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
+              <Col className={'mt-3'}>
+                <div className="d-grid gap-2">
+                  <Button variant={'danger'}
+                          size={'lg'}
+                          data-testid={'Test-InitialMenu-LinearRegression'}
+                          onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
+                    <Trans i18nKey={'pages.index.linear-regression.1-title'} />
+                  </Button>
+                </div>
+              </Col>
+            }
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button variant={'info'}
@@ -252,7 +254,6 @@ export default function Home () {
                 </Button>
               </div>
             </Col>
-
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button variant={'warning'}
