@@ -4,9 +4,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 
 export default function LinearRegressionDatasetForm () {
   // const prefix = 'pages.playground.generator.'
-  const { iModelInfo } = useContext(LinearRegressionContext)
+  const { iModelInstance } = useContext(LinearRegressionContext)
 
-  return <>
-    {iModelInfo._KEY}
-  </>
+  return <>{iModelInstance._KEY}</>
 }

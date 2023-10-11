@@ -7,20 +7,13 @@ import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
 
-import {
-  MODEL_1_SALARY,
-  MODEL_2_AUTO_MPG,
-  MODEL_3_BOSTON_HOUSING,
-  MODEL_4_BREAST_CANCER,
-  MODEL_5_STUDENT_PERFORMANCE,
-  MODEL_6_WINE,
-} from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
+import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   const { id } = useParams()
@@ -29,7 +22,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const { t } = useTranslation()
   const refPlotJS = useRef()
 
-  const [iModel, setIModel] = useState(null)
+  const [iModelInstance, setIModelInstance] = useState(new I_MODEL_LINEAR_REGRESSION(t, () => {}))
 
   const [datasets, setDatasets] = useState([])
   const [datasets_Index, setDatasets_Index] = useState(0)
@@ -46,43 +39,36 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   useEffect(() => {
     // const dataset_ID = parseInt(dataset)
     // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
-    const modelClasses = {
-      [MODEL_1_SALARY.KEY]             : MODEL_1_SALARY,
-      [MODEL_2_AUTO_MPG.KEY]           : MODEL_2_AUTO_MPG,
-      [MODEL_3_BOSTON_HOUSING.KEY]     : MODEL_3_BOSTON_HOUSING,
-      [MODEL_4_BREAST_CANCER.KEY]      : MODEL_4_BREAST_CANCER,
-      [MODEL_5_STUDENT_PERFORMANCE.KEY]: MODEL_5_STUDENT_PERFORMANCE,
-      [MODEL_6_WINE.KEY]               : MODEL_6_WINE,
-    }
-    const selectedModelClass = modelClasses[dataset]
-    if (selectedModelClass) {
-      setIModel(new selectedModelClass(t, {}))
+
+    if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
+      const _iModelClass = MAP_LR_CLASSES[dataset]
+      setIModelInstance(new _iModelClass(t, {}))
     } else {
-      console.error('Error, incorrect model', dataset)
+      console.error('Error, option not valid', dataset)
     }
   }, [dataset, t])
 
   useEffect(() => {
     async function init () {
-      if (iModel !== null) {
-        const _datasets = (await iModel.DATASETS()).datasets
+      if (iModelInstance !== null) {
+        const _datasets = (await iModelInstance.DATASETS()).datasets
         setDatasets(_datasets)
       }
     }
 
     init().then(_r => undefined)
-  }, [iModel])
+  }, [iModelInstance])
 
   useEffect(() => {
     async function init () {
-      if (iModel !== null && datasets.length > 0) {
-        const _listModels = (await iModel.MODELS(datasets[datasets_Index].csv))
+      if (iModelInstance !== null && datasets.length > 0) {
+        const _listModels = (await iModelInstance.MODELS(datasets[datasets_Index].csv))
         setListModels(_listModels)
       }
     }
 
     init().then(_r => undefined)
-  }, [datasets, datasets_Index, iModel])
+  }, [datasets, datasets_Index, iModelInstance])
 
   useEffect(() => {
     if (listModels.length === 0) {
@@ -153,12 +139,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
           </Col>
         </Row>
 
-        {iModel !== null &&
+        {iModelInstance !== null &&
           <Row>
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top border-info mt-3'}>
                 <Card.Header>
-                  <h3><Trans i18nKey={iModel.i18n_TITLE} /></h3>
+                  <h3><Trans i18nKey={iModelInstance.i18n_TITLE} /></h3>
                 </Card.Header>
                 <Card.Body>
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
@@ -176,7 +162,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                     </Form.Text>
                   </Form.Group>
 
-                  {iModel.DESCRIPTION()}
+                  {iModelInstance.DESCRIPTION()}
 
                 </Card.Body>
               </Card>

@@ -1,5 +1,5 @@
 import { Trans } from 'react-i18next'
-import { I_MODEL_OBJECT_DETECTION } from './_model'
+import I_MODEL_OBJECT_DETECTION from './_model'
 import * as coCoSsdDetection from '@tensorflow-models/coco-ssd'
 
 export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {

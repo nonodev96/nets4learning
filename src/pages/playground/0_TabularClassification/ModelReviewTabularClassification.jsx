@@ -12,7 +12,7 @@ import {
 import alertHelper from '@utils/alertHelper'
 import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
 import { CONSOLE_LOG_h3, VERBOSE } from '@/CONSTANTS'
-import { MAP_TC_MODEL } from '@pages/playground/0_TabularClassification/models'
+import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
 import ModelReviewTabularClassificationDatasetTable from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationDatasetTable'
 import ModelReviewTabularClassificationDatasetInfo from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationDatasetInfo'
 import ModelReviewTabularClassificationPredict from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationPredict'
@@ -43,63 +43,68 @@ export default function ModelReviewTabularClassification (props) {
   const [tableHead, setTableHead] = useState([])
   const [tableBody, setTableBody] = useState([])
 
+  const handleChange_onProgress = (fraction) => {
+    console.log(fraction)
+  }
+
   useEffect(() => {
-    console.log('useEffect [progress]')
+    console.debug('useEffect [progress]')
     const interval = setInterval(() => {
       if (progress < 90) {
-        setProgress(progress + 1)
+        setProgress(progress + 10)
       } else {
         clearInterval(interval)
       }
     }, 50)
     return () => clearInterval(interval)
   }, [progress])
-
-  async function init () {
-    const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === dataset)
-    if (!isValid) {
-      await alertHelper.alertError('Error en la selección del modelo')
-      return
-    }
-    if (dataset === UPLOAD) {
-      await alertHelper.alertError(t('alert.error.dataset-not-valid'))
-      return
-    }
-    const _iModelClass = MAP_TC_MODEL[dataset]
-
-    if (_iModelClass) {
-      const _iModelInstance = new _iModelClass(t)
-
-      const _tableHead = _iModelInstance.TABLE_HEADER
-      const _tableBody = _iModelInstance.DATA
-      setTableHead(_tableHead)
-      setTableBody(_tableBody)
-
-      try {
-        setDataToTest(_iModelInstance.DATA_DEFAULT)
-        setTextToTest(Object.values(_iModelInstance.DATA_DEFAULT).join(';'))
-        const _loadedModel = await _iModelInstance.loadModel()
-
-        setIsLoading(false)
-        setIModelInstance(_iModelInstance)
-        setModel(_loadedModel)
-        setIsButtonDisabled(false)
-        console.log(`%cLoad model ${_iModelClass.KEY}`, CONSOLE_LOG_h3)
-        await alertHelper.alertSuccess(t('model-loaded-successfully'))
-      } catch (e) {
-        console.error('Error, can\'t load model', { e })
-      }
-    } else {
-      console.error('Error, model not valid')
-    }
-  }
+  
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: `/ModelReviewTabularClassification/${dataset}`, title: dataset })
+    async function init () {
+      const isValid = LIST_MODELS_TABULAR_CLASSIFICATION.some((e) => e === dataset)
+      if (!isValid) {
+        await alertHelper.alertError('Error en la selección del modelo')
+        return
+      }
+      if (dataset === UPLOAD) {
+        await alertHelper.alertError(t('alert.error.dataset-not-valid'))
+        return
+      }
+
+      if (MAP_TC_CLASSES.hasOwnProperty(dataset)) {
+        const _iModelClass = MAP_TC_CLASSES[dataset]
+        const _iModelInstance = new _iModelClass(t)
+        const datasets = await _iModelInstance.DATASETS()
+
+        const _tableHead = _iModelInstance.TABLE_HEADER
+        const _tableBody = datasets[0].data_original
+        setTableHead(_tableHead)
+        setTableBody(_tableBody)
+
+        try {
+          setDataToTest(_iModelInstance.DATA_DEFAULT)
+          setTextToTest(Object.values(_iModelInstance.DATA_DEFAULT).join(';'))
+          const _loadedModel = await _iModelInstance.LOAD_GRAPH_MODEL(handleChange_onProgress)
+
+          setIsLoading(false)
+          setIModelInstance(_iModelInstance)
+          setModel(_loadedModel)
+          setIsButtonDisabled(false)
+          console.log(`%cLoad model ${_iModelClass.KEY}`, CONSOLE_LOG_h3)
+          await alertHelper.alertSuccess(t('model-loaded-successfully'))
+        } catch (e) {
+          console.error('Error, can\'t load model', { e })
+        }
+      } else {
+        console.error('Error, model not valid')
+      }
+    }
     init().then(r => {
       console.log('init end')
     })
-  }, [])
+  }, [dataset, t])
 
   const handleChange_TestInput = () => {
     setTextToTest(document.getElementById(`formTestInput`).value)
@@ -113,7 +118,9 @@ export default function ModelReviewTabularClassification (props) {
       return
     }
     try {
-      const loadedModel = await tfjs.loadLayersModel(tfjs.io.browserFiles([files.json, files.binary]))
+      const loadedModel = await tfjs.loadLayersModel(tfjs.io.browserFiles([files.json, files.binary]), {
+        onProgress: (fraction) => {console.log('loadLayersModel', { fraction })}
+      })
       setModel(loadedModel)
       setIsLoading(false)
       setIsButtonDisabled(false)

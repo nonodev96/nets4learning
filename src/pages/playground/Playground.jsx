@@ -37,7 +37,7 @@ export default function Playground () {
         } else if (option === 'dataset') {
           return <>
             <LinearRegressionProvider>
-              <LinearRegression dataset_id={example} />
+              <LinearRegression dataset={example} />
             </LinearRegressionProvider>
           </>
         }

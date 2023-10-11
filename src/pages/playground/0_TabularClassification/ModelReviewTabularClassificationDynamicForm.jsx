@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
@@ -7,14 +7,14 @@ export default function ModelReviewTabularClassificationDynamicForm (props) {
     iModelInstance,
     dataToTest,
     setDataToTest,
-    textToTest,
+    // textToTest,
     setTextToTest
   } = props
   const { t } = useTranslation()
 
   const handleChange_Parameter = (key_parameter, value) => {
     setDataToTest((prevState) => ({
-      ...prevState.dataToTest,
+      ...prevState,
       [key_parameter]: value,
     }))
     setTextToTest(Object.values({ ...dataToTest, [key_parameter]: value }).join(';'))

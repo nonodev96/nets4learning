@@ -18,8 +18,16 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
     this.t = _t
   }
 
-  async loadModel () {
+  async LOAD_GRAPH_MODEL (onProgress) {
     throw new Error('Error')
+  }
+
+  DEFAULT_LAYERS () {
+    return []
+  }
+
+  async DATASETS () {
+    return []
   }
 
   function_v_input (element, index, param) {

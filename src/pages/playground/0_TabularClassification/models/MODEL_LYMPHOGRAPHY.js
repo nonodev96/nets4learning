@@ -61,9 +61,20 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  loadModel = async () => {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json')
+  DEFAULT_LAYERS () {
+    return [
+      { units: 18, activation: 'sigmoid' },
+      { units: 10, activation: 'relu' },
+      { units: 4, activation: 'softmax' },
+    ]
   }
+
+  async LOAD_GRAPH_MODEL (onProgress) {
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
+      onProgress: onProgress
+    })
+  }
+
   function_v_input = async function (element, index, param = '') {
     return parseInt(element)
   }

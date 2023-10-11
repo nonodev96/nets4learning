@@ -33,11 +33,9 @@ export default function N4LTablePagination ({ data_head, data_body, rows_per_pag
           .map((r_v, r_i) => {
             return <tr key={'tbody_' + r_i}>
               <th key={'tbody_id_' + r_i}>{(activePage * rowsPerPage) + r_i}</th>
-              {
-                r_v.map((c_v, c_i) => {
-                  return <td key={'tbody_' + r_i + '_' + c_i}>{c_v}</td>
-                })
-              }
+              {r_v.map((c_v, c_i) => {
+                return <td key={'tbody_' + r_i + '_' + c_i}>{c_v}</td>
+              })}
             </tr>
           })}
         </tbody>

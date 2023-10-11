@@ -9,7 +9,9 @@ import TabularClassificationPredictionDynamicForm from '@pages/playground/0_Tabu
 
 export default function TabularClassificationPrediction ({
   dataset,
-  dataset_JSON,
+  datasets,
+  datasetIndex,
+
   dataProcessed,
   predictionBar,
   generatedModels,
@@ -45,32 +47,32 @@ export default function TabularClassificationPrediction ({
   }
 
   useEffect(() => {
-    if (dataset_JSON?.data?.length > 0) {
-      const rowDefault = dataset_JSON.data[0]
+    if (datasets[datasetIndex]?.data?.length > 0) {
+      const rowDefault = datasets[datasetIndex].data[0]
       const defaultString = rowDefault.slice(0, -1).join(';')
       setStringToPredict(defaultString)
 
-      dataset_JSON.attributes.forEach((att) => {
+      datasets[datasetIndex].attributes.forEach((att) => {
         setObjectToPredict(oldState => ({
           ...oldState,
           [att.name]: rowDefault[att.index_column],
         }))
       })
     }
-  }, [dataset_JSON, setStringToPredict, setObjectToPredict])
+  }, [datasets, datasetIndex, setStringToPredict, setObjectToPredict])
 
   const handleChange_ROW = (e) => {
     let row_index = parseInt(e.target.value)
-    setStringToPredict(dataset_JSON.data[row_index].slice(0, -1).join(';'))
+    setStringToPredict(datasets[datasetIndex].data[row_index].slice(0, -1).join(';'))
 
-    dataset_JSON.attributes.forEach((att) => {
+    datasets[datasetIndex].attributes.forEach((att) => {
       setObjectToPredict(oldState => ({
         ...oldState,
-        [att.name]: dataset_JSON.data[row_index][att?.index_column],
+        [att.name]: datasets[datasetIndex].data[row_index][att?.index_column],
       }))
 
       document.getElementById('FormControl_' + att.index_column).value =
-        dataset_JSON.data[row_index][att?.index_column]
+        datasets[datasetIndex].data[row_index][att?.index_column]
     })
   }
   const handleChange_Model = (e) => {
@@ -81,9 +83,9 @@ export default function TabularClassificationPrediction ({
 
   const canRender_PredictDynamicForm = () => {
     if (dataset === UPLOAD) {
-      return (dataset_JSON || dataProcessed) && Model
+      return (datasets[datasetIndex] || dataProcessed) && Model
     } else {
-      return (dataset_JSON) && Model
+      return (datasets[datasetIndex]) && Model
     }
   }
 
@@ -93,12 +95,12 @@ export default function TabularClassificationPrediction ({
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /> {generatedModelsIndex !== -1 && <>| <Trans i18nKey={'model.__index__'} values={{ index: generatedModelsIndex }} /></>}</h3>
         <div className={'d-flex'}>
-          {(generatedModels.length !== 0 && dataset_JSON?.data?.length > 0) && <>
+          {(generatedModels.length !== 0 && datasets[datasetIndex]?.data?.length > 0) && <>
             <Form.Group controlId={'DATA'} className={'joyride-step-select-instance'}>
               <Form.Select aria-label={t(prefix + 'selector-entity')}
                            size={'sm'}
                            onChange={(e) => handleChange_ROW(e)}>
-                {dataset_JSON.data.map((row, index) => {
+                {datasets[datasetIndex].data.map((row, index) => {
                   return <option key={'option_' + index} value={index}>
                     Id row: {index.toString().padStart(3, '0')} - Target: {row.slice(-1)}
                   </option>
@@ -135,10 +137,11 @@ export default function TabularClassificationPrediction ({
           <Form onSubmit={(e) => handleSubmit_PredictVector(e)}>
             <Card.Text>
               <Trans i18nKey={prefix + 'text-0'} /><br />
-              <b>({dataset_JSON.attributes.map(att => att.name).join(', ')}).</b>
+              <b>({datasets[datasetIndex].attributes.map(att => att.name).join(', ')}).</b>
             </Card.Text>
             <Row>
-              <TabularClassificationPredictionDynamicForm dataset_JSON={dataset_JSON}
+              <TabularClassificationPredictionDynamicForm datasets={datasets}
+                                                          datasetIndex={datasetIndex}
                                                           stringToPredict={stringToPredict}
                                                           setStringToPredict={setStringToPredict}
                                                           setObjectToPredict={setObjectToPredict} />

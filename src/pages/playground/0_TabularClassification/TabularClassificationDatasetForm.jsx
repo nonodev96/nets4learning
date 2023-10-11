@@ -10,12 +10,12 @@ export class Parser {
   /**
    * @typedef {Object} Parser_list_column_type_to_transform_t
    * @property {string} column_name,
-   * @property {"int32"|"float32"|"string"|"label-encoder"|"one-hot-encoder"|"drop"|"ignored"} column_type,
+   * @property {'int32'|'float32'|'string'|'label-encoder'|'one-hot-encoder'|'drop'|'ignored'} column_type,
    */
 
   /**
    * @typedef {Object} Parser_params_t
-   * @property {"min-max-scaler"|"standard-scaler"} type_scaler
+   * @property {'min-max-scaler'|'standard-scaler'} type_scaler
    */
   /**
    * @typedef TYPE_ATTRIBUTES_OPTIONS_LIST
@@ -37,7 +37,7 @@ export class Parser {
   /**
    * @typedef TYPE_ATTRIBUTES_NUMBER
    * @type {Object}
-   * @property {"int32"|"float32"} type
+   * @property {'int32'|'float32'} type
    * @property {number} index_column
    * @property {string} name
    */
@@ -77,14 +77,14 @@ export class Parser {
    * @param {Parser_params_t} params
    *
    * @return {{
-   * dataframeProcessed: dfd.DataFrame,
-   * scaler: dfd.MinMaxScaler | dfd.StandardScaler,
-   * X: dfd.DataFrame,
-   * y: dfd.DataFrame,
-   * obj_encoder: {},
-   * attributes: *[],
-   * classes: *[],
-   * data: any
+   * dataframe_processed: dfd.DataFrame,
+   * scaler             : dfd.MinMaxScaler | dfd.StandardScaler,
+   * X                  : dfd.DataFrame,
+   * y                  : dfd.DataFrame,
+   * obj_encoder        : {},
+   * attributes         : *[],
+   * classes            : *[],
+   * data               : any
    * }}
    */
   static transform (dataframeOriginal,
@@ -262,15 +262,15 @@ export class Parser {
     }
 
     return {
-      dataframeProcessed: newDataframe,
-      column_name_target: column_name_target,
-      obj_encoder       : obj_encoder,
-      scaler            : scaler,
-      X                 : dataframe_X,
-      y                 : dataframe_y,
-      attributes        : list_attributes,
-      classes           : list_classes,
-      data              : data,
+      dataframe_processed: newDataframe,
+      column_name_target : column_name_target,
+      obj_encoder        : obj_encoder,
+      scaler             : scaler,
+      X                  : dataframe_X,
+      y                  : dataframe_y,
+      attributes         : list_attributes,
+      classes            : list_classes,
+      data               : data,
     }
   }
 }
@@ -287,26 +287,13 @@ const cellStyle = {
   font : { family: 'Arial', size: 11, color: ['black'] },
 }
 
-/**
- *
- * @param {{
- *   dataframeOriginal    : dfd.DataFrame,
- *   dataProcessed        : DataProcessedState_t,
- *   setDataProcessed     : Function,
- *   setIsDatasetProcessed: Function,
- *   setCustomDataSet_JSON: Function,
- *   setLayers            : Function
- * }} props
- */
-export default function TabularClassificationForm (props) {
+export default function TabularClassificationDatasetForm (props) {
   const {
-    dataframeOriginal,
-    dataProcessed,
-
-    setDataProcessed,
-    setIsDatasetProcessed,
-    setCustomDataSet_JSON,
-    setLayers
+    // TODO
+    datasets,
+    setDatasets,
+    datasetIndex,
+    setDatasetIndex,
   } = props
 
   const [listColumnTypeProcessed_X, setListColumnTypeProcessed_X] = useState([])
@@ -328,28 +315,28 @@ export default function TabularClassificationForm (props) {
   ]
 
   useEffect(() => {
-    if (dataframeOriginal === null) return
-    const list_X = dataframeOriginal.columns.slice(0, -1).map((column_name, i) => {
-      const dtype = dataframeOriginal.dtypes[i]
+    if (datasets[datasetIndex].dataframe_original === null) return
+    const list_X = datasets[datasetIndex].dataframe_original.columns.slice(0, -1).map((column_name, i) => {
+      const dtype = datasets[datasetIndex].dataframe_original.dtypes[i]
       return {
         column_name: column_name,
         column_type: (dtype === 'string') ? 'label-encoder' : dtype,
       }
     })
     setListColumnTypeProcessed_X(list_X)
-    const list_y = dataframeOriginal.columns.slice(-1).map((column_name, i) => {
+    const list_y = datasets[datasetIndex].dataframe_original.columns.slice(-1).map((column_name, i) => {
       return {
         column_name: column_name,
-        column_type: dataframeOriginal.dtypes[i]
+        column_type: datasets[datasetIndex].dataframe_original.dtypes[i]
       }
     })
     list_y[list_y.length - 1].column_type = 'label-encoder'
     setListColumnTypeProcessed_y(list_y)
 
-  }, [dataframeOriginal])
+  }, [datasets, datasetIndex])
 
   useEffect(() => {
-    dataframeOriginal.plot('plot_original').table({
+    datasets[datasetIndex].dataframe_original.plot('plot_original').table({
       config: {
         tableHeaderStyle: headerStyle,
         tableCellStyle  : cellStyle,
@@ -358,11 +345,19 @@ export default function TabularClassificationForm (props) {
         title: t('dataframe-original'),
       },
     })
-  }, [dataframeOriginal, t])
+  }, [datasets, datasetIndex, t])
 
   useEffect(() => {
-    if (dataProcessed === null) return
-    dataProcessed.dataframeProcessed.plot('plot_processed').table({
+    if (!datasets[datasetIndex].is_dataset_processed) {
+      console.log("!datasets[datasetIndex].is_dataset_processed")
+      return
+    }
+    if (datasets[datasetIndex].dataframe_processed === null) {
+      console.log("!datasets[datasetIndex].dataframe_processed")
+      return
+    }
+
+    datasets[datasetIndex].dataframe_processed.plot('plot_processed').table({
       config: {
         tableHeaderStyle: headerStyle,
         tableCellStyle  : cellStyle,
@@ -371,7 +366,7 @@ export default function TabularClassificationForm (props) {
         title: t('dataframe-processed'),
       },
     })
-  }, [dataProcessed, t])
+  }, [datasets, datasetIndex, t])
 
   const handleChange_cType = (e, column_name, set_array) => {
     set_array(old_array => [
@@ -392,48 +387,47 @@ export default function TabularClassificationForm (props) {
 
   const handleSubmit_ProcessDataFrame = async (event) => {
     event.preventDefault()
-    const list = [...listColumnTypeProcessed_X, ...listColumnTypeProcessed_y]
+    // const list = [...listColumnTypeProcessed_X, ...listColumnTypeProcessed_y]
 
-    const {
-      dataframeProcessed,
-      obj_encoder,
-      scaler,
-      column_name_target,
-      X,
-      y,
-      attributes,
-      classes,
-      data,
-    } = Parser.transform(dataframeOriginal, list, { type_scaler: typeScaler })
-
-    setLayers((old_layer) => changeUnitsLastLayer(old_layer, classes.length))
-    setDataProcessed({
-      dataframeProcessed,
-      obj_encoder,
-      typeScaler,
-      scaler,
-      column_name_target,
-      X,
-      y,
-
-      attributes,
-      classes,
-    })
-    setIsDatasetProcessed(true)
-    setCustomDataSet_JSON({
-      missing_values   : false,
-      missing_value_key: '',
-      attributes       : attributes,
-      classes          : classes,
-      data             : data,
-    })
+    // const {
+    //   dataframe_processed,
+    //   obj_encoder,
+    //   scaler,
+    //   column_name_target,
+    //   X,
+    //   y,
+    //   attributes,
+    //   classes,
+    //   data,
+    // } = Parser.transform(dataframeOriginal, list, { type_scaler: typeScaler })
+    //
+    // setLayers((old_layer) => changeUnitsLastLayer(old_layer, classes.length))
+    // setDataProcessed({
+    //   dataframe_processed,
+    //   obj_encoder,
+    //   typeScaler,
+    //   scaler,
+    //   column_name_target,
+    //   X,
+    //   y,
+    //
+    //   attributes,
+    //   classes,
+    // })
+    // TODO
+    // setCustomDataSet_JSON({
+    //   missing_values   : false,
+    //   missing_value_key: '',
+    //   attributes       : attributes,
+    //   classes          : classes,
+    //   data             : data,
+    // })
     await alertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
   }
 
-  if(VERBOSE) console.debug('render TabularClassificationCustomDatasetForm')
+  if (VERBOSE) console.debug('render TabularClassificationCustomDatasetForm')
   return <>
     <Form onSubmit={handleSubmit_ProcessDataFrame}>
-
       <Row>
         <Col xxl={12}>
           <details open={true}>

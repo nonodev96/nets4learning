@@ -2,25 +2,28 @@ import React, { useEffect } from 'react'
 import { Col, Form } from 'react-bootstrap'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function TabularClassificationPredictionDynamicForm ({
-  dataset_JSON,
-  stringToPredict = '',
-  setStringToPredict,
-  setObjectToPredict,
-}) {
+export default function TabularClassificationPredictionDynamicForm (props) {
+  const {
+    datasets,
+    datasetIndex,
+
+    stringToPredict = '',
+    setStringToPredict,
+    setObjectToPredict,
+  } = props
 
   useEffect(() => {
-    const rowDefault = dataset_JSON.data[0]
+    const rowDefault = datasets[datasetIndex].data[0]
     const defaultString = rowDefault.slice(0, -1).join(';')
     setStringToPredict(defaultString)
 
-    dataset_JSON.attributes.forEach((att) => {
+    datasets[datasetIndex].attributes.forEach((att) => {
       setObjectToPredict(oldState => ({
         ...oldState,
         [att.name]: rowDefault[att.index_column],
       }))
     })
-  }, [dataset_JSON, setStringToPredict, setObjectToPredict])
+  }, [datasets, datasetIndex, setStringToPredict, setObjectToPredict])
 
   const handleChange_Float = (e, column_name, index_column) => {
     const text_split = stringToPredict.split(';')
@@ -60,7 +63,7 @@ export default function TabularClassificationPredictionDynamicForm ({
 
   if (VERBOSE) console.debug('Render TabularClassificationDynamicFormPrediction')
   return <>
-    {dataset_JSON.attributes.map((attribute, index) => {
+    {datasets[datasetIndex].attributes.map((attribute, index) => {
       // VALUES:
       // { name: "type1", type: "int32" },
       // { name: "type2", type: "float32"  },
@@ -82,7 +85,7 @@ export default function TabularClassificationPredictionDynamicForm ({
                             placeholder={'int32'}
                             min={0}
                             step={1}
-                            defaultValue={parseInt(dataset_JSON.data[0][column_index])}
+                            defaultValue={parseInt(datasets[datasetIndex].data_original[0][column_index])}
                             onChange={(e) => handleChange_Number(e, column_name, column_index)} />
               <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
             </Form.Group>
@@ -98,7 +101,7 @@ export default function TabularClassificationPredictionDynamicForm ({
                             placeholder={'float32'}
                             min={0}
                             step={0.1}
-                            defaultValue={parseFloat(dataset_JSON.data[0][column_index])}
+                            defaultValue={parseFloat(datasets[datasetIndex].data_original[0][column_index])}
                             onChange={(e) => handleChange_Float(e, column_name, column_index)} />
               <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
             </Form.Group>
@@ -117,7 +120,7 @@ export default function TabularClassificationPredictionDynamicForm ({
               <Form.Label><b>{column_name}</b></Form.Label>
               <Form.Select aria-label="select"
                            size={'sm'}
-                           defaultValue={dataset_JSON.data[0][column_index]}
+                           defaultValue={datasets[datasetIndex].data_original[0][column_index]}
                            onChange={(e) => handleChange_Select(e, column_name, column_index)}>
                 {column_options.map((option_value, option_index) => {
                   return <option key={column_name + '_option_' + option_index}

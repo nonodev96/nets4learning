@@ -113,6 +113,44 @@ export function TransformArrayToSeriesTensor (series) {
   return new dfd.Series(series).tensor
 }
 
+export function DataFrameEncoder (dataframe, dataframe_transforms) {
+  const transformer = {
+    // [column_name]: {
+    // type   : 'label-encoder',
+    // type   : 'one-hot-encoder',
+    // encoder: encode.transform
+    // }
+  }
+  for (const { column_transform, column_name } of dataframe_transforms) {
+    switch (column_transform) {
+      case 'label-encoder': {
+        const encode = new dfd.LabelEncoder()
+        const _serie = dataframe[column_name]
+        encode.fit(_serie)
+        transformer[column_name] = {
+          type   : 'label-encoder',
+          encoder: encode.transform
+        }
+        break
+      }
+      case 'one-hot-encoder': {
+        const encode = new dfd.OneHotEncoder()
+        const _serie = dataframe[column_name]
+        encode.fit(_serie)
+        transformer[column_name] = {
+          type   : 'label-encoder',
+          encoder: encode.transform
+        }
+        break
+      }
+      default: {
+        break
+      }
+    }
+  }
+  return transformer
+}
+
 /**
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
@@ -136,10 +174,18 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         dataframe.fillNa(values, { columns: [column_name], inplace: true })
         break
       }
+      case 'label-encoder': {
+        const encode = new dfd.LabelEncoder()
+        const _serie = dataframe[column_name]
+        encode.fit(_serie)
+        for (const [oldValue, newValue] of Object.entries(encode.$labels)) {
+          dataframe.asType(column_name, 'string', { inplace: true })
+          dataframe.replace(oldValue, newValue.toString(), { columns: [column_name], inplace: true })
+        }
+        break
+      }
       case 'drop_?': {
-        /**
-         * @type {number[]}
-         */
+        /** @type {number[]} */
         let index_to_drop = dataframe.query(dataframe[column_name].eq('?')).index
         dataframe.drop({ index: index_to_drop, inplace: true })
         break
@@ -158,4 +204,13 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
     }
   }
   return dataframe
+}
+
+/**
+ * @param {dfd.DataFrame} dataframe
+ *
+ * @return {any[][]}
+ */
+export function DataFrameIterRows (dataframe) {
+  return dataframe.$data
 }

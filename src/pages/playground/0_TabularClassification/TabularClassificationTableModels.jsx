@@ -6,11 +6,12 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function TabularClassificationTableModels ({
-  listModels = [],
-  rowsPerPage = 3,
-  isTraining
-}) {
+export default function TabularClassificationTableModels (props) {
+  const {
+    listModels = [],
+    rowsPerPage = 3,
+    isTraining
+  } = props
   const prefix = 'generator.table-models.'
 
   const [activePage, setActivePage] = useState(0)

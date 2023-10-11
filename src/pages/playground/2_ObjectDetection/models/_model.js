@@ -1,21 +1,20 @@
-export class I_MODEL_OBJECT_DETECTION {
-  TITLE = ""
-  i18n_TITLE = ""
+export default class I_MODEL_OBJECT_DETECTION {
+  TITLE = ''
+  i18n_TITLE = ''
 
-  constructor(_t) {
+  constructor (_t) {
     this.t = _t
   }
 
-  DESCRIPTION() {
+  DESCRIPTION () {
     return <></>
   }
 
-
-  async enable_Model() {
+  async enable_Model () {
 
   }
 
-  render() {
+  render () {
 
   }
 }

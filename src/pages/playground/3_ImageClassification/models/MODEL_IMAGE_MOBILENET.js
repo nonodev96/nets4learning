@@ -1,4 +1,4 @@
-import { I_MODEL_IMAGE_CLASSIFICATION } from './_model'
+import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import { Trans } from 'react-i18next'
 
 export default class MODEL_IMAGE_MOBILENET extends I_MODEL_IMAGE_CLASSIFICATION {

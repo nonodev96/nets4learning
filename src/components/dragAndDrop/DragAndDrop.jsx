@@ -33,16 +33,17 @@ const rejectStyle = {
   borderColor: '#ff1744',
 }
 
-export default function DragAndDrop ({
-  name,
-  id,
-  accept,
-  text,
-  labelFiles = 'Files',
-  multiple = false,
-  function_DropAccepted = (files, event) => console.log('function_DropAccepted', { files, event }),
-  function_DropRejected = (files, event) => console.log('function_Rejected', { files, event }),
-}) {
+export default function DragAndDrop (props) {
+  const {
+    name,
+    id,
+    accept,
+    text,
+    labelFiles = 'Files',
+    multiple = false,
+    function_DropAccepted = (files, event) => console.log('function_DropAccepted', { files, event }),
+    function_DropRejected = (files, event) => console.log('function_Rejected', { files, event }),
+  } = props
   const { t } = useTranslation()
 
   const {
@@ -75,7 +76,7 @@ export default function DragAndDrop ({
     isDragReject,
   ])
 
-  const acceptedFileItems = acceptedFiles.map((file, i) => (
+  const acceptedFileItems = acceptedFiles.map((file) => (
     <li key={file.name}>
       {file.name} - {file.size} bytes
     </li>

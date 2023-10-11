@@ -9,7 +9,8 @@ import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { LIST_MODELS_OBJECT_DETECTION, MODEL_COCO_SSD, MODEL_FACE_DETECTOR, MODEL_FACE_MESH, MODEL_MOVE_NET_POSE_NET, UPLOAD } from '@/DATA_MODEL'
-import { I_MODEL_OBJECT_DETECTION } from './models/_model'
+import I_MODEL_OBJECT_DETECTION from './models/_model'
+import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 
 tfjs.setBackend('webgl').then((r) => {
   console.log('setBackend', { r })
@@ -65,45 +66,31 @@ export default function ModelReviewObjectDetection (props) {
         console.error('Error, data set not valid')
       }
 
-      let _iModel = new I_MODEL_OBJECT_DETECTION(t)
+      let _iModelClases = new I_MODEL_OBJECT_DETECTION(t)
+      if (MAP_OD_CLASSES.hasOwnProperty(dataset)) {
+        const _iModelInstance = MAP_OD_CLASSES[dataset](t)
+        setIModel(_iModelInstance)
 
-      switch (dataset) {
-        case MODEL_FACE_MESH.KEY:
-          _iModel = new MODEL_FACE_MESH(t)
-          break
-        case MODEL_FACE_DETECTOR.KEY:
-          _iModel = new MODEL_FACE_DETECTOR(t)
-          break
-        case MODEL_MOVE_NET_POSE_NET.KEY:
-          _iModel = new MODEL_MOVE_NET_POSE_NET(t)
-          break
-        case MODEL_COCO_SSD.KEY:
-          _iModel = new MODEL_COCO_SSD(t)
-          break
-        default:
-          console.error('Error, option not valid')
-      }
-      setIModel(_iModel)
+        try {
+          await tfjs.ready()
+          console.log('ready', {
+            kernel        : tfjs.getKernel(),
+            backend       : tfjs.getBackend(),
+            kernel_backend: tfjs.getKernelsForBackend(),
+          })
+          if (tfjs.getBackend() !== 'webgl') {
+            await alertHelper.alertError('Backend of tensorflow not installed')
+            return
+          }
 
-      try {
-        await tfjs.ready()
-        console.log('ready', {
-          kernel        : tfjs.getKernel(),
-          backend       : tfjs.getBackend(),
-          kernel_backend: tfjs.getKernelsForBackend(),
-        })
-        if (tfjs.getBackend() !== 'webgl') {
-          await alertHelper.alertError('Backend of tensorflow not installed')
-          return
+          const _modelDetector = await _iModelInstance.enable_Model()
+          setModelDetector(_modelDetector)
+          setLoading(false)
+          setProgress(100)
+          await alertHelper.alertSuccess(t('model-loaded-successfully'))
+        } catch (error) {
+          console.error('Error initializing TensorFlow', error)
         }
-
-        const _modelDetector = await _iModel.enable_Model()
-        setModelDetector(_modelDetector)
-        setLoading(false)
-        setProgress(100)
-        await alertHelper.alertSuccess(t('model-loaded-successfully'))
-      } catch (error) {
-        console.error('Error initializing TensorFlow', error)
       }
     }
 

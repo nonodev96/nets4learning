@@ -5,8 +5,8 @@ import Errors from '@shared/Errors'
 
 export default class I_MODEL_LINEAR_REGRESSION {
   _KEY = ''
-  URL_DATASET = ''
   i18n_TITLE = ''
+  URL_DATASET = ''
 
   constructor (_t, _setAccordionActive) {
     this.t = _t

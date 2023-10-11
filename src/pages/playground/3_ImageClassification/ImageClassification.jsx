@@ -5,9 +5,9 @@ import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import ReactGA from 'react-ga4'
 
+import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
 import * as ImageClassificationUtils from './utils/utils'
 import * as TrainMNIST from './custom/Train_MNIST'
-import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
@@ -237,6 +237,7 @@ export default function ImageClassification (props) {
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
                   JOYRIDE_state={iModelInfo.JOYRIDE()}
+                  TASK={'image-classification'}
                   KEY={'ImageClassification'}
       />
 

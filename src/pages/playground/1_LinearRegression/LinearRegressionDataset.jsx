@@ -11,13 +11,13 @@ import { UPLOAD } from '@/DATA_MODEL'
 import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function LinearRegressionDataset ({ dataset_id }) {
+export default function LinearRegressionDataset ({ dataset }) {
 
   const { t } = useTranslation()
   const {
     setDatasets,
     datasetLocal,
-    iModelInfo,
+    iModelInstance,
   } = useContext(LinearRegressionContext)
 
   const handleChange_FileUpload_CSV = async (files, event) => {
@@ -57,7 +57,7 @@ export default function LinearRegressionDataset ({ dataset_id }) {
 
   if (VERBOSE) console.debug('render LinearRegressionDataset')
   return <>
-    {dataset_id === UPLOAD && <>
+    {dataset === UPLOAD && <>
       <DragAndDrop name={'csv'}
                    accept={{ 'text/csv': ['.csv'] }}
                    text={t('drag-and-drop.csv')}
@@ -77,8 +77,6 @@ export default function LinearRegressionDataset ({ dataset_id }) {
         </p>
       </>}
     </>}
-    {dataset_id !== UPLOAD && <>
-      {iModelInfo.DESCRIPTION()}
-    </>}
+    {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}
   </>
 }

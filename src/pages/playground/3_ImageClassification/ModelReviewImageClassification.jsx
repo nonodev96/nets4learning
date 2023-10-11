@@ -19,7 +19,7 @@ import {
   MODEL_IMAGE_RESNET,
 } from '@/DATA_MODEL'
 
-import { I_MODEL_IMAGE_CLASSIFICATION } from './models/_model'
+import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
 import CustomCanvasDrawer from './components/customCanvasDrawer'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -145,7 +145,6 @@ class ModelReviewImageClassification extends React.Component {
   async loadModel () {
     try {
       const isValid = LIST_MODELS_IMAGE_CLASSIFICATION.some((e) => e === this.dataset)
-
       if (!isValid) {
         await alertHelper.alertError(this.t('error.model-selected'))
         return
@@ -170,7 +169,7 @@ class ModelReviewImageClassification extends React.Component {
         case MODEL_IMAGE_RESNET.KEY: {
           this.model = await tf.loadGraphModel(
             'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1',
-            { fromTFHub: true },
+            { fromTFHub: true, onProgress: (fraction) => {console.log({ fraction })} },
           )
           break
         }
@@ -815,7 +814,6 @@ class ModelReviewImageClassification extends React.Component {
             </Button>
           </Modal.Footer>
         </Modal>
-
       </>
     )
   }

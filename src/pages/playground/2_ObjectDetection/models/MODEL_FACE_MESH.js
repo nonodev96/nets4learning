@@ -1,4 +1,4 @@
-import { I_MODEL_OBJECT_DETECTION } from './_model'
+import I_MODEL_OBJECT_DETECTION from './_model'
 import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
 import { Trans } from 'react-i18next'
 

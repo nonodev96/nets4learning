@@ -5,7 +5,7 @@ import Joyride from 'react-joyride'
 import { VERBOSE } from '@/CONSTANTS'
 import { DEFAULT_JOYRIDE_STYLE } from "@/CONSTANTS_JOYRIDE";
 
-export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, KEY = 'DEFAULT' }) {
+export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, TASK = 'DEFAULT', KEY = 'DEFAULT' }) {
 
   const { t } = useTranslation()
 
@@ -38,10 +38,10 @@ export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, KEY 
 
     setJoyride(JOYRIDE_state)
 
-    if (localStorage.getItem('linear-regression.joyride-' + KEY) !== null) {
-      localStorage.setItem('linear-regression.joyride-' + KEY, JSON.stringify({ run: true }))
+    if (localStorage.getItem(`${TASK}.joyride-` + KEY) !== null) {
+      localStorage.setItem(`${TASK}.joyride-` + KEY, JSON.stringify({ run: true }))
     } else {
-      console.debug('else linear-regression.joyride-' + KEY)
+      console.debug(`else ${TASK}.joyride-` + KEY)
     }
   }, [JOYRIDE_state, KEY])
 

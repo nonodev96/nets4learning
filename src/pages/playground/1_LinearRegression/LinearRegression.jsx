@@ -5,11 +5,11 @@ import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootst
 import { Trans, useTranslation } from 'react-i18next'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
-import N4LJoyride from "@components/joyride/N4LJoyride";
+import N4LJoyride from '@components/joyride/N4LJoyride'
 import DebugJSON from '@components/debug/DebugJSON'
 
 import { LIST_MODELS_LINEAR_REGRESSION, UPLOAD } from '@/DATA_MODEL'
-import { MAP_LR_MODEL } from './models'
+import { MAP_LR_CLASSES } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
@@ -32,7 +32,8 @@ const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableM
 const LinearRegressionPrediction = lazy(() => import(  './LinearRegressionPrediction'))
 
 // TODO
-export default function LinearRegression ({ dataset_id }) {
+export default function LinearRegression (props) {
+  const { dataset } = props
   const { id: param_id } = useParams()
 
   // i18n
@@ -57,8 +58,8 @@ export default function LinearRegression ({ dataset_id }) {
     accordionActive,
     setAccordionActive,
 
-    iModelInfo,
-    setIModelInfo,
+    iModelInstance,
+    setIModelInstance,
   } = useContext(LinearRegressionContext)
 
   const refJoyrideButton = useRef({})
@@ -129,29 +130,26 @@ export default function LinearRegression ({ dataset_id }) {
   useEffect(() => {
     console.debug('LinearRegression useEffect[init]')
     const init = async () => {
-      const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset_id)
+      const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset)
       if (!isValid) {
         await alertHelper.alertError('Error in selection of model')
         return
       }
 
-      if (dataset_id === UPLOAD) {
+      if (dataset === UPLOAD) {
         // TODO
         // console.log('TODO')
-      } else {
-        let info_dataset
-        if (MAP_LR_MODEL.hasOwnProperty(dataset_id)) {
-          info_dataset = new MAP_LR_MODEL[dataset_id](t, setAccordionActive)
-        } else {
-          console.error('Error, option not valid')
-        }
-        const { datasets } = await info_dataset.DATASETS()
-        setIModelInfo(info_dataset)
+      } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
+        const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
+        const { datasets } = await _iModelInstance.DATASETS()
+        setIModelInstance(_iModelInstance)
         setDatasets(datasets)
+      } else {
+        console.error('Error, option not valid')
       }
     }
     init().then(() => undefined)
-  }, [dataset_id, t, setIModelInfo, setTmpModel, setAccordionActive, setDatasets])
+  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -168,8 +166,10 @@ export default function LinearRegression ({ dataset_id }) {
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModelInfo.JOYRIDE()}
-                  KEY={'LinearRegression'} />
+                  JOYRIDE_state={iModelInstance.JOYRIDE()}
+                  TASK={'linear-regression'}
+                  KEY={'LinearRegression'}
+      />
 
       <Container>
         <Row className={'mt-2 mb-3'}>
@@ -205,10 +205,10 @@ export default function LinearRegression ({ dataset_id }) {
 
               <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
-                  <h3><Trans i18nKey={dataset_id !== UPLOAD ? iModelInfo.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
-                <Accordion.Body id={'info_model'}>
-                  <Suspense fallback={<></>}><LinearRegressionDataset dataset_id={dataset_id} /></Suspense>
+                <Accordion.Body id={'info-dataset'}>
+                  <Suspense fallback={<></>}><LinearRegressionDataset dataset={dataset} /></Suspense>
                 </Accordion.Body>
               </Accordion.Item>
 
@@ -249,7 +249,7 @@ export default function LinearRegression ({ dataset_id }) {
           </Col>
         </Row>
 
-        <Form onSubmit={dataset_id === UPLOAD ? handleSubmit_TrainModel_Upload : handleSubmit_TrainModel}>
+        <Form onSubmit={dataset === UPLOAD ? handleSubmit_TrainModel_Upload : handleSubmit_TrainModel}>
 
           <Row className={'mt-3'}>
             <Col className={'mb-3'}>

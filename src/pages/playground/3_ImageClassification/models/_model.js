@@ -2,7 +2,7 @@ import { ACTIONS, LIFECYCLE } from 'react-joyride'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 
-export class I_MODEL_IMAGE_CLASSIFICATION {
+export default class I_MODEL_IMAGE_CLASSIFICATION {
   TITLE = ''
   i18n_TITLE = ''
 

@@ -117,8 +117,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {Array<string>} accordionActive
  * @property {React.Dispatch<React.SetStateAction<Array<string>>>} setAccordionActive
  *
- * @property {I_MODEL_LINEAR_REGRESSION} iModelInfo
- * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModelInfo
+ * @property {I_MODEL_LINEAR_REGRESSION} iModelInstance
+ * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModelInstance
  *
  *
  */
@@ -186,8 +186,8 @@ export function LinearRegressionProvider ({ children }) {
   const [listModels, setListModels] = useState(/** @type Array<CustomModelGenerated_t> */[])
 
   const [isTraining, setIsTraining] = useState(false)
-  const [accordionActive, setAccordionActive] = useState([])
-  const [iModelInfo, setIModelInfo] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
+  const [accordionActive, setAccordionActive] = useState(['dataset_info'])
+  const [iModelInstance, setIModelInstance] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
 
   return (
     <LinearRegressionContext.Provider value={{
@@ -212,8 +212,8 @@ export function LinearRegressionProvider ({ children }) {
       accordionActive,
       setAccordionActive,
 
-      iModelInfo,
-      setIModelInfo,
+      iModelInstance,
+      setIModelInstance,
     }}>
       {children}
     </LinearRegressionContext.Provider>

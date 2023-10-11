@@ -103,6 +103,13 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
+  async DEFAULT_LAYERS () {
+    return [
+      { units: 10, activation: 'sigmoid' },
+      { units: 3, activation: 'softmax' },
+    ]
+  }
+
   HTML_EXAMPLE () {
     const prefix = 'datasets-models.0-tabular-classification.iris.html-example.'
     return <>
@@ -113,9 +120,12 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  loadModel = async function () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json')
+  async LOAD_GRAPH_MODEL (onProgress) {
+    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
+      onProgress: onProgress
+    })
   }
+
   function_v_input = async function (element, _index, _param = '') {
     return parseFloat(element)
   }
