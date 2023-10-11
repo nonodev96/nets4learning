@@ -16,7 +16,10 @@ export default function TabularClassificationDatasetShow (props) {
   }
 
   const canRenderDataset = () => {
-    return datasets && datasets.length > 0 && datasetIndex > -1
+    if (datasets && datasets.length > 0 && datasetIndex > -1)
+      if (datasets[datasetIndex].is_dataset_processed)
+        return true
+    return false
   }
 
   return <>
