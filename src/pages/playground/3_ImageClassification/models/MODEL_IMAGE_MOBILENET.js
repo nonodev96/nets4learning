@@ -1,6 +1,18 @@
 import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import { Trans } from 'react-i18next'
 
+
+export const LIST_OF_IMAGES_MOBILENET = [
+  'beef-burger.jpg',
+  'bulldog.jpg',
+  'butterfly.jpg',
+  'cat.jpg',
+  'cheetah.jpg',
+  'cruise.jpg',
+  'duck.jpg',
+  'elephant.jpg',
+  'lion.jpg',
+]
 export default class MODEL_IMAGE_MOBILENET extends I_MODEL_IMAGE_CLASSIFICATION {
   static KEY = 'IMAGE-MOBILENET'
   TITLE = 'datasets-models.3-image-classifier.mobilenet.title'

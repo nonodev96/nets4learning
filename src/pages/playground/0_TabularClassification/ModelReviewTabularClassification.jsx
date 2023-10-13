@@ -78,15 +78,15 @@ export default function ModelReviewTabularClassification (props) {
           const _iModelInstance = new _iModelClass(t)
           setDataToPredict(_iModelInstance.DATA_DEFAULT)
 
-          const datasets = await _iModelInstance.DATASETS()
+          const _datasets = await _iModelInstance.DATASETS()
           const _applyEncoders = DataFrameUtils.DataFrameApplyEncoders(
-            datasets[0].encoders,
+            _datasets[0].encoders,
             _iModelInstance.DATA_DEFAULT,
             _iModelInstance.DATA_DEFAULT_KEYS,
           )
           setVectorToPredict(_applyEncoders)
 
-          const _loadedModel = await _iModelInstance.LOAD_GRAPH_MODEL(handleChange_onProgress)
+          const _loadedModel = await _iModelInstance.LOAD_LAYERS_MODEL({ onProgress: handleChange_onProgress })
           setIsLoading(false)
 
           setIModelInstance(_iModelInstance)

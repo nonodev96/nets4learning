@@ -48,13 +48,13 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
             <Trans i18nKey={prefix + 'details-3-references.list.0'}
                    components={{
                      link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
-                   }}/>
+                   }} />
           </li>
           <li>
             <Trans i18nKey={prefix + 'details-3-references.list.1'}
                    components={{
                      link1: <a href={this.URL_MEDIUM} target={'_blank'} rel="noreferrer">link</a>,
-                   }}/>
+                   }} />
           </li>
         </ol>
       </details>
@@ -74,18 +74,16 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_original = await dfd.readCSV(datasets_path + 'housing.csv')
     const dataframe_processed = await dfd.readCSV(datasets_path + 'housing.csv')
 
-    return {
-      datasets: [{
-        is_dataset_upload   : false,
-        path                : datasets_path,
-        csv                 : 'housing.csv',
-        info                : 'housing.names',
-        dataframe_original  : dataframe_original,
-        dataframe_processed : dataframe_processed,
-        dataset_transforms  : [],
-        is_dataset_processed: true,
-      }]
-    }
+    return [{
+      is_dataset_upload   : false,
+      path                : datasets_path,
+      csv                 : 'housing.csv',
+      info                : 'housing.names',
+      dataframe_original  : dataframe_original,
+      dataframe_processed : dataframe_processed,
+      dataset_transforms  : [],
+      is_dataset_processed: true,
+    }]
   }
 
   async MODELS (dataset) {

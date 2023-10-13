@@ -4,7 +4,7 @@ import * as dfd from 'danfojs'
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
-export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
+export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
   static KEY = 'CAR'
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
@@ -126,16 +126,6 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
-  HTML_EXAMPLE () {
-    const prefix = 'datasets-models.0-tabular-classification.car.html-example.'
-    return <>
-      <p>
-        <Trans i18nKey={prefix + 'text'} /><br />
-        <b><Trans i18nKey={prefix + 'items'} /></b>
-      </p>
-    </>
-  }
-
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'car.csv')
@@ -180,6 +170,17 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     }]
   }
 
+  async LOAD_GRAPH_MODEL (callbacks) {
+    return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
+      onProgress: callbacks.onProgress,
+    })
+  }
+  async LOAD_LAYERS_MODEL (callbacks) {
+    return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
+      onProgress: callbacks.onProgress
+    })
+  }
+
   DEFAULT_LAYERS () {
     return [
       { units: 10, activation: 'sigmoid' },
@@ -187,13 +188,13 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     ]
   }
 
-  async LOAD_GRAPH_MODEL (onProgress) {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
-      onProgress: onProgress,
-    })
-  }
-
-  async function_v_input (element, index, param = '') {
-    return this.DATA_CLASSES[index].findIndex((data_class) => data_class === element)
+  HTML_EXAMPLE () {
+    const prefix = 'datasets-models.0-tabular-classification.car.html-example.'
+    return <>
+      <p>
+        <Trans i18nKey={prefix + 'text'} /><br />
+        <b><Trans i18nKey={prefix + 'items'} /></b>
+      </p>
+    </>
   }
 }

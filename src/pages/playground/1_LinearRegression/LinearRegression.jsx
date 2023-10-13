@@ -143,9 +143,9 @@ export default function LinearRegression (props) {
         // console.log('TODO')
       } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
-        const { datasets } = await _iModelInstance.DATASETS()
+        const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
-        setDatasets(datasets)
+        setDatasets(_datasets)
       } else {
         console.error('Error, option not valid')
       }

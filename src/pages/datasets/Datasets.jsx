@@ -127,44 +127,18 @@ export default function Datasets () {
   // @formatter:on
 
   return <>
-    <Container id={'Datasets'} className={'mt-3 mb-3'}>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Header><h3><Trans i18nKey={'datasets.title'} /></h3></Card.Header>
-            <Card.Body>
-              <Tabs defaultActiveKey={'tabular-classification'} justify>
-                <Tab eventKey="tabular-classification" title={t('pages.index.tabular-classification.1-title')}>
-                  <Table className={'mt-3'} responsive={true}>
-                    <thead>
-                    <tr>
-                      <th>{t('datasets.dataset-name')}</th>
-                      <th>{t('datasets.dataset-size')}</th>
-                      <th>{t('datasets.dataset-web')}</th>
-                      <th>{t('download')}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {tabular_classification_datasets_list.map((value, index) => {
-
-                      return <tr key={index}>
-                        <td>{t(value.i18n)}</td>
-                        <td>{value.size}</td>
-                        <td><a className="link-secondary" href={value.url_original} rel="noreferrer" target="_blank">web</a></td>
-                        <td>
-                          <a href={process.env.REACT_APP_PATH + '/datasets/' + value.url_download}
-                             className={'btn btn-outline-primary btn-sm mt-2'}
-                             download>
-                            {t('download')}
-                          </a>
-                        </td>
-                      </tr>
-                    })}
-                    </tbody>
-                  </Table>
-                </Tab>
-                {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
-                  <Tab eventKey="linear-regression" title={t('pages.index.linear-regression.1-title')}>
+    <main className={'mb-3'} data-title={'Datasets'}>
+      <Container id={'Datasets'} className={'mt-3 mb-3'}>
+        <Row className={'mt-3'}>
+          <Col><h1><Trans i18nKey={'pages.contribute.title'} /></h1></Col>
+        </Row>
+        <Row className={'mt-3'}>
+          <Col>
+            <Card>
+              <Card.Header><h3><Trans i18nKey={'datasets.title'} /></h3></Card.Header>
+              <Card.Body>
+                <Tabs defaultActiveKey={'tabular-classification'} justify>
+                  <Tab eventKey="tabular-classification" title={t('pages.index.tabular-classification.1-title')}>
                     <Table className={'mt-3'} responsive={true}>
                       <thead>
                       <tr>
@@ -175,14 +149,16 @@ export default function Datasets () {
                       </tr>
                       </thead>
                       <tbody>
-                      {linear_regression_datasets_list.map((_value, index) => {
+                      {tabular_classification_datasets_list.map((value, index) => {
+
                         return <tr key={index}>
-                          <td>{t(_value.i18n)}</td>
-                          <td>{_value.size}</td>
-                          <td><a className="link-secondary" href={_value.url_original} rel="noreferrer" target="_blank">web</a></td>
+                          <td>{t(value.i18n)}</td>
+                          <td>{value.size}</td>
+                          <td><a className="link-secondary" href={value.url_original} rel="noreferrer" target="_blank">web</a></td>
                           <td>
-                            <a download href={process.env.REACT_APP_PATH + '/datasets/01-linear-regression/' + _value.url_download}
-                               className={'btn btn-outline-primary btn-sm mt-2'}>
+                            <a href={process.env.REACT_APP_PATH + '/datasets/' + value.url_download}
+                               className={'btn btn-outline-primary btn-sm mt-2'}
+                               download>
                               {t('download')}
                             </a>
                           </td>
@@ -191,19 +167,48 @@ export default function Datasets () {
                       </tbody>
                     </Table>
                   </Tab>
-                }
-                {/*<Tab eventKey="object-detection" title={t("pages.index.object-detection.1-title")}>*/}
-                {/*TODO*/}
-                {/*</Tab>*/}
-                {/*<Tab eventKey="image-classification" title={t("pages.index.image-classification.1-title")}>*/}
-                {/*TODO*/}
-                {/*</Tab>*/}
-              </Tabs>
+                  {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
+                    <Tab eventKey="linear-regression" title={t('pages.index.linear-regression.1-title')}>
+                      <Table className={'mt-3'} responsive={true}>
+                        <thead>
+                        <tr>
+                          <th>{t('datasets.dataset-name')}</th>
+                          <th>{t('datasets.dataset-size')}</th>
+                          <th>{t('datasets.dataset-web')}</th>
+                          <th>{t('download')}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {linear_regression_datasets_list.map((_value, index) => {
+                          return <tr key={index}>
+                            <td>{t(_value.i18n)}</td>
+                            <td>{_value.size}</td>
+                            <td><a className="link-secondary" href={_value.url_original} rel="noreferrer" target="_blank">web</a></td>
+                            <td>
+                              <a download href={process.env.REACT_APP_PATH + '/datasets/01-linear-regression/' + _value.url_download}
+                                 className={'btn btn-outline-primary btn-sm mt-2'}>
+                                {t('download')}
+                              </a>
+                            </td>
+                          </tr>
+                        })}
+                        </tbody>
+                      </Table>
+                    </Tab>
+                  }
+                  {/*<Tab eventKey="object-detection" title={t("pages.index.object-detection.1-title")}>*/}
+                  {/*TODO*/}
+                  {/*</Tab>*/}
+                  {/*<Tab eventKey="image-classification" title={t("pages.index.image-classification.1-title")}>*/}
+                  {/*TODO*/}
+                  {/*</Tab>*/}
+                </Tabs>
 
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </main>
   </>
 }

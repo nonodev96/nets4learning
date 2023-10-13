@@ -76,7 +76,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
   note         = {{DOI}: https://doi.org/10.24432/C5GK50}
 }
 `}
-{`
+          {`
 @misc{misc_breast_cancer_wisconsin_(diagnostic)_17,
   author       = {Wolberg,William, Mangasarian,Olvi, Street,Nick, and Street,W.},
   title        = {{Breast Cancer Wisconsin (Diagnostic)}},
@@ -113,40 +113,38 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_original_3 = await dfd.readCSV(path_dataset_3)
     const dataframe_processed_3 = await dfd.readCSV(path_dataset_3)
 
-    return {
-      datasets: [
-        {
-          is_dataset_upload   : false,
-          path                : dataset_path,
-          info                : 'breast-cancer-wisconsin.names',
-          csv                 : 'breast-cancer-wisconsin.csv',
-          dataframe_original  : dataframe_original_1,
-          dataframe_processed : dataframe_processed_1,
-          dataset_transforms  : dataset_transforms_1,
-          is_dataset_processed: true,
-        },
-        {
-          is_dataset_upload   : false,
-          path                : dataset_path,
-          info                : 'wdbc.names',
-          csv                 : 'wdbc.csv',
-          dataframe_original  : dataframe_original_2,
-          dataframe_processed : dataframe_processed_2,
-          dataset_transforms  : [],
-          is_dataset_processed: true,
-        },
-        {
-          is_dataset_upload   : false,
-          path                : dataset_path,
-          info                : 'wpbc.names',
-          csv                 : 'wpbc.csv',
-          dataframe_original  : dataframe_original_3,
-          dataframe_processed : dataframe_processed_3,
-          dataset_transforms  : [],
-          is_dataset_processed: true,
-        }
-      ]
-    }
+    return [
+      {
+        is_dataset_upload   : false,
+        path                : dataset_path,
+        info                : 'breast-cancer-wisconsin.names',
+        csv                 : 'breast-cancer-wisconsin.csv',
+        dataframe_original  : dataframe_original_1,
+        dataframe_processed : dataframe_processed_1,
+        dataset_transforms  : dataset_transforms_1,
+        is_dataset_processed: true,
+      },
+      {
+        is_dataset_upload   : false,
+        path                : dataset_path,
+        info                : 'wdbc.names',
+        csv                 : 'wdbc.csv',
+        dataframe_original  : dataframe_original_2,
+        dataframe_processed : dataframe_processed_2,
+        dataset_transforms  : [],
+        is_dataset_processed: true,
+      },
+      {
+        is_dataset_upload   : false,
+        path                : dataset_path,
+        info                : 'wpbc.names',
+        csv                 : 'wpbc.csv',
+        dataframe_original  : dataframe_original_3,
+        dataframe_processed : dataframe_processed_3,
+        dataset_transforms  : [],
+        is_dataset_processed: true,
+      }
+    ]
   }
 
   async MODELS (dataset) {

@@ -6,6 +6,7 @@ import CookiesModal from '@components/cookiesModal/CookiesModal'
 
 import { useHistory } from 'react-router-dom'
 import { TASKS } from '@/DATA_MODEL'
+import N4LDivider from '@components/divider/N4LDivider'
 
 const SELECTOR = {
   MODEL  : 'MODEL',
@@ -225,7 +226,7 @@ export default function Home () {
         <CookiesModal />
 
         <Container>
-          <Row className={'row-cols-1 row-cols-md-3 row-cols-xl-3'}>
+          <Row>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button variant={'primary'}
@@ -266,6 +267,7 @@ export default function Home () {
               </div>
             </Col>
           </Row>
+          <N4LDivider i18nKey={'hr.tasks'} />
           <Row className={'mt-3'}>
             <Col xl={12}>
               <MenuSelection />

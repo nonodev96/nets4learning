@@ -1,6 +1,18 @@
 import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import { Trans } from 'react-i18next'
 
+export const LIST_OF_IMAGES_MNIST = [
+  '0_new.png',
+  '1_new.png',
+  '2_new.png',
+  '3_new.png',
+  '4_new.png',
+  '5_new.png',
+  '6_new.png',
+  '7_new.png',
+  '8_new.png',
+  '9_new.png'
+]
 export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
   static KEY = 'IMAGE-MNIST'
   TITLE = 'datasets-models.3-image-classifier.mnist.title'

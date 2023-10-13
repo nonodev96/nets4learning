@@ -11,8 +11,6 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import alertHelper from '@utils/alertHelper'
 import {
   LIST_MODELS_IMAGE_CLASSIFICATION,
-  LIST_OF_IMAGES_MNIST,
-  LIST_OF_IMAGES_MOBILENET,
   UPLOAD,
   MODEL_IMAGE_MNIST,
   MODEL_IMAGE_MOBILENET,
@@ -20,7 +18,10 @@ import {
 } from '@/DATA_MODEL'
 
 import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
+
 import CustomCanvasDrawer from './components/customCanvasDrawer'
+import { LIST_OF_IMAGES_MNIST } from '@pages/playground/3_ImageClassification/models/MODEL_IMAGE_MNIST'
+import { LIST_OF_IMAGES_MOBILENET } from '@pages/playground/3_ImageClassification/models/MODEL_IMAGE_MOBILENET'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 

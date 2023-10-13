@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Trans } from 'react-i18next'
 import { Card } from 'react-bootstrap'
 import { UPLOAD } from '@/DATA_MODEL'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function ModelReviewTabularClassificationDatasetInfo (props) {
 
@@ -11,6 +12,7 @@ export default function ModelReviewTabularClassificationDatasetInfo (props) {
     console.log(iModelInstance)
   }, [iModelInstance])
 
+  if (VERBOSE) console.log('render ModelReviewTabularClassificationDatasetInfo')
   return <>
     <Card className={'mt-3'}>
       <Card.Header>

@@ -4,59 +4,94 @@ import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Col, Container, Row } from 'react-bootstrap'
 
-import ManualDescription from '@pages/manual/ManualDescription'
-import { VERBOSE } from '@/CONSTANTS'
+import N4LDivider from '@components/divider/N4LDivider'
 import N4LMarkdown from '@components/markdown/N4LMarkdown'
 
-const DEFAULT_LIST_FILES = [
-  '_0. Tool Objectives.md',
-  '_1. Manual.md',
-  '_2. Glossary.md',
-  '00. Tabular Classification - Editor Hyperparameters.md',
-  '00. Tabular Classification - Editor Layer.md',
-  '01. Linear Regression - Editor Hyperparameters.md',
-  '01. Linear Regression - Editor Layer.md',
-  '02. Object Detection - Editor Hyperparameters.md',
-  '02. Object Detection - Editor Layer.md',
-  '03. Image Classification - Editor Hyperparameters.md',
-  '03. Image Classification - Editor Layer.md',
+import ManualDescription from '@pages/manual/ManualDescription'
+import { VERBOSE } from '@/CONSTANTS'
+
+const DEFAULT_LAYOUT = [
+  {
+    i18n_hr: 'hr.00-tabular-classification',
+    files  : [
+      {
+        key : '00-tabular-classification-Hyperparameters-editor',
+        file: {
+          i18n_title  : 'pages.manual.hyperparameters-editor.title',
+          file_name   : '00. Tabular Classification - Editor Hyperparameters.md',
+          file_content: ''
+        }
+      },
+      {
+        key : '00-tabular-classification-layer-editor',
+        file: {
+          i18n_title  : 'pages.manual.layer-editor.title',
+          file_name   : '00. Tabular Classification - Editor Layer.md',
+          file_content: ''
+        }
+      },
+    ]
+  },
+  // {
+  //   i18n_hr: 'hr.01-linear-regression',
+  //   files  : [
+  //     {
+  //       key : '01-linear-regression-Hyperparameters-editor',
+  //       file: {
+  //         i18n_title  : 'pages.manual.hyperparameters-editor.title',
+  //         file_name   : '01. Linear Regression - Editor Hyperparameters.md',
+  //         file_content: ''
+  //       }
+  //     },
+  //     {
+  //       key : '01-linear-regression-layer-editor',
+  //       file: {
+  //         i18n_title  : 'pages.manual.layer-editor.title',
+  //         file_name   : '01. Linear Regression - Editor Layer.md',
+  //         file_content: ''
+  //       }
+  //     },
+  //   ]
+  // },
+
 ]
+
 export default function Manual () {
 
   const history = useHistory()
   const { t, i18n } = useTranslation()
-  const [filesData, setFilesData] = useState({})
+  const [filesData, setFilesData] = useState(DEFAULT_LAYOUT)
   const [accordionActiveManual, setAccordionActiveManual] = useState([])
 
   useEffect(() => {
     console.log('useEffect[i18n.language]')
-    const fetchFile = async (fileName) => {
+
+    const fetchFile = async (indexTask, indexFile, file_name) => {
       try {
-        const response = await fetch(process.env.REACT_APP_PATH + `/docs/${i18n.language}/${fileName}`) // Reemplaza con la ruta correcta
-        console.log(response)
+        const response = await fetch(process.env.REACT_APP_PATH + `/docs/${i18n.language}/${file_name}`) // Reemplaza con la ruta correcta
         if (response.ok) {
-          const fileContent = await response.text()
-          console.log(fileContent)
-          setFilesData((prevData) => ({
-            ...prevData,
-            [fileName]: fileContent,
-          }))
+          const file_content = await response.text()
+          setFilesData((prevState) => {
+            const newArray = [...prevState]
+            newArray[indexTask].files[indexFile].file.file_content = file_content
+            return newArray
+          })
         } else {
-          console.error(`No se pudo descargar ${fileName}`)
+          console.error(`No se pudo descargar ${file_name}`)
         }
       } catch (error) {
-        console.error(`Error al descargar ${fileName}`, error)
+        console.error(`Error al descargar ${file_name}`, error)
       }
     }
-    for (const fileName of DEFAULT_LIST_FILES) {
-      fetchFile(fileName).then(() => {
-        console.debug('downloaded', fileName)
-      })
+    for (const [indexTask, { files }] of DEFAULT_LAYOUT.entries()) {
+      for (const [indexFile, { file }] of files.entries()) {
+        fetchFile(indexTask, indexFile, file.file_name).then(() => {})
+      }
     }
   }, [i18n.language])
 
   const toggleAccordionActiveManual = useCallback((itemActive) => {
-    console.log("useCallback -> toggleAccordionActiveManual")
+    console.log('useCallback -> toggleAccordionActiveManual')
     setAccordionActiveManual((prevActive) => {
       if (prevActive.includes(itemActive)) {
         return prevActive.filter((item) => item !== itemActive)
@@ -67,7 +102,7 @@ export default function Manual () {
   }, [setAccordionActiveManual])
 
   useEffect(() => {
-    console.log("useEffect[history, toggleAccordionActiveManual]")
+    console.log('useEffect[history, toggleAccordionActiveManual]')
     const openManualInSection = (action) => {
       switch (action) {
         case 'open-layer-editor-tabular-classification': {
@@ -101,9 +136,7 @@ export default function Manual () {
           <Row className={'mt-3'}>
             <Col>
               <ManualDescription />
-              <div className={`mt-3 mb-4 n4l-hr-row`}>
-                <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.tasks'} /></span></p>
-              </div>
+              <N4LDivider i18nKey={'hr.tasks'} />
               <Accordion className={'mt-3'}>
                 <Accordion.Item eventKey={'manual-0-tabular-classification'}>
                   <Accordion.Header><h3><Trans i18nKey={'pages.manual.0-tabular-classification.title'} /></h3></Accordion.Header>
@@ -177,27 +210,26 @@ export default function Manual () {
                 </Accordion.Item>
               </Accordion>
 
-              <div className={`mt-3 mb-4 n4l-hr-row`}>
-                <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.00-tabular-classification'} /></span></p>
-              </div>
-              <Accordion className={'mt-3'} defaultActiveKey={[]} activeKey={accordionActiveManual}>
-                <Accordion.Item eventKey={'tabular-classification-layer-editor'}>
-                  <Accordion.Header onClick={() => toggleAccordionActiveManual('tabular-classification-layer-editor')}>
-                    <h3><Trans i18nKey={'pages.manual.layer-editor.title'} /></h3>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <N4LMarkdown>{filesData['00. Tabular Classification - Editor Layer.md']}</N4LMarkdown>
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey={'tabular-classification-hyperparameters-editor'}>
-                  <Accordion.Header onClick={() => toggleAccordionActiveManual('tabular-classification-hyperparameters-editor')}>
-                    <h3><Trans i18nKey={'pages.manual.hyperparameters-editor.title'} /></h3>
-                  </Accordion.Header>
-                  <Accordion.Body>
-                    <N4LMarkdown>{filesData['00. Tabular Classification - Editor Hyperparameters.md']}</N4LMarkdown>
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
+              {(filesData).map(({ i18n_hr, files }, index) => {
+                return <Row key={index}>
+                  <Col>
+                    <N4LDivider i18nKey={i18n_hr} />
+                    <Accordion className={'mt-3'} defaultActiveKey={[]} activeKey={accordionActiveManual}>
+                      {files.map(({ key, file }, index_2) => {
+                        return <Accordion.Item eventKey={key}>
+                          <Accordion.Header onClick={() => toggleAccordionActiveManual(key)}>
+                            <h3><Trans i18nKey={file.i18n_title} /></h3>
+                          </Accordion.Header>
+                          <Accordion.Body>
+                            <N4LMarkdown>{file.file_content}</N4LMarkdown>
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      })}
+                    </Accordion>
+                  </Col>
+                </Row>
+              })}
+
             </Col>
           </Row>
         </Container>

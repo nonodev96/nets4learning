@@ -6,6 +6,7 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function TabularClassificationDataset (props) {
   const {
@@ -70,6 +71,7 @@ export default function TabularClassificationDataset (props) {
   }
   // endregion
 
+  if (VERBOSE) console.debug('render TabularClassificationDataset')
   return <>
     {dataset === UPLOAD && <>
       <DragAndDrop name={'csv'}

@@ -74,27 +74,25 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const dataframe_processed_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
     const dataframe_original_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
     const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
-    return {
-      datasets: [{
-        is_dataset_upload   : false,
-        path                : datasets_path,
-        info                : 'student.txt',
-        csv                 : 'student-mat.csv',
-        dataframe_original  : dataframe_original_1,
-        dataframe_processed : dataframe_processed_1,
-        dataset_transforms  : [],
-        is_dataset_processed: true,
-      }, {
-        is_dataset_upload   : false,
-        path                : datasets_path,
-        info                : 'student.txt',
-        csv                 : 'student-por.csv',
-        dataframe_original  : dataframe_original_2,
-        dataframe_processed : dataframe_processed_2,
-        dataset_transforms  : [],
-        is_dataset_processed: true,
-      }]
-    }
+    return [{
+      is_dataset_upload   : false,
+      path                : datasets_path,
+      info                : 'student.txt',
+      csv                 : 'student-mat.csv',
+      dataframe_original  : dataframe_original_1,
+      dataframe_processed : dataframe_processed_1,
+      dataset_transforms  : [],
+      is_dataset_processed: true,
+    }, {
+      is_dataset_upload   : false,
+      path                : datasets_path,
+      info                : 'student.txt',
+      csv                 : 'student-por.csv',
+      dataframe_original  : dataframe_original_2,
+      dataframe_processed : dataframe_processed_2,
+      dataset_transforms  : [],
+      is_dataset_processed: true,
+    }]
   }
 
   async MODELS (dataset) {

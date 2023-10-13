@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import alertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function TabularClassificationEditorLayers (props) {
   const {
@@ -69,6 +70,7 @@ export default function TabularClassificationEditorLayers (props) {
   }
   // endregion
 
+  if (VERBOSE) console.debug('render TabularClassificationEditorLayers')
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>

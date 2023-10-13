@@ -72,11 +72,6 @@ export default function ModelReviewObjectDetection (props) {
 
         try {
           await tfjs.ready()
-          console.log('ready', {
-            kernel        : tfjs.getKernel(),
-            backend       : tfjs.getBackend(),
-            kernel_backend: tfjs.getKernelsForBackend(),
-          })
           if (tfjs.getBackend() !== 'webgl') {
             await alertHelper.alertError('Backend of tensorflow not installed')
             return

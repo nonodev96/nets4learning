@@ -43,14 +43,11 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @property {boolean} is_dataset_processed
    * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
    *
-   * @typedef {Object} CustomDatasets_t
    *
-   * @return {Object<CustomDatasets_t>}
+   * @return {Array<CustomDatasetInfo_t>}
    */
   async DATASETS () {
-    return {
-      datasets: []
-    }
+    return []
   }
 
   /**

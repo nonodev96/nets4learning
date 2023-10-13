@@ -19,20 +19,24 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
     this.callbacks = _callbacks
   }
 
-  async LOAD_GRAPH_MODEL (onProgress) {
-    throw new Error('Error')
-  }
-
-  DEFAULT_LAYERS () {
-    return []
+  DESCRIPTION () {
+    return <></>
   }
 
   async DATASETS () {
     return []
   }
 
-  DESCRIPTION () {
-    return <></>
+  async LOAD_GRAPH_MODEL (callbacks) {
+    // throw new Error('Error')
+  }
+
+  async LOAD_LAYERS_MODEL (callbacks) {
+    // throw new Error('Error')
+  }
+
+  DEFAULT_LAYERS () {
+    return []
   }
 
   HTML_EXAMPLE () {

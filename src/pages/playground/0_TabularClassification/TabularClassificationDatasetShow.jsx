@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
-import { Card, Col, ProgressBar, Row, Form } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function TabularClassificationDatasetShow (props) {
   const { datasets, datasetIndex } = props
@@ -10,21 +11,25 @@ export default function TabularClassificationDatasetShow (props) {
   const { t } = useTranslation()
 
   const [showProcessed, setShowProcessed] = useState(false)
+  const [showDataset, setShowDataset] = useState(false)
 
   const handleChange_Dataset = (e) => {
     const checked = e.target.checked
     setShowProcessed(!!checked)
   }
 
-  const canRenderDataset = () => {
-    if (datasets && datasets.length > 0 && datasetIndex >= 0) {
-      console.log(datasets, datasetIndex)
-      if (datasets[datasetIndex].is_dataset_processed)
-        return true
+  useEffect(() => {
+    const canRenderDataset = () => {
+      if (datasets && datasets.length > 0 && datasetIndex >= 0) {
+        if (datasets[datasetIndex].is_dataset_processed)
+          return true
+      }
+      return false
     }
-    return false
-  }
+    setShowDataset(canRenderDataset())
+  }, [datasets, datasetIndex])
 
+  if (VERBOSE) console.debug('render TabularClassificationDatasetShow')
   return <>
     <Card className={'mt-3'}>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
@@ -44,13 +49,13 @@ export default function TabularClassificationDatasetShow (props) {
         </div>
       </Card.Header>
       <Card.Body>
-        {!canRenderDataset() && <>
+        {!showDataset && <>
           <p className="placeholder-glow">
             <small className={'text-muted'}><Trans i18nKey={'pages.playground.generator.waiting-for-file'} /></small>
             <span className="placeholder col-12"></span>
           </p>
         </>}
-        {canRenderDataset() && <>
+        {showDataset && <>
           <Row>
             <Col className={'overflow-x-auto'}>
 
@@ -68,7 +73,7 @@ export default function TabularClassificationDatasetShow (props) {
           </Row>
         </>}
       </Card.Body>
-      {canRenderDataset() &&
+      {showDataset &&
         <Card.Footer>
           <Row>
             <Col lg={10}>

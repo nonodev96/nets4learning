@@ -43,6 +43,7 @@ import {
   DEFAULT_LAYERS_UPLOAD,
 } from './CONSTANTS'
 import TabularClassificationDatasetForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetForm'
+import N4LDivider from '@components/divider/N4LDivider'
 
 /**
  * @typedef {Object} GeneratedModel_t
@@ -163,7 +164,7 @@ export default function TabularClassification (props) {
         setLayers(_iModelInstance.DEFAULT_LAYERS())
         const _datasets = await _iModelInstance.DATASETS()
         setDatasets(_datasets)
-        setDatasetIndex(_datasets.length)
+        setDatasetIndex(0)
       } else {
         console.error('Error, opción not valid')
       }
@@ -196,6 +197,7 @@ export default function TabularClassification (props) {
         idOptimizer  : _idOptimizer,
         idLoss       : _idLoss,
         idMetrics    : _idMetrics,
+
         dataProcessed: datasets[datasetIndex],
       }, t)
 
@@ -204,7 +206,7 @@ export default function TabularClassification (props) {
           return [
             // Old elements
             ...oldArray.map((oldModel) => {
-              return { ...oldModel, isLoad: false }
+              return { ...oldModel }
             }),
             // New element
             {
@@ -287,7 +289,7 @@ export default function TabularClassification (props) {
       }, t)
       setGeneratedModels(oldArray => [
         ...oldArray.map((oldModel) => {
-          return { ...oldModel, isLoad: false }
+          return { ...oldModel }
         }), {
           idMODEL           : oldArray.length,
           model             : model,
@@ -397,7 +399,6 @@ export default function TabularClassification (props) {
   }
   // endregion
 
-  console.log(datasets)
   if (VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
@@ -423,10 +424,8 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
-        {/* INFORMACIÓN */}
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.information'} /></span></p>
-        </div>
+        {/* INFORMATION */}
+        <N4LDivider i18nKey={'hr.information'} />
         <Row className={'mt-3'}>
           <Col>
             <Accordion defaultActiveKey={dataset === UPLOAD ? ['dataset_info'] : []}>
@@ -459,9 +458,7 @@ export default function TabularClassification (props) {
 
         {/* PROCESS DATASET */}
         {dataset === UPLOAD && <>
-          <div className={`mt-3 mb-4 n4l-hr-row`}>
-            <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.process-dataset'} /></span></p>
-          </div>
+          <N4LDivider i18nKey={'hr.process-dataset'} />
           <Row className={'mt-3 joyride-step-process-dataset'}>
             <Col>
               <TabularClassificationDatasetForm datasets={datasets}
@@ -473,9 +470,7 @@ export default function TabularClassification (props) {
         </>}
 
         {/* SHOW DATASET */}
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.dataset'} /></span></p>
-        </div>
+        <N4LDivider i18nKey={'hr.dataset'} />
         <Row className={'mt-3 joyride-step-dataset'}>
           <Col>
             <TabularClassificationDatasetShow datasets={datasets}
@@ -484,56 +479,54 @@ export default function TabularClassification (props) {
         </Row>
 
         {/* GENERADOR */}
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.model'} /></span></p>
-        </div>
-        <Form id={'TabularClassificationCustomDataset'} onSubmit={dataset === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel}>
-          {/* BLOCK 1 */}
-          <Row className={'mt-3'}>
-            <Col xl={12} className={'joyride-step-layer'}>
-              <N4LLayerDesign layers={layers} />
-            </Col>
+        <N4LDivider i18nKey={'hr.model'} />
+        {datasetIndex >= 0 &&
+          <Form onSubmit={dataset === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel} id={'TabularClassificationCustomDataset'}>
+            {/* BLOCK 1 */}
+            <Row className={'mt-3'}>
+              <Col xl={12} className={'joyride-step-layer'}>
+                <N4LLayerDesign layers={layers} />
+              </Col>
 
-            {/* LAYER EDITOR */}
-            <Col className={'mt-3 joyride-step-editor-layers'} xl={6}>
-              <TabularClassificationEditorLayers layers={layers}
-                                                 setLayers={setLayers}
-                                                 datasets={datasets}
-                                                 datasetIndex={datasetIndex}
-              />
-            </Col>
+              {/* LAYER EDITOR */}
+              <Col className={'mt-3 joyride-step-editor-layers'} xl={6}>
+                <TabularClassificationEditorLayers layers={layers}
+                                                   setLayers={setLayers}
+                                                   datasets={datasets}
+                                                   datasetIndex={datasetIndex}
+                />
+              </Col>
 
-            {/* HYPERPARAMETERS EDITOR */}
-            <Col className={'mt-3 joyride-step-editor-trainer'} xl={6}>
-              <TabularClassificationEditorHyperparameters setLearningRate={setLearningRate}
-                                                          setNumberEpochs={setNumberEpochs}
-                                                          setTestSize={setTestSize}
-                                                          setIdOptimizer={setIdOptimizer}
-                                                          setIdLoss={setIdLoss}
-                                                          setIdMetrics={setIdMetrics}
-              />
-            </Col>
-          </Row>
+              {/* HYPERPARAMETERS EDITOR */}
+              <Col className={'mt-3 joyride-step-editor-trainer'} xl={6}>
+                <TabularClassificationEditorHyperparameters setLearningRate={setLearningRate}
+                                                            setNumberEpochs={setNumberEpochs}
+                                                            setTestSize={setTestSize}
+                                                            setIdOptimizer={setIdOptimizer}
+                                                            setIdLoss={setIdLoss}
+                                                            setIdMetrics={setIdMetrics}
+                />
+              </Col>
+            </Row>
 
-          {/* BLOCK BUTTON SUBMIT */}
-          <Row className={'mt-3'}>
-            <Col xl={12}>
-              <div className="d-grid gap-2">
-                <Button variant={'primary'}
-                        size={'lg'}
-                        type={'submit'}
-                        disabled={isTraining || (datasets[datasetIndex]?.is_dataset_processed ?? true)}>
-                  <Trans i18nKey={prefix + 'models.button-submit'} />
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        </Form>
+            {/* BLOCK BUTTON SUBMIT */}
+            <Row className={'mt-3'}>
+              <Col xl={12}>
+                <div className="d-grid gap-2">
+                  <Button variant={'primary'}
+                          size={'lg'}
+                          type={'submit'}
+                          disabled={isTraining || (!datasets[datasetIndex].is_dataset_processed)}>
+                    <Trans i18nKey={prefix + 'models.button-submit'} />
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Form>
+        }
 
         {/* SALIDA */}
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.generated-models'} /></span></p>
-        </div>
+        <N4LDivider i18nKey={'hr.generated-models'} />
         <Row className={'mt-3 joyride-step-list-of-models'}>
           <Col>
             <TabularClassificationTableModels listModels={generatedModels}
@@ -543,9 +536,7 @@ export default function TabularClassification (props) {
         </Row>
 
         {/* Prediction */}
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.predict'} /></span></p>
-        </div>
+        <N4LDivider i18nKey={'hr.predict'} />
         <Row className={'mt-3 joyride-step-classify-visualization'}>
           <Col xl={12}>
             <TabularClassificationPrediction dataset={dataset}  // conjunto de datos
