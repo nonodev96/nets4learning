@@ -1,4 +1,4 @@
-import './App.css'
+// import './stylesheet.scss'
 import React, { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { Redirect, Route } from 'react-router'

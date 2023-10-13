@@ -6,7 +6,7 @@ import { Bar } from 'react-chartjs-2'
 
 export default function ModelReviewTabularClassificationPredict (props) {
 
-  const { prediction } = props
+  const { iModelInstance, prediction } = props
   const { t } = useTranslation()
 
   return <>
@@ -20,9 +20,9 @@ export default function ModelReviewTabularClassificationPredict (props) {
         <Bar options={{
           responsive: true,
           plugins   : {
-            legend: { position: 'top', display: false, },
-            title : { display: true, text: t('prediction'), },
-          }
+            legend: { position: 'top', display: false },
+            title : { display: true, text: t('prediction') },
+          },
         }}
              data={{
                // i18n key

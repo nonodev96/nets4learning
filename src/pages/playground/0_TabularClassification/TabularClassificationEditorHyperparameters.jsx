@@ -17,86 +17,105 @@ export default function TabularClassificationEditorHyperparameters (props) {
     setIdMetrics,
   } = props
 
-  const prefix = ''
+  const prefix = 'pages.playground.generator.general-parameters.'
   const { t } = useTranslation()
-  // region HYPERPARAMETERS
 
+  // region HYPERPARAMETERS
+  const handleChange_LearningRate = (e) => {
+    setLearningRate(parseInt(e.target.value))
+  }
+  const handleChange_NumberEpochs = (e) => {
+    setNumberEpochs(parseInt(e.target.value))
+  }
+  const handleChange_TestSize = (e) => {
+    setTestSize(parseInt(e.target.value))
+  }
+  const handleChange_IdOptimizer = (e) => {
+    setIdOptimizer(e.target.value)
+  }
+  const handleChange_IdLoss = (e) => {
+    setIdLoss(e.target.value)
+  }
+  const handleChange_IdMetrics = (e) => {
+    setIdMetrics(e.target.value)
+  }
   // endregion
+
   if (VERBOSE) console.debug('render TabularClassificationEditorHyperparameters')
   return <>
     <Card className={'sticky-top'} style={{ zIndex: 10 }}>
-      <Card.Header><h3><Trans i18nKey={prefix + 'general-parameters.title'} /></h3></Card.Header>
+      <Card.Header><h3><Trans i18nKey={prefix + 'title'} /></h3></Card.Header>
       <Card.Body>
         {/* LEARNING RATE */}
         <Form.Group className="mb-3" controlId="formLearningRate">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.learning-rate'} />
+            <Trans i18nKey={prefix + 'learning-rate'} />
           </Form.Label>
           <Form.Control type="number"
                         min={1} max={100}
-                        placeholder={t(prefix + 'general-parameters.learning-rate-placeholder')}
+                        placeholder={t(prefix + 'learning-rate-placeholder')}
                         defaultValue={DEFAULT_LEARNING_RATE}
-                        onChange={(e) => setLearningRate(parseInt(e.target.value))} />
+                        onChange={handleChange_LearningRate} />
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.learning-rate-info'} />
+            <Trans i18nKey={prefix + 'learning-rate-info'} />
           </Form.Text>
         </Form.Group>
 
-        {/* Número OT ITERATIONS */}
+        {/* NUMBER OT EPOCHS */}
         <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.number-of-epochs'} />
+            <Trans i18nKey={prefix + 'number-of-epochs'} />
           </Form.Label>
           <Form.Control type="number"
                         min={1} max={100}
-                        placeholder={t(prefix + 'general-parameters.number-of-epochs')}
+                        placeholder={t(prefix + 'number-of-epochs')}
                         defaultValue={DEFAULT_NUMBER_EPOCHS}
-                        onChange={(e) => setNumberEpochs(parseInt(e.target.value))} />
+                        onChange={handleChange_NumberEpochs} />
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.number-of-epochs-info'} />
+            <Trans i18nKey={prefix + 'number-of-epochs-info'} />
           </Form.Text>
         </Form.Group>
 
         {/* TEST SIZE */}
         <Form.Group className="mb-3" controlId="formTrainRate">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.train-rate'} />
+            <Trans i18nKey={prefix + 'train-rate'} />
           </Form.Label>
           <Form.Control type="number"
                         min={1} max={100}
-                        placeholder={t(prefix + 'general-parameters.train-rate-placeholder')}
+                        placeholder={t(prefix + 'train-rate-placeholder')}
                         defaultValue={DEFAULT_TEST_SIZE}
-                        onChange={(e) => setTestSize(parseInt(e.target.value))} />
+                        onChange={handleChange_TestSize} />
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.train-rate-info'} />
+            <Trans i18nKey={prefix + 'train-rate-info'} />
           </Form.Text>
         </Form.Group>
 
         {/* OPTIMIZATION FUNCTION */}
         <Form.Group className="mb-3" controlId="FormOptimizer">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.optimizer-id'} />
+            <Trans i18nKey={prefix + 'optimizer-id'} />
           </Form.Label>
           <Form.Select aria-label="Default select example"
                        defaultValue={DEFAULT_ID_OPTIMIZATION}
-                       onChange={(e) => setIdOptimizer(e.target.value)}>
+                       onChange={handleChange_IdOptimizer}>
             {TYPE_OPTIMIZER.map(({ key, label }, index) => {
               return (<option key={index} value={key}>{label}</option>)
             })}
           </Form.Select>
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.optimizer-id-info'} />
+            <Trans i18nKey={prefix + 'optimizer-id-info'} />
           </Form.Text>
         </Form.Group>
 
         {/* LOSS FUNCTION */}
         <Form.Group className="mb-3" controlId="FormLoss">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.loss-id'} />
+            <Trans i18nKey={prefix + 'loss-id'} />
           </Form.Label>
           <Form.Select aria-label="Selecciona la función de pérdida"
                        defaultValue={DEFAULT_ID_LOSS}
-                       onChange={(e) => setIdLoss(e.target.value)}>
+                       onChange={handleChange_IdLoss}>
             <optgroup label={'Losses'}>
               {TYPE_LOSSES.map(({ key, label }, index) => {
                 return (<option key={index} value={'losses-' + key}>{label}</option>)
@@ -109,25 +128,25 @@ export default function TabularClassificationEditorHyperparameters (props) {
             </optgroup>
           </Form.Select>
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.loss-id-info'} />
+            <Trans i18nKey={prefix + 'loss-id-info'} />
           </Form.Text>
         </Form.Group>
 
         {/* METRICS FUNCTION */}
         <Form.Group className="mb-3" controlId="FormMetrics">
           <Form.Label>
-            <Trans i18nKey={prefix + 'general-parameters.metrics-id'} />
+            <Trans i18nKey={prefix + 'metrics-id'} />
           </Form.Label>
           <Form.Select aria-label="Selecciona la métrica"
                        defaultValue={DEFAULT_ID_METRICS}
                        disabled={true}
-                       onChange={(e) => setIdMetrics(e.target.value)}>
+                       onChange={handleChange_IdMetrics}>
             {TYPE_METRICS.map(({ key, label }, index) => {
               return (<option key={index} value={key}>{label}</option>)
             })}
           </Form.Select>
           <Form.Text className="text-muted">
-            <Trans i18nKey={prefix + 'general-parameters.metrics-id-info'} />
+            <Trans i18nKey={prefix + 'metrics-id-info'} />
           </Form.Text>
         </Form.Group>
       </Card.Body>
@@ -136,7 +155,7 @@ export default function TabularClassificationEditorHyperparameters (props) {
           <Trans i18nKey={'more-information-in-link'}
                  components={{
                    link1: <Link to={{ pathname: '/manual/', state: { action: 'open-hyperparameters-editor-tabular-classification' } }}
-                                className={'text-info'}>link</Link>
+                                className={'text-info'}>link</Link>,
                  }} />
         </p>
       </Card.Footer>

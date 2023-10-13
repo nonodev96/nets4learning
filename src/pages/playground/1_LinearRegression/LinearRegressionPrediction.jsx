@@ -28,7 +28,7 @@ export default function LinearRegressionPrediction () {
     setDynamicObject((prevState) => {
       return {
         ...prevState,
-        [_column_name]: _new_value
+        [_column_name]: _new_value,
       }
     })
   }
@@ -85,7 +85,12 @@ export default function LinearRegressionPrediction () {
   useEffect(() => {
     console.debug('useEffect [listModels, indexModel, setDataPrediction]')
     if (listModels.length > 0 && indexModel >= 0 && listModels[indexModel]) {
-      const { original, predicted, predictedLinear, params_features } = listModels[indexModel]
+      const {
+        original,
+        predicted,
+        params_features,
+        /* predictedLinear */
+      } = listModels[indexModel]
       const { X_feature, y_target } = params_features
       const trace = {
         x      : original.map((v) => v.x),
@@ -95,8 +100,8 @@ export default function LinearRegressionPrediction () {
         type   : 'scatter',
         opacity: 1,
         marker : {
-          color: 'blue'
-        }
+          color: 'blue',
+        },
       }
       const rTrace = {
         x      : predicted.map((v) => v.x),
@@ -106,8 +111,8 @@ export default function LinearRegressionPrediction () {
         type   : 'scatter',
         opacity: 0.5,
         marker : {
-          color: 'forestgreen'
-        }
+          color: 'forestgreen',
+        },
       }
       // const lrTrace = {
       //   x      : predictedLinear.map((v) => v.x),
@@ -212,7 +217,7 @@ export default function LinearRegressionPrediction () {
                       style={PLOTLY_CONFIG_DEFAULT.STYLES}
                       layout={{
                         title: '',
-                        ...PLOTLY_CONFIG_DEFAULT.LAYOUT
+                        ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
                       }}
                 />
               </Col>

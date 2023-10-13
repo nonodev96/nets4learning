@@ -2,6 +2,8 @@ export default class I_MODEL_OBJECT_DETECTION {
   TITLE = ''
   i18n_TITLE = ''
 
+  _modelDetector = null
+
   constructor (_t) {
     this.t = _t
   }
@@ -10,11 +12,15 @@ export default class I_MODEL_OBJECT_DETECTION {
     return <></>
   }
 
-  async enable_Model () {
+  async ENABLE_MODEL () {
 
   }
 
-  render () {
+  async PREDICTION (img_or_video) {
+    return []
+  }
+
+  RENDER (_ctx, _predictions) {
 
   }
 }

@@ -63,19 +63,24 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
-  async enable_Model () {
+  async ENABLE_MODEL () {
     const model = faceDetection.SupportedModels.MediaPipeFaceDetector
     const mediaPipeFaceDetectorMediaPipeModelConfig = {
+      // runtime  : 'tfjs', // this is a bug  tfjs is too fast that can't render correct
       runtime     : 'mediapipe',
       solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
-      // runtime  : 'tfjs', // this is a bug  tfjs is too fast that can't render correct
-      modelType       : 'short',
-      maxFaces        : 4,
+      modelType   : 'short',
+      maxFaces    : 4,
     }
-    return await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
+    this._modelDetector = await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
   }
 
-  render (ctx, faces) {
+  async PREDICTION (img_or_video) {
+    return await this._modelDetector.estimateFaces(img_or_video)
+  }
+
+  RENDER (ctx, faces) {
+    console.log({ctx, faces})
     ctx.font = '8px Verdana'
     ctx.lineWidth = 5
     ctx.strokeStyle = '#FF0902'

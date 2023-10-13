@@ -1,6 +1,8 @@
 import * as tf from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
+import * as dfd from 'danfojs'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   static KEY = 'LYMPHOGRAPHY'
@@ -61,6 +63,32 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
+  async DATASETS () {
+    const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
+    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'lymphography.csv')
+    let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'lymphography.csv')
+    const dataset_transforms_1 = []
+    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
+    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
+
+    return [{
+      missing_values   : false,
+      missing_value_key: '',
+      classes          : [...this.CLASSES],
+      encoders         : encoders,
+      attributes       : [...this.FORM],
+
+      is_dataset_upload   : false,
+      path                : dataset_path,
+      info                : 'lymphography.names',
+      csv                 : 'lymphography.csv',
+      dataframe_original  : dataframe_original_1,
+      dataframe_processed : dataframe_processed_1,
+      dataset_transforms  : dataset_transforms_1,
+      is_dataset_processed: true,
+    }]
+  }
+
   DEFAULT_LAYERS () {
     return [
       { units: 18, activation: 'sigmoid' },
@@ -71,7 +99,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
 
   async LOAD_GRAPH_MODEL (onProgress) {
     return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
-      onProgress: onProgress
+      onProgress: onProgress,
     })
   }
 
@@ -135,7 +163,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     'special forms'  : ['1', '2', '3'],
     'dislocation of' : ['1', '2'],
     'exclusion of'   : ['1', '2'],
-    'no. of nodes in': ['1', '2', '3', '4', '5', '6', '7', '8']
+    'no. of nodes in': ['1', '2', '3', '4', '5', '6', '7', '8'],
   }
   DATA_DEFAULT = {
     // 4 -> fibrosis
@@ -156,7 +184,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     'special forms'  : '2',
     'dislocation of' : '1',
     'exclusion of'   : '1',
-    'no. of nodes in': '7'
+    'no. of nodes in': '7',
   }
   DATA_OBJECT_KEYS = [
     'lymphatics',
@@ -176,7 +204,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     'special forms',
     'dislocation of',
     'exclusion of',
-    'no. of nodes in'
+    'no. of nodes in',
   ]
   DATA_CLASSES = [
     ['normal', 'arched', 'deformed', 'displaced'],
@@ -196,7 +224,7 @@ export class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     ['No', 'chalices', 'vesicles'],
     ['No', 'Yes'],
     ['No', 'Yes'],
-    ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '=>70']
+    ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '=>70'],
   ]
 
   // @formatter:off

@@ -1,6 +1,6 @@
 {
   "name": "tfg-nets4learning",
-  "version": "1.8.3",
+  "version": "1.9.0",
   "homepage": ".",
   "private": true,
   "scripts": {
@@ -86,6 +86,7 @@
     "craco-plugin-env": "^1.0.5",
     "jest": "^27.5.1",
     "jest-watch-typeahead": "^2.2.2",
+    "sass": "^1.69.3",
     "standard": "^17.1.0"
   },
   "eslintConfig": {

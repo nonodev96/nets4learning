@@ -1,5 +1,7 @@
-import * as tf from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
+import * as tf from '@tensorflow/tfjs'
+import * as dfd from 'danfojs'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 
 export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
@@ -10,19 +12,13 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   TITLE = 'datasets-models.0-tabular-classification.iris.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.iris.title'
 
-  DATA_OBJECT = {
-    sepal_length: 5.1,
-    sepal_width : 3.5,
-    petal_length: 1.4,
-    petal_width : 0.2
-  }
+  DATA_DEFAULT_KEYS = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
   DATA_DEFAULT = {
     sepal_length: 5.1,
     sepal_width : 3.5,
     petal_length: 1.4,
     petal_width : 0.2
   }
-  DATA_OBJECT_KEYS = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
   FORM = [
     { type: 'float32', name: 'sepal_length' },
     { type: 'float32', name: 'sepal_width' },
@@ -52,6 +48,39 @@ export class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     '00-tc.iris.petal_width',
     '00-tc.iris.class'
   ]
+
+  async DATASETS () {
+    const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
+    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'iris.csv')
+    let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'iris.csv')
+    const dataset_transforms_1 = []
+    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
+    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
+
+    return [{
+      missing_values       : false,
+      missing_value_key    : '',
+      classes              : ['1', '2', '3'],
+      encoders             : encoders,
+      attributes           : [
+        // @formatter:off
+        { type: 'float32', name: 'sepal_length' },
+        { type: 'float32', name: 'sepal_width' },
+        { type: 'float32', name: 'petal_length' },
+        { type: 'float32', name: 'petal_width' },
+        // @formatter:on
+      ],
+
+      is_dataset_upload   : false,
+      path                : dataset_path,
+      info                : 'iris.names',
+      csv                 : 'iris.csv',
+      dataframe_original  : dataframe_original_1,
+      dataframe_processed : dataframe_processed_1,
+      dataset_transforms  : dataset_transforms_1,
+      is_dataset_processed: true,
+    }]
+  }
 
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.iris.description.'

@@ -8,17 +8,17 @@ i18n
   .use(Backend)
   .use(initReactI18next)
   .init({
-    preload    : ['en'],
-    load       : 'languageOnly',
-    fallbackLng: 'en',
-    debug        : process.env.REACT_APP_ENVIRONMENT === "development",
+    preload      : ['en'],
+    load         : 'languageOnly',
+    fallbackLng  : ['en', 'es'],
+    debug        : process.env.REACT_APP_ENVIRONMENT === 'development',
     backend      : {
-      loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json'
+      loadPath: process.env.REACT_APP_PATH + '/locales/{{lng}}/{{ns}}.json',
     },
     react        : {
       useSuspense               : true,
       transSupportBasicHtmlNodes: true,
-      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b', 'kbd']
+      transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b', 'kbd'],
     },
     interpolation: {
       escapeValue: false, // not needed for react!!

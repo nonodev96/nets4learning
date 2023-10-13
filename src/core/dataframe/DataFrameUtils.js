@@ -113,33 +113,39 @@ export function TransformArrayToSeriesTensor (series) {
   return new dfd.Series(series).tensor
 }
 
+/**
+ * @typedef {Object} EncoderObject_t
+ * @property {'label-encoder' | 'one-hot-encoder'} type - El tipo de codificador, puede ser .
+ * @property {dfd.LabelEncoder | dfd.OneHotEncoder} encoder
+ */
+
+/**
+ * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
+ */
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
-  const transformer = {
-    // [column_name]: {
-    // type   : 'label-encoder',
-    // type   : 'one-hot-encoder',
-    // encoder: encode.transform
-    // }
-  }
+  /**
+   * @type {EncoderMap_t}
+   */
+  const encoders = {}
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
-        const encode = new dfd.LabelEncoder()
+        const encoder = new dfd.LabelEncoder()
         const _serie = dataframe[column_name]
-        encode.fit(_serie)
-        transformer[column_name] = {
+        encoder.fit(_serie)
+        encoders[column_name] = {
           type   : 'label-encoder',
-          encoder: encode.transform
+          encoder: encoder,
         }
         break
       }
       case 'one-hot-encoder': {
-        const encode = new dfd.OneHotEncoder()
+        const encoder = new dfd.OneHotEncoder()
         const _serie = dataframe[column_name]
-        encode.fit(_serie)
-        transformer[column_name] = {
+        encoder.fit(_serie)
+        encoders[column_name] = {
           type   : 'label-encoder',
-          encoder: encode.transform
+          encoder: encoder,
         }
         break
       }
@@ -148,7 +154,29 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
       }
     }
   }
-  return transformer
+  return encoders
+}
+
+/**
+ *
+ * @param {EncoderMap_t} EncodersMap
+ * @param {Object.<string, any>} ValuesMap
+ * @param {string[]} columns - Es necesario para respetar el orden
+ * @returns {number[]}
+ * @constructor
+ */
+export function DataFrameApplyEncoders (EncodersMap, ValuesMap, columns) {
+  const newValues = []
+  for (const column_name of columns) {
+    const prevValue = ValuesMap[column_name]
+    if (EncodersMap.hasOwnProperty(column_name)) {
+      const newValue = EncodersMap[column_name].encoder.transform([prevValue])[0]
+      newValues.push(newValue)
+    } else {
+      newValues.push(prevValue)
+    }
+  }
+  return newValues
 }
 
 /**

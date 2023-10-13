@@ -78,12 +78,15 @@ export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
-  async enable_Model () {
-    // const moveNetModelConfig = {}
-    return await coCoSsdDetection.load()
+  async ENABLE_MODEL () {
+    this._modelDetector = await coCoSsdDetection.load()
   }
 
-  render (ctx, predictions) {
+  async PREDICTION (img_or_video) {
+    return await this._modelDetector.detect(img_or_video)
+  }
+
+  RENDER (ctx, predictions) {
     let score = 0
     ctx.fillStyle = '#fc0400'
     ctx.font = '1em Verdana'

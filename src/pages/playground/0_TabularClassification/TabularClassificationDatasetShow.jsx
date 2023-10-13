@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Card, Col, ProgressBar, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import N4LTablePagination from '@components/table/N4LTablePagination'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default function TabularClassificationDatasetShow (props) {
   const { datasets, datasetIndex } = props
@@ -16,9 +17,11 @@ export default function TabularClassificationDatasetShow (props) {
   }
 
   const canRenderDataset = () => {
-    if (datasets && datasets.length > 0 && datasetIndex > -1)
+    if (datasets && datasets.length > 0 && datasetIndex >= 0) {
+      console.log(datasets, datasetIndex)
       if (datasets[datasetIndex].is_dataset_processed)
         return true
+    }
     return false
   }
 
@@ -43,15 +46,24 @@ export default function TabularClassificationDatasetShow (props) {
       <Card.Body>
         {!canRenderDataset() && <>
           <p className="placeholder-glow">
-            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-file')}</small>
+            <small className={'text-muted'}><Trans i18nKey={'pages.playground.generator.waiting-for-file'} /></small>
             <span className="placeholder col-12"></span>
           </p>
         </>}
         {canRenderDataset() && <>
           <Row>
             <Col className={'overflow-x-auto'}>
+
               <N4LTablePagination data_head={datasets[datasetIndex].dataframe_processed.columns}
-                                  data_body={showProcessed ? datasets[datasetIndex].data_processed : datasets[datasetIndex].data_original} />
+                                  data_body={
+                                    DataFrameUtils.DataFrameIterRows(
+                                      showProcessed ?
+                                        datasets[datasetIndex].dataframe_processed
+                                        :
+                                        datasets[datasetIndex].dataframe_original,
+                                    )
+                                  }
+              />
             </Col>
           </Row>
         </>}

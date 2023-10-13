@@ -7,8 +7,6 @@ export default function ModelReviewTabularClassificationDynamicForm (props) {
     iModelInstance,
     dataToTest,
     setDataToTest,
-    // textToTest,
-    setTextToTest
   } = props
   const { t } = useTranslation()
 
@@ -17,7 +15,6 @@ export default function ModelReviewTabularClassificationDynamicForm (props) {
       ...prevState,
       [key_parameter]: value,
     }))
-    setTextToTest(Object.values({ ...dataToTest, [key_parameter]: value }).join(';'))
   }
 
   return <>

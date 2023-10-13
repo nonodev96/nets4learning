@@ -62,19 +62,23 @@ export class MODEL_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
-  async enable_Model () {
+  async ENABLE_MODEL () {
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
     const mediaPipeFaceMeshMediaPipeModelConfig = {
+      // runtime     : 'tfjs',
       runtime        : 'mediapipe',
       solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
-      // runtime        : 'tfjs',
       refineLandmarks: true,
       maxFaces       : 4,
     }
-    return await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
+    this._modelDetector = await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
   }
 
-  render (ctx, faces) {
+  async PREDICTION(img_or_video){
+    return await this._modelDetector.estimateFaces(img_or_video)
+  }
+
+  RENDER (ctx, faces) {
     for (const face of faces) {
       ctx.strokeStyle = '#FF0902'
       for (const element of face.keypoints) {

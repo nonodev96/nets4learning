@@ -4,19 +4,18 @@ import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
-import TabularClassificationDatasetForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetForm'
-
 import { UPLOAD } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
 
 export default function TabularClassificationDataset (props) {
   const {
     dataset,
+    iModelInstance,
     datasets,
     setDatasets,
+
     datasetIndex,
     setDatasetIndex,
-    iModelInstance
   } = props
 
   const { t } = useTranslation()
@@ -28,11 +27,39 @@ export default function TabularClassificationDataset (props) {
     }
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
-      dfd.readCSV(file_csv).then((_dataframe) => {
+      dfd.readCSV(file_csv).then(async (_dataframe) => {
         // setDataframeOriginal(_dataframe)
         // setObjectToPredict({})
+
+        console.log(_dataframe, datasetIndex)
+
+        setDatasets((prevState) => {
+          const newDataset = {
+            missing_values   : false,
+            missing_value_key: '',
+            classes          : [],
+            encoders         : {},
+            attributes       : [],
+
+            is_dataset_upload   : true,
+            is_dataset_processed: false,
+            path                : '',
+            info                : '',
+            csv                 : '',
+            dataset_transforms  : [],
+            dataframe_original  : _dataframe,
+            dataframe_processed : _dataframe,
+          }
+          return [...prevState, newDataset]
+        })
+        setDatasetIndex(0)
+
+
+        await alertHelper.alertSuccess(t('success.file-upload'))
+
+      }).catch((error) => {
+        console.error(error)
       })
-      await alertHelper.alertSuccess(t('success.file-upload'))
     } catch (error) {
       console.error(error)
     }
@@ -51,14 +78,7 @@ export default function TabularClassificationDataset (props) {
                    labelFiles={t('drag-and-drop.label-files-one')}
                    function_DropAccepted={handleChange_FileUpload_CSV}
                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
-      {datasets.length > 0 && datasets[datasetIndex].is_dataset_upload === true && <>
-        <TabularClassificationDatasetForm datasets={datasets}
-                                          setDatasets={setDatasets}
-                                          datasetIndex={datasetIndex}
-                                          setDatasetIndex={setDatasetIndex}
-        />
-      </>}
-      {datasets.length > 0 && datasets[datasetIndex].is_dataset_processed === true && <>
+      {datasets.length === 0 && <>
         <p className="placeholder-glow">
           <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-file')}</small>
           <span className="placeholder col-12"></span>

@@ -1,4 +1,4 @@
-import './N4LFooter.css'
+// import './N4LFooter.css'
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -9,7 +9,7 @@ export default function N4LFooter () {
 
   return (
     <>
-      <footer className="footer mt-auto py-3 bg-light">
+      <footer className="bg-body-tertiary footer mt-auto py-3">
         <Container>
           <Row>
             <Col xs={12} sm={12} md={7}>

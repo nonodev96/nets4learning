@@ -1,6 +1,5 @@
 import './TabularClassification.css'
 import React, { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
@@ -10,24 +9,28 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
-import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload, } from '@core/nn-utils/ArchitectureHelper'
+import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload } from '@core/nn-utils/ArchitectureHelper'
 
 import alertHelper from '@utils/alertHelper'
 
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import N4LJoyride from '@components/joyride/N4LJoyride'
+
 import TabularClassificationManual from '@pages/playground/0_TabularClassification/TabularClassificationManual'
+import TabularClassificationDataset from '@pages/playground/0_TabularClassification/TabularClassificationDataset'
 import TabularClassificationDatasetShow from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShow'
+
+import TabularClassificationEditorHyperparameters from '@pages/playground/0_TabularClassification/TabularClassificationEditorHyperparameters'
+import TabularClassificationEditorLayers from '@pages/playground/0_TabularClassification/TabularClassificationEditorLayers'
+
 import TabularClassificationTableModels from '@pages/playground/0_TabularClassification/TabularClassificationTableModels'
+
 import TabularClassificationPrediction from '@pages/playground/0_TabularClassification/TabularClassificationPrediction'
 
 import { isProduction } from '@utils/utils'
 import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
 import * as errorUtils from '@core/error-utils'
-import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
-import N4LJoyride from '@components/joyride/N4LJoyride'
 import { VERBOSE } from '@/CONSTANTS'
-import TabularClassificationDataset from '@pages/playground/0_TabularClassification/TabularClassificationDataset'
-import TabularClassificationEditorLayers from '@pages/playground/0_TabularClassification/TabularClassificationEditorLayers'
-import TabularClassificationEditorHyperparameters from '@pages/playground/0_TabularClassification/TabularClassificationEditorHyperparameters'
 
 import {
   DEFAULT_LEARNING_RATE,
@@ -37,8 +40,9 @@ import {
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
   DEFAULT_LAYERS,
-  DEFAULT_LAYERS_UPLOAD
+  DEFAULT_LAYERS_UPLOAD,
 } from './CONSTANTS'
+import TabularClassificationDatasetForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetForm'
 
 /**
  * @typedef {Object} GeneratedModel_t
@@ -62,7 +66,7 @@ import {
  * @property {dfd.DataFrame} X
  * @property {dfd.DataFrame} y
  * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
- * @property {Object.<string, dfd.LabelEncoder>} obj_encoder
+ * @property {Object.<string, dfd.LabelEncoder>} map_encoder
  * @property {Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>} attributes
  * @property {Array<TYPE_CLASSES>} classes
  */
@@ -131,9 +135,6 @@ export default function TabularClassification (props) {
   const [Model, setModel] = useState(null)
   const [datasets, setDatasets] = useState([])
   const [datasetIndex, setDatasetIndex] = useState(-1)
-
-  const [DataSetClasses, setDataSetClasses] = useState([])
-  const [TargetSetClasses, setTargetSetClasses] = useState([])
   // Utils
 
   // Class && Controllers
@@ -149,9 +150,8 @@ export default function TabularClassification (props) {
   const [stringToPredict, setStringToPredict] = useState('')
   const refJoyrideButton = useRef({})
 
-
   useEffect(() => {
-    ReactGA.send({ hitType: 'pageview', page: '/TabularClassificationCustomDataset/' + dataset, title: dataset })
+    ReactGA.send({ hitType: 'pageview', page: '/TabularClassification/' + dataset, title: dataset })
 
     const init = async () => {
       if (dataset === UPLOAD) {
@@ -161,9 +161,9 @@ export default function TabularClassification (props) {
         const _iModelInstance = new _iModelClass(t)
         set_IModelInstance(_iModelInstance)
         setLayers(_iModelInstance.DEFAULT_LAYERS())
-        const datasets = await _iModelInstance.DATASETS()
-        setDatasets(datasets)
-        setDatasetIndex(0)
+        const _datasets = await _iModelInstance.DATASETS()
+        setDatasets(_datasets)
+        setDatasetIndex(_datasets.length)
       } else {
         console.error('Error, opción not valid')
       }
@@ -176,78 +176,6 @@ export default function TabularClassification (props) {
   }, [dataset, t])
 
   // region MODEL
-  const handleSubmit_CreateModel = async (event) => {
-    event.preventDefault()
-    console.debug('ID Conjunto de datos: ', { dataset })
-    if (datasets.length === 0) {
-      await alertHelper.alertError(t('error.need-dataset'))
-      return
-    }
-
-    const last_layer_units = layers[layers.length - 1].units ?? 0
-    const classes_length = datasets[datasetIndex]?.classes?.length ?? 0
-
-    if (last_layer_units !== classes_length) {
-      await alertHelper.alertWarning(t('error.tensor-shape'), {
-        footer: '',
-        text  : '',
-        html  : <Trans i18nKey={'error.tensor-shape-change'} values={{ last_layer_units: last_layer_units, classes_length: classes_length, }} />,
-      })
-      return
-    }
-
-    try {
-      setIsTraining(true)
-      let _learningRate = learningRate / 100
-      let _numberOfEpoch = numberEpochs
-      let _testSize = testSize / 100
-      let _layerList = layers
-
-      let _idOptimizer = idOptimizer
-      let _idLoss = idLoss
-      let _idMetrics = idMetrics
-
-      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createTabularClassificationCustomDataSet({
-        learningRate : _learningRate,
-        numberOfEpoch: _numberOfEpoch,
-        testSize     : _testSize,
-        layerList    : _layerList,
-        // TODO
-        // dataset_JSON : _customDataset_JSON,
-        dataset    : datasets[datasetIndex],
-        idOptimizer: _idOptimizer,
-        idLoss     : _idLoss,
-        idMetrics  : _idMetrics,
-      }, t)
-      setGeneratedModels(oldArray => [
-        ...oldArray.map((oldModel) => {
-          return { ...oldModel, isLoad: false }
-        }), {
-          idMODEL           : oldArray.length,
-          model             : model,
-          TARGET_SET_CLASSES: TARGET_SET_CLASSES,
-          DATA_SET_CLASSES  : DATA_SET_CLASSES,
-          learningRate      : _learningRate,
-          testSize          : _testSize,
-          numberOfEpoch     : _numberOfEpoch,
-          layerList         : JSON.parse(JSON.stringify(_layerList)),
-          idOptimizer       : _idOptimizer,
-          idLoss            : _idLoss,
-          idMetrics         : _idMetrics,
-        }],
-      )
-      setIsTraining(false)
-      // setDataSetClasses(DATA_SET_CLASSES)
-      // setTargetSetClasses(TARGET_SET_CLASSES)
-
-      setModel(model)
-      await alertHelper.alertSuccess(t('alert.model-train-success'))
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setIsTraining(false)
-    }
-  }
   const handleSubmit_CreateModel_upload = async (event) => {
     event.preventDefault()
     try {
@@ -311,6 +239,75 @@ export default function TabularClassification (props) {
       } else {
         await alertHelper.alertError(error.message, { title: 'Error' })
       }
+    } finally {
+      setIsTraining(false)
+    }
+  }
+  const handleSubmit_CreateModel = async (event) => {
+    event.preventDefault()
+    if (datasets.length === 0) {
+      await alertHelper.alertError(t('error.need-dataset'))
+      return
+    }
+
+    const last_layer_units = layers[layers.length - 1].units ?? 0
+    const classes_length = datasets[datasetIndex]?.classes?.length ?? 0
+
+    if (last_layer_units !== classes_length) {
+      await alertHelper.alertWarning(t('error.tensor-shape'), {
+        footer: '',
+        text  : '',
+        html  : <Trans i18nKey={'error.tensor-shape-change'} values={{ last_layer_units: last_layer_units, classes_length: classes_length }} />,
+      })
+      return
+    }
+
+    try {
+      setIsTraining(true)
+      let _learningRate = learningRate / 100
+      let _numberOfEpoch = numberEpochs
+      let _testSize = testSize / 100
+      let _layerList = layers
+
+      let _idOptimizer = idOptimizer
+      let _idLoss = idLoss
+      let _idMetrics = idMetrics
+
+      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createTabularClassificationCustomDataSet({
+        learningRate : _learningRate,
+        numberOfEpoch: _numberOfEpoch,
+        testSize     : _testSize,
+        layerList    : _layerList,
+        // TODO
+        // dataset_JSON : _customDataset_JSON,
+        dataset    : datasets[datasetIndex],
+        idOptimizer: _idOptimizer,
+        idLoss     : _idLoss,
+        idMetrics  : _idMetrics,
+      }, t)
+      setGeneratedModels(oldArray => [
+        ...oldArray.map((oldModel) => {
+          return { ...oldModel, isLoad: false }
+        }), {
+          idMODEL           : oldArray.length,
+          model             : model,
+          TARGET_SET_CLASSES: TARGET_SET_CLASSES,
+          DATA_SET_CLASSES  : DATA_SET_CLASSES,
+          learningRate      : _learningRate,
+          testSize          : _testSize,
+          numberOfEpoch     : _numberOfEpoch,
+          layerList         : JSON.parse(JSON.stringify(_layerList)),
+          idOptimizer       : _idOptimizer,
+          idLoss            : _idLoss,
+          idMetrics         : _idMetrics,
+        }],
+      )
+      setIsTraining(false)
+
+      setModel(model)
+      await alertHelper.alertSuccess(t('alert.model-train-success'))
+    } catch (error) {
+      console.error(error)
     } finally {
       setIsTraining(false)
     }
@@ -383,45 +380,8 @@ export default function TabularClassification (props) {
     let input = [[], [1, stringToPredict.split(';').length]]
     try {
 
-      let i = 0
-      for (const element of stringToPredict.split(';')) {
-        if (!isProduction()) console.debug('Attribute: ', datasets[datasetIndex].attributes[i])
-        let name = datasets[datasetIndex]?.attributes[i].name
-        let type = datasets[datasetIndex]?.attributes[i].type
-
-        let input_number = undefined
-        let input_float = undefined
-        let input_select = undefined
-        switch (type) {
-          case 'int32': {
-            input_number = DataSetClasses[i].get(parseInt(element))
-            break
-          }
-          case 'float32': {
-            input_float = parseFloat(element)
-            //DataSetClasses[i].get(parseFloat(element))
-            break
-          }
-          case 'string':
-          case 'label-encoder': {
-            input_select = DataSetClasses[i].get(element)
-            input_select = input_select ?? DataSetClasses[i].get(parseInt(element))
-            break
-          }
-          default: {
-            console.warn('Tipo de dato desconocido')
-            break
-          }
-        }
-        // Bug: 0||undefined||undefined
-        let new_input = (input_number || input_float || input_select) ?? 0
-        input[0].push(new_input)
-        if (!isProduction()) console.debug('By column:', name, { element: element, type: type }, [input_number, input_float, input_select], new_input)
-        i++
-      }
-
       if (input[0].some((tag) => tag === undefined)) {
-        await alertHelper.alertInfo('Valor indefinido', { text: 'Error, input no válido' })
+        await alertHelper.alertInfo('tag undefined', { text: 'Error, input not valid' })
         return
       }
 
@@ -429,33 +389,7 @@ export default function TabularClassification (props) {
       const prediction = Model.predict(tensor)
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMax = prediction.argMax(-1).dataSync()
-      console.log('predictionWithArgMax', { predictionWithArgMax, predictionDataSync })
-
-      const prediction_class_name = datasets[datasetIndex].classes.find((item) => {
-        if (isFinite(TargetSetClasses[predictionWithArgMax]))
-          return parseInt(item.key) === TargetSetClasses[predictionWithArgMax]
-        else
-          return item.key === TargetSetClasses[predictionWithArgMax]
-      })
-      const list_encoded_classes = datasets[datasetIndex].classes.map(({ name }) => name)
-      if (!isProduction()) console.info('DataSetClasses: ', { DataSetClasses }, ...input[0])
-      if (!isProduction()) console.info('La solución es: ', { prediction, predictionWithArgMax, TargetSetClasses, prediction_class_name })
-      if (prediction_class_name !== undefined) {
-        await alertHelper.alertInfo(
-          '' + prediction_class_name.key,
-          '' + prediction_class_name.name,
-        )
-        setPredictionBar({
-          list_encoded_classes: list_encoded_classes,
-          labels              : list_encoded_classes,
-          data                : Array.from(predictionDataSync)
-        })
-      } else {
-        await alertHelper.alertInfo(
-          'Tipo: ' + TargetSetClasses[predictionWithArgMax],
-          `` + TargetSetClasses[predictionWithArgMax],
-        )
-      }
+      console.log({ prediction, predictionDataSync, predictionWithArgMax })
 
     } catch (error) {
       console.error(error)
@@ -463,6 +397,7 @@ export default function TabularClassification (props) {
   }
   // endregion
 
+  console.log(datasets)
   if (VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
@@ -477,11 +412,13 @@ export default function TabularClassification (props) {
           <Col xl={12}>
             <div className="d-flex justify-content-between">
               <h1><Trans i18nKey={'modality.0'} /></h1>
-              <Button size={'sm'}
-                      variant={'outline-primary'}
-                      onClick={refJoyrideButton.current.handleClick_StartJoyride}>
-                <Trans i18nKey={'datasets-models.0-tabular-classification.joyride.title'} />
-              </Button>
+              {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
+                <Button size={'sm'}
+                        variant={'outline-primary'}
+                        onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                  <Trans i18nKey={'datasets-models.0-tabular-classification.joyride.title'} />
+                </Button>
+              }
             </div>
           </Col>
         </Row>
@@ -505,10 +442,13 @@ export default function TabularClassification (props) {
                 </Accordion.Header>
                 <Accordion.Body>
                   <TabularClassificationDataset dataset={dataset}
+
                                                 datasets={datasets}
                                                 setDatasets={setDatasets}
+
                                                 datasetIndex={datasetIndex}
                                                 setDatasetIndex={setDatasetIndex}
+
                                                 iModelInstance={iModelInstance}
                   />
                 </Accordion.Body>
@@ -517,7 +457,22 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
-        {/* CONJUNTO DE DATOS */}
+        {/* PROCESS DATASET */}
+        {dataset === UPLOAD && <>
+          <div className={`mt-3 mb-4 n4l-hr-row`}>
+            <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.process-dataset'} /></span></p>
+          </div>
+          <Row className={'mt-3 joyride-step-process-dataset'}>
+            <Col>
+              <TabularClassificationDatasetForm datasets={datasets}
+                                                setDatasets={setDatasets}
+                                                datasetIndex={datasetIndex}
+                                                setDatasetIndex={setDatasetIndex} />
+            </Col>
+          </Row>
+        </>}
+
+        {/* SHOW DATASET */}
         <div className={`mt-3 mb-4 n4l-hr-row`}>
           <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.dataset'} /></span></p>
         </div>

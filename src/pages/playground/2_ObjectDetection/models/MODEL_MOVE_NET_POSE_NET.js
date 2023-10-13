@@ -65,18 +65,21 @@ export class MODEL_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
-  async enable_Model () {
+  async ENABLE_MODEL () {
     const model = poseDetection.SupportedModels.MoveNet
     const moveNetModelConfig = {
       modelType     : poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
       enableTracking: true,
       trackerType   : poseDetection.TrackerType.BoundingBox,
     }
-
-    return await poseDetection.createDetector(model, moveNetModelConfig)
+    this._modelDetector = await poseDetection.createDetector(model, moveNetModelConfig)
   }
 
-  render (ctx, poses) {
+  async PREDICTION (img_or_video) {
+    return await this._modelDetector.estimatePoses(img_or_video)
+  }
+
+  RENDER (ctx, poses) {
     // let lineas = [[10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7], [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],]
     let lineas = [[0, 1], [0, 2], [1, 3], [2, 4], [5, 6], [5, 7], [5, 11], [6, 8], [6, 12], [7, 9], [8, 10], [11, 12], [11, 13], [12, 14], [13, 15], [14, 16]]
     ctx.strokeStyle = '#FF0902'

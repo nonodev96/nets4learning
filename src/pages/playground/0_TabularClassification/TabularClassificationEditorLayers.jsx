@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
@@ -10,11 +10,22 @@ export default function TabularClassificationEditorLayers (props) {
     layers,
     setLayers,
     datasets,
-    datasetIndex
+    datasetIndex,
   } = props
 
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
+
+  useEffect(() => {
+    const changeUnitsLastLayer = (old_layer, units_last_layer) => {
+      if (old_layer.length > 0) {
+        old_layer[old_layer.length - 1].units = units_last_layer
+      }
+      return old_layer
+    }
+
+    setLayers((old_layers) => changeUnitsLastLayer(old_layers, datasets[datasetIndex]?.classes?.length ?? 10))
+  }, [datasets, datasetIndex, setLayers])
   // region  Layers
   const handlerClick_AddLayer_Start = async () => {
     if (layers.length < 10) {
@@ -140,7 +151,7 @@ export default function TabularClassificationEditorLayers (props) {
           <Trans i18nKey={'more-information-in-link'}
                  components={{
                    link1: <Link to={{ pathname: '/manual/', state: { action: 'open-layer-editor-tabular-classification' } }}
-                                className={'text-info'} />
+                                className={'text-info'} />,
                  }} />
         </p>
       </Card.Footer>

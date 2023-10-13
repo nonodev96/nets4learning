@@ -10,12 +10,13 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
   TABLE_HEADER = []
   CLASSES = []
   FORM = []
+  DATA_DEFAULT_KEYS = []
   DATA_DEFAULT = {}
-  DATA_OBJECT_KEYS = {}
   DATA = [[]]
 
-  constructor (_t) {
+  constructor (_t, _callbacks) {
     this.t = _t
+    this.callbacks = _callbacks
   }
 
   async LOAD_GRAPH_MODEL (onProgress) {
@@ -28,10 +29,6 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
 
   async DATASETS () {
     return []
-  }
-
-  function_v_input (element, index, param) {
-    throw new Error('Error')
   }
 
   DESCRIPTION () {
@@ -89,7 +86,7 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
 
     const prefix = 'datasets-models.0-tabular-classification.joyride.steps.'
     return {
-      run                  : true,
+      run                  : false,
       continuous           : true,
       handleJoyrideCallback: handleJoyrideCallback,
       steps                : [

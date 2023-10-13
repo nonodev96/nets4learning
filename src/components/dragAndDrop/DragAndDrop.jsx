@@ -12,7 +12,7 @@ const baseStyle = {
   borderRadius   : 3,
   borderColor    : '#b1b1b1',
   borderStyle    : 'dashed',
-  backgroundColor: '#e5e5e5',
+  backgroundColor: 'var(--bc-drag-and-drop)',
   color          : '#bdbdbd',
   outline        : 'none',
   transition     : 'border .24s ease-in-out',

@@ -85,7 +85,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
                             placeholder={'int32'}
                             min={0}
                             step={1}
-                            defaultValue={parseInt(datasets[datasetIndex].data_original[0][column_index])}
+                            defaultValue={0}
                             onChange={(e) => handleChange_Number(e, column_name, column_index)} />
               <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
             </Form.Group>
@@ -101,7 +101,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
                             placeholder={'float32'}
                             min={0}
                             step={0.1}
-                            defaultValue={parseFloat(datasets[datasetIndex].data_original[0][column_index])}
+                            defaultValue={0.0}
                             onChange={(e) => handleChange_Float(e, column_name, column_index)} />
               <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
             </Form.Group>
@@ -120,7 +120,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
               <Form.Label><b>{column_name}</b></Form.Label>
               <Form.Select aria-label="select"
                            size={'sm'}
-                           defaultValue={datasets[datasetIndex].data_original[0][column_index]}
+                           defaultValue={''}
                            onChange={(e) => handleChange_Select(e, column_name, column_index)}>
                 {column_options.map((option_value, option_index) => {
                   return <option key={column_name + '_option_' + option_index}

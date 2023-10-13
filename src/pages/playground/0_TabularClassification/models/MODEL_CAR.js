@@ -8,7 +8,6 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
   static KEY = 'CAR'
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
-  static URL_MODEL = '/public/models/classification/car/my-model-car.json'
   TITLE = 'datasets-models.0-tabular-classification.car.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.car.title'
 
@@ -19,6 +18,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     '00-tc.car.persons',
     '00-tc.car.lug_boot',
     '00-tc.car.safety',
+    '00-tc.car.result',
   ]
   CLASSES = [
     '00-tc.car.unacc',
@@ -26,41 +26,16 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     '00-tc.car.good',
     '00-tc.car.vgood',
   ]
-  NUM_CLASSES = 4
   // @formatter:off
-  DATA_CLASSES     = [
-    ["vhigh", "high", "med", "low"   ],
-    ["vhigh", "high", "med", "low"   ],
-    ["2",     "3",    "4",   "5more" ],
-    ["2",     "4",    "more"         ],
-    ["small", "med",  "big"          ],
-    ["low",   "med",  "high"         ]
-  ]
-  DATA_OBJECT      = {
-    buying  : ["vhigh", "high", "med", "low"   ],
-    maint   : ["vhigh", "high", "med", "low"   ],
-    doors   : ["2",     "3",    "4",   "5more" ],
-    persons : ["2",     "4",    "more"         ],
-    lug_boot: ["small", "med",  "big"          ],
-    safety  : ["low",   "med",  "high"         ]
-  }
-  DATA_OBJECT_KEYS = [ "buying", "maint", "doors", "persons", "lug_boot", "safety" ]
+  DATA_DEFAULT_KEYS = ["Buying", "Maint", "Doors", "Persons", "Lug_boot", "Safety",]
   DATA_DEFAULT = {
-    buying  : "vhigh",
-    maint   : "vhigh",
-    doors   : "2",
-    persons : "2",
-    lug_boot: "small",
-    safety  : "low",
+    Buying  : "vhigh",
+    Maint   : "vhigh",
+    Doors   : "2",
+    Persons : "2",
+    Lug_boot: "small",
+    Safety  : "low",
   }
-  DATA_CLASSES_KEYS = [
-    "Precio de compra",
-    "Precio del mantenimiento",
-    "Número de puertas",
-    "Capacidad de personas",
-    "Tamaño del maletero",
-    "Seguridad estimada"
-  ]
   LIST_EXAMPLES_RESULTS = [
     "unacc",
     "acc",
@@ -68,18 +43,18 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     "vgood"
   ]
   LIST_EXAMPLES = [
-    { buying: "vhigh", maint: "vhigh", doors: "2",     persons: "2",    lug_boot: "small", safety: "low" },
-    { buying: "low",   maint: "vhigh", doors: "4",     persons: "2",    lug_boot: "small", safety: "low" },
-    { buying: "med",   maint: "low",   doors: "5more", persons: "more", lug_boot: "med",   safety: "med" },
-    { buying: "low",   maint: "low",   doors: "5more", persons: "more", lug_boot: "big",   safety: "high" }
+    { Buying: "vhigh", Maint: "vhigh", Doors: "2",     Persons: "2",    Lug_boot: "small", Safety: "low" },
+    { Buying: "low",   Maint: "vhigh", Doors: "4",     Persons: "2",    Lug_boot: "small", Safety: "low" },
+    { Buying: "med",   Maint: "low",   Doors: "5more", Persons: "more", Lug_boot: "med",   Safety: "med" },
+    { Buying: "low",   Maint: "low",   Doors: "5more", Persons: "more", Lug_boot: "big",   Safety: "high" }
   ]
   FORM = [
-    { type: "label-encoder", name: "buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
-    { type: "label-encoder", name: "persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
-    { type: "label-encoder", name: "lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
-    { type: "label-encoder", name: "safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
+    { type: "label-encoder", name: "Buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "label-encoder", name: "Maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
+    { type: "label-encoder", name: "Doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
+    { type: "label-encoder", name: "Persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
+    { type: "label-encoder", name: "Lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
+    { type: "label-encoder", name: "Safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
   ]
   // @formatter:on
 
@@ -166,29 +141,24 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'car.csv')
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'car.csv')
     const dataset_transforms_1 = [
-      //Buying,Maint,Doors,Persons,Lug boot,Safety,Result
-      { column_name: 'Buying', column_transform: 'label-encoder' },
-      { column_name: 'Maint', column_transform: 'label-encoder' },
-      { column_name: 'Doors', column_transform: 'label-encoder' },
-      { column_name: 'Persons', column_transform: 'label-encoder' },
-      { column_name: 'Lug boot', column_transform: 'label-encoder' },
-      { column_name: 'Safety', column_transform: 'label-encoder' },
-      { column_name: 'Result', column_transform: 'label-encoder' },
+      //Buying,Maint,Doors,Persons,Lug_boot,Safety,Result
+      {  column_transform: 'label-encoder', column_name: 'Buying' },
+      {  column_transform: 'label-encoder', column_name: 'Maint' },
+      {  column_transform: 'label-encoder', column_name: 'Doors' },
+      {  column_transform: 'label-encoder', column_name: 'Persons' },
+      {  column_transform: 'label-encoder', column_name: 'Lug_boot' },
+      {  column_transform: 'label-encoder', column_name: 'Safety' },
+      {  column_transform: 'label-encoder', column_name: 'Result' },
     ]
     const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
 
-    const data_processed = DataFrameUtils.DataFrameIterRows(dataframe_processed_1)
-    const data_original = DataFrameUtils.DataFrameIterRows(dataframe_original_1)
-
     return [{
-      missing_values   : false,
-      missing_value_key: '',
-      data_original    : data_original,
-      data_processed   : data_processed,
-      classes          : ['unacc', 'acc', 'good', 'vgood'],
-      encoders         : encoders,
-      attributes       : [
+      missing_values       : false,
+      missing_value_key    : '',
+      classes              : ['unacc', 'acc', 'good', 'vgood'],
+      encoders             : encoders,
+      attributes           : [
         // @formatter:off
         { "type": "label-encoder", "index_column": 0, "name": "Buying",   "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
         { "type": "label-encoder", "index_column": 1, "name": "Maint",    "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
@@ -206,7 +176,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataset_transforms  : dataset_transforms_1,
-      is_dataset_processed: true
+      is_dataset_processed: true,
     }]
   }
 
@@ -219,7 +189,7 @@ export class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
   async LOAD_GRAPH_MODEL (onProgress) {
     return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
-      onProgress: onProgress
+      onProgress: onProgress,
     })
   }
 

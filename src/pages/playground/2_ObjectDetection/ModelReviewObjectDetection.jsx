@@ -8,7 +8,7 @@ import ReactGA from 'react-ga4'
 import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
-import { LIST_MODELS_OBJECT_DETECTION, MODEL_COCO_SSD, MODEL_FACE_DETECTOR, MODEL_FACE_MESH, MODEL_MOVE_NET_POSE_NET, UPLOAD } from '@/DATA_MODEL'
+import { LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 
@@ -30,7 +30,6 @@ export default function ModelReviewObjectDetection (props) {
   const [devices, setDevices] = useState([])
 
   const [iModel, setIModel] = useState(new I_MODEL_OBJECT_DETECTION(t))
-  const [modelDetector, setModelDetector] = useState(null)
 
   const requestRef = useRef()
   const webcamRef = useRef(null)
@@ -66,9 +65,9 @@ export default function ModelReviewObjectDetection (props) {
         console.error('Error, data set not valid')
       }
 
-      let _iModelClases = new I_MODEL_OBJECT_DETECTION(t)
       if (MAP_OD_CLASSES.hasOwnProperty(dataset)) {
-        const _iModelInstance = MAP_OD_CLASSES[dataset](t)
+        const _iModelClass = MAP_OD_CLASSES[dataset]
+        const _iModelInstance = new _iModelClass(t)
         setIModel(_iModelInstance)
 
         try {
@@ -83,8 +82,7 @@ export default function ModelReviewObjectDetection (props) {
             return
           }
 
-          const _modelDetector = await _iModelInstance.enable_Model()
-          setModelDetector(_modelDetector)
+          await _iModelInstance.ENABLE_MODEL()
           setLoading(false)
           setProgress(100)
           await alertHelper.alertSuccess(t('model-loaded-successfully'))
@@ -125,6 +123,15 @@ export default function ModelReviewObjectDetection (props) {
     return { video, ctx }
   }
 
+  const processData = async (ctx, img_or_video) => {
+    if (dataset === UPLOAD) {
+      console.error('Error, option not valid')
+      return
+    }
+    const predictions = await iModel.PREDICTION(img_or_video)
+    iModel.RENDER(ctx, predictions)
+  }
+
   useEffect(() => {
     console.log('useEffect[isCameraEnable]', { isCameraEnable })
     if (isCameraEnable === false) {
@@ -133,11 +140,11 @@ export default function ModelReviewObjectDetection (props) {
     }
     try {
       let fps = 20
-      let fpsInterval, startTime, now, then, elapsed
+      let fpsInterval, now, then, elapsed
+      // let startTime
 
       const animate = async () => {
         if (isCameraEnable) {
-          console.log('frame')
           requestRef.current = requestAnimationFrame(animate)
           now = Date.now()
           elapsed = now - then
@@ -160,7 +167,7 @@ export default function ModelReviewObjectDetection (props) {
       const startAnimating = (fps) => {
         fpsInterval = 1000 / fps
         then = Date.now()
-        startTime = then
+        // startTime = then
         animate().then(r => {
           console.log('start animation')
         })
@@ -190,34 +197,6 @@ export default function ModelReviewObjectDetection (props) {
       navigator.mediaDevices.enumerateDevices().then(handleDevices)
     }
   }, [handleDevices])
-
-  const processData = async (ctx, img_or_video) => {
-    switch (dataset) {
-      case UPLOAD:
-        // TODO
-        break
-      case MODEL_FACE_DETECTOR.KEY: {
-        const faces = await modelDetector.estimateFaces(img_or_video)
-        iModel.render(ctx, faces)
-        break
-      }
-      case MODEL_FACE_MESH.KEY:
-        const faces = await modelDetector.estimateFaces(img_or_video)
-        iModel.render(ctx, faces)
-        break
-      case MODEL_MOVE_NET_POSE_NET.KEY:
-        const poses = await modelDetector.estimatePoses(img_or_video)
-        iModel.render(ctx, poses)
-        break
-      case MODEL_COCO_SSD.KEY:
-        const predictions = await modelDetector.detect(img_or_video)
-        iModel.render(ctx, predictions)
-        break
-      default:
-        console.error('Error, conjunto de datos no reconocido')
-        break
-    }
-  }
 
   const handleChange_Camera = (e) => {
     console.log('handleChange_Camera')

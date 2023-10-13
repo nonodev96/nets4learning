@@ -3,6 +3,7 @@ import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+import ReactGA from 'react-ga4'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
@@ -128,6 +129,7 @@ export default function LinearRegression (props) {
   }
 
   useEffect(() => {
+    ReactGA.send({ hitType: 'pageview', page: '/LinearRegression/' + dataset, title: dataset })
     console.debug('LinearRegression useEffect[init]')
     const init = async () => {
       const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset)
