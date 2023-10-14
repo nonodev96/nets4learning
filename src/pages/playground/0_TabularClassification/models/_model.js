@@ -23,6 +23,28 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
     return <></>
   }
 
+  /**
+   * @typedef {Object} DatasetProcessed_t
+   * @property {boolean} missing_values
+   * @property {string} missing_value_key
+   * @property {string[]} classes
+   * @property {any} encoders
+   * @property {Array} attributes
+   * @property {boolean} is_dataset_processed
+   * @property {boolean} is_dataset_upload
+   * @property {string} path
+   * @property {string} info
+   * @property {string} csv
+   * @property {Array} dataset_transforms
+   * @property {dfd.DataFrame} dataframe_original
+   * @property {dfd.DataFrame} dataframe_processed
+   */
+
+  /**
+   *
+   * @returns {Promise<DatasetProcessed_t[]>}
+   * @constructor
+   */
   async DATASETS () {
     return []
   }
@@ -122,27 +144,27 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
           title    : this.t(prefix + 'layer-editor.title'),
           content  : this.t(prefix + 'layer-editor.content'),
           target   : '.joyride-step-editor-layers',
-          placement: 'right'
+          placement: 'right',
         },
         {
           title    : this.t(prefix + 'params-editor.title'),
           content  : this.t(prefix + 'params-editor.content'),
           target   : '.joyride-step-editor-trainer',
-          placement: 'left-start'
+          placement: 'left-start',
         },
         {
           title    : this.t(prefix + 'list-of-models.title'),
           content  : this.t(prefix + 'list-of-models.content'),
           target   : '.joyride-step-list-of-models',
-          placement: 'bottom'
+          placement: 'bottom',
         },
         {
           title    : this.t(prefix + 'classify-and-visualizer.title'),
           content  : this.t(prefix + 'classify-and-visualizer.content'),
           target   : '.joyride-step-classify-visualization',
-          placement: 'top'
+          placement: 'top',
         },
-      ]
+      ],
     }
   }
 

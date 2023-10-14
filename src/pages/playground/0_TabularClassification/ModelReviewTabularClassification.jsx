@@ -21,7 +21,7 @@ import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 export default function ModelReviewTabularClassification (props) {
   const { dataset } = props
 
-  const prefix = 'pages.playground.0-tabular-classification'
+  //const prefix = 'pages.playground.0-tabular-classification'
   const { t } = useTranslation()
 
   const [iModelInstance, setIModelInstance] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))

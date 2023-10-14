@@ -1,176 +1,216 @@
 import * as tf from '@tensorflow/tfjs'
+import * as tfvis from '@tensorflow/tfjs-vis'
 import * as dfd from 'danfojs'
+import * as sk from 'scikitjs'
+import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
-export function transform_datasetJSON_To_DataFrame (dataset_JSON) {
-  const data_parsed = dataset_JSON.data.map((row) => {
-    return row.map((item) => {
-      if (dataset_JSON?.missing_value_key === item) return NaN
-      else return item
+sk.setBackend(dfd.tensorflow)
+
+/**
+ * @typedef {Object} CustomDatasetParams_t
+ * @property {DatasetProcessed_t} dataProcessed
+ * @property {Array} layerList
+ * @property {number} learningRate
+ * @property {number} testSize
+ * @property {number} numberOfEpoch
+ * @property {string} idOptimizer
+ * @property {string} idLoss
+ * @property {string} idMetrics
+ */
+
+/**
+ *
+ * @param {CustomDatasetParams_t} params
+ * @param {i18n.t} t
+ * @returns {Promise<Sequential>}
+ */
+export async function createTabularClassificationCustomDataSet_upload (params, t) {
+
+  const {
+    dataProcessed,
+
+    layerList,
+
+    learningRate,
+    testSize,
+    numberOfEpoch,
+    idOptimizer,
+    idLoss,
+    idMetrics,
+
+  } = params
+
+  const { dataframe_processed } = dataProcessed
+  const column_name_target = dataframe_processed.columns[dataframe_processed.columns.length - 1]
+  const index_of_last_column = dataframe_processed.columns.indexOf(column_name_target)
+  const dataframe_X = dataframe_processed.iloc({ columns: [`:${index_of_last_column}`] })
+  const dataframe_y = dataframe_processed[column_name_target]
+
+  const model = tf.sequential()
+  for (const layer_data of layerList) {
+    const index = layerList.indexOf(layer_data)
+    const layer = {
+      units     : layer_data.units,
+      activation: layer_data.activation,
+      ...(index === 0) && {
+        inputShape: [dataframe_X.shape[1]],
+      },
+    }
+    model.add(tf.layers.dense(layer))
+  }
+
+  const optimizer = createOptimizer(idOptimizer, { learningRate })
+  const loss = createLoss(idLoss, {})
+  const metrics = createMetrics(idMetrics, {})
+
+  model.compile({ optimizer, loss, metrics })
+
+  // Creamos las métricas que van a aparecer en los gráficos
+  const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+  const fit_callbacks_container = {
+    name  : t('pages.playground.generator.models.history-train'),
+    tab   : t('pages.playground.generator.models.train'),
+    styles: { height: '1000px' },
+  }
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, {
+    callbacks: [
+      // 'onBatchEnd',
+      'onEpochEnd',
+    ],
+  })
+
+  const { X, y, scaler, encoders } = dataProcessed
+  const oneHotEncoder = new dfd.OneHotEncoder()
+  oneHotEncoder.fit(y.values)
+  let y_one_hot_values = oneHotEncoder.transform(y.values)
+
+  const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y_one_hot_values, testSize)
+  scaler.fit(X.values)
+  const _XTrain = scaler.transform(XTrain)
+  const _XTest = scaler.transform(XTest)
+
+  const Xtrain_tensor = tf.tensor(_XTrain)
+  const XTest_tensor = tf.tensor(_XTest)
+  const yTrain_tensor = tf.tensor(yTrain)
+  const yTest_tensor = tf.tensor(yTest)
+
+  await model.fit(Xtrain_tensor, yTrain_tensor, {
+    // batchSize      : 32,
+    // shuffle        : true,
+    validationData: [XTest_tensor, yTest_tensor],
+    epochs        : numberOfEpoch,
+    callbacks     : fitCallbacks,
+  })
+
+  return model
+}
+
+/**
+ *
+ * @param {CustomDatasetParams_t} params
+ * @param {i18n.t} t
+ * @returns {Promise<Sequential>}
+ */
+export async function createTabularClassificationCustomDataSet (params, t) {
+  const {
+    dataProcessed,
+
+    layerList,
+    learningRate,
+    testSize,
+    numberOfEpoch,
+    idOptimizer,
+    idLoss,
+    idMetrics,
+
+  } = params
+
+  tfvis.visor().open()
+
+  const { dataframe_processed, encoders } = dataProcessed
+
+  const new_dataframe = dataframe_processed.copy()
+
+  const index_of_last_column = new_dataframe.columns.length - 1
+  const column_name_target = new_dataframe.columns[index_of_last_column]
+  const dataframe_X = new_dataframe.iloc({ columns: [`:${index_of_last_column}`] })
+  const dataframe_y = new_dataframe[column_name_target]
+  console.log({ dataframe_X, dataframe_y })
+
+  const oneHotEncoder = new dfd.OneHotEncoder()
+  oneHotEncoder.fit(dataframe_y.values)
+  const dataframe_y_one_hot_values = oneHotEncoder.transform(dataframe_y.values)
+
+  const minMaxScaler = new dfd.MinMaxScaler()
+  minMaxScaler.fit(dataframe_X.values)
+  const dataframe_X_Scaler = minMaxScaler.transform(dataframe_X.values)
+
+  // let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X.values, dataframe_y.values, testSize)
+  let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
+
+  const XTrain_tensor = tf.tensor(XTrain)
+  const XTest_tensor = tf.tensor(XTest)
+  const yTrain_tensor = tf.tensor(yTrain)
+  const yTest_tensor = tf.tensor(yTest)
+
+  // region Define model
+  const model = tf.sequential()
+  for (const layer of layerList) {
+    const index = layerList.indexOf(layer)
+    const _layer = tf.layers.dense({
+      units     : layer.units,
+      activation: layer.activation.toLowerCase(),
+      ...(index === 0) && {
+        inputShape: [dataframe_X.shape[1]],
+      },
     })
-  })
-  const columns_number = dataset_JSON.attributes.filter(({ type }) => {
-    return type === 'int32'
-  })
-  const columns_float = dataset_JSON.attributes.filter(({ type }) => {
-    return type === 'float32'
-  })
-  const columns_select = dataset_JSON.attributes.filter(({ type }) => {
-    return type === 'string'
-  })
-  let df = new dfd.DataFrame(data_parsed)
-
-  for (const column of columns_number) {
-    let index_column = column?.index_column.toString()
-    let value_to_fill = parseInt(df[index_column].median())
-    df = df.fillNa(value_to_fill, { columns: [index_column] })
-  }
-  for (const column of columns_float) {
-    let index_column = column?.index_column.toString()
-    let value_to_fill = df[index_column].median()
-    df = df.fillNa(value_to_fill, { columns: [index_column] })
+    model.add(_layer)
   }
 
-  let encoder = new dfd.LabelEncoder()
+  const optimizer = createOptimizer(idOptimizer, { learningRate })
+  const loss = createLoss(idLoss, {})
+  const metrics = createMetrics(idMetrics, {})
 
-  columns_select.forEach((col) => {
-    let index_column = col?.index_column.toString()
+  model.compile({ optimizer, loss, metrics })
+  await tfvis.show.modelSummary({
+    name: 'Model Summary',
+    tab : 'Model Summary',
+  }, model)
+  // endregion
 
-    encoder.fit(df[index_column])
-    let enc_val = encoder.transform(df[index_column])
-    df.addColumn(index_column, enc_val, { inplace: true })
+  const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
+  const fit_callbacks_container = {
+    name: 'Training',
+    tab : 'Training',
+  }
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: [/*'onBatchEnd'*/, 'onEpochEnd'] })
+  await model.fit(XTrain_tensor, yTrain_tensor, {
+    // batchSize     : 32,
+    shuffle       : true,
+    validationData: [XTest_tensor, yTest_tensor],
+    epochs        : numberOfEpoch,
+    callbacks     : fitCallbacks,
   })
 
-  console.log('ENCODER', { df })
+  // TODO
+  const example = dataframe_X.values[dataframe_X.values.length - 1]
+  const example_scale = minMaxScaler.transform(example)
+  console.log({ example, example_scale })
 
-  return df
-}
+  const predict = model.predict(tf.tensor([example_scale,]))
+  console.log({ predict: predict.dataSync() })
+  // Lo que espera
+  const labels = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
+  // Lo que se predice
+  const predictions = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
 
-export function convertToTensorsDataFrame (df, dataset_JSON) {
-
-  return []
-}
-
-export function getClassesFromDataSet (dataset_JSON) {
-  try {
-
-    let data = []
-    const num_attributes = dataset_JSON.attributes.length
-    for (let i = 0; i <= num_attributes; i++) {
-      data.push([])
-    }
-
-    for (const array of dataset_JSON.data) {
-      for (let index = 0; index <= num_attributes; index++) {
-        data[index].push(array[index])
-      }
-    }
-
-    // Pasamos los atributos a identificadores
-    // Por columna (atributo) vamos Mapa con K = el valor del atributo y V = ID del atributo
-    const Array_MAPS_WITH_INDEX = []
-    for (let i = 0; i <= num_attributes; i++) {
-      const mySet = new Set(data[i])
-      let map = new Map()
-      let j = 0
-      for (const [element] of mySet.entries()) {
-        map.set(element, j)
-        j++
-      }
-      Array_MAPS_WITH_INDEX.push(map)
-    }
-
-    data = []
-    for (const array of dataset_JSON.data) {
-      let aux = []
-      for (let index = 0; index <= num_attributes; index++) {
-        aux.push(Array_MAPS_WITH_INDEX[index].get(array[index]))
-      }
-      data.push(aux)
-    }
-
-    const list_targets = []
-    for (let val of Array_MAPS_WITH_INDEX[num_attributes].keys()) {
-      list_targets.push(val)
-    }
-    return [data, list_targets, Array_MAPS_WITH_INDEX]
-  } catch (error) {
-    console.error(error)
+  const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, predictions)
+  const container = {
+    name: 'Evaluation',
+    tab : 'Evaluation',
   }
-}
+  const classNames = Object.keys(encoders[column_name_target].encoder.$labels)
+  await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
 
-function convertToTensors (data, targets, testSize, numClasses) {
-  const numExamples = data.length
-  if (numExamples !== targets.length) {
-    throw new Error('data and split have different numbers of examples')
-  }
-
-  // Randomly shuffle `data` and `targets`.
-  const indices = []
-  for (let i = 0; i < numExamples; ++i) {
-    indices.push(i)
-  }
-  tf.util.shuffle(indices)
-
-  const shuffledData = []
-  const shuffledTargets = []
-  for (let i = 0; i < numExamples; ++i) {
-    shuffledData.push(data[indices[i]])
-    shuffledTargets.push(targets[indices[i]])
-  }
-
-  // Split the data into a training set and a tet set, based on `testSplit`.
-  const numTestExamples = Math.round(numExamples * testSize)
-  const numTrainExamples = numExamples - numTestExamples
-
-  const xDims = shuffledData[0].length
-
-  // Create a 2D `tf.Tensor` to hold the feature data.
-  const xs = tf.tensor2d(shuffledData, [numExamples, xDims])
-
-  // Create a 1D `tf.Tensor` to hold the labels, and convert the number label
-  // from the set {0, 1, 2} into one-hot encoding (.e.g., 0 --> [1, 0, 0]).
-  const ys = tf.oneHot(tf.tensor1d(shuffledTargets).toInt(), numClasses)
-
-  // Split the data into training and test sets, using `slice`.
-  const xTrain = xs.slice([0, 0], [numTrainExamples, xDims])
-  const xTest = xs.slice([numTrainExamples, 0], [numTestExamples, xDims])
-  const yTrain = ys.slice([0, 0], [numTrainExamples, numClasses])
-  const yTest = ys.slice([0, 0], [numTestExamples, numClasses])
-  return [xTrain, yTrain, xTest, yTest]
-}
-
-export function trainTestSplit (data, classes, testSize) {
-
-  return tf.tidy(() => {
-    const dataByClass = []
-    const targetByClass = []
-    for (let i = 0; i < classes.length; i++) {
-      dataByClass.push([])
-      targetByClass.push([])
-    }
-
-    for (const example of data) {
-      const target = example[example.length - 1]
-      const data = example.slice(0, example.length - 1)
-      dataByClass[target].push(data)
-      targetByClass[target].push(target)
-    }
-
-    const xTrains = [], yTrains = [], xTests = [], yTests = []
-    for (let i = 0; i < classes.length; i++) {
-      const [xTrain, yTrain, xTest, yTest] = convertToTensors(dataByClass[i], targetByClass[i], testSize, classes.length)
-      xTrains.push(xTrain)
-      yTrains.push(yTrain)
-      xTests.push(xTest)
-      yTests.push(yTest)
-    }
-
-    const concatAxis = 0
-    return [
-      tf.concat(xTrains, concatAxis),
-      tf.concat(yTrains, concatAxis),
-      tf.concat(xTests, concatAxis),
-      tf.concat(yTests, concatAxis),
-    ]
-  })
+  return model
 }

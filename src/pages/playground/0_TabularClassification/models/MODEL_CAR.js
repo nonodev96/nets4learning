@@ -183,7 +183,10 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
   DEFAULT_LAYERS () {
     return [
-      { units: 10, activation: 'sigmoid' },
+      //{ units: 10, activation: 'sigmoid' },
+      { units: 128, activation: 'relu' },
+      { units: 64, activation: 'relu' },
+      { units: 32, activation: 'relu' },
       { units: 4, activation: 'softmax' },
     ]
   }

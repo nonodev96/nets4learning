@@ -9,7 +9,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
-import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload } from '@core/nn-utils/ArchitectureHelper'
+import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload } from '@core/nn-utils/ClassificationHelper'
 
 import alertHelper from '@utils/alertHelper'
 
@@ -118,7 +118,7 @@ export default function TabularClassification (props) {
   // const [isDatasetProcessed, setIsDatasetProcessed] = useState(false)
 
   // Layers
-  const [layers, setLayers] = useState(dataset === UPLOAD ? DEFAULT_LAYERS_UPLOAD : DEFAULT_LAYERS)
+  const [layers, setLayers] = useState(DEFAULT_LAYERS)
 
   // Params
   const [learningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE)
@@ -190,15 +190,14 @@ export default function TabularClassification (props) {
       let _idLoss = idLoss
       let _idMetrics = idMetrics
       const model = await createTabularClassificationCustomDataSet_upload({
+        dataProcessed: datasets[datasetIndex],
+        layerList    : JSON.parse(JSON.stringify(_layers)),
         learningRate : _learningRate,
         testSize     : _testSize,
         numberOfEpoch: _numberOfEpoch,
-        layerList    : JSON.parse(JSON.stringify(_layers)),
         idOptimizer  : _idOptimizer,
         idLoss       : _idLoss,
         idMetrics    : _idMetrics,
-
-        dataProcessed: datasets[datasetIndex],
       }, t)
 
       setModel(model)
@@ -210,7 +209,6 @@ export default function TabularClassification (props) {
             }),
             // New element
             {
-              idMODEL            : generatedModels.length,
               model              : model,
               learningRate       : _learningRate,
               testSize           : _testSize,
@@ -275,14 +273,14 @@ export default function TabularClassification (props) {
       let _idLoss = idLoss
       let _idMetrics = idMetrics
 
-      const [model, TARGET_SET_CLASSES, DATA_SET_CLASSES] = await createTabularClassificationCustomDataSet({
+      const model = await createTabularClassificationCustomDataSet({
+        dataProcessed: datasets[datasetIndex],
+
         learningRate : _learningRate,
         numberOfEpoch: _numberOfEpoch,
         testSize     : _testSize,
         layerList    : _layerList,
-        // TODO
-        // dataset_JSON : _customDataset_JSON,
-        dataset    : datasets[datasetIndex],
+
         idOptimizer: _idOptimizer,
         idLoss     : _idLoss,
         idMetrics  : _idMetrics,
@@ -291,14 +289,11 @@ export default function TabularClassification (props) {
         ...oldArray.map((oldModel) => {
           return { ...oldModel }
         }), {
-          idMODEL           : oldArray.length,
           model             : model,
-          TARGET_SET_CLASSES: TARGET_SET_CLASSES,
-          DATA_SET_CLASSES  : DATA_SET_CLASSES,
+          layerList         : JSON.parse(JSON.stringify(_layerList)),
           learningRate      : _learningRate,
           testSize          : _testSize,
           numberOfEpoch     : _numberOfEpoch,
-          layerList         : JSON.parse(JSON.stringify(_layerList)),
           idOptimizer       : _idOptimizer,
           idLoss            : _idLoss,
           idMetrics         : _idMetrics,

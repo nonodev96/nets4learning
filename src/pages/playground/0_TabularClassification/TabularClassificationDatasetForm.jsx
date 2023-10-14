@@ -190,10 +190,7 @@ export class Parser {
     }
 
     // TARGET
-    const {
-      column_name: column_name_target,
-      column_type: column_type_target,
-    } = column_target_to_transform
+    const { column_name: column_name_target, column_type: column_type_target } = column_target_to_transform
     switch (column_type_target) {
       case 'int32': {
         break

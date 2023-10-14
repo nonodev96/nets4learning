@@ -207,9 +207,9 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         const _serie = dataframe[column_name]
         encode.fit(_serie)
         for (const [oldValue, newValue] of Object.entries(encode.$labels)) {
-          dataframe.asType(column_name, 'string', { inplace: true })
           dataframe.replace(oldValue, newValue.toString(), { columns: [column_name], inplace: true })
         }
+        dataframe.asType(column_name, 'int32', { inplace: true })
         break
       }
       case 'drop_?': {

@@ -7,7 +7,7 @@ import { VERBOSE } from '@/CONSTANTS'
 
 export default function ModelReviewTabularClassificationPredict (props) {
 
-  const { iModelInstance, prediction } = props
+  const { prediction } = props
   const { t } = useTranslation()
 
   if (VERBOSE) console.log('render ModelReviewTabularClassificationPredict')

@@ -106,7 +106,10 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'iris.csv')
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'iris.csv')
-    const dataset_transforms_1 = []
+    const dataset_transforms_1 = [
+
+      {  column_transform: 'label-encoder', column_name: 'class' },
+    ]
     const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
 
@@ -146,9 +149,10 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     })
   }
 
-  async DEFAULT_LAYERS () {
+  DEFAULT_LAYERS () {
     return [
-      { units: 10, activation: 'sigmoid' },
+      { units: 10, activation: 'relu' },
+      { units: 10, activation: 'relu' },
       { units: 3, activation: 'softmax' },
     ]
   }

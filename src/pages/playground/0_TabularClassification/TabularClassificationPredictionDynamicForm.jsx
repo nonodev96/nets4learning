@@ -13,7 +13,7 @@ export default function TabularClassificationPredictionDynamicForm (props) {
   } = props
 
   useEffect(() => {
-    const rowDefault = datasets[datasetIndex].data[0]
+    const rowDefault = datasets[datasetIndex].dataframe_original.$data[0]
     const defaultString = rowDefault.slice(0, -1).join(';')
     setStringToPredict(defaultString)
 
