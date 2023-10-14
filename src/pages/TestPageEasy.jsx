@@ -4,7 +4,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import Plot from 'react-plotly.js'
 
 import TestComponentEasy from '@components/TestComponentEasy'
-import * as LinearRegressionModelExample from '@core/LinearRegressionModelExample'
+import * as LinearRegressionModelExample from '@core/controller/01-linear-regression/LinearRegressionModelExample'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import AlertHelper from '@utils/alertHelper'
 

@@ -11,7 +11,7 @@ import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
-import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
+import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
 import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
 

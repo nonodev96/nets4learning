@@ -13,7 +13,7 @@ import { LIST_MODELS_LINEAR_REGRESSION, UPLOAD } from '@/DATA_MODEL'
 import { MAP_LR_CLASSES } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import LinearRegressionModelController_Simple from '@core/LinearRegressionModelController_Simple'
+import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
 

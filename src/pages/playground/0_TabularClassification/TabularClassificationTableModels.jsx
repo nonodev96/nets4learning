@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
 import { Table, Card, Button, Container, Row, Col, Pagination } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'

@@ -9,7 +9,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
-import { createTabularClassificationCustomDataSet, createTabularClassificationCustomDataSet_upload } from '@core/nn-utils/ClassificationHelper'
+import { createTabularClassificationCustomDataSet } from '@core/controller/00-tabular-classification/TabularClassificationModelController'
 
 import alertHelper from '@utils/alertHelper'
 
@@ -189,7 +189,7 @@ export default function TabularClassification (props) {
       let _idOptimizer = idOptimizer
       let _idLoss = idLoss
       let _idMetrics = idMetrics
-      const model = await createTabularClassificationCustomDataSet_upload({
+      const model = await createTabularClassificationCustomDataSet({
         dataProcessed: datasets[datasetIndex],
         layerList    : JSON.parse(JSON.stringify(_layers)),
         learningRate : _learningRate,
