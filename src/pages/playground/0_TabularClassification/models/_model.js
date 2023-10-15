@@ -28,7 +28,8 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
    * @property {boolean} missing_values
    * @property {string} missing_value_key
    * @property {string[]} classes
-   * @property {any} encoders
+   * @property {Object<string, any>} encoders
+   * @property {Object} scaler
    * @property {Array} attributes
    * @property {boolean} is_dataset_processed
    * @property {boolean} is_dataset_upload

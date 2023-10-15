@@ -5,56 +5,47 @@ import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
-
   static KEY = 'CAR'
   static URL = 'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'
   TITLE = 'datasets-models.0-tabular-classification.car.title'
   i18n_TITLE = 'datasets-models.0-tabular-classification.car.title'
 
-  TABLE_HEADER = [
-    '00-tc.car.buying',
-    '00-tc.car.maint',
-    '00-tc.car.doors',
-    '00-tc.car.persons',
-    '00-tc.car.lug_boot',
-    '00-tc.car.safety',
-    '00-tc.car.result',
-  ]
-  CLASSES = [
-    '00-tc.car.unacc',
-    '00-tc.car.acc',
-    '00-tc.car.good',
-    '00-tc.car.vgood',
-  ]
+  TABLE_HEADER = ['00-tc.car.buying', '00-tc.car.maint', '00-tc.car.doors', '00-tc.car.persons', '00-tc.car.lug_boot', '00-tc.car.safety', '00-tc.car.result']
+
+  CLASSES = ['00-tc.car.unacc', '00-tc.car.acc', '00-tc.car.good', '00-tc.car.vgood']
+
   // @formatter:off
-  DATA_DEFAULT_KEYS = ["Buying", "Maint", "Doors", "Persons", "Lug_boot", "Safety",]
+  DATA_DEFAULT_KEYS = ['Buying', 'Maint', 'Doors', 'Persons', 'Lug_boot', 'Safety']
   DATA_DEFAULT = {
-    Buying  : "vhigh",
-    Maint   : "vhigh",
-    Doors   : "2",
-    Persons : "2",
-    Lug_boot: "small",
-    Safety  : "low",
+    Buying: 'vhigh',
+    Maint: 'vhigh',
+    Doors: '2',
+    Persons: '2',
+    Lug_boot: 'small',
+    Safety: 'low'
   }
+
   LIST_EXAMPLES_RESULTS = [
-    "unacc",
-    "acc",
-    "good",
-    "vgood"
+    'unacc',
+    'acc',
+    'good',
+    'vgood'
   ]
+
   LIST_EXAMPLES = [
-    { Buying: "vhigh", Maint: "vhigh", Doors: "2",     Persons: "2",    Lug_boot: "small", Safety: "low" },
-    { Buying: "low",   Maint: "vhigh", Doors: "4",     Persons: "2",    Lug_boot: "small", Safety: "low" },
-    { Buying: "med",   Maint: "low",   Doors: "5more", Persons: "more", Lug_boot: "med",   Safety: "med" },
-    { Buying: "low",   Maint: "low",   Doors: "5more", Persons: "more", Lug_boot: "big",   Safety: "high" }
+    { Buying: 'vhigh', Maint: 'vhigh', Doors: '2',     Persons: '2',    Lug_boot: 'small', Safety: 'low' },
+    { Buying: 'low',   Maint: 'vhigh', Doors: '4',     Persons: '2',    Lug_boot: 'small', Safety: 'low' },
+    { Buying: 'med',   Maint: 'low',   Doors: '5more', Persons: 'more', Lug_boot: 'med',   Safety: 'med' },
+    { Buying: 'low',   Maint: 'low',   Doors: '5more', Persons: 'more', Lug_boot: 'big',   Safety: 'high' }
   ]
+
   FORM = [
-    { type: "label-encoder", name: "Buying",   options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "Maint",    options: [{ value: "vhigh", text: "vhigh" }, { value: "high", text: "high" }, { value: "med",  text: "med"  }, { value: "low",   text: "low"   },] },
-    { type: "label-encoder", name: "Doors",    options: [{ value: "2",     text: "2"     }, { value: "3",    text: "3"    }, { value: "4",    text: "4"    }, { value: "5more", text: "5more" },] },
-    { type: "label-encoder", name: "Persons",  options: [{ value: "2",     text: "2"     }, { value: "4",    text: "4"    }, { value: "more", text: "more" },] },
-    { type: "label-encoder", name: "Lug_boot", options: [{ value: "small", text: "small" }, { value: "med", text: "med"   }, { value: "big",  text: "big"  },] },
-    { type: "label-encoder", name: "Safety",   options: [{ value: "low",   text: "low"   }, { value: "med", text: "med"   }, { value: "high", text: "high" },] },
+    { type: 'label-encoder', name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   },] },
+    { type: 'label-encoder', name: 'Maint',    options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   },] },
+    { type: 'label-encoder', name: 'Doors',    options: [{ value: '2',     text: '2'     }, { value: '3',    text: '3'    }, { value: '4',    text: '4'    }, { value: '5more', text: '5more' },] },
+    { type: 'label-encoder', name: 'Persons',  options: [{ value: '2',     text: '2'     }, { value: '4',    text: '4'    }, { value: 'more', text: 'more' },] },
+    { type: 'label-encoder', name: 'Lug_boot', options: [{ value: 'small', text: 'small' }, { value: 'med', text: 'med'   }, { value: 'big',  text: 'big'  },] },
+    { type: 'label-encoder', name: 'Safety',   options: [{ value: 'low',   text: 'low'   }, { value: 'med', text: 'med'   }, { value: 'high', text: 'high' },] },
   ]
   // @formatter:on
 
@@ -65,8 +56,11 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       <p>
         <Trans i18nKey={prefix + 'text-2'}
                components={{
-                 link1: <a href={'https://archive.ics.uci.edu/ml/datasets/Car+Evaluation'} target={'_blank'} rel="noreferrer">link</a>,
-               }} />
+                 link1: <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation"
+                           target="_blank"
+                           rel="noreferrer">link</a>
+               }}
+        />
       </p>
       <details>
         <summary><Trans i18nKey={prefix + 'details-1.title'} /></summary>
@@ -121,7 +115,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   note         = {{DOI}: https://doi.org/10.24432/C5JP48}
 }
 `}
-        </pre>
+          </pre>
       </details>
     </>
   }
@@ -130,8 +124,8 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/'
     const dataframe_original_1 = await dfd.readCSV(dataset_path + 'car.csv')
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'car.csv')
+    // @formatter:off
     const dataset_transforms_1 = [
-      //Buying,Maint,Doors,Persons,Lug_boot,Safety,Result
       {  column_transform: 'label-encoder', column_name: 'Buying' },
       {  column_transform: 'label-encoder', column_name: 'Maint' },
       {  column_transform: 'label-encoder', column_name: 'Doors' },
@@ -140,41 +134,45 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       {  column_transform: 'label-encoder', column_name: 'Safety' },
       {  column_transform: 'label-encoder', column_name: 'Result' },
     ]
+    // @formatter:on
     const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
+    const scaler = new dfd.MinMaxScaler()
 
     return [{
-      missing_values       : false,
-      missing_value_key    : '',
-      classes              : ['unacc', 'acc', 'good', 'vgood'],
-      encoders             : encoders,
-      attributes           : [
-        // @formatter:off
-        { "type": "label-encoder", "index_column": 0, "name": "Buying",   "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
-        { "type": "label-encoder", "index_column": 1, "name": "Maint",    "options": [{ "value": "vhigh", "text": "vhigh" }, { "value": "high", "text": "high" }, { "value": "med",  "text": "med"  }, { "value": "low",   "text": "low"   } ] },
-        { "type": "label-encoder", "index_column": 2, "name": "Doors",    "options": [{ "value": "2",     "text": "2"     }, { "value": "3",    "text": "3"    }, { "value": "4",    "text": "4"    }, { "value": "5more", "text": "5more" } ] },
-        { "type": "label-encoder", "index_column": 3, "name": "Persons",  "options": [{ "value": "2",     "text": "2"     }, { "value": "4",    "text": "4"    }, { "value": "more", "text": "more" } ] },
-        { "type": "label-encoder", "index_column": 4, "name": "Lug_boot", "options": [{ "value": "small", "text": "small" }, { "value": "med", "text": "med"   }, { "value": "big",  "text": "big"  } ] },
-        { "type": "label-encoder", "index_column": 5, "name": "Safety",   "options": [{ "value": "low",   "text": "low"   }, { "value": "med", "text": "med"   }, { "value": "high", "text": "high" } ] }
-        // @formatter:on
+      missing_values   : false,
+      missing_value_key: '',
+      encoders         : encoders,
+      scaler           : scaler,
+      classes          : ['unacc', 'acc', 'good', 'vgood'],
+      // @formatter:off
+      attributes       : [
+        { type: 'label-encoder', index_column: 0, name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
+        { type: 'label-encoder', index_column: 1, name: 'Maint',    options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
+        { type: 'label-encoder', index_column: 2, name: 'Doors',    options: [{ value: '2',     text: '2'     }, { value: '3',    text: '3'    }, { value: '4',    text: '4'    }, { value: '5more', text: '5more' } ] },
+        { type: 'label-encoder', index_column: 3, name: 'Persons',  options: [{ value: '2',     text: '2'     }, { value: '4',    text: '4'    }, { value: 'more', text: 'more' } ] },
+        { type: 'label-encoder', index_column: 4, name: 'Lug_boot', options: [{ value: 'small', text: 'small' }, { value: 'med', text: 'med'   }, { value: 'big',  text: 'big'  } ] },
+        { type: 'label-encoder', index_column: 5, name: 'Safety',   options: [{ value: 'low',   text: 'low'   }, { value: 'med', text: 'med'   }, { value: 'high', text: 'high' } ] }
       ],
+      // @formatter:on
 
       is_dataset_upload   : false,
+      is_dataset_processed: true,
       path                : dataset_path,
       info                : 'car.names',
       csv                 : 'car.csv',
       dataframe_original  : dataframe_original_1,
-      dataframe_processed : dataframe_processed_1,
       dataset_transforms  : dataset_transforms_1,
-      is_dataset_processed: true,
+      dataframe_processed : dataframe_processed_1
     }]
   }
 
   async LOAD_GRAPH_MODEL (callbacks) {
     return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
-      onProgress: callbacks.onProgress,
+      onProgress: callbacks.onProgress
     })
   }
+
   async LOAD_LAYERS_MODEL (callbacks) {
     return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
       onProgress: callbacks.onProgress
@@ -182,22 +180,19 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   DEFAULT_LAYERS () {
-    return [
-      //{ units: 10, activation: 'sigmoid' },
-      { units: 128, activation: 'relu' },
-      { units: 64, activation: 'relu' },
-      { units: 32, activation: 'relu' },
-      { units: 4, activation: 'softmax' },
-    ]
+    return [// { units: 10, activation: 'sigmoid' },
+      { units: 128, activation: 'relu' }, { units: 64, activation: 'relu' }, {
+        units: 32, activation: 'relu'
+      }, { units: 4, activation: 'softmax' }]
   }
 
   HTML_EXAMPLE () {
     const prefix = 'datasets-models.0-tabular-classification.car.html-example.'
-    return <>
+    return (<>
       <p>
         <Trans i18nKey={prefix + 'text'} /><br />
         <b><Trans i18nKey={prefix + 'items'} /></b>
       </p>
-    </>
+    </>)
   }
 }

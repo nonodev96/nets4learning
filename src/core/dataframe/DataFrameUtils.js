@@ -102,7 +102,7 @@ export function pieChartsValidConfig (dataframe, dataframePlotConfig) {
 
 export function lineChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
   const config_LineCharts = {
-    columns: columnsToShow,
+    columns: columnsToShow
   }
 
   const isValidConfig_LineCharts = true
@@ -126,16 +126,17 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
   /**
    * @type {EncoderMap_t}
    */
-  const encoders = {}
+  const mapEncoders = {}
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
+        console.log({ column_name, dataframe, data: dataframe[column_name] })
         const encoder = new dfd.LabelEncoder()
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
-        encoders[column_name] = {
+        mapEncoders[column_name] = {
           type   : 'label-encoder',
-          encoder: encoder,
+          encoder: encoder
         }
         break
       }
@@ -143,18 +144,19 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
         const encoder = new dfd.OneHotEncoder()
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
-        encoders[column_name] = {
+        mapEncoders[column_name] = {
           type   : 'label-encoder',
-          encoder: encoder,
+          encoder: encoder
         }
         break
       }
       default: {
+        console.error('Error, option not valid')
         break
       }
     }
   }
-  return encoders
+  return mapEncoders
 }
 
 /**
@@ -180,10 +182,15 @@ export function DataFrameApplyEncoders (EncodersMap, ValuesMap, columns) {
 }
 
 /**
+ * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
+ */
+
+/**
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
- * @property {string} column_transform
+ * @property {Transform_t} column_transform
  */
+
 /**
  * @param {dfd.DataFrame} dataframe
  * @param {Array<DataFrameColumnTransform_t>} dataframe_transforms
@@ -193,41 +200,40 @@ export function DataFrameApplyEncoders (EncodersMap, ValuesMap, columns) {
 export function DataFrameTransform (dataframe, dataframe_transforms) {
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
-      case 'replace_?_NaN': {
-        dataframe.replace('?', NaN, { columns: [column_name], inplace: true })
-        break
-      }
-      case 'fill_NaN_median': {
-        const values = dataframe[column_name].mean()
-        dataframe.fillNa(values, { columns: [column_name], inplace: true })
+      case 'one-hot-encoder': {
+        const encoder = new dfd.OneHotEncoder()
+        encoder.fit(dataframe[column_name])
+        const newSerie = encoder.transform(dataframe[column_name].values)
+        dataframe.addColumn(column_name, newSerie, { inplace: true })
         break
       }
       case 'label-encoder': {
-        const encode = new dfd.LabelEncoder()
-        const _serie = dataframe[column_name]
-        encode.fit(_serie)
-        for (const [oldValue, newValue] of Object.entries(encode.$labels)) {
-          dataframe.replace(oldValue, newValue.toString(), { columns: [column_name], inplace: true })
-        }
+        const encoder = new dfd.LabelEncoder()
+        encoder.fit(dataframe[column_name])
+        const new_serie = encoder.transform(dataframe[column_name].values)
+        dataframe.addColumn(column_name, new_serie, { inplace: true })
         dataframe.asType(column_name, 'int32', { inplace: true })
         break
       }
-      case 'drop_?': {
-        /** @type {number[]} */
-        let index_to_drop = dataframe.query(dataframe[column_name].eq('?')).index
-        dataframe.drop({ index: index_to_drop, inplace: true })
+      case 'int32': {
         break
       }
-      case 'dropNa': {
-        dataframe.dropNa({ inplace: true, axis: 1 })
+      case 'float32': {
+        break
+      }
+      case 'string': {
         break
       }
       case 'drop': {
         dataframe.drop({ columns: [column_name], inplace: true })
         break
       }
+      case 'dropNa': {
+        dataframe.dropNa({ inplace: true, axis: 1 })
+        break
+      }
       default: {
-        console.error('Error, option not valid', column_transform)
+        console.error('Error, option not valid', { column_transform, column_name })
       }
     }
   }

@@ -42,7 +42,7 @@ import {
   DEFAULT_LAYERS,
   DEFAULT_LAYERS_UPLOAD,
 } from './CONSTANTS'
-import TabularClassificationDatasetForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetForm'
+import TabularClassificationDatasetProcess from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcess'
 import N4LDivider from '@components/divider/N4LDivider'
 
 /**
@@ -456,10 +456,10 @@ export default function TabularClassification (props) {
           <N4LDivider i18nKey={'hr.process-dataset'} />
           <Row className={'mt-3 joyride-step-process-dataset'}>
             <Col>
-              <TabularClassificationDatasetForm datasets={datasets}
-                                                setDatasets={setDatasets}
-                                                datasetIndex={datasetIndex}
-                                                setDatasetIndex={setDatasetIndex} />
+              <TabularClassificationDatasetProcess datasets={datasets}
+                                                   setDatasets={setDatasets}
+                                                   datasetIndex={datasetIndex}
+                                                   setDatasetIndex={setDatasetIndex} />
             </Col>
           </Row>
         </>}

@@ -59,7 +59,7 @@ export async function createTabularClassificationCustomDataSet (params, t) {
   const dataframe_X_Scaler = minMaxScaler.transform(dataframe_X.values)
 
   // let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X.values, dataframe_y.values, testSize)
-  let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
+  const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
 
   const XTrain_tensor = tf.tensor(XTrain)
   const XTest_tensor = tf.tensor(XTest)
@@ -96,7 +96,7 @@ export async function createTabularClassificationCustomDataSet (params, t) {
     name: 'Training',
     tab : 'Training',
   }
-  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: [/*'onBatchEnd'*/, 'onEpochEnd'] })
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: [/* 'onBatchEnd', */ 'onEpochEnd'] })
   await model.fit(XTrain_tensor, yTrain_tensor, {
     // batchSize     : 32,
     shuffle       : true,

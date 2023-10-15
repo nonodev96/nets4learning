@@ -108,16 +108,18 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'iris.csv')
     const dataset_transforms_1 = [
 
-      {  column_transform: 'label-encoder', column_name: 'class' },
+      { column_transform: 'label-encoder', column_name: 'class' },
     ]
-    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
+    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
+    const scaler = new dfd.MinMaxScaler()
 
     return [{
       missing_values   : false,
       missing_value_key: '',
+      encoders         : encoders_map,
+      scaler           : scaler,
       classes          : ['1', '2', '3'],
-      encoders         : encoders,
       attributes       : [
         // @formatter:off
         { type: 'float32', name: 'sepal_length' },
@@ -128,13 +130,13 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
       ],
 
       is_dataset_upload   : false,
+      is_dataset_processed: true,
       path                : dataset_path,
       info                : 'iris.names',
       csv                 : 'iris.csv',
       dataframe_original  : dataframe_original_1,
-      dataframe_processed : dataframe_processed_1,
       dataset_transforms  : dataset_transforms_1,
-      is_dataset_processed: true,
+      dataframe_processed : dataframe_processed_1,
     }]
   }
 
@@ -143,6 +145,7 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
       onProgress: callbacks.onProgress
     })
   }
+
   async LOAD_LAYERS_MODEL (callbacks) {
     return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
       onProgress: callbacks.onProgress

@@ -139,7 +139,8 @@ export default function Manual () {
               <N4LDivider i18nKey={'hr.tasks'} />
               <Accordion className={'mt-3'}>
                 <Accordion.Item eventKey={'manual-0-tabular-classification'}>
-                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.0-tabular-classification.title'} /></h3></Accordion.Header>
+                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.0-tabular-classification.title'} /></h3>
+                  </Accordion.Header>
                   <Accordion.Body>
                     <h4><Trans i18nKey={'pages.manual.0-tabular-classification.1-title'} /></h4>
                     <p><Trans i18nKey={'pages.manual.0-tabular-classification.1-description-1'} /></p>
@@ -156,7 +157,8 @@ export default function Manual () {
                 </Accordion.Item>
                 {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
                   <Accordion.Item eventKey={'manual-1-linear-regression'}>
-                    <Accordion.Header><h3><Trans i18nKey={'pages.manual.1-linear-regression.title'} /></h3></Accordion.Header>
+                    <Accordion.Header><h3><Trans i18nKey={'pages.manual.1-linear-regression.title'} /></h3>
+                    </Accordion.Header>
                     <Accordion.Body>
                       <h4><Trans i18nKey={'pages.manual.1-linear-regression.1-title'} /></h4>
                       <p><Trans i18nKey={'pages.manual.1-linear-regression.1-description.0'} /></p>
@@ -180,7 +182,8 @@ export default function Manual () {
                   </Accordion.Item>
                 }
                 <Accordion.Item eventKey={'manual-2-object-identification'}>
-                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.2-object-identification.title'} /></h3></Accordion.Header>
+                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.2-object-identification.title'} /></h3>
+                  </Accordion.Header>
                   <Accordion.Body>
                     <h4><Trans i18nKey={'pages.manual.2-object-identification.1-title'} /></h4>
                     <p><Trans i18nKey={'pages.manual.2-object-identification.1-description-1'} /></p>
@@ -195,7 +198,8 @@ export default function Manual () {
                   </Accordion.Body>
                 </Accordion.Item>
                 <Accordion.Item eventKey={'manual-3-image-classification'}>
-                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.3-image-classification.title'} /></h3></Accordion.Header>
+                  <Accordion.Header><h3><Trans i18nKey={'pages.manual.3-image-classification.title'} /></h3>
+                  </Accordion.Header>
                   <Accordion.Body>
                     <h4><Trans i18nKey={'pages.manual.3-image-classification.1-title'} /></h4>
                     <p><Trans i18nKey={'pages.manual.3-image-classification.1-description-1'} /></p>
@@ -216,7 +220,7 @@ export default function Manual () {
                     <N4LDivider i18nKey={i18n_hr} />
                     <Accordion className={'mt-3'} defaultActiveKey={[]} activeKey={accordionActiveManual}>
                       {files.map(({ key, file }, index_2) => {
-                        return <Accordion.Item eventKey={key}>
+                        return <Accordion.Item key={index_2} eventKey={key}>
                           <Accordion.Header onClick={() => toggleAccordionActiveManual(key)}>
                             <h3><Trans i18nKey={file.i18n_title} /></h3>
                           </Accordion.Header>

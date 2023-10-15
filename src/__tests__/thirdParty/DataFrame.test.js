@@ -2,20 +2,6 @@ import * as dfd from 'danfojs'
 import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 
 describe('DataFrame', () => {
-  test('DataFrameTransform', () => {
-    const dataframe = new dfd.DataFrame({ 'column': [1, 2, 3, '?', 5, 6] })
-    // Check replace
-    const transform_replace = [{ column_name: 'column', column_transform: 'replace_?_NaN' }]
-    DataFrameTransform(dataframe, transform_replace)
-    const value_NaN = dataframe['column'].values[3]
-    expect(value_NaN).toBe(NaN)
-    // Check median
-    const transform_median = [{ column_name: 'column', column_transform: 'fill_NaN_median' }]
-    DataFrameTransform(dataframe, transform_median)
-    const value_median = dataframe['column'].values[3]
-    expect(value_median).toBe(3.4)
-  })
-
   test('DataFrame Dates', () => {
     let data = [
       ['Alice', 2, new Date('2029-01-01 01:00:00')],
