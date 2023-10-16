@@ -7,6 +7,7 @@ import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import { Link } from 'react-router-dom'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 // @formatter:off
 const DEFAULT_OPTIONS = [
@@ -21,7 +22,9 @@ const DEFAULT_OPTIONS = [
 
 export default function TabularClassificationDatasetProcessForm (props) {
   const {
+    /**@type DatasetProcessed_t[]*/
     datasets,
+    /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
     datasetIndex,
     setDatasetIndex
@@ -32,15 +35,20 @@ export default function TabularClassificationDatasetProcessForm (props) {
    * @property {string} column_name
    * @property {string} column_type
    */
-  const [columns, setColumns] = useState(/**@type ColumnType_t[]*/[])
+  const [listColumnNameType, setListColumnNameType] = useState(/**@type ColumnType_t[]*/[])
   /**
    * @typedef {Object} Transoformation_t
    * @property {string} column_name
    * @property {string} column_transform
    */
-  const [listTransformations, setListTransformations] = useState(/**@type DataFrameColumnTransform_t[]*/[])
-  const [typeScaler, setTypeScaler] = useState('min-max-scaler')
+  const [listColumnNameTransformations, setListColumnNameTransformations] = useState(/**@type DataFrameColumnTransform_t[]*/[])
   const [columnNameTarget, setColumnNameTarget] = useState('')
+  const [typeScaler, setTypeScaler] = useState('min-max-scaler')
+  const [showDetails, setShowDetails] = useState({
+    show_dataframe_original : false,
+    show_dataframe_form     : true,
+    show_dataframe_processed: false,
+  })
 
   const { t } = useTranslation()
   const prefix = 'form-dataframe.'
@@ -49,18 +57,17 @@ export default function TabularClassificationDatasetProcessForm (props) {
     const _columns = datasets[datasetIndex].dataframe_original.columns
     const _dtypes = datasets[datasetIndex].dataframe_original.dtypes
 
-    const _c_name_type = _columns.map((_, index) => {
+    const _listColumnNameType = _columns.map((_, index) => {
       return { column_name: _columns[index], column_type: _dtypes[index] }
     })
 
-    const _listTransformations = _c_name_type.map(({ column_name, column_type }, index) => {
+    const _listTransformations = _listColumnNameType.map(({ column_name, column_type }, index) => {
       const _column_transform = (column_type === 'string') ? 'label-encoder' : column_type
       return { column_name: column_name, column_transform: _column_transform }
     })
-    setColumns(_c_name_type)
     setColumnNameTarget(_columns[0])
-    setListTransformations(_listTransformations)
-    console.log({ d: datasets[datasetIndex].dataframe_original, _c_name_type, _listTransformations })
+    setListColumnNameType(_listColumnNameType)
+    setListColumnNameTransformations(_listTransformations)
   }, [datasets, datasetIndex])
 
   useEffect(() => {
@@ -72,52 +79,96 @@ export default function TabularClassificationDatasetProcessForm (props) {
     })
   }, [datasets, datasetIndex, t])
 
-  useEffect(() => {
-    if (!datasets[datasetIndex].is_dataset_processed) {
-      console.log('!datasets[datasetIndex].is_dataset_processed')
-      return
-    }
-    if (datasets[datasetIndex].dataframe_processed === null) {
-      console.log('!datasets[datasetIndex].dataframe_processed')
-      return
-    }
-
-    datasets[datasetIndex].dataframe_processed.plot('plot_processed').table({
-      config: TABLE_PLOT_STYLE_CONFIG, layout: {
-        title: t('dataframe-processed')
-      }
-    })
-  }, [datasets, datasetIndex, t])
-
-  const handleChange_cType = (e, columnName, setArray) => {
-    setListTransformations((prevState) =>
+  const handleChange_ColumnTransform = (e, columnName, setArray) => {
+    setListColumnNameTransformations((prevState) =>
       prevState.map((oldColumn) =>
         (oldColumn.column_name === columnName) ? { ...oldColumn, column_transform: e.target.value } : oldColumn
       )
     )
   }
 
+  const handleChange_ColumnNameTarget = (e) => {
+    setColumnNameTarget(e.target.value)
+    setListColumnNameTransformations((prevState) =>
+      prevState.map((oldColumn) =>
+        (oldColumn.column_name === e.target.value) ? { ...oldColumn, column_transform: 'label-encoder' } : oldColumn
+      )
+    )
+  }
+
   const handleSubmit_ProcessDataset = async (event) => {
     event.preventDefault()
-    const map_encoders = {}
-    let scaler
-    if (typeScaler === 'min-max-scaler') {
-      scaler = new dfd.MinMaxScaler()
-    } else if (typeScaler === 'standard-scaler') {
-      scaler = new dfd.StandardScaler()
-    }
-    const classes = []
-    const attributes = []
-    const column_name_target = 'class'
-    const dataProcessed = {
+    const dataframe_original = datasets[datasetIndex].dataframe_original
+    let dataframe_processed = datasets[datasetIndex].dataframe_processed
+
+    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, listColumnNameTransformations)
+    dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, listColumnNameTransformations)
+    const dataframe_X = dataframe_processed.drop({ columns: [columnNameTarget] })
+    const dataframe_y = dataframe_original[columnNameTarget]
+
+    const label_encoder_y = new dfd.LabelEncoder()
+    label_encoder_y.fit(dataframe_y.values)
+    const classes = Object.keys(label_encoder_y.$labels)
+
+    let attributes = listColumnNameTransformations.map(({ column_name, column_transform }, index) => {
+      if (column_transform === 'label-encoder') {
+        const _options = Object.keys(encoders_map[column_name].encoder.$labels).map((label) => ({ value: label, text: label }))
+        return { type: column_transform, index_column: index, name: column_name, options: _options }
+      } else {
+        return { type: column_transform, index_column: index, name: column_name }
+      }
+    })
+
+    attributes = attributes.filter(v => v.name !== columnNameTarget)
+
+    const scaler = (typeScaler === 'min-max-scaler') ? new dfd.MinMaxScaler() : new dfd.StandardScaler()
+    scaler.fit(dataframe_X)
+    const X = scaler.transform(dataframe_X)
+
+    const oneHotEncoder = new dfd.OneHotEncoder()
+    oneHotEncoder.fit(dataframe_y)
+    const y = oneHotEncoder.transform(dataframe_y)
+
+    const data_processed = {
       missing_values    : false,
       missing_value_key : '',
-      column_name_target: column_name_target,
-      classes           : classes,
-      encoders          : map_encoders,
+      column_name_target: columnNameTarget,
+      encoders          : encoders_map,
       scaler            : scaler,
-      attributes        : attributes
+      classes           : classes,
+      attributes        : attributes,
+      X                 : X,
+      y                 : y,
     }
+
+    dataframe_processed.plot('plot_processed').table({
+      config: TABLE_PLOT_STYLE_CONFIG, layout: {
+        title: t('dataframe-processed')
+      }
+    })
+
+    setDatasets((prevDatasets) => {
+      return prevDatasets.map((_dataset, _datasetIndex) => {
+        if (datasetIndex === _datasetIndex) {
+          return {
+            ..._dataset,
+            is_dataset_processed: true,
+            dataframe_processed : dataframe_processed,
+            data_processed      : data_processed
+          }
+        }
+        return _dataset
+      })
+    })
+
+    setShowDetails(() => {
+      return {
+        show_dataframe_original : false,
+        show_dataframe_form     : false,
+        show_dataframe_processed: true,
+      }
+    })
+
     await alertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
   }
 
@@ -126,7 +177,22 @@ export default function TabularClassificationDatasetProcessForm (props) {
     <Form onSubmit={handleSubmit_ProcessDataset}>
       <Row>
         <Col>
-          <details open>
+          <details open={showDetails.show_dataframe_original}>
+            <summary className="n4l-summary"><Trans i18nKey="dataframe-original" /></summary>
+            <main>
+              <Row>
+                <Col>
+                  <div id="plot_original" />
+                </Col>
+              </Row>
+            </main>
+          </details>
+        </Col>
+      </Row>
+      <hr />
+      <Row>
+        <Col>
+          <details open={showDetails.show_dataframe_form}>
             <summary className="n4l-summary"><Trans i18nKey="dataframe-form" /></summary>
             <hr />
             <Row>
@@ -134,15 +200,16 @@ export default function TabularClassificationDatasetProcessForm (props) {
             </Row>
 
             <Row className="mt-3" md={2} lg={3} xl={4} xxl={6}>
-              {listTransformations
+              {listColumnNameTransformations
                 .map(({ column_name, column_transform }, index) => {
                   return <Col key={index}>
                     <Form.Group controlId={'FormControl_' + column_name} className="mt-2">
                       <Form.Label><b>{column_name}</b></Form.Label>
                       <Form.Select aria-label="select"
                                    size="sm"
+                                   disabled={column_name === columnNameTarget}
                                    value={column_transform}
-                                   onChange={(e) => handleChange_cType(e, column_name)}>
+                                   onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
                         <>
                           {DEFAULT_OPTIONS.map((optionValue, optionIndex) => {
                             return <option key={column_name + '_option_' + optionIndex}
@@ -179,18 +246,18 @@ export default function TabularClassificationDatasetProcessForm (props) {
               </Col>
               <Col>
                 <Form.Group controlId="FormControl_ColumnNameTarget">
-                  <Form.Label><b>ColumnNameTarget</b> {columnNameTarget}</Form.Label>
+                  <Form.Label><b>Column target</b> {columnNameTarget}</Form.Label>
                   <Form.Select aria-label={'Selecciona un '}
                                size="sm"
                                value={columnNameTarget}
-                               onChange={(e) => setColumnNameTarget(e.target.value)}>
+                               onChange={handleChange_ColumnNameTarget}>
                     <>
-                      {columns.map(({column_name}, index) => {
+                      {listColumnNameType.map(({ column_name }, index) => {
                         return <option value={column_name} key={index}>{column_name}</option>
                       })}
                     </>
                   </Form.Select>
-                  <Form.Text className="text-muted">ColumnNameTarget</Form.Text>
+                  <Form.Text className="text-muted">{columnNameTarget}</Form.Text>
                 </Form.Group>
               </Col>
             </Row>
@@ -208,20 +275,8 @@ export default function TabularClassificationDatasetProcessForm (props) {
       </Row>
       <hr />
       <Row>
-        <Col xs={12} sm={12} md={12} lg={12} xxl={12}>
-          <details>
-            <summary className="n4l-summary"><Trans i18nKey="dataframe-original" /></summary>
-            <main>
-              <Row>
-                <Col>
-                  <div id="plot_original" />
-                </Col>
-              </Row>
-            </main>
-          </details>
-        </Col>
-        <Col xs={12} sm={12} md={12} lg={12} xxl={12}>
-          <details>
+        <Col>
+          <details open={showDetails.show_dataframe_processed}>
             <summary className="n4l-summary"><Trans i18nKey="dataframe-processed" /></summary>
             <main>
               <Row>

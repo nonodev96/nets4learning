@@ -1,6 +1,8 @@
 import { ACTIONS, LIFECYCLE } from 'react-joyride'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
+// eslint-disable-next-line no-unused-vars
+import * as dfd from 'danfojs'
 
 export default class I_MODEL_TABULAR_CLASSIFICATION {
   TITLE = ''
@@ -24,13 +26,20 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   /**
-   * @typedef {Object} DatasetProcessed_t
+   * @typedef {Object} DataProcessed_t
    * @property {boolean} missing_values
    * @property {string} missing_value_key
    * @property {string[]} classes
    * @property {Object<string, any>} encoders
-   * @property {Object} scaler
+   * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
+   * @property {string} column_name_target
    * @property {Array} attributes
+   * @property {dfd.DataFrame} X
+   * @property {dfd.DataFrame|dfd.Series} y
+   */
+
+  /**
+   * @typedef {Object} DatasetProcessed_t
    * @property {boolean} is_dataset_processed
    * @property {boolean} is_dataset_upload
    * @property {string} path
@@ -39,6 +48,7 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
    * @property {Array} dataset_transforms
    * @property {dfd.DataFrame} dataframe_original
    * @property {dfd.DataFrame} dataframe_processed
+   * @property {DataProcessed_t?} data_processed
    */
 
   /**

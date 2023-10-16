@@ -130,7 +130,6 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
-        console.log({ column_name, dataframe, data: dataframe[column_name] })
         const encoder = new dfd.LabelEncoder()
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
@@ -161,24 +160,40 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
 
 /**
  *
- * @param {EncoderMap_t} EncodersMap
- * @param {Object.<string, any>} ValuesMap
- * @param {string[]} columns - Es necesario para respetar el orden
+ * @param {EncoderMap_t} encoders_map
+ * @param {Object.<string, any>} values_map
+ * @param {string[]} column_name_list - Es necesario para respetar el orden
  * @returns {number[]}
  * @constructor
  */
-export function DataFrameApplyEncoders (EncodersMap, ValuesMap, columns) {
-  const newValues = []
-  for (const column_name of columns) {
-    const prevValue = ValuesMap[column_name]
-    if (EncodersMap.hasOwnProperty(column_name)) {
-      const newValue = EncodersMap[column_name].encoder.transform([prevValue])[0]
-      newValues.push(newValue)
+export function DataFrameApplyEncoders (encoders_map, values_map, column_name_list) {
+  const new_values = []
+  for (const column_name of column_name_list) {
+    const prev_value = values_map[column_name]
+    if (encoders_map.hasOwnProperty(column_name)) {
+      const new_value = encoders_map[column_name].encoder.transform([prev_value])[0]
+      new_values.push(new_value)
     } else {
-      newValues.push(prevValue)
+      new_values.push(prev_value)
     }
   }
-  return newValues
+  return new_values
+}
+
+export function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_list) {
+  const new_input_vector = []
+  console.log({ encoders_map, input_data, column_name_list })
+
+  for (const [column_index, column_name] of column_name_list.entries()) {
+    const prev_value = input_data[column_index]
+    if (encoders_map.hasOwnProperty(column_name)) {
+      const new_value = encoders_map[column_name].encoder.transform([prev_value])[0]
+      new_input_vector.push(new_value)
+    } else {
+      new_input_vector.push(prev_value)
+    }
+  }
+  return new_input_vector
 }
 
 /**
@@ -198,21 +213,22 @@ export function DataFrameApplyEncoders (EncodersMap, ValuesMap, columns) {
  * @return {dfd.DataFrame}
  */
 export function DataFrameTransform (dataframe, dataframe_transforms) {
+  const _dataframe = dataframe.copy()
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'one-hot-encoder': {
         const encoder = new dfd.OneHotEncoder()
-        encoder.fit(dataframe[column_name])
-        const newSerie = encoder.transform(dataframe[column_name].values)
-        dataframe.addColumn(column_name, newSerie, { inplace: true })
+        encoder.fit(_dataframe[column_name])
+        const new_serie = encoder.transform(_dataframe[column_name].values)
+        _dataframe.addColumn(column_name, new_serie, { inplace: true })
         break
       }
       case 'label-encoder': {
         const encoder = new dfd.LabelEncoder()
-        encoder.fit(dataframe[column_name])
-        const new_serie = encoder.transform(dataframe[column_name].values)
-        dataframe.addColumn(column_name, new_serie, { inplace: true })
-        dataframe.asType(column_name, 'int32', { inplace: true })
+        encoder.fit(_dataframe[column_name])
+        const new_serie = encoder.transform(_dataframe[column_name].values)
+        _dataframe.addColumn(column_name, new_serie, { inplace: true })
+        _dataframe.asType(column_name, 'int32', { inplace: true })
         break
       }
       case 'int32': {
@@ -225,11 +241,11 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         break
       }
       case 'drop': {
-        dataframe.drop({ columns: [column_name], inplace: true })
+        _dataframe.drop({ columns: [column_name], inplace: true })
         break
       }
       case 'dropNa': {
-        dataframe.dropNa({ inplace: true, axis: 1 })
+        _dataframe.dropNa({ axis: 1, inplace: true })
         break
       }
       default: {
@@ -237,7 +253,7 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
       }
     }
   }
-  return dataframe
+  return _dataframe
 }
 
 /**

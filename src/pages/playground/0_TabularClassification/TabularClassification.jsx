@@ -40,7 +40,6 @@ import {
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
   DEFAULT_LAYERS,
-  DEFAULT_LAYERS_UPLOAD,
 } from './CONSTANTS'
 import TabularClassificationDatasetProcess from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcess'
 import N4LDivider from '@components/divider/N4LDivider'
@@ -89,7 +88,7 @@ import N4LDivider from '@components/divider/N4LDivider'
  * > > Parser.transform()                       <-------------|
  *                                                            |
  * 2. Entrenar modelo:                                        |
- * handleSubmit_CreateModel_upload()            <-------------|
+ * handleSubmit_CreateModel()                   <-------------|
  *                                                            |
  * 3. Predecir con el modelo:                                 |
  * $ <TabularClassificationDynamicFormPrediction />           |
@@ -102,7 +101,7 @@ import N4LDivider from '@components/divider/N4LDivider'
  * > handleChange_Select()                                    |
  *                                                            |
  * -- Predecir                                                |
- * > handleClick_TestVector_upload()            <-------------|
+ * > handleClick_TestVector()                   <-------------|
  *
  */
 export default function TabularClassification (props) {
@@ -113,9 +112,6 @@ export default function TabularClassification (props) {
   const { t } = useTranslation()
 
   const isDebug = process.env.REACT_APP_ENVIRONMENT !== 'production'
-  // const [dataframeOriginal, setDataframeOriginal] = useState(null)
-  // const [dataProcessed, setDataProcessed] = useState(null)
-  // const [isDatasetProcessed, setIsDatasetProcessed] = useState(false)
 
   // Layers
   const [layers, setLayers] = useState(DEFAULT_LAYERS)
@@ -128,27 +124,27 @@ export default function TabularClassification (props) {
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS) // LOSS_TYPE
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS) // METRICS_TYPE
 
+  // Datasets
+  const [datasets, setDatasets] = useState(/** @type DatasetProcessed_t[]*/[])
+  const [datasetIndex, setDatasetIndex] = useState(-1)
   // Models upload && review
   const [isTraining, setIsTraining] = useState(false)
   const [generatedModels, setGeneratedModels] = useState(/** @type Array<GeneratedModel_t> */[])
   const [generatedModelsIndex, setGeneratedModelsIndex] = useState(-1)
   // Model review
   const [Model, setModel] = useState(null)
-  const [datasets, setDatasets] = useState([])
-  const [datasetIndex, setDatasetIndex] = useState(-1)
-  // Utils
 
   // Class && Controllers
   const [iModelInstance, set_IModelInstance] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
 
   // Prediction
+  const [inputDataToPredict, setInputDataToPredict] = useState([])
+  const [inputVectorToPredict, setInputVectorToPredict] = useState([])
   const [predictionBar, setPredictionBar] = useState({
     list_encoded_classes: [],
     labels              : [],
     data                : [],
   })
-  const [objectToPredict, setObjectToPredict] = useState({})
-  const [stringToPredict, setStringToPredict] = useState('')
   const refJoyrideButton = useRef({})
 
   useEffect(() => {
@@ -177,72 +173,6 @@ export default function TabularClassification (props) {
   }, [dataset, t])
 
   // region MODEL
-  const handleSubmit_CreateModel_upload = async (event) => {
-    event.preventDefault()
-    try {
-      setIsTraining(true)
-
-      let _learningRate = learningRate / 100
-      let _testSize = testSize / 100
-      let _numberOfEpoch = numberEpochs
-      let _layers = layers
-      let _idOptimizer = idOptimizer
-      let _idLoss = idLoss
-      let _idMetrics = idMetrics
-      const model = await createTabularClassificationCustomDataSet({
-        dataProcessed: datasets[datasetIndex],
-        layerList    : JSON.parse(JSON.stringify(_layers)),
-        learningRate : _learningRate,
-        testSize     : _testSize,
-        numberOfEpoch: _numberOfEpoch,
-        idOptimizer  : _idOptimizer,
-        idLoss       : _idLoss,
-        idMetrics    : _idMetrics,
-      }, t)
-
-      setModel(model)
-      setGeneratedModels(oldArray => {
-          return [
-            // Old elements
-            ...oldArray.map((oldModel) => {
-              return { ...oldModel }
-            }),
-            // New element
-            {
-              model              : model,
-              learningRate       : _learningRate,
-              testSize           : _testSize,
-              numberOfEpoch      : _numberOfEpoch,
-              layerList          : JSON.parse(JSON.stringify(_layers)),
-              idOptimizer        : _idOptimizer,
-              idLoss             : _idLoss,
-              idMetrics          : _idMetrics,
-              dataframe_processed: datasets[datasetIndex].dataframe_processed,
-            },
-          ]
-        },
-      )
-      setGeneratedModelsIndex(generatedModels.length)
-
-    } catch (error) {
-      console.error(error)
-      if (errorUtils.isErrorTargetExpected(error.message)) {
-        const match = errorUtils.matchErrorTargetExpected(error.message)
-        const error_params = {
-          tensor_shape_0       : match.tensor_shape_0,
-          tensor_shape_1       : match.tensor_shape_1,
-          target_tensor_shape_0: match.target_tensor_shape_0,
-          target_tensor_shape_1: match.target_tensor_shape_1,
-        }
-        const error_message = t('error.tensor-shape-description', error_params)
-        await alertHelper.alertError(error_message, { title: 'Error' })
-      } else {
-        await alertHelper.alertError(error.message, { title: 'Error' })
-      }
-    } finally {
-      setIsTraining(false)
-    }
-  }
   const handleSubmit_CreateModel = async (event) => {
     event.preventDefault()
     if (datasets.length === 0) {
@@ -250,14 +180,19 @@ export default function TabularClassification (props) {
       return
     }
 
-    const last_layer_units = layers[layers.length - 1].units ?? 0
-    const classes_length = datasets[datasetIndex]?.classes?.length ?? 0
+    console.log({ datasets, layers })
+    const dataset_processed = datasets[datasetIndex]
+    const { data_processed } = dataset_processed
 
+    const last_layer_units = layers[layers.length - 1].units ?? 0
+    const classes_length = data_processed.classes.length
+
+    console.log({ last_layer_units, classes_length })
     if (last_layer_units !== classes_length) {
       await alertHelper.alertWarning(t('error.tensor-shape'), {
         footer: '',
         text  : '',
-        html  : <Trans i18nKey={'error.tensor-shape-change'} values={{ last_layer_units: last_layer_units, classes_length: classes_length }} />,
+        html  : <Trans i18nKey={'error.tensor-shape-change'} values={{ last_layer_units: last_layer_units, class_length: classes_length }} />,
       })
       return
     }
@@ -268,35 +203,31 @@ export default function TabularClassification (props) {
       let _numberOfEpoch = numberEpochs
       let _testSize = testSize / 100
       let _layerList = layers
-
       let _idOptimizer = idOptimizer
       let _idLoss = idLoss
       let _idMetrics = idMetrics
 
       const model = await createTabularClassificationCustomDataSet({
-        dataProcessed: datasets[datasetIndex],
-
-        learningRate : _learningRate,
-        numberOfEpoch: _numberOfEpoch,
-        testSize     : _testSize,
-        layerList    : _layerList,
-
-        idOptimizer: _idOptimizer,
-        idLoss     : _idLoss,
-        idMetrics  : _idMetrics,
+        dataset_processed: dataset_processed,
+        learningRate     : _learningRate,
+        numberOfEpoch    : _numberOfEpoch,
+        testSize         : _testSize,
+        layerList        : _layerList,
+        idOptimizer      : _idOptimizer,
+        idLoss           : _idLoss,
+        idMetrics        : _idMetrics,
       }, t)
-      setGeneratedModels(oldArray => [
-        ...oldArray.map((oldModel) => {
-          return { ...oldModel }
-        }), {
-          model             : model,
-          layerList         : JSON.parse(JSON.stringify(_layerList)),
-          learningRate      : _learningRate,
-          testSize          : _testSize,
-          numberOfEpoch     : _numberOfEpoch,
-          idOptimizer       : _idOptimizer,
-          idLoss            : _idLoss,
-          idMetrics         : _idMetrics,
+      setGeneratedModels((oldArray) => [
+        ...oldArray,
+        {
+          model        : model,
+          layerList    : JSON.parse(JSON.stringify(_layerList)),
+          learningRate : _learningRate,
+          testSize     : _testSize,
+          numberOfEpoch: _numberOfEpoch,
+          idOptimizer  : _idOptimizer,
+          idLoss       : _idLoss,
+          idMetrics    : _idMetrics,
         }],
       )
       setIsTraining(false)
@@ -312,56 +243,6 @@ export default function TabularClassification (props) {
   // endregion
 
   // region Prediction
-  // TODO Prediction Upload
-  const handleSubmit_PredictVector_upload = async (e) => {
-    e.preventDefault()
-    const currentDataProcessed = generatedModels[generatedModelsIndex].dataProcessed
-    const currentObjEncoder = currentDataProcessed.obj_encoder
-    const columnNameTarget = currentDataProcessed.column_name_target
-    // Seleccionamos el escalador MinMaxScaler o StandardScaler
-    const currentScaler = currentDataProcessed.scaler
-    // Seleccionamos el modelo cargado
-    const currentModel = generatedModels[generatedModelsIndex].model
-
-    const objectToPredict_dataframe_format = {}
-    for (const [name, value] of Object.entries(objectToPredict)) {
-      objectToPredict_dataframe_format[name] = [value]
-    }
-    const tempDataFrame = new dfd.DataFrame(objectToPredict_dataframe_format)
-
-    // Escalamos los datos a predecir en función del escalador del preprocesamiento
-    const scaledData = currentScaler.transform(tempDataFrame.values[0])
-    // Realizamos la predicción
-    const tensor_input = tf.tensor2d([scaledData])
-    const prediction = currentModel.predict(tensor_input)
-    // const predictionWithArgMax = prediction.argMax(-1).dataSync();
-    const predictionArraySync = prediction.arraySync()[0]
-    const labels = currentDataProcessed.classes.map(({ name }) => {
-      return name
-    })
-    const list_encoded_classes = currentDataProcessed.classes.map(({ name }, index) => {
-      const class_target_id = currentObjEncoder[columnNameTarget].$labels[name].toString()
-      return <Trans key={index}
-                    i18nKey="pages.playground.generator.prediction.class_id_name"
-                    values={{ name, class_target_id }} />
-    })
-
-    setPredictionBar((_prevState) => {
-      return {
-        list_encoded_classes: [...list_encoded_classes],
-        labels              : [...labels],
-        data                : [...predictionArraySync],
-      }
-    })
-
-    if (!isProduction()) console.debug('Predicción', { prediction, predictionArraySync, wtf: prediction.arraySync() })
-    const text = predictionArraySync.map(item => {
-      const float = parseFloat(item * 100)
-      return float.toFixed(2)
-    }).join(', ')
-    await alertHelper.alertSuccess(t('prediction'), { text })
-  }
-
   const handleSubmit_PredictVector = async (e) => {
     e.preventDefault()
     if (dataset === UPLOAD) {
@@ -374,21 +255,30 @@ export default function TabularClassification (props) {
       await alertHelper.alertError('Primero debes de entrenar el modelo')
       return
     }
-    let input = [[], [1, stringToPredict.split(';').length]]
     try {
+      const { data_processed } = datasets[datasetIndex]
+      const { scaler, classes } = data_processed
 
-      if (input[0].some((tag) => tag === undefined)) {
-        await alertHelper.alertInfo('tag undefined', { text: 'Error, input not valid' })
-        return
-      }
+      const input_vector_to_predict_scaled = scaler.transform(inputVectorToPredict)
+      console.log({ inputVectorToPredict, input_vector_to_predict_scaled })
 
-      const tensor = tf.tensor2d(input[0], input[1])
+      const tensor = tf.tensor([input_vector_to_predict_scaled])
       const prediction = Model.predict(tensor)
       const predictionDataSync = prediction.dataSync()
-      const predictionWithArgMax = prediction.argMax(-1).dataSync()
-      console.log({ prediction, predictionDataSync, predictionWithArgMax })
+      const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
+      console.log({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
+
+      setPredictionBar(() => {
+
+        return {
+          classes: classes,
+          labels : classes,
+          data   : [...predictionDataSync],
+        }
+      })
 
     } catch (error) {
+      await alertHelper.alertError(error.toString())
       console.error(error)
     }
   }
@@ -476,7 +366,7 @@ export default function TabularClassification (props) {
         {/* GENERADOR */}
         <N4LDivider i18nKey={'hr.model'} />
         {datasetIndex >= 0 &&
-          <Form onSubmit={dataset === UPLOAD ? handleSubmit_CreateModel_upload : handleSubmit_CreateModel} id={'TabularClassificationCustomDataset'}>
+          <Form onSubmit={handleSubmit_CreateModel} id={'TabularClassificationCustomDataset'}>
             {/* BLOCK 1 */}
             <Row className={'mt-3'}>
               <Col xl={12} className={'joyride-step-layer'}>
@@ -547,36 +437,17 @@ export default function TabularClassification (props) {
                                              generatedModelsIndex={generatedModelsIndex}
                                              setGeneratedModelsIndex={setGeneratedModelsIndex}
 
-                                             stringToPredict={stringToPredict}
-                                             setStringToPredict={setStringToPredict}
-
-                                             objectToPredict={objectToPredict}
-                                             setObjectToPredict={setObjectToPredict}
+                                             inputDataToPredict={inputDataToPredict}
+                                             setInputDataToPredict={setInputDataToPredict}
+                                             inputVectorToPredict={inputVectorToPredict}
+                                             setInputVectorToPredict={setInputVectorToPredict}
 
                                              predictionBar={predictionBar}
 
-                                             handleSubmit_PredictVector={dataset === UPLOAD ? handleSubmit_PredictVector_upload : handleSubmit_PredictVector} />
+                                             handleSubmit_PredictVector={handleSubmit_PredictVector} />
           </Col>
         </Row>
       </Container>
-
-      {isDebug &&
-        <Container>
-          <Row>
-            <Col>
-              <Card className={'mt-3'}>
-                <Card.Header className={'d-flex align-items-center justify-content-between'}>
-                  <h3>Debug</h3>
-                </Card.Header>
-                <Card.Body>
-                  {datasetIndex}
-                  <div id="plot_div"></div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      }
     </>
   )
 }

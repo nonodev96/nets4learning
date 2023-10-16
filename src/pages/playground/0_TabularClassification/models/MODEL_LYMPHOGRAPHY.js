@@ -270,9 +270,9 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
 
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
-    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'lymphography.csv')
-    let dataframe_processed_1 = await dfd.readCSV(dataset_path + 'lymphography.csv')
-    const dataset_transforms_1 = [
+    const dataframe_original = await dfd.readCSV(dataset_path + 'lymphography.csv')
+    const dataframe_copy = dataframe_original.copy()
+    const dataset_transforms = [
       { column_transform: 'label-encoder', column_name: 'lymphatics' },
       { column_transform: 'label-encoder', column_name: 'block of affere' },
       { column_transform: 'label-encoder', column_name: 'bl. of lymph. c' },
@@ -293,27 +293,43 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
       { column_transform: 'label-encoder', column_name: 'no. of nodes in' },
       { column_transform: 'label-encoder', column_name: 'class' },
     ]
-    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms_1)
-    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
+    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_copy, dataset_transforms)
+    const dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_copy, dataset_transforms)
+    const column_name_target = 'class'
+    const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
+    const dataframe_y = dataframe_original[column_name_target]
+
     const scaler = new dfd.MinMaxScaler()
+    scaler.fit(dataframe_X)
+    const X = scaler.transform(dataframe_X)
 
-    return [{
-      missing_values   : false,
-      missing_value_key: '',
-      encoders         : encoders,
-      scaler           : scaler,
-      classes          : this.CLASSES,
-      attributes       : this.FORM,
+    const oneHotEncoder = new dfd.OneHotEncoder()
+    oneHotEncoder.fit(dataframe_y)
+    const y = oneHotEncoder.transform(dataframe_y)
 
-      is_dataset_upload   : false,
-      is_dataset_processed: true,
-      path                : dataset_path,
-      info                : 'lymphography.names',
-      csv                 : 'lymphography.csv',
-      dataframe_original  : dataframe_original_1,
-      dataset_transforms  : dataset_transforms_1,
-      dataframe_processed : dataframe_processed_1,
-    }]
+    return [
+      {
+        is_dataset_upload   : false,
+        is_dataset_processed: true,
+        path                : dataset_path,
+        info                : 'lymphography.names',
+        csv                 : 'lymphography.csv',
+        dataframe_original  : dataframe_original,
+        dataset_transforms  : dataset_transforms,
+        dataframe_processed : dataframe_processed,
+        data_processed      : {
+          X                 : X,
+          y                 : y,
+          missing_values    : false,
+          missing_value_key : '',
+          encoders          : encoders,
+          scaler            : scaler,
+          column_name_target: 'class',
+          classes           : this.CLASSES,
+          attributes        : this.FORM,
+        },
+      }
+    ]
   }
 
   async LOAD_GRAPH_MODEL (callbacks) {

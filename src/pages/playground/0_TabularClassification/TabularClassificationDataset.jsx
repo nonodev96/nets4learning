@@ -12,7 +12,9 @@ export default function TabularClassificationDataset (props) {
   const {
     dataset,
     iModelInstance,
+    /*** @type DatasetProcessed_t[] */
     datasets,
+    /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
 
     datasetIndex,
@@ -28,40 +30,27 @@ export default function TabularClassificationDataset (props) {
     }
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
-      dfd.readCSV(file_csv).then(async (_dataframe) => {
-        // setDataframeOriginal(_dataframe)
-        // setObjectToPredict({})
-
-        console.log(_dataframe, datasetIndex)
-
-        setDatasets((prevState) => {
-          const newDataset = {
-            missing_values   : false,
-            missing_value_key: '',
-            classes          : [],
-            encoders         : {},
-            attributes       : [],
-
-            is_dataset_upload   : true,
-            is_dataset_processed: false,
-            path                : '',
-            info                : '',
-            csv                 : '',
-            dataset_transforms  : [],
-            dataframe_original  : _dataframe,
-            dataframe_processed : _dataframe,
-          }
-          return [...prevState, newDataset]
-        })
-        setDatasetIndex(0)
-
-
-        await alertHelper.alertSuccess(t('success.file-upload'))
-
-      }).catch((error) => {
-        console.error(error)
+      // Por un bug de referencias, el dataframe original y el procesado se comunican y no debe
+      // la función dataframe.copy() no funciona correctamente
+      const D_original = await dfd.readCSV(file_csv)
+      const D_processed = await dfd.readCSV(file_csv)
+      setDatasets((prevState) => {
+        return [...prevState, {
+          is_dataset_upload   : true,
+          is_dataset_processed: false,
+          path                : '',
+          info                : '',
+          csv                 : '',
+          dataset_transforms  : [],
+          dataframe_original  : D_original,
+          dataframe_processed : D_processed,
+          data_processed      : {}
+        }]
       })
+      setDatasetIndex(0)
+      await alertHelper.alertSuccess(t('success.file-upload'))
     } catch (error) {
+      await alertHelper.alertError(t('error.file-upload'))
       console.error(error)
     }
   }

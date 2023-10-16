@@ -10,7 +10,9 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function TabularClassificationDatasetProcess (props) {
   const {
+    /** @type DatasetProcessed_t[] */
     datasets,
+    /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
     datasetIndex,
     setDatasetIndex

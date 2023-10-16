@@ -10,6 +10,7 @@ export default function TabularClassificationEditorLayers (props) {
   const {
     layers,
     setLayers,
+    /**@type DatasetProcessed_t[] */
     datasets,
     datasetIndex,
   } = props
@@ -24,8 +25,9 @@ export default function TabularClassificationEditorLayers (props) {
       }
       return old_layer
     }
+    const { data_processed } = datasets[datasetIndex]
 
-    setLayers((old_layers) => changeUnitsLastLayer(old_layers, datasets[datasetIndex]?.classes?.length ?? 10))
+    setLayers((old_layers) => changeUnitsLastLayer(old_layers, data_processed?.classes?.length ?? 10))
   }, [datasets, datasetIndex, setLayers])
   // region  Layers
   const handlerClick_AddLayer_Start = async () => {
@@ -41,7 +43,8 @@ export default function TabularClassificationEditorLayers (props) {
 
   const handlerClick_AddLayer_End = async () => {
     if (layers.length < 10) {
-      let units = datasets[datasetIndex]?.classes?.length ?? 10
+      const { data_processed } = datasets[datasetIndex]
+      let units = data_processed?.classes?.length ?? 10
       if (units === 0) units = 1
       setLayers(oldLayers => [...oldLayers, {
         units     : units,

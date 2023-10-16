@@ -8,7 +8,7 @@ sk.setBackend(dfd.tensorflow)
 
 /**
  * @typedef {Object} CustomDatasetParams_t
- * @property {DatasetProcessed_t} dataProcessed
+ * @property {DatasetProcessed_t} dataset_processed
  * @property {Array} layerList
  * @property {number} learningRate
  * @property {number} testSize
@@ -26,7 +26,7 @@ sk.setBackend(dfd.tensorflow)
  */
 export async function createTabularClassificationCustomDataSet (params, t) {
   const {
-    dataProcessed,
+    dataset_processed,
 
     layerList,
     learningRate,
@@ -40,26 +40,24 @@ export async function createTabularClassificationCustomDataSet (params, t) {
 
   tfvis.visor().open()
 
-  const { dataframe_processed, encoders } = dataProcessed
+  const { data_processed } = dataset_processed
+  const { scaler, X, y } = data_processed
+  // const new_dataframe = dataframe_processed.copy()
+  // const dataframe_X = new_dataframe.drop({ columns: [column_name_target] })
+  // const dataframe_y = new_dataframe[column_name_target]
+  // console.log({ dataframe_X, dataframe_y })
 
-  const new_dataframe = dataframe_processed.copy()
+  // const oneHotEncoder = new dfd.OneHotEncoder()
+  // oneHotEncoder.fit(dataframe_y.values)
+  // const dataframe_y_one_hot_values = oneHotEncoder.transform(dataframe_y.values)
 
-  const index_of_last_column = new_dataframe.columns.length - 1
-  const column_name_target = new_dataframe.columns[index_of_last_column]
-  const dataframe_X = new_dataframe.iloc({ columns: [`:${index_of_last_column}`] })
-  const dataframe_y = new_dataframe[column_name_target]
-  console.log({ dataframe_X, dataframe_y })
-
-  const oneHotEncoder = new dfd.OneHotEncoder()
-  oneHotEncoder.fit(dataframe_y.values)
-  const dataframe_y_one_hot_values = oneHotEncoder.transform(dataframe_y.values)
-
-  const minMaxScaler = new dfd.MinMaxScaler()
-  minMaxScaler.fit(dataframe_X.values)
-  const dataframe_X_Scaler = minMaxScaler.transform(dataframe_X.values)
+  // const scaler = new dfd.MinMaxScaler()
+  // scaler.fit(dataframe_X.values)
+  // const dataframe_X_Scaler = scaler.transform(X.values)
 
   // let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X.values, dataframe_y.values, testSize)
-  const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
+  // const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
+  const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
 
   const XTrain_tensor = tf.tensor(XTrain)
   const XTest_tensor = tf.tensor(XTest)
@@ -74,7 +72,7 @@ export async function createTabularClassificationCustomDataSet (params, t) {
       units     : layer.units,
       activation: layer.activation.toLowerCase(),
       ...(index === 0) && {
-        inputShape: [dataframe_X.shape[1]],
+        inputShape: [X.shape[1]],
       },
     })
     model.add(_layer)
@@ -106,24 +104,23 @@ export async function createTabularClassificationCustomDataSet (params, t) {
   })
 
   // TODO
-  const example = dataframe_X.values[dataframe_X.values.length - 1]
-  const example_scale = minMaxScaler.transform(example)
-  console.log({ example, example_scale })
-
-  const predict = model.predict(tf.tensor([example_scale,]))
-  console.log({ predict: predict.dataSync() })
+  // const example = X.values[X.values.length - 1]
+  // console.log({ X, example })
+  //
+  // const predict = model.predict(tf.tensor([example]))
+  // console.log({ predict: predict.dataSync() })
   // Lo que espera
-  const labels = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
+  // const labels = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
   // Lo que se predice
-  const predictions = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
+  // const predictions = tf.tensor1d([0, 0, 1, 1, 2, 2, 3, 3])
 
-  const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, predictions)
-  const container = {
-    name: 'Evaluation',
-    tab : 'Evaluation',
-  }
-  const classNames = Object.keys(encoders[column_name_target].encoder.$labels)
-  await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
+  // const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, predictions)
+  // const container = {
+  //   name: 'Evaluation',
+  //   tab : 'Evaluation',
+  // }
+  // const classNames = Object.keys(encoders[column_name_target].encoder.$labels)
+  // await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
 
   return model
 }

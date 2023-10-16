@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Col, Row, Form } from 'react-bootstrap'
+import { Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
-import N4LTablePagination from '@components/table/N4LTablePagination'
+import * as dfd from 'danfojs'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import N4LTablePagination from '@components/table/N4LTablePagination'
 import { VERBOSE } from '@/CONSTANTS'
 
 export default function TabularClassificationDatasetShow (props) {
@@ -10,12 +11,18 @@ export default function TabularClassificationDatasetShow (props) {
   const prefix = 'pages.playground.generator.dataset.'
   const { t } = useTranslation()
 
+  const [dataframe, setDataframe] = useState(new dfd.DataFrame())
   const [showProcessed, setShowProcessed] = useState(false)
   const [showDataset, setShowDataset] = useState(false)
 
   const handleChange_Dataset = (e) => {
     const checked = e.target.checked
     setShowProcessed(!!checked)
+    if (!!checked) {
+      setDataframe(datasets[datasetIndex].dataframe_processed)
+    } else {
+      setDataframe(datasets[datasetIndex].dataframe_original)
+    }
   }
 
   useEffect(() => {
@@ -26,7 +33,12 @@ export default function TabularClassificationDatasetShow (props) {
       }
       return false
     }
-    setShowDataset(canRenderDataset())
+
+    const _showDataset = canRenderDataset()
+    setShowDataset(_showDataset)
+    if (_showDataset) {
+      setDataframe(datasets[datasetIndex].dataframe_original)
+    }
   }, [datasets, datasetIndex])
 
   if (VERBOSE) console.debug('render TabularClassificationDatasetShow')
@@ -41,8 +53,8 @@ export default function TabularClassificationDatasetShow (props) {
                         reverse={true}
                         size={'sm'}
                         name={'switch-webcam'}
-                        label={t('processed')}
-                        defaultValue={'false'}
+                        label={t('Processed')}
+                        value={showProcessed.toString()}
                         onChange={(e) => handleChange_Dataset(e)}
             />
           </div>
@@ -59,15 +71,8 @@ export default function TabularClassificationDatasetShow (props) {
           <Row>
             <Col className={'overflow-x-auto'}>
 
-              <N4LTablePagination data_head={datasets[datasetIndex].dataframe_processed.columns}
-                                  data_body={
-                                    DataFrameUtils.DataFrameIterRows(
-                                      showProcessed ?
-                                        datasets[datasetIndex].dataframe_processed
-                                        :
-                                        datasets[datasetIndex].dataframe_original,
-                                    )
-                                  }
+              <N4LTablePagination data_head={dataframe.columns}
+                                  data_body={DataFrameUtils.DataFrameIterRows(dataframe)}
               />
             </Col>
           </Row>
@@ -80,9 +85,9 @@ export default function TabularClassificationDatasetShow (props) {
               <details>
                 <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
                 <main>
-                  <Row>
-                    {datasets[datasetIndex].attributes.map((item, i1) => {
-                      return <Col lg={2} md={2} sm={3} xs={3} key={i1}>
+                  <Row xs={12} sm={12} md={12} lg={12}>
+                    {datasets[datasetIndex].data_processed.attributes.map((item, i1) => {
+                      return <Col key={i1}>
                         <p><b>{item.name}</b></p>
                         {item.type === 'int32' && <p><Trans i18nKey={prefix + 'attributes.int32'} /></p>}
                         {item.type === 'float32' && <p><Trans i18nKey={prefix + 'attributes.float32'} /></p>}
@@ -103,13 +108,16 @@ export default function TabularClassificationDatasetShow (props) {
               <details>
                 <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.classes'} /></summary>
                 <main>
-                  <div className={'n4l-list'}>
-                    <ol start="0">
-                      {datasets[datasetIndex].classes.map((item, index) => {
-                        return <li key={'_' + index}>{item.name}</li>
-                      })}
-                    </ol>
-                  </div>
+                  <Row>
+                    <Col>
+                      <p><b>{datasets[datasetIndex].data_processed.column_name_target}</b></p>
+                      <ol start="0">
+                        {datasets[datasetIndex].data_processed.classes.map((item, index) => {
+                          return <li key={'_' + index}>{item}</li>
+                        })}
+                      </ol>
+                    </Col>
+                  </Row>
                 </main>
               </details>
             </Col>

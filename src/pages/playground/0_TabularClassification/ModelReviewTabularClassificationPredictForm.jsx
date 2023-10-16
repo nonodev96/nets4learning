@@ -3,7 +3,7 @@ import { Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function ModelReviewTabularClassificationDynamicForm (props) {
+export default function ModelReviewTabularClassificationPredictForm (props) {
 
   const { iModelInstance, dataToTest, setDataToTest } = props
   const { t } = useTranslation()
@@ -15,7 +15,7 @@ export default function ModelReviewTabularClassificationDynamicForm (props) {
     }))
   }
 
-  if (VERBOSE) console.log('render ModelReviewTabularClassificationDynamicForm')
+  if (VERBOSE) console.log('render ModelReviewTabularClassificationPredictForm')
   return <>
     <Row>
       {iModelInstance.FORM.map((value, index) => {

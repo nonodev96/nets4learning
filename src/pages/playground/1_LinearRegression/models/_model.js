@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import { ACTIONS, EVENTS, LIFECYCLE, STATUS, CallBackProps } from 'react-joyride'
+import { ACTIONS, LIFECYCLE, CallBackProps } from 'react-joyride'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 

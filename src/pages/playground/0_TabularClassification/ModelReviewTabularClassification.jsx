@@ -15,7 +15,7 @@ import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models
 import ModelReviewTabularClassificationDatasetTable from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationDatasetTable'
 import ModelReviewTabularClassificationDatasetInfo from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationDatasetInfo'
 import ModelReviewTabularClassificationPredict from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationPredict'
-import ModelReviewTabularClassificationDynamicForm from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationDynamicForm'
+import ModelReviewTabularClassificationPredictForm from '@pages/playground/0_TabularClassification/ModelReviewTabularClassificationPredictForm'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default function ModelReviewTabularClassification (props) {
@@ -55,7 +55,7 @@ export default function ModelReviewTabularClassification (props) {
     const init = async () => {
       const datasets = await iModelInstance.DATASETS()
       if (datasets.length === 0) return
-      const _vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(datasets[0].encoders, dataToPredict, iModelInstance.DATA_DEFAULT_KEYS)
+      const _vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(datasets[0].data_processed.encoders, dataToPredict, iModelInstance.DATA_DEFAULT_KEYS)
       setVectorToPredict(_vectorValuesEncoders)
     }
     init().then()
@@ -80,7 +80,7 @@ export default function ModelReviewTabularClassification (props) {
 
           const _datasets = await _iModelInstance.DATASETS()
           const _applyEncoders = DataFrameUtils.DataFrameApplyEncoders(
-            _datasets[0].encoders,
+            _datasets[0].data_processed.encoders,
             _iModelInstance.DATA_DEFAULT,
             _iModelInstance.DATA_DEFAULT_KEYS,
           )
@@ -229,29 +229,29 @@ export default function ModelReviewTabularClassification (props) {
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit_PredictVector}>
-                <ModelReviewTabularClassificationDynamicForm iModelInstance={iModelInstance}
+                <ModelReviewTabularClassificationPredictForm iModelInstance={iModelInstance}
                                                              dataToTest={dataToPredict}
                                                              setDataToTest={setDataToPredict}
 
                 />
                 <Row className={'mt-3'}>
                   <Col>
-                    <Form.Group controlId={`formDataInput`}>
+                    <Form.Group controlId={`formInputData`}>
                       <Form.Label>
-                        <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-input'} />
+                        <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-data'} />
                       </Form.Label>
                       <Form.Control size={'sm'}
                                     disabled={true}
                                     value={Object.values(dataToPredict).join(';')} />
                       <Form.Text className="text-muted">
-                        <Trans i18nKey={'pages.playground.form.vector-to-check'} />
+                        <Trans i18nKey={'pages.playground.form.data-to-check'} />
                       </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col>
-                    <Form.Group controlId={`formVectorInput`}>
+                    <Form.Group controlId={`formInputVector`}>
                       <Form.Label>
-                        <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-input'} />
+                        <Trans i18nKey={'pages.playground.0-tabular-classification.general.description-vector'} />
                       </Form.Label>
                       <Form.Control size={'sm'}
                                     disabled={true}
