@@ -105,13 +105,13 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
     const dataframe_original = await dfd.readCSV(dataset_path + 'iris.csv')
-    const dataframe_copy = dataframe_original.copy()
+    let dataframe_processed = await dfd.readCSV(dataset_path + 'iris.csv')
 
     const dataset_transforms = [
       { column_transform: 'label-encoder', column_name: 'class' },
     ]
-    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_copy, dataset_transforms)
-    const dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_copy, dataset_transforms)
+    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
+    dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
 
     const column_name_target = 'class'
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
@@ -124,6 +124,10 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     const oneHotEncoder = new dfd.OneHotEncoder()
     oneHotEncoder.fit(dataframe_y)
     const y = oneHotEncoder.transform(dataframe_y)
+
+    const label_encoder_y = new dfd.LabelEncoder()
+    label_encoder_y.fit(dataframe_y.values)
+    const classes = Object.keys(label_encoder_y.$labels)
 
     return [
       {
@@ -142,8 +146,8 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
           missing_value_key : '',
           encoders          : encoders_map,
           scaler            : scaler,
-          classes           : ['1', '2', '3'],
           column_name_target: column_name_target,
+          classes           : classes,
           attributes        : [
             // @formatter:off
             { type: 'float32', name: 'sepal_length' },

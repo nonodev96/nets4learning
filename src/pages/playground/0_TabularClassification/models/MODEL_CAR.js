@@ -144,6 +144,10 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     oneHotEncoder.fit(dataframe_y)
     const y = oneHotEncoder.transform(dataframe_y)
 
+    const label_encoder_y = new dfd.LabelEncoder()
+    label_encoder_y.fit(dataframe_y.values)
+    const classes = Object.keys(label_encoder_y.$labels)
+
     return [
       {
         is_dataset_upload   : false,
@@ -162,7 +166,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
           encoders          : encoders_map,
           scaler            : scaler,
           column_name_target: column_name_target,
-          classes           : ['unacc', 'acc', 'good', 'vgood'],
+          classes           : classes,
           // @formatter:off
           attributes       : [
             { type: 'label-encoder', index_column: 0, name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },

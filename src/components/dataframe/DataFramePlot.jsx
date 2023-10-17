@@ -9,12 +9,12 @@ import {
   timeSeriesPlotsValidConfig, violinPlotsValidConfig,
 } from '@core/dataframe/DataFrameUtils'
 
-import { VERBOSE } from '@/CONSTANTS'
-import DataFramePlotContext from '../_context/DataFramePlotContext'
-import { E_PLOTS, LIST_PLOTS } from '../_context/Constants'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import DataFramePlotModalConfiguration from './DataFramePlotModalConfiguration'
 import DataFramePlotModalDescription from './DataFramePlotModalDescription'
+import DataFramePlotContext from '../_context/DataFramePlotContext'
+import { E_PLOTS, LIST_PLOTS } from '../_context/CONSTANTS'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFramePlot ({ dataframe }) {
 

@@ -2,9 +2,9 @@ import { Col, Container, Form, Modal, Row, Button } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useContext, useEffect, useState } from 'react'
 
-import DataFramePlotContext from '../_context/DataFramePlotContext'
-import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/Constants'
 import { columnsTimeSeriesValidForIndex, isTimeSeriesDataFrameValidForIndex, listPlotsAvailable } from '@core/dataframe/DataFrameUtils'
+import DataFramePlotContext from '../_context/DataFramePlotContext'
+import { DEFAULT_DATAFRAME_PLOT_CONFIG, E_PLOTS } from '../_context/CONSTANTS'
 import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFramePlotModalConfiguration () {

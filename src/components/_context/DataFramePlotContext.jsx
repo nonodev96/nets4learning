@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react'
 import * as dfd from 'danfojs'
-import { DEFAULT_DATAFRAME_PLOT_CONFIG } from './Constants'
+import { DEFAULT_DATAFRAME_PLOT_CONFIG } from './CONSTANTS'
 
 const DataFramePlotContext = createContext({})
 

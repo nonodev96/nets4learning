@@ -1,24 +1,6 @@
 import * as dfd from 'danfojs'
-import { E_PLOTS, LIST_PLOTS } from '@components/_context/Constants'
+import { E_PLOTS, LIST_PLOTS } from '@components/_context/CONSTANTS'
 
-/**
- * @typedef {Object} ConfigLayoutPlots_t
- * @property {string} title
- * @property {string} x_axis
- * @property {string} y_axis
- */
-
-/**
- * @typedef {Object} ConfigTimeSeriesPlots_t
- * @property {{config: index}} config
- */
-
-/**
- * @typedef {Object} TimeSeriesPlotsValidConfigResponse_t
- * @property {boolean} isValidConfig_TimeSeries
- * @property {{columns: Array<string>}} config_TimeSeries
- * @property {{column, drop: boolean}} index
- */
 // E_PLOTS.LINE_CHARTS
 // E_PLOTS.BAR_CHARTS
 // E_PLOTS.SCATTER_PLOTS
@@ -30,8 +12,7 @@ import { E_PLOTS, LIST_PLOTS } from '@components/_context/Constants'
 
 export function columnsTimeSeriesValidForIndex (_dataFrameLocal, _columns) {
   return _columns.filter((column) => {
-    if (_dataFrameLocal.columns.includes(column))
-      return _dataFrameLocal[column].unique().shape[0] === _dataFrameLocal.shape[0]
+    if (_dataFrameLocal.columns.includes(column)) return _dataFrameLocal[column].unique().shape[0] === _dataFrameLocal.shape[0]
     return false
   })
 }
@@ -51,13 +32,6 @@ export function listPlotsAvailable (_dataframeLocal, _columns) {
   }
   return list_of_available_plots
 }
-
-/**
- * @typedef {Object} DataframePlotConfig_t
- * @property {ConfigLayoutPlots_t} LAYOUT
- * @property {ConfigTimeSeriesPlots_t} TIME_SERIES_PLOTS
- * @property {Array<string>} COLUMNS
- */
 
 /**
  *
@@ -114,28 +88,22 @@ export function TransformArrayToSeriesTensor (series) {
 }
 
 /**
- * @typedef {Object} EncoderObject_t
- * @property {'label-encoder' | 'one-hot-encoder'} type - El tipo de codificador, puede ser .
- * @property {dfd.LabelEncoder | dfd.OneHotEncoder} encoder
- */
-
-/**
- * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
+ *
+ * @param {dfd.DataFrame} dataframe
+ * @param {Array<'label-encoder'|'one-hot-encoder'>} dataframe_transforms
+ * @return {EncoderMap_t}
  */
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
-  /**
-   * @type {EncoderMap_t}
-   */
-  const mapEncoders = {}
+  /** @type EncoderMap_t */
+  const encoders_map = {}
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
         const encoder = new dfd.LabelEncoder()
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
-        mapEncoders[column_name] = {
-          type   : 'label-encoder',
-          encoder: encoder
+        encoders_map[column_name] = {
+          type: 'label-encoder', encoder: encoder
         }
         break
       }
@@ -143,9 +111,8 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
         const encoder = new dfd.OneHotEncoder()
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
-        mapEncoders[column_name] = {
-          type   : 'label-encoder',
-          encoder: encoder
+        encoders_map[column_name] = {
+          type: 'label-encoder', encoder: encoder
         }
         break
       }
@@ -155,16 +122,15 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
       }
     }
   }
-  return mapEncoders
+  return encoders_map
 }
 
 /**
  *
- * @param {EncoderMap_t} encoders_map
+ * @param {EncoderMap_t}         encoders_map
  * @param {Object.<string, any>} values_map
- * @param {string[]} column_name_list - Es necesario para respetar el orden
+ * @param {string[]}             column_name_list
  * @returns {number[]}
- * @constructor
  */
 export function DataFrameApplyEncoders (encoders_map, values_map, column_name_list) {
   const new_values = []
@@ -180,6 +146,13 @@ export function DataFrameApplyEncoders (encoders_map, values_map, column_name_li
   return new_values
 }
 
+/**
+ *
+ * @param {EncoderMap_t}         encoders_map
+ * @param {Array<string|number>} input_data
+ * @param {string[]}             column_name_list
+ * @return {number[]}
+ */
 export function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_list) {
   const new_input_vector = []
   console.log({ encoders_map, input_data, column_name_list })
@@ -197,19 +170,8 @@ export function DataFrameApplyEncodersVector (encoders_map, input_data, column_n
 }
 
 /**
- * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
- */
-
-/**
- * @typedef DataFrameColumnTransform_t
- * @property {string} column_name
- * @property {Transform_t} column_transform
- */
-
-/**
- * @param {dfd.DataFrame} dataframe
- * @param {Array<DataFrameColumnTransform_t>} dataframe_transforms
- *
+ * @param {dfd.DataFrame}                dataframe
+ * @param {DataFrameColumnTransform_t[]} dataframe_transforms
  * @return {dfd.DataFrame}
  */
 export function DataFrameTransform (dataframe, dataframe_transforms) {
@@ -258,8 +220,7 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
 
 /**
  * @param {dfd.DataFrame} dataframe
- *
- * @return {any[][]}
+ * @return {{string, float32, int32, boolean}[][]}
  */
 export function DataFrameIterRows (dataframe) {
   return dataframe.$data

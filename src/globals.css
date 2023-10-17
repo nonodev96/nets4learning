@@ -147,3 +147,14 @@ pre.highlight {
 .overflow-x-scroll-inherit {
   overflow-x: inherit;
 }
+
+.n4l-ol-label-encoder {
+  counter-reset: item -1;
+  list-style: none;
+  padding-left: 1em;
+}
+
+.n4l-ol-label-encoder li::before {
+  content: counter(item) ' ⟶ ';
+  counter-increment: item;
+}

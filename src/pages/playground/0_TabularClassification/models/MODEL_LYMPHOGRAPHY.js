@@ -271,7 +271,7 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
     const dataframe_original = await dfd.readCSV(dataset_path + 'lymphography.csv')
-    const dataframe_copy = dataframe_original.copy()
+    let dataframe_processed = await dfd.readCSV(dataset_path + 'lymphography.csv')
     const dataset_transforms = [
       { column_transform: 'label-encoder', column_name: 'lymphatics' },
       { column_transform: 'label-encoder', column_name: 'block of affere' },
@@ -293,8 +293,8 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
       { column_transform: 'label-encoder', column_name: 'no. of nodes in' },
       { column_transform: 'label-encoder', column_name: 'class' },
     ]
-    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_copy, dataset_transforms)
-    const dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_copy, dataset_transforms)
+    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
+    dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
     const column_name_target = 'class'
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
     const dataframe_y = dataframe_original[column_name_target]
@@ -306,6 +306,10 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     const oneHotEncoder = new dfd.OneHotEncoder()
     oneHotEncoder.fit(dataframe_y)
     const y = oneHotEncoder.transform(dataframe_y)
+
+    const label_encoder_y = new dfd.LabelEncoder()
+    label_encoder_y.fit(dataframe_y.values)
+    const classes = Object.keys(label_encoder_y.$labels)
 
     return [
       {
@@ -324,8 +328,8 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
           missing_value_key : '',
           encoders          : encoders,
           scaler            : scaler,
-          column_name_target: 'class',
-          classes           : this.CLASSES,
+          column_name_target: column_name_target,
+          classes           : classes,
           attributes        : this.FORM,
         },
       }

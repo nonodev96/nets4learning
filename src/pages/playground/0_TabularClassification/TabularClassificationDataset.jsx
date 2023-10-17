@@ -17,7 +17,9 @@ export default function TabularClassificationDataset (props) {
     /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
 
+    /** @type number */
     datasetIndex,
+    /** @type React.Dispatch<number> */
     setDatasetIndex,
   } = props
 
@@ -47,7 +49,7 @@ export default function TabularClassificationDataset (props) {
           data_processed      : {}
         }]
       })
-      setDatasetIndex(0)
+      setDatasetIndex((prevState) => prevState + 1)
       await alertHelper.alertSuccess(t('success.file-upload'))
     } catch (error) {
       await alertHelper.alertError(t('error.file-upload'))

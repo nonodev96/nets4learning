@@ -1,11 +1,6 @@
 import { Trans, useTranslation } from 'react-i18next'
 import { Card, Col, Container, Row, Tab, Table, Tabs } from 'react-bootstrap'
 
-/**
- * @typedef {Object} File_t
- * @property {string} title
- * @property {string} url
- */
 export default function Datasets () {
   const { t } = useTranslation()
 

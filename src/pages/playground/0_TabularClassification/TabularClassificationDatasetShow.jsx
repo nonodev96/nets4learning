@@ -85,14 +85,15 @@ export default function TabularClassificationDatasetShow (props) {
               <details>
                 <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
                 <main>
-                  <Row xs={12} sm={12} md={12} lg={12}>
+                  <Row xs={12} sm={12} md={12} lg={6}>
                     {datasets[datasetIndex].data_processed.attributes.map((item, i1) => {
                       return <Col key={i1}>
-                        <p><b>{item.name}</b></p>
-                        {item.type === 'int32' && <p><Trans i18nKey={prefix + 'attributes.int32'} /></p>}
-                        {item.type === 'float32' && <p><Trans i18nKey={prefix + 'attributes.float32'} /></p>}
+                        <p className={'mb-0'}><b>{item.name}</b></p>
+                        {item.type === 'int32' && <p className={'mb-0'}><Trans i18nKey={prefix + 'attributes.int32'} /></p>}
+                        {item.type === 'float32' && <p className={'mb-0'}><Trans i18nKey={prefix + 'attributes.float32'} /></p>}
                         {item.type === 'label-encoder' && <>
-                          <ol start="0">
+                          <p className={'mb-0'}>LabelEncoder:</p>
+                          <ol className={'n4l-ol-label-encoder'} start="0">
                             {item.options.map((option, i2) => {
                               return <li key={i1 + '_' + i2}>{option.text}</li>
                             })}
@@ -110,10 +111,11 @@ export default function TabularClassificationDatasetShow (props) {
                 <main>
                   <Row>
                     <Col>
-                      <p><b>{datasets[datasetIndex].data_processed.column_name_target}</b></p>
-                      <ol start="0">
+                      <p className={'mb-0'}><b>{datasets[datasetIndex].data_processed.column_name_target}</b></p>
+                      <p className={'mb-0'}>LabelEncoder:</p>
+                      <ol className={'n4l-ol-label-encoder'} start="0">
                         {datasets[datasetIndex].data_processed.classes.map((item, index) => {
-                          return <li key={'_' + index}>{item}</li>
+                          return <li key={index}>{item}</li>
                         })}
                       </ol>
                     </Col>
