@@ -16,7 +16,7 @@ export default function Version () {
         <Col>
           <Card className={'mt-3'}>
             <Card.Header>
-              <h3><Trans i18nKey={'Dependencies'} /></h3>
+              <h2><Trans i18nKey={'Dependencies'} /></h2>
             </Card.Header>
             <Card.Body>
               <Table responsive={true} bordered={true} striped={true} hover={true} variant={''} size={'sm'}>
@@ -40,7 +40,7 @@ export default function Version () {
 
           <Card className={'mt-3'}>
             <Card.Header>
-              <h3><Trans i18nKey={'Dev dependencies'} /></h3>
+              <h2><Trans i18nKey={'Dev dependencies'} /></h2>
             </Card.Header>
             <Card.Body>
               <Table responsive={true} bordered={true} striped={true} hover={true} variant={''} size={'sm'}>

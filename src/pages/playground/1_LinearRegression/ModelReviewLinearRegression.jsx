@@ -144,7 +144,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top border-info mt-3'}>
                 <Card.Header>
-                  <h3><Trans i18nKey={iModelInstance.i18n_TITLE} /></h3>
+                  <h2><Trans i18nKey={iModelInstance.i18n_TITLE} /></h2>
                 </Card.Header>
                 <Card.Body>
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
@@ -175,7 +175,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
 
               <Card className={'mt-3'}>
                 <Card.Header className={'d-flex justify-content-between'}>
-                  <h3><Trans i18nKey={prefix + 'model-selector.title'} /></h3>
+                  <h2><Trans i18nKey={prefix + 'model-selector.title'} /></h2>
                   <div className={'d-flex'}>
                     <Form.Group controlId={'FormModelSelector_X'}>
                       <Form.Select aria-label={'plot'}

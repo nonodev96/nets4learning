@@ -70,7 +70,7 @@ const TYPE_METRICS = [
 const TYPE_ACTIVATION = [
   { key: 'sigmoid', label: 'Sigmoid' },
   { key: 'softmax', label: 'Softmax' },
-  { key: 'elu', label: 'Elu' },
+  { key: 'elu', label: 'ELU' },
   { key: 'hardSigmoid', label: 'Hard Sigmoid' },
   { key: 'linear', label: 'Linear' },
   { key: 'relu', label: 'ReLU' },

@@ -468,7 +468,6 @@ export default class RegressionModelController_Simple {
 
     // Normalización del valor de entrada
     const normalizedInput = (inputValue - inputMin) / (inputMax - inputMin)
-    console.log(normalizedInput)
     // Desnormalización del resultado de la predicción
     return tfjs.tidy(() => {
       const xs = tfjs.tensor1d([normalizedInput])

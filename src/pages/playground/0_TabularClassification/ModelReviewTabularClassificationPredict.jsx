@@ -10,7 +10,7 @@ export default function ModelReviewTabularClassificationPredict (props) {
   const { prediction } = props
   const { t } = useTranslation()
 
-  if (VERBOSE) console.log('render ModelReviewTabularClassificationPredict')
+  if (VERBOSE) console.debug('render ModelReviewTabularClassificationPredict')
   return <>
     <Card className={'mt-3'}>
       <Card.Header>

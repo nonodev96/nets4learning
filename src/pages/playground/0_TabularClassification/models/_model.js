@@ -45,7 +45,7 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
    * @property {string} path
    * @property {string} info
    * @property {string} csv
-   * @property {Array} dataset_transforms
+   * @property {Array<DataFrameColumnTransform_t>} dataset_transforms
    * @property {dfd.DataFrame} dataframe_original
    * @property {dfd.DataFrame} dataframe_processed
    * @property {DataProcessed_t?} data_processed

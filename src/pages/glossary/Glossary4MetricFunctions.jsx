@@ -10,7 +10,7 @@ export default function Glossary4MetricFunctions () {
   return <>
     <Accordion defaultValue={''} defaultActiveKey={''}>
       <Accordion.Item eventKey={'functions-metrics'}>
-        <Accordion.Header><h3>{t('pages.glossary.metric-functions.title')}</h3></Accordion.Header>
+        <Accordion.Header><h2>{t('pages.glossary.metric-functions.title')}</h2></Accordion.Header>
         <Accordion.Body>
           <Row>
             <Col>
@@ -32,7 +32,7 @@ export default function Glossary4MetricFunctions () {
       </Accordion.Item>
       {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
         <Accordion.Item eventKey={'equation-metric'}>
-          <Accordion.Header><h3>{t('equations.title-metrics')}</h3></Accordion.Header>
+          <Accordion.Header><h2>{t('equations.title-metrics')}</h2></Accordion.Header>
           <Accordion.Body>
             <Row xs={1} sm={1} md={2} lg={2} xl={2} xxl={2}>
               <Col>

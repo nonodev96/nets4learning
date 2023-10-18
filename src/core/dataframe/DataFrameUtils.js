@@ -76,7 +76,7 @@ export function pieChartsValidConfig (dataframe, dataframePlotConfig) {
 
 export function lineChartsValidConfig (dataframe, dataframePlotConfig, columnsToShow) {
   const config_LineCharts = {
-    columns: columnsToShow
+    columns: columnsToShow,
   }
 
   const isValidConfig_LineCharts = true
@@ -90,7 +90,7 @@ export function TransformArrayToSeriesTensor (series) {
 /**
  *
  * @param {dfd.DataFrame} dataframe
- * @param {Array<'label-encoder'|'one-hot-encoder'>} dataframe_transforms
+ * @param {Array<{column_name: string, column_transform:'label-encoder'|'one-hot-encoder'}>} dataframe_transforms
  * @return {EncoderMap_t}
  */
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
@@ -103,7 +103,8 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
         encoders_map[column_name] = {
-          type: 'label-encoder', encoder: encoder
+          type   : 'label-encoder',
+          encoder: encoder,
         }
         break
       }
@@ -112,7 +113,8 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
         const _serie = dataframe[column_name]
         encoder.fit(_serie)
         encoders_map[column_name] = {
-          type: 'label-encoder', encoder: encoder
+          type   : 'label-encoder',
+          encoder: encoder,
         }
         break
       }
@@ -155,8 +157,6 @@ export function DataFrameApplyEncoders (encoders_map, values_map, column_name_li
  */
 export function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_list) {
   const new_input_vector = []
-  console.log({ encoders_map, input_data, column_name_list })
-
   for (const [column_index, column_name] of column_name_list.entries()) {
     const prev_value = input_data[column_index]
     if (encoders_map.hasOwnProperty(column_name)) {

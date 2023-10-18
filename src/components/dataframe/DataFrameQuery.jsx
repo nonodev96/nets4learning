@@ -25,11 +25,9 @@ export default function DataFrameQuery ({ dataframe }) {
         }
 
         const _stringToQuery = stringToQuery.replaceAll('df[', 'window.n4l_data.dataframe[')
-        console.log(columnToQuery, stringToQuery)
         // eslint-disable-next-line no-new-func
         const query = new Function(`return (window.n4l_data.dataframe['${columnToQuery}']${_stringToQuery})`)()
         let query_df = dataframe.query(query)
-        console.log(query_df)
         query_df.plot(dataframeID).table({ config: TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1 })
       } catch (e) {
         console.error(e)

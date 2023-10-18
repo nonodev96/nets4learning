@@ -1,27 +1,26 @@
 import 'katex/dist/katex.min.css' // `rehype-katex` does not import the CSS for you
 import Markdown from 'react-markdown'
-import rehypeDocument from 'rehype-document'
 import rehypeFormat from 'rehype-format'
-import rehypeStringify from 'rehype-stringify'
 import rehypeKatex from 'rehype-katex'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-
 import rehypeRaw from 'rehype-raw'
+
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
+import remarkRehype from 'remark-rehype'
 
-import { Table, Image } from 'react-bootstrap'
+import { Table, Image, Tabs, Tab } from 'react-bootstrap'
 
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash'
 import markdown from 'react-syntax-highlighter/dist/esm/languages/prism/markdown'
 import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
 import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx'
 import jsdoc from 'react-syntax-highlighter/dist/esm/languages/prism/jsdoc'
 
+SyntaxHighlighter.registerLanguage('bash', bash)
 SyntaxHighlighter.registerLanguage('markdown', markdown)
 SyntaxHighlighter.registerLanguage('typescript', typescript)
 SyntaxHighlighter.registerLanguage('javascript', js)
@@ -31,7 +30,7 @@ SyntaxHighlighter.registerLanguage('jsdoc', jsdoc)
 export default function N4LMarkdown (_props_) {
 
   return <>
-    <Markdown className={'text-nowrap'}
+    <Markdown className={'text-wrap'}
               remarkPlugins={[remarkGfm, remarkRehype, remarkMath]}
               rehypePlugins={[rehypeRaw, rehypeKatex, rehypeFormat]}
               components={{
@@ -39,6 +38,12 @@ export default function N4LMarkdown (_props_) {
                 h2: 'h4',
                 h3: 'h5',
                 h4: 'h6',
+                h5: 'strong',
+                h6: 'strong',
+                a (props) {
+                  const { children, ...rest } = props
+                  return <a className={'link-info'} {...rest}>{children}</a>
+                },
                 details (props) {
                   const { children, open, className, ...rest } = props
                   return <details className={className} open={open}>{children}</details>
@@ -68,13 +73,25 @@ export default function N4LMarkdown (_props_) {
                   else return <>Todo</>
                 },
                 img (props) {
+                  // https://amirardalan.com/blog/use-next-image-with-react-markdown
                   const { node, ...rest } = props
-                  return <Image fluid={true}
-                                rounded={true}
-                                thumbnail={true}
-                                src={rest.src}
-                                alt={rest.alt}
-                  />
+                  const isServer = !!(rest.alt?.toLowerCase().match('{server}'))
+                  if (isServer) {
+                    const newSrc = rest.src.replace('../', process.env.REACT_APP_PATH + '/docs/')
+                    return <Image fluid={true}
+                                  rounded={true}
+                                  thumbnail={true}
+                                  src={newSrc}
+                                  alt={rest.alt}
+                    />
+                  } else {
+                    return <Image fluid={true}
+                                  rounded={true}
+                                  thumbnail={true}
+                                  src={rest.src}
+                                  alt={rest.alt}
+                    />
+                  }
                 },
                 blockquote (props) {
                   const { node, ...rest } = props
@@ -85,7 +102,8 @@ export default function N4LMarkdown (_props_) {
                   return <p className={'mb-2'}>{children}</p>
                 },
                 ul (props) {
-                  return <ul className={'list-group'}>{props.children}</ul>
+                  // return <ul className={'list-group'}>{props.children}</ul>
+                  return <ul>{props.children}</ul>
                 },
                 ol (props) {
                   // return <ol className={'list-group'}>{props.children}</ol>
@@ -105,7 +123,7 @@ export default function N4LMarkdown (_props_) {
                                 responsive={true}
                                 {...rest}
                   />
-                }
+                },
               }}>{_props_.children}</Markdown>
   </>
 }

@@ -110,7 +110,7 @@ export default function Glossary2ActivationFunctions () {
   return <>
     <Accordion defaultValue={''} defaultActiveKey={''}>
       <Accordion.Item eventKey={'functions-activations'}>
-        <Accordion.Header><h3>{t('pages.glossary.activation-functions.title')}</h3></Accordion.Header>
+        <Accordion.Header><h2>{t('pages.glossary.activation-functions.title')}</h2></Accordion.Header>
         <Accordion.Body>
           <p>{t('pages.glossary.activation-functions.text-1')}</p>
           <Table striped bordered hover responsive={true}>
@@ -166,7 +166,7 @@ export default function Glossary2ActivationFunctions () {
       </Accordion.Item>
       {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
         <Accordion.Item eventKey={'equations-activation'}>
-          <Accordion.Header><h3>{t('equations.title-activation')}</h3></Accordion.Header>
+          <Accordion.Header><h2>{t('equations.title-activation')}</h2></Accordion.Header>
           <Accordion.Body>
             <>
               {activationsFunctions.map((section, index) => {

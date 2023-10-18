@@ -154,8 +154,14 @@ export default function TabularClassificationEditorHyperparameters (props) {
         <p className={'text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}
                  components={{
-                   link1: <Link to={{ pathname: '/manual/', state: { action: 'open-hyperparameters-editor-tabular-classification' } }}
-                                className={'text-info'}>link</Link>,
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/manual/',
+                                  state   : {
+                                    action: 'tabular-classification-editor-hyperparameters-open',
+                                  },
+                                }}
+                   />,
                  }} />
         </p>
       </Card.Footer>

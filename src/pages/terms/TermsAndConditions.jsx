@@ -16,7 +16,7 @@ export default function TermsAndConditions () {
           <Col className={'mt-3'}>
 
             <Card>
-              <Card.Header><h3><Trans i18nKey={'pages.terms.privacy-title'} /></h3></Card.Header>
+              <Card.Header><h2><Trans i18nKey={'pages.terms.privacy-title'} /></h2></Card.Header>
               <Card.Body>
                 <Card.Text>
                   <Trans i18nKey={'pages.terms.privacy-text'} />
@@ -25,7 +25,7 @@ export default function TermsAndConditions () {
             </Card>
 
             <Card className={'mt-3'}>
-              <Card.Header><h3><Trans i18nKey={'pages.terms.cookies-title'} /></h3></Card.Header>
+              <Card.Header><h2><Trans i18nKey={'pages.terms.cookies-title'} /></h2></Card.Header>
               <Card.Body>
                 <Card.Text>
                   <Trans i18nKey={'pages.terms.cookies-text'} />

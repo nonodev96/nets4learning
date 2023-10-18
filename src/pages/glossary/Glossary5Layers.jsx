@@ -10,7 +10,7 @@ export default function Glossary5Layers () {
     {process.env.REACT_APP_ENVIRONMENT === 'development' && <>
       <Accordion defaultValue={''} defaultActiveKey={''}>
         <Accordion.Item eventKey={'layers'}>
-          <Accordion.Header><h3>Tipos de capas</h3></Accordion.Header>
+          <Accordion.Header><h2>Tipos de capas</h2></Accordion.Header>
           <Accordion.Body>
             <Table striped bordered hover responsive={true}>
               <thead>
@@ -42,7 +42,7 @@ export default function Glossary5Layers () {
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey={'normalization'} style={{ display: 'none' }}>
-          <Accordion.Header><h3>Normalización</h3></Accordion.Header>
+          <Accordion.Header><h2>Normalización</h2></Accordion.Header>
           <Accordion.Body>
             <p>La normalización de datos es un paso importante en el procesamiento de datos para redes neuronales. La normalización se refiere a la transformación de los datos de entrada para que tengan una escala común.</p>
             <p>La normalización de datos se utiliza en redes neuronales por varias razones:</p>

@@ -27,7 +27,7 @@ export default function ModelReviewTabularClassificationDatasetTable (props) {
     })
   }, [iModelInstance])
 
-  if (VERBOSE) console.log('render ModelReviewTabularClassificationDatasetTable')
+  if (VERBOSE) console.debug('render ModelReviewTabularClassificationDatasetTable')
   return <>
     <Card className={'mt-3'}>
       <Card.Header>

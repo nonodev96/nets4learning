@@ -10,7 +10,7 @@ export default function Glossary3LossFunctions () {
   return <>
     <Accordion defaultValue={''} defaultActiveKey={''}>
       <Accordion.Item eventKey={'functions-losses'}>
-        <Accordion.Header><h3>{t('pages.glossary.loss-functions.title')}</h3></Accordion.Header>
+        <Accordion.Header><h2>{t('pages.glossary.loss-functions.title')}</h2></Accordion.Header>
         <Accordion.Body>
           <p>{t('pages.glossary.loss-functions.text-1')}</p>
           <p>{t('pages.glossary.loss-functions.text-2')}</p>
@@ -86,7 +86,7 @@ export default function Glossary3LossFunctions () {
       </Accordion.Item>
       {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
         <Accordion.Item eventKey={'equations-losses'}>
-          <Accordion.Header><h3>{t('equations.title-losses')}</h3></Accordion.Header>
+          <Accordion.Header><h2>{t('equations.title-losses')}</h2></Accordion.Header>
           <Accordion.Body>
             <Row xs={1} sm={1} md={2} lg={2} xl={2} xxl={2}>
               <Col className={'mt-3'}>

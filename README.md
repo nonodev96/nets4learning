@@ -35,12 +35,6 @@ There are some classical problems prepared and reviewed to make predictions, the
     - [MODEL_MOVE_NET_POSE_NET.js](src/pages/playground/2_ObjectDetection/models/MODEL_MOVE_NET_POSE_NET.js)
     - [MODEL_COCO_SSD.js](src/pages/playground/2_ObjectDetection/models/MODEL_COCO_SSD.js)
 
-## Deploy with docker
-
-```bash
-docker-compose up -d
-```
-
 ## Install local
 
 ```bash

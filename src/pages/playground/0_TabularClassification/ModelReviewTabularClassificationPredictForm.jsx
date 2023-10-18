@@ -15,9 +15,9 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
     }))
   }
 
-  if (VERBOSE) console.log('render ModelReviewTabularClassificationPredictForm')
+  if (VERBOSE) console.debug('render ModelReviewTabularClassificationPredictForm')
   return <>
-    <Row>
+    <Row xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
       {iModelInstance.FORM.map((value, index) => {
         // VALUES:
         // {name: "type1", type: "int32" },
@@ -25,8 +25,7 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
         // {name: "type3", type: "string", options: [{value: "", text: ""] },
         switch (value.type) {
           case 'int32': {
-            return <Col key={'form' + index} className={'mb-3'}
-                        xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+            return <Col key={'form' + index} className={'mb-3'}>
               <Form.Group>
                 <Form.Label>{t('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
                 <Form.Control type="number"
@@ -44,8 +43,7 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
           }
 
           case 'float32': {
-            return <Col key={'form' + index} className={'mb-3'}
-                        xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+            return <Col key={'form' + index} className={'mb-3'}>
               <Form.Group controlId={value.name}>
                 <Form.Label>{t('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
                 <Form.Control type="number"
@@ -62,8 +60,7 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
             </Col>
           }
           case 'label-encoder': {
-            return <Col key={'form' + index} className={'mb-3'}
-                        xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+            return <Col key={'form' + index} className={'mb-3'}>
               <Form.Group controlId={value.name}>
                 <Form.Label>{t('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
                 <Form.Select aria-label={t('pages.playground.form.select-parameter')}

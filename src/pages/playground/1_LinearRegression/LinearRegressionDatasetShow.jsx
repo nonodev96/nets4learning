@@ -67,7 +67,7 @@ export default function LinearRegressionDatasetShow () {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={prefix + 'title'} /></h3>
+        <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className={'ms-3'}>
           <Form.Group controlId={'dataset'}>
             <Form.Select aria-label={'dataset'}

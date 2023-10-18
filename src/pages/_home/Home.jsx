@@ -36,7 +36,7 @@ export default function Home () {
           <>
             <Card className={'border-primary'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.tabular-classification.1-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.tabular-classification.1-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text>
@@ -55,7 +55,7 @@ export default function Home () {
 
             <Card className={'border-primary mt-3'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.tabular-classification.2-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.tabular-classification.2-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text>
@@ -99,7 +99,7 @@ export default function Home () {
           <>
             <Card className={'border-danger'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.linear-regression.1-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.linear-regression.1-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text><Trans i18nKey={'pages.index.linear-regression.1-description-1'} /></Card.Text>
@@ -114,7 +114,7 @@ export default function Home () {
 
             <Card className={'border-danger mt-3'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.linear-regression.2-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.linear-regression.2-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-1'} /></Card.Text>
@@ -150,7 +150,7 @@ export default function Home () {
           <>
             <Card className={'border-warning'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.object-detection.1-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.object-detection.1-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text>
@@ -173,7 +173,7 @@ export default function Home () {
           <>
             <Card className={'border-info'}>
               <Card.Header>
-                <h3><Trans i18nKey={'pages.index.image-classification.1-title'} /></h3>
+                <h2><Trans i18nKey={'pages.index.image-classification.1-title'} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text>
@@ -190,7 +190,7 @@ export default function Home () {
             {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
               <Card className={'mt-3 border-info'}>
                 <Card.Header>
-                  <h3><Trans i18nKey={'pages.index.image-classification.2-title'} /></h3>
+                  <h2><Trans i18nKey={'pages.index.image-classification.2-title'} /></h2>
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>

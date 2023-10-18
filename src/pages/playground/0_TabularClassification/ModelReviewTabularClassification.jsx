@@ -101,9 +101,10 @@ export default function ModelReviewTabularClassification (props) {
       }
     }
 
-    init().then((_r) => {
-      console.log('init end')
-    })
+    init()
+      .then((_r) => {
+        console.debug('init end')
+      })
   }, [dataset, t])
 
   const handleSubmit_PredictVector = async (e) => {
@@ -144,10 +145,9 @@ export default function ModelReviewTabularClassification (props) {
 
   const handleClick_openSummary = async () => {
     if (model === null) {
-      console.log('Error, model is null')
+      console.error('Error, model is null')
       return
     }
-    console.log('tfvis')
     if (!tfvis.visor().isOpen()) {
       await tfvis.show.modelSummary({ name: 'Model Summary' }, model)
       tfvis.visor().open()
@@ -182,7 +182,7 @@ export default function ModelReviewTabularClassification (props) {
         <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
           <Card className={'sticky-top mt-3 border-info'} style={{ zIndex: 0 }}>
             <Card.Header className={'d-flex align-items-center justify-content-between'}>
-              <h3><Trans i18nKey={'pages.playground.0-tabular-classification.general.model'} /></h3>
+              <h2><Trans i18nKey={'pages.playground.0-tabular-classification.general.model'} /></h2>
               <div className="d-flex">
                 <Button size={'sm'}
                         variant={'outline-info'}

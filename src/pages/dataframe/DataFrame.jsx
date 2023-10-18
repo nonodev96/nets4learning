@@ -29,9 +29,9 @@ export default function DataFrame () {
       const data = await dfd.readCSV(file_dataframe)
       setDataFrame(data)
       await AlertHelper.alertSuccess(t('success.file-upload'))
-    } catch (e) {
+    } catch (error) {
+      console.error(error)
       await AlertHelper.alertError(t('error.parsing-csv'))
-      console.log(e)
     } finally {
       setWaiting(false)
     }

@@ -31,7 +31,7 @@ export default function Glossary () {
             </div>
             <Accordion defaultValue={'classification-tabular'}>
               <Accordion.Item eventKey={'classification-tabular'}>
-                <Accordion.Header><h3><Trans i18nKey={'pages.glossary.tabular-classification.title'} /></h3></Accordion.Header>
+                <Accordion.Header><h2><Trans i18nKey={'pages.glossary.tabular-classification.title'} /></h2></Accordion.Header>
                 <Accordion.Body>
                   <p><Trans i18nKey={'pages.glossary.tabular-classification.text-1'} /></p>
                   <p><Trans i18nKey={'pages.glossary.tabular-classification.text-2'} /></p>
@@ -41,7 +41,7 @@ export default function Glossary () {
               </Accordion.Item>
               {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
                 <Accordion.Item eventKey={'linear-regression'}>
-                  <Accordion.Header><h3><Trans i18nKey={'pages.glossary.linear-regression.title'} /></h3></Accordion.Header>
+                  <Accordion.Header><h2><Trans i18nKey={'pages.glossary.linear-regression.title'} /></h2></Accordion.Header>
                   <Accordion.Body>
                     <p><Trans i18nKey={'pages.glossary.linear-regression.text.0'} /></p>
                     <p><Trans i18nKey={'pages.glossary.linear-regression.text.1'} /></p>
@@ -51,7 +51,7 @@ export default function Glossary () {
                 </Accordion.Item>
               }
               <Accordion.Item eventKey={'classification-imagen'}>
-                <Accordion.Header><h3><Trans i18nKey={'pages.glossary.image-classification.title'} /></h3></Accordion.Header>
+                <Accordion.Header><h2><Trans i18nKey={'pages.glossary.image-classification.title'} /></h2></Accordion.Header>
                 <Accordion.Body>
                   <p><Trans i18nKey={'pages.glossary.image-classification.text-1'} /></p>
                   <p><Trans i18nKey={'pages.glossary.image-classification.text-2'} /></p>
@@ -61,7 +61,7 @@ export default function Glossary () {
                 </Accordion.Body>
               </Accordion.Item>
               <Accordion.Item eventKey={'objects-detection'}>
-                <Accordion.Header><h3><Trans i18nKey={'pages.glossary.object-identification.title'} /></h3></Accordion.Header>
+                <Accordion.Header><h2><Trans i18nKey={'pages.glossary.object-identification.title'} /></h2></Accordion.Header>
                 <Accordion.Body>
                   <p><Trans i18nKey={'pages.glossary.object-identification.text-1'} /></p>
                   <p><Trans i18nKey={'pages.glossary.object-identification.text-2'} /></p>

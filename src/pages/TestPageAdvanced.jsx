@@ -11,7 +11,7 @@ export default function TestPageAdvanced () {
         <Col>
 
           <Card>
-            <Card.Header><h3>TestPage-Advanced</h3></Card.Header>
+            <Card.Header><h2>TestPage-Advanced</h2></Card.Header>
             <Card.Body>
               <p><span data-testid={'Test-TestPageAdvanced-id'}>{id}</span></p>
               <p><span data-testid={'Test-TestPageAdvanced-option'}>{option}</span></p>

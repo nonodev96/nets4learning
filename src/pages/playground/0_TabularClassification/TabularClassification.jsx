@@ -9,7 +9,7 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
-import { createTabularClassificationCustomDataSet } from '@core/controller/00-tabular-classification/TabularClassificationModelController'
+import { createTabularClassificationCustomModel } from '@core/controller/00-tabular-classification/TabularClassificationModelController'
 
 import alertHelper from '@utils/alertHelper'
 
@@ -180,14 +180,12 @@ export default function TabularClassification (props) {
       return
     }
 
-    console.log({ datasets, layers })
     const dataset_processed = datasets[datasetIndex]
     const { data_processed } = dataset_processed
 
     const last_layer_units = layers[layers.length - 1].units ?? 0
     const classes_length = data_processed.classes.length
 
-    console.log({ last_layer_units, classes_length })
     if (last_layer_units !== classes_length) {
       await alertHelper.alertWarning(t('error.tensor-shape'), {
         footer: '',
@@ -207,7 +205,7 @@ export default function TabularClassification (props) {
       let _idLoss = idLoss
       let _idMetrics = idMetrics
 
-      const model = await createTabularClassificationCustomDataSet({
+      const model = await createTabularClassificationCustomModel({
         dataset_processed: dataset_processed,
         learningRate     : _learningRate,
         numberOfEpoch    : _numberOfEpoch,
@@ -258,18 +256,14 @@ export default function TabularClassification (props) {
     try {
       const { data_processed } = datasets[datasetIndex]
       const { scaler, classes } = data_processed
-
       const input_vector_to_predict_scaled = scaler.transform(inputVectorToPredict)
-      console.log({ inputVectorToPredict, input_vector_to_predict_scaled })
-
       const tensor = tf.tensor([input_vector_to_predict_scaled])
       const prediction = Model.predict(tensor)
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
-      console.log({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
+      console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
 
       setPredictionBar(() => {
-
         return {
           classes: classes,
           labels : classes,
@@ -316,13 +310,13 @@ export default function TabularClassification (props) {
             <Accordion defaultActiveKey={dataset === UPLOAD ? ['dataset_info'] : []}>
               <Accordion.Item className={'joyride-step-manual'} key={UPLOAD} eventKey={'manual'}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={prefixManual + 'manual.title'} /></h3>
+                  <h2><Trans i18nKey={prefixManual + 'manual.title'} /></h2>
                 </Accordion.Header>
                 <Accordion.Body><TabularClassificationManual /></Accordion.Body>
               </Accordion.Item>
               <Accordion.Item className={'joyride-step-dataset-info'} key={'1'} eventKey={'dataset_info'}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h2><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.TITLE : prefix + 'dataset.upload-dataset'} /></h2>
                 </Accordion.Header>
                 <Accordion.Body>
                   <TabularClassificationDataset dataset={dataset}
@@ -370,7 +364,8 @@ export default function TabularClassification (props) {
             {/* BLOCK 1 */}
             <Row className={'mt-3'}>
               <Col xl={12} className={'joyride-step-layer'}>
-                <N4LLayerDesign layers={layers} />
+                <N4LLayerDesign layers={layers}
+                                link_action={'tabular-classification-layer-design-open'} />
               </Col>
 
               {/* LAYER EDITOR */}

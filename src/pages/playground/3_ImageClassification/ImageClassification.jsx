@@ -192,7 +192,7 @@ export default function ImageClassification (props) {
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.log('Predicción', mayorIndice)
+      console.debug('Predicción', { mayorIndice })
       // document.getElementById('demo').innerHTML = mayorIndice
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -265,7 +265,7 @@ export default function ImageClassification (props) {
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             <Accordion>
               <Accordion.Item eventKey={'manual'} className={'joyride-step-1-manual'}>
-                <Accordion.Header><h3>Manual</h3></Accordion.Header>
+                <Accordion.Header><h2>Manual</h2></Accordion.Header>
                 <Accordion.Body>
                   <ImageClassificationManual />
                 </Accordion.Body>

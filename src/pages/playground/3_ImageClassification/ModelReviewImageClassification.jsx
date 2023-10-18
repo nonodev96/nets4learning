@@ -170,7 +170,7 @@ class ModelReviewImageClassification extends React.Component {
         case MODEL_IMAGE_RESNET.KEY: {
           this.model = await tf.loadGraphModel(
             'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1',
-            { fromTFHub: true, onProgress: (fraction) => {console.log({ fraction })} },
+            { fromTFHub: true, onProgress: (fraction) => {console.debug({ fraction })} },
           )
           break
         }
@@ -444,9 +444,7 @@ class ModelReviewImageClassification extends React.Component {
     return <>
       <Card className={'mt-3'}>
         <Card.Header>
-          <h3>
-            <Trans i18nKey={'datasets-models.3-image-classifier.interface.process-examples.title'} />
-          </h3>
+          <h2><Trans i18nKey={'datasets-models.3-image-classifier.interface.process-examples.title'} /></h2>
         </Card.Header>
         <Card.Body>
           <Container fluid={true}>

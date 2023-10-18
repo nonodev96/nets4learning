@@ -47,13 +47,23 @@ import * as dfd from 'danfojs'
  */
 
 /**
- * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
+ * @typedef {'int32'|'float32'|'string'|'boolean'} ColumnType_t
+ */
+
+/**
+ * @typedef {Object} DataFrameColumnType_t
+ * @property {string} column_name
+ * @property {ColumnType_t} column_type
+ */
+
+/**
+ * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} ColumnTransform_t
  */
 
 /**
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
- * @property {Transform_t} column_transform
+ * @property {ColumnTransform_t} column_transform
  */
 
 /**

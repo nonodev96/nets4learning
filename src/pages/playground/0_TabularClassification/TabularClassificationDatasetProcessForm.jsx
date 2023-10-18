@@ -22,25 +22,18 @@ const DEFAULT_OPTIONS = [
 
 export default function TabularClassificationDatasetProcessForm (props) {
   const {
-    /**@type DatasetProcessed_t[]*/
+    /** @type DatasetProcessed_t[] */
     datasets,
     /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
+    /** @type number*/
     datasetIndex,
-    setDatasetIndex
+    /** @type React.Dispatch<number>*/
+    setDatasetIndex,
   } = props
 
-  /**
-   * @typedef {Object} ColumnType_t
-   * @property {string} column_name
-   * @property {string} column_type
-   */
-  const [listColumnNameType, setListColumnNameType] = useState(/**@type ColumnType_t[]*/[])
-  /**
-   * @typedef {Object} Transoformation_t
-   * @property {string} column_name
-   * @property {string} column_transform
-   */
+
+  const [listColumnNameType, setListColumnNameType] = useState(/** @type DataFrameColumnType_t[] */[])
   const [listColumnNameTransformations, setListColumnNameTransformations] = useState(/**@type DataFrameColumnTransform_t[]*/[])
   const [columnNameTarget, setColumnNameTarget] = useState('')
   const [typeScaler, setTypeScaler] = useState('min-max-scaler')
@@ -74,16 +67,16 @@ export default function TabularClassificationDatasetProcessForm (props) {
     datasets[datasetIndex].dataframe_original.plot('plot_original').table({
       config: TABLE_PLOT_STYLE_CONFIG,
       layout: {
-        title: t('dataframe-original')
-      }
+        title: t('dataframe-original'),
+      },
     })
   }, [datasets, datasetIndex, t])
 
   const handleChange_ColumnTransform = (e, columnName, setArray) => {
     setListColumnNameTransformations((prevState) =>
       prevState.map((oldColumn) =>
-        (oldColumn.column_name === columnName) ? { ...oldColumn, column_transform: e.target.value } : oldColumn
-      )
+        (oldColumn.column_name === columnName) ? { ...oldColumn, column_transform: e.target.value } : oldColumn,
+      ),
     )
   }
 
@@ -91,8 +84,8 @@ export default function TabularClassificationDatasetProcessForm (props) {
     setColumnNameTarget(e.target.value)
     setListColumnNameTransformations((prevState) =>
       prevState.map((oldColumn) =>
-        (oldColumn.column_name === e.target.value) ? { ...oldColumn, column_transform: 'label-encoder' } : oldColumn
-      )
+        (oldColumn.column_name === e.target.value) ? { ...oldColumn, column_transform: 'label-encoder' } : oldColumn,
+      ),
     )
   }
 
@@ -148,8 +141,8 @@ export default function TabularClassificationDatasetProcessForm (props) {
 
     dataframe_processed.plot('plot_processed').table({
       config: TABLE_PLOT_STYLE_CONFIG, layout: {
-        title: t('dataframe-processed')
-      }
+        title: t('dataframe-processed'),
+      },
     })
 
     setDatasets((prevDatasets) => {
@@ -159,7 +152,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
             ..._dataset,
             is_dataset_processed: true,
             dataframe_processed : dataframe_processed,
-            data_processed      : data_processed
+            data_processed      : data_processed,
           }
         }
         return _dataset

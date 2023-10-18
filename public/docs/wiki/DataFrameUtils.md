@@ -1,135 +1,154 @@
 # DataFrameUtils
 
+This is a list of utilities to easily pre-process a data set so that the data set can be prepared for a deep learning model.
+
+---
+
+## `DataFrameEncoder`
+
+| Parameters | Type                                        | Description | Default |
+|------------|---------------------------------------------|-------------|---------|
+| dataframe  | `DataFrame`                                 |             |         |
+| transforms | `Array<'label-encoder'\|'one-hot-encoder'>` |             |         |
+
 <details>
-<summary class="n4l-summary">DataFrameTransform</summary>
+<summary class="n4l-summary-wiki">Code example</summary>
 
 ```js
-function DataFrameTransform (dataframe, dataframe_transforms): DataFrame {}
+/**
+ *
+ * @param {dfd.DataFrame} dataframe
+ * @param {Array<{column_name: string, column_transform:'label-encoder'|'one-hot-encoder'}>} transforms
+ * @return {EncoderMap_t}
+ */
+export function DataFrameEncoder (dataframe, transforms) {}
 ```
+
+```js
+const dataframe = await dfd.readCSV(dataset_path + 'DATASET.csv')
+const transforms = [
+  {  column_transform: 'label-encoder', column_name: 'COLUMN_NAME' },
+  {  column_transform: 'label-encoder', column_name: 'COLUMN_NAME_TARGET' },
+]
+const encoders = DataFrameUtils.DataFrameEncoder(dataframe, transforms)
+```
+
+</details>
+
+---
+
+## `DataFrameTransform`
 
 | Parameters | Type                                | Description | Default |
 |------------|-------------------------------------|-------------|---------|
-| dataframe  | `EncoderMap_t`                      |             |         |
+| dataframe  | `DataFrame`                         |             |         |
 | transforms | `Array<DataFrameColumnTransform_t>` |             |         |
 
-
-[//]: # (```js)
-[//]: # (/**)
-[//]: # ( * @param {dfd.DataFrame}                dataframe)
-[//]: # ( * @param {DataFrameColumnTransform_t[]} dataframe_transforms)
-[//]: # ( * @return {dfd.DataFrame})
-[//]: # ( */)
-[//]: # (export function DataFrameTransform &#40;dataframe, dataframe_transforms&#41; {})
-[//]: # (```)
-
-</details>
-
----
-
 <details>
-<summary class="n4l-summary">@type DataFrameColumnTransform_t</summary>
+<summary class="n4l-summary-wiki">Code example</summary>
 
 ```js
 /**
- * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
+ * @param {dfd.DataFrame}                dataframe
+ * @param {DataFrameColumnTransform_t[]} transforms
+ * @return {dfd.DataFrame}
  */
+export function DataFrameTransform (dataframe, transforms) {}
+```
 
+```js
+let dataframe = await dfd.readCSV(dataset_path + 'DATASET.csv')
+const transforms = [
+  { column_transform: 'drop', column_name: 'COLUMN_NAME_1' },
+  { column_transform: 'int32', column_name: 'COLUMN_NAME_2' },
+  { column_transform: 'float32', column_name: 'COLUMN_NAME_3' },
+  { column_transform: 'label-encoder', column_name: 'COLUMN_NAME_TARGET' },
+]
+dataframe = DataFrameUtils.DataFrameTransform(dataframe, transforms)
+
+```
+
+</details>
+
+---
+
+## `DataFrameApplyEncoders`
+
+| Parameters | Type                   | Description | Default |
+|------------|------------------------|-------------|---------|
+| encoders   | `EncoderMap_t`         |             |         |
+| values     | `Object.<string\|any>` |             |         |
+| columns    | `Array<string>`        |             |         |
+
+<details>
+<summary class="n4l-summary-wiki">Code example</summary>
+
+```js
 /**
- * @typedef DataFrameColumnTransform_t
- * @property {string} column_name
- * @property {Transform_t} column_transform
+ *
+ * @param {EncoderMap_t}         encoders
+ * @param {Object.<string, int32|float32|string|boolean>} values
+ * @param {string[]}             columns
+ * @returns {number[]}
  */
+function DataFrameApplyEncoders (encoders, values, columns) {}
 ```
-
-</details>
-
----
-
-<details>
-<summary class="n4l-summary">DataFrameEncoder</summary>
 
 ```js
-function DataFrameEncoder (dataframe, transforms): EncoderMap_t {}
+const columns = [
+  "COLUMN_NAME_1",
+  "COLUMN_NAME_2"
+]
+const dataToPredict = {
+  "COLUMN_NAME_1": 3,
+  "COLUMN_NAME_2": 'COLUMN_2_VALUE',
+}
+const vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(encoders, dataToPredict, columns)
+
 ```
-
-| Parameters | Type                                        | Description                                                            | Default |
-|------------|---------------------------------------------|------------------------------------------------------------------------|---------|
-| dataframe  | `DataFrame`                                 | Two-dimensional, size-mutable, potentially heterogeneous tabular data. | -       |
-| transforms | `Array<'label-encoder'\|'one-hot-encoder'>` |                                                                        | -       |
-
-
-[//]: # (```js)
-[//]: # (/**)
-[//]: # ( *)
-[//]: # ( * @param {dfd.DataFrame}                            dataframe)
-[//]: # ( * @param {Array<'label-encoder'|'one-hot-encoder'>} dataframe_transforms)
-[//]: # ( * @return {EncoderMap_t})
-[//]: # ( */)
-[//]: # (export function DataFrameEncoder &#40;dataframe, dataframe_transforms&#41; {})
-[//]: # (```)
 
 </details>
 
 ---
 
+## `DataFrameApplyEncodersVector`
+
+| Parameters | Type                    | Description | Default |
+|------------|-------------------------|-------------|---------|
+| encoders   | `EncoderMap_t`          |             |         |
+| input      | `Array<string\|number>` |             |         |
+| columns    | `Array<string>`         |             |         |
+
 <details>
-<summary class="n4l-summary">DataFrameApplyEncoders</summary>
+<summary class="n4l-summary-wiki">Code example</summary>
 
 ```js
-function DataFrameApplyEncoders (encoders_map, values_map, column_name_list): number[] {}
+/**
+ *
+ * @param {EncoderMap_t}         encoders
+ * @param {Array<string|number>} input
+ * @param {string[]}             columns
+ * @return {number[]}
+ */
+export function DataFrameApplyEncodersVector (encoders, input, columns) {}
 ```
-
-| Parameters       | Type                   | Description | Default |
-|------------------|------------------------|-------------|---------|
-| encoders_map     | `EncoderMap_t`         |             |         |
-| values_map       | `Object.<string\|any>` |             |         |
-| column_name_list | `Array<string>`        |             |         |
-
-[//]: # (```js)
-[//]: # (/**)
-[//]: # ( *)
-[//]: # ( * @param {EncoderMap_t}         encoders_map)
-[//]: # ( * @param {Object.<string, any>} values_map)
-[//]: # ( * @param {string[]}             column_name_list)
-[//]: # ( * @returns {number[]})
-[//]: # ( */)
-[//]: # (function DataFrameApplyEncoders &#40;encoders_map, values_map, column_name_list&#41; {})
-[//]: # (```)
-
-</details>
-
----
-
-<details>
-<summary class="n4l-summary">DataFrameApplyEncodersVector</summary>
 
 ```js
-function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_list): number[] {}
+const columns = ['COLUMN_NAME_1', 'COLUMN_NAME_2', 'COLUMN_NAME_TARGET']
+const inputDataToPredict = ['column_1_class_1', 3.3, "class_target_3"]
+const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoders, inputDataToPredict, columns)
+// [0, 3.3, 2]
 ```
 
-| Parameters       | Type                    | Description | Default |
-|------------------|-------------------------|-------------|---------|
-| encoders_map     | `EncoderMap_t`          |             |         |
-| input_data       | `Array<string\|number>` |             |         |
-| column_name_list | `Array<string>`         |             |         |
-
-[//]: # (```js)
-[//]: # (/**)
-[//]: # ( *)
-[//]: # ( * @param {EncoderMap_t}         encoders_map)
-[//]: # ( * @param {Array<string|number>} input_data)
-[//]: # ( * @param {string[]}             column_name_list)
-[//]: # ( * @return {number[]})
-[//]: # ( */)
-[//]: # (export function DataFrameApplyEncodersVector &#40;encoders_map, input_data, column_name_list&#41; {})
-[//]: # (```)
 
 </details>
 
 ---
 
+## `@type EncoderMap_t`
+
 <details>
-<summary class="n4l-summary">@type EncoderMap_t</summary>
+<summary class="n4l-summary-wiki">Code example</summary>
 
 ```js
 /**
@@ -140,6 +159,27 @@ function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_lis
 
 /**
  * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
+ */
+```
+
+</details>
+
+---
+
+## `@type DataFrameColumnTransform_t`
+
+<details>
+<summary class="n4l-summary-wiki">Code example</summary>
+
+```js
+/**
+ * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
+ */
+
+/**
+ * @typedef DataFrameColumnTransform_t
+ * @property {string} column_name
+ * @property {Transform_t} column_transform
  */
 ```
 

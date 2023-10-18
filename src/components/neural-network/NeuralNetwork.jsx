@@ -21,7 +21,6 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
 
     },
     zoom  : (e) => {
-      // console.log(e)
       // e.preventDefault()
       // e.stopPropagation()
       // e.stopImmediatePropagation()

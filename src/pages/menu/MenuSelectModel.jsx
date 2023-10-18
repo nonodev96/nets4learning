@@ -76,7 +76,7 @@ export default function MenuSelectModel (_props) {
           <Row className="mt-3 mb-3">
             <Col>
               <Card>
-                <Card.Header><h3><Trans i18nKey={'modality.' + id} /></h3></Card.Header>
+                <Card.Header><h2><Trans i18nKey={'modality.' + id} /></h2></Card.Header>
                 <Card.Body>
                   <Card.Text>
                     <Trans i18nKey={'pages.menu-selection-model.form-description-1'} />

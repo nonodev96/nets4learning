@@ -9,10 +9,10 @@ export default function ModelReviewTabularClassificationDatasetInfo (props) {
   const { dataset, iModelInstance } = props
 
   useEffect(() => {
-    console.log(iModelInstance)
+    console.debug("useEffect[iModelInstance]")
   }, [iModelInstance])
 
-  if (VERBOSE) console.log('render ModelReviewTabularClassificationDatasetInfo')
+  if (VERBOSE) console.debug('render ModelReviewTabularClassificationDatasetInfo')
   return <>
     <Card className={'mt-3'}>
       <Card.Header>

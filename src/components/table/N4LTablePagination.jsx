@@ -42,7 +42,7 @@ export default function N4LTablePagination ({ data_head, data_body, rows_per_pag
       </Table>
     </div>
 
-    <Pagination size="sm" className={'n4l-pagination justify-content-center mt-3'}>
+    <Pagination size="sm" className={'n4l-pagination justify-content-center'}>
       {(activePage > 0) && <></>}
       <Pagination.First disabled={!(activePage > 0)}
                         onClick={() => handleClick_ChangePage(0)} />

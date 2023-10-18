@@ -67,7 +67,7 @@ export default function LinearRegressionEditorLayers () {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={prefix + 'title'} /></h3>
+        <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className={'d-flex'}>
           <Button variant={'outline-primary'}
                   size={'sm'}

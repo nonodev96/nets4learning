@@ -12,9 +12,10 @@ import { LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 
-tfjs.setBackend('webgl').then((r) => {
-  console.log('setBackend', { r })
-})
+tfjs.setBackend('webgl')
+  .then((r) => {
+    console.debug('setBackend', { r })
+  })
 
 export default function ModelReviewObjectDetection (props) {
   const dataset = props.dataset
@@ -40,7 +41,7 @@ export default function ModelReviewObjectDetection (props) {
   }, [dataset])
 
   useEffect(() => {
-    console.log('useEffect [progress]')
+    console.debug('useEffect[progress]')
     const interval = setInterval(() => {
       if (progress < 90) {
         setProgress(progress + 1)
@@ -52,7 +53,7 @@ export default function ModelReviewObjectDetection (props) {
   }, [progress])
 
   useEffect(() => {
-    console.log('useEffect [dataset]')
+    console.log('useEffect[dataset, t]')
 
     async function init () {
       const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataset)
@@ -87,9 +88,10 @@ export default function ModelReviewObjectDetection (props) {
       }
     }
 
-    init().then((r) => {
-      console.log('endInit')
-    })
+    init()
+      .then((r) => {
+        console.debug('endInit')
+      })
 
     return () => {}
   }, [dataset, t])
@@ -128,9 +130,9 @@ export default function ModelReviewObjectDetection (props) {
   }
 
   useEffect(() => {
-    console.log('useEffect[isCameraEnable]', { isCameraEnable })
+    console.debug('useEffect[isCameraEnable]', { isCameraEnable })
     if (isCameraEnable === false) {
-      console.log(`stop AnimationFrame(${requestRef.current});`)
+      console.debug(`stop AnimationFrame(${requestRef.current});`)
       cancelAnimationFrame(requestRef.current)
     }
     try {
@@ -163,13 +165,15 @@ export default function ModelReviewObjectDetection (props) {
         fpsInterval = 1000 / fps
         then = Date.now()
         // startTime = then
-        animate().then(r => {
-          console.log('start animation')
-        })
+        animate()
+          .then(r => {
+            console.debug('start animation')
+          })
       }
       startAnimating(fps)
-    } catch (e) {
-      console.log(`catch cancelAnimationFrame(${requestRef.current});`)
+    } catch (error) {
+      console.error(error)
+      console.debug(`catch cancelAnimationFrame(${requestRef.current});`)
       cancelAnimationFrame(requestRef.current)
     }
     // Limpia la animación cuando el componente se desmonta
@@ -180,12 +184,12 @@ export default function ModelReviewObjectDetection (props) {
   }, [isCameraEnable])
 
   const handleDevices = useCallback((mediaDevices) => {
-    console.log('useCallback[handleDevices]')
+    console.debug('useCallback[handleDevices]')
     setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'))
   }, [setDevices])
 
   useEffect(() => {
-    console.log('useEffect[handleDevices]')
+    console.debug('useEffect[handleDevices]')
     if (!navigator.mediaDevices?.enumerateDevices) {
       console.error('enumerateDevices() not supported.')
     } else {
@@ -194,7 +198,7 @@ export default function ModelReviewObjectDetection (props) {
   }, [handleDevices])
 
   const handleChange_Camera = (e) => {
-    console.log('handleChange_Camera')
+    console.debug('handleChange_Camera')
     const webcamChecked = e.target.checked
     setCameraEnable(!!webcamChecked)
   }
@@ -205,18 +209,18 @@ export default function ModelReviewObjectDetection (props) {
   }
 
   const onUserMediaEvent = (mediaStream) => {
-    console.log({ mediaStream })
+    console.debug({ mediaStream })
     // mediaStream.scale(-1, 1)
   }
 
   const onUserMediaErrorEvent = (error) => {
-    console.log({ error })
+    console.error({ error })
     // cancelAnimationFrame(animation_id)
   }
 
   const handleChangeFileUpload = async (_files) => {
     // let tgt = e.target || window.event.srcElement
-    console.log('ModelReviewObjectDetection -> handleChangeFileUpload', { _files })
+    console.debug('ModelReviewObjectDetection -> handleChangeFileUpload', { _files })
     let files = _files
 
     const originalImageCanvas = document.getElementById('originalImageCanvas')

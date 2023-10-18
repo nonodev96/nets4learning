@@ -130,7 +130,7 @@ export default function Datasets () {
         <Row className={'mt-3'}>
           <Col>
             <Card>
-              <Card.Header><h3><Trans i18nKey={'datasets.title'} /></h3></Card.Header>
+              <Card.Header><h2><Trans i18nKey={'datasets.title'} /></h2></Card.Header>
               <Card.Body>
                 <Tabs defaultActiveKey={'tabular-classification'} justify>
                   <Tab eventKey="tabular-classification" title={t('pages.index.tabular-classification.1-title')}>

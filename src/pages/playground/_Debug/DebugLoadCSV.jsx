@@ -33,7 +33,7 @@ export default function DebugLoadCSV () {
       <Row className={'mt-3'}>
         <Col>
           <Card>
-            <Card.Header><h3>Debug</h3></Card.Header>
+            <Card.Header><h2>Debug</h2></Card.Header>
             <Card.Body>
               <Card.Title>Pruebas modelo</Card.Title>
 
@@ -50,7 +50,6 @@ export default function DebugLoadCSV () {
                 <Button variant="primary"
                         type={'button'}
                         onClick={async () => {
-                          console.log('TODO')
                           await handleClick_debug_ALL()
                         }}
                         size={'sm'}>

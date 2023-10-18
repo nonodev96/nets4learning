@@ -80,7 +80,7 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
   }
 
   RENDER (ctx, faces) {
-    console.log({ctx, faces})
+    console.debug('render', { ctx, faces })
     ctx.font = '8px Verdana'
     ctx.lineWidth = 5
     ctx.strokeStyle = '#FF0902'

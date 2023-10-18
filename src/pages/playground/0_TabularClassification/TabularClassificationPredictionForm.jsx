@@ -38,7 +38,6 @@ export default function TabularClassificationPredictionForm (props) {
     const { data_processed } = datasets[datasetIndex]
     const { encoders, X } = data_processed
     const _inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoders, inputDataToPredict, X.columns)
-    console.log({ _inputVectorToPredict })
     setInputVectorToPredict(_inputVectorToPredict)
   }, [datasetIndex, datasets, inputDataToPredict])
 

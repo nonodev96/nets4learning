@@ -9,7 +9,7 @@ import {
   TYPE_CLASS,
   TYPE_OPTIMIZER,
   TYPE_LOSSES,
-  TYPE_METRICS
+  TYPE_METRICS,
 } from '@core/nn-utils/ArchitectureTypesHelper'
 
 import CustomCanvasDrawer from '../3_ImageClassification/components/customCanvasDrawer'
@@ -68,7 +68,7 @@ export default function ObjectDetection (props) {
           {
             class   : 'MaxPooling2D',
             poolSize: [2, 2],
-            strides2: [2, 2]
+            strides2: [2, 2],
           },
           {
             class            : 'Conv2D',
@@ -81,7 +81,7 @@ export default function ObjectDetection (props) {
           {
             class   : 'MaxPooling2D',
             poolSize: [2, 2],
-            strides2: [2, 2]
+            strides2: [2, 2],
           },
         ])
         setRecarga(true)
@@ -139,7 +139,7 @@ export default function ObjectDetection (props) {
       const tensor4 = tf.tensor4d(arr)
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-      console.log('Predicción', mayorIndice)
+      console.debug('Predicción', { mayorIndice })
       document.getElementById('demo').innerHTML = mayorIndice.toString()
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -178,7 +178,7 @@ export default function ObjectDetection (props) {
     let resultados = Model.predict(tensor4).dataSync()
     let mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-    console.log('Predicción', mayorIndice)
+    console.log('Predicción', { mayorIndice })
     document.getElementById('demo').innerHTML = mayorIndice.toString()
 
     await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -376,9 +376,7 @@ export default function ObjectDetection (props) {
             <Col>
               <Card>
                 <Card.Header>
-                  <h3>
-                    Clasificador
-                  </h3>
+                  <h2>Clasificador</h2>
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>
@@ -393,9 +391,7 @@ export default function ObjectDetection (props) {
             <Col>
               <Card>
                 <Card.Header>
-                  <h3>
-                    Clasificador
-                  </h3>
+                  <h2>Clasificador</h2>
                 </Card.Header>
                 <Card.Body>
                   <p>Ahora vamos a ver la interfaz de edición de arquitectura.</p>
@@ -720,7 +716,7 @@ export default function ObjectDetection (props) {
             <Row>
               <Col>
                 <Card>
-                  <Card.Header><h3>Resultados</h3></Card.Header>
+                  <Card.Header><h2>Resultados</h2></Card.Header>
                   <Card.Body>
                     <div id="demo" className="console">
                       Aquí se muestran los resultados

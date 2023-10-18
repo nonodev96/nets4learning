@@ -5,6 +5,7 @@ import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootst
 import { Trans, useTranslation } from 'react-i18next'
 import ReactGA from 'react-ga4'
 
+import N4LDivider from '@components/divider/N4LDivider'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
 import DebugJSON from '@components/debug/DebugJSON'
@@ -85,7 +86,7 @@ export default function LinearRegression (props) {
       X_features : params.params_features.X_features,
       X_feature  : params.params_features.X_feature,
       y_target   : params.params_features.y_target,
-      categorical: new Map()
+      categorical: new Map(),
     })
     modelController.setFit({
       testSize : params.params_training.test_size,
@@ -95,12 +96,12 @@ export default function LinearRegression (props) {
       metrics  : [...params.params_training.list_id_metrics],
     })
     const { model, original, predicted, predictedLinear } = await modelController.run()
-    console.log('modelController.run()', { original })
+    console.debug('modelController.run()', { original })
     const updatedTmpModel = {
       model          : model,
       original       : Array.from(original),
       predicted      : Array.from(predicted),
-      predictedLinear: Array.from(predictedLinear)
+      predictedLinear: Array.from(predictedLinear),
     }
     setTmpModel(updatedTmpModel)
     setListModels((prevState) => [...prevState, {
@@ -108,13 +109,13 @@ export default function LinearRegression (props) {
       params_layers  : [...params.params_layers],
       params_training: { ...params.params_training },
       params_features: { ...params.params_features },
-      dataframe      : datasetLocal.dataframe_processed
+      dataframe      : datasetLocal.dataframe_processed,
     }])
   }
 
   const handleSubmit_TrainModel = async (event) => {
     event.preventDefault()
-    console.log('handleSubmit_TrainModel')
+    console.debug('handleSubmit_TrainModel')
     setIsTraining(true)
     await TrainModel()
     setIsTraining(false)
@@ -122,7 +123,7 @@ export default function LinearRegression (props) {
 
   const handleSubmit_TrainModel_Upload = async (event) => {
     event.preventDefault()
-    console.log('handleSubmit_TrainModel_Upload')
+    console.debug('handleSubmit_TrainModel_Upload')
     setIsTraining(true)
     await TrainModel()
     setIsTraining(false)
@@ -140,7 +141,7 @@ export default function LinearRegression (props) {
 
       if (dataset === UPLOAD) {
         // TODO
-        // console.log('TODO')
+        console.debug("Linear regression upload csv")
       } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
@@ -187,18 +188,14 @@ export default function LinearRegression (props) {
           </Col>
         </Row>
 
-        <div className={'mt-2 mb-4 n4l-hr-row'}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.information'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.information'} />
 
         <Row>
           <Col>
             <Accordion defaultActiveKey={[]} activeKey={accordionActive}>
               <Accordion.Item className={'joyride-step-1-manual'} eventKey={'manual'}>
                 <Accordion.Header onClick={() => accordionToggle('manual')}>
-                  <h3><Trans i18nKey={'pages.playground.1-linear-regression.generator.manual.title'} /></h3>
+                  <h2><Trans i18nKey={'pages.playground.1-linear-regression.generator.manual.title'} /></h2>
                 </Accordion.Header>
                 <Accordion.Body>
                   <Suspense fallback={<></>}><LinearRegressionManual /></Suspense>
@@ -207,7 +204,7 @@ export default function LinearRegression (props) {
 
               <Accordion.Item className={'joyride-step-2-dataset-info'} eventKey={'dataset_info'}>
                 <Accordion.Header onClick={() => accordionToggle('dataset_info')}>
-                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h2><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.i18n_TITLE : prefix + 'dataset.upload-dataset'} /></h2>
                 </Accordion.Header>
                 <Accordion.Body id={'info-dataset'}>
                   <Suspense fallback={<></>}><LinearRegressionDataset dataset={dataset} /></Suspense>
@@ -219,11 +216,7 @@ export default function LinearRegression (props) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
-          <span className={styles.n4l_hr_title}>
-            <Trans i18nKey={'hr.dataset'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.dataset'} />
 
         <Row className={'joyride-step-3-dataset'}>
           <Col>
@@ -239,11 +232,7 @@ export default function LinearRegression (props) {
           </Col>
         </Row>
 
-        <div className={`mt-2 mb-4 ${styles.n4l_hr_row}`}>
-          <span className={styles.n4l_hr_title}>
-            <Trans i18nKey={'hr.model'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.model'} />
 
         <Row>
           <Col className={'joyride-step-5-layer'}>
@@ -315,7 +304,7 @@ export default function LinearRegression (props) {
             <Col>
               <Card>
                 <Card.Header>
-                  <h3>Debug</h3>
+                  <h2>Debug</h2>
                 </Card.Header>
                 <Card.Body>
                   <Row lg={3}>

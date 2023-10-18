@@ -38,7 +38,7 @@ export default function LinearRegressionPrediction () {
     e.preventDefault()
     // const tensor = tfjs.tensor1d([165]).reshape([100, 1])
     // console.log(listModels[indexModel].model.predict(tensor).dataSync())
-    console.log(listModels[indexModel].p)
+    console.debug(listModels[indexModel])
   }
 
   const handleChange_Model = (e) => {
@@ -133,7 +133,7 @@ export default function LinearRegressionPrediction () {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={prefix + 'title'} /></h3>
+        <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className="d-flex">
           <div className={'ms-3'}>
             <Form.Group controlId={'model-selector'}>

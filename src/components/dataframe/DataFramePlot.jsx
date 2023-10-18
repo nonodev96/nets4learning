@@ -120,7 +120,7 @@ export default function DataFramePlot ({ dataframe }) {
             if (isValidConfig_LineCharts) {
               sub_df.plot(dataframe_plot_id).line({ layout })
             } else {
-              console.log('Error, option not valid E_PLOTS.LINE_CHARTS', { config_LineCharts })
+              console.error('Error, option not valid E_PLOTS.LINE_CHARTS', { config_LineCharts })
             }
             break
           case E_PLOTS.PIE_CHARTS:
@@ -128,7 +128,7 @@ export default function DataFramePlot ({ dataframe }) {
             if (isValidConfig_PieCharts) {
               sub_df.plot(dataframe_plot_id).pie({ layout, config: config_PieCharts })
             } else {
-              console.log('Error, option not valid E_PLOTS.PIE_CHARTS', { config_PieCharts })
+              console.error('Error, option not valid E_PLOTS.PIE_CHARTS', { config_PieCharts })
             }
             break
           case E_PLOTS.SCATTER_PLOTS:
@@ -142,7 +142,7 @@ export default function DataFramePlot ({ dataframe }) {
               sub_sub_df.plot(dataframe_plot_id).line({ layout })
             } else {
               list_warnings.push('dataframe-plot.time-series.warning.index')
-              console.log('Error, option not valid E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
+              console.error('Error, option not valid E_PLOTS.TIME_SERIES_PLOTS', { config_TimeSeries, index })
             }
             break
           case E_PLOTS.VIOLIN_PLOTS:
@@ -214,7 +214,7 @@ export default function DataFramePlot ({ dataframe }) {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3><Trans i18nKey={'dataframe-plot.title'} /></h3>
+        <h2><Trans i18nKey={'dataframe-plot.title'} /></h2>
         <div className={'d-flex'}>
           <Form.Group controlId={'plot'}>
             <Form.Select onChange={(e) => handleChange_Plot(e)}

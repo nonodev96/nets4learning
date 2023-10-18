@@ -2,7 +2,7 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 export default function N4LFooter () {
   const { t } = useTranslation()
@@ -13,20 +13,34 @@ export default function N4LFooter () {
         <Container>
           <Row>
             <Col xs={12} sm={12} md={7}>
-              <h3>{t('footer.about-us')}</h3>
+              <h3><Trans i18nKey={'footer.about-us'} /></h3>
               <ul style={{ padding: '0 1em' }}>
-                <li>{t('footer.developers')}:{' '}
-                  <a href="https://github.com/Davavico22" target="_blank" rel="noreferrer" className="link-secondary">David Valdivia Vico</a>,{' '}
-                  <a href="https://github.com/nonodev96" target="_blank" rel="noreferrer" className="link-secondary">Antonio Mudarra Machuca</a>
-
-                </li>
-                <li>{t('footer.directors')}:{' '}
+                <li>
+                  <Trans i18nKey={'footer.directors'} />:{' '}
                   <a href="https://simidat.ujaen.es/members/arivera/" target="_blank" rel="noreferrer" className="link-secondary">Antonio Jesús Rivera Rivas</a>,{' '}
                   <a href="https://simidat.ujaen.es/members/lperez/" target="_blank" rel="noreferrer" className="link-secondary">María Dolores Pérez Godoy</a>,{' '}
                   <a href="https://simidat.ujaen.es/members/mjjesus/" target="_blank" rel="noreferrer" className="link-secondary">María José del Jesus Díaz</a>
                 </li>
-                <li><Link to={'/terms-and-conditions'} className="link-secondary">{t('footer.terms')}</Link></li>
-                <li><Link to={'/version'} className="link-secondary">{t('footer.version')}</Link></li>
+                <li>
+                  <Link to={'/terms-and-conditions'} className="link-secondary">
+                    <Trans i18nKey={'footer.terms'} />
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/documentation'} className="link-secondary">
+                    <Trans i18nKey={'footer.documentation'} />
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/contribute'} className="link-secondary">
+                    <Trans i18nKey={'footer.contribute'} />
+                  </Link>
+                </li>
+                <li>
+                  <Link to={'/version'} className="link-secondary">
+                    <Trans i18nKey={'footer.version'} />
+                  </Link>
+                </li>
                 <li><a href="https://github.com/simidat/nets4learning/" target="_blank" rel="noreferrer" className="link-secondary">GitHub</a></li>
               </ul>
             </Col>

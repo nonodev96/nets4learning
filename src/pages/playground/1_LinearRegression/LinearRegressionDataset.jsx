@@ -48,7 +48,7 @@ export default function LinearRegressionDataset ({ dataset }) {
   }
 
   const handleChange_FileUpload_CSV_reject = (files, event) => {
-    console.log({ files })
+    console.debug({ files })
   }
 
   const handleSubmit_ProcessDataset = (e) => {

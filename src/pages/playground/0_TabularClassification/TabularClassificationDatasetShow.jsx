@@ -5,6 +5,7 @@ import * as dfd from 'danfojs'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import { VERBOSE } from '@/CONSTANTS'
+import { Link } from 'react-router-dom'
 
 export default function TabularClassificationDatasetShow (props) {
   const { datasets, datasetIndex } = props
@@ -70,22 +71,18 @@ export default function TabularClassificationDatasetShow (props) {
         {showDataset && <>
           <Row>
             <Col className={'overflow-x-auto'}>
-
               <N4LTablePagination data_head={dataframe.columns}
                                   data_body={DataFrameUtils.DataFrameIterRows(dataframe)}
               />
             </Col>
           </Row>
-        </>}
-      </Card.Body>
-      {showDataset &&
-        <Card.Footer>
+          <hr />
           <Row>
             <Col lg={10}>
               <details>
                 <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
                 <main>
-                  <Row xs={12} sm={12} md={12} lg={6}>
+                  <Row xs={3} sm={3} md={3} lg={4}>
                     {datasets[datasetIndex].data_processed.attributes.map((item, i1) => {
                       return <Col key={i1}>
                         <p className={'mb-0'}><b>{item.name}</b></p>
@@ -124,8 +121,23 @@ export default function TabularClassificationDatasetShow (props) {
               </details>
             </Col>
           </Row>
-        </Card.Footer>
-      }
+        </>}
+      </Card.Body>
+      <Card.Footer className={'d-flex justify-content-end'}>
+        <p className={'text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-link'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/manual/',
+                                  state   : {
+                                    action: 'tabular-classification-dataset-open',
+                                  },
+                                }}
+                   />,
+                 }} />
+        </p>
+      </Card.Footer>
 
     </Card>
   </>

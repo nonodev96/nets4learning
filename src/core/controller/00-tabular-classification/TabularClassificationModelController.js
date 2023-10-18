@@ -24,7 +24,7 @@ sk.setBackend(dfd.tensorflow)
  * @param {i18n.t} t
  * @returns {Promise<tf.Sequential>}
  */
-export async function createTabularClassificationCustomDataSet (params, t) {
+export async function createTabularClassificationCustomModel (params, t) {
   const {
     dataset_processed,
 
@@ -41,22 +41,7 @@ export async function createTabularClassificationCustomDataSet (params, t) {
   tfvis.visor().open()
 
   const { data_processed } = dataset_processed
-  const { scaler, X, y } = data_processed
-  // const new_dataframe = dataframe_processed.copy()
-  // const dataframe_X = new_dataframe.drop({ columns: [column_name_target] })
-  // const dataframe_y = new_dataframe[column_name_target]
-  // console.log({ dataframe_X, dataframe_y })
-
-  // const oneHotEncoder = new dfd.OneHotEncoder()
-  // oneHotEncoder.fit(dataframe_y.values)
-  // const dataframe_y_one_hot_values = oneHotEncoder.transform(dataframe_y.values)
-
-  // const scaler = new dfd.MinMaxScaler()
-  // scaler.fit(dataframe_X.values)
-  // const dataframe_X_Scaler = scaler.transform(X.values)
-
-  // let [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X.values, dataframe_y.values, testSize)
-  // const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(dataframe_X_Scaler, dataframe_y_one_hot_values, testSize)
+  const { X, y } = data_processed
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
 
   const XTrain_tensor = tf.tensor(XTrain)

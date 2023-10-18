@@ -97,7 +97,7 @@ export default function DataFramePlotModalConfiguration () {
 
   const handleSubmit_Config = (e) => {
     e.preventDefault()
-    console.log({ e })
+    console.error({ e })
   }
 
   const handleClick_SelectAllColumns = () => {

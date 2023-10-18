@@ -65,7 +65,7 @@ export default function TestPageEasy () {
         <Col>
           <Card>
             <Card.Header>
-              <h3>Alerts</h3>
+              <h2>Alerts</h2>
             </Card.Header>
             <Card.Body>
               <Button variant={'danger'}
@@ -84,7 +84,7 @@ export default function TestPageEasy () {
         <Col>
 
           <Card>
-            <Card.Header><h3>TestPage-Easy</h3></Card.Header>
+            <Card.Header><h2>TestPage-Easy</h2></Card.Header>
             <Card.Body>
               <Button variant={'primary'}
                       onClick={() => setCounter(c => c + 1)}>

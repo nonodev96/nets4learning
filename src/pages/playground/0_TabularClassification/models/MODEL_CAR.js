@@ -25,10 +25,8 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     'unacc',
     'acc',
     'good',
-    'vgood'
   ]
   LIST_EXAMPLES = [
-    { Buying: 'vhigh', Maint: 'vhigh', Doors: '2',     Persons: '2',    Lug_boot: 'small', Safety: 'low' },
     { Buying: 'low',   Maint: 'vhigh', Doors: '4',     Persons: '2',    Lug_boot: 'small', Safety: 'low' },
     { Buying: 'med',   Maint: 'low',   Doors: '5more', Persons: 'more', Lug_boot: 'med',   Safety: 'med' },
     { Buying: 'low',   Maint: 'low',   Doors: '5more', Persons: 'more', Lug_boot: 'big',   Safety: 'high' }
@@ -52,7 +50,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
                components={{
                  link1: <a href="https://archive.ics.uci.edu/ml/datasets/Car+Evaluation"
                            target="_blank"
-                           rel="noreferrer">link</a>
+                           rel="noreferrer">link</a>,
                }}
         />
       </p>
@@ -184,13 +182,13 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
   async LOAD_GRAPH_MODEL (callbacks) {
     return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
-      onProgress: callbacks.onProgress
+      onProgress: callbacks.onProgress,
     })
   }
 
   async LOAD_LAYERS_MODEL (callbacks) {
     return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
-      onProgress: callbacks.onProgress
+      onProgress: callbacks.onProgress,
     })
   }
 
@@ -200,7 +198,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       { units: 128, activation: 'relu' },
       { units: 64, activation: 'relu' },
       { units: 32, activation: 'relu' },
-      { units: 4, activation: 'softmax' }
+      { units: 4, activation: 'softmax' },
     ]
   }
 

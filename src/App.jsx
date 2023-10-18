@@ -22,6 +22,7 @@ const PageGlossary = lazy(() => import( './pages/glossary/Glossary'))
 const PageDatasets = lazy(() => import( './pages/datasets/Datasets'))
 const PageDataFrame = lazy(() => import( './pages/dataframe/DataFrame'))
 const PageContribute = lazy(() => import( './pages/contribute/Contribute'))
+const PageDocumentation = lazy(() => import( './pages/documentation/Documentation'))
 const PageTermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
 const PageNotFoundPage = lazy(() => import( './pages/notFound/NotFoundPage'))
 const PageVersion = lazy(() => import( './pages/version/Version'))
@@ -33,7 +34,6 @@ function App () {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
 
   useEffect(() => {
-    console.log(process.env)
     ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID)
   }, [])
 
@@ -55,6 +55,7 @@ function App () {
             <Route exact path={'/datasets/'} component={PageDatasets}></Route>
             <Route exact path={'/dataframe/'} component={PageDataFrame}></Route>
             <Route exact path={'/contribute/'} component={PageContribute}></Route>
+            <Route exact path={'/documentation/'} component={PageDocumentation}></Route>
             <Route exact path={'/terms-and-conditions/'} component={PageTermsAndConditions}></Route>
             <Route exact path={'/version/'} component={PageVersion}></Route>
 
