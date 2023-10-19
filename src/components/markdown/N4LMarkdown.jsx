@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkRehype from 'remark-rehype'
 
-import { Table, Image, Tabs, Tab } from 'react-bootstrap'
+import { Table, Image, Tabs, Tab, Row, Col } from 'react-bootstrap'
 
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -81,6 +81,7 @@ export default function N4LMarkdown (_props_) {
                     return <Image fluid={true}
                                   rounded={true}
                                   thumbnail={true}
+                                  className={'d-block mx-auto'}
                                   src={newSrc}
                                   alt={rest.alt}
                     />

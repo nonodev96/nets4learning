@@ -27,8 +27,8 @@ export function DataFrameEncoder (dataframe, transforms) {}
 ```js
 const dataframe = await dfd.readCSV(dataset_path + 'DATASET.csv')
 const transforms = [
-  {  column_transform: 'label-encoder', column_name: 'COLUMN_NAME' },
-  {  column_transform: 'label-encoder', column_name: 'COLUMN_NAME_TARGET' },
+  { column_transform: 'label-encoder', column_name: 'COLUMN_NAME' },
+  { column_transform: 'label-encoder', column_name: 'COLUMN_NAME_TARGET' },
 ]
 const encoders = DataFrameUtils.DataFrameEncoder(dataframe, transforms)
 ```
@@ -140,7 +140,6 @@ const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoder
 // [0, 3.3, 2]
 ```
 
-
 </details>
 
 ---
@@ -178,9 +177,49 @@ const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoder
 
 /**
  * @typedef DataFrameColumnTransform_t
- * @property {string} column_name
+ * @property {string}      column_name
  * @property {Transform_t} column_transform
  */
+```
+
+</details>
+
+---
+
+## `DataFrameDeepCopy`
+
+<details>
+<summary class="n4l-summary-wiki">Code example</summary>
+
+```js
+/**
+ *
+ * @param {dfd.DataFrame} dataframe
+ * @return {dfd.DataFrame}
+ */
+export function DataFrameDeepCopy (dataframe): DataFrame {}
+```
+
+```js
+const dataframe_original = await dfd.readCSV("../dataset.csv")
+let dataframe_processed = DataFrameUtils.DataFrameDeepCopy(dataframe_original)
+```
+
+</details>
+
+---
+
+## `DataFrameIterRows`
+
+<details>
+<summary class="n4l-summary-wiki">Code example</summary>
+
+```js
+/**
+ * @param {dfd.DataFrame} dataframe
+ * @return {Array<Array<string|float32|int32|boolean>>}
+ */
+export function DataFrameIterRows (dataframe) {}
 ```
 
 </details>

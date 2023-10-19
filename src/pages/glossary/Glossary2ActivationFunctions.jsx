@@ -27,21 +27,21 @@ export default function Glossary2ActivationFunctions () {
         { i18n_title: 'Linear', img: IMGLinear, latex: '$$ \\begin{split} R(z,m) = \\begin{Bmatrix} z*m \\end{Bmatrix} \\end{split} $$' },
       ]
     },
-    // Non-linear Activations (weighted sum, non linearity)
+    // Non-linear Activations (weighted sum, non-linearity)
     {
       i18n_title_section: 'pages.glossary.activation-functions.sub-title-2',
       layers            : [
-        {
-          i18n_title: 'ELU',
-          img       : IMGELU,
-          latex     : '$$ \\begin{split} ELU(x) = \\begin{Bmatrix} x & x > 0 \\\\ \\alpha * (exp(x) - 1) & x \\leq 0 \\end{Bmatrix}\\end{split} $$',
-          ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.ELU.html'
-        },
         {
           i18n_title: 'Sigmoid',
           img       : IMGSigmoid,
           latex     : '$$ Sigmoid(x) =\\alpha(x) = \\frac{1} {1 + e^{-x}} $$',
           ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.Sigmoid.html'
+        },
+        {
+          i18n_title: 'Hardsigmoid',
+          img       : IMGHardSigmoid,
+          latex     : '$$ \\begin{split} Hardsigmoid(x) = \\begin{Bmatrix} 0 & x \\leq -3 \\\\ 1 & x \\leq +3 \\\\ x/6 + 1/2 & otherwise \\end{Bmatrix}\\end{split} $$',
+          ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html'
         },
         {
           i18n_title: 'ReLU',
@@ -62,10 +62,10 @@ export default function Glossary2ActivationFunctions () {
           ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.LeakyReLU.html'
         },
         {
-          i18n_title: 'Hardsigmoid',
-          img       : IMGHardSigmoid,
-          latex     : '$$ \\begin{split} Hardsigmoid(x) = \\begin{Bmatrix} 0 & x \\leq -3 \\\\ 1 & x \\leq +3 \\\\ x/6 + 1/2 & otherwise \\end{Bmatrix}\\end{split} $$',
-          ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.Hardsigmoid.html'
+          i18n_title: 'ELU',
+          img       : IMGELU,
+          latex     : '$$ \\begin{split} ELU(x) = \\begin{Bmatrix} x & x > 0 \\\\ \\alpha * (exp(x) - 1) & x \\leq 0 \\end{Bmatrix}\\end{split} $$',
+          ref       : 'https://pytorch.org/docs/stable/generated/torch.nn.ELU.html'
         },
         {
           i18n_title: 'Tanh',
@@ -107,6 +107,11 @@ export default function Glossary2ActivationFunctions () {
     }
   ]
 
+  /** @typedef {Object} TableStruct_t */
+  /** @property {string} title */
+  /** @property {string} description */
+  /** @property {Object} characteristics */
+
   return <>
     <Accordion defaultValue={''} defaultActiveKey={''}>
       <Accordion.Item eventKey={'functions-activations'}>
@@ -122,49 +127,41 @@ export default function Glossary2ActivationFunctions () {
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <th>Sigmoid</th>
-              <td><Trans i18nKey={'pages.glossary.activation-functions.table.sigmoid.description'} /></td>
-              <td>
-                <ol>
-                  <li>{t('pages.glossary.activation-functions.table.sigmoid.characteristics.0')}</li>
-                  <li>{t('pages.glossary.activation-functions.table.sigmoid.characteristics.1')}</li>
-                  <li>{t('pages.glossary.activation-functions.table.sigmoid.characteristics.2')}</li>
-                </ol>
-              </td>
-            </tr>
-            <tr>
-              <th>Softmax</th>
-              <td><Trans i18nKey={'pages.glossary.activation-functions.table.softmax.description'} /></td>
-              <td>
-                <ol>
-                  <li>{t('pages.glossary.activation-functions.table.softmax.characteristics.0')}</li>
-                  <li>{t('pages.glossary.activation-functions.table.softmax.characteristics.1')}</li>
-                  <li>{t('pages.glossary.activation-functions.table.softmax.characteristics.2')}</li>
-                </ol>
-              </td>
-            </tr>
-            <tr>
-              <th>ReLU</th>
-              <td><Trans i18nKey={'pages.glossary.activation-functions.table.relu.description'} /></td>
-              <td>
-                <ol>
-                  <li>{t('pages.glossary.activation-functions.table.relu.characteristics.0')}</li>
-                  <li>{t('pages.glossary.activation-functions.table.relu.characteristics.1')}</li>
-                </ol>
-              </td>
-            </tr>
+            {Object.entries(t('pages.glossary.activation-functions.table', { returnObjects: true }))
+              .map(([function_key, function_info], index) => {
+
+                const { title, description, characteristics } = /** @type TableStruct_t */ function_info
+                return <tr key={index}>
+                  <th>{title}</th>
+                  <td>{description}</td>
+                  <td>
+                    <ol>
+                      {Object.entries(characteristics)
+                        .map(([sub_key, value], index_2) => {
+                          return <li key={index_2}>{value}</li>
+                        })}
+                    </ol>
+                  </td>
+                </tr>
+              })}
             </tbody>
           </Table>
 
           <Trans i18nKey={'references'} />
           <ol>
-            <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">TensorFlow JS. Layers / Advanced Activation</a></li>
+            <li>
+              <a target="_blank"
+                 rel="noreferrer"
+                 className="link-info"
+                 href="https://js.tensorflow.org/api/3.14.0/#Layers-Advanced%20Activation">
+                TensorFlow JS. Layers / Advanced Activation
+              </a>
+            </li>
           </ol>
 
         </Accordion.Body>
       </Accordion.Item>
-      {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
+      {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
         <Accordion.Item eventKey={'equations-activation'}>
           <Accordion.Header><h2>{t('equations.title-activation')}</h2></Accordion.Header>
           <Accordion.Body>
@@ -182,7 +179,7 @@ export default function Glossary2ActivationFunctions () {
                               {value.img &&
                                 <div>
                                   {value.ref ?
-                                    <a href={value.ref} target="_blank" rel="noreferrer" className="link-secondary">
+                                    <a href={value.ref} target="_blank" rel="noreferrer" className="link-info">
                                       <img src={value.img} alt="linear-activation-function" className={'img-n4l-glossary img-thumbnail d-block mx-auto'} />
                                     </a>
                                     :

@@ -98,8 +98,8 @@ export default function TabularClassificationPrediction (props) {
             </Form.Group>
           </>}
           {generatedModels.length !== 0 && <>
-            <Form.Group controlId={'MODEL'} className={'ms-3'}>
-              <Form.Select aria-label={t(prefix + 'selector-model joyride-step-select-model')}
+            <Form.Group controlId={'MODEL'} className={'ms-3 joyride-step-select-model'}>
+              <Form.Select aria-label={t(prefix + 'selector-model')}
                            size={'sm'}
                            onChange={(e) => handleChange_Model(e)}>
                 {generatedModels.map((row, index) => {
@@ -125,7 +125,9 @@ export default function TabularClassificationPrediction (props) {
         {(canRender_PredictDynamicForm()) && <>
           <Form onSubmit={handleSubmit_PredictVector}>
             <Card.Text>
-              <Trans i18nKey={prefix + 'text-0'} /><br />
+              <Trans i18nKey={prefix + 'text-0-__column_name_target__'}
+                     values={{ column_name_target: datasets[datasetIndex].data_processed.column_name_target   }} />
+              <br />
               <b>({datasets[datasetIndex].data_processed.attributes.map(att => att.name).join(', ')}).</b>
             </Card.Text>
             <TabularClassificationPredictionForm datasets={datasets}

@@ -21,6 +21,13 @@
     "__index__": "Model {{index}}"
   },
   "more-information-in-link": "Más información en el siguiente <link1>enlace</link1>",
+  "more-information-in-tutorial": "Puedes seguir este <link1>tutorial</link1>",
+  "downloaded": "Descargado",
+  "downloading": "Descargando",
+  "Data set processing": "Procesamiento del conjunto de datos",
+  "Column target": "Columna a predecir",
+  "Scaler": "Escalador",
+  "Processed": "Procesado",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -117,9 +124,9 @@
       }
     }
   },
-  "dataframe-form": "Formulario DataFrame",
-  "dataframe-original": "DataFrame original",
-  "dataframe-processed": "DataFrame procesado",
+  "dataframe-original": "DataFrame | Original",
+  "dataframe-form": "DataFrame | Formulario de procesamiento",
+  "dataframe-processed": "DataFrame | Procesado",
   "dataframe": {
     "dataset": {
       "title": "Conjunto de datos"
@@ -243,6 +250,7 @@
     "glossary": "Glosario",
     "home": "Inicio",
     "datasets": "Conjuntos de datos",
+    "theme": "Tema",
     "dataframe": "DataFrame"
   },
   "footer": {
@@ -252,6 +260,8 @@
     "directors": "Directores",
     "maintainers": "Mantenimiento y mejoras",
     "terms": "Términos y condiciones",
+    "contribute": "Contribuye",
+    "documentation": "Documentación",
     "version": "Versión"
   },
   "drag-and-drop": {
@@ -338,7 +348,7 @@
           }
         },
         "html-example": {
-          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a el coche que se va a evaluar:",
+          "text": "Introduce los valores correspondientes a el coche que se va a evaluar:",
           "items": "(buying; maint; doors; persons; lug_boot; safety)",
           "examples": "Ejemplos:"
         }
@@ -372,7 +382,7 @@
           }
         },
         "html-example": {
-          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:",
+          "text": "Introduce los valores correspondientes a la flor que se va a evaluar:",
           "items": "(longitud sépalo; anchura sépalo; longitud petalo; anchura petalo).",
           "examples": "Ejemplos:"
         }
@@ -421,7 +431,7 @@
           }
         },
         "html-example": {
-          "text": "Introduce separado por punto y coma los siguientes valores correspondientes a la planta que se va a evaluar:",
+          "text": "Introduce los valores correspondientes del paciente que se va a evaluar:",
           "items": "(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special forms, dislocation of, exclusion of no, no. of nodes in).",
           "examples": "Ejemplos:"
         }
@@ -1315,6 +1325,12 @@
         "2-button": "Entrenar un modelo"
       }
     },
+    "contribute": {
+      "title": "Contribuye",
+      "github": {
+        "title": "Proyecto en GitHub"
+      }
+    },
     "menu-selection-dataset": {
       "0-tabular-classification": {
         "csv": "Subir conjunto de datos - CSV",
@@ -1346,6 +1362,7 @@
         "parameter-float": "Parámetro flotante de precisión simple",
         "parameter-double": "Parámetro flotante de precisión doble",
         "parameter-categorical": "Parámetro categórico",
+        "data-to-check": "Datos a probar",
         "vector-to-check": "Vector a probar",
         "button-check-result": "Predecir"
       },
@@ -1353,7 +1370,9 @@
         "general": {
           "model": "Modelo",
           "description-input": "Descripción de la entrada de datos",
-          "description-features": "Formulario de edición de las características"
+          "description-features": "Formulario de edición de las características",
+          "description-data": "Datos del formulario",
+          "description-vector": "Vector de los datos"
         },
         "0_upload": {
           "upload": "Subir",
@@ -1499,6 +1518,7 @@
         "loaded": "Cargado",
         "load": "Cargar",
         "waiting-for-file": "Esperando archivo",
+        "waiting-for-process": "Esperando el procesamiento del conjunto de datos",
         "models": {
           "title": "Modelos",
           "history-train": "Historial del entrenamiento",
@@ -1522,10 +1542,14 @@
         },
         "dynamic-form-dataset": {
           "title": "Predicción",
-          "text-0": "Introduce los valores de cada característica de entrada del ejemplo a predecir",
+          "text-0-__column_name_target__": "Introduce los valores de cada característica de entrada del ejemplo a predecir <b>{{column_name_target}}</b>",
           "select-option": "Selecciona una opción",
+          "input-data": "Introduce los datos a probar",
           "input-vector": "Introduce el vector a probar",
-          "test-vector": "Vector a probar"
+          "test-vector": "Vector a probar",
+          "test-input-data": "Datos del formulario",
+          "test-input-vector": "Vector de los datos",
+          "selector-entity": "Selecciona la entidad"
         },
         "list-models-generated": "Lista modelos generados",
         "visor": {
@@ -1702,8 +1726,28 @@
       "title": "Analizar conjunto de datos",
       "upload-csv": "Subir conjunto de datos"
     },
+    "documentation": {
+      "title": "Documentación"
+    },
     "manual": {
       "title": "Manual",
+      "00-tabular-classification": {
+        "upload-and-process": {
+          "title": "Paso 1: Subir y procesar el conjunto de datos"
+        },
+        "dataset": {
+          "title": "Paso 2: Analizar el conjunto de datos"
+        },
+        "layer-design": {
+          "title": "Paso 3: Visualizar el diseño de capas de la red neuronal."
+        },
+        "editor-layers": {
+          "title": "Paso 4: Editar la red neuronal"
+        },
+        "editor-hyperparameters": {
+          "title": "Paso 5: Editar los hiperparámetros del entrenamiento"
+        }
+      },
       "app": {
         "title": "Objetivos de la herramienta",
         "description-1": "Esta aplicación muestra algunas de las tareas más importantes que pueden realizar las redes neuronales artificiales, como son: clasificación tabular, clasificación de imágenes e Identificación de objetos.  Las redes son técnicas de inteligencia artificial pertenecientes al campo del aprendizaje automático, en el cual se desarrollan modelos que se entrenan (o aprenden) a partir de conjuntos de datos.",
@@ -1835,6 +1879,7 @@
         "text-1": "Una función de activación es una función matemática utilizada en una red neuronal artificial para determinar la salida de una neurona o de un conjunto de neuronas en función de la entrada recibida. La función de activación introduce no linealidad en la red neuronal, lo que permite a la red aprender patrones más complejos en los datos de entrada. Ejemplos comunes de funciones de activación son:",
         "table": {
           "softmax": {
+            "title": "Softmax",
             "description": "Transforma las salidas a una representación en forma de probabilidades, de forma que la suma de todas las probabilidades da 1",
             "characteristics": {
               "0": "Acotada entre 0 y 1",
@@ -1843,19 +1888,129 @@
             }
           },
           "sigmoid": {
-            "description": "Transforma los valores de entrada de forma que los valores más altos tiendan a 1 y los valores más bajos tiendan a 0",
+            "title": "Sigmoid",
+            "description": "La función sigmoide transforma los valores de entrada en un rango entre 0 y 1. Es comúnmente utilizada en redes neuronales para problemas de clasificación binaria.",
             "characteristics": {
-              "0": "Acotada entre 0 y 1",
-              "1": "Lenta convergencia",
-              "2": "Buena en capas finales"
+              "0": "Resultados con el rango [0, 1].",
+              "1": "Útil en la capa de salida de clasificadores binarios.",
+              "2": "Puede sufrir el problema de desvanecimiento del gradiente en redes profundas."
+            }
+          },
+          "hard-sigmoid": {
+            "title": "Hard Sigmoid",
+            "description": "Hardsigmoid es una versión simplificada de la función sigmoide utilizada para la eficiencia computacional.",
+            "characteristics": {
+              "0": "Es más rápida de calcular que la sigmoide.",
+              "1": "Menos suave en la transición entre 0 y 1."
             }
           },
           "relu": {
-            "description": "Transforma los valores de entrada dejando a cero los valores negativos y dejando tal como estaban los datos positivos",
+            "title": "ReLU (Rectified Linear Unit)",
+            "description": "La función ReLU es simple y efectiva al devolver cero para valores negativos y mantener los valores positivos sin cambios",
             "characteristics": {
-              "0": "En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada. En otras palabras, la función de pérdida mide cómo se ajusta la salida de modelo a los datos de entrenamiento.",
-              "1": "Buen desempeño con redes convolucionales"
+              "0": "Eficiente en términos de cómputo.",
+              "1": "Mitiga el problema de desvanecimiento del gradiente.",
+              "2": "Puede activar neuronas esparsamente."
             }
+          },
+          "relu6": {
+            "title": "ReLU6",
+            "description": "Similar a ReLU, pero con una limitación superior de 6 para los valores positivos, lo que puede ayudar a evitar la explosión de gradientes.",
+            "characteristics": {
+              "0": "Mitiga el problema de desvanecimiento del gradiente.",
+              "1": "Útil en redes con gradientes inestables."
+            }
+          },
+          "leaky-relu": {
+            "title": "LeakyReLU",
+            "description": "Leaky ReLU es una variante de ReLU que permite que una fracción pequeña de los valores negativos pase a través de la función.",
+            "characteristics": {
+              "0": "Mitiga el problema de muerte de neuronas en comparación con ReLU.",
+              "1": "Ayuda a mantener la información en los gradientes negativos."
+            }
+          },
+          "elu": {
+            "title": "ELU (Exponential Linear Unit)",
+            "description": "ELU es una función que se asemeja a ReLU en los valores positivos, pero también tiene un gradiente definido para valores negativos.",
+            "characteristics": {
+              "0": "Reduce el problema de desvanecimiento del gradiente.",
+              "1": "Ayuda a mantener activas más neuronas."
+            }
+          },
+          "tanh": {
+            "title": "Tanh (Tangente hiperbólica)",
+            "description": "La función tangente hiperbólica transforma los valores de entrada en un rango [-1, 1].",
+            "characteristics": {
+              "0": "Resultados en el rango [-1, 1].",
+              "1": "Útil en problemas de clasificación binaria.",
+              "2": "Sufre de desvanecimiento del gradiente en redes profundas."
+            }
+          },
+          "soft-plus": {
+            "title": "SoftPlus",
+            "description": "SoftPlus es una función suave que se utiliza a menudo como una alternativa suave a ReLU.",
+            "characteristics": {
+              "0": "Suave y derivable en todas partes.",
+              "1": "Puede ser útil en redes generativas y de regresión."
+            }
+          },
+          "mish": {
+            "title": "Mish",
+            "description": "Mish es una función de activación relativamente nueva que combina características de otras funciones como la tangente hiperbólica y la función sigmoide.",
+            "characteristics": {
+              "0": "Suavidad y derivabilidad en todo su rango.",
+              "1": "Proporciona un mejor rendimiento en algunas aplicaciones."
+            }
+          },
+          "selu": {
+            "title": "SELU (Scaled Exponential Linear Unit)",
+            "description": "SELU es una función que se beneficia de una normalización específica y puede ayudar a mantener la estabilidad de la red.",
+            "characteristics": {
+              "0": "Autocalibración: propaga estadísticas estables a través de las capas.",
+              "1": "Puede ser útil en redes con arquitectura autoencoder."
+            }
+          }
+        }
+      },
+      "editor-layers": {
+        "title": "Glosario del editor de capas",
+        "table": {
+          "activation-function": {
+            "title": "Layer Neurons (Neuronas de Capa)",
+            "description": "Son las unidades individuales o nodos en una capa específica de la red. Cada neurona recibe entradas, realiza cálculos y produce una salida que se transmite a la siguiente capa. La cantidad de neuronas en una capa puede variar y suele ser un hiperparámetro del modelo. La elección del número de neuronas en una capa afecta la capacidad del modelo para aprender representaciones de los datos."
+          },
+          "units": {
+            "title": "Layer Activation Function (Función de Activación de Capa)",
+            "description": "En cada neurona de una capa de una red neuronal, se aplica una función de activación para introducir no linealidad en el modelo. La función de activación determina la salida de la neurona en función de su entrada y los pesos asociados."
+          }
+        }
+      },
+      "editor-hyperparameters": {
+        "title": "Glosario del editor de hiperparámetros",
+        "table": {
+          "learning-rate": {
+            "title": "Tasa de Aprendizaje (Learning Rate)",
+            "description": "La tasa de aprendizaje es un hiperparámetro crucial en algoritmos de aprendizaje automático y redes neuronales. Determina cuánto deben actualizarse los pesos del modelo en cada iteración durante el proceso de entrenamiento. Una tasa de aprendizaje alta puede llevar a la convergencia rápida, pero puede resultar en inestabilidad, mientras que una tasa baja puede llevar a la convergencia lenta o quedarse atrapada en mínimos locales."
+          },
+          "number-or-epochs": {
+            "title": "Número de Épocas (Number of Epochs)",
+            "description": "Las épocas se refieren al número de veces que todo el conjunto de datos de entrenamiento se ha pasado a través del modelo durante el proceso de entrenamiento. Un mayor número de épocas generalmente permite que el modelo se ajuste mejor a los datos, pero también puede conducir al sobre ajuste si se excede un cierto límite."
+          },
+          "test-size": {
+            "title": "Tamaño del Conjunto de Pruebas (Test Size)",
+            "description": "Es la cantidad de datos que se reserva para evaluar el rendimiento del modelo después de su entrenamiento. El conjunto de pruebas se utiliza para medir la precisión y el rendimiento general del modelo en datos no vistos."
+          },
+          "optimizer": {
+            "title": "Optimizador (Optimizer)",
+            "description": "El optimizador es un algoritmo que ajusta los parámetros de un modelo de aprendizaje automático durante el entrenamiento. Su objetivo es minimizar la función de pérdida al actualizar los pesos del modelo de manera eficiente. Ejemplos de optimizadores comunes incluyen el Descenso del Gradiente Estocástico (SGD), el Adam y el RMSprop."
+          },
+          "loss-function": {
+            "title": "Función de Pérdida (Loss Function)",
+            "description": "La función de pérdida es una medida que cuantifica qué tan bien se está desempeñando el modelo en sus predicciones. Ayuda a calcular la diferencia entre las predicciones del modelo y los valores reales del conjunto de datos. El objetivo del entrenamiento es minimizar esta función, ya que un valor bajo de pérdida indica que el modelo se ajusta mejor a los datos."
+          },
+          "metric-function": {
+            "title": "Función de Métrica (Metric Function)",
+            "description": "A diferencia de la función de pérdida, que se utiliza para optimizar el modelo durante el entrenamiento, las funciones de métrica se utilizan para evaluar el rendimiento del modelo después del entrenamiento. Estas métricas proporcionan información sobre la precisión, la recuperación, la precisión, el F1-score, etc., y ayudan a comprender cómo se desempeña el modelo en tareas específicas."
           }
         }
       },
@@ -1895,9 +2050,11 @@
       },
       "loss-functions": {
         "title": "Funciones de pérdida",
-        "text-1": "En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada. En otras palabras, la función de pérdida mide qué tan bien el modelo se ajusta a los datos de entrenamiento.",
-        "text-2": "El objetivo de un algoritmo de aprendizaje automático es minimizar la función de pérdida, lo que significa encontrar el conjunto de parámetros del modelo que mejor se ajuste a los datos de entrenamiento. Por lo tanto, la elección de la función de pérdida es muy importante, ya que puede afectar la capacidad del modelo para aprender correctamente los patrones en los datos y hacer predicciones precisas en nuevos datos.",
-        "text-4": "En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar. Algunos ejemplos se muestran a continuación:",
+        "text": {
+          "0": "En aprendizaje automático, una función de pérdida (también llamada función de costo) es una medida que cuantifica la discrepancia entre la salida predicha por un modelo y la salida real o deseada. En otras palabras, la función de pérdida mide qué tan bien el modelo se ajusta a los datos de entrenamiento.",
+          "1": "El objetivo de un algoritmo de aprendizaje automático es minimizar la función de pérdida, lo que significa encontrar el conjunto de parámetros del modelo que mejor se ajuste a los datos de entrenamiento. Por lo tanto, la elección de la función de pérdida es muy importante, ya que puede afectar la capacidad del modelo para aprender correctamente los patrones en los datos y hacer predicciones precisas en nuevos datos.",
+          "2": "En tensorflow.js hay diferentes funciones de pérdida y la aplicación de cada una de ellas depende del tipo de problema que queramos afrontar. Algunos ejemplos se muestran a continuación:"
+        },
         "table": {
           "AbsoluteDifference": {
             "references": "Diferencia absoluta \n (Acervolima, s.f.)",
@@ -2018,6 +2175,7 @@
   },
   "hr": {
     "information": "Información",
+    "editor": "Editor",
     "dataset": "Conjunto de datos",
     "model": "Modelo",
     "generated-models": "Modelos generados",
@@ -2025,13 +2183,18 @@
     "classify": "Clasificar",
     "tasks": "Tareas",
     "00-tabular-classification": "Clasificación Tabular",
+    "tutorial-00-tabular-classification": "Tutorial clasificación tabular",
     "01-linear-regression": "Regresión Lineal",
     "02-object-detection": "Detección de objetos",
     "03-image-classification": "Clasificación de imágenes",
     "optimization-function": "Funciones de optimización",
     "activation-functions": "Funciones de activación",
     "loss-functions": "Funciones de pérdida",
-    "metric-function": "Funciones de métrica"
+    "metric-function": "Funciones de métrica",
+    "process-dataset": "Procesamiento del conjunto de datos",
+    "project": "Proyecto",
+    "add-model-dataset": "Añadir modelo al proyecto",
+    "dataframe": "DataFrame"
   },
   "form-dataframe": {
     "int32": "Entero",
@@ -2063,6 +2226,7 @@
       "persons": "Capacidad de personas",
       "lug_boot": "Tamaño del maletero",
       "safety": "Seguridad estimada del coche.",
+      "result": "Resultado",
       "unacc": "Inaceptable",
       "acc": "Aceptable",
       "good": "Bueno",

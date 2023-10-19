@@ -6,7 +6,7 @@ const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'
 const DEFAULT_ID_METRICS = 'accuracy'
 const DEFAULT_START_LAYER_UNITS = 10
 const DEFAULT_START_LAYER_ACTIVATION = 'sigmoid'
-const DEFAULT_END_LAYER_UNITS = 3
+const DEFAULT_END_LAYER_UNITS = 10
 const DEFAULT_END_LAYER_ACTIVATION = 'softmax'
 const DEFAULT_LAYERS = [
   { units: DEFAULT_START_LAYER_UNITS, activation: DEFAULT_START_LAYER_ACTIVATION },

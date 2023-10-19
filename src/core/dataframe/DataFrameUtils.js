@@ -219,8 +219,18 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
 }
 
 /**
+ *
  * @param {dfd.DataFrame} dataframe
- * @return {{string, float32, int32, boolean}[][]}
+ * @return {dfd.DataFrame}
+ */
+export function DataFrameDeepCopy (dataframe) {
+  const dataframe_deep_copy_JSON = dfd.toJSON(dataframe, { format: 'row' })
+  return new dfd.DataFrame(dataframe_deep_copy_JSON)
+}
+
+/**
+ * @param {dfd.DataFrame} dataframe
+ * @return {Array<Array<string|float32|int32|boolean>>}
  */
 export function DataFrameIterRows (dataframe) {
   return dataframe.$data

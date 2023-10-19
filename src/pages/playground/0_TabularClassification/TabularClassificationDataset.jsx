@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
@@ -7,6 +7,9 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { UPLOAD } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
+import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
+import { Link } from 'react-router-dom'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function TabularClassificationDataset (props) {
   const {
@@ -72,12 +75,39 @@ export default function TabularClassificationDataset (props) {
                    function_DropAccepted={handleChange_FileUpload_CSV}
                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
       {datasets.length === 0 && <>
-        <p className="placeholder-glow">
-          <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-file')}</small>
-          <span className="placeholder col-12"></span>
+        <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+
+        <p className={'text-end text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-link'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/glossary/',
+                                  state   : {
+                                    action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_1_UPLOAD_AND_PROCESS,
+                                  },
+                                }}
+                   />
+                 }}
+          />
+        </p>
+
+        <p className={'text-end text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-tutorial'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/manual/',
+                                  state   : {
+                                    action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_1_UPLOAD_AND_PROCESS,
+                                  },
+                                }}
+                   />
+                 }}
+          />
         </p>
       </>}
     </>}
-    {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}
+      {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}
   </>
 }

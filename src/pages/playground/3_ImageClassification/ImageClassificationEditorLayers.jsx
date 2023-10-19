@@ -7,6 +7,7 @@ import ImageClassificationEditorLayersItem from '@pages/playground/3_ImageClassi
 import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import { Link } from 'react-router-dom'
+import { MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 const DEFAULT_LAYER_START = {
   _class: 'Conv2D',
@@ -172,12 +173,18 @@ export default function ImageClassificationEditorLayers (props) {
           })}
         </Accordion>
       </Card.Body>
-      <Card.Footer className={'d-flex justify-content-end'}>
+      <Card.Footer className={'text-end'}>
         <p className={'text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}
                  components={{
-                   link1: <Link to={{ pathname: '/manual/', state: { action: 'open-layer-editor-image-classification' } }}
-                                className={'text-info'} />
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/manual/',
+                                  state   : {
+                                    action: MANUAL_ACTIONS.IMAGE_CLASSIFICATION.STEP_3_LAYERS
+                                  }
+                                }}
+                   />
                  }} />
         </p>
       </Card.Footer>

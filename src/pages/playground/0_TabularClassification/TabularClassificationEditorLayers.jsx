@@ -5,6 +5,7 @@ import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
+import { GLOSSARY_ACTIONS, GLOSsARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 export default function TabularClassificationEditorLayers (props) {
   const {
@@ -151,15 +152,28 @@ export default function TabularClassificationEditorLayers (props) {
           })}
         </Accordion>
       </Card.Body>
-      <Card.Footer className={'d-flex justify-content-end'}>
+      <Card.Footer className={'text-end'}>
         <p className={'text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}
                  components={{
                    link1: <Link className={'text-info'}
                                 to={{
+                                  pathname: '/glossary/',
+                                  state   : {
+                                    action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_LAYERS,
+                                  },
+                                }}
+                   />,
+                 }} />
+        </p>
+        <p className={'text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-tutorial'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
                                   pathname: '/manual/',
                                   state   : {
-                                    action: 'tabular-classification-editor-layers-open',
+                                    action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_LAYERS,
                                   },
                                 }}
                    />,

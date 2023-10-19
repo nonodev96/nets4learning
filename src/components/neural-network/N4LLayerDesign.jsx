@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 import { Link } from 'react-router-dom'
 
-export default function N4LLayerDesign ({ layers, link_action = '' }) {
+export default function N4LLayerDesign ({ layers, glossary_action = '', manual_action = '' }) {
 
   const prefix = 'pages.playground.generator.'
   const { t } = useTranslation()
@@ -38,19 +38,34 @@ export default function N4LLayerDesign ({ layers, link_action = '' }) {
                        layers={layers}
                        mode={mode} />
       </Card.Body>
-      <Card.Footer className={'d-flex justify-content-end'}>
-        <p className={'text-muted mb-0 pb-0'}>
-          <Trans i18nKey={'more-information-in-link'}
-                 components={{
-                   link1: <Link className={'text-info'}
-                                to={{
-                                  pathname: '/manual/',
-                                  state   : {
-                                    action: link_action,
-                                  },
-                                }} />,
-                 }} />
-        </p>
+      <Card.Footer className={'text-end'}>
+        {glossary_action !== '' &&
+          <p className={'text-muted mb-0 pb-0'}>
+            <Trans i18nKey={'more-information-in-link'}
+                   components={{
+                     link1: <Link className={'text-info'}
+                                  to={{
+                                    pathname: '/glossary/',
+                                    state   : {
+                                      action: glossary_action,
+                                    },
+                                  }} />,
+                   }} />
+          </p>}
+        {manual_action !== '' &&
+          <p className={'text-muted mb-0 pb-0'}>
+            <Trans i18nKey={'more-information-in-tutorial'}
+                   components={{
+                     link1: <Link className={'text-info'}
+                                  to={{
+                                    pathname: '/manual/',
+                                    state   : {
+                                      action: manual_action,
+                                    },
+                                  }} />,
+                   }} />
+          </p>
+        }
       </Card.Footer>
     </Card>
   </>

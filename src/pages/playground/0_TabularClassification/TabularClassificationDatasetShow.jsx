@@ -6,6 +6,8 @@ import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import N4LTablePagination from '@components/table/N4LTablePagination'
 import { VERBOSE } from '@/CONSTANTS'
 import { Link } from 'react-router-dom'
+import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function TabularClassificationDatasetShow (props) {
   const { datasets, datasetIndex } = props
@@ -54,6 +56,7 @@ export default function TabularClassificationDatasetShow (props) {
                         reverse={true}
                         size={'sm'}
                         name={'switch-webcam'}
+                        disabled={!showDataset}
                         label={t('Processed')}
                         value={showProcessed.toString()}
                         onChange={(e) => handleChange_Dataset(e)}
@@ -63,10 +66,7 @@ export default function TabularClassificationDatasetShow (props) {
       </Card.Header>
       <Card.Body>
         {!showDataset && <>
-          <p className="placeholder-glow">
-            <small className={'text-muted'}><Trans i18nKey={'pages.playground.generator.waiting-for-file'} /></small>
-            <span className="placeholder col-12"></span>
-          </p>
+          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {showDataset && <>
           <Row>
@@ -123,18 +123,29 @@ export default function TabularClassificationDatasetShow (props) {
           </Row>
         </>}
       </Card.Body>
-      <Card.Footer className={'d-flex justify-content-end'}>
+      <Card.Footer className={'text-end'}>
         <p className={'text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}
                  components={{
                    link1: <Link className={'text-info'}
                                 to={{
+                                  pathname: '/glossary/',
+                                  state   : {
+                                    action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_2_DATASET,
+                                  },
+                                }} />,
+                 }} />
+        </p>
+        <p className={'text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-tutorial'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
                                   pathname: '/manual/',
                                   state   : {
-                                    action: 'tabular-classification-dataset-open',
+                                    action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_2_DATASET,
                                   },
-                                }}
-                   />,
+                                }} />,
                  }} />
         </p>
       </Card.Footer>

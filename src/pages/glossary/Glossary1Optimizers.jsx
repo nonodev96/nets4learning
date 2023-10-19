@@ -60,7 +60,7 @@ export default function Glossary1Optimizers () {
           </Table>
           <Trans i18nKey={'references'} />
           <ol>
-            <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Training-Optimizers">TensorFlow JS. Training / Optimizers</a></li>
+            <li><a target="_blank" rel="noreferrer" className="link-info" href="https://js.tensorflow.org/api/3.14.0/#Training-Optimizers">TensorFlow JS. Training / Optimizers</a></li>
           </ol>
 
         </Accordion.Body>

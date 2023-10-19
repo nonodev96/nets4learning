@@ -10,12 +10,11 @@ export default function Glossary3LossFunctions () {
   return <>
     <Accordion defaultValue={''} defaultActiveKey={''}>
       <Accordion.Item eventKey={'functions-losses'}>
-        <Accordion.Header><h2>{t('pages.glossary.loss-functions.title')}</h2></Accordion.Header>
+        <Accordion.Header><h2><Trans i18nKey={'pages.glossary.loss-functions.title'} /></h2></Accordion.Header>
         <Accordion.Body>
-          <p>{t('pages.glossary.loss-functions.text-1')}</p>
-          <p>{t('pages.glossary.loss-functions.text-2')}</p>
-          {/*<p>{t("pages.glossary.loss-functions.text-3")}</p>*/}
-          <p>{t('pages.glossary.loss-functions.text-4')}</p>
+          <p><Trans i18nKey={'pages.glossary.loss-functions.text.0'} /></p>
+          <p><Trans i18nKey={'pages.glossary.loss-functions.text.1'} /></p>
+          <p><Trans i18nKey={'pages.glossary.loss-functions.text.2'} /></p>
           <Table striped bordered hover responsive={true}>
             <thead>
             <tr>
@@ -84,7 +83,7 @@ export default function Glossary3LossFunctions () {
           </ol>
         </Accordion.Body>
       </Accordion.Item>
-      {process.env.REACT_APP_SHOW_NEW_FEATURE === "true" &&
+      {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
         <Accordion.Item eventKey={'equations-losses'}>
           <Accordion.Header><h2>{t('equations.title-losses')}</h2></Accordion.Header>
           <Accordion.Body>

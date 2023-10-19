@@ -8,6 +8,7 @@ import { VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import { Link } from 'react-router-dom'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import { DataFrameDeepCopy } from '@core/dataframe/DataFrameUtils'
 
 // @formatter:off
 const DEFAULT_OPTIONS = [
@@ -31,7 +32,6 @@ export default function TabularClassificationDatasetProcessForm (props) {
     /** @type React.Dispatch<number>*/
     setDatasetIndex,
   } = props
-
 
   const [listColumnNameType, setListColumnNameType] = useState(/** @type DataFrameColumnType_t[] */[])
   const [listColumnNameTransformations, setListColumnNameTransformations] = useState(/**@type DataFrameColumnTransform_t[]*/[])
@@ -97,7 +97,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
   const handleSubmit_ProcessDataset = async (event) => {
     event.preventDefault()
     const dataframe_original = datasets[datasetIndex].dataframe_original
-    let dataframe_processed = datasets[datasetIndex].dataframe_processed
+    let dataframe_processed = DataFrameUtils.DataFrameDeepCopy(dataframe_original)
 
     const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, listColumnNameTransformations)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, listColumnNameTransformations)
@@ -231,7 +231,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
             <Row>
               <Col>
                 <Form.Group controlId="FormControl_Scaler">
-                  <Form.Label><b>Scaler</b> {typeScaler}</Form.Label>
+                  <Form.Label><b><Trans i18nKey={'Scaler'} /></b> {typeScaler}</Form.Label>
                   <Form.Select aria-label="Selecciona un escalador"
                                size="sm"
                                defaultValue="min-max-scaler"
@@ -244,7 +244,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
               </Col>
               <Col>
                 <Form.Group controlId="FormControl_ColumnNameTarget">
-                  <Form.Label><b>Column target</b> {columnNameTarget}</Form.Label>
+                  <Form.Label><b><Trans i18nKey={'Column target'} /></b> {columnNameTarget}</Form.Label>
                   <Form.Select aria-label={'Selecciona un '}
                                size="sm"
                                value={columnNameTarget}

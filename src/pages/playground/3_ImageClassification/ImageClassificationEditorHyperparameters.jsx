@@ -11,6 +11,7 @@ import {
   DEFAULT_ID_METRICS, DEFAULT_TEST_SIZE,
 } from './CONSTANTS'
 import { Link } from 'react-router-dom'
+import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 export default function ImageClassificationEditorHyperparameters (props) {
   const {
@@ -140,12 +141,31 @@ export default function ImageClassificationEditorHyperparameters (props) {
           </Form.Text>
         </Form.Group>
       </Card.Body>
-      <Card.Footer className={'d-flex justify-content-end'}>
+      <Card.Footer className={'text-end'}>
         <p className={'text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}
                  components={{
-                   link1: <Link to={{ pathname: '/manual/', state: { action: 'open-hyperparameters-editor-image-classification' } }}
-                                className={'text-info'} />
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/glossary/',
+                                  state   : {
+                                    action: GLOSSARY_ACTIONS.IMAGE_CLASSIFICATION.STEP_4_HYPERPARAMETERS
+                                  }
+                                }}
+                   />
+                 }} />
+        </p>
+        <p className={'text-muted mb-0 pb-0'}>
+          <Trans i18nKey={'more-information-in-tutorial'}
+                 components={{
+                   link1: <Link className={'text-info'}
+                                to={{
+                                  pathname: '/manual/',
+                                  state   : {
+                                    action: MANUAL_ACTIONS.IMAGE_CLASSIFICATION.STEP_4_HYPERPARAMETERS
+                                  }
+                                }}
+                   />
                  }} />
         </p>
       </Card.Footer>

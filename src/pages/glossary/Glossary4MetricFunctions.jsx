@@ -24,7 +24,7 @@ export default function Glossary4MetricFunctions () {
             <Col>
               <Trans i18nKey={'references'} />
               <ol>
-                <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://js.tensorflow.org/api/3.14.0/#Metrics">TensorFlow JS. Metrics</a></li>
+                <li><a target="_blank" rel="noreferrer" className="link-info" href="https://js.tensorflow.org/api/3.14.0/#Metrics">TensorFlow JS. Metrics</a></li>
               </ol>
             </Col>
           </Row>
@@ -90,7 +90,7 @@ export default function Glossary4MetricFunctions () {
               <Col>
                 <Trans i18nKey={'references'} />
                 <ol>
-                  <li><a target="_blank" rel="noreferrer" className="link-secondary" href="https://www.iartificial.net/precision-recall-f1-accuracy-en-clasificacion/">Precision, Recall, F1, Accuracy en clasificación</a></li>
+                  <li><a target="_blank" rel="noreferrer" className="link-info" href="https://www.iartificial.net/precision-recall-f1-accuracy-en-clasificacion/">Precision, Recall, F1, Accuracy en clasificación</a></li>
                 </ol>
               </Col>
             </Row>

@@ -20,7 +20,14 @@
   "model": {
     "__index__": "Model {{index}}"
   },
-  "more-information-in-link": "More information in the following <link1> Link </link1>",
+  "more-information-in-link": "More information in the following <link1>link</link1>",
+  "more-information-in-tutorial": "You can follow this <link1>tutorial</link1>",
+  "downloaded": "Downloaded",
+  "downloading": "Downloading",
+  "Data set processing": "Data set processing",
+  "Column target": "Column to predict",
+  "Scaler": "Scaler",
+  "Processed": "Processed",
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -117,9 +124,9 @@
       }
     }
   },
-  "dataframe-form": "Dataframe form",
-  "dataframe-original": "Original dataframe",
-  "dataframe-processed": "Processed dataframe",
+  "dataframe-original": "DataFrame | Original",
+  "dataframe-form": "DataFrame | Pre-processing data set form",
+  "dataframe-processed": "DataFrame | Processed",
   "dataframe": {
     "dataset": {
       "title": "Data set"
@@ -134,7 +141,7 @@
         "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
         "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
         "6": "Where:",
-        "7": "are the values ​​of the two variables in each observation.",
+        "7": "are the values of the two variables in each observation.",
         "8": "are the stockings of the two variables, respectively.",
         "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
         "title": "Description"
@@ -146,7 +153,7 @@
       "title": "DataFrame | Describe",
       "description": {
         "0": "This function is used to generate a statistical summary of the numerical columns of a dataframe. It provides key descriptive statistics, such as average, standard deviation, minimum, maximum and several quantiles of numerical columns. This is useful to obtain a rapid understanding of the distribution and data trends.",
-        "1": "This function is useful to obtain a quick idea of ​​data distribution and can help you identify atypical values ​​or anomalies in your data.",
+        "1": "This function is useful to obtain a quick idea of data distribution and can help you identify atypical values or anomalies in your data.",
         "title": "Description"
       },
       "link": "Consult more information in the following <link1> link </link1>"
@@ -243,6 +250,7 @@
     "glossary": "Glossary",
     "home": "Home",
     "datasets": "Data sets",
+    "theme": "Theme",
     "dataframe": "DataFrame"
   },
   "footer": {
@@ -252,6 +260,8 @@
     "directors": "Directors",
     "maintainers": "Maintenance and improvements",
     "terms": "Terms and conditions",
+    "contribute": "Contribute",
+    "documentation": "Documentation",
     "version": "Version"
   },
   "drag-and-drop": {
@@ -338,7 +348,7 @@
           }
         },
         "html-example": {
-          "text": "Enter separate by point and eat the following values corresponding to the car to be evaluated:",
+          "text": "Enter the values corresponding to the car to be evaluated:",
           "items": "(Buying; Maint; Doors; Persons; Lug_boot; Safety)",
           "examples": "Examples:"
         }
@@ -372,7 +382,7 @@
           }
         },
         "html-example": {
-          "text": "Enter separate by point and eat the following values corresponding to the plant to be evaluated:",
+          "text": "Enter the values corresponding to the plant to be evaluated:",
           "items": "(sepal length; sepalo width; petal length; petal width).",
           "examples": "Examples:"
         }
@@ -421,7 +431,7 @@
           }
         },
         "html-example": {
-          "text": "Enter separate by point and eat the following values corresponding to the plant to be evaluated:",
+          "text": "Enter the corresponding values of the patient to be evaluated:",
           "items": "(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special forms, dislocation of, exclusion of no, no. of nodes in).",
           "examples": "Examples:"
         }
@@ -429,7 +439,7 @@
       "list-datasets": {
         "0-option-1": "Data set - Car classification",
         "0-option-2": "Data set - Iris classification",
-        "0-option-3": "Data set - Lymphomas classification"
+        "0-option-3": "Data set - Lymphoma classification"
       },
       "list-models": {
         "0-option-1": "Model - Car classification",
@@ -1102,19 +1112,19 @@
       "title": "Box Plot",
       "description": {
         "intro": {
-          "0": "Box type graphics, also known as cash diagrams and mustaches or boxplots in English, are a visual representation used to show the distribution and statistical summaries of a numerical data set.\nThis type of graph is based on a rectangle that represents the interquotile range (IQR), where the central line indicates the median and extended lines, known as mustaches, represent the range of\nvalues ​​beyond the IQR.",
+          "0": "Box type graphics, also known as cash diagrams and mustaches or boxplots in English, are a visual representation used to show the distribution and statistical summaries of a numerical data set.\nThis type of graph is based on a rectangle that represents the interquotile range (IQR), where the central line indicates the median and extended lines, known as mustaches, represent the range of\nvalues beyond the IQR.",
           "1": "In a boxing chart, the rectangle is traced vertically or horizontally, and is delimited by two lines, one at the bottom and one in the upper part.\nThe line in the middle of the rectangle represents the median, which is the value that divides the data ordered into two equal parts.\nThe mustaches extend from the edges of the rectangle to the extreme values, with a length determined by the variability of the data.",
           "2": "Box type graphics have several features and outstanding applications:"
         },
         "list": {
           "0": "Statistical summary: Box type graphics provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also show quartiles (Q1 and Q3), which divide data into four equal parts, and atypical values, which are shown as points or asterisks outside the mustaches.",
-          "1": "Identification of asymmetries and atypical values: when observing a box of the box type, it is possible to identify asymmetries in the distribution of the data.\nIf the mustaches do not have the same length, it can indicate an asymmetry towards one of the ends.\nIn addition, the atypical values ​​that are outside the mustaches can be easily highlighted.",
-          "2": "Comparison between groups or categories: Box type graphs are also used to compare the distribution of data between different groups or categories.\nBy superimposing several cash diagrams on the same graph, it is possible to visualize the differences in medium -sized, interquile ranges and the presence of atypical values ​​between the groups.",
+          "1": "Identification of asymmetries and atypical values: when observing a box of the box type, it is possible to identify asymmetries in the distribution of the data.\nIf the mustaches do not have the same length, it can indicate an asymmetry towards one of the ends.\nIn addition, the atypical values that are outside the mustaches can be easily highlighted.",
+          "2": "Comparison between groups or categories: Box type graphs are also used to compare the distribution of data between different groups or categories.\nBy superimposing several cash diagrams on the same graph, it is possible to visualize the differences in medium -sized, interquile ranges and the presence of atypical values between the groups.",
           "3": "Detect biases and distributions: Box type graphs allow visually identifying if the distribution of the data is symmetrical or biased towards one end.\nIf the central line of the rectangle is not in the middle, you can indicate a bias towards the opposite direction.",
-          "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
+          "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of the distribution and general variability of the data."
         },
         "end": {
-          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+          "0": "Box type graphics are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
         }
       }
     },
@@ -1122,16 +1132,16 @@
       "title": "Histograms",
       "description": {
         "intro": {
-          "0": "Histogram type graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents an interval of values ​​and the height of the bar indicates the frequency or amount of observations within that\ninterval.",
-          "1": "In a histogram type graph, the horizontal axis is used to represent the range of values ​​of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or amount of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
+          "0": "Histogram type graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents an interval of values and the height of the bar indicates the frequency or amount of observations within that\ninterval.",
+          "1": "In a histogram type graph, the horizontal axis is used to represent the range of values of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or amount of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
           "2": "Histogram type graphics have several features and outstanding applications:"
         },
         "list": {
           "0": "Distribution visualization: Histograms allow visualizing the form and distribution of numerical data.\nThey can show if the data follow a symmetric, biased, multimodal or uniform distribution.",
-          "1": "Identification of atypical values: when observing a histogram, it is possible to identify atypical or extreme values ​​that are outside the range of most data.\nThese values ​​will be represented as isolated bars or as bars that extend beyond the main range of values.",
+          "1": "Identification of atypical values: when observing a histogram, it is possible to identify atypical or extreme values that are outside the range of most data.\nThese values will be represented as isolated bars or as bars that extend beyond the main range of values.",
           "2": "Trend and patterns analysis: histograms can reveal patterns and trends in the data.\nFor example, a biased distribution to the left or to the right indicates an asymmetry in the data, while a normal distribution shows approximate symmetry.",
           "3": "Comparison of groups or categories: histograms can also be used to compare the distribution of data between different groups or categories.\nBy superimposing several histograms in the same chart, it is possible to visualize the differences and similarities between the groups.",
-          "4": "Density estimate: in addition to showing the absolute frequency, histograms can also provide a visual estimate of the data probability.\nWhen normalizing the heights of the bars, it is possible to obtain a relative representation of the probability of occurrence of the values ​​in each interval."
+          "4": "Density estimate: in addition to showing the absolute frequency, histograms can also provide a visual estimate of the data probability.\nWhen normalizing the heights of the bars, it is possible to obtain a relative representation of the probability of occurrence of the values in each interval."
         },
         "end": {
           "0": "Histogram type graphs are a useful tool to visualize the distribution and patterns of numerical data.\nThey allow to identify atypical values, analyze trends and compare distributions between groups.\nTheir clear and concise visual representation makes them an effective tool to communicate information on the distribution of the data in an understandable way."
@@ -1182,19 +1192,19 @@
       "title": "Scatter Plots",
       "description": {
         "intro": {
-          "0": "A dispersion chart, also known as points graph or Scatter Plot in English, is a visual representation that uses Cartesian coordinates to show the relationship between two variables.\nIn this type of graph, the data is represented as individual points in the two -dimensional space, where each point represents a couple of values ​​corresponding to the two variables.",
-          "1": "In a dispersion graph, the horizontal axis is generally assigned to the independent variable, while the vertical axis is assigned to the dependent variable.\nEach point in the graph represents an individual observation and its position in the graph is determined by the values ​​it has for both variables.\nThe relative location of the points in the graph reveals patterns and relationships between the two variables.",
+          "0": "A dispersion chart, also known as points graph or Scatter Plot in English, is a visual representation that uses Cartesian coordinates to show the relationship between two variables.\nIn this type of graph, the data is represented as individual points in the two -dimensional space, where each point represents a couple of values corresponding to the two variables.",
+          "1": "In a dispersion graph, the horizontal axis is generally assigned to the independent variable, while the vertical axis is assigned to the dependent variable.\nEach point in the graph represents an individual observation and its position in the graph is determined by the values it has for both variables.\nThe relative location of the points in the graph reveals patterns and relationships between the two variables.",
           "2": "Dispersion graphics have several applications and prominent characteristics:"
         },
         "list": {
           "0": "Relationship between variables: Dispersion graphics allow analyzing the relationship between two variables.\nThey can show if there is a positive correlation (the points tend to group in an ascending direction), a negative correlation (the points tend to group in a descending direction) or a lack of correlation (the points do not show a defined pattern).",
           "1": "Trends identification: A dispersion chart can reveal trends or patterns in the data.\nWhen observing the general direction of the points, it is possible to identify whether there is a linear, non -linear relationship or even a curvilinear relationship between the variables.",
-          "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values ​​in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
+          "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
           "3": "Analysis of clusters or groups: If the points in the dispersion graph are grouped or form different patterns, this may indicate the presence of clusters or groups.\nThis may be useful in data classification or classification analysis.",
           "4": "Multidimensional data display: If additional colors or sizes are used, dispersion graphics can also represent additional information in a two -dimensional space.\nThis allows to visualize multidimensional data more intuitively."
         },
         "end": {
-          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values ​​in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
+          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
         }
       }
     },
@@ -1203,7 +1213,7 @@
       "description": {
         "intro": {
           "0": "A time series graph is a visual representation of data that are collected and recorded in regular intervals over time.\nThese graphics are widely used in various disciplines, such as economy, finance, meteorology, engineering and many others, to analyze and understand how the data changed as time elapses.",
-          "1": "The horizontal axis of the graph represents the time, while the vertical axis shows the values ​​of the data that is being observed or recorded.\nThe data points are connected with lines, which allows identifying patterns and trends over time.",
+          "1": "The horizontal axis of the graph represents the time, while the vertical axis shows the values of the data that is being observed or recorded.\nThe data points are connected with lines, which allows identifying patterns and trends over time.",
           "2": "Time series graphics offer various advantages and practical applications:"
         },
         "list": {
@@ -1238,12 +1248,12 @@
         },
         "list": {
           "0": "Comparison of distributions: violin graphics allow comparing data distributions between different groups or categories.\nThis is useful for identifying differences or similarities in the form, dispersion and data trends.",
-          "1": "Identification of atypical values: violin graphs provide visual information about the presence of atypical or extreme values ​​in the data.\nThese values ​​are represented as points outside the shaded areas and may indicate unusual observations that may require additional analysis.",
+          "1": "Identification of atypical values: violin graphs provide visual information about the presence of atypical or extreme values in the data.\nThese values are represented as points outside the shaded areas and may indicate unusual observations that may require additional analysis.",
           "2": "Probability density display: violin graphics also offer a graphic representation of data probability density.\nThis allows to easily identify high or low density areas, as well as possible biases or asymmetries in the distribution.",
           "3": "Effective data communication: violin graphics are an effective way to communicate complex information on data distribution in a visually attractive way.\nThey can summarize the information in a concise manner and help transmit important patterns and characteristics to a non -technical audience."
         },
         "end": {
-          "0": "Violin graphics are a useful tool to visualize and compare data distributions.\nThey allow analyzing the form, dispersion, symmetry and presence of atypical values ​​in the data, and are especially useful when comparison is required between multiple groups or categories.\nTheir attractive and concise graphic representation makes them an effective tool to communicate complex information understandably."
+          "0": "Violin graphics are a useful tool to visualize and compare data distributions.\nThey allow analyzing the form, dispersion, symmetry and presence of atypical values in the data, and are especially useful when comparison is required between multiple groups or categories.\nTheir attractive and concise graphic representation makes them an effective tool to communicate complex information understandably."
         }
       }
     }
@@ -1315,6 +1325,12 @@
         "2-button": "Train a model"
       }
     },
+    "contribute": {
+      "title": "Contribute",
+      "github": {
+        "title": "Project in GitHub"
+      }
+    },
     "menu-selection-dataset": {
       "0-tabular-classification": {
         "csv": "Upload dataset - CSV",
@@ -1346,6 +1362,7 @@
         "parameter-float": "Simple precision floating parameter",
         "parameter-double": "Double precision floating parameter",
         "parameter-categorical": "Categorical parameter",
+        "data-to-check": "Data to test",
         "vector-to-check": "Vector to test",
         "button-check-result": "Predict"
       },
@@ -1353,7 +1370,9 @@
         "general": {
           "model": "Model",
           "description-input": "Data entry description",
-          "description-features": "Features edit form"
+          "description-features": "Features edit form",
+          "description-data": "Form data",
+          "description-vector": "Data vector"
         },
         "0_upload": {
           "upload": "Upload",
@@ -1499,6 +1518,7 @@
         "loaded": "Loaded",
         "load": "Load",
         "waiting-for-file": "Waiting for file",
+        "waiting-for-process": "Waiting for data set processing",
         "models": {
           "title": "Models",
           "history-train": "Training history",
@@ -1522,10 +1542,14 @@
         },
         "dynamic-form-dataset": {
           "title": "Prediction",
-          "text-0": "Enter the values of each entry feature of the example to predict",
+          "text-0-__column_name_target__": "Enter the values of each entry feature of the example to predictc <b>{{column_name_target}}</b>",
           "select-option": "Select an option",
-          "input-vector": "Enter the vector to try",
-          "test-vector": "Vector to test"
+          "input-data": "Enter the data to test",
+          "input-vector": "Enter the vector to test",
+          "test-vector": "Vector to test",
+          "test-input-data": "Form data",
+          "test-input-vector": "Vector to test",
+          "selector-entity": "Select the entity"
         },
         "list-models-generated": "List generated models",
         "visor": {
@@ -1702,8 +1726,28 @@
       "title": "Analyze data set",
       "upload-csv": "Upload data set"
     },
+    "documentation": {
+      "title": "Documentation"
+    },
     "manual": {
       "title": "Manual",
+      "00-tabular-classification": {
+        "upload-and-process": {
+          "title": "Step 1: Upload and process the data set"
+        },
+        "dataset": {
+          "title": "Step 2: Analyze the data set"
+        },
+        "layer-design": {
+          "title": "Step 3: Visualize the layer design of the neural network."
+        },
+        "editor-layers": {
+          "title": "Step 4: Edit the neural network"
+        },
+        "editor-hyperparameters": {
+          "title": "Step 5: Edit training hyperparameters"
+        }
+      },
       "app": {
         "title": "Tool objectives",
         "description-1": "This application shows some of the most important tasks that artificial neural networks can perform, such as: tabular classification, image classification and object identification. Networks are artificial intelligence techniques belonging to the field of automatic learning, in which models that train (or learn) are developed from data sets.",
@@ -1807,7 +1851,7 @@
         "title": "Linear regression",
         "text": {
           "0": "Linear regression is a statistical analysis method used in automatic learning to model the linear relationship between an independent variable and a dependent variable, seeking to find the best straight line that adjusts the data and allows predictions to be made.",
-          "1": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values ​​of the dependent variable depending on the values ​​of the independent variable.",
+          "1": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values of the dependent variable depending on the values of the independent variable.",
           "2": "For example, if we are analyzing the relationship between the amount of advertising on a website and the sales of a product, the amount of advertising would be the independent variable, and the sales of the product would be the dependent variable. Linear regression would help us determine if there is a linear relationship between investment in advertising and sales, and if so, it would allow us to predict future sales based on advertising spending.",
           "3": "Linear regression is a powerful tool in data analysis and is used in a variety of fields, including economy, social science, medical research and many other disciplines to understand and predict relationships between variables."
         }
@@ -1835,6 +1879,7 @@
         "text-1": "An activation function is a mathematical function used in an artificial neuronal network to determine the output of a neuron or a set of neurons based on the entry received. The activation function introduces non -linearity in the neuronal network, allowing the network to learn more complex patterns in the input data. Common examples of activation functions are:",
         "table": {
           "softmax": {
+            "title": "Softmax",
             "description": "Transforms outputs to a representation in the form of probabilities, so that the sum of all probabilities gives 1",
             "characteristics": {
               "0": "Bounded between 0 and 1",
@@ -1843,19 +1888,129 @@
             }
           },
           "sigmoid": {
-            "description": "Transforma, the input values where the highest tend to 1 and the lowest values tend to 0",
+            "title": "Sigmoid",
+            "description": "The sigmoid function transforms the input values into a range between 0 and 1. is commonly used in neural networks for binary classification problems.",
             "characteristics": {
-              "0": "Bounded between 0 and 1",
-              "1": "Slow convergence",
-              "2": "Good in final layers"
+              "0": "Results with the range [0, 1].",
+              "1": "Useful in the output layer of binary classifiers.",
+              "2": "You can suffer the problem of fading of the gradient in deep networks."
+            }
+          },
+          "hard-sigmoid": {
+            "title": "Hard Sigmoid",
+            "description": "Hardsigmoid is a simplified version of the sigmoid function used for computational efficiency.",
+            "characteristics": {
+              "0": "It is faster to calculate than sigmoid.",
+              "1": "Less soft in the transition between 0 and 1."
             }
           },
           "relu": {
-            "description": "Transforms the input values leaving negative values zero and leaving as the positive data were",
+            "title": "ReLU (Rectified Linear Unit)",
+            "description": "The ReLU function is simple and effective when returning zero for negative values and maintaining positive values without changes",
             "characteristics": {
-              "0": "In automatic learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how model output to training data is adjusted.",
-              "1": "Good performance with convolutional networks"
+              "0": "Efficient in terms of computation.",
+              "1": "Mitigate the gradient fading problem.",
+              "2": "It can activate neurons sparsely."
             }
+          },
+          "relu6": {
+            "title": "Reluctant",
+            "description": "Similar to reluct, but with a higher limitation of 6 for positive values, which can help avoid the explosion of gradients.",
+            "characteristics": {
+              "0": "Mitigate the gradient fading problem.",
+              "1": "Useful in networks with unstable gradients."
+            }
+          },
+          "leaky-relu": {
+            "title": "LeakyReLU",
+            "description": "Leaky ReLU is a ReLU variant that allows a small fraction of negative values to pass through the function.",
+            "characteristics": {
+              "0": "Mitigate the death problem of neurons compared to reluct.",
+              "1": "It helps maintain information in negative gradients."
+            }
+          },
+          "elu": {
+            "title": "ELU (Exponential Linear Unit)",
+            "description": "ELU is a function that resembles ReLU in positive values, but also has a defined gradient for negative values.",
+            "characteristics": {
+              "0": "Reduce the problem of fading of the gradient.",
+              "1": "It helps keep more neurons active."
+            }
+          },
+          "tanh": {
+            "title": "Tanh (hyperbolic tangent)",
+            "description": "The hyperbolic tangent function transforms the input values into a range [-1, 1].",
+            "characteristics": {
+              "0": "Results in the range [-1, 1].",
+              "1": "Useful in binary classification problems.",
+              "2": "Suffers from fading of the gradient in deep networks."
+            }
+          },
+          "soft-plus": {
+            "title": "SoftPlus",
+            "description": "SoftPlus is a soft function that is often used as a soft alternative to reluct.",
+            "characteristics": {
+              "0": "Soft and derivable everywhere.",
+              "1": "It can be useful in generative and regression networks."
+            }
+          },
+          "mish": {
+            "title": "Mish",
+            "description": "Mish is a relatively new activation function that combines characteristics of other functions such as hyperbolic tangent and sigmoid function.",
+            "characteristics": {
+              "0": "Softness and derivability in its entire range.",
+              "1": "It provides better performance in some applications."
+            }
+          },
+          "selu": {
+            "title": "SELU (Scaled Exponential Linear Unit)",
+            "description": "SELU is a function that benefits from specific standardization and can help maintain network stability.",
+            "characteristics": {
+              "0": "Autocalibration: stable statistical propagates through the layers.",
+              "1": "It can be useful in networks with self-chire architecture."
+            }
+          }
+        }
+      },
+      "editor-layers": {
+        "title": "Layers editor glossary",
+        "table": {
+          "activation-function": {
+            "title": "Layer Neurons",
+            "description": "These are the individual units or nodes in a specific layer of the network. Each neuron receives inputs, performs computations and produces an output that is transmitted to the next layer. The number of neurons in a layer can vary and is usually a hyperparameter of the model. The choice of the number of neurons in a layer affects the model's ability to learn representations of the data."
+          },
+          "units": {
+            "title": "Layer Activation Function",
+            "description": "At each neuron in a layer of a neural network, an activation function is applied to introduce non-linearity into the model. The activation function determines the output of the neuron as a function of its input and associated weights."
+          }
+        }
+      },
+      "editor-hyperparameters": {
+        "title": "Hyperparameter editor glossary",
+        "table": {
+          "learning-rate": {
+            "title": "Learning Rate",
+            "description": "The learning rate is a crucial hyperparameter in machine learning algorithms and neural networks. It determines how much the model weights must be updated at each iteration during the training process. A high learning rate can lead to fast convergence, but can result in instability, while a low rate can lead to slow convergence or get stuck in local minima."
+          },
+          "number-or-epochs": {
+            "title": "Number of Epochs",
+            "description": "Epochs refer to the number of times the entire training data set has been passed through the model during the training process. A higher number of epochs generally allows the model to fit the data better, but can also lead to overfitting if a certain limit is exceeded."
+          },
+          "test-size": {
+            "title": "Test Size",
+            "description": "The amount of data that is set aside to evaluate the performance of the model after training. The test set is used to measure the accuracy and overall performance of the model on unseen data."
+          },
+          "optimizer": {
+            "title": "Optimiser",
+            "description": "The optimiser is an algorithm that adjusts the parameters of a machine learning model during training. Its goal is to minimise the loss function by updating the model weights efficiently. Examples of common optimisers include Stochastic Gradient Descent (SGD), Adam and RMSprop."
+          },
+          "loss-function": {
+            "title": "Loss Function",
+            "description": "The loss function is a measure that quantifies how well the model is performing in its predictions. It helps to calculate the difference between the model's predictions and the actual values of the data set. The goal of training is to minimise this function, as a low loss value indicates that the model is a better fit to the data."
+          },
+          "metric-function": {
+            "title": "Metric Function",
+            "description": "Unlike the loss function, which is used to optimise the model during training, metric functions are used to evaluate the performance of the model after training. These metrics provide information on accuracy, recall, precision, F1-score, etc., and help to understand how the model performs on specific tasks."
           }
         }
       },
@@ -1895,9 +2050,11 @@
       },
       "loss-functions": {
         "title": "Loss functions",
-        "text-1": "In automatic learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how well the model conforms to training data.",
-        "text-2": "The objective of an automatic learning algorithm is to minimize the loss function, which means finding the model set of the model that best suits training data. Therefore, the choice of loss function is very important, since it can affect the model ability to correctly learn patterns in the data and make precise predictions in new data.",
-        "text-4": "In tensorflow.js there are different loss functions and the application of each of them depends on the type of problem we want to face. Some examples are shown below:",
+        "text": {
+          "0": "In automatic learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how well the model conforms to training data.",
+          "1": "The objective of an automatic learning algorithm is to minimize the loss function, which means finding the model set of the model that best suits training data. Therefore, the choice of loss function is very important, since it can affect the model ability to correctly learn patterns in the data and make precise predictions in new data.",
+          "2": "In tensorflow.js there are different loss functions and the application of each of them depends on the type of problem we want to face. Some examples are shown below:"
+        },
         "table": {
           "AbsoluteDifference": {
             "references": "Absolute difference\n (Privolima, s.f.)",
@@ -2018,6 +2175,7 @@
   },
   "hr": {
     "information": "Information",
+    "editor": "Editor",
     "dataset": "Data set",
     "model": "Model",
     "generated-models": "Modelos generados",
@@ -2025,13 +2183,18 @@
     "classify": "Classify",
     "tasks": "Tasks",
     "00-tabular-classification": "Tabular Classification",
+    "tutorial-00-tabular-classification": "Tabular classification tutorial",
     "01-linear-regression": "Linear Regression",
     "02-object-detection": "Object Detection",
     "03-image-classification": "Image Classification",
     "optimization-function": "Optimization functions",
     "activation-functions": "Activation functions",
     "loss-functions": "Loss functions",
-    "metric-function": "Metric functions"
+    "metric-function": "Metric functions",
+    "process-dataset": "Data set processing",
+    "project": "Project",
+    "add-model-dataset": "Add model to project",
+    "dataframe": "DataFrame"
   },
   "form-dataframe": {
     "int32": "Integer",
@@ -2063,6 +2226,7 @@
       "persons": "Capacity in terms of persons to carry",
       "lug_boot": "The size of luggage boot",
       "safety": "Estimated safety of the car",
+      "result": "Resultado",
       "unacc": "Unacceptable",
       "acc": "Aceptable",
       "good": "Good",

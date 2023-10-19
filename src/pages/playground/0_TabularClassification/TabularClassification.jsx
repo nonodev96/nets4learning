@@ -43,6 +43,8 @@ import {
 } from './CONSTANTS'
 import TabularClassificationDatasetProcess from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcess'
 import N4LDivider from '@components/divider/N4LDivider'
+import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
  * @typedef {Object} GeneratedModel_t
@@ -357,18 +359,28 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
-        {/* GENERADOR */}
+        {/* GENERATOR */}
         <N4LDivider i18nKey={'hr.model'} />
+        {datasetIndex < 0 && <>
+          <Card>
+            <Card.Body>
+              <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+            </Card.Body>
+          </Card>
+        </>}
         {datasetIndex >= 0 &&
           <Form onSubmit={handleSubmit_CreateModel} id={'TabularClassificationCustomDataset'}>
             {/* BLOCK 1 */}
             <Row className={'mt-3'}>
               <Col xl={12} className={'joyride-step-layer'}>
                 <N4LLayerDesign layers={layers}
-                                link_action={'tabular-classification-layer-design-open'} />
+                                manual_action={MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN}
+                                glossary_action={GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN} />
               </Col>
+            </Row>
 
-              {/* LAYER EDITOR */}
+            <Row className={'mt-3'}>
+              {/* LAYERS EDITOR */}
               <Col className={'mt-3 joyride-step-editor-layers'} xl={6}>
                 <TabularClassificationEditorLayers layers={layers}
                                                    setLayers={setLayers}
@@ -405,7 +417,7 @@ export default function TabularClassification (props) {
           </Form>
         }
 
-        {/* SALIDA */}
+        {/* TABLE MODELS */}
         <N4LDivider i18nKey={'hr.generated-models'} />
         <Row className={'mt-3 joyride-step-list-of-models'}>
           <Col>
@@ -415,7 +427,7 @@ export default function TabularClassification (props) {
           </Col>
         </Row>
 
-        {/* Prediction */}
+        {/* PREDICTION */}
         <N4LDivider i18nKey={'hr.predict'} />
         <Row className={'mt-3 joyride-step-classify-visualization'}>
           <Col xl={12}>

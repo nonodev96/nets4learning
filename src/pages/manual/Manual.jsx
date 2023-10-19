@@ -9,51 +9,56 @@ import N4LMarkdownDownloader from '@components/markdown/N4LMarkdownDownloader'
 
 import ManualDescription from '@pages/manual/ManualDescription'
 import { VERBOSE } from '@/CONSTANTS'
+import { MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
+const DEFAULT_LAYOUT = [
+  {
+    i18n_hr: 'hr.tutorial-00-tabular-classification',
+    files  : [
+      {
+        key   : '00-tabular-classification-upload-and-process',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_1_UPLOAD_AND_PROCESS,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.upload-and-process.title',
+          file_name : '00. Tabular Classification - Step 0. Upload and process dataset.md',
+        },
+      },
+      {
+        key   : '00-tabular-classification-dataset',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_2_DATASET,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.dataset.title',
+          file_name : '00. Tabular Classification - Step 1. Dataset.md',
+        },
+      },
+      {
+        key   : '00-tabular-classification-layer-design',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.layer-design.title',
+          file_name : '00. Tabular Classification - Step 2. Layer Design.md',
+        },
+      },
+      {
+        key   : '00-tabular-classification-editor-layers',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_LAYERS,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.editor-layers.title',
+          file_name : '00. Tabular Classification - Step 3. Editor Layers.md',
+        },
+      },
+      {
+        key   : '00-tabular-classification-editor-hyperparameters',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_4_HYPERPARAMETERS,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.editor-hyperparameters.title',
+          file_name : '00. Tabular Classification - Step 4. Editor Hyperparameters.md',
+        },
+      },
+    ],
+  },
+]
 export default function Manual () {
-
-  const DEFAULT_LAYOUT = [
-    {
-      i18n_hr: 'hr.00-tabular-classification',
-      files  : [
-        {
-          key : '00-tabular-classification-upload-and-process',
-          file: {
-            i18n_title: 'pages.manual.00-tabular-classification.upload-and-process.title',
-            file_name : '00. Tabular Classification - Step 0. Upload and process dataset.md',
-          },
-        },
-        {
-          key : '00-tabular-classification-dataset',
-          file: {
-            i18n_title: 'pages.manual.00-tabular-classification.dataset.title',
-            file_name : '00. Tabular Classification - Step 1. Dataset.md',
-          },
-        },
-        {
-          key : '00-tabular-classification-layer-design',
-          file: {
-            i18n_title: 'pages.manual.00-tabular-classification.layer-design.title',
-            file_name : '00. Tabular Classification - Step 2. Layer Design.md',
-          },
-        },
-        {
-          key : '00-tabular-classification-editor-layers',
-          file: {
-            i18n_title: 'pages.manual.00-tabular-classification.editor-layers.title',
-            file_name : '00. Tabular Classification - Step 3. Editor Layers.md',
-          },
-        },
-        {
-          key : '00-tabular-classification-editor-hyperparameters',
-          file: {
-            i18n_title: 'pages.manual.00-tabular-classification.editor-hyperparameters.title',
-            file_name : '00. Tabular Classification - Step 4. Editor Hyperparameters.md',
-          },
-        },
-      ],
-    },
-  ]
 
   const history = useHistory()
   const { t, i18n } = useTranslation()
@@ -73,25 +78,11 @@ export default function Manual () {
   useEffect(() => {
     console.debug('useEffect[history, toggleAccordionActiveManual]')
     const openManualInSection = (action) => {
-      switch (action) {
-        case 'tabular-classification-dataset-open': {
-          toggleAccordionActiveManual('00-tabular-classification-dataset')
-          break
-        }
-        case 'tabular-classification-layer-design-open': {
-          toggleAccordionActiveManual('00-tabular-classification-layer-design')
-          break
-        }
-        case 'tabular-classification-editor-layers-open': {
-          toggleAccordionActiveManual('00-tabular-classification-editor-layers')
-          break
-        }
-        case 'tabular-classification-editor-hyperparameters-open': {
-          toggleAccordionActiveManual('00-tabular-classification-editor-hyperparameters')
-          break
-        }
-        default: {
-          console.error('Error, action not valid')
+      for (const { files } of DEFAULT_LAYOUT) {
+        for (const file of files) {
+          if (file.action === action) {
+            toggleAccordionActiveManual(file.key)
+          }
         }
       }
     }
