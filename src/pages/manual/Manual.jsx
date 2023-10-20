@@ -55,6 +55,14 @@ const DEFAULT_LAYOUT = [
           file_name : '00. Tabular Classification - Step 4. Editor Hyperparameters.md',
         },
       },
+      {
+        key   : '00-tabular-classification-table-models',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_5_TABLE_OF_MODELS,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.table-models.title',
+          file_name : '00. Tabular Classification - Step 5. Table models.md',
+        },
+      },
     ],
   },
 ]
