@@ -1329,6 +1329,9 @@
       "title": "Contribuye",
       "github": {
         "title": "Proyecto en GitHub"
+      },
+      "license": {
+        "title": "Licencia"
       }
     },
     "menu-selection-dataset": {
@@ -1746,6 +1749,12 @@
         },
         "editor-hyperparameters": {
           "title": "Paso 5: Editar los hiperparámetros del entrenamiento"
+        },
+        "table-models": {
+          "title": "Paso 6: Entrenamiento y tabla de modelos"
+        },
+        "prediction": {
+          "title": "Paso 7: Predicción"
         }
       },
       "app": {
@@ -1976,11 +1985,11 @@
         "title": "Glosario del editor de capas",
         "table": {
           "activation-function": {
-            "title": "Layer Neurons (Neuronas de Capa)",
+            "title": "Neuronas de Capa (Layer Neurons)",
             "description": "Son las unidades individuales o nodos en una capa específica de la red. Cada neurona recibe entradas, realiza cálculos y produce una salida que se transmite a la siguiente capa. La cantidad de neuronas en una capa puede variar y suele ser un hiperparámetro del modelo. La elección del número de neuronas en una capa afecta la capacidad del modelo para aprender representaciones de los datos."
           },
           "units": {
-            "title": "Layer Activation Function (Función de Activación de Capa)",
+            "title": "Función de Activación de Capa (Layer Activation Function)",
             "description": "En cada neurona de una capa de una red neuronal, se aplica una función de activación para introducir no linealidad en el modelo. La función de activación determina la salida de la neurona en función de su entrada y los pesos asociados."
           }
         }

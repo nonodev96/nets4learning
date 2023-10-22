@@ -63,6 +63,14 @@ const DEFAULT_LAYOUT = [
           file_name : '00. Tabular Classification - Step 5. Table models.md',
         },
       },
+      {
+        key   : '00-tabular-classification-predict',
+        action: MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_6_PREDICT,
+        file  : {
+          i18n_title: 'pages.manual.00-tabular-classification.prediction.title',
+          file_name : '00. Tabular Classification - Step 6. Predict.md',
+        },
+      },
     ],
   },
 ]

@@ -39,7 +39,6 @@ export default function N4LMarkdownDownloader ({ file_name, download = true, bas
           }
 
           await read()
-          console.log({ content })
           setLoading(false)
           return content
         }

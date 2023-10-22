@@ -134,7 +134,7 @@ export default function TabularClassification (props) {
   const [generatedModels, setGeneratedModels] = useState(/** @type Array<GeneratedModel_t> */[])
   const [generatedModelsIndex, setGeneratedModelsIndex] = useState(-1)
   // Model review
-  const [Model, setModel] = useState(null)
+  const [Model, setModel] = useState(/** @type {tf.Sequential | null }*/null)
 
   // Class && Controllers
   const [iModelInstance, set_IModelInstance] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
@@ -263,7 +263,7 @@ export default function TabularClassification (props) {
       const prediction = Model.predict(tensor)
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
-      console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
+      if (VERBOSE) console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
 
       setPredictionBar(() => {
         return {

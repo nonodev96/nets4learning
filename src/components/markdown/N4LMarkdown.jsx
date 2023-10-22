@@ -19,6 +19,7 @@ import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typesc
 import js from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
 import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx'
 import jsdoc from 'react-syntax-highlighter/dist/esm/languages/prism/jsdoc'
+import { Link } from 'react-router-dom'
 
 SyntaxHighlighter.registerLanguage('bash', bash)
 SyntaxHighlighter.registerLanguage('markdown', markdown)
@@ -42,6 +43,10 @@ export default function N4LMarkdown (_props_) {
                 h6: 'strong',
                 a (props) {
                   const { children, ...rest } = props
+                  const isServer = !!(children?.toLowerCase().match('{server}'))
+                  if (isServer) {
+                    return <Link className={'link-info'} to={rest.href}>{children.replace('{server}','')}</Link>
+                  }
                   return <a className={'link-info'} {...rest}>{children}</a>
                 },
                 details (props) {

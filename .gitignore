@@ -34,3 +34,5 @@ deploy.sh
 deploy-beta.sh
 
 build.zip
+
+moveToN4L.sh

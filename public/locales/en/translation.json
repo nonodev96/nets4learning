@@ -141,7 +141,7 @@
         "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
         "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
         "6": "Where:",
-        "7": "are the values of the two variables in each observation.",
+        "7": "are the values ​​of the two variables in each observation.",
         "8": "are the stockings of the two variables, respectively.",
         "9": "Pearson's correlation coefficient is a useful tool to analyze the linear relationship between two variables and determine if there is an association between them. It is widely used in various areas, such as scientific research, economics, psychology, sociology and many others, to understand how two variables behave together. However, it is important to highlight that Pearson's correlation coefficient only measures the linear relationship and does not capture other types of nonlinear relationships between the variables.",
         "title": "Description"
@@ -153,7 +153,7 @@
       "title": "DataFrame | Describe",
       "description": {
         "0": "This function is used to generate a statistical summary of the numerical columns of a dataframe. It provides key descriptive statistics, such as average, standard deviation, minimum, maximum and several quantiles of numerical columns. This is useful to obtain a rapid understanding of the distribution and data trends.",
-        "1": "This function is useful to obtain a quick idea of data distribution and can help you identify atypical values or anomalies in your data.",
+        "1": "This function is useful to obtain a quick idea of ​​data distribution and can help you identify atypical values ​​or anomalies in your data.",
         "title": "Description"
       },
       "link": "Consult more information in the following <link1> link </link1>"
@@ -431,7 +431,7 @@
           }
         },
         "html-example": {
-          "text": "Enter the corresponding values of the patient to be evaluated:",
+          "text": "Enter the corresponding values ​​of the patient to be evaluated:",
           "items": "(lymphatics, block of affere, bl. of lymph. c, bl. of lymph. s, by pass, extravasates, regeneration of, early uptake in, lym.nodes dimin, lym.nodes enlar, changes in lym., defect in node, changes in node, changes in stru, special forms, dislocation of, exclusion of no, no. of nodes in).",
           "examples": "Examples:"
         }
@@ -531,9 +531,9 @@
             "list": {
               "0": "<b>MPG</b>: MPG is Miles Per Gallon. This is the amount of fuel consumed by the particular vehicle of an instance. This varable can also be used as the variable to be predicted for any car",
               "1": "<b>cylinders</b>: This attribute describes the number of cylinders of each car. This is a discrete valued attribute",
-              "2": "<b>displacement</b>: This is another attibute of the vehicle which has a quantitative continous value describing the engine displacement",
-              "3": "<b>horsepower</b>: This attribute tells about the horsepower of a car and is a continous valued variable",
-              "4": "<b>weight</b>: This refers to the weight of each car which is a continous valued quantitative variable",
+              "2": "<b>displacement</b>: This is another attribute of the vehicle which has a quantitative continuous value describing the engine displacement",
+              "3": "<b>horsepower</b>: This attribute tells about the horsepower of a car and is a continuous valued variable",
+              "4": "<b>weight</b>: This refers to the weight of each car which is a continuous valued quantitative variable",
               "5": "<b>acceleration</b>: The acceleration of the car",
               "6": "<b>model year</b>: The year the model was released is mentioned in this attribute",
               "7": "<b>origin</b>: The origin attribute has 3 discrete values. 1 refers to cars made in USA, 2 for Europe and 3 for Asia",
@@ -1112,19 +1112,19 @@
       "title": "Box Plot",
       "description": {
         "intro": {
-          "0": "Box type graphics, also known as cash diagrams and mustaches or boxplots in English, are a visual representation used to show the distribution and statistical summaries of a numerical data set.\nThis type of graph is based on a rectangle that represents the interquotile range (IQR), where the central line indicates the median and extended lines, known as mustaches, represent the range of\nvalues beyond the IQR.",
+          "0": "Box type graphics, also known as cash diagrams and mustaches or boxplots in English, are a visual representation used to show the distribution and statistical summaries of a numerical data set.\nThis type of graph is based on a rectangle that represents the interquotile range (IQR), where the central line indicates the median and extended lines, known as mustaches, represent the range of\nvalues ​​beyond the IQR.",
           "1": "In a boxing chart, the rectangle is traced vertically or horizontally, and is delimited by two lines, one at the bottom and one in the upper part.\nThe line in the middle of the rectangle represents the median, which is the value that divides the data ordered into two equal parts.\nThe mustaches extend from the edges of the rectangle to the extreme values, with a length determined by the variability of the data.",
           "2": "Box type graphics have several features and outstanding applications:"
         },
         "list": {
           "0": "Statistical summary: Box type graphics provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also show quartiles (Q1 and Q3), which divide data into four equal parts, and atypical values, which are shown as points or asterisks outside the mustaches.",
-          "1": "Identification of asymmetries and atypical values: when observing a box of the box type, it is possible to identify asymmetries in the distribution of the data.\nIf the mustaches do not have the same length, it can indicate an asymmetry towards one of the ends.\nIn addition, the atypical values that are outside the mustaches can be easily highlighted.",
-          "2": "Comparison between groups or categories: Box type graphs are also used to compare the distribution of data between different groups or categories.\nBy superimposing several cash diagrams on the same graph, it is possible to visualize the differences in medium -sized, interquile ranges and the presence of atypical values between the groups.",
+          "1": "Identification of asymmetries and atypical values: when observing a box of the box type, it is possible to identify asymmetries in the distribution of the data.\nIf the mustaches do not have the same length, it can indicate an asymmetry towards one of the ends.\nIn addition, the atypical values ​​that are outside the mustaches can be easily highlighted.",
+          "2": "Comparison between groups or categories: Box type graphs are also used to compare the distribution of data between different groups or categories.\nBy superimposing several cash diagrams on the same graph, it is possible to visualize the differences in medium -sized, interquile ranges and the presence of atypical values ​​between the groups.",
           "3": "Detect biases and distributions: Box type graphs allow visually identifying if the distribution of the data is symmetrical or biased towards one end.\nIf the central line of the rectangle is not in the middle, you can indicate a bias towards the opposite direction.",
-          "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of the distribution and general variability of the data."
+          "4": "Dispersions visualization: In addition to providing information on the central position and data variability, box type graphs also allow visualizing the dispersion and variability of the data in a single graph.\nThis can be useful to have a quick idea of ​​the distribution and general variability of the data."
         },
         "end": {
-          "0": "Box type graphics are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
+          "0": "Box type graphs are a useful tool to visualize the distribution, statistical summaries and the variability of a numerical data set.\nThey allow to identify asymmetries, atypical values ​​and compare distributions between groups.\nTheir concise and effective visual representation makes them a tool commonly used in data analysis and communication."
         }
       }
     },
@@ -1132,16 +1132,16 @@
       "title": "Histograms",
       "description": {
         "intro": {
-          "0": "Histogram type graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents an interval of values and the height of the bar indicates the frequency or amount of observations within that\ninterval.",
-          "1": "In a histogram type graph, the horizontal axis is used to represent the range of values of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or amount of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
+          "0": "Histogram type graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents an interval of values ​​and the height of the bar indicates the frequency or amount of observations within that\ninterval.",
+          "1": "In a histogram type graph, the horizontal axis is used to represent the range of values ​​of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or amount of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
           "2": "Histogram type graphics have several features and outstanding applications:"
         },
         "list": {
           "0": "Distribution visualization: Histograms allow visualizing the form and distribution of numerical data.\nThey can show if the data follow a symmetric, biased, multimodal or uniform distribution.",
-          "1": "Identification of atypical values: when observing a histogram, it is possible to identify atypical or extreme values that are outside the range of most data.\nThese values will be represented as isolated bars or as bars that extend beyond the main range of values.",
+          "1": "Identification of atypical values: when observing a histogram, it is possible to identify atypical or extreme values ​​that are outside the range of most data.\nThese values ​​will be represented as isolated bars or as bars that extend beyond the main range of values.",
           "2": "Trend and patterns analysis: histograms can reveal patterns and trends in the data.\nFor example, a biased distribution to the left or to the right indicates an asymmetry in the data, while a normal distribution shows approximate symmetry.",
           "3": "Comparison of groups or categories: histograms can also be used to compare the distribution of data between different groups or categories.\nBy superimposing several histograms in the same chart, it is possible to visualize the differences and similarities between the groups.",
-          "4": "Density estimate: in addition to showing the absolute frequency, histograms can also provide a visual estimate of the data probability.\nWhen normalizing the heights of the bars, it is possible to obtain a relative representation of the probability of occurrence of the values in each interval."
+          "4": "Density estimate: in addition to showing the absolute frequency, histograms can also provide a visual estimate of the data probability.\nWhen normalizing the heights of the bars, it is possible to obtain a relative representation of the probability of occurrence of the values ​​in each interval."
         },
         "end": {
           "0": "Histogram type graphs are a useful tool to visualize the distribution and patterns of numerical data.\nThey allow to identify atypical values, analyze trends and compare distributions between groups.\nTheir clear and concise visual representation makes them an effective tool to communicate information on the distribution of the data in an understandable way."
@@ -1192,19 +1192,19 @@
       "title": "Scatter Plots",
       "description": {
         "intro": {
-          "0": "A dispersion chart, also known as points graph or Scatter Plot in English, is a visual representation that uses Cartesian coordinates to show the relationship between two variables.\nIn this type of graph, the data is represented as individual points in the two -dimensional space, where each point represents a couple of values corresponding to the two variables.",
-          "1": "In a dispersion graph, the horizontal axis is generally assigned to the independent variable, while the vertical axis is assigned to the dependent variable.\nEach point in the graph represents an individual observation and its position in the graph is determined by the values it has for both variables.\nThe relative location of the points in the graph reveals patterns and relationships between the two variables.",
+          "0": "A dispersion chart, also known as points graph or Scatter Plot in English, is a visual representation that uses Cartesian coordinates to show the relationship between two variables.\nIn this type of graph, the data is represented as individual points in the two -dimensional space, where each point represents a couple of values ​​corresponding to the two variables.",
+          "1": "In a dispersion graph, the horizontal axis is generally assigned to the independent variable, while the vertical axis is assigned to the dependent variable.\nEach point in the graph represents an individual observation and its position in the graph is determined by the values ​​it has for both variables.\nThe relative location of the points in the graph reveals patterns and relationships between the two variables.",
           "2": "Dispersion graphics have several applications and prominent characteristics:"
         },
         "list": {
           "0": "Relationship between variables: Dispersion graphics allow analyzing the relationship between two variables.\nThey can show if there is a positive correlation (the points tend to group in an ascending direction), a negative correlation (the points tend to group in a descending direction) or a lack of correlation (the points do not show a defined pattern).",
           "1": "Trends identification: A dispersion chart can reveal trends or patterns in the data.\nWhen observing the general direction of the points, it is possible to identify whether there is a linear, non -linear relationship or even a curvilinear relationship between the variables.",
-          "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
+          "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values ​​in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
           "3": "Analysis of clusters or groups: If the points in the dispersion graph are grouped or form different patterns, this may indicate the presence of clusters or groups.\nThis may be useful in data classification or classification analysis.",
           "4": "Multidimensional data display: If additional colors or sizes are used, dispersion graphics can also represent additional information in a two -dimensional space.\nThis allows to visualize multidimensional data more intuitively."
         },
         "end": {
-          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
+          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values ​​in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
         }
       }
     },
@@ -1213,7 +1213,7 @@
       "description": {
         "intro": {
           "0": "A time series graph is a visual representation of data that are collected and recorded in regular intervals over time.\nThese graphics are widely used in various disciplines, such as economy, finance, meteorology, engineering and many others, to analyze and understand how the data changed as time elapses.",
-          "1": "The horizontal axis of the graph represents the time, while the vertical axis shows the values of the data that is being observed or recorded.\nThe data points are connected with lines, which allows identifying patterns and trends over time.",
+          "1": "The horizontal axis of the graph represents the time, while the vertical axis shows the values ​​of the data that is being observed or recorded.\nThe data points are connected with lines, which allows identifying patterns and trends over time.",
           "2": "Time series graphics offer various advantages and practical applications:"
         },
         "list": {
@@ -1248,12 +1248,12 @@
         },
         "list": {
           "0": "Comparison of distributions: violin graphics allow comparing data distributions between different groups or categories.\nThis is useful for identifying differences or similarities in the form, dispersion and data trends.",
-          "1": "Identification of atypical values: violin graphs provide visual information about the presence of atypical or extreme values in the data.\nThese values are represented as points outside the shaded areas and may indicate unusual observations that may require additional analysis.",
+          "1": "Identification of atypical values: violin graphs provide visual information about the presence of atypical or extreme values ​​in the data.\nThese values ​​are represented as points outside the shaded areas and may indicate unusual observations that may require additional analysis.",
           "2": "Probability density display: violin graphics also offer a graphic representation of data probability density.\nThis allows to easily identify high or low density areas, as well as possible biases or asymmetries in the distribution.",
           "3": "Effective data communication: violin graphics are an effective way to communicate complex information on data distribution in a visually attractive way.\nThey can summarize the information in a concise manner and help transmit important patterns and characteristics to a non -technical audience."
         },
         "end": {
-          "0": "Violin graphics are a useful tool to visualize and compare data distributions.\nThey allow analyzing the form, dispersion, symmetry and presence of atypical values in the data, and are especially useful when comparison is required between multiple groups or categories.\nTheir attractive and concise graphic representation makes them an effective tool to communicate complex information understandably."
+          "0": "Violin graphics are a useful tool to visualize and compare data distributions.\nThey allow analyzing the form, dispersion, symmetry and presence of atypical values ​​in the data, and are especially useful when comparison is required between multiple groups or categories.\nTheir attractive and concise graphic representation makes them an effective tool to communicate complex information understandably."
         }
       }
     }
@@ -1329,6 +1329,9 @@
       "title": "Contribute",
       "github": {
         "title": "Project in GitHub"
+      },
+      "license": {
+        "title": "Licencia"
       }
     },
     "menu-selection-dataset": {
@@ -1746,6 +1749,12 @@
         },
         "editor-hyperparameters": {
           "title": "Step 5: Edit training hyperparameters"
+        },
+        "table-models": {
+          "title": "Step 6: Training and table of models"
+        },
+        "prediction": {
+          "title": "Step 6: Prediction"
         }
       },
       "app": {
@@ -1851,7 +1860,7 @@
         "title": "Linear regression",
         "text": {
           "0": "Linear regression is a statistical analysis method used in automatic learning to model the linear relationship between an independent variable and a dependent variable, seeking to find the best straight line that adjusts the data and allows predictions to be made.",
-          "1": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values of the dependent variable depending on the values of the independent variable.",
+          "1": "In the linear regression, the data is generally represented as dispersed points in a Cartesian plane, where the independent variable is placed on the X axis and the dependent variable on the Y axis. The objective is to find the equation of a straight line (y = = mx + b) that minimizes the distance between this line and the data points. Once this equation has been obtained, it can be used to make predictions on future values ​​of the dependent variable depending on the values ​​of the independent variable.",
           "2": "For example, if we are analyzing the relationship between the amount of advertising on a website and the sales of a product, the amount of advertising would be the independent variable, and the sales of the product would be the dependent variable. Linear regression would help us determine if there is a linear relationship between investment in advertising and sales, and if so, it would allow us to predict future sales based on advertising spending.",
           "3": "Linear regression is a powerful tool in data analysis and is used in a variety of fields, including economy, social science, medical research and many other disciplines to understand and predict relationships between variables."
         }
@@ -1889,7 +1898,7 @@
           },
           "sigmoid": {
             "title": "Sigmoid",
-            "description": "The sigmoid function transforms the input values into a range between 0 and 1. is commonly used in neural networks for binary classification problems.",
+            "description": "The sigmoid function transforms the input values ​​into a range between 0 and 1. is commonly used in neural networks for binary classification problems.",
             "characteristics": {
               "0": "Results with the range [0, 1].",
               "1": "Useful in the output layer of binary classifiers.",
@@ -1906,7 +1915,7 @@
           },
           "relu": {
             "title": "ReLU (Rectified Linear Unit)",
-            "description": "The ReLU function is simple and effective when returning zero for negative values and maintaining positive values without changes",
+            "description": "The ReLU function is simple and effective when returning zero for negative values ​​and maintaining positive values ​​without changes",
             "characteristics": {
               "0": "Efficient in terms of computation.",
               "1": "Mitigate the gradient fading problem.",
@@ -1923,7 +1932,7 @@
           },
           "leaky-relu": {
             "title": "LeakyReLU",
-            "description": "Leaky ReLU is a ReLU variant that allows a small fraction of negative values to pass through the function.",
+            "description": "Leaky ReLU is a ReLU variant that allows a small fraction of negative values ​​to pass through the function.",
             "characteristics": {
               "0": "Mitigate the death problem of neurons compared to reluct.",
               "1": "It helps maintain information in negative gradients."
@@ -1939,7 +1948,7 @@
           },
           "tanh": {
             "title": "Tanh (hyperbolic tangent)",
-            "description": "The hyperbolic tangent function transforms the input values into a range [-1, 1].",
+            "description": "The hyperbolic tangent function transforms the input values ​​into a range [-1, 1].",
             "characteristics": {
               "0": "Results in the range [-1, 1].",
               "1": "Useful in binary classification problems.",
@@ -1986,11 +1995,11 @@
         }
       },
       "editor-hyperparameters": {
-        "title": "Hyperparameter editor glossary",
+        "title": "Hyper parameter editor glossary",
         "table": {
           "learning-rate": {
             "title": "Learning Rate",
-            "description": "The learning rate is a crucial hyperparameter in machine learning algorithms and neural networks. It determines how much the model weights must be updated at each iteration during the training process. A high learning rate can lead to fast convergence, but can result in instability, while a low rate can lead to slow convergence or get stuck in local minima."
+            "description": "The learning rate is a crucial hyper parameter in machine learning algorithms and neural networks. It determines how much the model weights must be updated at each iteration during the training process. A high learning rate can lead to fast convergence, but can result in instability, while a low rate can lead to slow convergence or get stuck in local minima."
           },
           "number-or-epochs": {
             "title": "Number of Epochs",
@@ -2178,7 +2187,7 @@
     "editor": "Editor",
     "dataset": "Data set",
     "model": "Model",
-    "generated-models": "Modelos generados",
+    "generated-models": "Models generated",
     "predict": "Predict",
     "classify": "Classify",
     "tasks": "Tasks",

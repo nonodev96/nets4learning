@@ -1,5 +1,15 @@
 @import url(https://fonts.googleapis.com/css?family=Bangers);
 
+@font-face {
+  font-family: "Barlow-Regular";   /*Can be any text*/
+  src: local("Barlow-Regular"), url("./styles/fonts/Barlow-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Barlow-SemiBold";   /*Can be any text*/
+  src: local("Barlow-SemiBold"), url("./styles/fonts/Barlow-SemiBold.ttf") format("truetype");
+}
+
 #root {
   /* Para los \n de i18next */
   white-space: pre-line;
@@ -7,11 +17,12 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Barlow-Regular", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1.1em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* min-width: fit-content; */
   overflow-y: scroll;
+  /* min-width: fit-content; */
 }
 
 .body {
