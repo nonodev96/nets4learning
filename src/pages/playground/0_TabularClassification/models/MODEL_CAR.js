@@ -132,7 +132,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
 
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_processed[column_name_target]
+    const dataframe_y = dataframe_original[column_name_target]
 
     const scaler = new dfd.MinMaxScaler()
     scaler.fit(dataframe_X)

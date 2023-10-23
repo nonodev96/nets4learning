@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Col, Container, Row, Button, Card } from 'react-bootstrap'
-import { Trans } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 
 import CookiesModal from '@components/cookiesModal/CookiesModal'
 
@@ -15,6 +15,7 @@ const SELECTOR = {
 
 export default function Home () {
   const history = useHistory()
+  const { t } = useTranslation()
 
   const [buttonActive, setButtonActive] = useState(TASKS.TABULAR_CLASSIFICATION)
 
@@ -36,7 +37,7 @@ export default function Home () {
           <>
             <Card className={'border-primary'}>
               <Card.Header>
-                <h2><Trans i18nKey={'pages.index.tabular-classification.1-title'} /></h2>
+                <h2><Trans i18nKey={'pages.index.tabular-classification.1-title'} t={t} /></h2>
               </Card.Header>
               <Card.Body>
                 <Card.Text>

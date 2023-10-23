@@ -167,9 +167,10 @@ export default function TabularClassification (props) {
         console.error('Error, opción not valid')
       }
     }
-    init().then(() => {
-      console.debug('end init')
-    })
+    init()
+      .then(() => {
+        if (VERBOSE) console.debug('end init Tabular classification')
+      })
 
     return () => { tfvis.visor().close() }
   }, [dataset, t])

@@ -40,8 +40,6 @@ export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, TASK
 
     if (localStorage.getItem(`${TASK}.joyride-` + KEY) !== null) {
       localStorage.setItem(`${TASK}.joyride-` + KEY, JSON.stringify({ run: true }))
-    } else {
-      console.debug(`else ${TASK}.joyride-` + KEY)
     }
   }, [JOYRIDE_state, KEY])
 

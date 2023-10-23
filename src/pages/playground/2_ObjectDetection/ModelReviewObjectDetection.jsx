@@ -12,9 +12,10 @@ import { LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 
-tfjs.setBackend('webgl')
-  .then((r) => {
-    console.debug('setBackend', { r })
+tfjs
+  .setBackend('webgl')
+  .then((_) => {
+
   })
 
 export default function ModelReviewObjectDetection (props) {

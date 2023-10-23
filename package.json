@@ -1,6 +1,6 @@
 {
   "name": "nets4learning",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "homepage": ".",
   "private": true,
   "scripts": {
@@ -24,16 +24,16 @@
   },
   "dependencies": {
     "@faker-js/faker": "8.0.2",
-    "@tensorflow-models/coco-ssd": "^2.2.2",
-    "@tensorflow-models/face-detection": "^1.0.1",
-    "@tensorflow-models/face-landmarks-detection": "^1.0.1",
-    "@tensorflow-models/hand-pose-detection": "^2.0.0",
-    "@tensorflow-models/mobilenet": "^2.1.0",
-    "@tensorflow-models/pose-detection": "^1.0.1",
-    "@tensorflow/tfjs": "^3.21.0",
-    "@tensorflow/tfjs-backend-wasm": "^3.21.0",
-    "@tensorflow/tfjs-backend-webgl": "^3.21.0",
-    "@tensorflow/tfjs-vis": "^1.5.1",
+    "@tensorflow-models/coco-ssd": "2.2.2",
+    "@tensorflow-models/face-detection": "1.0.1",
+    "@tensorflow-models/face-landmarks-detection": "1.0.1",
+    "@tensorflow-models/hand-pose-detection": "2.0.0",
+    "@tensorflow-models/mobilenet": "2.1.0",
+    "@tensorflow-models/pose-detection": "1.0.1",
+    "@tensorflow/tfjs": "3.21.0",
+    "@tensorflow/tfjs-backend-wasm": "3.21.0",
+    "@tensorflow/tfjs-backend-webgl": "3.21.0",
+    "@tensorflow/tfjs-vis": "1.5.1",
     "bootstrap": "^5.3.0",
     "brace": "^0.11.1",
     "chart.js": "^4.3.0",
@@ -94,6 +94,11 @@
     "jest-watch-typeahead": "^2.2.2",
     "sass": "^1.69.3",
     "standard": "^17.1.0"
+  },
+  "overrides": {
+    "danfojs": {
+      "fraction.js": "4.2.0"
+    }
   },
   "eslintConfig": {
     "extends": [

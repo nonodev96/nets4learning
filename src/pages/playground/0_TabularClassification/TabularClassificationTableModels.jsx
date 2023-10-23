@@ -94,7 +94,7 @@ export default function TabularClassificationTableModels (props) {
                       return <tr key={index}>
                         <th>{(activePage * rowsPerPage) + index + 1}</th>
                         <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.learningRate * 100}%</span></td>
-                        <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.numberOfEpoch}%</span></td>
+                        <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.numberOfEpoch}</span></td>
                         <td><span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.testSize * 100}%</span></td>
                         <td>
                           {value.layerList

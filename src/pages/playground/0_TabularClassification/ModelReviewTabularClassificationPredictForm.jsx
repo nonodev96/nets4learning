@@ -17,7 +17,7 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
 
   if (VERBOSE) console.debug('render ModelReviewTabularClassificationPredictForm')
   return <>
-    <Row xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+    <Row xs={2} sm={2} md={4} lg={4} xl={4} xxl={3}>
       {iModelInstance.FORM.map((value, index) => {
         // VALUES:
         // {name: "type1", type: "int32" },
