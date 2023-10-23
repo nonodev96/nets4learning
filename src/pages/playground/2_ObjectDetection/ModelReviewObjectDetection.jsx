@@ -8,9 +8,9 @@ import ReactGA from 'react-ga4'
 import { VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
-import { LIST_MODELS_OBJECT_DETECTION, UPLOAD } from '@/DATA_MODEL'
-import I_MODEL_OBJECT_DETECTION from './models/_model'
+import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
+import I_MODEL_OBJECT_DETECTION from './models/_model'
 
 tfjs
   .setBackend('webgl')
@@ -31,7 +31,7 @@ export default function ModelReviewObjectDetection (props) {
   const [deviceId, setDeviceId] = useState('default')
   const [devices, setDevices] = useState([])
 
-  const [iModel, setIModel] = useState(new I_MODEL_OBJECT_DETECTION(t))
+  const iModelRef = useRef(new I_MODEL_OBJECT_DETECTION(t))
 
   const requestRef = useRef()
   const webcamRef = useRef(null)
@@ -55,35 +55,32 @@ export default function ModelReviewObjectDetection (props) {
 
   useEffect(() => {
     console.debug('useEffect[dataset, t]')
+
     async function init () {
-      const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataset)
-      if (!isValid) {
-        await alertHelper.alertError('Error in selection of model')
+      await tfjs.ready()
+      if (tfjs.getBackend() !== 'webgl') {
+        await alertHelper.alertError('Error tensorflow backend webgl not installed in your browser')
         return
       }
       if (dataset === UPLOAD) {
         console.error('Error, data set not valid')
       }
 
-      if (MAP_OD_CLASSES.hasOwnProperty(dataset)) {
+      if (!MAP_OD_CLASSES.hasOwnProperty(dataset)) {
+        console.error('Error, model not valid')
+        return
+      }
+      try {
         const _iModelClass = MAP_OD_CLASSES[dataset]
         const _iModelInstance = new _iModelClass(t)
-        setIModel(_iModelInstance)
+        iModelRef.current = _iModelInstance
 
-        try {
-          await tfjs.ready()
-          if (tfjs.getBackend() !== 'webgl') {
-            await alertHelper.alertError('Error tensorflow backend webgl not installed in your browser')
-            return
-          }
-
-          await _iModelInstance.ENABLE_MODEL()
-          setLoading(false)
-          setProgress(100)
-          await alertHelper.alertSuccess(t('model-loaded-successfully'))
-        } catch (error) {
-          console.error('Error initializing TensorFlow', error)
-        }
+        await _iModelInstance.ENABLE_MODEL()
+        setLoading(false)
+        setProgress(100)
+        await alertHelper.alertSuccess(t('model-loaded-successfully'))
+      } catch (error) {
+        console.error('Error', error)
       }
     }
 
@@ -119,12 +116,8 @@ export default function ModelReviewObjectDetection (props) {
   }
 
   const processData = async (ctx, img_or_video) => {
-    if (dataset === UPLOAD) {
-      console.error('Error, option not valid')
-      return
-    }
-    const predictions = await iModel.PREDICTION(img_or_video)
-    iModel.RENDER(ctx, predictions)
+    const predictions = await iModelRef.current.PREDICTION(img_or_video)
+    iModelRef.current.RENDER(ctx, predictions)
   }
 
   useEffect(() => {
@@ -291,9 +284,9 @@ export default function ModelReviewObjectDetection (props) {
           <Card className={'sticky-top mt-3 mb-3 border-info'}>
             <Card.Body>
               <Card.Title>
-                <Trans i18nKey={iModel.TITLE} />
+                <Trans i18nKey={iModelRef.current.TITLE} />
               </Card.Title>
-              {dataset !== UPLOAD && <>{iModel.DESCRIPTION()}</>}
+              {dataset !== UPLOAD && <>{iModelRef.current.DESCRIPTION()}</>}
             </Card.Body>
           </Card>
         </Col>

@@ -151,6 +151,8 @@ export default function TabularClassification (props) {
     const init = async () => {
       if (dataset === UPLOAD) {
         // TODO
+        const df = new dfd.DataFrame()
+        if(VERBOSE) console.debug(df)
       } else if (MAP_TC_CLASSES.hasOwnProperty(dataset)) {
         const _iModelClass = MAP_TC_CLASSES[dataset]
         const _iModelInstance = new _iModelClass(t)
