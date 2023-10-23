@@ -23,3 +23,5 @@ jobs:
           INSTALL_COMMAND: npm i
           BUILD_COMMAND: npm run build:netlify
           BUILD_DIRECTORY: 'build'
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
