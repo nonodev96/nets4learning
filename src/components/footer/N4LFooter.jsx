@@ -47,32 +47,32 @@ export default function N4LFooter () {
             <Col xs={12} sm={12} md={5}>
               <h4>Nets4Learning</h4>
               <p>{t('footer.description-app')}</p>
-              <div className="d-flex justify-content-xs-around justify-content-sm-between justify-content-md-between flex-wrap">
-                <div>
-                  <a href="https://ujaen.es" target="_blank" rel="noreferrer">
-                    <img src={process.env.REACT_APP_PATH + '/assets/uja.svg'}
-                         alt="Universidad de Jaén"
-                         width={100}
-                    />
-                  </a>
-                </div>
-                <div>
-                  <a href="https://simidat.ujaen.es" target="_blank" rel="noreferrer">
-                    <img src={process.env.REACT_APP_PATH + '/assets/simidat-fill.svg'}
-                         alt="SIMIDAT"
-                         width={100}
-                    />
-                  </a>
-                </div>
-                <div>
+              <Row className="align-items-center text-center">
+                <Col>
                   <a href="https://dasci.es" target="_blank" rel="noreferrer">
                     <img src={process.env.REACT_APP_PATH + '/assets/DaSCI_logo-1.png'}
+                         className={'img-fluid w-100'}
                          alt="DaSCI"
-                         width={200}
                     />
                   </a>
-                </div>
-              </div>
+                </Col>
+                <Col>
+                  <a href="https://ujaen.es" target="_blank" rel="noreferrer">
+                    <img src={process.env.REACT_APP_PATH + '/assets/uja.svg'}
+                         className={'img-fluid w-50'}
+                         alt="Universidad de Jaén"
+                    />
+                  </a>
+                </Col>
+                <Col>
+                  <a href="https://simidat.ujaen.es" target="_blank" rel="noreferrer">
+                    <img src={process.env.REACT_APP_PATH + '/assets/logo-simidat-2023.png'}
+                         className={'img-fluid w-100'}
+                         alt="SIMIDAT"
+                    />
+                  </a>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Container>

@@ -1745,7 +1745,7 @@
           "title": "Paso 3: Visualizar el diseño de capas de la red neuronal."
         },
         "editor-layers": {
-          "title": "Paso 4: Editar la red neuronal"
+          "title": "Paso 4: Editar las capas de la red neuronal"
         },
         "editor-hyperparameters": {
           "title": "Paso 5: Editar los hiperparámetros del entrenamiento"

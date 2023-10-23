@@ -21,11 +21,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-package-lock.json
+#package-lock.json
 
 .env
 .env.android
 .env.development
+.env.netlify
 .env.production
 .env.simidat
 .env.simidat-beta
