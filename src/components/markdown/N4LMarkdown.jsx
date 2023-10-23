@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkRehype from 'remark-rehype'
 
-import { Table, Image, Tabs, Tab, Row, Col } from 'react-bootstrap'
+import { Table, Image } from 'react-bootstrap'
 
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
@@ -45,16 +45,16 @@ export default function N4LMarkdown (_props_) {
                   const { children, ...rest } = props
                   const isServer = !!(children?.toLowerCase().match('{server}'))
                   if (isServer) {
-                    return <Link className={'link-info'} to={rest.href}>{children.replace('{server}','')}</Link>
+                    return <Link className={'link-info'} to={rest.href}>{children.replace('{server}', '')}</Link>
                   }
                   return <a className={'link-info'} {...rest}>{children}</a>
                 },
                 details (props) {
-                  const { children, open, className, ...rest } = props
+                  const { children, open, className } = props
                   return <details className={className} open={open}>{children}</details>
                 },
                 summary (props) {
-                  const { children, className, ...rest } = props
+                  const { children, className } = props
                   return <summary className={className}>{children}</summary>
                 },
                 code (props) {
@@ -104,7 +104,7 @@ export default function N4LMarkdown (_props_) {
                   return <blockquote className={'blockquote'} {...rest} />
                 },
                 p (props) {
-                  const { node, className, children, ...rest } = props
+                  const { children } = props
                   return <p className={'mb-2'}>{children}</p>
                 },
                 ul (props) {

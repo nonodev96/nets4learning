@@ -27,9 +27,7 @@ import TabularClassificationTableModels from '@pages/playground/0_TabularClassif
 
 import TabularClassificationPrediction from '@pages/playground/0_TabularClassification/TabularClassificationPrediction'
 
-import { isProduction } from '@utils/utils'
 import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
-import * as errorUtils from '@core/error-utils'
 import { VERBOSE } from '@/CONSTANTS'
 
 import {
@@ -69,8 +67,8 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
  * @property {dfd.DataFrame} y
  * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
  * @property {Object.<string, dfd.LabelEncoder>} map_encoder
- * @property {Array<TYPE_ATTRIBUTES_OPTIONS|TYPE_ATTRIBUTES_NUMBER>} attributes
- * @property {Array<TYPE_CLASSES>} classes
+ * @property {Array} attributes
+ * @property {Array<string>} classes
  */
 
 /**
@@ -112,8 +110,6 @@ export default function TabularClassification (props) {
   const prefix = 'pages.playground.generator.'
   const prefixManual = 'pages.playground.0-tabular-classification.generator.'
   const { t } = useTranslation()
-
-  const isDebug = process.env.REACT_APP_ENVIRONMENT !== 'production'
 
   // Layers
   const [layers, setLayers] = useState(DEFAULT_LAYERS)

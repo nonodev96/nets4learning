@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactGA from 'react-ga4'
-import { Button, Card, Col, Container, Form, Row, ProgressBar } from 'react-bootstrap'
+import { Button, Card, Col, Container, Form, ProgressBar, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-import {
-  LIST_MODELS_TABULAR_CLASSIFICATION,
-} from '@/DATA_MODEL'
+import { LIST_MODELS_TABULAR_CLASSIFICATION, } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
 import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
 import { VERBOSE } from '@/CONSTANTS'
@@ -24,8 +22,8 @@ export default function ModelReviewTabularClassification (props) {
   //const prefix = 'pages.playground.0-tabular-classification'
   const { t } = useTranslation()
 
-  const [iModelInstance, setIModelInstance] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
-  const [model, setModel] = useState(null)
+  const iModelInstance_ref = useRef(new I_MODEL_TABULAR_CLASSIFICATION(t))
+  const model_ref = useRef(null)
 
   const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
@@ -53,9 +51,9 @@ export default function ModelReviewTabularClassification (props) {
     console.debug('useEffect [dataToPredict]')
     // TODO encoders to dataToPredict
     const init = async () => {
-      const datasets = await iModelInstance.DATASETS()
+      const datasets = await iModelInstance_ref.current.DATASETS()
       if (datasets.length === 0) return
-      const _vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(datasets[0].data_processed.encoders, dataToPredict, iModelInstance.DATA_DEFAULT_KEYS)
+      const _vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(datasets[0].data_processed.encoders, dataToPredict, iModelInstance_ref.current.DATA_DEFAULT_KEYS)
       setVectorToPredict(_vectorValuesEncoders)
     }
     init().then()
@@ -75,22 +73,20 @@ export default function ModelReviewTabularClassification (props) {
         const _iModelClass = MAP_TC_CLASSES[dataset]
 
         try {
-          const _iModelInstance = new _iModelClass(t)
-          setDataToPredict(_iModelInstance.DATA_DEFAULT)
+          iModelInstance_ref.current = new _iModelClass(t)
+          model_ref.current = await iModelInstance_ref.current.LOAD_LAYERS_MODEL({ onProgress: handleChange_onProgress })
 
-          const _datasets = await _iModelInstance.DATASETS()
+          setDataToPredict(iModelInstance_ref.current.DATA_DEFAULT)
+          const _datasets = await iModelInstance_ref.current.DATASETS()
           const _applyEncoders = DataFrameUtils.DataFrameApplyEncoders(
             _datasets[0].data_processed.encoders,
-            _iModelInstance.DATA_DEFAULT,
-            _iModelInstance.DATA_DEFAULT_KEYS,
+            iModelInstance_ref.current.DATA_DEFAULT,
+            iModelInstance_ref.current.DATA_DEFAULT_KEYS,
           )
           setVectorToPredict(_applyEncoders)
 
-          const _loadedModel = await _iModelInstance.LOAD_LAYERS_MODEL({ onProgress: handleChange_onProgress })
-          setIsLoading(false)
 
-          setIModelInstance(_iModelInstance)
-          setModel(_loadedModel)
+          setIsLoading(false)
           setIsButtonToPredictDisabled(false)
           await alertHelper.alertSuccess(t('model-loaded-successfully'))
         } catch (e) {
@@ -119,10 +115,10 @@ export default function ModelReviewTabularClassification (props) {
     try {
       const input = [vectorToPredict, [1, vectorToPredict.length]]
       const tensor = tfjs.tensor2d(input[0], input[1])
-      const model_prediction = model.predict(tensor)
+      const model_prediction = model_ref.current.predict(tensor)
       const model_prediction_data = model_prediction.dataSync()
       const _prediction = {
-        labels: iModelInstance.CLASSES,
+        labels: iModelInstance_ref.current.CLASSES,
         data  : Array.from(model_prediction_data).map((item) => item.toFixed(4)),
       }
       setPrediction(_prediction)
@@ -144,12 +140,12 @@ export default function ModelReviewTabularClassification (props) {
   }
 
   const handleClick_openSummary = async () => {
-    if (model === null) {
+    if (model_ref.current === null) {
       console.error('Error, model is null')
       return
     }
     if (!tfvis.visor().isOpen()) {
-      await tfvis.show.modelSummary({ name: 'Model Summary' }, model)
+      await tfvis.show.modelSummary({ name: 'Model Summary' }, model_ref.current)
       tfvis.visor().open()
     } else {
       tfvis.visor().close()
@@ -191,10 +187,9 @@ export default function ModelReviewTabularClassification (props) {
             </Card.Header>
             <Card.Body>
               <Card.Title>
-                <Trans i18nKey={iModelInstance?.TITLE ?? 'loading'} />
+                <Trans i18nKey={iModelInstance_ref.current?.TITLE ?? 'loading'} />
               </Card.Title>
-              {iModelInstance.DESCRIPTION()}
-
+              {iModelInstance_ref.current.DESCRIPTION()}
             </Card.Body>
           </Card>
         </Col>
@@ -202,10 +197,10 @@ export default function ModelReviewTabularClassification (props) {
         <Col xs={12} sm={12} md={12} xl={9} xxl={9}>
 
           <ModelReviewTabularClassificationDatasetTable dataset={dataset}
-                                                        iModelInstance={iModelInstance} />
+                                                        iModelInstance={iModelInstance_ref.current} />
 
           <ModelReviewTabularClassificationDatasetInfo dataset={dataset}
-                                                       iModelInstance={iModelInstance} />
+                                                       iModelInstance={iModelInstance_ref.current} />
 
           <Card className={'mt-3'}>
             <Card.Header className={'d-flex align-items-center justify-content-between'}>
@@ -217,10 +212,10 @@ export default function ModelReviewTabularClassification (props) {
                   <Form.Select aria-label={'example'}
                                size={'sm'}
                                onChange={(e) => handleChange_Example(e)}>
-                    {iModelInstance.LIST_EXAMPLES.map((value, index) => {
+                    {iModelInstance_ref.current.LIST_EXAMPLES.map((value, index) => {
                       return (<option key={'option_' + index} value={JSON.stringify(value)}>
                         <Trans i18nKey={'example-i'}
-                               values={{ i: iModelInstance.LIST_EXAMPLES_RESULTS[index] }} />
+                               values={{ i: iModelInstance_ref.current.LIST_EXAMPLES_RESULTS[index] }} />
                       </option>)
                     })}
                   </Form.Select>
@@ -229,7 +224,7 @@ export default function ModelReviewTabularClassification (props) {
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleSubmit_PredictVector}>
-                <ModelReviewTabularClassificationPredictForm iModelInstance={iModelInstance}
+                <ModelReviewTabularClassificationPredictForm iModelInstance={iModelInstance_ref.current}
                                                              dataToTest={dataToPredict}
                                                              setDataToTest={setDataToPredict}
 
@@ -279,7 +274,7 @@ export default function ModelReviewTabularClassification (props) {
             </Card.Body>
           </Card>
 
-          <ModelReviewTabularClassificationPredict iModelInstance={iModelInstance}
+          <ModelReviewTabularClassificationPredict iModelInstance={iModelInstance_ref.current}
                                                    prediction={prediction} />
         </Col>
       </Row>

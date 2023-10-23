@@ -5,7 +5,7 @@ import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
-import { GLOSSARY_ACTIONS, GLOSsARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
+import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 export default function TabularClassificationEditorLayers (props) {
   const {

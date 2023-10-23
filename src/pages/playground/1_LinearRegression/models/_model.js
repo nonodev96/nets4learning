@@ -1,4 +1,4 @@
-import { ACTIONS, LIFECYCLE, CallBackProps } from 'react-joyride'
+import { ACTIONS, LIFECYCLE } from 'react-joyride'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 
@@ -84,11 +84,6 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @constructor
    */
   JOYRIDE () {
-    /**
-     *
-     * @param {CallBackProps} data
-     * @return {Promise<void>}
-     */
     const handleJoyrideCallback = async (data) => {
       const { action, lifecycle, step/*, status, type*/ } = data
       const { target } = step

@@ -1,4 +1,3 @@
-import styles from './LinearRegression.module.css'
 import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'

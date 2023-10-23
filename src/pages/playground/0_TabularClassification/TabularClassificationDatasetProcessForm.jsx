@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
-import { Link } from 'react-router-dom'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
-import { DataFrameDeepCopy } from '@core/dataframe/DataFrameUtils'
 
 // @formatter:off
 const DEFAULT_OPTIONS = [
@@ -29,8 +27,6 @@ export default function TabularClassificationDatasetProcessForm (props) {
     setDatasets,
     /** @type number*/
     datasetIndex,
-    /** @type React.Dispatch<number>*/
-    setDatasetIndex,
   } = props
 
   const [listColumnNameType, setListColumnNameType] = useState(/** @type DataFrameColumnType_t[] */[])
@@ -54,7 +50,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
       return { column_name: _columns[index], column_type: _dtypes[index] }
     })
 
-    const _listTransformations = _listColumnNameType.map(({ column_name, column_type }, index) => {
+    const _listTransformations = _listColumnNameType.map(({ column_name, column_type }) => {
       const _column_transform = (column_type === 'string') ? 'label-encoder' : column_type
       return { column_name: column_name, column_transform: _column_transform }
     })
@@ -72,7 +68,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
     })
   }, [datasets, datasetIndex, t])
 
-  const handleChange_ColumnTransform = (e, columnName, setArray) => {
+  const handleChange_ColumnTransform = (e, columnName) => {
     setListColumnNameTransformations((prevState) =>
       prevState.map((oldColumn) =>
         (oldColumn.column_name === columnName) ? { ...oldColumn, column_transform: e.target.value } : oldColumn,

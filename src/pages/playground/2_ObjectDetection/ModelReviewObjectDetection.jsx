@@ -90,8 +90,7 @@ export default function ModelReviewObjectDetection (props) {
     }
 
     init()
-      .then((r) => {
-        console.debug('endInit')
+      .then(() => {
       })
 
     return () => {}
@@ -148,15 +147,8 @@ export default function ModelReviewObjectDetection (props) {
           elapsed = now - then
           if (elapsed > fpsInterval) {
             then = now - (elapsed % fpsInterval)
-            // Put your drawing code here
             const _processWebcam = processWebcam()
             if (_processWebcam !== null) await processData(_processWebcam.ctx, _processWebcam.video)
-
-            // end
-            // TESTING...Report #seconds since start and achieved fps.
-            // let sinceStart = now - startTime
-            // let currentFps = Math.round(1000 / (sinceStart / ++frameCount) * 100) / 100
-            // console.debug('Elapsed time= ' + Math.round(sinceStart / 1000 * 100) / 100 + ' secs @ ' + currentFps + ' fps.')
           }
         }
       }
@@ -167,7 +159,7 @@ export default function ModelReviewObjectDetection (props) {
         then = Date.now()
         // startTime = then
         animate()
-          .then(r => {
+          .then((_) => {
             console.debug('start animation')
           })
       }

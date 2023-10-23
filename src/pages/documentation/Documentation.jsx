@@ -6,7 +6,7 @@ import N4LDivider from '@components/divider/N4LDivider'
 import N4LMarkdownDownloader from '@components/markdown/N4LMarkdownDownloader'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function Documentation ({}) {
+export default function Documentation () {
 
   if (VERBOSE) console.debug('render Documentation')
   return <>

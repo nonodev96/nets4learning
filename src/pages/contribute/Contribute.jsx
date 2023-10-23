@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Accordion, Card, Col, Container, Row } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 
@@ -6,7 +6,7 @@ import N4LMarkdownDownloader from '@components/markdown/N4LMarkdownDownloader'
 import N4LDivider from '@components/divider/N4LDivider'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function Contribute (props) {
+export default function Contribute () {
 
   const prefix = 'pages.contribute.'
 
@@ -53,8 +53,7 @@ SOFTWARE.`}</pre>
                 <p className={'text-muted mb-0 pb-0'}>
                   <Trans i18nKey={'more-information-in-link'}
                          components={{
-                           link1: <a className={'text-info'}
-                                     href={'https://github.com/SIMIDAT'} />,
+                           link1: <a className={'text-info'} href={'https://github.com/SIMIDAT'}>link</a>,
                          }} />
                 </p>
               </Card.Footer>

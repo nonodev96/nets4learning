@@ -20,8 +20,6 @@ export default function TabularClassificationDataset (props) {
     /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
 
-    /** @type number */
-    datasetIndex,
     /** @type React.Dispatch<number> */
     setDatasetIndex,
   } = props
