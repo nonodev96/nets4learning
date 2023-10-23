@@ -78,7 +78,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @return {{
    *    run                   : boolean,
    *    continuous            : boolean,
-   *    handleJoyrideCallback : (data: CallBackProps) => void,
+   *    handleJoyrideCallback : (data) => Promise<void>,
    *    steps                 : Array<{content: string, target: string}>
    * }}
    * @constructor

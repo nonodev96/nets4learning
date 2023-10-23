@@ -1,5 +1,5 @@
 const DEFAULT_LEARNING_RATE = 1
-const DEFAULT_NUMBER_EPOCHS = 3
+const DEFAULT_NUMBER_EPOCHS = 5
 const DEFAULT_TEST_SIZE = 10
 const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'

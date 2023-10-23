@@ -54,15 +54,13 @@ export default function ModelReviewObjectDetection (props) {
   }, [progress])
 
   useEffect(() => {
-    console.log('useEffect[dataset, t]')
-
+    console.debug('useEffect[dataset, t]')
     async function init () {
       const isValid = LIST_MODELS_OBJECT_DETECTION.some((e) => e === dataset)
       if (!isValid) {
         await alertHelper.alertError('Error in selection of model')
         return
       }
-
       if (dataset === UPLOAD) {
         console.error('Error, data set not valid')
       }
@@ -75,7 +73,7 @@ export default function ModelReviewObjectDetection (props) {
         try {
           await tfjs.ready()
           if (tfjs.getBackend() !== 'webgl') {
-            await alertHelper.alertError('Backend of tensorflow not installed')
+            await alertHelper.alertError('Error tensorflow backend webgl not installed in your browser')
             return
           }
 
