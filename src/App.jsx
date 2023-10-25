@@ -1,7 +1,8 @@
 // import './stylesheet.scss'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { Redirect, Route } from 'react-router'
+import ReactGA from 'react-ga4'
 import Loading from './pages/Loading'
 import N4LNavbar from './components/header/N4LNavbar'
 import N4LFooter from './components/footer/N4LFooter'
@@ -31,6 +32,11 @@ const TestPageAdvanced_lazy = lazy(() => import( '@pages/TestPageAdvanced'))
 
 function App () {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
+
+  useEffect(() => {
+    console.log(process.env)
+    ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID)
+  }, [])
 
   return (
     <div className="body">
