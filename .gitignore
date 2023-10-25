@@ -24,9 +24,9 @@ yarn-error.log*
 #package-lock.json
 
 .env
-.env.android
 .env.development
 .env.netlify
+.env.netlify-snapshot
 .env.production
 .env.simidat
 .env.simidat-beta

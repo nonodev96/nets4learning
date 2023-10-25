@@ -10,9 +10,6 @@ jobs:
     name: 'Deploy to netlify stable'
     runs-on: ubuntu-latest
     steps:
-      - name: 'Create env file'
-        run: |
-          echo "${{ vars.NETLIFY_ENV_FILE_STABLE }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -31,14 +28,19 @@ jobs:
           BUILD_DIRECTORY: 'build'
         env:
           NODE_OPTIONS: "--max_old_space_size=6144"
+          NODE_ENV: "production"
+          PUBLIC_URL: "https://nets4learning.netlify.app"
+          REACT_APP_ENVIRONMENT: "production"
+          REACT_APP_PATH: ""
+          REACT_APP_PUBLIC_URL: "https://nets4learning.netlify.app"
+          REACT_APP_GA_MEASUREMENT_ID: "G-3644EFBXMG"
+          REACT_APP_SHOW_NEW_FEATURE: "false"
+          REACT_APP_NEW_FEATURE: "linear-regression"
 
   deploy-snapshot:
     name: 'Deploy to netlify snapshot'
     runs-on: ubuntu-latest
     steps:
-      - name: 'Create env file'
-        run: |
-          echo "${{ vars.NETLIFY_ENV_FILE_SNAPSHOT }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -53,7 +55,15 @@ jobs:
           NETLIFY_DEPLOY_MESSAGE: "Deploy v${{ github.ref }}"
           NETLIFY_DEPLOY_TO_PROD: true
           INSTALL_COMMAND: npm install
-          BUILD_COMMAND: npm run build:netlify
+          BUILD_COMMAND: npm run build:netlify-snapshot
           BUILD_DIRECTORY: 'build'
         env:
           NODE_OPTIONS: "--max_old_space_size=6144"
+          NODE_ENV: "production"
+          PUBLIC_URL: "https://nets4learning-snapshot.netlify.app"
+          REACT_APP_ENVIRONMENT: "production"
+          REACT_APP_PATH: ""
+          REACT_APP_PUBLIC_URL: "https://nets4learning-snapshot.netlify.app"
+          REACT_APP_GA_MEASUREMENT_ID: "G-3644EFBXMG"
+          REACT_APP_SHOW_NEW_FEATURE: "true"
+          REACT_APP_NEW_FEATURE: "linear-regression"

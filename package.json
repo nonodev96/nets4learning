@@ -9,17 +9,12 @@
     "eject": "craco eject",
     "test": "craco test  --env jest-environment-jsdom",
     "start:development": "craco start --verbose --mode development",
-    "start:netlify": "craco start --verbose --mode netlify",
-    "start:production": "craco start --verbose --mode production",
-    "start:simidat": "craco start --verbose --mode simidat",
-    "start:simidat-beta": "craco start --verbose --mode simidat-beta",
-    "start:android": "craco start --verbose --mode android",
     "build:development": "craco build --mode development",
     "build:netlify": "craco build --mode netlify",
+    "build:netlify-snapshot": "craco build --mode netlify-snapshot",
     "build:production": "craco build --mode production",
     "build:simidat": "craco build --mode simidat",
     "build:simidat-beta": "craco build --mode simidat-beta",
-    "build:android": "craco build --mode android",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
   "dependencies": {
