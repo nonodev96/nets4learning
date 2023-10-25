@@ -10,6 +10,10 @@ jobs:
     name: 'Deploy to netlify stable'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Create env file'
+        run: |
+          echo "Hello $REACT_APP_PUBLIC_URL"
+          echo "${{ vars.NETLIFY_ENV_FILE_STABLE }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -41,6 +45,10 @@ jobs:
     name: 'Deploy to netlify snapshot'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Create env file'
+        run: |
+          echo "Hello $REACT_APP_PUBLIC_URL"
+          echo "${{ vars.NETLIFY_ENV_FILE_SNAPSHOT }}" > .env.netlify-snapshot
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -59,7 +67,6 @@ jobs:
           BUILD_DIRECTORY: 'build'
         env:
           NODE_OPTIONS: "--max_old_space_size=6144"
-          NODE_ENV: "production"
           PUBLIC_URL: "https://nets4learning-snapshot.netlify.app"
           REACT_APP_ENVIRONMENT: "production"
           REACT_APP_PATH: ""
