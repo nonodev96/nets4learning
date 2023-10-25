@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Form  } from 'react-bootstrap'
+import { Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
 import { UPLOAD } from '@/DATA_MODEL'
