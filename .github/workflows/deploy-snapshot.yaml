@@ -21,8 +21,6 @@ jobs:
         with:
           node-version: 18
       - uses: jsmrcaga/action-netlify-deploy@v2.0.0
-        run: |
-          echo "${{ vars.NETLIFY_ENV_FILE_STABLE }}" > .env.netlify
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_STABLE }}
