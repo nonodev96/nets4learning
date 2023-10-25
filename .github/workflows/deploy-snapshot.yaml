@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: 'Create env file'
         run: |
-          echo "${{ secrets.NETLIFY_ENV_FILE }}" > .env.netlify
+          echo "${{ secrets.NETLIFY_ENV_FILE_SNAPSHOT }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
@@ -25,11 +25,12 @@ jobs:
       - uses: jsmrcaga/action-netlify-deploy@v2.0.0
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_SNAPSHOT }}
           NETLIFY_DEPLOY_MESSAGE: "Deploy v${{ github.ref }}"
           NETLIFY_DEPLOY_TO_PROD: true
-          INSTALL_COMMAND: npm i
+          INSTALL_COMMAND: npm install
           BUILD_COMMAND: npm run build:netlify
           BUILD_DIRECTORY: 'build'
         env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
+          NODE_OPTIONS: "--max_old_space_size=6144"
+

@@ -1,8 +1,7 @@
 // import './stylesheet.scss'
-import React, { useEffect, lazy, Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { Redirect, Route } from 'react-router'
-import ReactGA from 'react-ga4'
 import Loading from './pages/Loading'
 import N4LNavbar from './components/header/N4LNavbar'
 import N4LFooter from './components/footer/N4LFooter'
@@ -20,7 +19,7 @@ const PageDescriptionLinearRegression = lazy(() => import( './pages/playground/1
 const PageManual = lazy(() => import( './pages/manual/Manual'))
 const PageGlossary = lazy(() => import( './pages/glossary/Glossary'))
 const PageDatasets = lazy(() => import( './pages/datasets/Datasets'))
-const PageDataFrame = lazy(() => import( './pages/dataframe/DataFrame'))
+const PageAnalyzeDataFrame = lazy(() => import( './pages/analyze/AnalyzeDataFrame'))
 const PageContribute = lazy(() => import( './pages/contribute/Contribute'))
 const PageDocumentation = lazy(() => import( './pages/documentation/Documentation'))
 const PageTermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
@@ -32,10 +31,6 @@ const TestPageAdvanced_lazy = lazy(() => import( '@pages/TestPageAdvanced'))
 
 function App () {
   const REACT_APP_PATH = process.env.REACT_APP_PATH
-
-  useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID)
-  }, [])
 
   return (
     <div className="body">
@@ -53,7 +48,7 @@ function App () {
             <Route exact path={'/manual/'} component={PageManual}></Route>
             <Route exact path={'/glossary/'} component={PageGlossary}></Route>
             <Route exact path={'/datasets/'} component={PageDatasets}></Route>
-            <Route exact path={'/dataframe/'} component={PageDataFrame}></Route>
+            <Route exact path={'/analyze/'} component={PageAnalyzeDataFrame}></Route>
             <Route exact path={'/contribute/'} component={PageContribute}></Route>
             <Route exact path={'/documentation/'} component={PageDocumentation}></Route>
             <Route exact path={'/terms-and-conditions/'} component={PageTermsAndConditions}></Route>

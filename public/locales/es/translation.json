@@ -28,6 +28,8 @@
   "Column target": "Columna a predecir",
   "Scaler": "Escalador",
   "Processed": "Procesado",
+  "Default": "Por defecto",
+  "Need permissions": "Necesitas permisos",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -251,7 +253,8 @@
     "home": "Inicio",
     "datasets": "Conjuntos de datos",
     "theme": "Tema",
-    "dataframe": "DataFrame"
+    "dataframe": "DataFrame",
+    "analyze": "Analizar"
   },
   "footer": {
     "description-app": "Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo.",
@@ -1552,7 +1555,8 @@
           "test-vector": "Vector a probar",
           "test-input-data": "Datos del formulario",
           "test-input-vector": "Vector de los datos",
-          "selector-entity": "Selecciona la entidad"
+          "selector-entity": "Selecciona la entidad",
+          "selector-model": "Selecciona el modelo"
         },
         "list-models-generated": "Lista modelos generados",
         "visor": {
@@ -2192,7 +2196,7 @@
     "classify": "Clasificar",
     "tasks": "Tareas",
     "00-tabular-classification": "Clasificación Tabular",
-    "tutorial-00-tabular-classification": "Tutorial clasificación tabular",
+    "tutorial-00-tabular-classification": "Entrenar un modelo para clasificación tabular",
     "01-linear-regression": "Regresión Lineal",
     "02-object-detection": "Detección de objetos",
     "03-image-classification": "Clasificación de imágenes",

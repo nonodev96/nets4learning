@@ -6,10 +6,10 @@ This is a list of utilities to easily pre-process a data set so that the data se
 
 ## `DataFrameEncoder`
 
-| Parameters | Type                                        | Description | Default |
-|------------|---------------------------------------------|-------------|---------|
-| dataframe  | `DataFrame`                                 |             |         |
-| transforms | `Array<'label-encoder'\|'one-hot-encoder'>` |             |         |
+| Parameters | Type                                                                                  | Description | Default |
+|------------|---------------------------------------------------------------------------------------|-------------|---------|
+| dataframe  | `DataFrame`                                                                           |             |         |
+| transforms | `Array<{column_name: string, column_transform:'label-encoder'\|'one-hot-encoder'}>`   |             |         |
 
 <details>
 <summary class="n4l-summary-wiki">Code example</summary>
@@ -49,7 +49,7 @@ const encoders = DataFrameUtils.DataFrameEncoder(dataframe, transforms)
 
 ```js
 /**
- * @param {dfd.DataFrame}                dataframe
+ * @param {dfd.DataFrame} dataframe
  * @param {DataFrameColumnTransform_t[]} transforms
  * @return {dfd.DataFrame}
  */
@@ -86,9 +86,9 @@ dataframe = DataFrameUtils.DataFrameTransform(dataframe, transforms)
 ```js
 /**
  *
- * @param {EncoderMap_t}         encoders
+ * @param {EncoderMap_t} encoders
  * @param {Object.<string, int32|float32|string|boolean>} values
- * @param {string[]}             columns
+ * @param {string[]} columns
  * @returns {number[]}
  */
 function DataFrameApplyEncoders (encoders, values, columns) {}
@@ -125,9 +125,9 @@ const vectorValuesEncoders = DataFrameUtils.DataFrameApplyEncoders(encoders, dat
 ```js
 /**
  *
- * @param {EncoderMap_t}         encoders
+ * @param {EncoderMap_t} encoders
  * @param {Array<string|number>} input
- * @param {string[]}             columns
+ * @param {string[]} columns
  * @return {number[]}
  */
 export function DataFrameApplyEncodersVector (encoders, input, columns) {}

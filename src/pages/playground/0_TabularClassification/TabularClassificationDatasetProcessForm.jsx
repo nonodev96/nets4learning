@@ -15,7 +15,6 @@ const DEFAULT_OPTIONS = [
   { value: 'string', i18n: 'string' },
   { value: 'label-encoder', i18n: 'label-encoder' },
   { value: 'drop', i18n: 'drop' },
-  { value: 'ignored', i18n: 'ignored' }
 ]
 // @formatter:on
 
@@ -54,7 +53,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
       const _column_transform = (column_type === 'string') ? 'label-encoder' : column_type
       return { column_name: column_name, column_transform: _column_transform }
     })
-    setColumnNameTarget(_columns[0])
+    setColumnNameTarget(_columns[_columns.length - 1])
     setListColumnNameType(_listColumnNameType)
     setListColumnNameTransformations(_listTransformations)
   }, [datasets, datasetIndex])
@@ -107,12 +106,13 @@ export default function TabularClassificationDatasetProcessForm (props) {
     let attributes = listColumnNameTransformations.map(({ column_name, column_transform }, index) => {
       if (column_transform === 'label-encoder') {
         const _options = Object.keys(encoders_map[column_name].encoder.$labels).map((label) => ({ value: label, text: label }))
-        return { type: column_transform, index_column: index, name: column_name, options: _options }
+        return { type: column_transform, name: column_name, options: _options }
       } else {
-        return { type: column_transform, index_column: index, name: column_name }
+        return { type: column_transform, name: column_name }
       }
     })
 
+    attributes = attributes.filter(v => v.type !== 'drop')
     attributes = attributes.filter(v => v.name !== columnNameTarget)
 
     const scaler = (typeScaler === 'min-max-scaler') ? new dfd.MinMaxScaler() : new dfd.StandardScaler()
@@ -148,6 +148,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
             ..._dataset,
             is_dataset_processed: true,
             dataframe_processed : dataframe_processed,
+            dataset_transforms  : [...listColumnNameTransformations],
             data_processed      : data_processed,
           }
         }

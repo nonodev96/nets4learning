@@ -119,7 +119,7 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
         break
       }
       default: {
-        console.error('Error, option not valid')
+        console.warn('Error, option not valid', { column_transform, column_name })
         break
       }
     }
@@ -150,9 +150,9 @@ export function DataFrameApplyEncoders (encoders_map, values_map, column_name_li
 
 /**
  *
- * @param {EncoderMap_t}         encoders_map
+ * @param {EncoderMap_t} encoders_map
  * @param {Array<string|number>} input_data
- * @param {string[]}             column_name_list
+ * @param {string[]} column_name_list
  * @return {number[]}
  */
 export function DataFrameApplyEncodersVector (encoders_map, input_data, column_name_list) {
@@ -170,7 +170,7 @@ export function DataFrameApplyEncodersVector (encoders_map, input_data, column_n
 }
 
 /**
- * @param {dfd.DataFrame}                dataframe
+ * @param {dfd.DataFrame} dataframe
  * @param {DataFrameColumnTransform_t[]} dataframe_transforms
  * @return {dfd.DataFrame}
  */
@@ -211,7 +211,7 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         break
       }
       default: {
-        console.error('Error, option not valid', { column_transform, column_name })
+        console.warn('Error, option not valid', { column_transform, column_name })
       }
     }
   }

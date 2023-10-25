@@ -15,11 +15,11 @@ import DataFrameDescribeCard from '@components/dataframe/DataFrameDescribeCard'
 import DataFrameQueryCard from '@components/dataframe/DataFrameQueryCard'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function DataFrame () {
+export default function AnalyzeDataFrame () {
   const prefix = 'pages.dataframe.'
   const { t } = useTranslation()
 
-  const [dataframe, setDataFrame] = useState(/**@type dfd.DataFrame*/ new dfd.DataFrame())
+  const [dataframe, setDataFrame] = useState(new dfd.DataFrame())
   const [waiting, setWaiting] = useState(true)
 
   const handleFileUpload_CSV_Accepted = async (files) => {

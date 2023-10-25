@@ -28,6 +28,8 @@
   "Column target": "Column to predict",
   "Scaler": "Scaler",
   "Processed": "Processed",
+  "Default": "Default",
+  "Need permissions": "Need permissions",
   "equations": {
     "title": "Equations",
     "title-metrics": "Metric functions formulas",
@@ -251,7 +253,8 @@
     "home": "Home",
     "datasets": "Data sets",
     "theme": "Theme",
-    "dataframe": "DataFrame"
+    "dataframe": "DataFrame",
+    "analyze": "Analyze"
   },
   "footer": {
     "description-app": "Web platform for the design and execution of deep learning models.",
@@ -605,7 +608,7 @@
             "title": "References",
             "list": {
               "0": "<link1>UCI data set info</link1>",
-              "1": "<link1>a Boston housing dataset controversy</link1>"
+              "1": "<link1>Boston housing dataset controversy</link1>"
             }
           }
         }
@@ -1552,7 +1555,8 @@
           "test-vector": "Vector to test",
           "test-input-data": "Form data",
           "test-input-vector": "Vector to test",
-          "selector-entity": "Select the entity"
+          "selector-entity": "Select the entity",
+          "selector-model": "Select the model"
         },
         "list-models-generated": "List generated models",
         "visor": {
@@ -2192,7 +2196,7 @@
     "classify": "Classify",
     "tasks": "Tasks",
     "00-tabular-classification": "Tabular Classification",
-    "tutorial-00-tabular-classification": "Tabular classification tutorial",
+    "tutorial-00-tabular-classification": "Train a model for Tabular classification",
     "01-linear-regression": "Linear Regression",
     "02-object-detection": "Object Detection",
     "03-image-classification": "Image Classification",

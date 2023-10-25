@@ -1,11 +1,13 @@
 import React from 'react'
-import { Form, Button, Card, Row, Col } from 'react-bootstrap'
+import { Button, Card, Form  } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
 import { UPLOAD } from '@/DATA_MODEL'
 import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import { VERBOSE } from '@/CONSTANTS'
 import TabularClassificationPredictionForm from '@pages/playground/0_TabularClassification/TabularClassificationPredictionForm'
+import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default function TabularClassificationPrediction (props) {
   const {
@@ -48,11 +50,17 @@ export default function TabularClassificationPrediction (props) {
   }
 
   const handleChange_ROW = (e) => {
-    let row_index = parseInt(e.target.value)
     const dataset_processed = datasets[datasetIndex]
-    const { data_processed } = dataset_processed
+    const { data_processed, dataframe_original, dataset_transforms } = dataset_processed
     const { column_name_target } = data_processed
-    const dataframe = dataset_processed.dataframe_original.drop({ columns: [column_name_target] })
+    const dataframe = DataFrameUtils.DataFrameDeepCopy(dataframe_original)
+    dataframe.drop({ columns: [column_name_target], inplace: true })
+    for (const { column_name, column_transform } of dataset_transforms) {
+      if (column_transform === 'drop') {
+        dataframe.drop({ columns: [column_name], inplace: true })
+      }
+    }
+    const row_index = parseInt(e.target.value)
     setInputDataToPredict(dataframe.$data[row_index])
   }
 
@@ -123,10 +131,10 @@ export default function TabularClassificationPrediction (props) {
 
 
         {(canRender_PredictDynamicForm()) && <>
-          <Form onSubmit={handleSubmit_PredictVector}>
+          <Form onSubmit={handleSubmit_PredictVector} noValidate={true}>
             <Card.Text>
               <Trans i18nKey={prefix + 'text-0-__column_name_target__'}
-                     values={{ column_name_target: datasets[datasetIndex].data_processed.column_name_target   }} />
+                     values={{ column_name_target: datasets[datasetIndex].data_processed.column_name_target }} />
               <br />
               <b>({datasets[datasetIndex].data_processed.attributes.map(att => att.name).join(', ')}).</b>
             </Card.Text>
@@ -148,6 +156,9 @@ export default function TabularClassificationPrediction (props) {
               </Button>
             </div>
             <hr />
+            <TabularClassificationDatasetShowInfo datasets={datasets}
+                                                  datasetIndex={datasetIndex} />
+            <hr />
             <Bar options={bar_options}
                  data={{
                    labels  : predictionBar.labels,
@@ -164,20 +175,6 @@ export default function TabularClassificationPrediction (props) {
           </Form>
         </>}
       </Card.Body>
-      <Card.Footer>
-        {dataset === UPLOAD && <>
-          <Row>
-            <Col>
-              <ol start="0">
-                {predictionBar
-                  .labels
-                  .map((item, index) => <li key={index}>{item}</li>)
-                }
-              </ol>
-            </Col>
-          </Row>
-        </>}
-      </Card.Footer>
     </Card>
   </>
 }

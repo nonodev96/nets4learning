@@ -8,7 +8,7 @@ import { VERBOSE } from '@/CONSTANTS'
 export default function TabularClassificationTableModels (props) {
   const {
     listModels = [],
-    rowsPerPage = 3,
+    rowsPerPage = 5,
     isTraining,
   } = props
   const prefix = 'generator.table-models.'
@@ -71,7 +71,7 @@ export default function TabularClassificationTableModels (props) {
           <Container fluid={true}>
             <Row>
               <Col>
-                <Table size={'sm'} striped={true} bordered={false} hover={true} responsive={'md'}>
+                <Table size={'sm'} striped={true} bordered={false} hover={true} responsive={true}>
                   <thead>
                   <tr>
                     <th>ID</th>

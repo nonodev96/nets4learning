@@ -14,6 +14,7 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 export default function TabularClassificationDataset (props) {
   const {
     dataset,
+    /** @type  I_MODEL_TABULAR_CLASSIFICATION*/
     iModelInstance,
     /*** @type DatasetProcessed_t[] */
     datasets,
@@ -106,6 +107,6 @@ export default function TabularClassificationDataset (props) {
         </p>
       </>}
     </>}
-      {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}
+    {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}
   </>
 }

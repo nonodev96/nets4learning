@@ -26,6 +26,7 @@ export default function ModelReviewObjectDetection (props) {
   const [isLoading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   const [isCameraEnable, setCameraEnable] = useState(false)
+  const [cameraPermission, setCameraPermission] = useState(/**@type {'denied' | 'granted' | 'prompt'} */'prompt')
   const [isProcessedImage, setIsProcessedImage] = useState(false)
 
   const [deviceId, setDeviceId] = useState('default')
@@ -41,6 +42,56 @@ export default function ModelReviewObjectDetection (props) {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
   }, [dataset])
 
+  const handleDevices = useCallback((mediaDevices) => {
+    console.debug('useCallback[handleDevices]')
+    setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'))
+  }, [setDevices])
+
+  useEffect(() => {
+    console.debug('useEffect[]')
+
+    async function checkCameraPermission () {
+      if (!navigator.permissions?.query) {
+        console.error('navigator.permissions.query | not supported.')
+      }
+      const permission = await navigator.permissions.query({ name: 'camera' })
+      setCameraPermission(permission.state)
+
+      if (permission.state === 'prompt' || permission.state === 'denied') {
+        setDevices([])
+      }
+      if (permission.state === 'granted') {
+        if (!navigator.mediaDevices?.enumerateDevices) {
+          console.error('navigator.mediaDevices.enumerateDevices | not supported.')
+        } else {
+          const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
+          handleDevices(_mediaDevices)
+        }
+      }
+      permission.onchange = async (ev) => {
+        console.log(`permission state has changed to ${permission.state}`, { ev: ev })
+        setCameraPermission(permission.state)
+
+        if (permission.state === 'granted') {
+          setDeviceId('default')
+          if (!navigator.mediaDevices?.enumerateDevices) {
+            console.error('enumerateDevices() not supported.')
+          } else {
+            const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
+            handleDevices(_mediaDevices)
+          }
+        }
+        if (permission.state === 'prompt' || permission.state === 'denied') {
+          setDeviceId('default')
+          setDevices([])
+          setCameraEnable(false)
+        }
+      }
+    }
+
+    checkCameraPermission().then(_ => {})
+  }, [])
+
   useEffect(() => {
     console.debug('useEffect[progress]')
     const interval = setInterval(() => {
@@ -52,7 +103,6 @@ export default function ModelReviewObjectDetection (props) {
     }, 10)
     return () => clearInterval(interval)
   }, [progress])
-
   useEffect(() => {
     console.debug('useEffect[dataset, t]')
 
@@ -72,10 +122,8 @@ export default function ModelReviewObjectDetection (props) {
       }
       try {
         const _iModelClass = MAP_OD_CLASSES[dataset]
-        const _iModelInstance = new _iModelClass(t)
-        iModelRef.current = _iModelInstance
-
-        await _iModelInstance.ENABLE_MODEL()
+        iModelRef.current = new _iModelClass(t)
+        await iModelRef.current.ENABLE_MODEL()
         setLoading(false)
         setProgress(100)
         await alertHelper.alertSuccess(t('model-loaded-successfully'))
@@ -90,36 +138,6 @@ export default function ModelReviewObjectDetection (props) {
 
     return () => {}
   }, [dataset, t])
-
-  const processWebcam = () => {
-    if (webcamRef.current === null
-      || typeof webcamRef.current === 'undefined'
-      || webcamRef.current.video.readyState !== 4) {
-      return null
-    }
-    // Get Video Properties
-    const video = webcamRef.current.video
-    const videoWidth = webcamRef.current.video.videoWidth
-    const videoHeight = webcamRef.current.video.videoHeight
-
-    // Set video width
-    webcamRef.current.video.width = videoWidth
-    webcamRef.current.video.height = videoHeight
-
-    // Set canvas width
-    canvasRef.current.width = videoWidth
-    canvasRef.current.height = videoHeight
-
-    const ctx = canvasRef.current.getContext('2d')
-
-    return { video, ctx }
-  }
-
-  const processData = async (ctx, img_or_video) => {
-    const predictions = await iModelRef.current.PREDICTION(img_or_video)
-    iModelRef.current.RENDER(ctx, predictions)
-  }
-
   useEffect(() => {
     console.debug('useEffect[isCameraEnable]', { isCameraEnable })
     if (isCameraEnable === false) {
@@ -167,19 +185,32 @@ export default function ModelReviewObjectDetection (props) {
     }
   }, [isCameraEnable])
 
-  const handleDevices = useCallback((mediaDevices) => {
-    console.debug('useCallback[handleDevices]')
-    setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'))
-  }, [setDevices])
-
-  useEffect(() => {
-    console.debug('useEffect[handleDevices]')
-    if (!navigator.mediaDevices?.enumerateDevices) {
-      console.error('enumerateDevices() not supported.')
-    } else {
-      navigator.mediaDevices.enumerateDevices().then(handleDevices)
+  const processWebcam = () => {
+    if (webcamRef.current === null || typeof webcamRef.current === 'undefined' || webcamRef.current.video.readyState !== 4) {
+      return null
     }
-  }, [handleDevices])
+    // Get Video Properties
+    const video = webcamRef.current.video
+    const videoWidth = webcamRef.current.video.videoWidth
+    const videoHeight = webcamRef.current.video.videoHeight
+
+    // Set video width
+    webcamRef.current.video.width = videoWidth
+    webcamRef.current.video.height = videoHeight
+
+    // Set canvas width
+    canvasRef.current.width = videoWidth
+    canvasRef.current.height = videoHeight
+
+    const ctx = canvasRef.current.getContext('2d')
+
+    return { video, ctx }
+  }
+
+  const processData = async (ctx, img_or_video) => {
+    const predictions = await iModelRef.current.PREDICTION(img_or_video)
+    iModelRef.current.RENDER(ctx, predictions)
+  }
 
   const handleChange_Camera = (e) => {
     console.debug('handleChange_Camera')
@@ -203,7 +234,6 @@ export default function ModelReviewObjectDetection (props) {
   }
 
   const handleChangeFileUpload = async (_files) => {
-    // let tgt = e.target || window.event.srcElement
     console.debug('ModelReviewObjectDetection -> handleChangeFileUpload', { _files })
     let files = _files
 
@@ -272,11 +302,10 @@ export default function ModelReviewObjectDetection (props) {
     <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
       <Row>
         <Col>
-          {isLoading &&
-            <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
-                         striped={true}
-                         animated={true}
-                         now={progress} />}
+          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
+                                     striped={true}
+                                     animated={true}
+                                     now={progress} />}
         </Col>
       </Row>
       <Row>
@@ -305,7 +334,8 @@ export default function ModelReviewObjectDetection (props) {
                                   size={'sm'}
                                   name={'switch-webcam'}
                                   label={t('datasets-models.2-object-detection.interface.process-webcam.button')}
-                                  defaultValue={isCameraEnable}
+                                  checked={isCameraEnable}
+                                  disabled={isLoading || cameraPermission === 'denied'}
                                   onChange={(e) => handleChange_Camera(e)}
                       />
                     </div>
@@ -313,14 +343,12 @@ export default function ModelReviewObjectDetection (props) {
                       <Form.Select aria-label={'select-device'}
                                    size={'sm'}
                                    value={deviceId}
-                                   disabled={isCameraEnable}
+                                   disabled={isLoading || isCameraEnable || cameraPermission === 'denied' || cameraPermission === 'prompt'}
                                    onChange={(e) => handleChange_Device(e)}>
-                        <option value={'default'} disabled>Default</option>
+                        {(cameraPermission === 'granted') && <option value={'default'} disabled><Trans i18nKey={'Default'} /></option>}
+                        {(cameraPermission === 'prompt' || cameraPermission === 'denied') && <option value={'default'} disabled><Trans i18nKey={'Need permissions'} /></option>}
                         {devices.map((device, index) => {
-                          return <option key={'device-id-' + index}
-                                         value={device.deviceId}>
-                            {device.label}
-                          </option>
+                          return <option key={'device-id-' + index} value={device.deviceId}>{device.label}</option>
                         })}
                       </Form.Select>
                     </Form.Group>
@@ -333,41 +361,31 @@ export default function ModelReviewObjectDetection (props) {
                 </Card.Title>
                 <Row className={'mt-3'}>
                   <Col className={'d-flex justify-content-center'}>
-                    {isCameraEnable && (
-                      <div id={'webcamContainer'}
-                           className={'nets4-border-1'}
-                           style={{
-                             position: 'relative',
-                             overflow: 'hidden',
-                           }}>
-                        <Webcam ref={webcamRef}
-                                onUserMedia={onUserMediaEvent}
-                                onUserMediaError={onUserMediaErrorEvent}
-                                videoConstraints={{
-                                  facingMode: 'environment',
-                                  deviceId  : deviceId,
-                                }}
-
-                                mirrored={false}
-                                width={250}
-                                height={250}
-                                style={{
-                                  position: 'relative',
-                                  display : 'block',
-                                }}
-                        />
-                        <canvas ref={canvasRef}
-                                width={250}
-                                height={250}
-                                style={{
-                                  position: 'absolute',
-                                  display : 'block',
-                                  left    : 0,
-                                  top     : 0,
-                                  zIndex  : 10,
-                                }}></canvas>
-                      </div>
-                    )}
+                    {isCameraEnable && (<div id={'webcamContainer'}
+                                             className={'nets4-border-1'}
+                                             style={{
+                                               position: 'relative', overflow: 'hidden',
+                                             }}>
+                      <Webcam ref={webcamRef}
+                              onUserMedia={onUserMediaEvent}
+                              onUserMediaError={onUserMediaErrorEvent}
+                              videoConstraints={{
+                                facingMode: 'environment', deviceId: deviceId,
+                              }}
+                              mirrored={false}
+                              width={250}
+                              height={250}
+                              style={{
+                                position: 'relative', display: 'block',
+                              }}
+                      />
+                      <canvas ref={canvasRef}
+                              width={250}
+                              height={250}
+                              style={{
+                                position: 'absolute', display: 'block', left: 0, top: 0, zIndex: 10,
+                              }}></canvas>
+                    </div>)}
                   </Col>
                 </Row>
               </Card.Body>
@@ -400,8 +418,7 @@ export default function ModelReviewObjectDetection (props) {
                                    text={t('drag-and-drop.image')}
                                    labelFiles={t('drag-and-drop.label-files-one')}
                                    accept={{
-                                     'image/png': ['.png'],
-                                     'image/jpg': ['.jpg'],
+                                     'image/png': ['.png'], 'image/jpg': ['.jpg'],
                                    }}
                                    function_DropAccepted={handleChangeFileUpload}
                       />

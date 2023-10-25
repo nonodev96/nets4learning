@@ -167,12 +167,12 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
           classes           : classes,
           // @formatter:off
           attributes       : [
-            { type: 'label-encoder', index_column: 0, name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
-            { type: 'label-encoder', index_column: 1, name: 'Maint',    options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
-            { type: 'label-encoder', index_column: 2, name: 'Doors',    options: [{ value: '2',     text: '2'     }, { value: '3',    text: '3'    }, { value: '4',    text: '4'    }, { value: '5more', text: '5more' } ] },
-            { type: 'label-encoder', index_column: 3, name: 'Persons',  options: [{ value: '2',     text: '2'     }, { value: '4',    text: '4'    }, { value: 'more', text: 'more' } ] },
-            { type: 'label-encoder', index_column: 4, name: 'Lug_boot', options: [{ value: 'small', text: 'small' }, { value: 'med', text: 'med'   }, { value: 'big',  text: 'big'  } ] },
-            { type: 'label-encoder', index_column: 5, name: 'Safety',   options: [{ value: 'low',   text: 'low'   }, { value: 'med', text: 'med'   }, { value: 'high', text: 'high' } ] }
+            { type: 'label-encoder', name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
+            { type: 'label-encoder', name: 'Maint',    options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
+            { type: 'label-encoder', name: 'Doors',    options: [{ value: '2',     text: '2'     }, { value: '3',    text: '3'    }, { value: '4',    text: '4'    }, { value: '5more', text: '5more' } ] },
+            { type: 'label-encoder', name: 'Persons',  options: [{ value: '2',     text: '2'     }, { value: '4',    text: '4'    }, { value: 'more', text: 'more' } ] },
+            { type: 'label-encoder', name: 'Lug_boot', options: [{ value: 'small', text: 'small' }, { value: 'med', text: 'med'   }, { value: 'big',  text: 'big'  } ] },
+            { type: 'label-encoder', name: 'Safety',   options: [{ value: 'low',   text: 'low'   }, { value: 'med', text: 'med'   }, { value: 'high', text: 'high' } ] }
           ],
           // @formatter:on
         }

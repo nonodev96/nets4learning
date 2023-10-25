@@ -58,14 +58,6 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
           </li>
         </ol>
       </details>
-      <details>
-        <summary>BibTeX</summary>
-        <pre>
-{`
-
-`}
-        </pre>
-      </details>
     </>
   }
 

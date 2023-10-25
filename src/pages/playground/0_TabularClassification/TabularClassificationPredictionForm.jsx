@@ -25,17 +25,23 @@ export default function TabularClassificationPredictionForm (props) {
   const { t } = useTranslation()
 
   useEffect(() => {
-    console.debug("useEffect [datasets, datasetIndex, setInputDataToPredict]")
+    console.debug('useEffect [datasets, datasetIndex, setInputDataToPredict]')
     const dataset_processed = datasets[datasetIndex]
-    const { dataframe_original, data_processed } = dataset_processed
+    const { dataframe_original, data_processed, dataset_transforms } = dataset_processed
     const { column_name_target } = data_processed
-    const dataframe = dataframe_original.drop({ columns: [column_name_target] })
+    const dataframe = DataFrameUtils.DataFrameDeepCopy(dataframe_original)
+    dataframe.drop({ columns: [column_name_target], inplace: true })
+    for (const { column_name, column_transform } of dataset_transforms) {
+      if (column_transform === 'drop') {
+        dataframe.drop({ columns: [column_name], inplace: true })
+      }
+    }
     const dataframe_row_default_data = dataframe.$data[0]
     setInputDataToPredict(dataframe_row_default_data)
   }, [datasets, datasetIndex, setInputDataToPredict])
 
   useEffect(() => {
-    console.debug("useEffect [datasets, datasetIndex, inputDataToPredict, setInputVectorToPredict]")
+    console.debug('useEffect [datasets, datasetIndex, inputDataToPredict, setInputVectorToPredict]')
     if (inputDataToPredict.length === 0) return
     const { data_processed } = datasets[datasetIndex]
     const { encoders, X } = data_processed
@@ -84,8 +90,6 @@ export default function TabularClassificationPredictionForm (props) {
         // { name: "type1", type: "int32" },
         // { name: "type2", type: "float32"  },
         // { name: "type3", type: "string", options: [{value: "", text: ""] },
-
-        const column_index = attribute.index_column
         const column_type = attribute.type
         const column_name = attribute.name
         const column_options = attribute.options
@@ -93,47 +97,42 @@ export default function TabularClassificationPredictionForm (props) {
         switch (column_type) {
           case 'int32': {
             return <Col key={'form' + index} className={'mb-3'}>
-              <Form.Group controlId={'FormControl_' + column_index}>
+              <Form.Group controlId={`FormControl_${column_name}__${index}`}>
                 <Form.Label><b>{column_name}</b></Form.Label>
                 <Form.Control type="number"
+                              inputMode={'numeric'}
                               size={'sm'}
                               placeholder={'int32'}
-                              min={0}
                               step={1}
-                              value={inputDataToPredict[column_index]}
-                              onChange={(e) => handleChange_Number(e, column_name, column_index)} />
+                              value={inputDataToPredict[index]}
+                              onChange={(e) => handleChange_Number(e, column_name, index)} />
                 <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
               </Form.Group>
             </Col>
           }
           case 'float32': {
             return <Col key={'form' + index} className={'mb-3'}>
-              <Form.Group controlId={'FormControl_' + column_index}>
+              <Form.Group controlId={`FormControl_${column_name}__${index}`}>
                 <Form.Label><b>{column_name}</b></Form.Label>
                 <Form.Control type="number"
+                              inputMode="decimal"
                               size={'sm'}
                               placeholder={'float32'}
-                              min={0}
-                              step={0.1}
-                              value={inputDataToPredict[column_index]}
-                              onChange={(e) => handleChange_Float(e, column_name, column_index)} />
+                              step={0.01}
+                              value={inputDataToPredict[index]}
+                              onChange={(e) => handleChange_Float(e, column_name, index)} />
                 <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
               </Form.Group>
             </Col>
           }
-          case 'string': {
-            return <Col key={'form' + index} className={'mb-3'}>
-              <p className={'text-center'}>Texto</p>
-            </Col>
-          }
           case 'label-encoder': {
             return <Col key={'form' + index} className={'mb-3'}>
-              <Form.Group controlId={'FormControl_' + column_index}>
+              <Form.Group controlId={`FormControl_${column_name}__${index}`}>
                 <Form.Label><b>{column_name}</b></Form.Label>
                 <Form.Select aria-label="select"
                              size={'sm'}
-                             value={inputDataToPredict[column_index]}
-                             onChange={(e) => handleChange_Select(e, column_name, column_index)}>
+                             value={inputDataToPredict[index]}
+                             onChange={(e) => handleChange_Select(e, column_name, index)}>
                   {column_options.map((option_value, option_index) => {
                     return <option key={column_name + '_option_' + option_index}
                                    value={option_value.value}>
@@ -145,14 +144,22 @@ export default function TabularClassificationPredictionForm (props) {
               </Form.Group>
             </Col>
           }
+          case 'string': {
+            return <Col key={'form' + index} className={'mb-3'}>
+              <p className={'text-center'}>Text: {inputDataToPredict[index]}</p>
+            </Col>
+          }
           case 'one-hot-encoder': {
             return <Col key={'form' + index} className={'mb-3'}>
               <p className={'text-center'}>OneHotEncoder</p>
             </Col>
           }
           default:
-            console.error('Error, option not valid')
-            return <>Error, option not valid</>
+            console.warn('Error, option not valid', { attribute })
+            return <Col key={'form' + index} className={'mb-3'}>
+              <p className={'text-center'}><b>{column_name}</b></p>
+              <p className={'text-center'}>{column_type}</p>
+            </Col>
         }
       })}
     </Row>

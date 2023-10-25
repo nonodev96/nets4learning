@@ -26,6 +26,13 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   /**
+   * @typedef {Object} DataFrameColumnTypeTransform_t
+   * @property {'drop'|'ignore'|'int32'|'float32'|'label-encoder'} type
+   * @property {string} name
+   * @property {Array<{value: string, text: string}>} options
+   */
+
+  /**
    * @typedef {Object} DataProcessed_t
    * @property {boolean} missing_values
    * @property {string} missing_value_key
@@ -33,7 +40,7 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
    * @property {Object<string, any>} encoders
    * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
    * @property {string} column_name_target
-   * @property {Array} attributes
+   * @property {Array<DataFrameColumnTypeTransform_t>} attributes
    * @property {dfd.DataFrame} X
    * @property {dfd.DataFrame|dfd.Series} y
    */

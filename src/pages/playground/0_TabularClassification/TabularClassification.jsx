@@ -133,7 +133,7 @@ export default function TabularClassification (props) {
   const [Model, setModel] = useState(/** @type {tf.Sequential | null }*/null)
 
   // Class && Controllers
-  const [iModelInstance, set_IModelInstance] = useState(new I_MODEL_TABULAR_CLASSIFICATION(t))
+  const iModelInstance = useRef(new I_MODEL_TABULAR_CLASSIFICATION(t))
 
   // Prediction
   const [inputDataToPredict, setInputDataToPredict] = useState([])
@@ -155,10 +155,9 @@ export default function TabularClassification (props) {
         if(VERBOSE) console.debug(df)
       } else if (MAP_TC_CLASSES.hasOwnProperty(dataset)) {
         const _iModelClass = MAP_TC_CLASSES[dataset]
-        const _iModelInstance = new _iModelClass(t)
-        set_IModelInstance(_iModelInstance)
-        setLayers(_iModelInstance.DEFAULT_LAYERS())
-        const _datasets = await _iModelInstance.DATASETS()
+        iModelInstance.current = new _iModelClass(t)
+        setLayers(iModelInstance.current.DEFAULT_LAYERS())
+        const _datasets = await iModelInstance.current.DATASETS()
         setDatasets(_datasets)
         setDatasetIndex(0)
       } else {
@@ -283,7 +282,7 @@ export default function TabularClassification (props) {
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModelInstance.JOYRIDE()}
+                  JOYRIDE_state={iModelInstance.current.JOYRIDE()}
                   TASK={'tabular-classification'}
                   KEY={'TabularClassification'}
       />
@@ -317,7 +316,7 @@ export default function TabularClassification (props) {
               </Accordion.Item>
               <Accordion.Item className={'joyride-step-dataset-info'} key={'1'} eventKey={'dataset_info'}>
                 <Accordion.Header>
-                  <h2><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.TITLE : prefix + 'dataset.upload-dataset'} /></h2>
+                  <h2><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.current.TITLE : prefix + 'dataset.upload-dataset'} /></h2>
                 </Accordion.Header>
                 <Accordion.Body>
                   <TabularClassificationDataset dataset={dataset}
@@ -328,7 +327,7 @@ export default function TabularClassification (props) {
                                                 datasetIndex={datasetIndex}
                                                 setDatasetIndex={setDatasetIndex}
 
-                                                iModelInstance={iModelInstance}
+                                                iModelInstance={iModelInstance.current}
                   />
                 </Accordion.Body>
               </Accordion.Item>

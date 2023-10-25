@@ -8,6 +8,7 @@ import { VERBOSE } from '@/CONSTANTS'
 import { Link } from 'react-router-dom'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
+import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
 
 export default function TabularClassificationDatasetShow (props) {
   const { datasets, datasetIndex } = props
@@ -77,50 +78,8 @@ export default function TabularClassificationDatasetShow (props) {
             </Col>
           </Row>
           <hr />
-          <Row>
-            <Col lg={10}>
-              <details>
-                <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
-                <main>
-                  <Row xs={3} sm={3} md={3} lg={4}>
-                    {datasets[datasetIndex].data_processed.attributes.map((item, i1) => {
-                      return <Col key={i1}>
-                        <p className={'mb-0'}><b>{item.name}</b></p>
-                        {item.type === 'int32' && <p className={'mb-0'}><Trans i18nKey={prefix + 'attributes.int32'} /></p>}
-                        {item.type === 'float32' && <p className={'mb-0'}><Trans i18nKey={prefix + 'attributes.float32'} /></p>}
-                        {item.type === 'label-encoder' && <>
-                          <p className={'mb-0'}>LabelEncoder:</p>
-                          <ol className={'n4l-ol-label-encoder'} start="0">
-                            {item.options.map((option, i2) => {
-                              return <li key={i1 + '_' + i2}>{option.text}</li>
-                            })}
-                          </ol>
-                        </>}
-                      </Col>
-                    })}
-                  </Row>
-                </main>
-              </details>
-            </Col>
-            <Col lg={2}>
-              <details>
-                <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.classes'} /></summary>
-                <main>
-                  <Row>
-                    <Col>
-                      <p className={'mb-0'}><b>{datasets[datasetIndex].data_processed.column_name_target}</b></p>
-                      <p className={'mb-0'}>LabelEncoder:</p>
-                      <ol className={'n4l-ol-label-encoder'} start="0">
-                        {datasets[datasetIndex].data_processed.classes.map((item, index) => {
-                          return <li key={index}>{item}</li>
-                        })}
-                      </ol>
-                    </Col>
-                  </Row>
-                </main>
-              </details>
-            </Col>
-          </Row>
+          <TabularClassificationDatasetShowInfo datasets={datasets}
+                                                datasetIndex={datasetIndex} />
         </>}
       </Card.Body>
       <Card.Footer className={'text-end'}>

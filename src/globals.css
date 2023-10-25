@@ -168,6 +168,9 @@ pre.highlight {
   counter-reset: item -1;
   list-style: none;
   padding-left: 1em;
+
+  overflow-y: auto;
+  height: 6em;
 }
 
 .n4l-ol-label-encoder li::before {
