@@ -10,15 +10,16 @@ jobs:
     name: 'Deploy to netlify stable'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Create env file'
+        run: |
+          echo "${{ vars.NETLIFY_ENV_FILE_STABLE }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - uses: jsmrcaga/action-netlify-deploy@v2.0.0
         run: |
           echo "${{ vars.NETLIFY_ENV_FILE_STABLE }}" > .env.netlify
@@ -37,18 +38,17 @@ jobs:
     name: 'Deploy to netlify snapshot'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Create env file'
+        run: |
+          echo "${{ vars.NETLIFY_ENV_FILE_SNAPSHOT }}" > .env.netlify
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - uses: jsmrcaga/action-netlify-deploy@v2.0.0
-        run: |
-          echo "${{ vars.NETLIFY_ENV_FILE_SNAPSHOT }}" > .env.netlify
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_SNAPSHOT }}
@@ -59,4 +59,3 @@ jobs:
           BUILD_DIRECTORY: 'build'
         env:
           NODE_OPTIONS: "--max_old_space_size=6144"
-
