@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Col, Form, Row } from 'react-bootstrap'
-import { Trans, useTranslation } from 'react-i18next'
-import * as dfd from 'danfojs'
-import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
-import N4LTablePagination from '@components/table/N4LTablePagination'
+import React from 'react'
+import { Col, Row } from 'react-bootstrap'
+import { Trans } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
-import { Link } from 'react-router-dom'
-import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
+
 
 export default function TabularClassificationDatasetShowInfo ({ datasets, datasetIndex }) {
   const prefix = 'pages.playground.generator.dataset.'

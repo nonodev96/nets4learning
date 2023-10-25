@@ -90,7 +90,7 @@ export default function ModelReviewObjectDetection (props) {
     }
 
     checkCameraPermission().then(_ => {})
-  }, [])
+  }, [handleDevices])
 
   useEffect(() => {
     console.debug('useEffect[progress]')
