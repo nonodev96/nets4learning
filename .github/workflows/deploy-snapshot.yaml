@@ -26,7 +26,7 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_SNAPSHOT }}
           NETLIFY_DEPLOY_MESSAGE: "Deploy v${{ github.ref }}"
           NETLIFY_DEPLOY_TO_PROD: true
-          INSTALL_COMMAND: npm install
+          INSTALL_COMMAND: npm ci
           BUILD_COMMAND: npm run build:netlify-snapshot
           BUILD_DIRECTORY: 'build'
         env:
