@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as tf from '@tensorflow/tfjs'
+import * as tfvis from '@tensorflow/tfjs-vis'
+
 import ReactGA from 'react-ga4'
 
 import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
@@ -10,6 +12,7 @@ import * as TrainMNIST from './custom/Train_MNIST'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
+import N4LDivider from '@components/divider/N4LDivider'
 
 import ImageClassificationClassify from '@pages/playground/3_ImageClassification/ImageClassificationClassify'
 import ImageClassificationManual from '@pages/playground/3_ImageClassification/ImageClassificationManual'
@@ -18,9 +21,7 @@ import ImageClassificationEditorHyperparameters from '@pages/playground/3_ImageC
 import ImageClassificationTableModels from '@pages/playground/3_ImageClassification/ImageClassificationTableModels'
 
 import alertHelper from '@utils/alertHelper'
-import {
-  MODEL_IMAGE_MNIST,
-} from '@/DATA_MODEL'
+import { UPLOAD } from '@/DATA_MODEL'
 import { VERBOSE } from '@/CONSTANTS'
 import {
   DEFAULT_NUMBER_EPOCHS,
@@ -28,13 +29,15 @@ import {
   DEFAULT_ID_OPTIMIZATION,
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
-  DEFAULT_LAYERS, DEFAULT_TEST_SIZE,
+  DEFAULT_LAYERS,
+  DEFAULT_TEST_SIZE,
 } from './CONSTANTS'
+import { MAP_IC_CLASSES } from '@pages/playground/3_ImageClassification/models'
 
 export default function ImageClassification (props) {
   const { dataset } = props
   const { t } = useTranslation()
-  const [iModelInfo, set_IModelInfo] = useState(new I_MODEL_IMAGE_CLASSIFICATION(t))
+  const iModelInfo = useRef(new I_MODEL_IMAGE_CLASSIFICATION(t))
 
   const prefix = 'pages.playground.generator.'
 
@@ -79,25 +82,30 @@ export default function ImageClassification (props) {
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ImageClassification/' + dataset, title: dataset })
-    switch (dataset) {
-      case MODEL_IMAGE_MNIST.KEY: {
-        set_IModelInfo(new MODEL_IMAGE_MNIST(t))
-        break
-      }
-      default: {
-        console.error('Error, option not valid')
+
+    const init = async () => {
+      if (dataset === UPLOAD) {
+        // TODO
+      } else if (MAP_IC_CLASSES.hasOwnProperty(dataset)) {
+        const _iModelClass = MAP_IC_CLASSES[dataset]
+        iModelInfo.current = new _iModelClass(t)
+        console.log(iModelInfo.current)
+        setLayers(iModelInfo.current.DEFAULT_LAYERS())
+      } else {
+        console.error('Error, opción not valid')
       }
     }
+    init()
+      .then(() => {
+        if (VERBOSE) console.debug('End init Image classification')
+      })
 
+    return () => { tfvis.visor().close() }
   }, [dataset, t])
 
   // region CREACIÓN DEL MODELO
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
-    const params = {
-      LearningRate,
-      TestSize
-    }
     if (Layers[0]._class === 'Conv2D') {
       const model = await TrainMNIST.MNIST_run({
         numberOfEpoch: NumberEpochs,
@@ -105,7 +113,10 @@ export default function ImageClassification (props) {
         idOptimizer  : idOptimizer,
         idMetrics    : idMetrics,
         layerList    : Layers,
-        params       : params,
+        params       : {
+          LearningRate,
+          TestSize
+        },
       })
       setModel(model)
       setGeneratedModels(oldModels => [...oldModels, {
@@ -223,19 +234,13 @@ export default function ImageClassification (props) {
     img.onerror = failed
     img.src = URL.createObjectURL(files[0])
   }
-
-  // const handleClick_DownloadModel = (index) => {
-  //   GeneratedModels[index].model.save('downloads://image-classification-model').then(() => {
-  //     console.log('downloaded my-model')
-  //   })
-  // }
   // endregion
 
   if (VERBOSE) console.debug('render ImageClassification')
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModelInfo.JOYRIDE()}
+                  JOYRIDE_state={iModelInfo.current.JOYRIDE()}
                   TASK={'image-classification'}
                   KEY={'ImageClassification'}
       />
@@ -255,11 +260,8 @@ export default function ImageClassification (props) {
           </Col>
         </Row>
 
-        <div className={'mt-2 mb-4 n4l-hr-row'}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.information'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.information'} />
+
 
         <Row className={'mt-3'}>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
@@ -273,21 +275,17 @@ export default function ImageClassification (props) {
 
               <Accordion.Item eventKey={'description-dataset'} className={'joyride-step-2-dataset-info'}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={dataset !== '0' ? iModelInfo.TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInfo.current.TITLE : prefix + 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body>
-                  {iModelInfo.DESCRIPTION()}
+                  {iModelInfo.current.DESCRIPTION()}
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
           </Col>
         </Row>
 
-        <div className={`mt-3 mb-4 n4l-hr-row`}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.model'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.model'} />
 
         {/* EDITOR */}
         <Form onSubmit={handleSubmit_Play} id={'ImageClassification'}>
@@ -332,11 +330,7 @@ export default function ImageClassification (props) {
 
         </Form>
 
-        <div className={'mt-4 mb-4 n4l-hr-row'}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.generated-models'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.generated-models'} />
 
         {/* GENERATED MODELS */}
         <Row className={'mt-3'}>
@@ -345,11 +339,7 @@ export default function ImageClassification (props) {
           </Col>
         </Row>
 
-        <div className={'mt-4 mb-4 n4l-hr-row'}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.classify'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.classify'} />
 
         {/* BLOCK 2 */}
         <Row className={'mt-3'}>

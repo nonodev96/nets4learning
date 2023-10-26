@@ -56,4 +56,57 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
       </details>
     </>
   }
+
+  async TRAIN_MODEL (params) {
+    return await TrainMNIST
+  }
+
+  DEFAULT_LAYERS () {
+    return [
+      {
+        _class           : 'Conv2D',
+        kernelSize       : 5,
+        filters          : 10,
+        strides          : 1,
+        activation       : 'Sigmoid',
+        kernelInitializer: 'varianceScaling',
+        // Not used because the class is Conv2D
+        poolSize: [2, 2],
+        strides2: [2, 2]
+      },
+      {
+        _class  : 'MaxPooling2D',
+        poolSize: [2, 2],
+        strides2: [2, 2],
+        // Not used because the class is MaxPooling2D
+        kernelSize       : 5,
+        filters          : 10,
+        strides          : 1,
+        activation       : 'Sigmoid',
+        kernelInitializer: 'varianceScaling',
+      },
+      {
+        _class           : 'Conv2D',
+        kernelSize       : 5,
+        filters          : 16,
+        strides          : 1,
+        activation       : 'relu',
+        kernelInitializer: 'varianceScaling',
+        // Not used because the class is Conv2D
+        poolSize: [2, 2],
+        strides2: [2, 2]
+      },
+      {
+        _class  : 'MaxPooling2D',
+        poolSize: [2, 2],
+        strides2: [2, 2],
+        // Not used because the class is MaxPooling2D
+        kernelSize       : 5,
+        filters          : 16,
+        strides          : 1,
+        activation       : 'relu',
+        kernelInitializer: 'varianceScaling',
+      },
+    ]
+  }
 }

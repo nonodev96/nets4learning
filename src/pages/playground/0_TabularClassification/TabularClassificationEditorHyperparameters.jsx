@@ -53,7 +53,9 @@ export default function TabularClassificationEditorHyperparameters (props) {
             <Trans i18nKey={prefix + 'learning-rate'} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={100}
+                        min={1}
+                        max={100}
+                        required={true}
                         placeholder={t(prefix + 'learning-rate-placeholder')}
                         defaultValue={DEFAULT_LEARNING_RATE}
                         onChange={handleChange_LearningRate} />
@@ -68,7 +70,9 @@ export default function TabularClassificationEditorHyperparameters (props) {
             <Trans i18nKey={prefix + 'number-of-epochs'} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={100}
+                        min={1}
+                        max={100}
+                        required={true}
                         placeholder={t(prefix + 'number-of-epochs')}
                         defaultValue={DEFAULT_NUMBER_EPOCHS}
                         onChange={handleChange_NumberEpochs} />
@@ -83,7 +87,9 @@ export default function TabularClassificationEditorHyperparameters (props) {
             <Trans i18nKey={prefix + 'train-rate'} />
           </Form.Label>
           <Form.Control type="number"
-                        min={1} max={100}
+                        min={1}
+                        max={100}
+                        required={true}
                         placeholder={t(prefix + 'train-rate-placeholder')}
                         defaultValue={DEFAULT_TEST_SIZE}
                         onChange={handleChange_TestSize} />

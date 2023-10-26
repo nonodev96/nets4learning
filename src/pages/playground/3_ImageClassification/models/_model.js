@@ -16,6 +16,22 @@ export default class I_MODEL_IMAGE_CLASSIFICATION {
     </>
   }
 
+  DEFAULT_LAYERS () {
+    return []
+  }
+
+  DEFAULT_HYPERPARAMETERS () {
+    return {}
+  }
+
+  async TRAIN_MODEL (params) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('I_MODEL_IMAGE_CLASSIFICATION')
+      }, 1000)
+    })
+  }
+
   JOYRIDE () {
     const handleJoyrideCallback = async (data) => {
       const { action, lifecycle, step/*, status, type*/ } = data

@@ -94,15 +94,23 @@ export default function ModelReviewObjectDetection (props) {
 
   useEffect(() => {
     console.debug('useEffect[progress]')
+    let step = 0.2
+    let current_progress = 0
     const interval = setInterval(() => {
-      if (progress < 90) {
-        setProgress(progress + 1)
-      } else {
+      current_progress += step
+      const _progress =  Math.round(Math.atan(current_progress) / (Math.PI / 2) * 100 * 1000) / 1000
+      setProgress(_progress)
+      if (_progress >= 100) {
         clearInterval(interval)
+      } else if (_progress >= 80) {
+        step = 0.05
+      } else if (_progress >= 70) {
+        step = 0.1
       }
-    }, 10)
+    }, 1000)
     return () => clearInterval(interval)
-  }, [progress])
+  }, [])
+
   useEffect(() => {
     console.debug('useEffect[dataset, t]')
 
@@ -302,7 +310,7 @@ export default function ModelReviewObjectDetection (props) {
     <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
       <Row>
         <Col>
-          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') : t('downloaded')}
+          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') + ' ' + progress + '%' : t('downloaded')}
                                      striped={true}
                                      animated={true}
                                      now={progress} />}
