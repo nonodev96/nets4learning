@@ -124,7 +124,7 @@ export default function ModelReviewTabularClassification (props) {
       setPrediction(_prediction)
     } catch (error) {
       console.error(error)
-      await alertHelper.alertError(error)
+      await alertHelper.alertError("Error, option not valid")
     }
 
     setIsButtonToPredictDisabled(false)

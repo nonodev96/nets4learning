@@ -8,7 +8,6 @@ import ReactGA from 'react-ga4'
 
 import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
 import * as ImageClassificationUtils from './utils/utils'
-import * as TrainMNIST from './custom/Train_MNIST'
 
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
@@ -37,7 +36,7 @@ import { MAP_IC_CLASSES } from '@pages/playground/3_ImageClassification/models'
 export default function ImageClassification (props) {
   const { dataset } = props
   const { t } = useTranslation()
-  const iModelInfo = useRef(new I_MODEL_IMAGE_CLASSIFICATION(t))
+  const iModelInstance = useRef(new I_MODEL_IMAGE_CLASSIFICATION(t))
 
   const prefix = 'pages.playground.generator.'
 
@@ -88,9 +87,9 @@ export default function ImageClassification (props) {
         // TODO
       } else if (MAP_IC_CLASSES.hasOwnProperty(dataset)) {
         const _iModelClass = MAP_IC_CLASSES[dataset]
-        iModelInfo.current = new _iModelClass(t)
-        console.log(iModelInfo.current)
-        setLayers(iModelInfo.current.DEFAULT_LAYERS())
+        iModelInstance.current = new _iModelClass(t)
+        console.log(iModelInstance.current)
+        setLayers(iModelInstance.current.DEFAULT_LAYERS())
       } else {
         console.error('Error, opción not valid')
       }
@@ -107,17 +106,16 @@ export default function ImageClassification (props) {
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
     if (Layers[0]._class === 'Conv2D') {
-      const model = await TrainMNIST.MNIST_run({
-        numberOfEpoch: NumberEpochs,
-        idLoss       : idLoss,
-        idOptimizer  : idOptimizer,
-        idMetrics    : idMetrics,
-        layerList    : Layers,
-        params       : {
-          LearningRate,
-          TestSize
-        },
-      })
+      const params = {
+        numberEpochs: NumberEpochs,
+        idLoss      : idLoss,
+        idOptimizer : idOptimizer,
+        idMetrics   : idMetrics,
+        layers      : Layers,
+        learningRate: LearningRate,
+        testSize    : TestSize
+      }
+      const model = await iModelInstance.current.TRAIN_MODEL(params)
       setModel(model)
       setGeneratedModels(oldModels => [...oldModels, {
         params: {
@@ -240,7 +238,7 @@ export default function ImageClassification (props) {
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModelInfo.current.JOYRIDE()}
+                  JOYRIDE_state={iModelInstance.current.JOYRIDE()}
                   TASK={'image-classification'}
                   KEY={'ImageClassification'}
       />
@@ -275,10 +273,10 @@ export default function ImageClassification (props) {
 
               <Accordion.Item eventKey={'description-dataset'} className={'joyride-step-2-dataset-info'}>
                 <Accordion.Header>
-                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInfo.current.TITLE : prefix + 'dataset.upload-dataset'} /></h3>
+                  <h3><Trans i18nKey={dataset !== UPLOAD ? iModelInstance.current.TITLE : prefix + 'dataset.upload-dataset'} /></h3>
                 </Accordion.Header>
                 <Accordion.Body>
-                  {iModelInfo.current.DESCRIPTION()}
+                  {iModelInstance.current.DESCRIPTION()}
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>

@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
+import { useHistory } from 'react-router-dom'
+
 import { Trans, useTranslation } from 'react-i18next'
-import { Card, Col, Container, Row, Form } from 'react-bootstrap'
+import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Plot from 'react-plotly.js'
 import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
@@ -14,15 +16,17 @@ import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
 import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
 import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
+import { UPLOAD } from '@/DATA_MODEL'
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   const { id } = useParams()
+  const history = useHistory()
 
   const prefix = 'pages.playground.1-linear-regression.'
   const { t } = useTranslation()
   const refPlotJS = useRef()
 
-  const [iModelInstance, setIModelInstance] = useState(new I_MODEL_LINEAR_REGRESSION(t, () => {}))
+  const iModelInstance = useRef(new I_MODEL_LINEAR_REGRESSION(t, () => {}))
 
   const [datasets, setDatasets] = useState([])
   const [datasets_Index, setDatasets_Index] = useState(0)
@@ -37,38 +41,34 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [dataset])
 
   useEffect(() => {
-    // const dataset_ID = parseInt(dataset)
-    // const dataset_key = getKeyDatasetByID_LinearRegression(dataset_ID)
-
-    if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
-      const _iModelClass = MAP_LR_CLASSES[dataset]
-      setIModelInstance(new _iModelClass(t, {}))
-    } else {
-      console.error('Error, option not valid', dataset)
-    }
-  }, [dataset, t])
-
-  useEffect(() => {
-    async function init () {
-      if (iModelInstance !== null) {
-        const _datasets = (await iModelInstance.DATASETS()).datasets
+    console.debug('useEffect[dataset, t]')
+    const init = async () => {
+      if (dataset === UPLOAD) {
+        console.warn('Error, option not valid', { ID: dataset })
+      } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
+        const _iModelClass = MAP_LR_CLASSES[dataset]
+        iModelInstance.current = new _iModelClass(t, {})
+        const _datasets = await iModelInstance.current.DATASETS()
+        console.log(_datasets)
         setDatasets(_datasets)
+      } else {
+        console.error('Error, option not valid', { ID: dataset })
+        history.push('/404')
       }
     }
-
-    init().then(_r => undefined)
-  }, [iModelInstance])
+    init().then(() => undefined)
+  }, [dataset, t, history])
 
   useEffect(() => {
     async function init () {
-      if (iModelInstance !== null && datasets.length > 0) {
-        const _listModels = (await iModelInstance.MODELS(datasets[datasets_Index].csv))
+      if (datasets.length > 0) {
+        const _listModels = (await iModelInstance.current.MODELS(datasets[datasets_Index].csv))
         setListModels(_listModels)
       }
     }
 
     init().then(_r => undefined)
-  }, [datasets, datasets_Index, iModelInstance])
+  }, [datasets, datasets_Index])
 
   useEffect(() => {
     if (listModels.length === 0) {
@@ -144,12 +144,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
             <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
               <Card className={'sticky-top border-info mt-3'}>
                 <Card.Header>
-                  <h2><Trans i18nKey={iModelInstance.i18n_TITLE} /></h2>
+                  <h2><Trans i18nKey={iModelInstance.current.i18n_TITLE} /></h2>
                 </Card.Header>
                 <Card.Body>
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
                     <Form.Label><Trans i18nKey={'form.select-dataset.title'} /></Form.Label>
-                    <Form.Select aria-label={'form.select-dataset.title'}
+                    <Form.Select aria-label={t('form.select-dataset.title')}
                                  size={'sm'}
                                  value={datasets_Index}
                                  onChange={handleChange_Datasets_Index}>
@@ -162,7 +162,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                     </Form.Text>
                   </Form.Group>
 
-                  {iModelInstance.DESCRIPTION()}
+                  {iModelInstance.current.DESCRIPTION()}
 
                 </Card.Body>
               </Card>
@@ -223,8 +223,10 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                         useResizeHandler={true}
                         style={PLOTLY_CONFIG_DEFAULT.STYLES}
                         layout={{
-                          title: '',
-                          ...PLOTLY_CONFIG_DEFAULT.LAYOUT
+                          ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
+                          title        : '',
+                          // plot_bgcolor : 'rgb(33,37,41)',
+                          // paper_bgcolor: 'rgb(33,37,41)'
                         }}
                   />
 

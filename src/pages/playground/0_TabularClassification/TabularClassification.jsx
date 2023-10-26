@@ -1,5 +1,6 @@
 import './TabularClassification.css'
 import React, { useEffect, useState, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
@@ -106,6 +107,7 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
  */
 export default function TabularClassification (props) {
   const { dataset } = props
+  const history  = useHistory()
 
   const prefix = 'pages.playground.generator.'
   const prefixManual = 'pages.playground.0-tabular-classification.generator.'
@@ -152,7 +154,7 @@ export default function TabularClassification (props) {
       if (dataset === UPLOAD) {
         // TODO
         const df = new dfd.DataFrame()
-        if(VERBOSE) console.debug(df)
+        if (VERBOSE) console.debug(df)
       } else if (MAP_TC_CLASSES.hasOwnProperty(dataset)) {
         const _iModelClass = MAP_TC_CLASSES[dataset]
         iModelInstance.current = new _iModelClass(t)
@@ -161,7 +163,8 @@ export default function TabularClassification (props) {
         setDatasets(_datasets)
         setDatasetIndex(0)
       } else {
-        console.error('Error, opción not valid')
+        console.error('Error, option not valid', { ID: dataset })
+        history.push('/404')
       }
     }
     init()
@@ -170,7 +173,7 @@ export default function TabularClassification (props) {
       })
 
     return () => { tfvis.visor().close() }
-  }, [dataset, t])
+  }, [dataset, t, history])
 
   // region MODEL
   const handleSubmit_CreateModel = async (event) => {
@@ -262,7 +265,6 @@ export default function TabularClassification (props) {
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
       if (VERBOSE) console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
-
       setPredictionBar(() => {
         return {
           classes: classes,
@@ -270,10 +272,9 @@ export default function TabularClassification (props) {
           data   : [...predictionDataSync],
         }
       })
-
     } catch (error) {
-      await alertHelper.alertError(error.toString())
       console.error(error)
+      await alertHelper.alertError('Error, model not valid')
     }
   }
   // endregion

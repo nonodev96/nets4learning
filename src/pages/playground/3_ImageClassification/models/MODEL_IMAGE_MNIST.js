@@ -1,5 +1,6 @@
 import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import { Trans } from 'react-i18next'
+import * as Train_MNIST from '@pages/playground/3_ImageClassification/custom/Train_MNIST'
 
 export const LIST_OF_IMAGES_MNIST = [
   '0_new.png',
@@ -58,7 +59,15 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
   }
 
   async TRAIN_MODEL (params) {
-    return await TrainMNIST
+    return await Train_MNIST.MNIST_run({
+      numberOfEpoch: params.numberEpochs,
+      idLoss       : params.idLoss,
+      idOptimizer  : params.idOptimizer,
+      idMetrics    : params.idMetrics,
+      layerList    : params.layers,
+      learningRate : params.learningRate,
+      testSize     : params.testSize
+    })
   }
 
   DEFAULT_LAYERS () {

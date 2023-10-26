@@ -55,9 +55,7 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   DESCRIPTION () {
     const prefix = 'datasets-models.0-tabular-classification.iris.description.'
     return <>
-      <p>
-        <Trans i18nKey={prefix + 'text-1'} />
-      </p>
+      <p><Trans i18nKey={prefix + 'text-1'} /></p>
       <details>
         <summary><Trans i18nKey={prefix + 'details-1.title'} /></summary>
         <ol>

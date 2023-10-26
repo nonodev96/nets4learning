@@ -1,7 +1,8 @@
 import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
-import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
+import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 
 import N4LDivider from '@components/divider/N4LDivider'
@@ -37,6 +38,7 @@ export default function LinearRegression (props) {
   const { dataset } = props
   const { id: param_id } = useParams()
 
+  const history = useHistory()
   // i18n
   const prefix = 'pages.playground.generator.'
   const { t } = useTranslation()
@@ -140,18 +142,19 @@ export default function LinearRegression (props) {
 
       if (dataset === UPLOAD) {
         // TODO
-        console.debug("Linear regression upload csv")
+        console.debug('Linear regression upload csv')
       } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
         setDatasets(_datasets)
       } else {
-        console.error('Error, option not valid')
+        console.error('Error, option not valid', { ID: dataset })
+        history.push('/404')
       }
     }
     init().then(() => undefined)
-  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets])
+  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, history])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))

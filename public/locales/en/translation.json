@@ -619,7 +619,7 @@
           "text": {
             "0": "It is a data set of the Hospital of the University of Wisconsin related to breast cancer. This data set is useful for the prediction and discrimination of a breast cancer tumor, differentiating whether it is benign or not.",
             "1": "Each record represents the monitoring data of a breast cancer case. These are cases attended since 1984 by Dr. Wolberg, only includes those cases that have invasive breast cancer and without evidence of metastases.",
-            "2": "The first 30 characteristics are calculated from a digitized image of a fine needle aspiration (FNAB) of the breast mass, these data describe the characteristics of the cell nuclei present in the image, some images can be found in <link2>cs wisc<link2>",
+            "2": "The first 30 characteristics are calculated from a digitized image of a fine needle aspiration (FNAB) of the breast mass, these data describe the characteristics of the cell nuclei present in the image, some images can be found in <link1>cs wisc</link1>",
             "3": "The file <kbd>wdbc.csv</kbd> corresponds to the diagnostic data set and <kbd>wpbc.csv</kbd> corresponds to the prognostic data set."
           },
           "link": "<link1>UCI data set input </link1>",

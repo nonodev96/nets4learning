@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Card, Col, Container, Form, ProgressBar, Row } from 'react-bootstrap'
 import Webcam from 'react-webcam'
@@ -11,6 +12,7 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
+import { useHistory } from 'react-router-dom'
 
 tfjs
   .setBackend('webgl')
@@ -22,9 +24,10 @@ export default function ModelReviewObjectDetection (props) {
   const dataset = props.dataset
 
   const { t } = useTranslation()
+  const history = useHistory();
 
   const [isLoading, setLoading] = useState(true)
-  const [progress, setProgress] = useState(0)
+  const [progress, setProgress] = useState(10)
   const [isCameraEnable, setCameraEnable] = useState(false)
   const [cameraPermission, setCameraPermission] = useState(/**@type {'denied' | 'granted' | 'prompt'} */'prompt')
   const [isProcessedImage, setIsProcessedImage] = useState(false)
@@ -37,6 +40,7 @@ export default function ModelReviewObjectDetection (props) {
   const requestRef = useRef()
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
+  const intervalRef = useRef()
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
@@ -93,22 +97,27 @@ export default function ModelReviewObjectDetection (props) {
   }, [handleDevices])
 
   useEffect(() => {
-    console.debug('useEffect[progress]')
+    if (progress >= 100) {
+      clearInterval(intervalRef.current)
+    }
+  }, [progress])
+
+  useEffect(() => {
+    console.debug('useEffect[]')
     let step = 0.2
-    let current_progress = 0
-    const interval = setInterval(() => {
+    let current_progress = 0.1
+    intervalRef.current = setInterval(() => {
       current_progress += step
-      const _progress =  Math.round(Math.atan(current_progress) / (Math.PI / 2) * 100 * 1000) / 1000
+      const _progress = Math.round(Math.atan(current_progress) / (Math.PI / 2) * 100 * 1000) / 1000
       setProgress(_progress)
-      if (_progress >= 100) {
-        clearInterval(interval)
-      } else if (_progress >= 80) {
+      if (_progress >= 80) {
         step = 0.05
       } else if (_progress >= 70) {
         step = 0.1
       }
     }, 1000)
-    return () => clearInterval(interval)
+
+    return () => clearInterval(intervalRef.current)
   }, [])
 
   useEffect(() => {
@@ -117,24 +126,22 @@ export default function ModelReviewObjectDetection (props) {
     async function init () {
       await tfjs.ready()
       if (tfjs.getBackend() !== 'webgl') {
-        await alertHelper.alertError('Error tensorflow backend webgl not installed in your browser')
-        return
-      }
-      if (dataset === UPLOAD) {
-        console.error('Error, data set not valid')
-      }
-
-      if (!MAP_OD_CLASSES.hasOwnProperty(dataset)) {
-        console.error('Error, model not valid')
+        console.error('Error tensorflow backend webgl not installed in your browser')
         return
       }
       try {
-        const _iModelClass = MAP_OD_CLASSES[dataset]
-        iModelRef.current = new _iModelClass(t)
-        await iModelRef.current.ENABLE_MODEL()
-        setLoading(false)
-        setProgress(100)
-        await alertHelper.alertSuccess(t('model-loaded-successfully'))
+        if (dataset === UPLOAD) {
+          console.error('Error, data set not valid')
+        } else if (MAP_OD_CLASSES.hasOwnProperty(dataset)) {
+          const _iModelClass = MAP_OD_CLASSES[dataset]
+          iModelRef.current = new _iModelClass(t)
+          await iModelRef.current.ENABLE_MODEL()
+          setLoading(false)
+          await alertHelper.alertSuccess(t('model-loaded-successfully'))
+        } else {
+          console.error('Error, option not valid', { ID: dataset })
+          history.push("/404");
+        }
       } catch (error) {
         console.error('Error', error)
       }
@@ -145,7 +152,8 @@ export default function ModelReviewObjectDetection (props) {
       })
 
     return () => {}
-  }, [dataset, t])
+  }, [dataset, t, history])
+
   useEffect(() => {
     console.debug('useEffect[isCameraEnable]', { isCameraEnable })
     if (isCameraEnable === false) {
@@ -297,25 +305,24 @@ export default function ModelReviewObjectDetection (props) {
 
   if (VERBOSE) console.debug('render ModelReviewObjectDetection')
   return <>
-    <Container>
+    <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
       <Row className={'mt-2'}>
-        <Col xl={12}>
-          <div className="d-flex justify-content-between">
-            <h1><Trans i18nKey={'modality.2'} /></h1>
-          </div>
+        <Col>
+          <h1><Trans i18nKey={'modality.2'} /></h1>
         </Col>
       </Row>
-    </Container>
 
-    <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
       <Row>
         <Col>
-          {isLoading && <ProgressBar label={progress < 100 ? t('downloading') + ' ' + progress + '%' : t('downloaded')}
-                                     striped={true}
-                                     animated={true}
-                                     now={progress} />}
+          {isLoading &&
+            <ProgressBar label={progress < 100 ? t('downloading') + ' ' + progress + '%' : t('downloaded')}
+                         striped={true}
+                         animated={true}
+                         now={progress} />
+          }
         </Col>
       </Row>
+
       <Row>
         <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
           <Card className={'sticky-top mt-3 mb-3 border-info'}>

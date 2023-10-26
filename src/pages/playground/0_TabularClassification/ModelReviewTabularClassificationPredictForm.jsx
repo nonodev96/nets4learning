@@ -8,6 +8,21 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
   const { iModelInstance, dataToTest, setDataToTest } = props
   const { t } = useTranslation()
 
+  const handleChange_Parameter_int32 = (key_parameter, value) => {
+    setDataToTest((prevState) => ({
+      ...prevState,
+      [key_parameter]: parseInt(value),
+    }))
+  }
+
+
+  const handleChange_Parameter_float32 = (key_parameter, value) => {
+    setDataToTest((prevState) => ({
+      ...prevState,
+      [key_parameter]: parseFloat(value),
+    }))
+  }
+
   const handleChange_Parameter = (key_parameter, value) => {
     setDataToTest((prevState) => ({
       ...prevState,
@@ -34,7 +49,7 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
                               placeholder={t('pages.playground.form.parameter-integer')}
                               step={1}
                               value={dataToTest[value.name] ?? 0}
-                              onChange={($event) => handleChange_Parameter(value.name, $event.target.value)} />
+                              onChange={($event) => handleChange_Parameter_int32(value.name, $event.target.value)} />
                 <Form.Text className="text-muted">
                   <Trans i18nKey={'pages.playground.form.parameter-integer'} />: {value.name}
                 </Form.Text>
@@ -47,12 +62,11 @@ export default function ModelReviewTabularClassificationPredictForm (props) {
               <Form.Group controlId={value.name}>
                 <Form.Label>{t('pages.playground.form.select-parameter')}: <b>{value.name}</b></Form.Label>
                 <Form.Control type="number"
-                              min={0}
                               size={'sm'}
                               placeholder={t('pages.playground.form.parameter-decimal')}
-                              step={0.1}
+                              step={0.01}
                               value={dataToTest[value.name] ?? 0.0}
-                              onChange={($event) => handleChange_Parameter(value.name, $event.target.value)} />
+                              onChange={($event) => handleChange_Parameter_float32(value.name, $event.target.value)} />
                 <Form.Text className="text-muted">
                   <Trans i18nKey={'pages.playground.form.parameter-decimal'} />: {value.name}
                 </Form.Text>
