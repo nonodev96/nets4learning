@@ -25,7 +25,7 @@ export default class I_MODEL_IMAGE_CLASSIFICATION {
   }
 
   async TRAIN_MODEL (params) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve('I_MODEL_IMAGE_CLASSIFICATION')
       }, 1000)
