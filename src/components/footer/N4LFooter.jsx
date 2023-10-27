@@ -22,13 +22,13 @@ export default function N4LFooter () {
                   <a href="https://simidat.ujaen.es/members/mjjesus/" target="_blank" rel="noreferrer" className="link-secondary">María José del Jesus Díaz</a>
                 </li>
                 <li>
-                  <Link to={'/terms-and-conditions'} className="link-secondary">
-                    <Trans i18nKey={'footer.terms'} />
-                  </Link>
+                  <Trans i18nKey={'footer.developers'} />:{' '}
+                  <a href="https://github.com/nonodev96/" target="_blank" rel="noreferrer" className="link-secondary">Antonio Mudarra Machuca</a>,{' '}
+                  <a href="https://github.com/Davavico22" target="_blank" rel="noreferrer" className="link-secondary">David Valdivia Vico</a>
                 </li>
                 <li>
-                  <Link to={'/documentation'} className="link-secondary">
-                    <Trans i18nKey={'footer.documentation'} />
+                  <Link to={'/terms-and-conditions'} className="link-secondary">
+                    <Trans i18nKey={'footer.terms'} />
                   </Link>
                 </li>
                 <li>
@@ -41,7 +41,6 @@ export default function N4LFooter () {
                     <Trans i18nKey={'footer.version'} />
                   </Link>
                 </li>
-                <li><a href="https://github.com/simidat/nets4learning/" target="_blank" rel="noreferrer" className="link-secondary">GitHub</a></li>
               </ul>
             </Col>
             <Col xs={12} sm={12} md={5}>
@@ -49,10 +48,10 @@ export default function N4LFooter () {
               <p>{t('footer.description-app')}</p>
               <Row className="align-items-center text-center">
                 <Col>
-                  <a href="https://dasci.es" target="_blank" rel="noreferrer">
-                    <img src={process.env.REACT_APP_PATH + '/assets/DaSCI_logo-1.png'}
+                  <a href="https://simidat.ujaen.es" target="_blank" rel="noreferrer">
+                    <img src={process.env.REACT_APP_PATH + '/assets/logo-simidat-2023.png'}
                          className={'img-fluid w-100'}
-                         alt="DaSCI"
+                         alt="SIMIDAT"
                     />
                   </a>
                 </Col>
@@ -65,10 +64,10 @@ export default function N4LFooter () {
                   </a>
                 </Col>
                 <Col>
-                  <a href="https://simidat.ujaen.es" target="_blank" rel="noreferrer">
-                    <img src={process.env.REACT_APP_PATH + '/assets/logo-simidat-2023.png'}
+                  <a href="https://dasci.es" target="_blank" rel="noreferrer">
+                    <img src={process.env.REACT_APP_PATH + '/assets/DaSCI_logo-1.png'}
                          className={'img-fluid w-100'}
-                         alt="SIMIDAT"
+                         alt="DaSCI"
                     />
                   </a>
                 </Col>

@@ -81,7 +81,7 @@ export default function Manual () {
   const [accordionActiveManual, setAccordionActiveManual] = useState([])
 
   const toggleAccordionActiveManual = useCallback((itemActive) => {
-    console.debug('useCallback -> toggleAccordionActiveManual')
+    if (VERBOSE) console.debug('useCallback -> toggleAccordionActiveManual')
     setAccordionActiveManual((prevActive) => {
       if (prevActive.includes(itemActive)) {
         return prevActive.filter((item) => item !== itemActive)
@@ -92,7 +92,7 @@ export default function Manual () {
   }, [setAccordionActiveManual])
 
   useEffect(() => {
-    console.debug('useEffect[history, toggleAccordionActiveManual]')
+    if (VERBOSE) console.debug('useEffect[history, toggleAccordionActiveManual]')
     const openManualInSection = (action) => {
       for (const { files } of DEFAULT_LAYOUT) {
         for (const file of files) {

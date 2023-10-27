@@ -54,7 +54,7 @@ export default function LinearRegressionDatasetShow () {
   }
 
   useEffect(() => {
-    console.debug('useEffect [datasets, indexDatasetSelected, updateDataFrameLocal]')
+    if (VERBOSE) console.debug('useEffect [datasets, indexDatasetSelected, updateDataFrameLocal]')
     const init = async () => {
       if (datasets?.length >= 1) {
         await updateDataFrameLocal(datasets[indexDatasetSelected])

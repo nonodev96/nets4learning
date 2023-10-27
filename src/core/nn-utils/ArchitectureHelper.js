@@ -176,3 +176,26 @@ export function createMetrics (idMetrics, params) {
   }
 }
 
+export function createMetricsList (idMetricsList, params) {
+  if (!isProduction()) console.debug('>> createMetricsList', { idMetricsList, params })
+
+  const metricMap = {
+    'binaryAccuracy'             : tf.metrics.binaryAccuracy,
+    'binaryCrossentropy'         : tf.metrics.binaryCrossentropy,
+    'categoricalAccuracy'        : tf.metrics.categoricalAccuracy,
+    'categoricalCrossentropy'    : tf.metrics.categoricalCrossentropy,
+    'cosineProximity'            : tf.metrics.cosineProximity,
+    'meanAbsoluteError'          : tf.metrics.meanAbsoluteError,
+    'meanAbsolutePercentageError': tf.metrics.meanAbsolutePercentageError,
+    'meanSquaredError'           : tf.metrics.meanSquaredError,
+    'precision'                  : tf.metrics.precision,
+    'recall'                     : tf.metrics.recall,
+    'sparseCategoricalAccuracy'  : tf.metrics.sparseCategoricalAccuracy,
+    'accuracy'                   : 'accuracy', // DEFAULT Tensorflow js
+  }
+
+  const metrics = idMetricsList.map((idMetric) => metricMap[idMetric] || 'accuracy')
+  if (!isProduction()) console.debug(metrics)
+  return metrics
+}
+

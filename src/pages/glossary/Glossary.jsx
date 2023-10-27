@@ -28,9 +28,8 @@ export default function Glossary () {
         {/* INFORMACIÓN */}
         <Row className={'mt-3'}>
           <Col>
-            <div className={`mt-3 mb-4 n4l-hr-row`}>
-              <p><span className={'n4l-hr-title'}><Trans i18nKey={'hr.tasks'} /></span></p>
-            </div>
+            <N4LDivider i18nKey={'hr.tasks'} />
+
             <Accordion defaultValue={'classification-tabular'}>
               <Accordion.Item eventKey={'classification-tabular'}>
                 <Accordion.Header><h2><Trans i18nKey={'pages.glossary.tabular-classification.title'} /></h2></Accordion.Header>
@@ -73,6 +72,9 @@ export default function Glossary () {
               </Accordion.Item>
             </Accordion>
 
+            <N4LDivider i18nKey={'hr.editor'} />
+            <GlossaryEditor />
+
              {/* Funciones de optimización */}
             <N4LDivider i18nKey={'hr.optimization-function'} />
             <Glossary1Optimizers />
@@ -91,8 +93,6 @@ export default function Glossary () {
 
             {/* Layers */}
             {/*<Glossary5Layers />*/}
-            <N4LDivider i18nKey={'hr.editor'} />
-            <GlossaryEditor />
           </Col>
         </Row>
       </Container>

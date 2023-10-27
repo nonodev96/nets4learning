@@ -107,6 +107,26 @@ SOFTWARE.`}</pre>
               </Accordion.Item>
             </Accordion>
 
+            <N4LDivider i18nKey={'hr.dataframe'} />
+            <Accordion className={'mt-3'}>
+              <Accordion.Item eventKey={'DataFrame'}>
+                <Accordion.Header>
+                  <h3>DataFrame</h3>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <N4LMarkdownDownloader file_name={'_0. DataFrame.md'} />
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey={'DataFrameUtils'}>
+                <Accordion.Header>
+                  <h3>DataFrame Utils</h3>
+                </Accordion.Header>
+                <Accordion.Body>
+                  <N4LMarkdownDownloader file_name={'DataFrameUtils.md'} />
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+
           </Col>
         </Row>
       </Container>

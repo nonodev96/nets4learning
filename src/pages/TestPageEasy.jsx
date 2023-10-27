@@ -7,6 +7,7 @@ import TestComponentEasy from '@components/TestComponentEasy'
 import * as LinearRegressionModelExample from '@core/controller/01-linear-regression/LinearRegressionModelExample'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import AlertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function TestPageEasy () {
 
@@ -58,7 +59,7 @@ export default function TestPageEasy () {
   }
   const [counter, setCounter] = useState(0)
 
-  console.debug('render TestPageEasy')
+  if (VERBOSE) console.debug('render TestPageEasy')
   return <>
     <Container className={'mt-3'}>
       <Row>

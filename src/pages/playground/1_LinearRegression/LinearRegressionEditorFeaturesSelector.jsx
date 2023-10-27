@@ -38,7 +38,7 @@ export default function LinearRegressionEditorFeaturesSelector () {
   }
 
   useEffect(() => {
-    console.debug('useEffect [datasetLocal.dataframe_processed, setParams]')
+    if (VERBOSE) console.debug('useEffect [datasetLocal.dataframe_processed, setParams]')
     setParams((prevState) => {
       const X_features = new Set([datasetLocal.dataframe_processed.columns[0]])
       const X_feature = datasetLocal.dataframe_processed.columns[0]

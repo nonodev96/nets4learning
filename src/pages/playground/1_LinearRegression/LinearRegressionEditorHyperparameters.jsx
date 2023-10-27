@@ -199,7 +199,7 @@ export default function LinearRegressionEditorHyperparameters () {
                       </Button>
                     </div>
 
-                    <Form.Group className="mb-3" controlId={'formMetric_' + index}>
+                    <Form.Group className="mb-3" controlId={`FormMetrics_${index}`}>
                       <Form.Label>
                         <Trans i18nKey={prefix + 'metric-id-select'} />
                       </Form.Label>

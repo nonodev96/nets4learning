@@ -38,7 +38,6 @@ export default function LinearRegressionPrediction () {
     e.preventDefault()
     // const tensor = tfjs.tensor1d([165]).reshape([100, 1])
     // console.log(listModels[indexModel].model.predict(tensor).dataSync())
-    console.debug(listModels[indexModel])
   }
 
   const handleChange_Model = (e) => {
@@ -58,12 +57,12 @@ export default function LinearRegressionPrediction () {
   }
 
   useEffect(() => {
-    console.debug('useEffect [listModels.length]')
+    if (VERBOSE) console.debug('useEffect [listModels.length]')
     setIndexModel(listModels.length - 1)
   }, [listModels.length])
 
   useEffect(() => {
-    console.debug('useEffect [listModels, indexModel]')
+    if (VERBOSE) console.debug('useEffect [listModels, indexModel]')
     if (listModels.length > 0 && indexModel >= 0) {
       listModels[indexModel].dataframe
         .describe()
@@ -83,7 +82,7 @@ export default function LinearRegressionPrediction () {
   }, [listModels, indexModel, idDataFrameDescribe])
 
   useEffect(() => {
-    console.debug('useEffect [listModels, indexModel, setDataPrediction]')
+    if (VERBOSE) console.debug('useEffect [listModels, indexModel, setDataPrediction]')
     if (listModels.length > 0 && indexModel >= 0 && listModels[indexModel]) {
       const {
         original,

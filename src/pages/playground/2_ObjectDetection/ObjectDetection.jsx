@@ -139,7 +139,6 @@ export default function ObjectDetection (props) {
       const tensor4 = tf.tensor4d(arr)
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-      console.debug('Predicción', { mayorIndice })
       document.getElementById('demo').innerHTML = mayorIndice.toString()
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)

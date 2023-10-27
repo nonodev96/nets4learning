@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Pagination, Row, Table } from 'react-bootstrap'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFrameDataset ({ dataframe, }) {
 
@@ -38,7 +39,7 @@ export default function DataFrameDataset ({ dataframe, }) {
   }
 
   useEffect(() => {
-    console.debug('useEffect[ dataframe ]')
+    if (VERBOSE) console.debug('useEffect[ dataframe ]')
     if (dataframe.columns.length > 0) {
       const _data = transposeMatrix(dataFrameToMatrix(dataframe))
       const _rowsCount = _data.length

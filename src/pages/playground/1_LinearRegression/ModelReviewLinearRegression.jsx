@@ -41,7 +41,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [dataset])
 
   useEffect(() => {
-    console.debug('useEffect[dataset, t]')
+    if (VERBOSE) console.debug('useEffect[dataset, t]')
     const init = async () => {
       if (dataset === UPLOAD) {
         console.warn('Error, option not valid', { ID: dataset })
@@ -78,7 +78,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [listModels])
 
   useEffect(() => {
-    console.debug('useEffect[ listModels, listModels_Index ]')
+    if (VERBOSE) console.debug('useEffect[ listModels, listModels_Index ]')
 
     async function init () {
       if (listModels_Index !== 'select-model' && listModels.length > 0) {
@@ -112,7 +112,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [datasets_DataFrame, listModels, listModels_Index, t])
 
   useEffect(() => {
-    console.debug('useEffect[datasets_Index]')
+    if (VERBOSE) console.debug('useEffect[datasets_Index]')
     if (datasets.length > 0) {
       setDatasets_DataFrame(datasets[datasets_Index].dataframe_processed)
     }

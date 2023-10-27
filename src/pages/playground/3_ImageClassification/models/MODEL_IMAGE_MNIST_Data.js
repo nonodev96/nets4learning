@@ -46,7 +46,7 @@ export class MnistData {
     const img = new Image()
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
-    const imgRequest = new Promise((resolve, reject) => {
+    const imgRequest = new Promise((resolve) => {
       img.crossOrigin = ''
       img.onload = () => {
         img.width = img.naturalWidth

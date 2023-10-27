@@ -176,7 +176,7 @@ export default function DataFramePlot ({ dataframe }) {
   ])
 
   useEffect(() => {
-    console.debug('useEffect [ dataframe, setDataFrameLocal ]')
+    if (VERBOSE) console.debug('useEffect [ dataframe, setDataFrameLocal ]')
     if (dataframe.columns.length > 0) {
       setDataFrameLocal(dataframe)
     }

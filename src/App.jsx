@@ -22,7 +22,6 @@ const PageGlossary = lazy(() => import( './pages/glossary/Glossary'))
 const PageDatasets = lazy(() => import( './pages/datasets/Datasets'))
 const PageAnalyzeDataFrame = lazy(() => import( './pages/analyze/AnalyzeDataFrame'))
 const PageContribute = lazy(() => import( './pages/contribute/Contribute'))
-const PageDocumentation = lazy(() => import( './pages/documentation/Documentation'))
 const PageTermsAndConditions = lazy(() => import( './pages/terms/TermsAndConditions'))
 const PageNotFoundPage = lazy(() => import( './pages/notFound/NotFoundPage'))
 const PageVersion = lazy(() => import( './pages/version/Version'))
@@ -56,7 +55,6 @@ function App () {
             <Route exact path={'/datasets/'} component={PageDatasets}></Route>
             <Route exact path={'/analyze/'} component={PageAnalyzeDataFrame}></Route>
             <Route exact path={'/contribute/'} component={PageContribute}></Route>
-            <Route exact path={'/documentation/'} component={PageDocumentation}></Route>
             <Route exact path={'/terms-and-conditions/'} component={PageTermsAndConditions}></Route>
             <Route exact path={'/version/'} component={PageVersion}></Route>
 

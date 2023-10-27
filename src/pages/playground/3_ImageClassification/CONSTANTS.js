@@ -3,15 +3,15 @@ const DEFAULT_NUMBER_EPOCHS = 15
 const DEFAULT_TEST_SIZE = 10
 const DEFAULT_ID_OPTIMIZATION = 'adam'
 const DEFAULT_ID_LOSS = 'metrics-categoricalCrossentropy'
-const DEFAULT_ID_METRICS = 'categoricalCrossentropy'
+const DEFAULT_ID_METRICS = ['categoricalCrossentropy']
 
 const DEFAULT_LAYERS = [
   {
     _class           : 'Conv2D',
-    kernelSize       : 5,
-    filters          : 10,
+    kernelSize       : 3,
+    filters          : 16,
     strides          : 1,
-    activation       : 'Sigmoid',
+    activation       : 'relu',
     kernelInitializer: 'varianceScaling',
     // Not used because the class is Conv2D
     poolSize: [2, 2],
@@ -25,7 +25,7 @@ const DEFAULT_LAYERS = [
     kernelSize       : 5,
     filters          : 10,
     strides          : 1,
-    activation       : 'Sigmoid',
+    activation       : 'relu',
     kernelInitializer: 'varianceScaling',
   },
   {

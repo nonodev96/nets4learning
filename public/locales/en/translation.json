@@ -1758,7 +1758,7 @@
           "title": "Step 6: Training and table of models"
         },
         "prediction": {
-          "title": "Step 6: Prediction"
+          "title": "Step 7: Prediction"
         }
       },
       "app": {
@@ -1986,7 +1986,7 @@
         }
       },
       "editor-layers": {
-        "title": "Layers editor glossary",
+        "title": "Layers editor",
         "table": {
           "activation-function": {
             "title": "Layer Neurons",
@@ -1999,7 +1999,7 @@
         }
       },
       "editor-hyperparameters": {
-        "title": "Hyperparameter editor glossary",
+        "title": "Hyperparameter editor",
         "table": {
           "learning-rate": {
             "title": "Learning Rate",

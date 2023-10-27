@@ -17,6 +17,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
+import { VERBOSE } from '@/CONSTANTS'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -97,7 +98,6 @@ export default function LinearRegression (props) {
       metrics  : [...params.params_training.list_id_metrics],
     })
     const { model, original, predicted, predictedLinear } = await modelController.run()
-    console.debug('modelController.run()', { original })
     const updatedTmpModel = {
       model          : model,
       original       : Array.from(original),
@@ -116,7 +116,6 @@ export default function LinearRegression (props) {
 
   const handleSubmit_TrainModel = async (event) => {
     event.preventDefault()
-    console.debug('handleSubmit_TrainModel')
     setIsTraining(true)
     await TrainModel()
     setIsTraining(false)
@@ -124,15 +123,14 @@ export default function LinearRegression (props) {
 
   const handleSubmit_TrainModel_Upload = async (event) => {
     event.preventDefault()
-    console.debug('handleSubmit_TrainModel_Upload')
     setIsTraining(true)
     await TrainModel()
     setIsTraining(false)
   }
 
   useEffect(() => {
+    if (VERBOSE) console.debug('useEffect[init]')
     ReactGA.send({ hitType: 'pageview', page: '/LinearRegression/' + dataset, title: dataset })
-    console.debug('LinearRegression useEffect[init]')
     const init = async () => {
       const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset)
       if (!isValid) {
@@ -167,7 +165,7 @@ export default function LinearRegression (props) {
     setAccordionActive(copy)
   }
 
-  console.debug('render LinearRegression')
+  if (VERBOSE) console.debug('render LinearRegression')
   return (
     <>
       <N4LJoyride refJoyrideButton={refJoyrideButton}

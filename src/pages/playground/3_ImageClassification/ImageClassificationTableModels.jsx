@@ -95,7 +95,7 @@ export default function ImageClassificationTableModels ({ GeneratedModels = [], 
                         <p className={'n4l-table-list'}>{value.params.id_loss}</p>
                       </td>
                       <td>
-                        {value.params.list_id_metrics
+                        {value.params.id_metrics_list
                           .map((metric, index2) => {
                             return <p key={index2} className={'n4l-table-list'}>{metric}</p>
                           })}

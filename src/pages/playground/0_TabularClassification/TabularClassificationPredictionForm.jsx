@@ -25,7 +25,7 @@ export default function TabularClassificationPredictionForm (props) {
   const { t } = useTranslation()
 
   useEffect(() => {
-    console.debug('useEffect [datasets, datasetIndex, setInputDataToPredict]')
+    if (VERBOSE) console.debug('useEffect [datasets, datasetIndex, setInputDataToPredict]')
     const dataset_processed = datasets[datasetIndex]
     const { dataframe_original, data_processed, dataset_transforms } = dataset_processed
     const { column_name_target } = data_processed
@@ -41,7 +41,7 @@ export default function TabularClassificationPredictionForm (props) {
   }, [datasets, datasetIndex, setInputDataToPredict])
 
   useEffect(() => {
-    console.debug('useEffect [datasets, datasetIndex, inputDataToPredict, setInputVectorToPredict]')
+    if (VERBOSE) console.debug('useEffect [datasets, datasetIndex, inputDataToPredict, setInputVectorToPredict]')
     if (inputDataToPredict.length === 0) return
     const { data_processed } = datasets[datasetIndex]
     const { encoders, X } = data_processed

@@ -15,7 +15,7 @@ const DEFAULT_LAYER_START = {
   kernelSize       : 0,
   filters          : 0,
   strides          : 0,
-  activation       : 'sigmoid',
+  activation       : 'relu',
   kernelInitializer: 'varianceScaling',
   // MaxPooling2D
   poolSize: [2, 2],
@@ -27,7 +27,7 @@ const DEFAULT_LAYER_END = {
   kernelSize       : 0,
   filters          : 0,
   strides          : 0,
-  activation       : 'sigmoid',
+  activation       : 'relu',
   kernelInitializer: 'varianceScaling',
   // MaxPooling2D
   poolSize: [2, 2],

@@ -170,7 +170,11 @@ class ModelReviewImageClassification extends React.Component {
         case MODEL_IMAGE_RESNET.KEY: {
           this.model = await tf.loadGraphModel(
             'https://tfhub.dev/google/tfjs-model/imagenet/resnet_v2_50/classification/3/default/1',
-            { fromTFHub: true, onProgress: (fraction) => {console.debug({ fraction })} },
+            {
+              fromTFHub: true, onProgress: (fraction) => {
+                console.debug({ fraction })
+              }
+            },
           )
           break
         }

@@ -59,7 +59,7 @@ export default function ImageClassification (props) {
 
   const [idOptimizer, setIdOptimizer] = useState(DEFAULT_ID_OPTIMIZATION)
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS)
-  const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS)
+  const [idMetricsList, setIdMetricsList] = useState(DEFAULT_ID_METRICS)
 
   const [LearningRate, setLearningRate] = useState(DEFAULT_LEARNING_RATE)
   const [NumberEpochs, setNumberEpochs] = useState(DEFAULT_NUMBER_EPOCHS)
@@ -88,7 +88,6 @@ export default function ImageClassification (props) {
       } else if (MAP_IC_CLASSES.hasOwnProperty(dataset)) {
         const _iModelClass = MAP_IC_CLASSES[dataset]
         iModelInstance.current = new _iModelClass(t)
-        console.log(iModelInstance.current)
         setLayers(iModelInstance.current.DEFAULT_LAYERS())
       } else {
         console.error('Error, opción not valid')
@@ -107,27 +106,25 @@ export default function ImageClassification (props) {
     event.preventDefault()
     if (Layers[0]._class === 'Conv2D') {
       const params = {
-        numberEpochs: NumberEpochs,
-        idLoss      : idLoss,
-        idOptimizer : idOptimizer,
-        idMetrics   : idMetrics,
-        layers      : Layers,
-        learningRate: LearningRate,
-        testSize    : TestSize
+        learningRate : LearningRate,
+        numberEpochs : NumberEpochs,
+        testSize     : TestSize,
+        idLoss       : idLoss,
+        idOptimizer  : idOptimizer,
+        idMetricsList: idMetricsList,
+        layers       : Layers,
       }
       const model = await iModelInstance.current.TRAIN_MODEL(params)
       setModel(model)
       setGeneratedModels(oldModels => [...oldModels, {
         params: {
-          learning_rate: LearningRate,
-          test_size    : TestSize,
-          n_epochs     : NumberEpochs,
-
+          learning_rate  : LearningRate,
+          n_epochs       : NumberEpochs,
+          test_size      : TestSize,
           layers         : Layers,
           id_optimizer   : idOptimizer,
           id_loss        : idLoss,
-          id_metric      : idMetrics,
-          list_id_metrics: [idMetrics],
+          id_metrics_list: idMetricsList,
         },
         model : model
       }])
@@ -166,8 +163,6 @@ export default function ImageClassification (props) {
       const tensor4 = tf.tensor4d(arr)
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
-
-      console.debug('Predicción', { resultados, mayorIndice })
       await alertHelper.alertInfo(t('info.the-class-is-__value__', { value: mayorIndice }))
     }
   }
@@ -201,7 +196,6 @@ export default function ImageClassification (props) {
       const resultados = Model.predict(tensor4).dataSync()
       const mayorIndice = resultados.indexOf(Math.max.apply(null, resultados))
 
-      console.debug('Predicción', { mayorIndice })
       // document.getElementById('demo').innerHTML = mayorIndice
 
       await alertHelper.alertInfo('¿El número es un ' + mayorIndice + '?', mayorIndice)
@@ -305,7 +299,8 @@ export default function ImageClassification (props) {
             <Col xl={6} className={'mt-3'}>
               <ImageClassificationEditorHyperparameters setIdOptimizer={setIdOptimizer}
                                                         setIdLoss={setIdLoss}
-                                                        setIdMetrics={setIdMetrics}
+                                                        idMetricsList={idMetricsList}
+                                                        setIdMetricsList={setIdMetricsList}
                                                         setNumberEpochs={setNumberEpochs}
                                                         setLearningRate={setLearningRate}
                                                         setTestSize={setTestSize}

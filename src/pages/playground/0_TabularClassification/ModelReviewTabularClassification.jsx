@@ -41,14 +41,14 @@ export default function ModelReviewTabularClassification (props) {
     setProgress(fraction * 100)
   }
   useEffect(() => {
-    console.debug('useEffect []')
+    if (VERBOSE) console.debug('useEffect []')
     return () => {
       tfvis.visor().close()
     }
   }, [])
 
   useEffect(() => {
-    console.debug('useEffect [dataToPredict]')
+    if (VERBOSE) console.debug('useEffect [dataToPredict]')
     // TODO encoders to dataToPredict
     const init = async () => {
       const datasets = await iModelInstance_ref.current.DATASETS()

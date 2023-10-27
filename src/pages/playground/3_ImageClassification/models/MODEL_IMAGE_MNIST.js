@@ -60,62 +60,60 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
 
   async TRAIN_MODEL (params) {
     return await Train_MNIST.MNIST_run({
+      learningRate : params.learningRate,
       numberOfEpoch: params.numberEpochs,
+      testSize     : params.testSize,
       idLoss       : params.idLoss,
       idOptimizer  : params.idOptimizer,
-      idMetrics    : params.idMetrics,
+      idMetricsList: params.idMetricsList,
       layerList    : params.layers,
-      learningRate : params.learningRate,
-      testSize     : params.testSize
     })
   }
 
   DEFAULT_LAYERS () {
     return [
       {
-        _class           : 'Conv2D',
-        kernelSize       : 5,
-        filters          : 10,
-        strides          : 1,
-        activation       : 'Sigmoid',
-        kernelInitializer: 'varianceScaling',
-        // Not used because the class is Conv2D
-        poolSize: [2, 2],
-        strides2: [2, 2]
+        _layer    : 'conv2d',
+        inputShape: [28, 28, 1],
+        kernelSize: 3,
+        filters   : 16,
+        activation: 'relu',
       },
       {
-        _class  : 'MaxPooling2D',
+        _layer  : 'maxPooling2d',
         poolSize: [2, 2],
         strides2: [2, 2],
-        // Not used because the class is MaxPooling2D
-        kernelSize       : 5,
-        filters          : 10,
-        strides          : 1,
-        activation       : 'Sigmoid',
-        kernelInitializer: 'varianceScaling',
       },
       {
-        _class           : 'Conv2D',
-        kernelSize       : 5,
-        filters          : 16,
-        strides          : 1,
-        activation       : 'relu',
-        kernelInitializer: 'varianceScaling',
-        // Not used because the class is Conv2D
-        poolSize: [2, 2],
-        strides2: [2, 2]
+        _layer    : 'conv2d',
+        kernelSize: 3,
+        filters   : 32,
+        activation: 'relu'
       },
       {
-        _class  : 'MaxPooling2D',
+        _layer  : 'maxPooling2d',
         poolSize: [2, 2],
         strides2: [2, 2],
-        // Not used because the class is MaxPooling2D
-        kernelSize       : 5,
-        filters          : 16,
-        strides          : 1,
-        activation       : 'relu',
-        kernelInitializer: 'varianceScaling',
       },
+      {
+        _layer    : 'conv2d',
+        kernelSize: 3,
+        filters   : 32,
+        activation: 'relu'
+      },
+      {
+        _layer: 'flatten',
+      },
+      {
+        _layer    : 'dense',
+        units     : 64,
+        activation: 'relu'
+      },
+      {
+        _layer    : 'dense',
+        units     : 10,
+        activation: 'softmax'
+      }
     ]
   }
 }
