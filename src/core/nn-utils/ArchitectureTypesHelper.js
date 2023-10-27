@@ -84,8 +84,10 @@ const TYPE_ACTIVATION = [
 ]
 
 const TYPE_CLASS = [
-  { key: 'Conv2D', label: 'Conv2D' },
-  { key: 'MaxPooling2D', label: 'MaxPooling2D' }
+  { key: 'conv2d', label: 'Conv2D' },
+  { key: 'maxPooling2d', label: 'MaxPooling2D' },
+  { key: 'flatten', label: 'Flatten' },
+  { key: 'dense', label: 'Dense' },
 ]
 
 export {

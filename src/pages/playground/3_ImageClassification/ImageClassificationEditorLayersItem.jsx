@@ -3,13 +3,41 @@ import { Trans, useTranslation } from 'react-i18next'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function ImageClassificationEditorLayersItem ({ item, indexLayer, handleChange_Attr, handleChange_AttrArray }) {
+export default function ImageClassificationEditorLayersItem ({ item, indexLayer, handleChange_Attr }) {
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
 
   if (VERBOSE) console.debug('render LayerEdit')
   return (<>
-    {item._class === 'Conv2D' && <Row className={'mt-3'}>
+    {item._class === 'flatten' && <Row className={'mt-3'}>
+      <Col></Col>
+    </Row>}
+    {item._class === 'dense' && <Row className={'mt-3'}>
+      <Col xl={6}>
+        <Form.Group className="mb-3" controlId={'formUnitsLayer_' + indexLayer}>
+          <Form.Label><Trans i18nKey={prefix + 'units'} /></Form.Label>
+          <Form.Control type="number"
+                        inputMode={'numeric'}
+                        placeholder={t(prefix + 'units-placeholder')}
+                        value={item.units}
+                        onChange={(e) => handleChange_Attr(e, indexLayer, 'units')} />
+        </Form.Group>
+      </Col>
+      {/* ACTIVATION FUNCTION */}
+      <Col xl={6}>
+        <Form.Group className="mb-3" controlId={'formActivationLayer' + indexLayer}>
+          <Form.Label><Trans i18nKey={prefix + 'activation-function-select'} /></Form.Label>
+          <Form.Select aria-label={t(prefix + 'activation-function-info')}
+                       value={item.activation}
+                       onChange={(e) => handleChange_Attr(e, indexLayer, 'activation')}>
+            {TYPE_ACTIVATION.map(({ key, label }, indexAct) => {
+              return (<option key={indexAct} value={key}>{label}</option>)
+            })}
+          </Form.Select>
+        </Form.Group>
+      </Col>
+    </Row>}
+    {item._class === 'conv2d' && <Row className={'mt-3'}>
       {/* KERNEL SIZE */}
       <Col xl={6}>
         <Form.Group className="mb-3" controlId={'formKernelLayer' + indexLayer}>
@@ -32,19 +60,8 @@ export default function ImageClassificationEditorLayersItem ({ item, indexLayer,
         </Form.Group>
       </Col>
 
-      {/* STRIDES */}
-      <Col xl={6}>
-        <Form.Group className="mb-3" controlId={'formStridesLayer' + indexLayer}>
-          <Form.Label><Trans i18nKey={prefix + 'strides'} /></Form.Label>
-          <Form.Control type="number"
-                        placeholder={t(prefix + 'strides-placeholder')}
-                        value={item.strides}
-                        onChange={(e) => handleChange_Attr(e, indexLayer, 'strides')} />
-        </Form.Group>
-      </Col>
-
       {/* ACTIVATION FUNCTION */}
-      <Col xl={6}>
+      <Col xl={12}>
         <Form.Group className="mb-3" controlId={'formActivationLayer' + indexLayer}>
           <Form.Label><Trans i18nKey={prefix + 'activation-function-select'} /></Form.Label>
           <Form.Select aria-label={t(prefix + 'activation-function-info')}
@@ -58,51 +75,30 @@ export default function ImageClassificationEditorLayersItem ({ item, indexLayer,
       </Col>
     </Row>}
 
-    {item._class === 'MaxPooling2D' && <Row className={'mt-3'}>
-      {/* POOL_SIZE */}
+    {item._class === 'maxPooling2d' && <Row className={'mt-3'}>
+      {/* POOLSIZE */}
       <Col xl={6}>
         <Form.Group className="mb-3"
                     controlId={'formPoolSize0Layer' + indexLayer}>
-          <Form.Label><Trans i18nKey={prefix + 'pool-size'} /> 0</Form.Label>
+          <Form.Label><Trans i18nKey={prefix + 'pool-size'} /></Form.Label>
           <Form.Control type="number"
                         placeholder={t(prefix + 'pool-size-placeholder')}
-                        value={item.poolSize[0]}
-                        onChange={(e) => handleChange_AttrArray(e, indexLayer, 'poolSize', 0)} />
+                        value={item.poolSize}
+                        onChange={(e) => handleChange_Attr(e, indexLayer, 'poolSize')} />
         </Form.Group>
       </Col>
 
-
-      {/* POOL SIZE 2 */}
-      <Col xl={6}>
-        <Form.Group className="mb-3" controlId={'formPoolSize1Layer' + indexLayer}>
-          <Form.Label><Trans i18nKey={prefix + 'pool-size'} /> 1</Form.Label>
-          <Form.Control type="number"
-                        placeholder={t(prefix + 'pool-size-placeholder')}
-                        value={item.poolSize[1]}
-                        onChange={(e) => handleChange_AttrArray(e, indexLayer, 'poolSize', 1)} />
-        </Form.Group>
-      </Col>
-
-      {/* strides max 1 */}
+      {/* STRIDES */}
       <Col xl={6}>
         <Form.Group className="mb-3" controlId={'formStrides0Layer' + indexLayer}>
-          <Form.Label><Trans i18nKey={prefix + 'strides'} /> 0</Form.Label>
+          <Form.Label><Trans i18nKey={prefix + 'strides'} /></Form.Label>
           <Form.Control type="number"
                         placeholder={t(prefix + 'strides-placeholder')}
-                        value={item.strides2[0]}
-                        onChange={(e) => handleChange_AttrArray(e, indexLayer, 'strides2', 0)} />
+                        value={item.strides}
+                        onChange={(e) => handleChange_Attr(e, indexLayer, 'strides')} />
         </Form.Group>
       </Col>
-      <Col xl={6}>
-        {/* strides max 2 */}
-        <Form.Group className="mb-3" controlId={'formStrides1Layer' + indexLayer}>
-          <Form.Label><Trans i18nKey={prefix + 'strides'} /> 1</Form.Label>
-          <Form.Control type="number"
-                        placeholder={t(prefix + 'strides-placeholder')}
-                        value={item.strides2[1]}
-                        onChange={(e) => handleChange_AttrArray(e, indexLayer, 'strides2', 1)} />
-        </Form.Group>
-      </Col>
+
     </Row>}
   </>)
 }

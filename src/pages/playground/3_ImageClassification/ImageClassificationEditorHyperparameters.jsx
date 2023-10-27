@@ -75,7 +75,10 @@ export default function ImageClassificationEditorHyperparameters (props) {
         <Form.Group className="mb-3" controlId="formTrainRate">
           <Form.Label><Trans i18nKey={prefix + 'learning-rate'} /></Form.Label>
           <Form.Control type="number"
-                        placeholder={t('learning-rate-placeholder')}
+                        inputMode={"numeric"}
+                        min={1}
+                        max={100}
+                        placeholder={t(prefix + 'learning-rate-placeholder')}
                         defaultValue={DEFAULT_LEARNING_RATE}
                         onChange={(e) => handleChange_LearningRate(e)} />
           <Form.Text className="text-muted">
@@ -87,7 +90,9 @@ export default function ImageClassificationEditorHyperparameters (props) {
         <Form.Group className="mb-3" controlId="FormNumberOfEpochs">
           <Form.Label><Trans i18nKey={prefix + 'number-of-epochs'} /></Form.Label>
           <Form.Control type="number"
-                        placeholder={t('number-of-epochs-placeholder')}
+                        min={1}
+                        max={100}
+                        placeholder={t(prefix + 'number-of-epochs-placeholder')}
                         defaultValue={DEFAULT_NUMBER_EPOCHS}
                         onChange={(e) => handleChange_NumberEpochs(e)}
           />
@@ -100,7 +105,10 @@ export default function ImageClassificationEditorHyperparameters (props) {
         <Form.Group className="mb-3" controlId="FormTestSize">
           <Form.Label><Trans i18nKey={prefix + 'test-size'} /></Form.Label>
           <Form.Control type="number"
-                        placeholder={t('test-size-placeholder')}
+                        inputMode={"numeric"}
+                        min={1}
+                        max={100}
+                        placeholder={t(prefix + 'test-size-placeholder')}
                         defaultValue={DEFAULT_TEST_SIZE}
                         onChange={(e) => handleChange_TestSize(e)}
           />

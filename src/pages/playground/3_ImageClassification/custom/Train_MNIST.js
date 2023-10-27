@@ -1,7 +1,7 @@
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tf from '@tensorflow/tfjs'
 import { MnistData } from '../models/MODEL_IMAGE_MNIST_Data'
-import { createOptimizer, createLoss, createMetricsList  } from '@core/nn-utils/ArchitectureHelper'
+import { createOptimizer, createLoss, createMetricsList } from '@core/nn-utils/ArchitectureHelper'
 
 const classNames = [
   'Zero',
@@ -49,8 +49,8 @@ async function showExamples (data) {
 async function train (model, data, numberOfEpoch) {
   const metrics = ['loss', 'val_loss', 'acc', 'val_acc']
   const container = {
-    name  : 'Train Modelo',
-    tab   : 'Training'
+    name: 'Train Modelo',
+    tab : 'Training'
   }
   const fitCallbacks = tfvis.show.fitCallbacks(container, metrics)
 
@@ -116,70 +116,56 @@ async function showConfusion (model, data) {
 
 function getModel (layerList, idOptimizer, idLoss, idMetrics_list, learningRate) {
   const model = tf.sequential()
-  const IMAGE_WIDTH = 28
-  const IMAGE_HEIGHT = 28
-  const IMAGE_CHANNELS = 1
   const optimizer = createOptimizer(idOptimizer, { learningRate: (learningRate / 100), momentum: 0.99 })
   const loss = createLoss(idLoss, {})
   const metrics = createMetricsList(idMetrics_list, {})
 
-  // layerList.forEach((element, index) => {
-  //   console.log(element)
-  //   if (index === 0) {
-  //     model.add(
-  //       tf.layers.conv2d({
-  //         inputShape       : [IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS],
-  //         kernelSize       : element.kernelSize,
-  //         filters          : element.filters,
-  //         strides          : element.strides,
-  //         activation       : element.activation.toLowerCase(),
-  //         kernelInitializer: element.kernelInitializer,
-  //       }),
-  //     )
-  //   } else {
-  //     switch (element._class) {
-  //       case 'Conv2D': {
-  //         model.add(
-  //           tf.layers.conv2d({
-  //             kernelSize       : element.kernelSize,
-  //             filters          : element.filters,
-  //             strides          : element.strides,
-  //             activation       : element.activation.toLowerCase(),
-  //             kernelInitializer: element.kernelInitializer,
-  //           }),
-  //         )
-  //         break
-  //       }
-  //       case 'MaxPooling2D': {
-  //         model.add(
-  //           tf.layers.maxPooling2d({
-  //             poolSize: element.poolSize,
-  //             strides : element.strides,
-  //           }),
-  //         )
-  //         break
-  //       }
-  //       default: {
-  //         console.error('Error, Class not valid')
-  //         break
-  //       }
-  //     }
-  //   }
-  // })
-
-  model.add(tf.layers.conv2d({
-    inputShape: [IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS],
-    kernelSize: 3,
-    filters: 16,
-    activation: 'relu'
-  }));
-  model.add(tf.layers.maxPooling2d({poolSize: 2, strides: 2}));
-  model.add(tf.layers.conv2d({kernelSize: 3, filters: 32, activation: 'relu'}));
-  model.add(tf.layers.maxPooling2d({poolSize: 2, strides: 2}));
-  model.add(tf.layers.conv2d({kernelSize: 3, filters: 32, activation: 'relu'}));
-  model.add(tf.layers.flatten({}));
-  model.add(tf.layers.dense({units: 64, activation: 'relu'}));
-  model.add(tf.layers.dense({units: 10, activation: 'softmax'}));
+  for (const layer of layerList) {
+    switch (layer._class) {
+      case 'conv2d': {
+        const inputShape = layer._protected ? { inputShape: layer.inputShape } : {}
+        model.add(tf.layers.conv2d({
+          ...inputShape,
+          kernelSize: layer.kernelSize,
+          filters   : layer.filters,
+          activation: layer.activation
+        }))
+        break
+      }
+      case 'maxPooling2d': {
+        model.add(tf.layers.maxPooling2d({ poolSize: layer.poolSize, strides: layer.strides }))
+        break
+      }
+      case 'flatten': {
+        model.add(tf.layers.flatten({}))
+        break
+      }
+      case 'dense': {
+        model.add(tf.layers.dense({ units: layer.units, activation: layer.activation }))
+        break
+      }
+      default: {
+        console.error('Error, layer not valid')
+        break
+      }
+    }
+  }
+  // const IMAGE_WIDTH = 28
+  // const IMAGE_HEIGHT = 28
+  // const IMAGE_CHANNELS = 1
+  // model.add(tf.layers.conv2d({
+  //   inputShape: [IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS],
+  //   kernelSize: 3,
+  //   filters   : 16,
+  //   activation: 'relu'
+  // }))
+  // model.add(tf.layers.maxPooling2d({ poolSize: 2, strides: 2 }))
+  // model.add(tf.layers.conv2d({ kernelSize: 3, filters: 32, activation: 'relu' }))
+  // model.add(tf.layers.maxPooling2d({ poolSize: 2, strides: 2 }))
+  // model.add(tf.layers.conv2d({ kernelSize: 3, filters: 32, activation: 'relu' }))
+  // model.add(tf.layers.flatten({}))
+  // model.add(tf.layers.dense({ units: 64, activation: 'relu' }))
+  // model.add(tf.layers.dense({ units: 10, activation: 'softmax' }))
   model.compile({
     optimizer: optimizer,
     loss     : loss,

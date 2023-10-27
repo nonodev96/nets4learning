@@ -1,7 +1,7 @@
 import { Button, Card, Col, Row } from 'react-bootstrap'
 import CustomCanvasDrawer from '@pages/playground/3_ImageClassification/components/customCanvasDrawer'
 
-export default function ImageClassificationClassify({
+export default function ImageClassificationClassify ({
   handleSubmit_VectorTest,
   handleChange_FileUpload,
   handleSubmit_VectorTestImageUpload
@@ -20,6 +20,8 @@ export default function ImageClassificationClassify({
                                 }}
             />
           </Col>
+        </Row>
+        <Row style={{ display: 'none' }}>
           <Col>
             <input style={{ marginBottom: '2rem' }}
                    type="file"
@@ -41,7 +43,6 @@ export default function ImageClassificationClassify({
               </Col>
             </Row>
 
-            {/* SUBMIT BUTTON */}
             <div className="d-grid gap-2 mt-3">
               <Button variant={'primary'}
                       onClick={handleSubmit_VectorTestImageUpload}>

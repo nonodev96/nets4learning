@@ -214,7 +214,8 @@
     "new-element-need-to-be-unique": "El elemento del conjunto X debe ser único.",
     "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de actvación",
     "parsing-csv": "Error en la preparación del conjunto de datos",
-    "file-not-valid": "Error, fichero no válido"
+    "file-not-valid": "Error, fichero no válido",
+    "metrics-length": "Error, el numero de metricas debe estar entre 1 y 10"
   },
   "warning": {
     "the-first-layer-need-to-be-__value__": "Advertencia, la primera capa debe ser de tipo {{value}}",
@@ -1518,6 +1519,7 @@
           "test-size-info": "Valor entre 0 y 100 (es un porcentaje) del tamaño del conjunto de pruebas",
           "delete-metric": "Eliminar funcion de métrica {{index}}",
           "add-metric": "Añadir función de métrica",
+          "metric-id-__index__": "Métrica {{index}}",
           "metric-id-select": "Selecciona la función de métrica",
           "metric-id-info": "Será una de las funciones de métrica"
         },

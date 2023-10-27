@@ -73,44 +73,45 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
   DEFAULT_LAYERS () {
     return [
       {
-        _layer    : 'conv2d',
+        _class    : 'conv2d',
+        _protected: true,
         inputShape: [28, 28, 1],
         kernelSize: 3,
         filters   : 16,
         activation: 'relu',
       },
       {
-        _layer  : 'maxPooling2d',
-        poolSize: [2, 2],
-        strides2: [2, 2],
+        _class  : 'maxPooling2d',
+        poolSize: 2,
+        strides : 2,
       },
       {
-        _layer    : 'conv2d',
+        _class    : 'conv2d',
         kernelSize: 3,
         filters   : 32,
         activation: 'relu'
       },
       {
-        _layer  : 'maxPooling2d',
-        poolSize: [2, 2],
-        strides2: [2, 2],
+        _class  : 'maxPooling2d',
+        poolSize: 2,
+        strides : 2,
       },
       {
-        _layer    : 'conv2d',
+        _class    : 'conv2d',
         kernelSize: 3,
         filters   : 32,
         activation: 'relu'
       },
       {
-        _layer: 'flatten',
+        _class: 'flatten',
       },
       {
-        _layer    : 'dense',
+        _class    : 'dense',
         units     : 64,
         activation: 'relu'
       },
       {
-        _layer    : 'dense',
+        _class    : 'dense',
         units     : 10,
         activation: 'softmax'
       }

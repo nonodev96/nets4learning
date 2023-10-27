@@ -20,7 +20,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
     select: () => {
 
     },
-    zoom  : (e) => {
+    zoom  : (_e) => {
       // e.preventDefault()
       // e.stopPropagation()
       // e.stopImmediatePropagation()
@@ -34,15 +34,21 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const getElementText = (index, element) => {
     let label = ''
     let title = ''
-    if (element?._class && element?._class === 'Conv2D') {
-      label = `Layer: ${index}\nK: ${element.kernelSize}\nF: ${element.filters}\nS: ${element.strides}\nK.I: ${element.kernelInitializer}\nF.A: ${element.activation}`
-      title = `Layer: ${index}\nKernelSize: ${element.kernelSize}\nFilters: ${element.filters}\nStrides: ${element.strides}\nKernelInitializer: ${element.kernelInitializer}\nF. Activation: ${element.activation}`
-    } else if (element?._class && element?._class === 'MaxPooling2D') {
-      label = `Layer: ${index}\nP.S: [${element.poolSize[0]}, ${element.poolSize[1]}]\nS.2: [${element.strides2[0]}, ${element.strides2[1]}]`
-      title = `Layer: ${index}\nPool Size: [${element.poolSize[0]}, ${element.poolSize[1]}]\nStrides 2: [${element.strides2[0]}, ${element.strides2[1]}]`
+    if (element?._class && element?._class === 'flatten') {
+      label = `Layer: ${index}\n\nFlatten`
+      title = `Layer: ${index} {flatten}`
+    } else if (element?._class && element?._class === 'dense') {
+      label = `Layer: ${index}\n\nDense\nU: ${element.units} F.A:  ${element.activation}`
+      title = `Layer: ${index} {dense}\nUnits: ${element.units} F.Activation: ${element.activation}`
+    } else if (element?._class && element?._class === 'conv2d') {
+      label = `Layer: ${index}\n\nConv 2D\nK: ${element.kernelSize}\nF: ${element.filters}\nF.A: ${element.activation}`
+      title = `Layer: ${index} {conv2d}\nKernelSize: ${element.kernelSize}\nFilters: ${element.filters}\nF. Activation: ${element.activation}`
+    } else if (element?._class && element?._class === 'maxPooling2d') {
+      label = `Layer: ${index}\n\nMax Pooling 2D\nP.S: ${element.poolSize}\nS: ${element.strides}`
+      title = `Layer: ${index} {maxPooling2d}\nPool Size: ${element.poolSize}\nStrides: ${element.strides}`
     } else {
       label = `Layer: ${index}\nU: ${element.units}\nF.A: ${element.activation}`
-      title = `Layer: ${index}\nUnits: ${element.units}\nF.Activation: ${element.activation}`
+      title = `Layer: ${index} {dense}\nUnits: ${element.units}\nF.Activation: ${element.activation}`
     }
     return { label, title }
   }
@@ -99,11 +105,11 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
     const nodes = [], edges = []
     for (let index = 0; index < layers.length; index++) {
       let element = layers[index]
-      const { label, title} = getElementText(index, element)
+      const { label, title } = getElementText(index, element)
       for (let unit = 0; unit < layers[index].units; unit++) {
         let key_id = index + ' - ' + unit
         nodes.push({
-          id: key_id,
+          id   : key_id,
           label: label,
           title: title,
           level: index

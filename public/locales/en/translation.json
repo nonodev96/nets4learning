@@ -138,8 +138,8 @@
       "description": {
         "0": "Pearson's correlation coefficient, also known as a linear correlation or product-moment correlation coefficient, is a statistical measure used to quantify the linear relationship between two quantitative variables. It is one of the most commonly used correlation statistics and provides information about the strength and direction of the relationship between the variables.",
         "1": "Pearson's correlation coefficient varies between -1 and 1:",
-        "2": "A value of -1 indicates a perfectly negative linear correlation, which means that as one variable increases, the other decreases in a reverse linear relationship.",
-        "3": "A value of 1 indicates a perfectly positive linear correlation, which means that as one variable increases, the other also increases in a direct linear relationship.",
+        "2": "A value of -1 indicates a perfectly negative linear correlation, which means that as one variable increases, the other decreases in an inverse linear relationship.",
+        "3": "A value of 1 indicates a perfectly positive linear correlation, which means that as one variable increases, the other also increases in a direct linear ratio.",
         "4": "A value of 0 indicates that there is no linear correlation between the variables, which implies that there is no linear relationship between them.",
         "5": "Pearson's correlation coefficient calculation is based on covariances and standard deviations of the two variables. Mathematically, it is calculated as follows:",
         "6": "Where:",
@@ -214,7 +214,8 @@
     "new-element-need-to-be-unique": "The element of set X must be unique.",
     "layers-length": "You must have at least one layer with the number of neurons and their actvation function",
     "parsing-csv": "Error, parsing data set",
-    "file-not-valid": "Error, file not valid"
+    "file-not-valid": "Error, file not valid",
+    "metrics-length": "Error, the number of metrics must be between 1 and 10"
   },
   "warning": {
     "the-first-layer-need-to-be-__value__": "Warning, the first layer must be of type {{value}}",
@@ -466,7 +467,7 @@
           },
           "dataset-plot": {
             "title": "Data set plot",
-            "content": "You can extract very relevant information by analyzing the data set using the different graphics, bars diagram, sectors diagrams, etc."
+            "content": "You can extract very relevant information by analyzing the data set using the different graphs, bars diagram, sectors diagrams, etc."
           },
           "layer-visualizer": {
             "title": "Visualizer of the layers of the neuronal network",
@@ -497,7 +498,7 @@
         "description": {
           "text": {
             "0": "The \"Salary\" data set is a collection of information that relates the number of years of work experience of an individual with their corresponding salary.",
-            "1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the number of years that an employee has worked in its specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually."
+            "1": "Each entry in the data set consists of two main variables: \"Years of Experience\" (years of experience) and \"Salary\" (salary). The variable \"Years of Experience\" represents the amount of years that an employee has worked in his specific field, while the variable \"Salary\" represents the amount of money that said employee earns annually."
           },
           "link": "For more information about this data set, visit the repository <link1>www.kaggy.com</link1>",
           "details-1-input": {
@@ -790,7 +791,7 @@
           },
           "dataset-plot": {
             "title": "Data set plot",
-            "content": "You can extract very relevant information by analyzing the data set using the different graphics, bars diagram, sectors diagrams, etc."
+            "content": "You can extract very relevant information by analyzing the data set using the different graphs, bars diagram, sectors diagrams, etc."
           },
           "layer-visualizer": {
             "title": "Visualizer of the layers of the neuronal network",
@@ -1037,7 +1038,7 @@
           },
           "dataset-plot": {
             "title": "Data set plot",
-            "content": "You can extract very relevant information by analyzing the data set using the different graphics, bars diagram, sectors diagrams, etc."
+            "content": "You can extract very relevant information by analyzing the data set using the different graphs, bars diagram, sectors diagrams, etc."
           },
           "layer-visualizer": {
             "title": "Visualizer of the layers of the neuronal network",
@@ -1094,7 +1095,7 @@
       "title": "Bar Charts",
       "description": {
         "intro": {
-          "0": "Bar or bar charts are a visual representation that shows the comparison of different categories or groups by rectangular bars.\nThis type of graph uses the length or height of the bars to represent the magnitude or amount of a specific variable.",
+          "0": "The bar or bar charts are a visual representation that shows the comparison of different categories or groups by rectangular bars.\nThis type of graph uses the length or height of the bars to represent the magnitude or amount of a specific variable.",
           "1": "In a bar chart, the horizontal axis represents the categories or groups, while the vertical axis shows the magnitude or frequency of the variable that is being analyzed.\nEach category has an individual bar, and the length or height of the bar is proportional to the corresponding value or amount.\nThe bars can be horizontal or vertical, depending on the orientation of the graph.",
           "2": "The bar charts have several features and outstanding applications:"
         },
@@ -1156,12 +1157,12 @@
       "description": {
         "intro": {
           "0": "Line type graphics, also known as series or trend graphs graphics, are a visual representation that shows the relationship and evolution of data over time or a continuous variable.\nThese graphics are constructed by drawing data points in a Cartesian coordinate system, where each point represents a specific measurement or value of the variable in the vertical axis depending on the time or variable\nindependent on the horizontal axis.",
-          "1": "In a line -type graph, the data points are connected by straight lines, which creates a series of connected points.\nThese lines allow to visualize the trajectory and pattern of data change over time or the independent variable.\nThe slope of the line may indicate a growing or decreasing trend, while variations in the direction and shape of the line can reveal additional patterns in the data.",
+          "1": "In a line -type graph, the data points are connected by straight lines, which creates a series of connected points.\nThese lines allow to visualize the trajectory and pattern of data change over time or the independent variable.\nThe slope of the line may indicate an increasing or decreasing trend, while variations in the direction and shape of the line can reveal additional patterns in the data.",
           "2": "Line type graphics have several features and outstanding applications:"
         },
         "list": {
           "0": "Trend representation: Line type graphics are especially useful for showing trends and changes over time.\nThey can reveal growth patterns, decline or fluctuation in the data as they occur over time.",
-          "1": "Identification of changes and variations: when observing a line -type chart, it is possible to identify abrupt changes or variations in the data.\nThese changes may indicate significant events or factors that influence the measured variable.",
+          "1": "Identification of changes and variations: when observing a line type chart, it is possible to identify abrupt changes or variations in the data.\nThese changes may indicate significant events or factors that influence the measured variable.",
           "2": "Comparison of multiple series: Line type graphics also allow comparing multiple data series in a single graph.\nThis is useful for analyzing and visualizing the relationship between different variables as they evolve over time.",
           "3": "Seasonality analysis and cycles: If the data exhibits seasonal or cyclical patterns, line -type graphics can help identify and analyze these patterns.\nThis can be useful in fields such as economics, meteorology and sales analysis, where there are recurring fluctuations in the data.",
           "4": "Forecast and projection: Line type graphics are also used to perform forecasts and projections based on historical data.\nWhen observing past trends, it is possible to infer and predict how the data will behave in the future."
@@ -1183,7 +1184,7 @@
           "0": "Representation of proportions: foot graphics are ideal for representing proportions and percentages.\nThey allow to quickly visualize the relative contribution of each category in the total data set.",
           "1": "Identification of dominant categories: the relative sizes of the sectors in the foot chart help to easily identify the dominant or more significant categories.\nThe largest sectors indicate the categories that have a greater proportion or contribution in relation to others.",
           "2": "Comparison between categories: While foot graphics are useful to show the proportions of the categories, they can be limited to make precise comparisons between them.\nThis is because human perception can have difficulties in precisely evaluating differences in sizes of angles or sectors.\nHowever, the relative comparison between sectors sizes can still provide general information about the proportions between categories.",
-          "3": "Representation of categorical data: Foot -type graphics are especially useful for representing categorical data, where categories are mutually exclusive and do not have an inherent order.\nFor example, they can be used to show the percentage distribution of income in different categories of expenses.",
+          "3": "Representation of categorical data: foot -type graphics are especially useful for representing categorical data, where categories are mutually exclusive and do not have an inherent order.\nFor example, they can be used to show the percentage distribution of income in different categories of expenses.",
           "4": "Improvement of the visual presentation: Pie type graphics are commonly used in presentations and documents to communicate information visually attractive and easily understandable.\nThe circular shape and the colors used can quickly capture attention and highlight the proportional relationships between the categories."
         },
         "end": {
@@ -1200,14 +1201,14 @@
           "2": "Dispersion graphics have several applications and prominent characteristics:"
         },
         "list": {
-          "0": "Relationship between variables: Dispersion graphics allow analyzing the relationship between two variables.\nThey can show if there is a positive correlation (the points tend to group in an ascending direction), a negative correlation (the points tend to group in a descending direction) or a lack of correlation (the points do not show a defined pattern).",
+          "0": "Relationship between variables: Dispersion graphics allow analyzing the relationship between two variables.\nThey can show if there is a positive correlation (the points tend to group in an ascending direction), a negative correlation (the points tend to group in a descending direction) or a lack of correlation (the points do not show a definite pattern).",
           "1": "Trends identification: A dispersion chart can reveal trends or patterns in the data.\nWhen observing the general direction of the points, it is possible to identify whether there is a linear, non -linear relationship or even a curvilinear relationship between the variables.",
           "2": "Detection of atypical values: Dispersion graphics can help identify atypical or extreme values in the data.\nThese points stand out and are far from the main group, suggesting unusual or exceptional observations that may require additional analysis.",
           "3": "Analysis of clusters or groups: If the points in the dispersion graph are grouped or form different patterns, this may indicate the presence of clusters or groups.\nThis may be useful in data classification or classification analysis.",
           "4": "Multidimensional data display: If additional colors or sizes are used, dispersion graphics can also represent additional information in a two -dimensional space.\nThis allows to visualize multidimensional data more intuitively."
         },
         "end": {
-          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values in the data, and are useful in various applications, such as correlation analysis, detection of clusters and visualization of multidimensional data."
+          "0": "Dispersion graphics are a powerful tool to explore and visualize the relationship between two variables.\nThey allow identifying patterns, trends and atypical values in the data, and are useful in various applications, such as correlation analysis, clusters detection and visualization of multidimensional data."
         }
       }
     },
@@ -1518,6 +1519,7 @@
           "test-size-info": "Value between 0 and 100 (is a percentage) of the size of the test set",
           "delete-metric": "Delete metric function {{index}}",
           "add-metric": "Add metric function",
+          "metric-id-__index__": "Metric {{index}}",
           "metric-id-select": "Select the metric function",
           "metric-id-info": "It will be one of the metric functions"
         },
@@ -1791,9 +1793,9 @@
         "2-title": "Train models",
         "2-description-1": "The tool has a data display that allows you to show the classes and attributes of the dataset. As well as a manager to create, design, train and export a data model.",
         "2-description-2": "On the left we have an editor of the different layers that the neuronal network has. It should be allowed the last network layer to have the same number of neurons as classes to predict.",
-        "2-description-3": "<b> Number of Epochs </b>: <br /> The Number of iterates refers to the number of Times the Training Data is present to the neuronal Network During the Training Process. Each iteration impies an update of the weights of the network as a function of the calculated error.",
-        "2-description-4": "We must press the \"Create and train model\" button to start the training process of the neuronal network. If all the configuration and selection of the functions are correct then an entry with the trained models will be added in the table below.",
-        "2-description-5": "Once a model is trained from the data we can make predictions, for this a dynamic form is included with the characteristics of the data set. The precision of the model in the prediction may be greater or less depending on the training and the selected options."
+        "2-description-3": "<b> Number of Epochs </b>: <br /> The Number of iterations to the Number of Times the Training Data is present to the neuronal Network During the Training Process. Each iteration impies an update of the weights of the network as a function of the calculated error.",
+        "2-description-4": "We must press the \"Create and train model\" button to start the training process of the neuronal network. If all the configuration and selection of the functions is correct then an entry with the trained models will be added in the table below.",
+        "2-description-5": "Once a model from the data is trained we can make predictions, for this a dynamic form is included with the characteristics of the data set. The precision of the model in the prediction may be greater or less depending on the training and the selected options."
       },
       "1-linear-regression": {
         "title": "Linear regression",

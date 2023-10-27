@@ -52,8 +52,8 @@ export default function ImageClassification (props) {
    * @property {string} activation
    *
    * @property {string} kernelInitializer
-   * @property {[number, number]} poolSize
-   * @property {[number, number]} strides2
+   * @property {number} poolSize
+   * @property {number} strides
    */
   const [Layers, setLayers] = useState(/**@type Array<Layer_t>*/DEFAULT_LAYERS)
 
@@ -104,7 +104,11 @@ export default function ImageClassification (props) {
   // region CREACIÓN DEL MODELO
   const handleSubmit_Play = async (event) => {
     event.preventDefault()
-    if (Layers[0]._class === 'Conv2D') {
+    if (Layers[0]._class !== 'conv2d') {
+      await alertHelper.alertWarning('warning.the-first-layer-need-to-be-__value__', { value: 'conv2d' })
+      return
+    }
+    try {
       const params = {
         learningRate : LearningRate,
         numberEpochs : NumberEpochs,
@@ -129,8 +133,8 @@ export default function ImageClassification (props) {
         model : model
       }])
       await alertHelper.alertSuccess(t('alert.model-train-success'))
-    } else {
-      await alertHelper.alertWarning('warning.the-first-layer-need-to-be-__value__', { value: 'Conv2D' })
+    } catch (error) {
+      console.error(error)
     }
   }
   // endregion
