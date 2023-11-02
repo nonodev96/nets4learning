@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Card, Col, Container, Form, ProgressBar, Row } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Webcam from 'react-webcam'
 import { Trans, useTranslation } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
@@ -12,22 +13,20 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
-import { useHistory } from 'react-router-dom'
+import FakeProgressBar from "@components/loading/FakeProgressBar";
 
 tfjs
   .setBackend('webgl')
-  .then((_) => {
+  .then(() => undefined)
 
-  })
+export default function ModelReviewObjectDetection ({ dataset }) {
 
-export default function ModelReviewObjectDetection (props) {
-  const dataset = props.dataset
+  const isWebView = navigator.userAgent.toLowerCase().indexOf("wv") !== -1
 
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
 
   const [isLoading, setLoading] = useState(true)
-  const [progress, setProgress] = useState(10)
   const [isCameraEnable, setCameraEnable] = useState(false)
   const [cameraPermission, setCameraPermission] = useState(/**@type {'denied' | 'granted' | 'prompt'} */'prompt')
   const [isProcessedImage, setIsProcessedImage] = useState(false)
@@ -40,7 +39,6 @@ export default function ModelReviewObjectDetection (props) {
   const requestRef = useRef()
   const webcamRef = useRef(null)
   const canvasRef = useRef(null)
-  const intervalRef = useRef()
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
@@ -55,8 +53,13 @@ export default function ModelReviewObjectDetection (props) {
     if (VERBOSE) console.debug('useEffect[]')
 
     async function checkCameraPermission () {
-      if (!navigator.permissions?.query) {
+      if (isWebView) {
+        const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
+        handleDevices(_mediaDevices)
+      }
+      if (!navigator?.permissions?.query) {
         console.error('navigator.permissions.query | not supported.')
+        return
       }
       const permission = await navigator.permissions.query({ name: 'camera' })
       setCameraPermission(permission.state)
@@ -93,32 +96,8 @@ export default function ModelReviewObjectDetection (props) {
       }
     }
 
-    checkCameraPermission().then(_ => {})
-  }, [handleDevices])
-
-  useEffect(() => {
-    if (progress >= 100) {
-      clearInterval(intervalRef.current)
-    }
-  }, [progress])
-
-  useEffect(() => {
-    if (VERBOSE) console.debug('useEffect[]')
-    let step = 0.2
-    let current_progress = 0.1
-    intervalRef.current = setInterval(() => {
-      current_progress += step
-      const _progress = Math.round(Math.atan(current_progress) / (Math.PI / 2) * 100 * 1000) / 1000
-      setProgress(_progress)
-      if (_progress >= 80) {
-        step = 0.05
-      } else if (_progress >= 70) {
-        step = 0.1
-      }
-    }, 1000)
-
-    return () => clearInterval(intervalRef.current)
-  }, [])
+    checkCameraPermission().then(() => undefined)
+  }, [isWebView, handleDevices])
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[dataset, t]')
@@ -132,7 +111,7 @@ export default function ModelReviewObjectDetection (props) {
       try {
         if (dataset === UPLOAD) {
           console.error('Error, data set not valid')
-        } else if (MAP_OD_CLASSES.hasOwnProperty(dataset)) {
+        } else if (dataset in MAP_OD_CLASSES) {
           const _iModelClass = MAP_OD_CLASSES[dataset]
           iModelRef.current = new _iModelClass(t)
           await iModelRef.current.ENABLE_MODEL()
@@ -147,11 +126,11 @@ export default function ModelReviewObjectDetection (props) {
       }
     }
 
-    init()
-      .then(() => {
-      })
+    init().then(() => {
+    })
 
-    return () => {}
+    return () => {
+    }
   }, [dataset, t, history])
 
   useEffect(() => {
@@ -184,7 +163,7 @@ export default function ModelReviewObjectDetection (props) {
         then = Date.now()
         // startTime = then
         animate()
-          .then((_) => {
+          .then(() => {
             console.debug('start animation')
           })
       }
@@ -265,7 +244,7 @@ export default function ModelReviewObjectDetection (props) {
     let designer_width = container_w * 0.75
     let designer_height = container_w * 0.50
 
-    async function draw (_event) {
+    async function draw () {
       const original_ratio = this.width / this.height
       let designer_ratio = designer_width / designer_height
 
@@ -293,13 +272,24 @@ export default function ModelReviewObjectDetection (props) {
     }
 
     function failed () {
-      console.error('Error al crear la imagen')
+      console.error('Error, not created the image')
     }
 
     const img = new Image()
     img.src = URL.createObjectURL(files[0])
     img.onload = draw
     img.onerror = failed
+  }
+
+  const disabledPermissionsCamera = () => {
+    if (isWebView) {
+      const permissionsInWebview = (devices.length > 0)
+      return isLoading || isCameraEnable || (!permissionsInWebview)
+    }
+    if (!isWebView) {
+      return isLoading || isCameraEnable || (cameraPermission === 'denied' || cameraPermission === 'prompt')
+    }
+    return isLoading || isCameraEnable || isWebView;
   }
 
   if (VERBOSE) console.debug('render ModelReviewObjectDetection')
@@ -313,12 +303,7 @@ export default function ModelReviewObjectDetection (props) {
 
       <Row>
         <Col>
-          {isLoading &&
-            <ProgressBar label={progress < 100 ? t('downloading') + ' ' + progress + '%' : t('downloaded')}
-                         striped={true}
-                         animated={true}
-                         now={progress} />
-          }
+          <FakeProgressBar isLoading={isLoading} />
         </Col>
       </Row>
 
@@ -357,12 +342,22 @@ export default function ModelReviewObjectDetection (props) {
                       <Form.Select aria-label={'select-device'}
                                    size={'sm'}
                                    value={deviceId}
-                                   disabled={isLoading || isCameraEnable || cameraPermission === 'denied' || cameraPermission === 'prompt'}
+                                   disabled={disabledPermissionsCamera()}
                                    onChange={(e) => handleChange_Device(e)}>
-                        {(cameraPermission === 'granted') && <option value={'default'} disabled><Trans i18nKey={'Default'} /></option>}
-                        {(cameraPermission === 'prompt' || cameraPermission === 'denied') && <option value={'default'} disabled><Trans i18nKey={'Need permissions'} /></option>}
+                        {isWebView && <>
+                          <option value={'default'} disabled><Trans i18nKey={'Default Android permissions'} /></option>
+                        </>}
+                        {!isWebView && <>
+                          {(cameraPermission === 'granted') &&
+                            <option value={'default'} disabled><Trans i18nKey={'Default'} /></option>
+                          }
+                          {(cameraPermission === 'prompt' || cameraPermission === 'denied') &&
+                            <option value={'default'} disabled><Trans i18nKey={'Need permissions'} /></option>}
+                        </>}
                         {devices.map((device, index) => {
-                          return <option key={'device-id-' + index} value={device.deviceId}>{device.label}</option>
+                          return <option key={'device-id-' + index} value={device.deviceId}>
+                            {device.label !== "" ? device.label : "Camera " + index}
+                          </option>
                         })}
                       </Form.Select>
                     </Form.Group>
@@ -384,7 +379,7 @@ export default function ModelReviewObjectDetection (props) {
                               onUserMedia={onUserMediaEvent}
                               onUserMediaError={onUserMediaErrorEvent}
                               videoConstraints={{
-                                facingMode: 'environment', deviceId: deviceId,
+                                deviceId: deviceId
                               }}
                               mirrored={false}
                               width={250}

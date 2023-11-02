@@ -10,7 +10,6 @@ import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
 import DebugJSON from '@components/debug/DebugJSON'
 
-import { LIST_MODELS_LINEAR_REGRESSION, UPLOAD } from '@/DATA_MODEL'
 import { MAP_LR_CLASSES } from './models'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
@@ -18,6 +17,7 @@ import LinearRegressionModelController_Simple from '@core/controller/01-linear-r
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
+import { UPLOAD } from '@/DATA_MODEL'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
@@ -132,8 +132,7 @@ export default function LinearRegression (props) {
     if (VERBOSE) console.debug('useEffect[init]')
     ReactGA.send({ hitType: 'pageview', page: '/LinearRegression/' + dataset, title: dataset })
     const init = async () => {
-      const isValid = LIST_MODELS_LINEAR_REGRESSION.some((e) => e === dataset)
-      if (!isValid) {
+      if (!(dataset in MAP_LR_CLASSES) || dataset!==UPLOAD) {
         await alertHelper.alertError('Error in selection of model')
         return
       }
@@ -141,7 +140,7 @@ export default function LinearRegression (props) {
       if (dataset === UPLOAD) {
         // TODO
         console.debug('Linear regression upload csv')
-      } else if (MAP_LR_CLASSES.hasOwnProperty(dataset)) {
+      } else if (dataset in MAP_LR_CLASSES) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)

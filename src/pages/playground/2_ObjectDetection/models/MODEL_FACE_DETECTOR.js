@@ -1,3 +1,4 @@
+import React from 'react'
 import I_MODEL_OBJECT_DETECTION from './_model'
 import * as faceDetection from '@tensorflow-models/face-detection'
 import { Trans } from 'react-i18next'
