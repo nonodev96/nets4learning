@@ -6,17 +6,18 @@ import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import ReactGA from 'react-ga4'
 
-import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import alertHelper from '@utils/alertHelper'
+
 import { UPLOAD, MODEL_IMAGE_MNIST } from '@/DATA_MODEL'
-
 import I_MODEL_IMAGE_CLASSIFICATION from './models/_model'
+import FakeProgressBar from '@components/loading/FakeProgressBar';
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
+import ModelReviewImageClassificationMNIST from '@pages/playground/3_ImageClassification/ModelReviewImageClassificationMNIST'
 import { MAP_IC_CLASSES } from '@pages/playground/3_ImageClassification/models'
 import { DEFAULT_BAR_DATA } from '@pages/playground/3_ImageClassification/CONSTANTS'
 import { UTILS_image } from '@pages/playground/3_ImageClassification/utils/utils'
-import ModelReviewImageClassificationMNIST from '@pages/playground/3_ImageClassification/ModelReviewImageClassificationMNIST'
-import FakeProgressBar from "@components/loading/FakeProgressBar";
+import { VERBOSE } from '@/CONSTANTS';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
@@ -30,6 +31,11 @@ export default function ModelReviewImageClassification ({ dataset }) {
 
   const iChartRef_modal = useRef()
   const iChartRef_image = useRef()
+
+  const originalImage_ref = useRef(/**@type HTMLCanvasElement*/null)
+  const resultCanvas_ref = useRef(/**@type HTMLCanvasElement*/null)
+  const imageCanvas_ref = useRef(/**@type HTMLCanvasElement*/null)
+  const modalCanvasImage_ref = useRef(/**@type HTMLCanvasElement*/null)
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -79,14 +85,14 @@ export default function ModelReviewImageClassification ({ dataset }) {
 
 
   useEffect(() => {
-    console.debug("useEffect [barDataModal]")
+    console.debug('useEffect [barDataModal]')
     if (iChartRef_modal.current) {
       iChartRef_modal.current.update()
     }
   }, [barDataModal])
 
   useEffect(() => {
-    console.debug("useEffect [barDataImage]")
+    console.debug('useEffect [barDataImage]')
     if (iChartRef_image.current) {
       iChartRef_image.current.update()
     }
@@ -129,14 +135,15 @@ export default function ModelReviewImageClassification ({ dataset }) {
   }
 
   const handleModal_Entered = async () => {
-    const canvas = document.getElementById('modal_canvas_image')
+    // const canvas = document.getElementById('modal_canvas_image')
+    const canvas = modalCanvasImage_ref.current
     const canvas_ctx = canvas.getContext('2d')
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
     let image = new Image()
     image.src = info.modal_image
     image.onerror = UTILS_image.failed
     image.onload = async () => {
-      UTILS_image.drawImageInCanvasWithContainer(image, 'modal_canvas_image')
+      UTILS_image.drawImageInCanvasWithContainer(image, canvas.id)
       const imageData = await iModelRef.current.GET_IMAGE_DATA(canvas, canvas_ctx)
       const { predictions } = await iModelRef.current.CLASSIFY_IMAGE(iModelRef_model.current, imageData)
       const barDataPrediction = await iModelRef.current.PREDICTION_FORMAT(predictions)
@@ -153,7 +160,8 @@ export default function ModelReviewImageClassification ({ dataset }) {
     image.src = URL.createObjectURL(info.image_upload)
     image.onerror = UTILS_image.failed
 
-    const canvas = document.getElementById('originalImage')
+    // const canvas = document.getElementById('originalImage')
+    const canvas = originalImage_ref.current
     if (!(canvas instanceof HTMLCanvasElement)) {
       throw new Error('HTMLCanvasElement')
     }
@@ -161,7 +169,7 @@ export default function ModelReviewImageClassification ({ dataset }) {
     const canvas_ctx = canvas.getContext('2d')
     canvas_ctx.clearRect(0, 0, canvas.width, canvas.height)
     image.onload = async () => {
-      UTILS_image.drawImageInCanvasWithContainer(image, 'originalImage')
+      UTILS_image.drawImageInCanvasWithContainer(image, canvas.id)
       const imageData = await iModelRef.current.GET_IMAGE_DATA(canvas, canvas_ctx)
       const { predictions } = await iModelRef.current.CLASSIFY_IMAGE(iModelRef_model.current, imageData)
       const barDataPrediction = await iModelRef.current.PREDICTION_FORMAT(predictions)
@@ -169,8 +177,9 @@ export default function ModelReviewImageClassification ({ dataset }) {
     }
   }
 
+  if (VERBOSE) console.debug('render ModelReviewImageClassification')
   return <>
-    <Container>
+    <Container id={'ModelReviewImageClassification'} data-testid={'Test-ModelReviewImageClassification'}>
       <Row className={'mt-2'}>
         <Col>
           <div className="d-flex justify-content-between">
@@ -188,10 +197,10 @@ export default function ModelReviewImageClassification ({ dataset }) {
       <Row>
         <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
           <Card className={'sticky-top mt-3 border-info'}>
+            <Card.Header>
+              <h2><Trans i18nKey={iModelRef.current.TITLE} /></h2>
+            </Card.Header>
             <Card.Body>
-              <Card.Title>
-                <Trans i18nKey={iModelRef.current.TITLE} />
-              </Card.Title>
               {(dataset === UPLOAD) ? <></> : iModelRef.current.DESCRIPTION()}
             </Card.Body>
           </Card>
@@ -212,7 +221,7 @@ export default function ModelReviewImageClassification ({ dataset }) {
                         .LIST_IMAGES_EXAMPLES()
                         .map((image, index) => {
                           const path_image = process.env.REACT_APP_PATH + '/assets/' + image
-                          return <Col className={'border bg-light'} key={index}>
+                          return <Col className={'border'} key={index}>
                             <img className={'img-fluid w-100 h-100 object-fit-cover'}
                                  src={process.env.REACT_APP_PATH + '/assets/' + image}
                                  alt={image}
@@ -243,7 +252,8 @@ export default function ModelReviewImageClassification ({ dataset }) {
                                text={t('drag-and-drop.image')}
                                labelFiles={t('drag-and-drop.label-files-one')}
                                accept={{
-                                 'image/png': ['.png'], 'image/jpg': ['.jpg'],
+                                 'image/png': ['.png'],
+                                 'image/jpg': ['.jpg'],
                                }}
                                function_DropAccepted={handleFileUpload_Image} />
 
@@ -279,12 +289,14 @@ export default function ModelReviewImageClassification ({ dataset }) {
                     <Row>
                       <Col className={'col-12 d-flex justify-content-center'}>
                         <canvas id="originalImage"
+                                ref={originalImage_ref}
                                 width={200}
                                 height={200}
                                 className={'nets4-border-1'}></canvas>
                       </Col>
                       <Col className={'col-12 d-flex justify-content-center'}>
                         <canvas id="resultCanvas"
+                                ref={resultCanvas_ref}
                                 style={{ display: 'none' }}
                                 width={250}
                                 height={250}
@@ -292,6 +304,7 @@ export default function ModelReviewImageClassification ({ dataset }) {
                       </Col>
                       <Col className={'col-12 d-flex justify-content-center'}>
                         <canvas id="imageCanvas"
+                                ref={imageCanvas_ref}
                                 style={{ display: 'none' }}
                                 width={250}
                                 height={250}
@@ -332,6 +345,7 @@ export default function ModelReviewImageClassification ({ dataset }) {
               <div className={'d-flex align-items-center justify-content-center'}
                    id={'modal_canvas_container'}>
                 <canvas id="modal_canvas_image"
+                        ref={modalCanvasImage_ref}
                         className={'nets4-border-1'}></canvas>
               </div>
             </Col>

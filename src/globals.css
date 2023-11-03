@@ -178,6 +178,28 @@ pre.highlight {
   counter-increment: item;
 }
 
+.n4l-fade-hidden {
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-name: fadeHidden;
+}
+
+@keyframes fadeHidden {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+  }
+}
+
 h1 {
   font-size: 2.2rem;
 }

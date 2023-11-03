@@ -13,7 +13,7 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
-import FakeProgressBar from "@components/loading/FakeProgressBar";
+import FakeProgressBar from '@components/loading/FakeProgressBar';
 
 tfjs
   .setBackend('webgl')
@@ -21,7 +21,7 @@ tfjs
 
 export default function ModelReviewObjectDetection ({ dataset }) {
 
-  const isWebView = navigator.userAgent.toLowerCase().indexOf("wv") !== -1
+  const isWebView = navigator.userAgent.toLowerCase().indexOf('wv') !== -1
 
   const { t } = useTranslation()
   const history = useHistory()
@@ -44,8 +44,21 @@ export default function ModelReviewObjectDetection ({ dataset }) {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
   }, [dataset])
 
-  const handleDevices = useCallback((mediaDevices) => {
+  const handleDevices = useCallback(async () => {
     if (VERBOSE) console.debug('useCallback[handleDevices]')
+    if (!navigator?.mediaDevices?.getUserMedia) {
+      console.log('not support navigator?.mediaDevices?.getUserMedia')
+      return
+    }
+    if (!navigator?.mediaDevices?.enumerateDevices) {
+      console.log('not support navigator?.mediaDevices?.enumerateDevices')
+      return
+    }
+    const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    mediaStream.getTracks().forEach((track) => {
+      track.stop()
+    })
+    const mediaDevices = await navigator.mediaDevices.enumerateDevices()
     setDevices(mediaDevices.filter(({ kind }) => kind === 'videoinput'))
   }, [setDevices])
 
@@ -54,8 +67,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
     async function checkCameraPermission () {
       if (isWebView) {
-        const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
-        handleDevices(_mediaDevices)
+        await handleDevices()
       }
       if (!navigator?.permissions?.query) {
         console.error('navigator.permissions.query | not supported.')
@@ -68,12 +80,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
         setDevices([])
       }
       if (permission.state === 'granted') {
-        if (!navigator.mediaDevices?.enumerateDevices) {
-          console.error('navigator.mediaDevices.enumerateDevices | not supported.')
-        } else {
-          const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
-          handleDevices(_mediaDevices)
-        }
+        await handleDevices()
       }
       permission.onchange = async (ev) => {
         console.log(`permission state has changed to ${permission.state}`, { ev: ev })
@@ -81,12 +88,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
         if (permission.state === 'granted') {
           setDeviceId('default')
-          if (!navigator.mediaDevices?.enumerateDevices) {
-            console.error('enumerateDevices() not supported.')
-          } else {
-            const _mediaDevices = await navigator.mediaDevices.enumerateDevices()
-            handleDevices(_mediaDevices)
-          }
+          await handleDevices()
         }
         if (permission.state === 'prompt' || permission.state === 'denied') {
           setDeviceId('default')
@@ -119,7 +121,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
           await alertHelper.alertSuccess(t('model-loaded-successfully'))
         } else {
           console.error('Error, option not valid', { ID: dataset })
-          history.push("/404");
+          history.push('/404');
         }
       } catch (error) {
         console.error('Error', error)
@@ -310,10 +312,17 @@ export default function ModelReviewObjectDetection ({ dataset }) {
       <Row>
         <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
           <Card className={'sticky-top mt-3 mb-3 border-info'}>
+            <Card.Header className={'d-flex align-items-center justify-content-between'}>
+              <h2><Trans i18nKey={iModelRef.current.TITLE} /></h2>
+              {/*{process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&*/}
+              {/*  <div className="d-flex">*/}
+              {/*    <Button size={'sm'}*/}
+              {/*            variant={'outline-info'}*/}
+              {/*            onClick={handleClick_openSummary}>Summary</Button>*/}
+              {/*  </div>*/}
+              {/*}*/}
+            </Card.Header>
             <Card.Body>
-              <Card.Title>
-                <Trans i18nKey={iModelRef.current.TITLE} />
-              </Card.Title>
               {dataset !== UPLOAD && <>{iModelRef.current.DESCRIPTION()}</>}
             </Card.Body>
           </Card>
@@ -356,7 +365,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
                         </>}
                         {devices.map((device, index) => {
                           return <option key={'device-id-' + index} value={device.deviceId}>
-                            {device.label !== "" ? device.label : "Camera " + index}
+                            {device.label !== '' ? device.label : 'Camera ' + index}
                           </option>
                         })}
                       </Form.Select>

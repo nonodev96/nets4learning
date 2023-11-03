@@ -123,7 +123,7 @@ export default function ModelReviewTabularClassification (props) {
       setPrediction(_prediction)
     } catch (error) {
       console.error(error)
-      await alertHelper.alertError("Error, option not valid")
+      await alertHelper.alertError('Error, option not valid')
     }
 
     setIsButtonToPredictDisabled(false)
@@ -178,11 +178,13 @@ export default function ModelReviewTabularClassification (props) {
           <Card className={'sticky-top mt-3 border-info'} style={{ zIndex: 0 }}>
             <Card.Header className={'d-flex align-items-center justify-content-between'}>
               <h2><Trans i18nKey={'pages.playground.0-tabular-classification.general.model'} /></h2>
-              <div className="d-flex">
-                <Button size={'sm'}
-                        variant={'outline-info'}
-                        onClick={handleClick_openSummary}>Summary</Button>
-              </div>
+              {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
+                <div className="d-flex">
+                  <Button size={'sm'}
+                          variant={'outline-info'}
+                          onClick={handleClick_openSummary}>Summary</Button>
+                </div>
+              }
             </Card.Header>
             <Card.Body>
               <Card.Title>
