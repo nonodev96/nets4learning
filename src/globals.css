@@ -74,6 +74,14 @@ code {
   z-index: 1000;
 }
 
+.ratio-9x16 {
+  padding-bottom: 177.77%;
+}
+
+.ratio-3x4 {
+  padding-bottom: 177.77%;
+}
+
 .nets4-border-1 {
   background: #fff;
   border: solid black;

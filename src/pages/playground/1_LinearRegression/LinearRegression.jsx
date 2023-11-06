@@ -132,11 +132,6 @@ export default function LinearRegression (props) {
     if (VERBOSE) console.debug('useEffect[init]')
     ReactGA.send({ hitType: 'pageview', page: '/LinearRegression/' + dataset, title: dataset })
     const init = async () => {
-      if (!(dataset in MAP_LR_CLASSES) || dataset!==UPLOAD) {
-        await alertHelper.alertError('Error in selection of model')
-        return
-      }
-
       if (dataset === UPLOAD) {
         // TODO
         console.debug('Linear regression upload csv')
@@ -146,6 +141,7 @@ export default function LinearRegression (props) {
         setIModelInstance(_iModelInstance)
         setDatasets(_datasets)
       } else {
+        await alertHelper.alertError('Error in selection of model')
         console.error('Error, option not valid', { ID: dataset })
         history.push('/404')
       }

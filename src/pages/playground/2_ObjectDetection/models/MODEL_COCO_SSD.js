@@ -89,15 +89,15 @@ export class MODEL_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
 
   RENDER (ctx, predictions) {
     let score = 0
-    ctx.fillStyle = '#fc0400'
-    ctx.font = '1em Verdana'
+    ctx.font = '1rem Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     ctx.lineWidth = 5
     ctx.strokeStyle = 'rgba(0,255,21,0.84)'
+    ctx.fillStyle = '#FF0902'
 
     predictions.forEach((prediction) => {
       score = Math.round(parseFloat(prediction.score) * 100)
       ctx.strokeRect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3])
-      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] + 20)
+      ctx.fillText(`${prediction.class.toUpperCase()} with ${score}% confidence`, prediction.bbox[0], prediction.bbox[1] - 10)
     })
   }
 }

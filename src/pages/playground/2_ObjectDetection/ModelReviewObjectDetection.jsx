@@ -36,9 +36,12 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
   const iModelRef = useRef(new I_MODEL_OBJECT_DETECTION(t))
 
-  const requestRef = useRef()
-  const webcamRef = useRef(null)
-  const canvasRef = useRef(null)
+  const [ratioCamera, setRatioCamera] = useState('ratio-16x9')
+  const requestAnimation_ref = useRef()
+  const WebCamContainer_ref = useRef(/** @type HTMLDivElement */null)
+  const WebCam_ref = useRef(null)
+  const canvas_ref = useRef(/** @type HTMLCanvasElement */null)
+  const CanvasTemp_ref = useRef(/** @type HTMLCanvasElement */null)
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewObjectDetection/' + dataset, title: dataset })
@@ -128,8 +131,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
       }
     }
 
-    init().then(() => {
-    })
+    init().then(() => undefined)
 
     return () => {
     }
@@ -138,8 +140,8 @@ export default function ModelReviewObjectDetection ({ dataset }) {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[isCameraEnable]', { isCameraEnable })
     if (isCameraEnable === false) {
-      console.debug(`stop AnimationFrame(${requestRef.current});`)
-      cancelAnimationFrame(requestRef.current)
+      console.debug(`stop AnimationFrame(${requestAnimation_ref.current});`)
+      cancelAnimationFrame(requestAnimation_ref.current)
     }
     try {
       let fps = 20
@@ -148,7 +150,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
       const animate = async () => {
         if (isCameraEnable) {
-          requestRef.current = requestAnimationFrame(animate)
+          requestAnimation_ref.current = requestAnimationFrame(animate)
           now = Date.now()
           elapsed = now - then
           if (elapsed > fpsInterval) {
@@ -172,36 +174,47 @@ export default function ModelReviewObjectDetection ({ dataset }) {
       startAnimating(fps)
     } catch (error) {
       console.error(error)
-      console.debug(`catch cancelAnimationFrame(${requestRef.current});`)
-      cancelAnimationFrame(requestRef.current)
+      console.debug(`catch cancelAnimationFrame(${requestAnimation_ref.current});`)
+      cancelAnimationFrame(requestAnimation_ref.current)
     }
     // Limpia la animación cuando el componente se desmonta
     return () => {
-      console.log(`delete AnimationFrame(${requestRef.current});`)
-      cancelAnimationFrame(requestRef.current)
+      console.log(`delete AnimationFrame(${requestAnimation_ref.current});`)
+      cancelAnimationFrame(requestAnimation_ref.current)
     }
   }, [isCameraEnable])
 
   const processWebcam = () => {
-    if (webcamRef.current === null || typeof webcamRef.current === 'undefined' || webcamRef.current.video.readyState !== 4) {
+    if (WebCam_ref.current === null || typeof WebCam_ref.current === 'undefined' || WebCam_ref.current.video.readyState !== 4) {
       return null
     }
     // Get Video Properties
-    const video = webcamRef.current.video
-    const videoWidth = webcamRef.current.video.videoWidth
-    const videoHeight = webcamRef.current.video.videoHeight
+    const video = WebCam_ref.current.video
+    const videoWidth = WebCam_ref.current.video.videoWidth
+    const videoHeight = WebCam_ref.current.video.videoHeight
+
+    // const w = WebCamContainer_ref.current.clientWidth
+    // const h = WebCamContainer_ref.current.clientHeight
+
+
+    // const videoD = videoDimensions(video)
+    // console.log(videoD)
 
     // Set video width
-    webcamRef.current.video.width = videoWidth
-    webcamRef.current.video.height = videoHeight
+    // WebCam_ref.current.video.width = videoD.width
+    // WebCam_ref.current.video.height = videoD.height
 
     // Set canvas width
-    canvasRef.current.width = videoWidth
-    canvasRef.current.height = videoHeight
+    canvas_ref.current.width = videoWidth
+    canvas_ref.current.height = videoHeight
 
-    const ctx = canvasRef.current.getContext('2d')
+    // const canvas_temp = CanvasTemp_ref.current
+    // canvas_temp.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight)
 
-    return { video, ctx }
+    const ctx = canvas_ref.current.getContext('2d')
+    ctx.clearRect(0, 0, canvas_ref.current.width, canvas_ref.current.height)
+
+    return { ctx, video }
   }
 
   const processData = async (ctx, img_or_video) => {
@@ -220,7 +233,19 @@ export default function ModelReviewObjectDetection ({ dataset }) {
   }
 
   const onUserMediaEvent = (mediaStream) => {
-    console.debug({ mediaStream })
+    console.debug({ mediaStream, s: mediaStream.getVideoTracks()[0].getSettings() })
+    const aspectRatio = mediaStream.getVideoTracks()[0].getSettings().aspectRatio
+    if (aspectRatio < 1) {
+      setRatioCamera('ratio-3x4');
+    } else if (aspectRatio === 1) {
+      setRatioCamera('ratio-1x1');
+    } else if (aspectRatio >= 1.33 && aspectRatio < 1.75) {
+      // setRatioCamera('ratio-4x3');
+      // } else if (aspectRatio >= 1.5 && aspectRatio < 1.75) {
+      setRatioCamera('ratio-16x9');
+    } else {
+      setRatioCamera('ratio-1x1');
+    }
     // mediaStream.scale(-1, 1)
   }
 
@@ -378,32 +403,39 @@ export default function ModelReviewObjectDetection ({ dataset }) {
                   <Trans i18nKey={'datasets-models.2-object-detection.interface.process-webcam.sub-title'} />
                 </Card.Title>
                 <Row className={'mt-3'}>
-                  <Col className={'d-flex justify-content-center'}>
-                    {isCameraEnable && (<div id={'webcamContainer'}
-                                             className={'nets4-border-1'}
-                                             style={{
-                                               position: 'relative', overflow: 'hidden',
-                                             }}>
-                      <Webcam ref={webcamRef}
-                              onUserMedia={onUserMediaEvent}
-                              onUserMediaError={onUserMediaErrorEvent}
-                              videoConstraints={{
-                                deviceId: deviceId
-                              }}
-                              mirrored={false}
-                              width={250}
-                              height={250}
-                              style={{
-                                position: 'relative', display: 'block',
-                              }}
-                      />
-                      <canvas ref={canvasRef}
-                              width={250}
-                              height={250}
-                              style={{
-                                position: 'absolute', display: 'block', left: 0, top: 0, zIndex: 10,
-                              }}></canvas>
-                    </div>)}
+                  <Col>
+                    {isCameraEnable && <>
+                      <div id={'webcamContainer'}
+                           ref={WebCamContainer_ref}
+                           className={'ratio ' + ratioCamera}
+                           style={{
+                             position: 'relative',
+                             overflow: 'hidden',
+                             // paddingBottom: '56.25%'
+                           }}>
+                        <Webcam ref={WebCam_ref}
+                                onUserMedia={onUserMediaEvent}
+                                onUserMediaError={onUserMediaErrorEvent}
+                                videoConstraints={{
+                                  deviceId: deviceId
+                                }}
+                                mirrored={false}
+                                style={{
+                                  position: 'absolute',
+                                  width   : '100%',
+                                  height  : '100%',
+                                }}
+                        />
+                        <canvas ref={canvas_ref}
+                                style={{
+                                  objectFit: 'contain',
+                                  position : 'absolute',
+                                  width    : '100%',
+                                  height   : '100%',
+                                }}></canvas>
+                        <canvas ref={CanvasTemp_ref}></canvas>
+                      </div>
+                    </>}
                   </Col>
                 </Row>
               </Card.Body>

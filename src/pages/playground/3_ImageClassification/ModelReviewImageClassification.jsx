@@ -192,8 +192,6 @@ export default function ModelReviewImageClassification ({ dataset }) {
           <FakeProgressBar isLoading={isLoading} />
         </Col>
       </Row>
-    </Container>
-    <Container id={'ModelReviewClassicImageClassification'}>
       <Row>
         <Col xs={12} sm={12} md={12} xl={3} xxl={3}>
           <Card className={'sticky-top mt-3 border-info'}>
