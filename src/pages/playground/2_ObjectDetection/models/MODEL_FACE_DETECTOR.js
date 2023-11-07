@@ -77,6 +77,7 @@ export class MODEL_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
   }
 
   async PREDICTION (img_or_video) {
+    if (this._modelDetector === null) return []
     return await this._modelDetector.estimateFaces(img_or_video)
   }
 

@@ -19,6 +19,10 @@ tfjs
   .setBackend('webgl')
   .then(() => undefined)
 
+/**
+ * @typedef {'ratio-9x16'|'ratio-2x3'|'ratio-3x4'|'ratio-1x1'|'ratio-4x3'|'ratio-3x2'|'ratio-16x9'} Ratio_t
+ */
+
 export default function ModelReviewObjectDetection ({ dataset }) {
 
   const isWebView = navigator.userAgent.toLowerCase().indexOf('wv') !== -1
@@ -36,7 +40,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
   const iModelRef = useRef(new I_MODEL_OBJECT_DETECTION(t))
 
-  const [ratioCamera, setRatioCamera] = useState('ratio-16x9')
+  const [ratioCamera, setRatioCamera] = useState(/** @type Ratio_t */'ratio-16x9')
   const requestAnimation_ref = useRef()
   const WebCamContainer_ref = useRef(/** @type HTMLDivElement */null)
   const WebCam_ref = useRef(null)
@@ -126,6 +130,7 @@ export default function ModelReviewObjectDetection ({ dataset }) {
           console.error('Error, option not valid', { ID: dataset })
           history.push('/404');
         }
+
       } catch (error) {
         console.error('Error', error)
       }
@@ -136,6 +141,41 @@ export default function ModelReviewObjectDetection ({ dataset }) {
     return () => {
     }
   }, [dataset, t, history])
+
+  // useEffect(() => {
+  //   const eventListener = (event) => {
+  //     const type = event.target.type;
+  //     if (type.includes('landscape')) {
+  //       switch (ratioCamera) {
+  //         case 'ratio-9x16':
+  //           setRatioCamera('ratio-16x9');
+  //           break;
+  //         case 'ratio-3x4':
+  //           setRatioCamera('ratio-4x3');
+  //           break;
+  //         case 'ratio-2x3':
+  //           setRatioCamera('ratio-3x2');
+  //           break;
+  //       }
+  //     } else {
+  //       switch (ratioCamera) {
+  //         case 'ratio-16x9':
+  //           setRatioCamera('ratio-9x16');
+  //           break;
+  //         case 'ratio-4x3':
+  //           setRatioCamera('ratio-3x4');
+  //           break;
+  //         case 'ratio-3x2':
+  //           setRatioCamera('ratio-2x3');
+  //           break;
+  //       }
+  //     }
+  //   }
+  //   screen.orientation.addEventListener('change', eventListener);
+  //   return () => {
+  //     screen.orientation.removeEventListener('change', eventListener);
+  //   }
+  // }, [/*ratioCamera*/]);
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[isCameraEnable]', { isCameraEnable })
@@ -193,23 +233,9 @@ export default function ModelReviewObjectDetection ({ dataset }) {
     const videoWidth = WebCam_ref.current.video.videoWidth
     const videoHeight = WebCam_ref.current.video.videoHeight
 
-    // const w = WebCamContainer_ref.current.clientWidth
-    // const h = WebCamContainer_ref.current.clientHeight
-
-
-    // const videoD = videoDimensions(video)
-    // console.log(videoD)
-
-    // Set video width
-    // WebCam_ref.current.video.width = videoD.width
-    // WebCam_ref.current.video.height = videoD.height
-
     // Set canvas width
     canvas_ref.current.width = videoWidth
     canvas_ref.current.height = videoHeight
-
-    // const canvas_temp = CanvasTemp_ref.current
-    // canvas_temp.getContext('2d').drawImage(video, 0, 0, videoWidth, videoHeight)
 
     const ctx = canvas_ref.current.getContext('2d')
     ctx.clearRect(0, 0, canvas_ref.current.width, canvas_ref.current.height)
@@ -234,14 +260,20 @@ export default function ModelReviewObjectDetection ({ dataset }) {
 
   const onUserMediaEvent = (mediaStream) => {
     console.debug({ mediaStream, s: mediaStream.getVideoTracks()[0].getSettings() })
-    const aspectRatio = mediaStream.getVideoTracks()[0].getSettings().aspectRatio
-    if (aspectRatio < 1) {
+    const aspectRatio = mediaStream.getVideoTracks()[0].getSettings().aspectRatio || 1
+    if (aspectRatio >= 0.5 && aspectRatio < 0.6) {
+      setRatioCamera('ratio-9x16');
+    } else if (aspectRatio >= 0.6 && aspectRatio < 0.7) {
+      setRatioCamera('ratio-2x3');
+    } else if (aspectRatio >= 0.7 && aspectRatio < 0.8) {
       setRatioCamera('ratio-3x4');
     } else if (aspectRatio === 1) {
       setRatioCamera('ratio-1x1');
-    } else if (aspectRatio >= 1.33 && aspectRatio < 1.75) {
-      // setRatioCamera('ratio-4x3');
-      // } else if (aspectRatio >= 1.5 && aspectRatio < 1.75) {
+    } else if (aspectRatio >= 1.3 && aspectRatio < 1.4) {
+      setRatioCamera('ratio-4x3');
+    } else if (aspectRatio >= 1.4 && aspectRatio < 1.6) {
+      setRatioCamera('ratio-3x2');
+    } else if (aspectRatio >= 1.7 && aspectRatio < 1.8) {
       setRatioCamera('ratio-16x9');
     } else {
       setRatioCamera('ratio-1x1');

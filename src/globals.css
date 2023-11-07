@@ -78,8 +78,12 @@ code {
   padding-bottom: 177.77%;
 }
 
+.ratio-2x3 {
+  padding-bottom: 150%;
+}
+
 .ratio-3x4 {
-  padding-bottom: 177.77%;
+  padding-bottom: 133.33%;
 }
 
 .nets4-border-1 {

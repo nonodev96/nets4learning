@@ -9,6 +9,21 @@ export class MODEL_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
   i18n_TITLE = 'datasets-models.2-object-detection.move-net--pose-net.title'
   URL = 'https://github.com/tensorflow/tfjs-models/tree/master/pose-detection'
 
+  COCO_CONNECTED_KEYPOINTS_PAIRS = [
+    // CARA
+    [0, 1], [0, 2], [1, 3], [2, 4],
+    // TORSO
+    [5, 6], [5, 11], [6, 12], [11, 12],
+    // BRAZO DERECHO
+    [5, 7], [7, 9],
+    // BRAZO IZQUIERDO
+    [6, 8], [8, 10],
+    // PIERNA DERECHA
+    [11, 13], [13, 15],
+    // PIERNA IZQUIERDA
+    [12, 14], [14, 16]
+  ]
+
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.move-net--pose-net.description.'
     return <>
@@ -72,30 +87,10 @@ export class MODEL_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
   }
 
   async PREDICTION (img_or_video) {
+    if (this._modelDetector === null) return []
     return await this._modelDetector.estimatePoses(img_or_video)
   }
 
-  COCO_CONNECTED_KEYPOINTS_PAIRS = [
-    // CARA
-    [0, 1], [0, 2], [1, 3], [2, 4],
-    // TORSO
-    [5, 6], [5, 11], [6, 12], [11, 12],
-    // BRAZO DERECHO
-    [5, 7], [7, 9],
-    // BRAZO IZQUIERDO
-    [6, 8], [8, 10],
-    // PIERNA DERECHA
-    [11, 13], [13, 15],
-    // PIERNA IZQUIERDA
-    [12, 14], [14, 16]
-  ]
-  // let lineas = [[10, 8], [8, 6], [6, 12], [6, 5], [5, 11], [5, 7], [7, 9], [12, 11], [12, 14], [14, 16], [11, 13], [13, 15],]
-  // this.LINEAS.forEach((index) => {
-  //     ctx.beginPath()
-  //     ctx.moveTo(pose.keypoints[index[0]].x, pose.keypoints[index[0]].y)
-  //     ctx.lineTo(pose.keypoints[index[1]].x, pose.keypoints[index[1]].y)
-  //     ctx.stroke()
-  // })
   RENDER (ctx, poses) {
     ctx.fillStyle = '#FF0902'
     ctx.strokeStyle = 'white';

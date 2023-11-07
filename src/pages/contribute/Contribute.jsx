@@ -83,7 +83,7 @@ SOFTWARE.`}</pre>
               </Accordion.Item>
               <Accordion.Item eventKey={'Example Pre-processing'}>
                 <Accordion.Header>
-                  <h3>Tabular classification - Introduction</h3>
+                  <h3>Introduction</h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   <N4LMarkdownDownloader file_name={'00. Tabular Classification - Introduction.md'} />
@@ -91,7 +91,7 @@ SOFTWARE.`}</pre>
               </Accordion.Item>
               <Accordion.Item eventKey={'Example Add Entry'}>
                 <Accordion.Header>
-                  <h3>Tabular classification - Add Entry</h3>
+                  <h3>Add Entry</h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   <N4LMarkdownDownloader file_name={'00. Tabular Classification - Add Entry.md'} />
@@ -99,7 +99,7 @@ SOFTWARE.`}</pre>
               </Accordion.Item>
               <Accordion.Item eventKey={'Create Model'}>
                 <Accordion.Header>
-                  <h3>Tabular classification - Create model</h3>
+                  <h3>Create model</h3>
                 </Accordion.Header>
                 <Accordion.Body>
                   <N4LMarkdownDownloader file_name={'00. Tabular Classification - CreateModel.md'} />
