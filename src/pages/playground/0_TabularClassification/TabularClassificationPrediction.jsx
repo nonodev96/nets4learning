@@ -42,7 +42,7 @@ export default function TabularClassificationPrediction (props) {
         position: 'top',
         display : false,
       },
-      title : {
+      title: {
         display: true,
         text   : t('prediction'),
       },

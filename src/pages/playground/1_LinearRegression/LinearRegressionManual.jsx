@@ -61,7 +61,7 @@ export default function LinearRegressionManual () {
     </details>
 
     <details>
-      <summary className={"n4l-summary"}>Info</summary>
+      <summary className={'n4l-summary'}>Info</summary>
       <main>
         <strong><Trans i18nKey={prefixManual + 'simple-linear-regression'} /><br /></strong>
         <Latex>{'$$ Y(x) = b x + a $$'}</Latex>

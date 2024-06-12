@@ -15,12 +15,12 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   // @formatter:off
   DATA_DEFAULT_KEYS = ['Buying', 'Maint', 'Doors', 'Persons', 'Lug_boot', 'Safety']
   DATA_DEFAULT = {
-    Buying: 'vhigh',
-    Maint: 'vhigh',
-    Doors: '2',
-    Persons: '2',
+    Buying  : 'vhigh',
+    Maint   : 'vhigh',
+    Doors   : '2',
+    Persons : '2',
     Lug_boot: 'small',
-    Safety: 'low'
+    Safety  : 'low'
   }
   LIST_EXAMPLES_RESULTS = [
     'unacc',
@@ -167,7 +167,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
           column_name_target: column_name_target,
           classes           : classes,
           // @formatter:off
-          attributes       : [
+          attributes        : [
             { type: 'label-encoder', name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
             { type: 'label-encoder', name: 'Maint',    options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },
             { type: 'label-encoder', name: 'Doors',    options: [{ value: '2',     text: '2'     }, { value: '3',    text: '3'    }, { value: '4',    text: '4'    }, { value: '5more', text: '5more' } ] },

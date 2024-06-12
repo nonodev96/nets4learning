@@ -60,7 +60,7 @@ export default function Playground () {
 
   return (
     <>
-      <main className={`mb-3`} data-title={'Playground'} data-testid={'Test-Playground'}>
+      <main className={'mb-3'} data-title={'Playground'} data-testid={'Test-Playground'}>
         <PrintHTMLPlaygroundView />
       </main>
     </>

@@ -37,12 +37,12 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
         let currentValue = _matrix[i][j]
         const textColor = (currentValue <= 0.0) ? 'white' : 'black'
         let result = {
-          xref     : 'x1',
-          yref     : 'y1',
-          x        : column_name_x,
-          y        : column_name_y,
-          text     : (_matrix[i][j].toFixed(4)).toString(),
-          font     : {
+          xref: 'x1',
+          yref: 'y1',
+          x   : column_name_x,
+          y   : column_name_y,
+          text: (_matrix[i][j].toFixed(4)).toString(),
+          font: {
             family: 'Arial',
             size  : 12,
             color : textColor
@@ -76,17 +76,17 @@ export default function DataFrameCorrelationMatrix ({ dataframe }) {
               useResizeHandler={true}
               style={{ width: '100%', height: '100%' }}
               layout={{
-                title      : t('dataframe.correlation-matrix.plot'),
-                autoSize   : true,
-                height     : undefined,
-                width      : undefined,
-                xaxis      : {
+                title   : t('dataframe.correlation-matrix.plot'),
+                autoSize: true,
+                height  : undefined,
+                width   : undefined,
+                xaxis   : {
                   ticks     : '',
                   ticksuffix: ' ',
                   side      : 'top',
                   autosize  : true
                 },
-                yaxis      : {
+                yaxis: {
                   ticks     : '',
                   ticksuffix: ' ',
                   autosize  : true

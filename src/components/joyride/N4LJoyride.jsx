@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import Joyride from 'react-joyride'
 
 import { VERBOSE } from '@/CONSTANTS'
-import { DEFAULT_JOYRIDE_STYLE } from "@/CONSTANTS_JOYRIDE";
+import { DEFAULT_JOYRIDE_STYLE } from '@/CONSTANTS_JOYRIDE'
 
 export default function N4LJoyride ({ refJoyrideButton, JOYRIDE_state = {}, TASK = 'DEFAULT', KEY = 'DEFAULT' }) {
 

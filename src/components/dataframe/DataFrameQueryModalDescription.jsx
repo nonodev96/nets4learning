@@ -11,7 +11,7 @@ export default function DataFrameQueryModalDescription ({ showDescription, setSh
            size={'xl'}
            fullscreen={'md-down'}>
       <Modal.Header closeButton>
-        <Modal.Title><Trans i18nKey={`dataframe.query.title`} /></Modal.Title>
+        <Modal.Title><Trans i18nKey={'dataframe.query.title'} /></Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p><Trans i18nKey={'dataframe.query.description.0'} /></p>

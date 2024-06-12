@@ -23,6 +23,7 @@
   ],
   "rules": {
     "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
     "no-unused-vars": [
       "warn",
       {
@@ -30,11 +31,31 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "react/no-unescaped-entities": [
-      "off"
-    ],
+    "react/no-unescaped-entities": "off",
     "no-extra-boolean-cast": "off",
     "no-inner-declarations": "off",
-    "no-case-declarations": "off"
+    "no-case-declarations": "off",
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "max-len": [
+      "error",
+      {
+        "code": 360
+      }
+    ],
+    "key-spacing": [
+      2,
+      {
+        "singleLine": {
+          "beforeColon": false,
+          "afterColon": true
+        },
+        "multiLine": {
+          "beforeColon": false,
+          "afterColon": true,
+          "align": "colon"
+        }
+      }
+    ]
   }
 }

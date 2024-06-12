@@ -149,7 +149,7 @@ export function LinearRegressionProvider ({ children }) {
   const DEFAULT_CUSTOM_DATASETS = []
   /** @type CustomParams_t */
   const DEFAULT_CUSTOM_PARAMS = {
-    params_training     : {
+    params_training: {
       learning_rate  : 1,  // 1%  [0-100]
       n_of_epochs    : 20,
       test_size      : 10, // 10% [0-100]
@@ -157,15 +157,15 @@ export function LinearRegressionProvider ({ children }) {
       id_loss        : 'losses-meanSquaredError',
       list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
     },
-    params_layers       : [
-      { units: 10, activation: "relu" },
-      { units: 20, activation: "relu" },
-      { units: 20, activation: "relu" },
-      { units: 20, activation: "relu" },
-      { units: 20, activation: "sigmoid" },
+    params_layers: [
+      { units: 10, activation: 'relu' },
+      { units: 20, activation: 'relu' },
+      { units: 20, activation: 'relu' },
+      { units: 20, activation: 'relu' },
+      { units: 20, activation: 'sigmoid' },
     ],
-    params_visor        : [],
-    params_features     : {
+    params_visor   : [],
+    params_features: {
       X_features: new Set(),
       X_feature : '',
       y_target  : '',

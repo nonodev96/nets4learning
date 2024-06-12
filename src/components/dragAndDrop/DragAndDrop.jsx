@@ -56,12 +56,8 @@ export default function DragAndDrop (props) {
     fileRejections,
   } = useDropzone({
     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-    onDropAccepted: (files) => {
-      function_DropAccepted(files)
-    },
-    onDropRejected: (files, event) => {
-      function_DropRejected(files, event)
-    },
+    onDropAccepted: (files) =>  function_DropAccepted(files),
+    onDropRejected: (files, event) => function_DropRejected(files, event) ,
     accept        : accept,
     multiple      : multiple,
   })
