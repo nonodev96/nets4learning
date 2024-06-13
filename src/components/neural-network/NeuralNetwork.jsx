@@ -17,9 +17,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
   const networkRef = useRef()
 
   const events = {
-    select: () => {
-
-    },
+    select: () => { },
     zoom  : (_e) => {
       // e.preventDefault()
       // e.stopPropagation()
@@ -171,7 +169,7 @@ export function NeuralNetwork ({ layers, id_parent, mode = NEURAL_NETWORK_MODES.
                         direction: 'LR',
                       },
                     },
-                    edges : {
+                    edges: {
                       color: '#000000',
                     },
                     height: options.height + 'px',

@@ -224,7 +224,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                         style={PLOTLY_CONFIG_DEFAULT.STYLES}
                         layout={{
                           ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
-                          title        : '',
+                          title: '',
                           // plot_bgcolor : 'rgb(33,37,41)',
                           // paper_bgcolor: 'rgb(33,37,41)'
                         }}

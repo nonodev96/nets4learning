@@ -239,15 +239,14 @@ export default function ModelReviewObjectDetection({ dataset }) {
     }
     // Get Video Properties
     const video = WebCam_ref.current.video
-    const videoWidth = WebCam_ref.current.video.videoWidth
-    const videoHeight = WebCam_ref.current.video.videoHeight
 
     // Set canvas width
-    canvas_ref.current.width = videoWidth
-    canvas_ref.current.height = videoHeight
+    canvas_ref.current.width = WebCam_ref.current.video.videoWidth
+    canvas_ref.current.height = WebCam_ref.current.video.videoHeight
 
     const ctx = canvas_ref.current.getContext('2d')
     ctx.clearRect(0, 0, canvas_ref.current.width, canvas_ref.current.height)
+    // ctx.setTransform(-1, 0, 0, 1, canvas_ref.current.width, 0)
 
     return { ctx, video }
   }
@@ -268,8 +267,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
   }
 
   const onUserMediaEvent = (mediaStream) => {
-    const aspectRatio =
-      mediaStream.getVideoTracks()[0].getSettings().aspectRatio || 1
+    const aspectRatio = mediaStream.getVideoTracks()[0].getSettings().aspectRatio || 1
     if (aspectRatio >= 0.5 && aspectRatio < 0.6) {
       setRatioCamera('ratio-9x16')
     } else if (aspectRatio >= 0.6 && aspectRatio < 0.7) {
@@ -292,7 +290,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
 
   const onUserMediaErrorEvent = (error) => {
     console.error({ error })
-    // cancelAnimationFrame(animation_id)
+    cancelAnimationFrame(requestAnimation_ref.current)
   }
 
   const handleChangeFileUpload = async (_files) => {
@@ -301,9 +299,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
     }
     let files = _files
 
-    const originalImageCanvas = document.getElementById(
-      '0_originalImageCanvas'
-    )
+    const originalImageCanvas = document.getElementById('0_originalImageCanvas')
     const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
 
     const processImageCanvas = document.getElementById('1_processImageCanvas')

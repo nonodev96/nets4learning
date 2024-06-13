@@ -46,12 +46,12 @@ export default function AnalyzeDataFrame () {
   return <>
     <main className={'mb-3'} data-title={'DataFrame'}>
       <Container>
-        <Row className={"mt-3"}>
+        <Row className={'mt-3'}>
           <Col>
             <h1><Trans i18nKey={prefix + 'title'} /></h1>
           </Col>
         </Row>
-        <Row className={"mt-3"}>
+        <Row className={'mt-3'}>
           <Col>
             <Card>
               <Card.Header><h3><Trans i18nKey={prefix + 'upload-csv'} /></h3></Card.Header>

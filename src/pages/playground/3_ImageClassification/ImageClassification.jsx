@@ -121,6 +121,7 @@ export default function ImageClassification (props) {
       const model = await iModelInstance.current.TRAIN_MODEL(params)
       setModel(model)
       setGeneratedModels(oldModels => [...oldModels, {
+        model : model,
         params: {
           learning_rate  : LearningRate,
           n_epochs       : NumberEpochs,
@@ -129,8 +130,7 @@ export default function ImageClassification (props) {
           id_optimizer   : idOptimizer,
           id_loss        : idLoss,
           id_metrics_list: idMetricsList,
-        },
-        model : model
+        }
       }])
       await alertHelper.alertSuccess(t('alert.model-train-success'))
     } catch (error) {

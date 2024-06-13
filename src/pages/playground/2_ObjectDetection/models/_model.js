@@ -45,5 +45,10 @@ export default class I_MODEL_OBJECT_DETECTION {
     ctx.fillStyle = '#009ddf'
     ctx.fillText(txt, x + padding / 2, y + padding / 2)
   }
-
+  
+  _drawPoint(ctx, x, y, r = 3) {
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, 2 * Math.PI)
+    ctx.fill()
+  }
 }

@@ -210,10 +210,10 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         console.debug('TODO', column_name, _dataframe[column_name])
         const new_serie = _dataframe[column_name].apply((val) => {
           if (val === '?') {
-            console.log("FOUND")
-            return NaN;
+            console.log('FOUND')
+            return NaN
           }
-          return val;
+          return val
         })
         _dataframe.addColumn(column_name, new_serie, { inplace: true })
         break

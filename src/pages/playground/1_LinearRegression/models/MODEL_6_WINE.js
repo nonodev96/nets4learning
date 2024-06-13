@@ -99,7 +99,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/wine'
     const models = {
-      'wine-quality-red.csv'  : [
+      'wine-quality-red.csv': [
         { model_path: path + '/0/lr-model-0.json', column_name_X: 'fixed acidity', column_name_Y: 'density' },
         { model_path: path + '/1/lr-model-1.json', column_name_X: 'fixed acidity', column_name_Y: 'pH' },
       ],

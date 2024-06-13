@@ -17,6 +17,7 @@ import {
   MODEL_3_MOVE_NET_POSE_NET,
   MODEL_4_COCO_SSD,
   MODEL_5_FACE_API,
+  MODEL_6_HAND_SIGN,
 } from '@pages/playground/2_ObjectDetection/models'
 import {
   MODEL_IMAGE_MNIST,
@@ -54,6 +55,7 @@ const TASK_MODEL_OPTIONS = {
     { i18n: 'datasets-models.2-object-detection.list-models.2-option-3', value: MODEL_3_MOVE_NET_POSE_NET.KEY },
     { i18n: 'datasets-models.2-object-detection.list-models.2-option-4', value: MODEL_4_COCO_SSD.KEY },
     { i18n: 'datasets-models.2-object-detection.list-models.2-option-5', value: MODEL_5_FACE_API.KEY },
+    { i18n: 'datasets-models.2-object-detection.list-models.2-option-6', value: MODEL_6_HAND_SIGN.KEY },
   ],
   [TASKS.IMAGE_CLASSIFICATION]: [
     { i18n: 'datasets-models.3-image-classifier.list-models.3-option-1', value: MODEL_IMAGE_MNIST.KEY },
@@ -80,6 +82,7 @@ const TASK_MODEL_OPTIONS_CLASS = {
     [MODEL_3_MOVE_NET_POSE_NET.KEY]: { _class_: MODEL_3_MOVE_NET_POSE_NET },
     [MODEL_4_COCO_SSD.KEY]         : { _class_: MODEL_4_COCO_SSD },
     [MODEL_5_FACE_API.KEY]         : { _class_: MODEL_5_FACE_API },
+    [MODEL_6_HAND_SIGN.KEY]        : { _class_: MODEL_6_HAND_SIGN },
   },
   [TASKS.IMAGE_CLASSIFICATION]: {
     [MODEL_IMAGE_MNIST.KEY]    : { _class_: MODEL_IMAGE_MNIST },
@@ -137,6 +140,7 @@ export {
   MODEL_3_MOVE_NET_POSE_NET,
   MODEL_4_COCO_SSD,
   MODEL_5_FACE_API,
+  MODEL_6_HAND_SIGN,
 
   // Clasificación por imágenes
   MODEL_IMAGE_MNIST,
