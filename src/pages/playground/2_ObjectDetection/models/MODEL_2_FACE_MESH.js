@@ -8,6 +8,7 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
   TITLE = 'datasets-models.2-object-detection.face-mesh.title'
   i18n_TITLE = 'datasets-models.2-object-detection.face-mesh.title'
   URL = 'https://github.com/tensorflow/tfjs-models/tree/master/face-landmarks-detection'
+  mirror = true
 
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.face-mesh.description.'
@@ -77,15 +78,17 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
 
   async PREDICTION (img_or_video) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.estimateFaces(img_or_video)
+    return await this._modelDetector.estimateFaces(img_or_video, { flipHorizontal: true })
   }
 
   RENDER (ctx, faces) {
     ctx.strokeStyle = '#FF0902'
+    ctx.strokeStyle = '#FF0902'
     for (const face of faces) {
       for (const element of face.keypoints) {
-        ctx.strokeRect(element.x, element.y, 1, 1)
+        ctx.strokeRect(element.x, element.y, 3, 3)
       }
+      this._drawRect(ctx, face.box.xMin, face.box.yMin, face.box.width, face.box.height)
     }
   }
 

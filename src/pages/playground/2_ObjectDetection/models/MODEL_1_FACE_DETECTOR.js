@@ -8,6 +8,7 @@ export class MODEL_1_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
   TITLE = 'datasets-models.2-object-detection.face-detection.title'
   i18n_TITLE = 'datasets-models.2-object-detection.face-detection.title'
   URL = ''
+  mirror = true
 
   DESCRIPTION () {
     const prefix = 'datasets-models.2-object-detection.face-detection.description.'
@@ -78,11 +79,14 @@ export class MODEL_1_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
 
   async PREDICTION (img_or_video) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.estimateFaces(img_or_video)
+    return await this._modelDetector.estimateFaces(img_or_video, { flipHorizontal: true })
   }
 
+  // https://stackoverflow.com/questions/22943186/html5-canvas-font-size-based-on-canvas-size
   RENDER (ctx, faces) {
-    ctx.font = '8px Verdana'
+    const font = '20px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+
+    ctx.font = font
     ctx.lineWidth = 5
     ctx.strokeStyle = '#FF0902'
     // ctx.strokeRect(element.x, element.y, 5, 5)

@@ -8,6 +8,7 @@ export class MODEL_3_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
   TITLE = 'datasets-models.2-object-detection.move-net--pose-net.title'
   i18n_TITLE = 'datasets-models.2-object-detection.move-net--pose-net.title'
   URL = 'https://github.com/tensorflow/tfjs-models/tree/master/pose-detection'
+  mirror = false
 
   COCO_CONNECTED_KEYPOINTS_PAIRS = [
     // CARA
@@ -76,27 +77,42 @@ export class MODEL_3_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
+  // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/src/movenet
+  // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/src/posenet
   async ENABLE_MODEL () {
     const model = poseDetection.SupportedModels.MoveNet
-    const moveNetModelConfig = {
-      modelType     : poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
-      enableTracking: true,
-      trackerType   : poseDetection.TrackerType.BoundingBox,
+    const modelConfig__MoveNet = {
+      modelType      : poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
+      enableTracking : true,
+      trackerType    : poseDetection.TrackerType.BoundingBox,
+      minPoseScore   : 0.2,
+      enableSmoothing: true
     }
-    this._modelDetector = await poseDetection.createDetector(model, moveNetModelConfig)
+    this._modelDetector = await poseDetection.createDetector(model, modelConfig__MoveNet)
   }
 
   async PREDICTION (img_or_video) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.estimatePoses(img_or_video)
+    const estimationConfig__MoveNet = {
+    }
+    // eslint-disable-next-line no-unused-vars
+    const estimationConfig__PoseNet = {
+      maxPoses      : 5,
+      flipHorizontal: true,
+      scoreThreshold: 0.3,
+      nmsRadius     : 20
+    }
+    return await this._modelDetector.estimatePoses(img_or_video, estimationConfig__MoveNet)
   }
 
   RENDER (ctx, poses) {
+    const font = '24px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     ctx.fillStyle = '#FF0902'
     ctx.strokeStyle = 'white'
-    ctx.font = '1rem Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+    ctx.font = font
     const scoreThreshold = 0.20
     poses.forEach((pose) => {
+
       this.COCO_CONNECTED_KEYPOINTS_PAIRS.forEach(([i, j]) => {
         const kp1 = pose.keypoints[i]
         const kp2 = pose.keypoints[j]
@@ -120,6 +136,10 @@ export class MODEL_3_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
           ctx.fillText(`${kp2.name}`, kp2.x, kp2.y)
         }
       })
+
+      const x = pose.keypoints[6].x
+      const y = pose.keypoints[6].y
+      this._drawTextBG(ctx, `ID: ${pose.id}`, font, x, y + 40, 16)
     })
   }
 }

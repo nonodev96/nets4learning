@@ -2,9 +2,19 @@ const cracoAlias = require('craco-alias')
 const CracoEnvPlugin = require('craco-plugin-env')
 
 module.exports = {
-  presets  : 'es2017',
-  jest     : {
-    babel    : {
+  presets: 'es2017',
+  webpack: {
+    configure: (webpackConfig) => {
+      console.log(webpackConfig)
+      webpackConfig.module.rules.push({
+        test: /face-api\.esm\.js/, 
+        type: 'javascript/esm'
+      })
+      return webpackConfig
+    },
+  },
+  jest: {
+    babel: {
       addPresets: true,
       addPlugins: true,
     },
@@ -19,7 +29,7 @@ module.exports = {
       return jestConfig
     },
   },
-  plugins  : [
+  plugins: [
     {
       plugin : CracoEnvPlugin,
       options: {

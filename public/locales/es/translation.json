@@ -30,6 +30,11 @@
   "Processed": "Procesado",
   "Default": "Por defecto",
   "Need permissions": "Necesitas permisos",
+  "Get Screenshot": "Captura de pantalla",
+  "ASL": "Lengua de signos americana",
+  "SSL": "Lengua de signos española",
+  "Info Hand sign": "Información sobre la lengua de signos",
+  "Info": "Información",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -49,8 +54,8 @@
       },
       "negative-log": {
         "title": "Negative Loglikelihood",
-        "text-1": "Minimizar loglikelilidad negativa",
-        "text-2": "es equivalente a la estimación de máxima verosimilitud (MLE)."
+        "text-1": "Minimizar la probabilidad logarítmica negativa",
+        "text-2": "es equivalente a la Estimación de Máxima Verosimilitud (MLE)."
       },
       "kj-divergence": {
         "title": "KL/JS divergence"
@@ -929,11 +934,66 @@
           }
         }
       },
+      "face-api": {
+        "title": "FaceAPI - Expresiones en cara",
+        "description": {
+          "text-0": "Multiples redes neuronales de distinto tipo agrupadas en un proyecto para la gestión de caras, permite detectar multiples caras, detectar su edad y genero, emociones, marcas en el rostro, extraer puntos claves como descriptores para comparar distintos tipos de caras.",
+          "details-input": {
+            "title": "Datos de entrada",
+            "text-0": "Imagen o vídeo (webcam) a color."
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "text-0": "Mismo elemento de entrada con una serie de cajas que delimitan las caras con el porcentaje expresividad de cada emoción, así como la edad de la persona.",
+            "list": {
+              "0": "Edad",
+              "1": "Neutral",
+              "2": "Feliz",
+              "3": "Triste",
+              "4": "Enojado",
+              "5": "Temeroso",
+              "6": "Disgustado",
+              "7": "Sorprendido",
+              "bounding": "Cuadro delimitador"
+            }
+          },
+          "details-references": {
+            "title": "Referencias"
+          }
+        }
+      },
+      "hand-sign": {
+        "title": "Lenguaje de signos con la mano",
+        "description": {
+          "text-0": "Red neuronal para la detección de manos y puntos de referencia, utilizada en conjunto con descriptores de posiciones para clasificar posibles signos del Spanish Sign Language (SSL)",
+          "details-input": {
+            "title": "Datos de entrada",
+            "list": {
+              "0": "Imagen o vídeo (webcam) a color."
+            }
+          },
+          "details-output": {
+            "title": "Datos de salida",
+            "list": {
+              "0": "Articulaciones de los dedos",
+              "1": "Letra correspondiente"
+            }
+          },
+          "details-references": {
+            "title": "Referencias",
+            "list": {
+              "0": "TFJS hand pose detection"
+            }
+          }
+        }
+      },
       "list-models": {
         "2-option-1": "Modelo - FaceDetector  - Geometría facial",
         "2-option-2": "Modelo - FaceMesh - Malla facial",
         "2-option-3": "Modelo - MoveNet - Detector de articulaciones",
-        "2-option-4": "Modelo - COCO SSD - Detector de objetos"
+        "2-option-4": "Modelo - COCO SSD - Detector de objetos",
+        "2-option-5": "Modelos - Face API - Gestor de caras",
+        "2-option-6": "Modelo - HandSign - Detector de signos"
       }
     },
     "3-image-classifier": {
@@ -1921,7 +1981,7 @@
           },
           "relu": {
             "title": "ReLU (Rectified Linear Unit)",
-            "description": "La función ReLU es simple y efectiva al devolver cero para valores negativos y mantener los valores positivos sin cambios",
+            "description": "La función ReLU es simple y efectiva al devolver cero para valores negativos y mantener los valores positivos sin cambios.",
             "characteristics": {
               "0": "Eficiente en términos de cómputo.",
               "1": "Mitiga el problema de desvanecimiento del gradiente.",

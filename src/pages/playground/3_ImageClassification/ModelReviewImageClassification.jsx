@@ -55,7 +55,7 @@ export default function ModelReviewImageClassification ({ dataset }) {
       title: {
         display: true,
         text   : t('prediction'),
-      },
+      }
     },
   }
 

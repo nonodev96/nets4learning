@@ -9,6 +9,7 @@ export class MODEL_4_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
   static URL_MODEL = ''
   TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
   i18n_TITLE = 'datasets-models.2-object-detection.coco-ssd.title'
+  mirror = false
 
   DESCRIPTION() {
     const prefix = 'datasets-models.2-object-detection.coco-ssd.description.'

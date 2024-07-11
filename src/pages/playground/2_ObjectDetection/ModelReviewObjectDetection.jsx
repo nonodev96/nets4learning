@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Card, Col, Container, Form, Row } from 'react-bootstrap'
+import { Card, Col, Container, Form, Row, Button } from 'react-bootstrap'
+import { Camera as IconCamera } from 'react-bootstrap-icons'
 import ReactGA from 'react-ga4'
 import { Trans, useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
@@ -293,6 +294,21 @@ export default function ModelReviewObjectDetection({ dataset }) {
     cancelAnimationFrame(requestAnimation_ref.current)
   }
 
+  const handleClick_getScreenshot = async () => {
+    const imageSrc = WebCam_ref.current.getScreenshot()
+    const img = new Image()
+    img.src = imageSrc
+    img.download = imageSrc
+    const a = document.createElement('a')
+    a.innerHTML = ' '
+    a.target = '_blank'
+    a.href = img.src
+    a.download = 'Image'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
   const handleChangeFileUpload = async (_files) => {
     if (VERBOSE) { 
       console.debug('ModelReviewObjectDetection -> handleChangeFileUpload', { _files })
@@ -418,19 +434,12 @@ export default function ModelReviewObjectDetection({ dataset }) {
             <Col xs={12} sm={12} md={12} xl={12} xxl={12}>
               <Card className={'mt-3'}>
                 <Card.Header>
-                  <div className="d-flex align-items-center justify-content-between">
+                  <div className='d-flex align-items-center justify-content-between'>
                     <h3>
-                      <Trans
-                        i18nKey={
-                          'datasets-models.2-object-detection.interface.process-webcam.title'
-                        }
-                      />
+                      <Trans i18nKey='datasets-models.2-object-detection.interface.process-webcam.title' />
                     </h3>
-                    <div
-                      className={
-                        'd-flex align-items-center justify-content-end'
-                      }
-                    >
+                    <div className='d-flex align-items-center justify-content-end'>
+                 
                       <div key={'default-switch'}>
                         <Form.Check
                           type="switch"
@@ -495,6 +504,13 @@ export default function ModelReviewObjectDetection({ dataset }) {
                           })}
                         </Form.Select>
                       </Form.Group>
+                      <Button size={'sm'}
+                          disabled={!isCameraEnable}
+                          className='ms-2'
+                          variant={'outline-info'}
+                          onClick={handleClick_getScreenshot}>
+                              <IconCamera  color="royalblue"/>
+                          </Button>
                     </div>
                   </div>
                 </Card.Header>
@@ -522,12 +538,23 @@ export default function ModelReviewObjectDetection({ dataset }) {
                           >
                             <Webcam
                               ref={WebCam_ref}
+                              forceScreenshotSourceSize
                               onUserMedia={onUserMediaEvent}
                               onUserMediaError={onUserMediaErrorEvent}
                               videoConstraints={{
                                 deviceId: deviceId,
+                                width   : { 
+                                  min  : 640, 
+                                  ideal: 1280,
+                                  max  : 1920 
+                                },
+                                height: {
+                                  min  : 480,
+                                  ideal: 720,
+                                  max  : 1080 
+                                } 
                               }}
-                              mirrored={false}
+                              mirrored={iModelRef.current.mirror}
                               style={{
                                 position: 'absolute',
                                 width   : '100%',

@@ -3,6 +3,7 @@ export default class I_MODEL_OBJECT_DETECTION {
   i18n_TITLE = ''
 
   _modelDetector = null
+  mirror = false
 
   constructor(_t) {
     this.t = _t

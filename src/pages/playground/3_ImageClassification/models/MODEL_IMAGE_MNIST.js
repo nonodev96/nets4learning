@@ -1,8 +1,8 @@
 import React from 'react'
-import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import { Trans } from 'react-i18next'
-import * as Train_MNIST from '@pages/playground/3_ImageClassification/custom/Train_MNIST'
 import * as tf from '@tensorflow/tfjs'
+import I_MODEL_IMAGE_CLASSIFICATION from './_model'
+import * as Train_MNIST from '@pages/playground/3_ImageClassification/custom/Train_MNIST'
 import { DEFAULT_BAR_DATA } from '@pages/playground/3_ImageClassification/CONSTANTS'
 
 export const LIST_OF_IMAGES_MNIST = [
