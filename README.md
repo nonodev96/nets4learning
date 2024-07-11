@@ -31,10 +31,12 @@ There are some classical problems prepared and reviewed to make predictions, the
     - [MODEL_IMAGE_MNIST.js](src/pages/playground/3_ImageClassification/models/MODEL_IMAGE_MNIST.js)
     - [MODEL_IMAGE_MOBILENET.js](src/pages/playground/3_ImageClassification/models/MODEL_IMAGE_MOBILENET.js)
 4. Object identification
-    - [MODEL_FACE_DETECTOR.js](src/pages/playground/2_ObjectDetection/models/MODEL_FACE_DETECTOR.js)
-    - [MODEL_FACE_MESH.js](src/pages/playground/2_ObjectDetection/models/MODEL_FACE_MESH.js)
-    - [MODEL_MOVE_NET_POSE_NET.js](src/pages/playground/2_ObjectDetection/models/MODEL_MOVE_NET_POSE_NET.js)
-    - [MODEL_COCO_SSD.js](src/pages/playground/2_ObjectDetection/models/MODEL_COCO_SSD.js)
+    - [MODEL_1_FACE_DETECTOR.js](src/pages/playground/2_ObjectDetection/models/MODEL_1_FACE_DETECTOR.js)
+    - [MODEL_2_FACE_MESH.js](src/pages/playground/2_ObjectDetection/models/MODEL_2_FACE_MESH.js)
+    - [MODEL_3_MOVE_NET_POSE_NET.js](src/pages/playground/2_ObjectDetection/models/MODEL_3_MOVE_NET_POSE_NET.js)
+    - [MODEL_4_COCO_SSD.js](src/pages/playground/2_ObjectDetection/models/MODEL_4_COCO_SSD.js)
+    - [MODEL_5_FACE_API.js](src/pages/playground/2_ObjectDetection/models/MODEL_5_FACE_API.js)
+    - [MODEL_6_HAND_SIGN.js](src/pages/playground/2_ObjectDetection/models/MODEL_6_HAND_SIGN.js)
 
 ## Install local
 
