@@ -42,7 +42,6 @@ export default function DataFramePlotModalDescription () {
         <Modal.Title><Trans i18nKey={`dataframe-plot.${dataframePlotConfig.PLOT_ENABLE}.title`} /></Modal.Title>
       </Modal.Header>
       <Modal.Body>
-
         <>
           {plotDescription.plot_intro.map((value, index) => {
             return <p key={index}>{value}</p>
@@ -58,8 +57,6 @@ export default function DataFramePlotModalDescription () {
             return <p key={index}>{value}</p>
           })}
         </>
-
-
       </Modal.Body>
       <Modal.Footer>
         <p className={'text-muted'}>

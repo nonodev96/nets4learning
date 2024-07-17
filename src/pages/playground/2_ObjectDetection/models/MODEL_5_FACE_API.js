@@ -98,10 +98,12 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
   async ENABLE_MODEL() {
     // const modelPath = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
     const modelPath = process.env.REACT_APP_PATH + '/models/02-object-detection/face-api-js/'
-    await faceapi.nets.ssdMobilenetv1.load(modelPath)
-    await faceapi.nets.tinyFaceDetector.load(modelPath)
-    await faceapi.nets.ageGenderNet.load(modelPath)
-    await faceapi.nets.faceExpressionNet.load(modelPath)
+    await Promise.all([
+      faceapi.nets.ssdMobilenetv1.load(modelPath),
+      faceapi.nets.tinyFaceDetector.load(modelPath),
+      faceapi.nets.ageGenderNet.load(modelPath),
+      faceapi.nets.faceExpressionNet.load(modelPath)
+    ])
     // await faceapi.nets.faceLandmark68Net.load(modelPath);
     // await faceapi.nets.faceRecognitionNet.load(modelPath);
   }
@@ -139,7 +141,7 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
     const font = '32px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     const font2 = '24px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
 
-    predictions.forEach(({ detection, expressions, gender, genderProbability, age }) => {
+    predictions.forEach(({ detection, expressions, age }) => {
       const { x, y, width, height } = detection.box
       this._drawRect(ctx, x, y, width, height)
 
@@ -152,8 +154,7 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
       }
 
       const ageParsed = Math.round(parseFloat(age))
-      const genderProbabilityParsed = Math.round(parseFloat(genderProbability) * 100)
-      const txt = `${gender} with ${genderProbabilityParsed}%, ${ageParsed} years`
+      const txt = `${ageParsed} years`
       this._drawTextBG(ctx, txt, font, x, y - 32, 16)
     })
   }

@@ -362,6 +362,9 @@ export default function TabularClassification (props) {
         <N4LDivider i18nKey={'hr.model'} />
         {datasetIndex < 0 && <>
           <Card>
+            <Card.Header className={'d-flex align-items-center justify-content-between'}>
+              <h3><Trans i18nKey={'pages.playground.generator.layer-design'} /></h3>
+            </Card.Header>
             <Card.Body>
               <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
             </Card.Body>
@@ -373,8 +376,8 @@ export default function TabularClassification (props) {
             <Row className={'mt-3'}>
               <Col xl={12} className={'joyride-step-layer'}>
                 <N4LLayerDesign layers={layers}
-                                manual_action={MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN}
-                                glossary_action={GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN} />
+                                glossary_action={GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN}
+                                manual_action={MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN} />
               </Col>
             </Row>
 

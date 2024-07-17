@@ -172,7 +172,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
     <Form onSubmit={handleSubmit_ProcessDataset}>
       <Row>
         <Col>
-          <details open={showDetails.show_dataframe_original}>
+          <details className='border p-2 rounded-2' open={showDetails.show_dataframe_original}>
             <summary className="n4l-summary"><Trans i18nKey="dataframe-original" /></summary>
             <main>
               <Row>
@@ -187,7 +187,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
       <hr />
       <Row>
         <Col>
-          <details open={showDetails.show_dataframe_form}>
+          <details className='border p-2 rounded-2' open={showDetails.show_dataframe_form}>
             <summary className="n4l-summary"><Trans i18nKey="dataframe-form" /></summary>
             <hr />
             <Row>
@@ -221,7 +221,6 @@ export default function TabularClassificationDatasetProcessForm (props) {
             </Row>
 
             <hr />
-
             <Row>
               <Col><h4><Trans i18nKey="preprocessing.transformations-set-X" /></h4></Col>
             </Row>
@@ -256,6 +255,8 @@ export default function TabularClassificationDatasetProcessForm (props) {
                 </Form.Group>
               </Col>
             </Row>
+            
+            <hr />
             <Row>
               <Col>
                 <div className="d-grid gap-2">
@@ -271,7 +272,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
       <hr />
       <Row>
         <Col>
-          <details open={showDetails.show_dataframe_processed}>
+          <details className='border p-2 rounded-2' open={showDetails.show_dataframe_processed}>
             <summary className="n4l-summary"><Trans i18nKey="dataframe-processed" /></summary>
             <main>
               <Row>

@@ -117,33 +117,33 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     return [
       {
         is_dataset_upload   : false,
+        is_dataset_processed: true,
         path                : dataset_path,
         info                : 'breast-cancer-wisconsin.names',
         csv                 : 'breast-cancer-wisconsin.csv',
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataset_transforms  : dataset_transforms_1,
-        is_dataset_processed: true,
       },
       {
         is_dataset_upload   : false,
+        is_dataset_processed: true,
         path                : dataset_path,
         info                : 'wdbc.names',
         csv                 : 'wdbc.csv',
         dataframe_original  : dataframe_original_2,
         dataframe_processed : dataframe_processed_2,
         dataset_transforms  : [],
-        is_dataset_processed: true,
       },
       {
         is_dataset_upload   : false,
+        is_dataset_processed: true,
         path                : dataset_path,
         info                : 'wpbc.names',
         csv                 : 'wpbc.csv',
         dataframe_original  : dataframe_original_3,
         dataframe_processed : dataframe_processed_3,
         dataset_transforms  : [],
-        is_dataset_processed: true,
       }
     ]
   }

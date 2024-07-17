@@ -64,13 +64,13 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
     return [{
       is_dataset_upload   : false,
+      is_dataset_processed: true,
       path                : dataset_path,
       info                : 'salary.names',
       csv                 : 'salary.csv',
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataframe_transforms: dataframe_transforms,
-      is_dataset_processed: true,
     }]
   }
 

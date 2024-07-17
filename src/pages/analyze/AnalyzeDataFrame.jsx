@@ -11,6 +11,7 @@ import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
 import DataFramePlot from '@components/dataframe/DataFramePlot'
 import DataFrameCorrelationMatrixCard from '@components/dataframe/DataFrameCorrelationMatrixCard'
+import DataFrameShowCard from '@components/dataframe/DataFrameShowCard'
 import DataFrameDescribeCard from '@components/dataframe/DataFrameDescribeCard'
 import DataFrameQueryCard from '@components/dataframe/DataFrameQueryCard'
 import { VERBOSE } from '@/CONSTANTS'
@@ -76,6 +77,12 @@ export default function AnalyzeDataFrame () {
                 }
               </Card.Body>
             </Card>
+          </Col>
+        </Row>
+
+        <Row className={'mt-3'}>
+          <Col>
+            <DataFrameShowCard dataframe={dataframe} />
           </Col>
         </Row>
 

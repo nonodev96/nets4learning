@@ -82,13 +82,11 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
   }
 
   RENDER (ctx, faces) {
-    ctx.strokeStyle = '#FF0902'
-    ctx.strokeStyle = '#FF0902'
     for (const face of faces) {
+      this._drawRect(ctx, face.box.xMin, face.box.yMin, face.box.width, face.box.height)
       for (const element of face.keypoints) {
         ctx.strokeRect(element.x, element.y, 3, 3)
       }
-      this._drawRect(ctx, face.box.xMin, face.box.yMin, face.box.width, face.box.height)
     }
   }
 

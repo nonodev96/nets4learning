@@ -4,8 +4,7 @@ import { Trans } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
 import { Link } from 'react-router-dom'
-import TabularClassificationDatasetProcessForm
-  from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcessForm'
+import TabularClassificationDatasetProcessForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcessForm'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 

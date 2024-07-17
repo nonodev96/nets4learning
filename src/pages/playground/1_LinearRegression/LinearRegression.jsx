@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
 import { useParams } from 'react-router'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
@@ -17,25 +17,27 @@ import LinearRegressionModelController_Simple from '@core/controller/01-linear-r
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
+import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import { UPLOAD } from '@/DATA_MODEL'
 
 // Manual and datasets
-const LinearRegressionManual = lazy(() => import( './LinearRegressionManual'))
-const LinearRegressionDataset = lazy(() => import( './LinearRegressionDataset'))
-const LinearRegressionDatasetShow = lazy(() => import( './LinearRegressionDatasetShow'))
-const LinearRegressionDatasetPlot = lazy(() => import( './LinearRegressionDatasetPlot'))
+const LinearRegressionManual = lazy(() => import('./LinearRegressionManual'))
+const LinearRegressionDataset = lazy(() => import('./LinearRegressionDataset'))
+const LinearRegressionDatasetProcess = lazy(() => import('./LinearRegressionDatasetProcess'))
+const LinearRegressionDatasetShow = lazy(() => import('./LinearRegressionDatasetShow'))
+const LinearRegressionDatasetShowPlot = lazy(() => import('./LinearRegressionDatasetShowPlot'))
 // Editors
-const LinearRegressionEditorLayers = lazy(() => import( './LinearRegressionEditorLayers'))
-const LinearRegressionEditorFeaturesSelector = lazy(() => import( './LinearRegressionEditorFeaturesSelector'))
-const LinearRegressionEditorHyperparameters = lazy(() => import( './LinearRegressionEditorHyperparameters'))
+const LinearRegressionEditorLayers = lazy(() => import('./LinearRegressionEditorLayers'))
+const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
+const LinearRegressionEditorHyperparameters = lazy(() => import('./LinearRegressionEditorHyperparameters'))
 // const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
 // Models
-const LinearRegressionTableModels = lazy(() => import( './LinearRegressionTableModels'))
+const LinearRegressionTableModels = lazy(() => import('./LinearRegressionTableModels'))
 // const LinearRegressionPredictionExample = lazy(() => import( './LinearRegressionPredictionExample'))
-const LinearRegressionPrediction = lazy(() => import(  './LinearRegressionPrediction'))
+const LinearRegressionPrediction = lazy(() => import('./LinearRegressionPrediction'))
 
 // TODO
-export default function LinearRegression (props) {
+export default function LinearRegression(props) {
   const { dataset } = props
   const { id: param_id } = useParams()
 
@@ -45,6 +47,7 @@ export default function LinearRegression (props) {
   const { t } = useTranslation()
 
   const {
+    datasets,
     setDatasets,
 
     tmpModel,
@@ -163,10 +166,11 @@ export default function LinearRegression (props) {
   if (VERBOSE) console.debug('render LinearRegression')
   return (
     <>
-      <N4LJoyride refJoyrideButton={refJoyrideButton}
-                  JOYRIDE_state={iModelInstance.JOYRIDE()}
-                  TASK={'linear-regression'}
-                  KEY={'LinearRegression'}
+      <N4LJoyride
+        refJoyrideButton={refJoyrideButton}
+        JOYRIDE_state={iModelInstance.JOYRIDE()}
+        TASK={'linear-regression'}
+        KEY={'LinearRegression'}
       />
 
       <Container>
@@ -175,16 +179,16 @@ export default function LinearRegression (props) {
             <div className="d-flex justify-content-between">
               <h1><Trans i18nKey={'modality.' + param_id} /></h1>
               <Button size={'sm'}
-                      variant={'outline-primary'}
-                      onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                variant={'outline-primary'}
+                onClick={refJoyrideButton.current.handleClick_StartJoyride}>
                 <Trans i18nKey={'datasets-models.1-linear-regression.joyride.title'} />
               </Button>
             </div>
           </Col>
         </Row>
 
+        {/* INFORMATION */}
         <N4LDivider i18nKey={'hr.information'} />
-
         <Row>
           <Col>
             <Accordion defaultActiveKey={[]} activeKey={accordionActive}>
@@ -211,8 +215,18 @@ export default function LinearRegression (props) {
           </Col>
         </Row>
 
-        <N4LDivider i18nKey={'hr.dataset'} />
+        {/* PROCESS DATASET */}
+        {dataset === UPLOAD && <>
+          <N4LDivider i18nKey={'hr.process-dataset'} />
+          <Row className={'joyride-step-process-dataset'}>
+            <Col>
+              <Suspense fallback={<></>}><LinearRegressionDatasetProcess /></Suspense>
+            </Col>
+          </Row>
+        </>}
 
+        {/* SHOW DATASET */}
+        <N4LDivider i18nKey={'hr.dataset'} />
         <Row className={'joyride-step-3-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetShow /></Suspense>
@@ -223,15 +237,31 @@ export default function LinearRegression (props) {
 
         <Row className={'joyride-step-4-dataset-plot'}>
           <Col>
-            <Suspense fallback={<></>}><LinearRegressionDatasetPlot /></Suspense>
+            <Suspense fallback={<></>}><LinearRegressionDatasetShowPlot /></Suspense>
           </Col>
         </Row>
 
+        {/* MODEL */}
         <N4LDivider i18nKey={'hr.model'} />
-
         <Row>
           <Col className={'joyride-step-5-layer'}>
-            <N4LLayerDesign layers={params.params_layers} />
+            <N4LLayerDesign layers={params.params_layers}
+              actions={[
+                <>
+                  <Trans i18nKey={'more-information-in-link'}
+                    components={{
+                      link1: <Link
+                        className={'text-info'}
+                        to={{
+                          pathname: '/glossary/',
+                          state   : {
+                            action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
+                          },
+                        }} />,
+                    }} />
+                </>
+              ]}
+            />
           </Col>
         </Row>
 
@@ -245,11 +275,6 @@ export default function LinearRegression (props) {
 
               <hr />
 
-              {/*
-              <div className={'joyride-step-6-editor-visor'}>
-                <Suspense fallback={<></>}><LinearRegressionEditorVisor /></Suspense>
-              </div>
-              */}
               <div className={'joyride-step-6-editor-selector-features'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>
@@ -263,9 +288,9 @@ export default function LinearRegression (props) {
             <Col xl={12}>
               <div className="d-grid gap-2">
                 <Button type={'submit'}
-                        disabled={isTraining || !datasetLocal.is_dataset_processed}
-                        size={'lg'}
-                        variant="primary">
+                  disabled={isTraining || !datasetLocal.is_dataset_processed}
+                  size={'lg'}
+                  variant="primary">
                   <Trans i18nKey={prefix + 'models.button-submit'} />
                 </Button>
               </div>
@@ -302,12 +327,26 @@ export default function LinearRegression (props) {
                   <h2>Debug</h2>
                 </Card.Header>
                 <Card.Body>
-                  <Row lg={3}>
+                  <Row lg={2}>
+                    <Col>
+                      <DebugJSON
+                        obj={{
+                          is_dataset_upload   : datasetLocal.is_dataset_upload,
+                          is_dataset_processed: datasetLocal.is_dataset_processed,
+                          container_info      : datasetLocal.container_info,
+                        }} />
+                    </Col>
+                    <Col>
+                      <DebugJSON
+                        obj={{
+                          datasets    : datasets.length,
+                          datasetLocal: Object.keys(datasetLocal)
+                        }} />
+                    </Col>
+                  </Row>
+                  <Row lg={2}>
                     <Col><DebugJSON obj={tmpModel.params_training} /></Col>
                     <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
-                    <Col><DebugJSON obj={Object.keys(datasetLocal)} /></Col>
-                    <Col><DebugJSON obj={{ accordionActive }} /></Col>
-                    <Col><DebugJSON obj={{ 'dataframe_processed_columns': datasetLocal.dataframe_processed.columns }} /></Col>
                   </Row>
                 </Card.Body>
               </Card>

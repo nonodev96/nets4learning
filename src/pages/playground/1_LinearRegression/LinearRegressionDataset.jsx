@@ -1,24 +1,29 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
-import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
-
-import LinearRegressionDatasetForm from './LinearRegressionDatasetForm'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function LinearRegressionDataset ({ dataset }) {
+export default function LinearRegressionDataset({ dataset }) {
 
   const { t } = useTranslation()
   const {
+    datasets,
     setDatasets,
+
     datasetLocal,
+    setDatasetLocal,
+
     iModelInstance,
   } = useContext(LinearRegressionContext)
+
+  const [showDatasetInfo, setShowDatasetInfo] = useState(false)
 
   const handleChange_FileUpload_CSV = async (files, _event) => {
     if (files.length < 1) {
@@ -27,20 +32,31 @@ export default function LinearRegressionDataset ({ dataset }) {
     }
     try {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
-      dfd.readCSV(file_csv).then((_dataframe) => {
-        setDatasets((prevState) => ([...prevState,
-            {
-              is_dataset_upload   : true,
-              is_dataset_processed: false,
-              csv                 : files[0].name,
-              info                : '',
-              path                : '',
-              dataframe_original  : _dataframe,
-              dataframe_processed : _dataframe,
-              dataframe_transforms: []
-            }]
-        ))
-      })
+      const _dataframeOriginal = await dfd.readCSV(file_csv)
+      const _dataframeProcessed = await dfd.readCSV(file_csv)
+
+      setDatasets((prevState) => ([...prevState,
+      {
+        is_dataset_upload   : true,
+        is_dataset_processed: false,
+        csv                 : files[0].name,
+        info                : '',
+        path                : '',
+        dataframe_original  : _dataframeOriginal,
+        dataframe_processed : _dataframeProcessed,
+        dataframe_transforms: []
+      }]
+      ))
+      setDatasetLocal((prevState) => ({
+        ...prevState,
+        is_dataset_upload   : true,
+        is_dataset_processed: false,
+        dataframe_original  : _dataframeOriginal,
+        dataframe_processed : _dataframeProcessed,
+        container_info      : '',
+        csv                 : files[0].name,
+      }))
+      setShowDatasetInfo(true)
       await alertHelper.alertSuccess(t('alert.file-upload-success'))
     } catch (error) {
       console.error(error)
@@ -51,30 +67,26 @@ export default function LinearRegressionDataset ({ dataset }) {
     if (VERBOSE) console.debug({ files })
   }
 
-  const handleSubmit_ProcessDataset = (_event) => {
-
-  }
-
   if (VERBOSE) console.debug('render LinearRegressionDataset')
   return <>
     {dataset === UPLOAD && <>
       <DragAndDrop name={'csv'}
-                   accept={{ 'text/csv': ['.csv'] }}
-                   text={t('drag-and-drop.csv')}
-                   labelFiles={t('drag-and-drop.label-files-one')}
-                   function_DropAccepted={handleChange_FileUpload_CSV}
-                   function_DropRejected={handleChange_FileUpload_CSV_reject} />
+        accept={{ 'text/csv': ['.csv'] }}
+        text={t('drag-and-drop.csv')}
+        labelFiles={t('drag-and-drop.label-files-one')}
+        function_DropAccepted={handleChange_FileUpload_CSV}
+        function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
-      {datasetLocal.dataframe_original && <>
-        <Form onSubmit={handleSubmit_ProcessDataset}>
-          <LinearRegressionDatasetForm />
-        </Form>
+      {!showDatasetInfo && <>
+        <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
       </>}
-      {!datasetLocal.dataframe_original && <>
-        <p className="placeholder-glow">
-          <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-file')}</small>
-          <span className="placeholder col-12"></span>
-        </p>
+      {showDatasetInfo && <>
+        <ol>
+          {datasets.map((dataset, index) => {
+            return <li key={index}>{dataset.csv}</li>
+          })}
+        </ol>
+        <p><strong>{datasetLocal.csv}</strong></p>
       </>}
     </>}
     {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}

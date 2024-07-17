@@ -49,7 +49,7 @@ export default class I_MODEL_OBJECT_DETECTION {
   
   _drawPoint(ctx, x, y, r = 3) {
     ctx.beginPath()
-    ctx.arc(x, y, r, 0, 2 * Math.PI)
+    ctx.arc(x, y, r, 1, 3 * Math.PI)
     ctx.fill()
   }
 }

@@ -1,10 +1,21 @@
-FROM node:18.15.0-alpine3.17 as build
-WORKDIR /usr/app
-COPY . /usr/app
-RUN npm install
-RUN npm run build:production
+ARG ARG_BUILD
+FROM node:18-alpine
 
-FROM nginx:1.24.0-alpine3.17
-EXPOSE 80
-COPY .nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /usr/app/build /usr/share/nginx/html
+RUN apk add bash
+RUN apk add xsel
+
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+RUN npm install -g serve@14.2.1
+
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+
+ARG ARG_BUILD
+ENV ARG_BUILD=${ARG_BUILD}
+
+RUN npm install
+RUN npm run build:${ARG_BUILD}
+
+EXPOSE 3000
+
+CMD bash /usr/src/app/n4l_start.sh

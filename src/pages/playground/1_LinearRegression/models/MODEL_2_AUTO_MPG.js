@@ -90,13 +90,13 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_processed_1 = await dfd.readCSV(dataset_path + 'auto-mpg.csv')
     return [{
       is_dataset_upload   : false,
+      is_dataset_processed: true,
       path                : dataset_path,
       info                : 'auto-mpg.names',
       csv                 : 'auto-mpg.csv',
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataset_transforms  : [],
-      is_dataset_processed: true
     }]
   }
 

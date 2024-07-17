@@ -12,7 +12,7 @@ export default function TabularClassificationDatasetShowInfo ({ datasets, datase
     <Row>
       <Col lg={10}>
         <details>
-          <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
+          <summary className={'n4l-summary-1-25'}><Trans i18nKey={prefix + 'attributes.title'} /></summary>
           <main>
             <Row xs={3} sm={3} md={3} lg={4}>
               {datasets[datasetIndex].data_processed.attributes.map((item, i1) => {
@@ -36,7 +36,7 @@ export default function TabularClassificationDatasetShowInfo ({ datasets, datase
       </Col>
       <Col lg={2}>
         <details>
-          <summary className={'n4l-summary'}><Trans i18nKey={prefix + 'attributes.classes'} /></summary>
+          <summary className={'n4l-summary-1-25'}><Trans i18nKey={prefix + 'attributes.classes'} /></summary>
           <main>
             <Row>
               <Col>

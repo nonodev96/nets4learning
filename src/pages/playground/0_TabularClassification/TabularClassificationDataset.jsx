@@ -1,5 +1,6 @@
 import React from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
@@ -8,19 +9,17 @@ import { UPLOAD } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
-import { Link } from 'react-router-dom'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 export default function TabularClassificationDataset (props) {
   const {
     dataset,
-    /** @type  I_MODEL_TABULAR_CLASSIFICATION*/
+    /** @type I_MODEL_TABULAR_CLASSIFICATION */
     iModelInstance,
     /*** @type DatasetProcessed_t[] */
     datasets,
     /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
-
     /** @type React.Dispatch<number> */
     setDatasetIndex,
   } = props
