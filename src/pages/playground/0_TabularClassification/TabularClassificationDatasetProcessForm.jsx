@@ -3,7 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
-import alertHelper from '@utils/alertHelper'
+import AlertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
@@ -164,7 +164,7 @@ export default function TabularClassificationDatasetProcessForm (props) {
       }
     })
 
-    await alertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
+    await AlertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
   }
 
   if (VERBOSE) console.debug('render TabularClassificationDatasetForm')

@@ -6,19 +6,14 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import DataFrameDescribe from '@components/dataframe/DataFrameDescribe'
 import DataFrameDescribeModalDescription from '@components/dataframe/DataFrameDescribeModalDescription'
 
-export default function DataFrameDescribeCard({ dataframe }) {
+export default function DataFrameDescribeCard({ dataframe, isDataFrameProcessed }) {
 
   const { t } = useTranslation()
-  const [showDataFrameDescription, setShowDataFrameDescription] = useState(false)
   const [showDataFrameDescriptionModal, setShowDataFrameDescriptionModal] = useState(false)
 
   const handleClick_OpenModal_Describe = () => {
     setShowDataFrameDescriptionModal(true)
   }
-
-  useEffect(() => {
-    setShowDataFrameDescription(dataframe.columns.length !== 0)
-  }, [dataframe])
 
   return <>
     <Card className={'mt-3'}>
@@ -33,10 +28,10 @@ export default function DataFrameDescribeCard({ dataframe }) {
         </div>
       </Card.Header>
       <Card.Body>
-        {!showDataFrameDescription && <>
+        {!isDataFrameProcessed && <>
           <WaitingPlaceholder title={t('Waiting')} />
         </>}
-        {showDataFrameDescription && <>
+        {isDataFrameProcessed && <>
           <DataFrameDescribe dataframe={dataframe} />
         </>}
       </Card.Body>

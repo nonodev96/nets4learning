@@ -162,15 +162,15 @@ export default class I_MODEL_LINEAR_REGRESSION {
           placement: 'top',
         },
         {
-          title    : this.t(prefix + 'dataset.title'),
-          content  : this.t(prefix + 'dataset.content'),
-          target   : '.joyride-step-3-dataset',
+          title    : this.t(prefix + 'pre-process-dataset.title'),
+          content  : this.t(prefix + 'pre-process-dataset.content'),
+          target   : '.joyride-step-3-pre-process-dataset',
           placement: 'top',
         },
         {
-          title    : this.t(prefix + 'dataset-plot.title'),
-          content  : this.t(prefix + 'dataset-plot.content'),
-          target   : '.joyride-step-4-dataset-plot',
+          title    : this.t(prefix + 'dataset.title'),
+          content  : this.t(prefix + 'dataset.content'),
+          target   : '.joyride-step-4-dataset',
           placement: 'top',
         },
         {

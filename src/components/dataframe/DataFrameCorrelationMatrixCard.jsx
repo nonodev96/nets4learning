@@ -6,7 +6,7 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import DataFrameCorrelationMatrixModalDescription from '@components/dataframe/DataFrameCorrelationMatrixModalDescription'
 import DataFrameCorrelationMatrix from '@components/dataframe/DataFrameCorrelationMatrix'
 
-export default function DataFrameCorrelationMatrixCard ({ dataframe }) {
+export default function DataFrameCorrelationMatrixCard ({ dataframe, isDataFrameProcessed }) {
 
   const [showDescription, setShowDescription] = useState(false)
 
@@ -29,12 +29,12 @@ export default function DataFrameCorrelationMatrixCard ({ dataframe }) {
         </div>
       </Card.Header>
       <Card.Body>
-        {dataframe.columns.length === 0 &&
+        {!isDataFrameProcessed &&
           <WaitingPlaceholder title={t('Waiting')} />
         }
-
-        <DataFrameCorrelationMatrix dataframe={dataframe} />
-
+        {isDataFrameProcessed &&
+          <DataFrameCorrelationMatrix dataframe={dataframe} />
+        }
       </Card.Body>
     </Card>
 

@@ -1,11 +1,13 @@
-import { Card, Form } from 'react-bootstrap'
-import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
 import React, { useState } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
-import { VERBOSE } from '@/CONSTANTS'
 import { Link } from 'react-router-dom'
+import { Trans, useTranslation } from 'react-i18next'
+import { Card, Form } from 'react-bootstrap'
 
-export default function N4LLayerDesign({ layers, glossary_action = '', manual_action = '', actions = [] }) {
+import { VERBOSE } from '@/CONSTANTS'
+import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
+
+export default function N4LLayerDesign({ layers, show = true, glossary_action = '', manual_action = '', actions = [] }) {
 
   const prefix = 'pages.playground.generator.'
   const { t } = useTranslation()
@@ -34,9 +36,14 @@ export default function N4LLayerDesign({ layers, glossary_action = '', manual_ac
         </div>
       </Card.Header>
       <Card.Body id={'LinearRegressionLayerDesign'}>
+        {show && <>
         <NeuralNetwork id_parent={'vis-network'}
           layers={layers}
           mode={mode} />
+        </>}
+        {!show && <>
+          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+        </>}
       </Card.Body>
       {(actions.length > 0 || glossary_action !== '' || manual_action !== '' ) && <>
         <Card.Footer className={'text-end'}>

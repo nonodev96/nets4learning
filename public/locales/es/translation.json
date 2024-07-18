@@ -794,6 +794,10 @@
             "title": "Conjuto de datos",
             "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
           },
+          "pre-process-dataset": {
+            "title": "Pre procesamiento",
+            "content": "Limpieza y preparación del conjunto de datos"
+          },
           "dataset-plot": {
             "title": "Graficas de los conjuntos de datos",
             "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
@@ -1145,6 +1149,9 @@
       },
       "columns": {
         "title": "Columnas del DataFrame"
+      },
+      "pie-charts": {
+        "labels": "Etiquetas"
       }
     },
     "buttons": {

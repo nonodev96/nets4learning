@@ -172,13 +172,14 @@ const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoder
 
 ```js
 /**
- * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'} Transform_t
+ * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'drop'|'dropNa'|'dropNa'|'ignored'|'replace_<match>_NaN'} Transform_t
  */
 
 /**
  * @typedef DataFrameColumnTransform_t
  * @property {string}      column_name
  * @property {Transform_t} column_transform
+ * @property {string} [match]
  */
 ```
 

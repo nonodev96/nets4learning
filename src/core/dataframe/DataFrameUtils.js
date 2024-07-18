@@ -176,7 +176,7 @@ export function DataFrameApplyEncodersVector (encoders_map, input_data, column_n
  */
 export function DataFrameTransform (dataframe, dataframe_transforms) {
   const _dataframe = dataframe.copy()
-  for (const { column_transform, column_name } of dataframe_transforms) {
+  for (const { column_name, column_transform, match } of dataframe_transforms) {
     switch (column_transform) {
       case 'one-hot-encoder': {
         const encoder = new dfd.OneHotEncoder()
@@ -212,6 +212,17 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
           if (val === '?') {
             console.log('FOUND')
             return NaN
+          }
+          return val
+        })
+        _dataframe.addColumn(column_name, new_serie, { inplace: true })
+        break
+      }
+      case 'replace_<match>_NaN': {
+        console.debug('TODO replace {match} NaN', column_name, _dataframe[column_name])
+        const new_serie = _dataframe[column_name].apply((val) => {
+          if (val === match) {
+            return Number.NaN
           }
           return val
         })

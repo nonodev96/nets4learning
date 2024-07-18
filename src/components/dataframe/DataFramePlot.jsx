@@ -17,7 +17,7 @@ import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/CONSTANTS'
 import { VERBOSE } from '@/CONSTANTS'
 
-export default function DataFramePlot ({ dataframe, is_dataset_processed = true }) {
+export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false }) {
 
   const {
     dataFrameLocal,
@@ -96,8 +96,8 @@ export default function DataFramePlot ({ dataframe, is_dataset_processed = true 
   }, [dataFrameLocal, setDataframePlotConfig])
 
   useEffect(() => {
-    setShowDataframe(is_dataset_processed)
-  }, [setShowDataframe, is_dataset_processed])
+    setShowDataframe(isDataFrameProcessed)
+  }, [setShowDataframe, isDataFrameProcessed])
 
   const updateUI = useCallback(() => {
     if (!showDataframe){

@@ -32,6 +32,12 @@ export default function DataFrameQueryModalDescription ({ showDescription, setSh
             const <var>query_df</var> = dataframe.query(query)
           </code>
         </pre>
+        <hr />
+        <pre>
+          <code>
+            dataframe["cylinders"] .gt(5).and(df["horsepower"].eq(130))
+          </code>
+        </pre>
       </Modal.Body>
       <Modal.Footer>
         <p className={'text-muted'}>

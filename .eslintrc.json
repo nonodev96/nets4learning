@@ -44,7 +44,7 @@
       }
     ],
     "key-spacing": [
-      2,
+      "warn",
       {
         "singleLine": {
           "beforeColon": false,

@@ -794,6 +794,10 @@
             "title": "Data set",
             "content": "You can view the data set and extract statistics from its descriptions"
           },
+          "pre-process-dataset": {
+            "title": "Pre process",
+            "content": "Cleaning and preparing the data set"
+          },
           "dataset-plot": {
             "title": "Data set plot",
             "content": "You can extract very relevant information by analyzing the data set using different graphs, bar diagrams, pie charts, etc."
@@ -1145,6 +1149,9 @@
       },
       "columns": {
         "title": "DataFrame columns"
+      },
+      "pie-charts": {
+        "labels": "Labels"
       }
     },
     "buttons": {
@@ -1181,11 +1188,11 @@
           "2": "Box type charts have several notable features and applications:"
         },
         "list": {
-          "0": "Statistical summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
+          "0": "Statistical Summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
           "1": "Identification of asymmetries and outliers: By observing a Box type chart, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
           "2": "Comparison between groups or categories: Box charts are also used to compare the distribution of data between different groups or categories.\nBy overlaying multiple boxplots on the same graph, it is possible to visualize differences in medians, interquartile ranges, and the presence of outliers between groups.",
           "3": "Detect biases and distributions: Box graphs allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias towards the opposite direction.",
-          "4": "Visualization of dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to visualize the dispersion and variability of the data in a single graph.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
+          "4": "Viewing dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to view the dispersion and variability of the data in a single chart.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
         },
         "end": {
           "0": "Box plots are a useful tool for visualizing the distribution, statistical summaries, and variability of a numerical data set.\nThey allow you to identify asymmetries, outliers and compare distributions between groups.\nTheir concise and effective visual representation makes them a commonly used tool in data analysis and communication."
@@ -1196,7 +1203,7 @@
       "title": "Histograms",
       "description": {
         "intro": {
-          "0": "Histogram graphs are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents a range of values and the height of the bar indicates the frequency or number of observations within that range.\ninterval.",
+          "0": "Histogram charts are a visual representation used to show the distribution of numerical or continuous data.\nThis type of graph is based on a set of adjacent rectangular bars, where the width of each bar represents a range of values and the height of the bar indicates the frequency or number of observations within that range.\ninterval.",
           "1": "In a histogram-type graph, the horizontal axis is used to represent the range of values of the variable under study, divided into intervals or bins.\nThe vertical axis represents the frequency or number of observations in each interval.\nThe height of each bar shows how many observations fall within that specific interval.",
           "2": "Histogram-type charts have several notable features and applications:"
         },
@@ -1243,7 +1250,7 @@
         "list": {
           "0": "Representation of proportions: Pie charts are ideal for representing proportions and percentages.\nThey allow you to quickly visualize the relative contribution of each category in the total data set.",
           "1": "Identifying Dominant Categories: The relative sizes of the slices in the pie chart help to easily identify the dominant or most significant categories.\nThe largest sectors indicate the categories that have a greater proportion or contribution in relation to the others.",
-          "2": "Comparison between categories: While pie charts are useful for showing the proportions of categories, they can be limited in making accurate comparisons between them.\nThis is because human perception can have difficulty accurately evaluating differences in angle or sector sizes.\nHowever, the relative comparison between sector sizes can still provide general information about the proportions between categories.",
+          "2": "Comparison between categories: While pie charts are useful for showing the proportions of categories, they can be limited in making accurate comparisons between them.\nThis is because human perception can have difficulty accurately assessing differences in angle or sector sizes.\nHowever, the relative comparison between sector sizes can still provide general information about the proportions between categories.",
           "3": "Representing Categorical Data: Pie charts are especially useful for representing categorical data, where the categories are mutually exclusive and have no inherent order.\nFor example, they can be used to show the percentage distribution of income across different expense categories.",
           "4": "Improving Visual Presentation: Pie charts are commonly used in presentations and documents to communicate information in a visually appealing and easily understandable way.\nThe circular shape and colors used can quickly capture attention and highlight the proportional relationships between categories."
         },
@@ -1265,7 +1272,7 @@
           "1": "Identifying trends: A scatter plot can reveal trends or patterns in the data.\nBy looking at the general direction of the points, it is possible to identify whether there is a linear, nonlinear, or even a curvilinear relationship between the variables.",
           "2": "Outlier Detection: Scatter plots can help identify outliers or extremes in data.\nThese points stand out and are far from the main grouping, suggesting unusual or exceptional observations that may require additional analysis.",
           "3": "Analysis of clusters or groups: If the points in the scatter plot group together or form distinct patterns, this may indicate the presence of clusters or groups.\nThis can be useful in data segmentation or classification analysis.",
-          "4": "Multidimensional data visualization: By using additional colors or point sizes, scatter plots can also represent additional information in two-dimensional space.\nThis allows multidimensional data to be viewed more intuitively."
+          "4": "Visualizing multidimensional data: By using additional colors or point sizes, scatter plots can also represent additional information in two-dimensional space.\nThis allows multidimensional data to be viewed more intuitively."
         },
         "end": {
           "0": "Scatter plots are a powerful tool for exploring and visualizing the relationship between two variables.\nThey allow you to identify patterns, trends, and outliers in data, and are useful in various applications, such as correlation analysis, cluster detection, and multidimensional data visualization."
@@ -1283,7 +1290,7 @@
         "list": {
           "0": "Trend Analysis: Time series graphs allow you to identify and analyze long-term trends in data.\nThis can be useful for predicting how data will behave in the future and making informed decisions.",
           "1": "Identifying seasonal patterns: In many data sets, there are seasonal patterns that repeat regularly over time, such as holiday sales or seasonal fluctuations in agricultural production.\nTime series charts help identify these seasonal patterns and understand their impact on the data.",
-          "2": "Detection of changes and anomalies: By observing a time series graph, it is possible to identify abrupt changes or anomalies in the data.\nThese changes may indicate important or unusual events that require further investigation and analysis.",
+          "2": "Detection of changes and anomalies: By observing a time series graph, it is possible to identify sudden changes or anomalies in the data.\nThese changes may indicate important or unusual events that require further investigation and analysis.",
           "3": "Modeling and forecasting: Time series graphs are a fundamental tool for developing models and forecasts.\nBy looking at past patterns, it is possible to build mathematical or statistical models that capture relationships and allow predictions about the future.",
           "4": "Comparative Analysis: Time series charts are also used to compare different sets of data that are collected during the same time period.\nThis can help identify differences, similarities and relationships between the observed variables."
         },
@@ -1360,7 +1367,7 @@
           "3": "Define the number of epochs.",
           "4": "Define the optimizer.",
           "5": "Define the loss function",
-          "6": "Define the metrics for evaluation",
+          "6": "Define the metrics for the evaluation",
           "title": "To apply linear regression and model the relationship between variables, we must follow the following steps:"
         }
       },

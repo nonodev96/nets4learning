@@ -57,13 +57,14 @@ import * as dfd from 'danfojs'
  */
 
 /**
- * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'replace_?_NaN'|'drop_?'|'drop'|'dropNa'|'dropNa'|'ignored'} ColumnTransform_t
+ * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'replace_<match>_NaN'|'replace_?_NaN'|'drop_?'|'drop'|'dropNa'|'ignored'} ColumnTransform_t
  */
 
 /**
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
  * @property {ColumnTransform_t} column_transform
+ * @property {string} [match] - optional property
  */
 
 /**

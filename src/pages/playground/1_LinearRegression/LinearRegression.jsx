@@ -25,7 +25,6 @@ const LinearRegressionManual = lazy(() => import('./LinearRegressionManual'))
 const LinearRegressionDataset = lazy(() => import('./LinearRegressionDataset'))
 const LinearRegressionDatasetProcess = lazy(() => import('./LinearRegressionDatasetProcess'))
 const LinearRegressionDatasetShow = lazy(() => import('./LinearRegressionDatasetShow'))
-const LinearRegressionDatasetShowPlot = lazy(() => import('./LinearRegressionDatasetShowPlot'))
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import('./LinearRegressionEditorLayers'))
 const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
@@ -218,7 +217,7 @@ export default function LinearRegression(props) {
         {/* PROCESS DATASET */}
         {dataset === UPLOAD && <>
           <N4LDivider i18nKey={'hr.process-dataset'} />
-          <Row className={'joyride-step-process-dataset'}>
+          <Row className={'joyride-step-3-pre-process-dataset'}>
             <Col>
               <Suspense fallback={<></>}><LinearRegressionDatasetProcess /></Suspense>
             </Col>
@@ -227,17 +226,9 @@ export default function LinearRegression(props) {
 
         {/* SHOW DATASET */}
         <N4LDivider i18nKey={'hr.dataset'} />
-        <Row className={'joyride-step-3-dataset'}>
+        <Row className={'joyride-step-4-dataset'}>
           <Col>
             <Suspense fallback={<></>}><LinearRegressionDatasetShow /></Suspense>
-          </Col>
-        </Row>
-
-        <hr />
-
-        <Row className={'joyride-step-4-dataset-plot'}>
-          <Col>
-            <Suspense fallback={<></>}><LinearRegressionDatasetShowPlot /></Suspense>
           </Col>
         </Row>
 
@@ -245,7 +236,9 @@ export default function LinearRegression(props) {
         <N4LDivider i18nKey={'hr.model'} />
         <Row>
           <Col className={'joyride-step-5-layer'}>
-            <N4LLayerDesign layers={params.params_layers}
+            <N4LLayerDesign 
+              layers={params.params_layers}
+              show={datasetLocal.is_dataset_processed}
               actions={[
                 <>
                   <Trans i18nKey={'more-information-in-link'}

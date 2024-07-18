@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import { Form } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
@@ -34,9 +33,8 @@ export default function LinearRegressionDataset({ dataset }) {
       const file_csv = new File([files[0]], files[0].name, { type: files[0].type })
       const _dataframeOriginal = await dfd.readCSV(file_csv)
       const _dataframeProcessed = await dfd.readCSV(file_csv)
-
-      setDatasets((prevState) => ([...prevState,
-      {
+      
+      setDatasets((prevState) => ([...prevState, {
         is_dataset_upload   : true,
         is_dataset_processed: false,
         csv                 : files[0].name,
@@ -45,8 +43,7 @@ export default function LinearRegressionDataset({ dataset }) {
         dataframe_original  : _dataframeOriginal,
         dataframe_processed : _dataframeProcessed,
         dataframe_transforms: []
-      }]
-      ))
+      }]))
       setDatasetLocal((prevState) => ({
         ...prevState,
         is_dataset_upload   : true,

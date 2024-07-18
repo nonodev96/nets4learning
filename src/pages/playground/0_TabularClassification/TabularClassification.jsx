@@ -14,8 +14,10 @@ import { createTabularClassificationCustomModel } from '@core/controller/00-tabu
 
 import alertHelper from '@utils/alertHelper'
 
-import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
+import N4LDivider from '@components/divider/N4LDivider'
+import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 import TabularClassificationManual from '@pages/playground/0_TabularClassification/TabularClassificationManual'
 import TabularClassificationDataset from '@pages/playground/0_TabularClassification/TabularClassificationDataset'
@@ -41,9 +43,7 @@ import {
   DEFAULT_LAYERS,
 } from './CONSTANTS'
 import TabularClassificationDatasetProcess from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcess'
-import N4LDivider from '@components/divider/N4LDivider'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
-import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
  * @typedef {Object} GeneratedModel_t
@@ -376,6 +376,7 @@ export default function TabularClassification (props) {
             <Row className={'mt-3'}>
               <Col xl={12} className={'joyride-step-layer'}>
                 <N4LLayerDesign layers={layers}
+                                show={datasetIndex >= 0}
                                 glossary_action={GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN}
                                 manual_action={MANUAL_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN} />
               </Col>

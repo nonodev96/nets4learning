@@ -5,6 +5,10 @@ import { Trans, useTranslation } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
+/**
+ * 
+ * @deprecated
+ */
 export default function LinearRegressionEditorVisor () {
 
   const prefix = 'pages.playground.generator.visor.'
