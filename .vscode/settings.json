@@ -1,5 +1,6 @@
 {
-    "editor.formatOnSave": false,
+  //  "editor.accessibilitySupport": "off",
+   "editor.formatOnSave": false,
     "eslint.format.enable": true,
     "editor.tabSize": 2,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",

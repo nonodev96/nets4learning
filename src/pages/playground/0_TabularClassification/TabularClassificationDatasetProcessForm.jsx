@@ -5,7 +5,7 @@ import * as dfd from 'danfojs'
 
 import AlertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
-import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
+import { TABLE_PLOT_STYLE_CONFIG, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 // @formatter:off
@@ -18,18 +18,31 @@ const DEFAULT_OPTIONS = [
 ]
 // @formatter:on
 
-export default function TabularClassificationDatasetProcessForm (props) {
+/**
+ * @typedef TabularClassificationDatasetProcessFormProps_t
+ * @property {DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<React.SetStateAction<DatasetProcessed_t[]>>} setDatasets
+ * @property {number} datasetIndex
+ */
+/**
+ * 
+ * @param {TabularClassificationDatasetProcessFormProps_t} props 
+ * @returns 
+ */
+export default function TabularClassificationDatasetProcessForm(props) {
   const {
-    /** @type DatasetProcessed_t[] */
     datasets,
-    /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
-    /** @type number*/
     datasetIndex,
   } = props
-
-  const [listColumnNameType, setListColumnNameType] = useState(/** @type DataFrameColumnType_t[] */[])
-  const [listColumnNameTransformations, setListColumnNameTransformations] = useState(/**@type DataFrameColumnTransform_t[]*/[])
+  /**
+   * @type {ReturnType<typeof useState<DataFrameColumnType_t[]>>}
+   */
+  const [listColumnNameType, setListColumnNameType] = useState([])
+  /**
+   * @type {ReturnType<typeof useState<DataFrameColumnTransform_t[]>>}
+   */
+  const [listColumnNameTransformations, setListColumnNameTransformations] = useState([])
   const [columnNameTarget, setColumnNameTarget] = useState('')
   const [typeScaler, setTypeScaler] = useState('min-max-scaler')
   const [showDetails, setShowDetails] = useState({
@@ -51,7 +64,11 @@ export default function TabularClassificationDatasetProcessForm (props) {
 
     const _listTransformations = _listColumnNameType.map(({ column_name, column_type }) => {
       const _column_transform = (column_type === 'string') ? 'label-encoder' : column_type
-      return { column_name: column_name, column_transform: _column_transform }
+      return { 
+        column_name     : column_name, 
+        column_type     : column_type, 
+        column_transform: _column_transform 
+      }
     })
     setColumnNameTarget(_columns[_columns.length - 1])
     setListColumnNameType(_listColumnNameType)
@@ -59,12 +76,15 @@ export default function TabularClassificationDatasetProcessForm (props) {
   }, [datasets, datasetIndex])
 
   useEffect(() => {
-    datasets[datasetIndex].dataframe_original.plot('plot_original').table({
-      config: TABLE_PLOT_STYLE_CONFIG,
-      layout: {
-        title: t('dataframe-original'),
-      },
-    })
+    datasets[datasetIndex]
+      .dataframe_original
+      .plot('plot_original')
+      .table({
+        config: TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1,
+        layout: {
+          title: t('dataframe-original'),
+        },
+      })
   }, [datasets, datasetIndex, t])
 
   const handleChange_ColumnTransform = (e, columnName) => {
@@ -135,11 +155,14 @@ export default function TabularClassificationDatasetProcessForm (props) {
       y                 : y,
     }
 
-    dataframe_processed.plot('plot_processed').table({
-      config: TABLE_PLOT_STYLE_CONFIG, layout: {
-        title: t('dataframe-processed'),
-      },
-    })
+    dataframe_processed
+      .plot('plot_processed')
+      .table({
+        config: TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2,
+        layout: {
+          title: t('dataframe-processed'),
+        },
+      })
 
     setDatasets((prevDatasets) => {
       return prevDatasets.map((_dataset, _datasetIndex) => {
@@ -191,47 +214,17 @@ export default function TabularClassificationDatasetProcessForm (props) {
             <summary className="n4l-summary"><Trans i18nKey="dataframe-form" /></summary>
             <hr />
             <Row>
-              <Col><h4><Trans i18nKey="preprocessing.transformations-columns" /></h4></Col>
-            </Row>
-
-            <Row className="mt-3" md={2} lg={3} xl={4} xxl={6}>
-              {listColumnNameTransformations
-                .map(({ column_name, column_transform }, index) => {
-                  return <Col key={index}>
-                    <Form.Group controlId={'FormControl_' + column_name} className="mt-2">
-                      <Form.Label><b>{column_name}</b></Form.Label>
-                      <Form.Select aria-label="select"
-                                   size="sm"
-                                   disabled={column_name === columnNameTarget}
-                                   value={column_transform}
-                                   onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
-                        <>
-                          {DEFAULT_OPTIONS.map((optionValue, optionIndex) => {
-                            return <option key={column_name + '_option_' + optionIndex}
-                                           value={optionValue.value}>
-                              <Trans i18nKey={prefix + optionValue.i18n} />
-                            </option>
-                          })}
-                        </>
-                      </Form.Select>
-                      <Form.Text className="text-muted">{column_transform}</Form.Text>
-                    </Form.Group>
-                  </Col>
-                })}
-            </Row>
-
-            <hr />
-            <Row>
               <Col><h4><Trans i18nKey="preprocessing.transformations-set-X" /></h4></Col>
             </Row>
             <Row>
               <Col>
                 <Form.Group controlId="FormControl_Scaler">
                   <Form.Label><b><Trans i18nKey={'Scaler'} /></b> {typeScaler}</Form.Label>
-                  <Form.Select aria-label="Selecciona un escalador"
-                               size="sm"
-                               defaultValue="min-max-scaler"
-                               onChange={(e) => setTypeScaler(e.target.value)}>
+                  <Form.Select 
+                    aria-label="Selecciona un escalador"
+                    size="sm"
+                    defaultValue="min-max-scaler"
+                    onChange={(e) => setTypeScaler(e.target.value)}>
                     <option value="min-max-scaler">MinMaxScaler</option>
                     <option value="standard-scaler">StandardScaler</option>
                   </Form.Select>
@@ -242,9 +235,9 @@ export default function TabularClassificationDatasetProcessForm (props) {
                 <Form.Group controlId="FormControl_ColumnNameTarget">
                   <Form.Label><b><Trans i18nKey={'Column target'} /></b> {columnNameTarget}</Form.Label>
                   <Form.Select aria-label={'Selecciona un '}
-                               size="sm"
-                               value={columnNameTarget}
-                               onChange={handleChange_ColumnNameTarget}>
+                    size="sm"
+                    value={columnNameTarget}
+                    onChange={handleChange_ColumnNameTarget}>
                     <>
                       {listColumnNameType.map(({ column_name }, index) => {
                         return <option value={column_name} key={index}>{column_name}</option>
@@ -255,7 +248,40 @@ export default function TabularClassificationDatasetProcessForm (props) {
                 </Form.Group>
               </Col>
             </Row>
-            
+
+            <hr />
+            <Row>
+              <Col><h4><Trans i18nKey="preprocessing.transformations-columns" /></h4></Col>
+            </Row>
+            <Row className="g-2" xs={1} sm={2} md={2} lg={3} xl={4} xxl={4}>
+              {listColumnNameTransformations
+                .map(({ column_name, column_transform, column_type }, index) => {
+                  return <Col key={index}>
+                    <div className={'border border-1 rounded p-2 ' + (column_name === columnNameTarget ? 'border-info' : '')} >
+                      <Form.Group controlId={'FormControl_' + column_name} className="mt-2">
+                        <Form.Label><b>{column_name}</b></Form.Label>
+                        <Form.Select 
+                          aria-label="select transform"
+                          size="sm"
+                          disabled={column_name === columnNameTarget}
+                          value={column_transform}
+                          onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
+                          <>
+                            {DEFAULT_OPTIONS.map((optionValue, optionIndex) => {
+                              return <option key={column_name + '_option_' + optionIndex}
+                                value={optionValue.value}>
+                                <Trans i18nKey={prefix + optionValue.i18n} />
+                              </option>
+                            })}
+                          </>
+                        </Form.Select>
+                        <Form.Text className="text-muted">Dtype: [{column_type}] -&gt; {column_transform}</Form.Text>
+                      </Form.Group>
+                    </div>
+                  </Col>
+                })}
+            </Row>
+
             <hr />
             <Row>
               <Col>

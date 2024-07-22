@@ -1,4 +1,4 @@
-import * as dfd from 'danfojs'
+import * as _dfd from 'danfojs'
 
 /**
  * @typedef {Object} DataframePlotConfig_t
@@ -10,7 +10,7 @@ import * as dfd from 'danfojs'
 /**
  * @typedef {Object} EncoderObject_t
  * @property {'label-encoder' | 'one-hot-encoder'} type
- * @property {dfd.LabelEncoder | dfd.OneHotEncoder} encoder
+ * @property {_dfd.LabelEncoder | _dfd.OneHotEncoder} encoder
  */
 
 /**
@@ -57,6 +57,13 @@ import * as dfd from 'danfojs'
  */
 
 /**
+ * @typedef {Object} DataFrameColumnTypeEnable_t
+ * @property {string} column_name
+ * @property {ColumnType_t} column_type
+ * @property {boolean} column_enable
+ */
+
+/**
  * @typedef {'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'string'|'replace_<match>_NaN'|'replace_?_NaN'|'drop_?'|'drop'|'dropNa'|'ignored'} ColumnTransform_t
  */
 
@@ -64,6 +71,14 @@ import * as dfd from 'danfojs'
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
  * @property {ColumnTransform_t} column_transform
+ * @property {string} [match] - optional property
+ */
+
+/**
+ * @typedef DataFrameColumnTransformEnable_t
+ * @property {string} column_name
+ * @property {ColumnTransform_t} column_transform
+ * @property {boolean} column_enable
  * @property {string} [match] - optional property
  */
 

@@ -55,6 +55,7 @@ export default function AnalyzeDataFrame() {
             <h1><Trans i18nKey={prefix + 'title'} /></h1>
           </Col>
         </Row>
+
         <Row className={'mt-3'}>
           <Col>
             <Card>
@@ -116,7 +117,7 @@ export default function AnalyzeDataFrame() {
           </Col>
         </Row>
 
-        <Row>
+        <Row className={'mt-3'}>
           <Col>
             <DataFrameEchartCard 
               dataframe={dataFrameProcessed}

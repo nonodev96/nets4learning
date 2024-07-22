@@ -31,7 +31,7 @@ export default function PreProcessDataFrameCard(props) {
   } = props
 
   return <>
-    <Card>
+    <Card className={'mt-3'}>
       <Card.Header>
         <h3><Trans i18nKey={'dataframe-form'} /></h3>
       </Card.Header>

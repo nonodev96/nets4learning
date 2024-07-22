@@ -215,7 +215,7 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
 
   if (VERBOSE) console.debug('render DataFramePlot')
   return <>
-    <Card>
+    <Card className={'mt-3'}>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h2><Trans i18nKey={'dataframe-plot.title'} /></h2>
         <div className={'d-flex'}>

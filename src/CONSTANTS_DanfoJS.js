@@ -32,6 +32,20 @@ export const TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 = {
   }
 }
 
+export const F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 = (columns, columnNameTarget) => {
+  const array_color = columns.map((column_name) => {
+    return column_name === columnNameTarget ? 'rgb(255,0,105)' : 'rgb(72,0,105)'
+  })
+  return {
+    ...TABLE_PLOT_STYLE_CONFIG,
+    tableHeaderStyle: {
+      ...TABLE_PLOT_STYLE_CONFIG.tableHeaderStyle,
+      fill: { color: array_color },
+      font: { family: 'Arial', size: 15, color: 'white' },
+    }
+  }
+}
+
 export const CONFIG_DANFOJS_FRAME = {
   frameConfig: {
     config: {
