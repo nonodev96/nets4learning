@@ -103,12 +103,21 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   async MODELS (_dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/auto-mpg'
     return [
-      { column_name_X: 'horsepower', column_name_Y: 'mpg', model_path: path + '/0/lr-model-0.json' },
+      { model_path: path + '/0/lr-model-0.json', column_name_X: 'horsepower', column_name_Y: 'mpg' },
     ]
   }
 
   LAYERS () {
-    return tfjs.sequential()
+    const model = tfjs.sequential()
+    return model
+  }
+
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
+    ]
   }
 
   COMPILE () {

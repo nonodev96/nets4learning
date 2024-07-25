@@ -77,7 +77,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
   async MODELS (_dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
     return [
-      { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
+      { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
     ]
   }
 
@@ -96,8 +96,16 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const model = tfjs.sequential()
     model.add(tfjs.layers.dense({ units: 64, activation: 'relu', inputShape: [inputShape] }))
     model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1, activation: 'relu' }))
+    model.add(tfjs.layers.dense({ units: 1,  activation: 'relu' }))
     return model
+  }
+
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
+    ]
   }
 
   ATTRIBUTE_INFORMATION () {

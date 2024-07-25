@@ -7,8 +7,8 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
 
 /**
  * @typedef TrainModelTensor_t
- * @property inputs: any
- * @property labels: any
+ * @property {*} inputs
+ * @property {*} labels
  */
 
 /**
@@ -18,8 +18,9 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
 /**
  * @typedef  LRConfigFeatures_t
  * @property {Set<string>} X_features
- * @property {string} y_target
- * @property {Map<string, number>} categorical
+ * @property {string} Y_target
+ * @property {Map<string, number>} categorical_count
+ * @property {Set<string>} categorical_features
  */
 
 /**
@@ -98,27 +99,28 @@ export default class LinearRegressionModelController {
 
   /**
    *
-   * @param {any} t
+   * @param {Function} t
    */
   constructor (t) {
     this.t = t
     this.dataframe = new DataFrame()
     this.config = {
       features: {
-        X_features : new Set(),
-        y_target   : '',
-        categorical: new Map()
+        X_features          : new Set(),
+        Y_target            : '',
+        categorical_count   : new Map(),
+        categorical_features: new Set()
       },
-      compile : {
+      compile: {
         id_optimizer: 'train-sgd',
         id_loss     : 'losses-meanSquaredError',
         id_metrics  : ['metrics-meanAbsoluteError'],
         params      : {
-          learningRate: 0.0001,
+          learningRate: 0.1,
           momentum    : 1,
         },
       },
-      fit     : {
+      fit: {
         batchSize     : 32,
         testSize      : 0.1,
         epochs        : 20,
@@ -126,7 +128,7 @@ export default class LinearRegressionModelController {
         metrics       : ['loss', 'mse'],
         container_name: 'Training Performance',
       },
-      layers  : {
+      layers: {
         input : { units: 1, activation: 'linear', inputShape: [1] },
         layers: [
           { units: 10, activation: 'relu' },
@@ -149,9 +151,11 @@ export default class LinearRegressionModelController {
    * @param {LRConfigFeatures_t} features
    **/
   setFeatures (features) {
-    this.config.features.X_features = features.X_features
-    this.config.features.y_target = features.y_target
-    this.config.features.categorical = new Map()// features.categorical
+    // this.config.features.X_feature = features.X_feature // Simple
+    this.config.features.X_features = features.X_features // Multiple
+    this.config.features.Y_target = features.Y_target
+    this.config.features.categorical_count = features.categorical_count
+    this.config.features.categorical_features = features.categorical_features
   }
 
   /**
@@ -211,7 +215,7 @@ export default class LinearRegressionModelController {
    * @return {Promise<object[]>}
    */
   async GetData () {
-    if (!this.dataframe.columns.includes(this.config.features.y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.y_target}`)
+    if (!this.dataframe.columns.includes(this.config.features.Y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.Y_target}`)
 
     const missingColumns = []
     const X_list = Array.from(this.config.features.X_features)
@@ -222,19 +226,19 @@ export default class LinearRegressionModelController {
     }
     if (missingColumns.length > 0) throw Error(`The dataset need to contain a column named ${missingColumns}`)
     const columns = [
-      ...this.config.features.X_features,
-      this.config.features.y_target,
+      ...X_list,
+      this.config.features.Y_target,
     ]
     const data = Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
 
     for (const feature of [...this.config.features.X_features]) {
       let values = data.map((d) => ({
         x: d[feature],
-        y: d[this.config.features.y_target],
+        y: d[this.config.features.Y_target],
       }))
       await tfvis.render.scatterplot(
         {
-          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: this.config.features.y_target }),
+          name: this.t('pages.playground.generator.visor.scatterplot.__feature____target__', { feature, target: this.config.features.Y_target }),
           tab : this.t('pages.playground.generator.visor.dataset'),
         },
         { values },
@@ -250,12 +254,12 @@ export default class LinearRegressionModelController {
   /**
    * @private
    *
-   * @param value
-   * @param categoryCount
+   * @param {tfjs.Tensor | tfjs.TensorLike} indices
+   * @param {number} categoryCount
    * @returns {number[]}
    */
-  OneHot (value, categoryCount) {
-    return Array.from(tfjs.oneHot(value, categoryCount).dataSync())
+  OneHot (indices, categoryCount) {
+    return Array.from(tfjs.oneHot(indices, categoryCount).dataSync())
   }
 
   /**
@@ -280,30 +284,32 @@ export default class LinearRegressionModelController {
   /**
    *
    * @param {object[]} data
-   * @param {Array<string>} X_features
-   * @param {string} Y_TARGET
-   * @param {Map<string, number>} VARIABLE_CATEGORY_COUNT
+   * @param {Set<string>} X_features
+   * @param {string} Y_target
+   * @param {Set<string>} categorical_features
+   * @param {Map<string, number>} categorical_count
    * @param {number} testSize
    * @returns {[Tensor<Rank>, Tensor<Rank>, Tensor<Rank>, Tensor<Rank>, Tensor | Tensor[]]}
    */
-  CreateDataSets (data, X_features, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize) {
+  CreateDataSets (data, X_features, Y_target, categorical_features, categorical_count, testSize) {
     const X = data.map((r) =>
-      X_features.flatMap((feature) => {
-        if (VARIABLE_CATEGORY_COUNT.has(feature)) {
-          return this.OneHot(!r[feature] ? 0 : r[feature], VARIABLE_CATEGORY_COUNT.get(feature))
+      Array.from(X_features).flatMap((feature) => {
+        if (categorical_features.has(feature)) {
+          return this.OneHot(!r[feature] ? 0 : r[feature], categorical_count.get(feature))
         }
         return !r[feature] ? 0 : r[feature]
       }),
     )
+    console.log({X})
 
     //
     const X_t = this.Normalize(tfjs.tensor2d(X))
-    const y = tfjs.tensor(data.map(r => (!r[Y_TARGET] ? 0 : r[Y_TARGET])))
+    const y = tfjs.tensor(data.map(r => (!r[Y_target] ? 0 : r[Y_target])))
 
     const splitIdx = parseInt(((1 - testSize) * data.length).toString(), 10)
     const [xTrain, xTest] = tfjs.split(X_t, [splitIdx, data.length - splitIdx])
     const [yTrain, yTest] = tfjs.split(y, [splitIdx, data.length - splitIdx])
-
+    console.log({d: [xTrain, xTest, yTrain, yTest, X_t]})
     return [xTrain, xTest, yTrain, yTest, X_t]
   }
 
@@ -332,10 +338,10 @@ export default class LinearRegressionModelController {
       model.add(tfjs.layers.dense({ units, activation }))
     }
     // Output
-    model.add(tfjs.layers.dense({
-      units     : this.config.layers.output.units,
-      activation: this.config.layers.output.activation
-    }))
+    // model.add(tfjs.layers.dense({
+    //   units     : this.config.layers.output.units,
+    //   activation: this.config.layers.output.activation
+    // }))
 
     await tfvis.show.modelSummary({
       name: this.t('pages.playground.generator.visor.summary'),
@@ -396,13 +402,14 @@ export default class LinearRegressionModelController {
     const data = await this.GetData()
 
     const X_FEATURES = Array.from(this.config.features.X_features)
-    const Y_TARGET = this.config.features.y_target
-    const VARIABLE_CATEGORY_COUNT = this.config.features.categorical
+    const Y_TARGET = this.config.features.Y_target
+    const categorical_count = this.config.features.categorical_count
+    const categorical_features = this.config.features.categorical_features
 
     // params
     const testSize = this.config.fit.testSize
 
-    const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_FEATURES, Y_TARGET, VARIABLE_CATEGORY_COUNT, testSize)
+    const [xTrain, xTest, yTrain, yTest] = this.CreateDataSets(data, X_FEATURES, Y_TARGET, categorical_features, categorical_count, testSize)
     const model = await this.TrainLinearModel(xTrain, xTest, yTrain, yTest)
 
     const original = yTest.dataSync()

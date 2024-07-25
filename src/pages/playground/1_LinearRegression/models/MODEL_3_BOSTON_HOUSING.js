@@ -82,8 +82,8 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
   async MODELS (_dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/boston-housing'
     return [
-      { column_name_X: 'LSTAT', column_name_Y: 'MEDV', model_path: path + '/0/lr-model-0.json' },
-      { column_name_X: 'RM', column_name_Y: 'MEDV', model_path: path + '/1/lr-model-1.json' },
+      { model_path: path + '/0/lr-model-0.json', column_name_X: 'LSTAT', column_name_Y: 'MEDV',  },
+      { model_path: path + '/1/lr-model-1.json', column_name_X: 'RM',    column_name_Y: 'MEDV' },
     ]
   }
 
@@ -94,8 +94,19 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
     model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
     model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
     model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1, activation: 'relu' }))
+    model.add(tfjs.layers.dense({ units: 1,  activation: 'relu' }))
     return model
+  }
+
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
+    ]
   }
 
   COMPILE () {

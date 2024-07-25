@@ -27,13 +27,14 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @typedef CustomParamsLayerModel_t
  * @property {number} units
  * @property {string} activation
+ * @property {boolean} is_disabled
  */
 
 /**
  * @typedef CustomParamsFeaturesSelector_t
  * @property {Set<string>} X_features
  * @property {string} X_feature
- * @property {string} y_target
+ * @property {string} Y_target
  */
 
 /**
@@ -144,10 +145,10 @@ export function LinearRegressionProvider ({ children }) {
   }
 
   // @formatter:off
-  /** @type CustomDataset_t[] */
-  const DEFAULT_CUSTOM_DATASETS = []
-  /** @type CustomParams_t */
-  const DEFAULT_CUSTOM_PARAMS = {
+  /** @type {CustomDataset_t[]} */
+  const DEFAULT_DATASETS = []
+  /** @type {CustomParams_t} */
+  const DEFAULT_PARAMS = {
     params_training: {
       learning_rate  : 1,  // 1%  [0-100]
       n_of_epochs    : 20,
@@ -157,36 +158,60 @@ export function LinearRegressionProvider ({ children }) {
       list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
     },
     params_layers: [
-      { units: 10, activation: 'relu' },
-      { units: 20, activation: 'relu' },
-      { units: 20, activation: 'relu' },
-      { units: 20, activation: 'relu' },
-      { units: 20, activation: 'sigmoid' },
+      { is_disabled: false, units: 10, activation: 'relu' },
+      { is_disabled: false, units: 20, activation: 'relu' },
+      { is_disabled: false, units: 20, activation: 'relu' },
+      { is_disabled: false, units: 20, activation: 'relu' },
+      { is_disabled: false, units: 20, activation: 'sigmoid' },
+      { is_disabled: true,  units: 1,  activation: 'linear' },
     ],
     params_visor   : [],
     params_features: {
       X_features: new Set(),
       X_feature : '',
-      y_target  : '',
+      Y_target  : '',
     }
   }
-  /** @type CustomModel_t */
-  const DEFAULT_CUSTOM_MODEL = {
+  /** @type {CustomModel_t} */
+  const DEFAULT_MODEL = {
     model          : new Sequential(),
     original       : [],
     predicted      : [],
     predictedLinear: []
   }
   // @formatter:on
-
-  const [datasets, setDatasets] = useState(/** @type CustomDataset_t[] */ DEFAULT_CUSTOM_DATASETS)
-  const [datasetLocal, setDatasetLocal] = useState(/** @type CustomDatasetLocal_t */ DEFAULT_DATASET_LOCAL)
-  const [params, setParams] = useState(/** @type CustomParams_t */ DEFAULT_CUSTOM_PARAMS)
-  const [tmpModel, setTmpModel] = useState(/** @type CustomModel_t */ DEFAULT_CUSTOM_MODEL)
-  const [listModels, setListModels] = useState(/** @type Array<CustomModelGenerated_t> */[])
-
+  
+  /**
+   * @type {ReturnType<typeof useState<Array<CustomDataset_t>>>}
+   */
+  const [datasets, setDatasets] = useState(DEFAULT_DATASETS)
+  /**
+   * @type {ReturnType<typeof useState<CustomDatasetLocal_t>>}
+   */
+  const [datasetLocal, setDatasetLocal] = useState(DEFAULT_DATASET_LOCAL)
+  /**
+   * @type {ReturnType<typeof useState<CustomParams_t>>}
+   */
+  const [params, setParams] = useState(DEFAULT_PARAMS)
+  /**
+   * @type {ReturnType<typeof useState<CustomModel_t>>}
+   */
+  const [tmpModel, setTmpModel] = useState(DEFAULT_MODEL)
+  /**
+   * @type {ReturnType<typeof useState<Array<CustomModelGenerated_t>>>}
+   */
+  const [listModels, setListModels] = useState([])
+  /**
+   * @type {ReturnType<typeof useState<boolean>>}
+   */
   const [isTraining, setIsTraining] = useState(false)
+  /**
+   * @type {ReturnType<typeof useState<Array<string>>>}
+   */
   const [accordionActive, setAccordionActive] = useState(['dataset_info'])
+  /**
+   * @type {ReturnType<typeof useState<I_MODEL_LINEAR_REGRESSION>>}
+   */
   const [iModelInstance, setIModelInstance] = useState(new I_MODEL_LINEAR_REGRESSION(t, setAccordionActive))
 
   return (

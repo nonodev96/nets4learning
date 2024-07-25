@@ -6,6 +6,10 @@ import { Trans } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 
+/**
+ * 
+ * @deprecated
+ */
 export default function LinearRegressionEditorFeaturesSelector () {
 
   const prefix = 'pages.playground.generator.editor-feature-selector.'
@@ -40,7 +44,7 @@ export default function LinearRegressionEditorFeaturesSelector () {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasetLocal.dataframe_processed, setParams]')
     setParams((prevState) => {
-      const X_features = new Set([datasetLocal.dataframe_processed.columns[0]])
+      const X_features = new Set(datasetLocal.dataframe_processed.columns)
       const X_feature = datasetLocal.dataframe_processed.columns[0]
       const y_target = datasetLocal.dataframe_processed.columns[datasetLocal.dataframe_processed.columns.length - 1]
       return Object.assign({}, prevState, {
@@ -91,7 +95,7 @@ export default function LinearRegressionEditorFeaturesSelector () {
           </Form.Label>
           <Form.Select aria-label={'feature selector y'}
                        className={styles.border_green}
-                       value={params.params_features.y_target}
+                       value={params.params_features.Y_target}
                        onChange={(e) => handleChange_FeatureSelector_Y(e)}>
             <>
               {datasetLocal.dataframe_processed.columns

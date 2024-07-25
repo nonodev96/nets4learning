@@ -53,7 +53,7 @@ export default function PreProcessDataFrame(props) {
    * @type {ReturnType<typeof useState<Array<_Types.DataFrameColumnTypeEnable_t>>>}
    */
   const [listColumnNameType, setListColumnNameTypes] = useState([])
-    /**
+  /**
    * @type {ReturnType<typeof useState<_Types.DataFrameColumnTransformEnable_t[]>>}
    */
   const [listColumnNameTransformations, setListColumnNameTransformations] = useState([])
@@ -104,15 +104,8 @@ export default function PreProcessDataFrame(props) {
   }, [dataFrameOriginal, plotDataFrameOriginalID, t])
   
   useEffect(() => {
-    dataFrameProcessed
-      .plot(plotDataFrameProcessedID)
-      .table({ 
-        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataFrameProcessed.columns, columnNameTarget),
-        layout: {
-          title: t('dataframe-processed'),
-        },
-      })
-  }, [dataFrameProcessed, plotDataFrameProcessedID, t])
+
+  }, [dataFrameProcessed, plotDataFrameProcessedID, columnNameTarget, t])
 
   const handleChange_ColumnTransformEnable = (e, column_name) => {
     setListColumnNameTransformations((prevState) =>{
@@ -146,11 +139,18 @@ export default function PreProcessDataFrame(props) {
   const handleSubmit_ProcessDataFrame = async (event) => {
     event.preventDefault()
 
-    console.log(dataFrameOriginal)
     let dataframe_processed = DataFrameDeepCopy(dataFrameOriginal)
-    // TODO
     dataframe_processed = DataFrameTransform(dataframe_processed, listColumnNameTransformations)
+    console.log({dataframe_processed})
 
+    dataframe_processed
+      .plot(plotDataFrameProcessedID)
+      .table({ 
+        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, columnNameTarget),
+        layout: {
+          title: t('dataframe-processed'),
+        },
+      })
 
     setDataFrameProcessed(dataframe_processed)
     setIsDataFrameProcessed(true)
@@ -219,7 +219,7 @@ export default function PreProcessDataFrame(props) {
                       })}
                     </>
                   </Form.Select>
-                  <Form.Text className="text-muted">{columnNameTarget}</Form.Text>
+                  <Form.Text className="text-muted"><Trans i18nKey={'Column target'} /></Form.Text>
                 </Form.Group>
               </Col>
             </Row>

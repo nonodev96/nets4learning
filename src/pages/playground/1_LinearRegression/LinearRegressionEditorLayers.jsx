@@ -7,7 +7,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import alertHelper from '@utils/alertHelper'
 
-export default function LinearRegressionEditorLayers () {
+export default function LinearRegressionEditorLayers() {
 
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
@@ -18,7 +18,7 @@ export default function LinearRegressionEditorLayers () {
       setParams((prevState) => ({
         ...prevState,
         params_layers: [
-          { units: 1, activation: 'relu' },
+          { is_disabled: false, units: 1, activation: 'relu' },
           ...prevState.params_layers
         ]
       }))
@@ -32,8 +32,10 @@ export default function LinearRegressionEditorLayers () {
       setParams((prevState) => ({
         ...prevState,
         params_layers: [
-          ...prevState.params_layers,
-          { units: 1, activation: 'relu' },
+          // Cambiamos la ultima capa previa para que esté habilitada
+          ...prevState.params_layers.map((item)=>({ is_disabled: false, units: item.units, activation: item.activation })),
+          // Añadimos una nueva última capa 
+          { is_disabled: true, units: 1, activation: 'linear' },
         ]
       }))
     } else {
@@ -56,10 +58,9 @@ export default function LinearRegressionEditorLayers () {
 
   const handleChange_Layer = (index, value) => {
     params.params_layers[index] = value
-    const nuevoArray = params.params_layers
     setParams((prevState) => ({
       ...prevState,
-      params_layers: nuevoArray
+      params_layers: params.params_layers
     }))
   }
 
@@ -69,15 +70,17 @@ export default function LinearRegressionEditorLayers () {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className={'d-flex'}>
-          <Button variant={'outline-primary'}
-                  size={'sm'}
-                  onClick={() => handlerClick_AddLayer_Start()}>
+          <Button 
+            variant={'outline-primary'}
+            size={'sm'}
+            onClick={() => handlerClick_AddLayer_Start()}>
             <Trans i18nKey={prefix + 'add-layer-start'} />
           </Button>
-          <Button variant={'outline-primary'}
-                  size={'sm'}
-                  className={'ms-3'}
-                  onClick={() => handlerClick_AddLayer_End()}>
+          <Button 
+            variant={'outline-primary'}
+            size={'sm'}
+            className={'ms-3'}
+            onClick={() => handlerClick_AddLayer_End()}>
             <Trans i18nKey={prefix + 'add-layer-end'} />
           </Button>
         </div>
@@ -91,40 +94,48 @@ export default function LinearRegressionEditorLayers () {
                 return <Accordion.Item eventKey={index.toString()} key={index}>
                   <Accordion.Header>
                     <Trans i18nKey={prefix + 'layer-id'}
-                           values={{ index: index + 1 }} />
+                      values={{ index: index + 1 }} />
                   </Accordion.Header>
                   <Accordion.Body>
                     <div className="d-grid gap-2">
-                      <Button variant={'outline-danger'}
-                              onClick={() => handlerClick_RemoveLayer(index)}>
-                        <Trans i18nKey={prefix + 'delete-layer'}
-                               values={{ index: index + 1 }} />
+                      <Button 
+                        variant={'outline-danger'} 
+                        disabled={item.is_disabled}
+                        onClick={() => handlerClick_RemoveLayer(index)}>
+                        <Trans i18nKey={prefix + 'delete-layer'} values={{ index: index + 1 }} />
                       </Button>
                     </div>
                     <Form.Group className="mt-3" controlId={'formUnitsLayer' + index}>
                       <Form.Label>
                         <Trans i18nKey={prefix + 'units'} />
                       </Form.Label>
-                      <Form.Control type="number"
-                                    min={1} max={200}
-                                    placeholder={t(prefix + 'units-placeholder')}
-                                    value={item.units}
-                                    onChange={(e) => handleChange_Layer(index, {
-                                      units     : parseInt(e.target.value),
-                                      activation: item.activation,
-                                    })} />
+                      <Form.Control 
+                        type="number"
+                        disabled={item.is_disabled}
+                        min={1} 
+                        max={200}
+                        placeholder={t(prefix + 'units-placeholder')}
+                        value={item.units}
+                        onChange={(e) => handleChange_Layer(index, {
+                          is_disabled: item.is_disabled, 
+                          activation : item.activation,
+                          units      : parseInt(e.target.value),
+                        })} />
                     </Form.Group>
 
                     <Form.Group className="mt-3" controlId={'formActivationLayer' + index}>
                       <Form.Label>
                         <Trans i18nKey={prefix + 'activation-function-select'} />
                       </Form.Label>
-                      <Form.Select aria-label={'Default select example: ' + item.activation}
-                                   value={item.activation}
-                                   onChange={(e) => handleChange_Layer(index, {
-                                     units     : item.units,
-                                     activation: e.target.value,
-                                   })}>
+                      <Form.Select 
+                        aria-label={'Default select example: ' + item.activation}
+                        disabled={item.is_disabled}
+                        value={item.activation}
+                        onChange={(e) => handleChange_Layer(index, {
+                          is_disabled: item.is_disabled, 
+                          activation : e.target.value,
+                          units      : item.units,
+                        })}>
                         {TYPE_ACTIVATION.map(({ key, label }, index) => {
                           return (<option key={index} value={key}>{label}</option>)
                         })}

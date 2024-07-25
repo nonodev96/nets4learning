@@ -6,6 +6,13 @@ import MODEL_4_BREAST_CANCER from './MODEL_4_BREAST_CANCER'
 import MODEL_5_STUDENT_PERFORMANCE from './MODEL_5_STUDENT_PERFORMANCE'
 import MODEL_6_WINE from './MODEL_6_WINE'
 
+/**
+ * @typedef MAP_LR_CLASSES_t
+ * @property {Object<string, I_MODEL_LINEAR_REGRESSION>}
+ */
+/**
+ * @type {MAP_LR_CLASSES_t}
+ */
 const MAP_LR_CLASSES = {
   [MODEL_1_SALARY.KEY]             : MODEL_1_SALARY,
   [MODEL_2_AUTO_MPG.KEY]           : MODEL_2_AUTO_MPG,

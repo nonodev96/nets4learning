@@ -148,12 +148,23 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     ]
   }
 
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
+    ]
+  }
+
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/breast-cancer'
     const models = {
       'breast-cancer-wisconsin.csv': [],
-      'wdbc.csv'                   : [{ model_path: path + '/0/lr-model-0.json', column_name_X: 'area_mean', column_name_Y: 'perimeter_mean' },],
-      'wpbc.csv'                   : []
+      'wpbc.csv'                   : [],
+      'wdbc.csv'                   : [
+        { model_path: path + '/0/lr-model-0.json', column_name_X: 'area_mean', column_name_Y: 'perimeter_mean' }
+      ],
     }
     return models[dataset]
   }

@@ -10,7 +10,7 @@ import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
 
 import { DataFramePlotProvider } from '@components/_context/DataFramePlotContext'
 import PreProcessDataFrameCard from '@components/dataframe/PreProcessDataFrameCard'
-import DataFrameEchartCard from '@components/dataframe/DataFrameEchartCard'
+// import DataFrameEchartCard from '@components/dataframe/DataFrameEchartCard'
 import DataFramePlot from '@components/dataframe/DataFramePlot'
 import DataFrameCorrelationMatrixCard from '@components/dataframe/DataFrameCorrelationMatrixCard'
 import DataFrameShowCard from '@components/dataframe/DataFrameShowCard'
@@ -117,6 +117,7 @@ export default function AnalyzeDataFrame() {
           </Col>
         </Row>
 
+        {/*
         <Row className={'mt-3'}>
           <Col>
             <DataFrameEchartCard 
@@ -124,6 +125,7 @@ export default function AnalyzeDataFrame() {
               isDataFrameProcessed={isDataFrameProcessed} />
           </Col>
         </Row>
+        */}
 
         <Row className={'mt-3'}>
           <Col>

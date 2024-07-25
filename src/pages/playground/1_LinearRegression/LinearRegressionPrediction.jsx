@@ -5,12 +5,14 @@ import Plot from 'react-plotly.js'
 
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
-import LinearRegressionContext from '@context/LinearRegressionContext'
-import N4LSummary from '@components/summary/N4LSummary'
-import LinearRegressionPredictionDynamicForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionDynamicForm'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
+import N4LSummary from '@components/summary/N4LSummary'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
-export default function LinearRegressionPrediction () {
+import LinearRegressionContext from '@context/LinearRegressionContext'
+import LinearRegressionPredictionDynamicForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionDynamicForm'
+
+export default function LinearRegressionPrediction() {
   const prefix = 'pages.playground.1-linear-regression.predict.'
   const { t } = useTranslation()
 
@@ -19,8 +21,12 @@ export default function LinearRegressionPrediction () {
   const [indexModel, setIndexModel] = useState(-1)
   const [dataPrediction, setDataPrediction] = useState([])
   const [dynamicObject, setDynamicObject] = useState({})
+  const [showPrediction, setShowPrediction] = useState(false)
+  /**
+   * @type {ReturnType<typeof useState<string|number>>}
+   */
+  const [indexInstance, setIndexInstance] = useState('__disabled__')
   const refPlotJS = useRef()
-  const idDataFrameDescribe = useId()
 
   const handleChange_DynamicObject = (e) => {
     const _new_value = e.target.value
@@ -46,9 +52,10 @@ export default function LinearRegressionPrediction () {
 
   const handleChange_Instance = (e) => {
     const index = e.target.value
+    setIndexInstance(index)
     const _dynamic_object = listModels[indexModel]
-      .dataframe
-      .columns
+    .dataframe
+    .columns
       .reduce((o, column_name) => {
         let new_value = listModels[indexModel].dataframe[column_name].values[index]
         return Object.assign(o, { [column_name]: new_value })
@@ -64,11 +71,12 @@ export default function LinearRegressionPrediction () {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [listModels, indexModel]')
     if (listModels.length > 0 && indexModel >= 0) {
-      listModels[indexModel].dataframe
-        .describe()
-        .T
-        .plot(idDataFrameDescribe)
-        .table({ config: TABLE_PLOT_STYLE_CONFIG })
+      // listModels[indexModel]
+      //   .dataframe
+      //   .describe()
+      //   .T
+      //   .plot(idDataFrameDescribe)
+      //   .table({ config: TABLE_PLOT_STYLE_CONFIG })
 
       const _dynamic_object = listModels[indexModel]
         .dataframe
@@ -79,7 +87,11 @@ export default function LinearRegressionPrediction () {
         }, {})
       setDynamicObject(_dynamic_object)
     }
-  }, [listModels, indexModel, idDataFrameDescribe])
+  }, [listModels, indexModel])
+
+  useEffect(() => {
+    setShowPrediction((listModels.length > 0 && indexModel >= 0))
+  }, [listModels, indexModel, setShowPrediction])
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [listModels, indexModel, setDataPrediction]')
@@ -90,7 +102,7 @@ export default function LinearRegressionPrediction () {
         params_features,
         /* predictedLinear */
       } = listModels[indexModel]
-      const { X_feature, y_target } = params_features
+      const { X_feature, Y_target: y_target } = params_features
       const trace = {
         x      : original.map((v) => v.x),
         y      : original.map((v) => v.y),
@@ -136,28 +148,33 @@ export default function LinearRegressionPrediction () {
         <div className="d-flex">
           <div className={'ms-3'}>
             <Form.Group controlId={'model-selector'}>
-              <Form.Select aria-label={'model-selector'}
-                           size={'sm'}
-                           value={indexModel}
-                           onChange={(e) => handleChange_Model(e)}>
+              <Form.Select
+                aria-label={'model-selector'}
+                size={'sm'}
+                value={indexModel}
+                disabled={!showPrediction}
+                onChange={(e) => handleChange_Model(e)}>
                 <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
                 <>
                   {listModels
                     .map((_, index) => {
                       return <option key={index} value={index}>
                         <Trans i18nKey={'model.__index__'}
-                               values={{ index: index + 1 }} />
+                          values={{ index: index + 1 }} />
                       </option>
                     })}
                 </>
               </Form.Select>
             </Form.Group>
           </div>
-          <div className={'ms-3'} style={{ display: 'none' }}>
+          <div className={'ms-3'}>
             <Form.Group controlId={'dataframe-selector-value'}>
-              <Form.Select aria-label={'dataframe-selector-value'}
-                           size={'sm'}
-                           onChange={(e) => handleChange_Instance(e)}>
+              <Form.Select 
+                aria-label={'dataframe-selector-value'}
+                size={'sm'}
+                disabled={!showPrediction}
+                value={indexInstance}
+                onChange={(e) => handleChange_Instance(e)}>
                 <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-instances'} /></option>
                 {listModels.length > 0 && indexModel >= 0 && <>
                   {Array(listModels[indexModel].dataframe.values.length)
@@ -165,7 +182,7 @@ export default function LinearRegressionPrediction () {
                     .map((value, index) => {
                       return <option key={index} value={index}>
                         <Trans i18nKey={prefix + 'instance.__index__'}
-                               values={{ index: index + 1 }} />
+                          values={{ index: index + 1 }} />
                       </option>
                     })}
                 </>}
@@ -175,49 +192,47 @@ export default function LinearRegressionPrediction () {
         </div>
       </Card.Header>
       <Card.Body>
-        {listModels.length === 0 && <>
-          <p className="placeholder-glow">
-            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-models')}</small>
-            <span className="placeholder col-12"></span>
-          </p>
+        {!showPrediction && <>
+          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-models'} />
         </>}
-        {(listModels.length > 0 && indexModel >= 0) && <>
+        {showPrediction && <>
           <Row>
-            <N4LSummary title={t('DataFrame')}>
-              <div id={idDataFrameDescribe}></div>
-            </N4LSummary>
             <N4LSummary title={t('Features')}>
+              <Card.Text><strong>X</strong> {listModels[indexModel]?.params_features.X_features ?? []}</Card.Text>
               <Card.Text><strong>X</strong> {listModels[indexModel]?.params_features.X_feature ?? ''}</Card.Text>
-              <Card.Text><strong>Y</strong> {listModels[indexModel]?.params_features.y_target ?? ''}</Card.Text>
+              <Card.Text><strong>Y</strong> {listModels[indexModel]?.params_features.Y_target ?? ''}</Card.Text>
             </N4LSummary>
           </Row>
           <hr />
           <Form onSubmit={handleSubmit_Predict}>
-            <Row style={{ display: 'none' }}>
-              <LinearRegressionPredictionDynamicForm generatedModel={listModels[indexModel]}
-                                                     dynamicObject={dynamicObject}
-                                                     handleChange_DynamicObject={handleChange_DynamicObject}
+            <Row xs={6} sm={6} md={4} lg={4} xl={4} xxl={6}>
+              <LinearRegressionPredictionDynamicForm 
+                generatedModel={listModels[indexModel]}
+                dynamicObject={dynamicObject}
+                handleChange_DynamicObject={handleChange_DynamicObject}
               />
             </Row>
-            <Row style={{ display: 'none' }}>
+            <Row>
               <div className="d-grid gap-2">
-                <Button variant={'outline-primary'}
-                        size={'lg'}
-                        type={'submit'}>
+                <Button 
+                  variant={'primary'}
+                  size={'lg'}
+                  type={'submit'}>
                   <Trans i18nKey={prefix + 'button-submit'} />
                 </Button>
               </div>
             </Row>
             <Row>
               <Col>
-                <Plot ref={refPlotJS}
-                      data={dataPrediction}
-                      useResizeHandler={true}
-                      style={PLOTLY_CONFIG_DEFAULT.STYLES}
-                      layout={{
-                        title: '',
-                        ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
-                      }}
+                <Plot 
+                  ref={refPlotJS}
+                  data={dataPrediction}
+                  useResizeHandler={true}
+                  style={PLOTLY_CONFIG_DEFAULT.STYLES}
+                  layout={{
+                    title: '',
+                    ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
+                  }}
                 />
               </Col>
             </Row>

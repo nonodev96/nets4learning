@@ -99,7 +99,16 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   async MODELS (_dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
     return [
-      { column_name_X: 'YearsExperience', column_name_Y: 'Salary', model_path: path + '/0/lr-model-0.json' },
+      { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
+    ]
+  }
+
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
     ]
   }
 

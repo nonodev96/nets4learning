@@ -5,19 +5,21 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 
+import { VERBOSE } from '@/CONSTANTS'
+import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
+
 import N4LDivider from '@components/divider/N4LDivider'
 import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
 import DebugJSON from '@components/debug/DebugJSON'
 
-import { MAP_LR_CLASSES } from './models'
+import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from './models'
 
+// import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
+import LinearRegressionModelController_Multiple from '@core/controller/01-linear-regression/LinearRegressionModelController_Multiple'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
-import { VERBOSE } from '@/CONSTANTS'
-import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import { UPLOAD } from '@/DATA_MODEL'
 
 // Manual and datasets
@@ -35,7 +37,16 @@ const LinearRegressionTableModels = lazy(() => import('./LinearRegressionTableMo
 // const LinearRegressionPredictionExample = lazy(() => import( './LinearRegressionPredictionExample'))
 const LinearRegressionPrediction = lazy(() => import('./LinearRegressionPrediction'))
 
-// TODO
+
+/**
+ * @typedef LinearRegressionProps_t
+ * @property {string} dataset
+ */
+/**
+ * 
+ * @param {LinearRegressionProps_t} props 
+ * @returns 
+ */
 export default function LinearRegression(props) {
   const { dataset } = props
   const { id: param_id } = useParams()
@@ -53,11 +64,13 @@ export default function LinearRegression(props) {
     setTmpModel,
 
     params,
+    setParams,
 
     isTraining,
     setIsTraining,
 
     datasetLocal,
+    setDatasetLocal,
 
     setListModels,
 
@@ -71,7 +84,7 @@ export default function LinearRegression(props) {
   const refJoyrideButton = useRef({})
 
   const TrainModel = async () => {
-    const modelController = new LinearRegressionModelController_Simple(t)
+    const modelController = new LinearRegressionModelController_Multiple(t)
     modelController.setDataFrame(datasetLocal.dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
@@ -87,10 +100,11 @@ export default function LinearRegression(props) {
       },
     })
     modelController.setFeatures({
-      X_features : params.params_features.X_features,
-      X_feature  : params.params_features.X_feature,
-      y_target   : params.params_features.y_target,
-      categorical: new Map(),
+      X_features          : params.params_features.X_features, // Multiple
+      X_feature           : params.params_features.X_feature, // Simple
+      Y_target            : params.params_features.Y_target,
+      categorical_count   : new Map(), // K => column_name, V => number
+      categorical_features: new Set(),
     })
     modelController.setFit({
       testSize : params.params_training.test_size,
@@ -99,17 +113,17 @@ export default function LinearRegression(props) {
       batchSize: 32,
       metrics  : [...params.params_training.list_id_metrics],
     })
-    const { model, original, predicted, predictedLinear } = await modelController.run()
+    const { model, original, predicted, /* predictedLinear */ } = await modelController.run()
     const updatedTmpModel = {
-      model          : model,
-      original       : Array.from(original),
-      predicted      : Array.from(predicted),
-      predictedLinear: Array.from(predictedLinear),
+      model    : model,
+      original : Array.from(original),
+      predicted: Array.from(predicted), // Multiple 
+      // predictedLinear: Array.from(predictedLinear), // Simple
     }
     setTmpModel(updatedTmpModel)
     setListModels((prevState) => [...prevState, {
       ...cloneTmpModel(updatedTmpModel),
-      params_layers  : [...params.params_layers],
+      params_layers  : [ ...params.params_layers ],
       params_training: { ...params.params_training },
       params_features: { ...params.params_features },
       dataframe      : datasetLocal.dataframe_processed,
@@ -138,10 +152,22 @@ export default function LinearRegression(props) {
         // TODO
         console.debug('Linear regression upload csv')
       } else if (dataset in MAP_LR_CLASSES) {
+        /**
+         * @type {I_MODEL_LINEAR_REGRESSION}
+         */
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
         setDatasets(_datasets)
+        setParams(prevState=>({
+          ...prevState,
+          params_layers: _iModelInstance.DEFAULT_LAYERS()
+        }))
+        setDatasetLocal((prevState)=> ({
+          ...prevState,
+           is_dataset_upload   : false,
+           is_dataset_processed: true,
+        }))
       } else {
         await alertHelper.alertError('Error in selection of model')
         console.error('Error, option not valid', { ID: dataset })
@@ -149,7 +175,7 @@ export default function LinearRegression(props) {
       }
     }
     init().then(() => undefined)
-  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, history])
+  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setParams, setDatasetLocal, history])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -267,10 +293,10 @@ export default function LinearRegression(props) {
               </div>
 
               <hr />
-
               <div className={'joyride-step-6-editor-selector-features'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>
+
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>
               <Suspense fallback={<></>}><LinearRegressionEditorHyperparameters /></Suspense>
@@ -300,11 +326,7 @@ export default function LinearRegression(props) {
           </Col>
         </Row>
 
-        <div className={'mt-2 mb-4 n4l-hr-row'}>
-          <span className={'n4l-hr-title'}>
-            <Trans i18nKey={'hr.predict'} />
-          </span>
-        </div>
+        <N4LDivider i18nKey={'hr.predict'} />
 
         <Row className={'mt-3'}>
           <Col className={'joyride-step-9-predict-visualization'}>

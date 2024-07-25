@@ -32,7 +32,7 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
     const column_type = generatedModel.dataframe[column_name].dtype
     switch (column_type) {
       case 'int32': {
-        return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+        return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
             <Form.Control type="number"
@@ -45,12 +45,12 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
                           disabled={isDisabled(column_name)}
                           onChange={handleChange_DynamicObject}
             />
-            <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
+            <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
           </Form.Group>
         </Col>
       }
       case 'float32': {
-        return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+        return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
             <Form.Control type="number"
@@ -63,14 +63,14 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
                           disabled={isDisabled(column_name)}
                           onChange={handleChange_DynamicObject}
             />
-            <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
+            <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
           </Form.Group>
         </Col>
       }
       case 'string': {
         const labelEncoder = new dfd.LabelEncoder()
         labelEncoder.fit(generatedModel.dataframe[column_name])
-        return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+        return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
             <Form.Select aria-label={'linear-regression-dynamic-form-' + column_name}
@@ -91,12 +91,12 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
                   )}
               </>
             </Form.Select>
-            <Form.Text className="text-muted">{column_name} | {column_type}</Form.Text>
+            <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
           </Form.Group>
         </Col>
       }
       default: {
-        return <Col className="mb-3" key={index} xs={6} sm={6} md={4} lg={4} xl={4} xxl={3}>
+        return <Col className="mb-3" key={index}>
           Error, option not valid
         </Col>
       }

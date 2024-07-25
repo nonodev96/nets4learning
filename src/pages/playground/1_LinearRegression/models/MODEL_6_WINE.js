@@ -94,6 +94,15 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
       dataframe_processed : dataframe_processed_2,
       dataset_transforms  : [],
     }]
+  }  
+  
+  DEFAULT_LAYERS () {
+    return [
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: true,  units: 1,  activation: 'linear' }
+    ]
   }
 
   async MODELS (dataset) {
