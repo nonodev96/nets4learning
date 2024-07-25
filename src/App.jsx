@@ -46,18 +46,19 @@ function App() {
         <Suspense fallback={<Loading />}>
           <Switch>
             <Route exact path={'/'} component={PageHome}></Route>
+            <Route exact path={'/home'} component={PageHome}></Route>
             <Route exact path={'/select-dataset/:id'} component={PageMenuSelectDataset}></Route>
             <Route exact path={'/select-model/:id'} component={PageMenuSelectModel}></Route>
             <Route exact path={'/playground/:id/:option/:example'} component={PagePlayground}></Route>
             <Route exact path={'/playground/description-linear-regression'} component={PageDescriptionLinearRegression}></Route>
             <Route exact path={'/manual/'} component={PageManual}></Route>
-            <Route exact path={'/glossary/'} component={PageGlossary}></Route>
-            <Route exact path={'/datasets/'} component={PageDatasets}></Route>
-            <Route exact path={'/analyze/'} component={PageAnalyzeDataFrame}></Route>
+            <Route exact path={'/glossary'} component={PageGlossary}></Route>
+            <Route exact path={'/datasets'} component={PageDatasets}></Route>
+            <Route exact path={'/analyze'} component={PageAnalyzeDataFrame}></Route>
             <Route exact path={'/contribute/'} component={PageContribute}></Route>
-            <Route exact path={'/terms-and-conditions/'} component={PageTermsAndConditions}></Route>
-            <Route exact path={'/version/'} component={PageVersion}></Route>
-            <Route exact path={'/debug/'} component={PageDebug}></Route>
+            <Route exact path={'/terms-and-conditions'} component={PageTermsAndConditions}></Route>
+            <Route exact path={'/version'} component={PageVersion}></Route>
+            <Route exact path={'/debug'} component={PageDebug}></Route>
 
             <Route exact path={'/test-page-easy'} component={TestPageEasy}></Route>
             <Route exact path={'/test-page-advanced/:id/:option/:example'} component={TestPageAdvanced}></Route>

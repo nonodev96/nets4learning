@@ -188,23 +188,21 @@ export default function Home () {
               </Card.Body>
             </Card>
 
-            {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
-              <Card className={'mt-3 border-info'}>
-                <Card.Header>
-                  <h2><Trans i18nKey={'pages.index.image-classification.2-title'} /></h2>
-                </Card.Header>
-                <Card.Body>
-                  <Card.Text>
-                    <Trans i18nKey={'pages.index.image-classification.2-description-1'} />
-                  </Card.Text>
-                  <div className="d-flex gap-2 justify-content-center">
-                    <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
-                      <Trans i18nKey={'pages.index.image-classification.2-button'} />
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            }
+            <Card className={'mt-3 border-info'}>
+              <Card.Header>
+                <h2><Trans i18nKey={'pages.index.image-classification.2-title'} /></h2>
+              </Card.Header>
+              <Card.Body>
+                <Card.Text>
+                  <Trans i18nKey={'pages.index.image-classification.2-description-1'} />
+                </Card.Text>
+                <div className="d-flex gap-2 justify-content-center">
+                  <Button onClick={() => handleClick_TrainEdit(SELECTOR.DATASET)}>
+                    <Trans i18nKey={'pages.index.image-classification.2-button'} />
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
           </>
         )
       default:
@@ -214,7 +212,7 @@ export default function Home () {
 
   return (
     <>
-      <main className={'mb-3'} data-title={'Home'}>
+      <main className={'mb-3'} data-title={'Home'} data-testid={'Test-InitialMenu'}>
         <Container>
           <Row>
             <Col>
@@ -226,33 +224,33 @@ export default function Home () {
 
         <CookiesModal />
 
-        <Container>
+      {/*   <Container>
           <Row>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button variant={'primary'}
                         size={'lg'}
+                        data-testid={'Test-InitialMenu-TabularClassification'}
                         onClick={() => handleClick_OpenCardModel(TASKS.TABULAR_CLASSIFICATION)}>
                   <Trans i18nKey={'pages.index.tabular-classification.1-title'} />
                 </Button>
               </div>
             </Col>
-            {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
-              <Col className={'mt-3'}>
-                <div className="d-grid gap-2">
-                  <Button variant={'danger'}
-                          size={'lg'}
-                          data-testid={'Test-InitialMenu-LinearRegression'}
-                          onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
-                    <Trans i18nKey={'pages.index.linear-regression.1-title'} />
-                  </Button>
-                </div>
-              </Col>
-            }
+            <Col className={'mt-3'}>
+              <div className="d-grid gap-2">
+                <Button variant={'danger'}
+                        size={'lg'}
+                        data-testid={'Test-InitialMenu-LinearRegression'}
+                        onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
+                  <Trans i18nKey={'pages.index.linear-regression.1-title'} />
+                </Button>
+              </div>
+            </Col>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
                 <Button variant={'info'}
                         size={'lg'}
+                        data-testid={'Test-InitialMenu-ImageClassification'}
                         onClick={() => handleClick_OpenCardModel(TASKS.IMAGE_CLASSIFICATION)}>
                   <Trans i18nKey={'pages.index.image-classification.1-title'} />
                 </Button>
@@ -262,6 +260,7 @@ export default function Home () {
               <div className="d-grid gap-2">
                 <Button variant={'warning'}
                         size={'lg'}
+                        data-testid={'Test-InitialMenu-ObjectDetection'}
                         onClick={() => handleClick_OpenCardModel(TASKS.OBJECT_DETECTION)}>
                   <Trans i18nKey={'pages.index.object-detection.1-title'} />
                 </Button>
@@ -274,7 +273,7 @@ export default function Home () {
               <MenuSelection />
             </Col>
           </Row>
-        </Container>
+        </Container> */}
       </main>
     </>
   )
