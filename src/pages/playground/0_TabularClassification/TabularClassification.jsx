@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { UPLOAD } from '@/DATA_MODEL'
@@ -125,14 +125,23 @@ export default function TabularClassification (props) {
   const [idMetrics, setIdMetrics] = useState(DEFAULT_ID_METRICS) // METRICS_TYPE
 
   // Datasets
-  const [datasets, setDatasets] = useState(/** @type DatasetProcessed_t[]*/[])
+  /** 
+   * @type {ReturnType<typeof useState<Array<DatasetProcessed_t>>>}
+   */
+  const [datasets, setDatasets] = useState([])
   const [datasetIndex, setDatasetIndex] = useState(-1)
   // Models upload && review
   const [isTraining, setIsTraining] = useState(false)
-  const [generatedModels, setGeneratedModels] = useState(/** @type Array<GeneratedModel_t> */[])
+  /**
+   * @type {ReturnType<typeof useState<Array<GeneratedModel_t>>>}
+   */
+  const [generatedModels, setGeneratedModels] = useState([])
   const [generatedModelsIndex, setGeneratedModelsIndex] = useState(-1)
   // Model review
-  const [Model, setModel] = useState(/** @type {tf.Sequential | null }*/null)
+  /**
+   * @type {ReturnType<typeof useState<tfjs.Sequential | null>>}
+   */
+  const [Model, setModel] = useState(null)
 
   // Class && Controllers
   const iModelInstance = useRef(new I_MODEL_TABULAR_CLASSIFICATION(t))
@@ -260,7 +269,7 @@ export default function TabularClassification (props) {
       const { data_processed } = datasets[datasetIndex]
       const { scaler, classes } = data_processed
       const input_vector_to_predict_scaled = scaler.transform(inputVectorToPredict)
-      const tensor = tf.tensor([input_vector_to_predict_scaled])
+      const tensor = tfjs.tensor([input_vector_to_predict_scaled])
       const prediction = Model.predict(tensor)
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()

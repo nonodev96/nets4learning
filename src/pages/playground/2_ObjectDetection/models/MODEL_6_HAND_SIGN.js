@@ -12,7 +12,7 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'HAND-SIGN'
   TITLE = 'datasets-models.2-object-detection.hand-sign.title'
   i18n_TITLE = 'datasets-models.2-object-detection.hand-sign.title'
-  URL = ''
+  URL = 'https://github.com/nonodev96/handsign-multilingual'
   mirror = true
 
   gestureEstimator = null

@@ -55,7 +55,7 @@ export default function ImageClassification (props) {
    * @property {number} poolSize
    * @property {number} strides
    */
-  const [Layers, setLayers] = useState(/**@type Array<Layer_t>*/DEFAULT_LAYERS)
+  const [Layers, setLayers] = useState(DEFAULT_LAYERS)
 
   const [idOptimizer, setIdOptimizer] = useState(DEFAULT_ID_OPTIMIZATION)
   const [idLoss, setIdLoss] = useState(DEFAULT_ID_LOSS)
@@ -67,17 +67,20 @@ export default function ImageClassification (props) {
 
   const refJoyrideButton = useRef({})
   /**
-   * @typedef {tf.Sequential} Model_t
+   * @type {ReturnType<typeof useState<tf.Sequential>>}
    */
-  const [Model, setModel] = useState(/**@type {Model_t}*/null)
+  const [Model, setModel] = useState(null)
 
   /**
-   * @typedef {Object} GeneratedModels_t
+   * @typedef GeneratedModels_t
    * @property {string} optimizer
    * @property {string} loss
    * @property {string} metric
    */
-  const [GeneratedModels, setGeneratedModels] = useState(/**@type Array<GeneratedModels_t> */[])
+  /**
+   * @type {ReturnType<typeof useState<Array<GeneratedModels_t>>>}
+   */
+  const [GeneratedModels, setGeneratedModels] = useState([])
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ImageClassification/' + dataset, title: dataset })

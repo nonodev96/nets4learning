@@ -32,10 +32,23 @@ export default function ModelReviewImageClassification ({ dataset }) {
   const iChartRef_modal = useRef()
   const iChartRef_image = useRef()
 
-  const originalImage_ref = useRef(/**@type HTMLCanvasElement*/null)
-  const resultCanvas_ref = useRef(/**@type HTMLCanvasElement*/null)
-  const imageCanvas_ref = useRef(/**@type HTMLCanvasElement*/null)
-  const modalCanvasImage_ref = useRef(/**@type HTMLCanvasElement*/null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const originalImage_ref = useRef(null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const resultCanvas_ref = useRef(null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const imageCanvas_ref = useRef(null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const modalCanvasImage_ref = useRef(null)
+
 
   const [isLoading, setIsLoading] = useState(true)
 

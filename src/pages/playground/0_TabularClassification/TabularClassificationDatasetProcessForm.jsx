@@ -5,7 +5,7 @@ import * as dfd from 'danfojs'
 
 import AlertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
-import { TABLE_PLOT_STYLE_CONFIG, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
+import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 // @formatter:off

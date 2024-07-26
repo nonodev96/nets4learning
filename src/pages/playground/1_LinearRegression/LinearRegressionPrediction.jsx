@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useId, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
-import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import N4LSummary from '@components/summary/N4LSummary'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 

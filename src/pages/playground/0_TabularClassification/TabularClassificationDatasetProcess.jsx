@@ -8,15 +8,24 @@ import TabularClassificationDatasetProcessForm from '@pages/playground/0_Tabular
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
+/**
+ * @typedef PropsTabularClassificationDatasetProcess
+ * @property {DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<Array<DatasetProcessed_t>>} setDatasets
+ * @property {number} datasetIndex
+ * @property {React.Dispatch<number>} setDatasetIndex
+ */
+
+/**
+ * 
+ * @param {PropsTabularClassificationDatasetProcess} props 
+ * @returns 
+ */
 export default function TabularClassificationDatasetProcess (props) {
   const {
-    /** @type DatasetProcessed_t[] */
     datasets,
-    /** @type React.Dispatch<Array<DatasetProcessed_t>> */
     setDatasets,
-    /** @type number */
     datasetIndex,
-    /** @type React.Dispatch<number> */
     setDatasetIndex
   } = props
 

@@ -144,7 +144,7 @@ const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoder
 
 ---
 
-## `@type EncoderMap_t`
+## `@type {EncoderMap_t}`
 
 <details>
 <summary class="n4l-summary-wiki">Code example</summary>
@@ -165,7 +165,7 @@ const inputVectorToPredict = DataFrameUtils.DataFrameApplyEncodersVector(encoder
 
 ---
 
-## `@type DataFrameColumnTransform_t`
+## `@type {DataFrameColumnTransform_t}`
 
 <details>
 <summary class="n4l-summary-wiki">Code example</summary>

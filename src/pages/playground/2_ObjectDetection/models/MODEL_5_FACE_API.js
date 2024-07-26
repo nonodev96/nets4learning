@@ -1,5 +1,5 @@
 // eslint-disable-next-line 
-// import * as faceapi from '@vladmandic/face-api/dist/face-api.esm.js'
+import * as faceapi from '@vladmandic/face-api/dist/face-api.esm.js'
 import { Trans } from 'react-i18next'
 import I_MODEL_OBJECT_DETECTION from './_model'
 import { MTCNN_bibtex, SSD_bibtex, MobileNets_bibtex, tiny_bibtex, faceRecognitionModel_bitex } from './MODEL_5_FACE_API_INFO'

@@ -224,7 +224,7 @@ export default function Home () {
 
         <CookiesModal />
 
-      {/*   <Container>
+        <Container>
           <Row>
             <Col className={'mt-3'}>
               <div className="d-grid gap-2">
@@ -273,7 +273,7 @@ export default function Home () {
               <MenuSelection />
             </Col>
           </Row>
-        </Container> */}
+        </Container> 
       </main>
     </>
   )

@@ -1,8 +1,10 @@
 ARG ARG_BUILD
 FROM node:18-alpine
 
-RUN apk add bash
-RUN apk add xsel
+USER sonarqube
+
+RUN apk --no-cache add bash
+RUN apk --no-cache add xsel
 
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 RUN npm install -g serve@14.2.1
@@ -18,4 +20,4 @@ RUN npm run build:${ARG_BUILD}
 
 EXPOSE 3000
 
-CMD bash /usr/src/app/n4l_start.sh
+CMD bash /usr/src/app/Scripts/n4l_start.sh

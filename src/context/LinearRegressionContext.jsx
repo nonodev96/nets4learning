@@ -125,7 +125,9 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  *
  */
 
-/** @type {import('react').Context<CustomLinearRegressionContext_t>} */
+/**
+ * @type {ReturnType<typeof createContext<CustomLinearRegressionContext_t>>}
+ */
 const LinearRegressionContext = createContext({})
 
 export function LinearRegressionProvider ({ children }) {
@@ -134,7 +136,7 @@ export function LinearRegressionProvider ({ children }) {
 
   // @formatter:off
   /**
-   * @type CustomDatasetLocal_t
+   * @type {CustomDatasetLocal_t}
    */
   const DEFAULT_DATASET_LOCAL = {
     is_dataset_upload   : false,

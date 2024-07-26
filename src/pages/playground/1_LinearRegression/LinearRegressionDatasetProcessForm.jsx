@@ -69,11 +69,19 @@ export default function LinearRegressionDatasetProcessForm() {
       is_dataset_processed: true,
       dataframe_processed : dataframe_processed
     }))
+
+    setShowDetails({
+      show_dataframe_original : false,
+      show_dataframe_form     : false,
+      show_dataframe_processed: true,
+    })
   }
   
   useEffect(() => {
     const { dataframe_original } = datasetLocal
-    /** @type _Types.DataFrameColumnType_t[] */
+    /** 
+     * @type {_Types.DataFrameColumnType_t[]}
+     */
     const _listColumnNameType = dataframe_original.columns.map((_, index) => {
       return {
         column_name     : dataframe_original.columns[index],
@@ -94,7 +102,7 @@ export default function LinearRegressionDatasetProcessForm() {
     setColumnNameTarget(dataframe_original.columns[dataframe_original.columns.length - 1])
     setListColumnNameTypes(_listColumnNameType)
     setListColumnNameTransformations(_listTransformations)
-  }, [])
+  }, [datasetLocal])
 
   useEffect(() => {
     datasetLocal
@@ -136,7 +144,7 @@ export default function LinearRegressionDatasetProcessForm() {
     )
   }
 
-  console.debug('render LinearRegressionDatasetProcessForm')
+  if (VERBOSE) console.debug('render LinearRegressionDatasetProcessForm')
   return <>
     <Row>
       <Col>

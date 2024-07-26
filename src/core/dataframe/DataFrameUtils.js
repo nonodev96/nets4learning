@@ -94,7 +94,7 @@ export function TransformArrayToSeriesTensor (series) {
  * @return {EncoderMap_t}
  */
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
-  /** @type EncoderMap_t */
+  /** @type {EncoderMap_t} */
   const encoders_map = {}
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {

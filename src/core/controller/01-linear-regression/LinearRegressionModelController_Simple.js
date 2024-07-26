@@ -457,13 +457,13 @@ export default class LinearRegressionModelController_Simple {
     const feature = this.config.features.X_feature
     const y_target = this.config.features.y_target
 
-    /** @type Point_t[] */
+    /** @type {Point_t[]} */
     const originalPoints = inputData.map(d => ({
       x: d[this.config.features.X_feature],
       y: d[this.config.features.y_target],
     }))
 
-    /** @type Point_t[] */
+    /** @type {Point_t[]} */
     const predictedPoints = Array.from(xs).map((value, i) => ({
       x: value,
       y: preds[i]

@@ -4,20 +4,30 @@ import { Trans, useTranslation } from 'react-i18next'
 import { VERBOSE } from '@/CONSTANTS'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
+/**
+ * @typedef {object} PropsTabularClassificationPredictionForm
+ * @property {DatasetProcessed_t[]} datasets
+ * @property {number} datasetIndex
+ * @property {Array<Object>} [inputDataToPredict = []]
+ * @property {React.Dispatch<Array<Object>>} setInputDataToPredict
+ * @property {Array<Object>} inputVectorToPredict
+ * @property {React.Dispatch<Array<Object>>} setInputVectorToPredict
+ */
+
+/**
+ * 
+ * @param {PropsTabularClassificationPredictionForm} props 
+ * @returns 
+ */
 export default function TabularClassificationPredictionForm (props) {
   const {
-    /** @type DatasetProcessed_t[] */
     datasets,
     datasetIndex,
 
-    /** @type any[] */
     inputDataToPredict = [],
-    /** @type React.Dispatch<Array<Object>>*/
     setInputDataToPredict,
 
-    /** @type any[] */
     inputVectorToPredict,
-    /** @type React.Dispatch<Array<Object>>*/
     setInputVectorToPredict
   } = props
 

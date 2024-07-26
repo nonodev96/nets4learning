@@ -5,7 +5,6 @@ import { Trans, useTranslation } from 'react-i18next'
 import * as _Types from '@/core/types'
 import { DataFrameTransform, DataFrameDeepCopy } from '@core/dataframe/DataFrameUtils'
 import AlertHelper from '@/utils/alertHelper'
-import { DataFrame } from 'danfojs'
 import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
 import { VERBOSE } from '@/CONSTANTS'
 
@@ -36,10 +35,8 @@ export default function PreProcessDataFrame(props) {
 
   const {
     dataFrameOriginal,
-    setDataFrameOriginal,
     dataFrameProcessed,
     setDataFrameProcessed,
-    isDataFrameProcessed,
     setIsDataFrameProcessed
   } = props
 
@@ -63,7 +60,10 @@ export default function PreProcessDataFrame(props) {
   const [typeScaler, setTypeScaler] = useState('min-max-scaler')
   
   useEffect(() => {
-    /** @type _Types.DataFrameColumnType_t[] */
+    /** 
+     * FIX
+     * @type {_Types.DataFrameColumnType_t[]} 
+     */
     const _listColumnNameType = dataFrameOriginal.columns.map((_, index) => {
       return {
         column_name     : dataFrameOriginal.columns[index],
@@ -104,6 +104,7 @@ export default function PreProcessDataFrame(props) {
   }, [dataFrameOriginal, plotDataFrameOriginalID, t])
   
   useEffect(() => {
+    // TODO
 
   }, [dataFrameProcessed, plotDataFrameProcessedID, columnNameTarget, t])
 

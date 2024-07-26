@@ -1,4 +1,8 @@
 import * as _dfd from 'danfojs'
+import _I_MODEL_TABULAR_CLASSIFICATION from '@/pages/playground/0_TabularClassification/models/_model'
+import _I_MODEL_LINEAR_REGRESSION from '@/pages/playground/1_LinearRegression/models/_model'
+import _I_MODEL_OBJECT_DETECTION from '@/pages/playground/2_ObjectDetection/models/_model'
+import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassification/models/_model'
 
 /**
  * @typedef {Object} DataframePlotConfig_t
@@ -11,6 +15,17 @@ import * as _dfd from 'danfojs'
  * @typedef {Object} EncoderObject_t
  * @property {'label-encoder' | 'one-hot-encoder'} type
  * @property {_dfd.LabelEncoder | _dfd.OneHotEncoder} encoder
+ */
+
+/**
+ * @typedef {_dfd.DataFrame} DataFrame_t
+ */
+
+/**
+ * @typedef {_I_MODEL_LINEAR_REGRESSION} I_MODEL_LINEAR_REGRESSION_t
+ * @typedef {_I_MODEL_TABULAR_CLASSIFICATION} I_MODEL_TABULAR_CLASSIFICATION_t
+ * @typedef {_I_MODEL_OBJECT_DETECTION} I_MODEL_OBJECT_DETECTION_t
+ * @typedef {_I_MODEL_IMAGE_CLASSIFICATION} I_MODEL_IMAGE_CLASSIFICATION_t
  */
 
 /**

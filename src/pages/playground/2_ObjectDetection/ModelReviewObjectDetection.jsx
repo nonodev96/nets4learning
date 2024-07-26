@@ -30,24 +30,34 @@ export default function ModelReviewObjectDetection({ dataset }) {
 
   const [isLoading, setLoading] = useState(true)
   const [isCameraEnable, setCameraEnable] = useState(false)
-  const [cameraPermission, setCameraPermission] = useState(
-    /**@type {'denied' | 'granted' | 'prompt'} */ 'prompt'
-  )
+  /**
+   * @type {ReturnType<typeof useState<'denied' | 'granted' | 'prompt'>>}
+   */
+  const [cameraPermission, setCameraPermission] = useState('prompt')
   const [isProcessedImage, setIsProcessedImage] = useState(false)
 
   const [deviceId, setDeviceId] = useState('default')
   const [devices, setDevices] = useState([])
 
   const iModelRef = useRef(new I_MODEL_OBJECT_DETECTION(t))
-
-  const [ratioCamera, setRatioCamera] = useState(
-    /** @type Ratio_t */ 'ratio-16x9'
-  )
+  /**
+   * @type {ReturnType<typeof useState<Ratio_t>>}
+   */
+  const [ratioCamera, setRatioCamera] = useState('ratio-16x9' )
   const requestAnimation_ref = useRef()
-  const WebCamContainer_ref = useRef(/** @type HTMLDivElement */ null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLDivElement>>}
+   */
+  const WebCamContainer_ref = useRef(null)
   const WebCam_ref = useRef(null)
-  const canvas_ref = useRef(/** @type HTMLCanvasElement */ null)
-  const canvasImage_ref = useRef(/** @type HTMLCanvasElement */ null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const canvas_ref = useRef(null)
+  /**
+   * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
+   */
+  const canvasImage_ref = useRef(null)
 
   useEffect(() => {
     ReactGA.send({

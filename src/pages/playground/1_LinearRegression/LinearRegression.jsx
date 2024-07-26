@@ -13,8 +13,9 @@ import N4LLayerDesign from '@components/neural-network/N4LLayerDesign'
 import N4LJoyride from '@components/joyride/N4LJoyride'
 import DebugJSON from '@components/debug/DebugJSON'
 
-import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from './models'
+import { MAP_LR_CLASSES } from './models'
 
+import * as _Types from '@/core/types'
 // import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
 import LinearRegressionModelController_Multiple from '@core/controller/01-linear-regression/LinearRegressionModelController_Multiple'
 import LinearRegressionContext from '@context/LinearRegressionContext'
@@ -153,7 +154,7 @@ export default function LinearRegression(props) {
         console.debug('Linear regression upload csv')
       } else if (dataset in MAP_LR_CLASSES) {
         /**
-         * @type {I_MODEL_LINEAR_REGRESSION}
+         * @type {_Types.I_MODEL_LINEAR_REGRESSION_t}
          */
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()

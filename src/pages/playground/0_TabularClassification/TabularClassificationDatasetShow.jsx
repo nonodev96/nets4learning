@@ -15,6 +15,17 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
 
+/**
+ * @typedef {object} PropsTabularClassificationDatasetShow
+ * @property {Array<>} datasets
+ * @property {number} datasetIndex
+ * 
+ */
+/**
+ * 
+ * @param {PropsTabularClassificationDatasetShow} props 
+ * @returns 
+ */
 export default function TabularClassificationDatasetShow(props) {
   const { datasets, datasetIndex } = props
   const prefix = 'pages.playground.generator.dataset.'
@@ -36,7 +47,11 @@ export default function TabularClassificationDatasetShow(props) {
     }
   }
 
-  const updateDataFrameDescribe = (_datasetSelected) => {
+  /**
+   * 
+   * @param {*} _datasetSelected 
+   */
+  const _updateDataFrameDescribe = (_datasetSelected) => {
     const dataframe_original = _datasetSelected.dataframe_original
     const dataframe_processed = _datasetSelected.dataframe_processed
 

@@ -5,22 +5,32 @@ import * as dfd from 'danfojs'
 
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 
+import * as _Types from '@/core/types'
 import { UPLOAD } from '@/DATA_MODEL'
 import alertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
+/**
+ * @typedef {object} PropsTabularClassificationDataset
+ * @property {_Types.I_MODEL_TABULAR_CLASSIFICATION_t} iModelInstance
+ * @property {DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<Array<DatasetProcessed_t>>} setDatasets
+ * @property {React.Dispatch<number>} setDatasetIndex
+ */
+
+/**
+ * 
+ * @param {PropsTabularClassificationDataset} props 
+ * @returns 
+ */
 export default function TabularClassificationDataset (props) {
   const {
     dataset,
-    /** @type I_MODEL_TABULAR_CLASSIFICATION */
     iModelInstance,
-    /*** @type DatasetProcessed_t[] */
     datasets,
-    /** @type React.Dispatch<Array<DatasetProcessed_t>>*/
     setDatasets,
-    /** @type React.Dispatch<number> */
     setDatasetIndex,
   } = props
 
