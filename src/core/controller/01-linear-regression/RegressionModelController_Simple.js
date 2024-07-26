@@ -113,7 +113,7 @@ export default class RegressionModelController_Simple {
         y_target   : '',
         categorical: new Map()
       },
-      compile : {
+      compile: {
         id_optimizer: 'train-adam',
         id_loss     : 'losses-meanSquaredError',
         id_metrics  : ['metrics-meanSquaredError', 'metrics-meanAbsoluteError'],
@@ -122,7 +122,7 @@ export default class RegressionModelController_Simple {
           momentum    : 1,
         },
       },
-      fit     : {
+      fit: {
         batchSize     : 32,
         testSize      : 0.1,
         epochs        : 20,
@@ -130,12 +130,12 @@ export default class RegressionModelController_Simple {
         metrics       : ['loss', 'mse'],
         container_name: 'Training Performance',
       },
-      visor   : {
+      visor: {
         scatterplot     : true,
         linechart       : true,
         confusion_matrix: false,
       },
-      layers  : {
+      layers: {
         input : { units: 1, activation: 'linear', inputShape: [1] },
         layers: [
           { units: 10, activation: 'relu' },
@@ -245,11 +245,11 @@ export default class RegressionModelController_Simple {
       }))
       await tfvis.render.scatterplot(
         {
-          name: this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, {
+          name: this.t('pages.playground.generator.visor.scatterplot.__feature____target__', {
             feature: this.config.features.X_feature,
             target : this.config.features.y_target
           }),
-          tab : this.t('pages.playground.generator.visor.dataset'),
+          tab: this.t('pages.playground.generator.visor.dataset'),
         },
         {
           values: series_values
@@ -394,7 +394,7 @@ export default class RegressionModelController_Simple {
       shuffle        : this.config.fit.shuffle,
       validationSplit: this.config.fit.testSize,
       // verbose  : 1,
-      callbacks: tfvis.show.fitCallbacks(
+      callbacks      : tfvis.show.fitCallbacks(
         {
           name: this.t('pages.playground.generator.models.history-train'),
           tab : this.t('pages.playground.generator.models.train'),
@@ -450,8 +450,8 @@ export default class RegressionModelController_Simple {
       {
         values: [originalPoints, predictedPoints],
         series: [
-          this.t(`pages.playground.generator.visor.scatterplot.__feature____target__`, { feature, target: y_target }),
-          this.t(`pages.playground.generator.visor.predicted`),
+          this.t('pages.playground.generator.visor.scatterplot.__feature____target__', { feature, target: y_target }),
+          this.t('pages.playground.generator.visor.predicted'),
         ]
       },
       {

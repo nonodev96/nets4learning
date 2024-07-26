@@ -1,20 +1,20 @@
-import { fireEvent, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
+//import { fireEvent } from '@testing-library/react'
 import { renderWithRouter } from '@/__tests__/setup/utils'
 import App from '@/App'
 
 describe('LinearRegression', () => {
 
   test('App / DescriptionLinearRegression', async () => {
-    const { getByTestId, debug } = renderWithRouter(<App />, { path: ['playground', 'description-linear-regression'] })
+    const { getByTestId } = renderWithRouter(<App />, { path: ['playground', 'description-linear-regression'] })
     await waitFor(() => expect(getByTestId('Test-DescriptionLinearRegression')).toBeInTheDocument())
-    // debug()
   })
 
   test('renders GoTo ModelReviewLinearRegression Review SALARY', async () => {
     const { getByTestId, debug } = renderWithRouter(<App />, { path: ['home']})
     // Seleccionamos el botón de Regresión lineal
     await waitFor(() => expect(getByTestId('Test-InitialMenu')).toBeInTheDocument())
-    // debug()
+    debug()
     // const Button_InitialMenu_LinearRegression = getByTestId('Test-InitialMenu-LinearRegression')
     // await waitFor(() => fireEvent.click(Button_InitialMenu_LinearRegression))
 

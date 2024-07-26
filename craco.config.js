@@ -18,7 +18,9 @@ module.exports = {
       addPresets: true,
       addPlugins: true,
     },
-    configure: (jestConfig, { env, paths, resolve, rootDir }) => {
+    configure: (jestConfig, jestEnv) => {
+      // eslint-disable-next-line no-unused-vars
+      const { env, paths, resolve, rootDir } = jestEnv
       jestConfig.testTimeout = 15000
       jestConfig.testMatch = ['**/__tests__/**/*.test.[jt]s?(x)']
       jestConfig.transformIgnorePatterns = ['<rootDir>/node_modules/(?!@private-repo-name)/']
@@ -44,7 +46,9 @@ module.exports = {
       },
     },
   ],
-  devServer: (devServerConfig, { env, paths }) => {
+  devServer: (devServerConfig, devServerEnv ) => {
+    // eslint-disable-next-line no-unused-vars
+    const { env, paths } = devServerEnv
     devServerConfig.onBeforeSetupMiddleware = undefined
     devServerConfig.onAfterSetupMiddleware = undefined
     return devServerConfig

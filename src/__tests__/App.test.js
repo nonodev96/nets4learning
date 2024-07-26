@@ -9,7 +9,7 @@ describe('App', () => {
     const { getByText } = renderWithRouter(<App />)
     await waitFor(() => {})
     await waitForElementToBeRemoved(() => screen.getByText(/Loading\.\.\./i))
-    // expect(getByText(/Loading\.\.\./i)).toBeInTheDocument()
+    expect(getByText(/Loading\.\.\./i)).toBeInTheDocument()
   })
 
   test('renders TestPage', () => {

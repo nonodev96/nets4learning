@@ -1,5 +1,4 @@
 import * as dfd from 'danfojs'
-import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
 
 describe('DataFrame', () => {
   test('DataFrame Dates', () => {

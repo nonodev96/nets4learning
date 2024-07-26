@@ -4,6 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Card, Col, Form, Row } from 'react-bootstrap'
 import * as dfd from 'danfojs'
 
+import * as _Types from '@/core/types'
 import { VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
@@ -17,10 +18,10 @@ import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularCla
 
 /**
  * @typedef {object} PropsTabularClassificationDatasetShow
- * @property {Array<>} datasets
+ * @property {Array<DatasetProcessed_t>} datasets
  * @property {number} datasetIndex
- * 
  */
+
 /**
  * 
  * @param {PropsTabularClassificationDatasetShow} props 
@@ -49,7 +50,7 @@ export default function TabularClassificationDatasetShow(props) {
 
   /**
    * 
-   * @param {*} _datasetSelected 
+   * @param {DatasetProcessed_t} _datasetSelected 
    */
   const _updateDataFrameDescribe = (_datasetSelected) => {
     const dataframe_original = _datasetSelected.dataframe_original

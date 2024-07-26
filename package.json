@@ -17,7 +17,8 @@
     "build:simidat": "craco build --mode simidat",
     "build:simidat-beta": "craco build --mode simidat-beta",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@craco/craco": "^7.1.0",
