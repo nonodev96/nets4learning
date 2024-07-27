@@ -17,7 +17,7 @@ export default class I_MODEL_OBJECT_DETECTION {
 
   }
 
-  async PREDICTION(_img_or_video) {
+  async PREDICTION(_input_image_or_video, _config) {
     return []
   }
 
@@ -51,5 +51,17 @@ export default class I_MODEL_OBJECT_DETECTION {
     ctx.beginPath()
     ctx.arc(x, y, r, 1, 3 * Math.PI)
     ctx.fill()
+  }
+
+  _ImageData_To_Image(imageData) {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.width = imageData.width
+    canvas.height = imageData.height
+    ctx.putImageData(imageData, 0, 0)
+
+    const image = new Image()
+    image.src = canvas.toDataURL()
+    return image
   }
 }

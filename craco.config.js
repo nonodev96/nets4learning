@@ -7,6 +7,10 @@ module.exports = {
     configure: (webpackConfig) => {
       console.log(webpackConfig)
       webpackConfig.module.rules.push({
+        test: /face-api\.esm-nobundle\.js/, 
+        type: 'javascript/esm'
+      })
+      webpackConfig.module.rules.push({
         test: /face-api\.esm\.js/, 
         type: 'javascript/esm'
       })
@@ -19,6 +23,10 @@ module.exports = {
       addPlugins: true,
     },
     configure: (jestConfig, jestEnv) => {
+      // params:
+      // --watchAll=false Desactiva el modo interactivo
+      // --maxWorkers=1 Modo paralelo
+      // --silent Desactiva los warnings internos
       // eslint-disable-next-line no-unused-vars
       const { env, paths, resolve, rootDir } = jestEnv
       jestConfig.testTimeout = 15000

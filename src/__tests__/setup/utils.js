@@ -7,7 +7,7 @@ import App from '@/App'
  *
  * @param ui
  * @param {{basename?: string, path?: string[]}} route
- * @return {object}
+ * @return {ReturnType<typeof render<>>}
  */
 export const renderWithRouter = (ui, route = {}) => {
   if (route.basename === undefined) route.basename = '/nets4learning'

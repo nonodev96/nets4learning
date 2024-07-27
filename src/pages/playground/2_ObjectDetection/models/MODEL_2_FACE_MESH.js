@@ -64,6 +64,11 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
     </>
   }
 
+  /**
+   * @type {faceLandmarksDetection.FaceLandmarksDetector}
+   */
+  _modelDetector
+
   async ENABLE_MODEL () {
     const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
     const mediaPipeFaceMeshMediaPipeModelConfig = {
@@ -76,16 +81,21 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
     this._modelDetector = await faceLandmarksDetection.createDetector(model, mediaPipeFaceMeshMediaPipeModelConfig)
   }
 
-  async PREDICTION (img_or_video) {
+  async PREDICTION (input_image_or_video, config = { flipHorizontal: false }) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.estimateFaces(img_or_video, { flipHorizontal: true })
+    return await this._modelDetector.estimateFaces(input_image_or_video, { flipHorizontal: config.flipHorizontal })
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {faceLandmarksDetection.Face[]} faces 
+   */
   RENDER (ctx, faces) {
     for (const face of faces) {
       this._drawRect(ctx, face.box.xMin, face.box.yMin, face.box.width, face.box.height)
-      for (const element of face.keypoints) {
-        ctx.strokeRect(element.x, element.y, 3, 3)
+      for (const {x, y} of face.keypoints) {
+        ctx.strokeRect(x, y, 3, 3)
       }
     }
   }

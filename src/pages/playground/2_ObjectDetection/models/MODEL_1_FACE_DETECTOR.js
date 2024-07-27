@@ -77,9 +77,9 @@ export class MODEL_1_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
     this._modelDetector = await faceDetection.createDetector(model, mediaPipeFaceDetectorMediaPipeModelConfig)
   }
 
-  async PREDICTION (img_or_video) {
+  async PREDICTION (input_image_or_video, config = { flipHorizontal: false }) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.estimateFaces(img_or_video, { flipHorizontal: true })
+    return await this._modelDetector.estimateFaces(input_image_or_video, { flipHorizontal: config.flipHorizontal })
   }
 
   // https://stackoverflow.com/questions/22943186/html5-canvas-font-size-based-on-canvas-size

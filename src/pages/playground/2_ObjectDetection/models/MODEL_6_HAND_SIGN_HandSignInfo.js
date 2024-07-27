@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import N4LModal from '@components/modal/N4LModal'
 import { Container, Row, Col, Button, ButtonGroup, Tabs, Tab } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
@@ -6,17 +6,29 @@ import { ASL_bibtex, SSL_bibtex } from './MODEL_6_HAND_SIGN_INFO'
 
 export function HandSignInfo() {
   const [showModal, setShowModal] = useState(false)
+  const [localLanguage, setLocalLanguage] = useState(localStorage.getItem('language') ?? 'en')
+ 
+  useEffect(() => {
+    function checkUserData() {
+      const item = localStorage.getItem('language')
+      if (item) {
+        setLocalLanguage(item)
+      }
+    }
+    window.addEventListener('storage', checkUserData)
+    return () => {
+      window.removeEventListener('storage', checkUserData)
+    }
+  }, [])
+
+  
   const title = <>
     <h3><Trans i18nKey={'Info Hand sign'} /></h3>
   </>
 
   const body = <>
-    <Tabs
-      defaultActiveKey="asl"
-      id="tab-SL"
-      className="mb-3"
-    >
-      <Tab eventKey="asl" title={<Trans i18nKey={'ASL'} />}>
+    <Tabs defaultActiveKey='en' activeKey={localLanguage} onSelect={setLocalLanguage} id="tab-SL" className="mb-3">
+      <Tab eventKey="en" title={<Trans i18nKey={'ASL'} />}>
       <Container fluid={true}>
           <Row>
             <Col xs={12} md={8}>
@@ -30,7 +42,7 @@ export function HandSignInfo() {
           </Row>
         </Container>
       </Tab>
-      <Tab eventKey="ssl" title={<Trans i18nKey={'SSL'} />}>
+      <Tab eventKey="es" title={<Trans i18nKey={'SSL'} />}>
         <Container fluid={true}>
           <Row>
             <Col xs={12} md={8}>

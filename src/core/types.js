@@ -5,6 +5,13 @@ import _I_MODEL_OBJECT_DETECTION from '@/pages/playground/2_ObjectDetection/mode
 import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassification/models/_model'
 
 /**
+ * Extracts the resolved type of a promise-returning function.
+ * 
+ * @template T - A function type that returns a Promise.
+ * @typedef {T extends (...args: any) => Promise<infer R> ? R : any} AsyncReturnType
+ */
+
+/**
  * @typedef {Object} DataframePlotConfig_t
  * @property {ConfigLayoutPlots_t} LAYOUT
  * @property {ConfigTimeSeriesPlots_t} TIME_SERIES_PLOTS

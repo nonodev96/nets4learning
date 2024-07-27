@@ -84,9 +84,9 @@ export class MODEL_4_COCO_SSD extends I_MODEL_OBJECT_DETECTION {
     this._modelDetector = await coCoSsdDetection.load()
   }
 
-  async PREDICTION(img_or_video) {
+  async PREDICTION (input_image_or_video, _config = { }) {
     if (this._modelDetector === null) return []
-    return await this._modelDetector.detect(img_or_video)
+    return await this._modelDetector.detect(input_image_or_video)
   }
 
   RENDER(ctx, predictions) {

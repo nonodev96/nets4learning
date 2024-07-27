@@ -1,8 +1,9 @@
 // eslint-disable-next-line 
-import * as faceapi from '@vladmandic/face-api/dist/face-api.esm.js'
+import * as faceapi from '@vladmandic/face-api/dist/face-api.esm-nobundle.js'
 import { Trans } from 'react-i18next'
 import I_MODEL_OBJECT_DETECTION from './_model'
 import { MTCNN_bibtex, SSD_bibtex, MobileNets_bibtex, tiny_bibtex, faceRecognitionModel_bitex } from './MODEL_5_FACE_API_INFO'
+
 
 export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'FACE-API'
@@ -108,24 +109,12 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
     // await faceapi.nets.faceRecognitionNet.load(modelPath);
   }
 
-  _ImageData_To_Image(imagedata) {
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    canvas.width = imagedata.width
-    canvas.height = imagedata.height
-    ctx.putImageData(imagedata, 0, 0)
-
-    const image = new Image()
-    image.src = canvas.toDataURL()
-    return image
-  }
-
-  async PREDICTION(input) {
-    let _input = input
-    if (input.constructor === ImageData) {
-      _input = this._ImageData_To_Image(input)
+  async PREDICTION (input_image_or_video, _config = { }) {
+    let _input = input_image_or_video
+    if (input_image_or_video.constructor === ImageData) {
+      _input = this._ImageData_To_Image(input_image_or_video)
     }
-    const minScore = 0.2
+    const minScore = 0.4
     const maxResults = 10
     const optionsSSDMobileNet = new faceapi.SsdMobilenetv1Options({ minConfidence: minScore, maxResults })
     const predictions = await faceapi
@@ -141,21 +130,21 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
     const font = '32px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     const font2 = '24px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
 
-    predictions.forEach(({ detection, expressions, age }) => {
+    for (const { detection, expressions, age } of predictions)  {
       const { x, y, width, height } = detection.box
       this._drawRect(ctx, x, y, width, height)
 
-      let i = 1
+      let i = 0
       for (const [expresion, score] of Object.entries(expressions)) {
         const scoreParsed = Math.round(parseFloat(score) * 100)
         const txt_expression = `${expresion} ${scoreParsed}%`
-        this._drawTextBG(ctx, txt_expression, font2, x + width, y + (48 * i), 12)
+        this._drawTextBG(ctx, txt_expression, font2, x + width, y + (38 * i), 12)
         i++
       }
 
       const ageParsed = Math.round(parseFloat(age))
       const txt = `${ageParsed} years`
-      this._drawTextBG(ctx, txt, font, x, y - 32, 16)
-    })
+      this._drawTextBG(ctx, txt, font, x, y - 48, 16)
+    }
   }
 }

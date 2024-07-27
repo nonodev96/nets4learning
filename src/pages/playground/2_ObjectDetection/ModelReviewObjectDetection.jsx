@@ -8,6 +8,11 @@ import { useHistory } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import * as tfjs from '@tensorflow/tfjs'
 
+// import * as tfjs_core from '@tensorflow/tfjs-core'
+// import * as tfjs_cpu from '@tensorflow/tfjs-backend-cpu'
+// import * as tfjs_webgl from '@tensorflow/tfjs-backend-webgl'
+// import * as tfjs_wasm from '@tensorflow/tfjs-backend-wasm'
+
 import { VERBOSE } from '@/CONSTANTS'
 import { UPLOAD } from '@/DATA_MODEL'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
@@ -16,7 +21,9 @@ import { MAP_OD_CLASSES } from '@pages/playground/2_ObjectDetection/models'
 import alertHelper from '@utils/alertHelper'
 import I_MODEL_OBJECT_DETECTION from './models/_model'
 
-tfjs.setBackend('webgl').then(() => undefined)
+tfjs.setBackend('webgl').then(() => {
+  console.debug('setBackend: WebGL')
+})
 
 /**
  * @typedef {'ratio-9x16'|'ratio-2x3'|'ratio-3x4'|'ratio-1x1'|'ratio-4x3'|'ratio-3x2'|'ratio-16x9'} Ratio_t
@@ -49,6 +56,9 @@ export default function ModelReviewObjectDetection({ dataset }) {
    * @type {ReturnType<typeof useRef<HTMLDivElement>>}
    */
   const WebCamContainer_ref = useRef(null)
+  /**
+   * @type {ReturnType<typeof useRef<Webcam>>}
+   */
   const WebCam_ref = useRef(null)
   /**
    * @type {ReturnType<typeof useRef<HTMLCanvasElement>>}
@@ -216,7 +226,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
             then = now - (elapsed % fpsInterval)
             const _processWebcam = processWebcam()
             if (_processWebcam !== null)
-              await processData(_processWebcam.ctx, _processWebcam.video)
+              await processData(_processWebcam.ctx, _processWebcam.video, { flipHorizontal: true })
           }
         }
       }
@@ -262,8 +272,14 @@ export default function ModelReviewObjectDetection({ dataset }) {
     return { ctx, video }
   }
 
-  const processData = async (ctx, img_or_video) => {
-    const predictions = await iModelRef.current.PREDICTION(img_or_video)
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {HTMLImageElement|HTMLVideoElement|HTMLCanvasElement} input_img_or_video 
+   * @param {{ flipHorizontal: boolean }} config 
+   */
+  const processData = async (ctx, input_img_or_video, config) => {
+    const predictions = await iModelRef.current.PREDICTION(input_img_or_video, config)
     iModelRef.current.RENDER(ctx, predictions)
   }
 
@@ -305,7 +321,8 @@ export default function ModelReviewObjectDetection({ dataset }) {
   }
 
   const handleClick_getScreenshot = async () => {
-    const imageSrc = WebCam_ref.current.getScreenshot()
+    //const imageSrc = WebCam_ref.current.getScreenshot()
+    const imageSrc = WebCam_ref.current.getCanvas().toDataURL('image/png"')
     const img = new Image()
     img.src = imageSrc
     img.download = imageSrc
@@ -325,33 +342,37 @@ export default function ModelReviewObjectDetection({ dataset }) {
     }
     let files = _files
 
+    /**
+     * @type {HTMLCanvasElement}
+     */
     const originalImageCanvas = document.getElementById('0_originalImageCanvas')
     const originalImageCanvas_ctx = originalImageCanvas.getContext('2d')
 
     const processImageCanvas = document.getElementById('1_processImageCanvas')
-    const processImageCanvas_ctx = processImageCanvas.getContext('2d')
+    //const processImageCanvas_ctx = processImageCanvas.getContext('2d')
 
     const resultCanvas = canvasImage_ref.current
     const resultCanvas_ctx = resultCanvas.getContext('2d')
-    const container_w = document
-      .getElementById('container-canvas')
-      .getBoundingClientRect().width
+    //const { width, height } = document.getElementById('container-canvas').getBoundingClientRect()
 
-    let designer_width = container_w * 0.75
-    let designer_height = container_w * 0.5
+    //let designer_width = width
+    //let designer_height = height
+
+    // For bug fix, you need to reload the model :/
+    await iModelRef.current.ENABLE_MODEL()
 
     async function draw() {
-      const original_ratio = this.width / this.height
-      let designer_ratio = designer_width / designer_height
-
-      if (original_ratio > designer_ratio) {
-        designer_height = designer_width / original_ratio
-      } else {
-        designer_width = designer_height * original_ratio
-      }
-
-      this.width = designer_width
-      this.height = designer_height
+      //const original_ratio = this.width / this.height
+      //let designer_ratio = designer_width / designer_height
+      //if (original_ratio > designer_ratio) {
+      //  designer_height = designer_width / original_ratio
+      //} else {
+      //  designer_width = designer_height * original_ratio
+      //}
+      //this.width = designer_width
+      //this.height = designer_height
+      const width = this.width
+      const height = this.height
 
       originalImageCanvas.width = this.width
       originalImageCanvas.height = this.height
@@ -362,11 +383,11 @@ export default function ModelReviewObjectDetection({ dataset }) {
       resultCanvas.width = this.width
       resultCanvas.height = this.height
 
-      originalImageCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
-      const imgData = originalImageCanvas_ctx.getImageData(0, 0, originalImageCanvas.height, originalImageCanvas.width)
-      await processData(processImageCanvas_ctx, imgData)
-      resultCanvas_ctx.drawImage(this, 0, 0, originalImageCanvas.width, originalImageCanvas.height)
-      await processData(resultCanvas_ctx, imgData)
+      originalImageCanvas_ctx.drawImage(this, 0, 0, width, height)
+      const imgData = originalImageCanvas_ctx.getImageData(0, 0, width, width)
+      //await processData(processImageCanvas_ctx, imgData, { flipHorizontal: false })
+      resultCanvas_ctx.drawImage(this, 0, 0, width, height)
+      await processData(resultCanvas_ctx, imgData, { flipHorizontal: false })
       setIsProcessedImage(true)
     }
 
@@ -630,8 +651,9 @@ export default function ModelReviewObjectDetection({ dataset }) {
                           text={t('drag-and-drop.image')}
                           labelFiles={t('drag-and-drop.label-files-one')}
                           accept={{
-                            'image/png': ['.png'],
-                            'image/jpg': ['.jpg'],
+                            'image/png' : ['.png'],
+                            'image/jpg' : ['.jpg'],
+                            'image/webp': ['.webp'],
                           }}
                           function_DropAccepted={handleChangeFileUpload}
                         />
@@ -640,7 +662,12 @@ export default function ModelReviewObjectDetection({ dataset }) {
                     <hr />
                     <Row
                       className={'mt-3'}
-                      style={isProcessedImage ? {} : { display: 'none' }}
+                      style={{
+                        display : isProcessedImage ? '' : 'none',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        // paddingBottom: '56.25%'
+                      }}
                     >
                       <Col className={'col-12 d-flex justify-content-center'}>
                         <canvas
@@ -662,9 +689,12 @@ export default function ModelReviewObjectDetection({ dataset }) {
                         <canvas
                           id="resultCanvas"
                           ref={canvasImage_ref}
-                          className={''}
-                          width={250}
-                          height={250}
+                          className={'ratio ' + ratioCamera}
+                          style={{
+                            //position: 'absolute',
+                            width : '100%',
+                            height: '100%',
+                          }}
                         ></canvas>
                       </Col>
                     </Row>

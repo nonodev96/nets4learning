@@ -3,6 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { Redirect, Route } from 'react-router'
 import ReactGA from 'react-ga4'
+
 import Loading from './pages/Loading'
 import N4LNavbar from './components/header/N4LNavbar'
 import N4LFooter from './components/footer/N4LFooter'

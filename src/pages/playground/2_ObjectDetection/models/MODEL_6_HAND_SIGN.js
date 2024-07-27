@@ -7,6 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import I_MODEL_OBJECT_DETECTION from './_model'
 import { HandSignInfo } from './MODEL_6_HAND_SIGN_HandSignInfo'
 import { TFJS_handpose_bibtex } from './MODEL_6_HAND_SIGN_INFO'
+import * as _Types from '@/core/types'
 
 export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
   static KEY = 'HAND-SIGN'
@@ -14,8 +15,15 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
   i18n_TITLE = 'datasets-models.2-object-detection.hand-sign.title'
   URL = 'https://github.com/nonodev96/handsign-multilingual'
   mirror = true
-
+  /**
+   * @type {_Types.AsyncReturnType<handPoseDetection.createDetector>} i
+   */
+  _modelDetector = null
+  /**
+   * @type {fp.GestureEstimator}
+   */
   gestureEstimator = null
+
   FINGER_JOINTS = {
     thumb: [0, 1, 2, 3, 4],
     index: [0, 5, 6, 7, 8],
@@ -68,9 +76,15 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
   }
 
   async ENABLE_MODEL() {
-    const { HandSignsSSL } = handsignMultiligual
-    console.log({ HandSignsSSL })
-    const signos = Object.values(HandSignsSSL.signs)
+    const { HandSignsSSL, HandSignsASL } = handsignMultiligual
+    let HandSign = null
+    if (localStorage.getItem('language') === 'es') {
+      HandSign = HandSignsSSL
+    } else {
+      HandSign = HandSignsASL
+    }
+    console.log({ HandSign })
+    const signos = Object.values(HandSign.signs)
     this.gestureEstimator = new fp.GestureEstimator([
       // fp.Gestures.ThumbsUpGesture,
       // fp.Gestures.VictoryGesture,
@@ -88,47 +102,56 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
     // this._modelDetector = await handpose.load()
   }
 
-
-  async PREDICTION(input) {
-    const predictions_hands = await this._modelDetector.estimateHands(input, {flipHorizontal: true})
-    return predictions_hands
+  /**
+   * 
+   * @param {ImageData} input_image_or_video 
+   * @param {{flipHorizontal: boolean}} config 
+   * @returns {Promise<handPoseDetection.Hand[]>}
+   */
+  async PREDICTION (input_image_or_video, config = { flipHorizontal: false }) {
+    console.log('hello', { config })
+    return await this._modelDetector.estimateHands(input_image_or_video, { flipHorizontal: config.flipHorizontal })
   }
 
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {handPoseDetection.Hand[]} predictions 
+   */
   RENDER(ctx, predictions = []) {
     const font = '32px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     // const font2 = '12px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
-    predictions.forEach((hand) => {
-      const landmark = hand.keypoints.map(({ x, y, z }) => [x, y, z])
-      this._drawFinger(ctx, landmark)
-      const landmark3D = hand.keypoints3D.map(({ x, y, z }) => [x, y, z])
-      const estimatedGestures = this.gestureEstimator.estimate(landmark3D, 8.5)
+    for (const hand of predictions) {
+      //const landmark = hand.keypoints.map(({ x, y, z }) => [x, y, z])
+      this._drawFinger(ctx, hand.keypoints)
+      const keypoints3D = hand.keypoints3D.map(({ x, y, z }) => [x, y, z])
+      const estimatedGestures = this.gestureEstimator.estimate(keypoints3D, 7)
       const { x, y } = hand.keypoints[0]
       this._drawTextBG(ctx, `${estimatedGestures.gestures.map(({ name }) => name)}`, font, x, y, 16)
-    })
+    }
   }
   
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {handPoseDetection.Keypoint[]} landmarks 
+   */
   _drawFinger(ctx, landmarks) {
+    ctx.strokeStyle = 'gold'
+    ctx.lineWidth = 2
+
     for (let j = 0; j < Object.keys(this.FINGER_JOINTS).length; j++) {
       let finger = Object.keys(this.FINGER_JOINTS)[j]
       for (let k = 0; k < this.FINGER_JOINTS[finger].length - 1; k++) {
         const firstJointIndex = this.FINGER_JOINTS[finger][k]
         const secondJointIndex = this.FINGER_JOINTS[finger][k + 1]
-        //draw joints
         ctx.beginPath()
-        ctx.moveTo(
-          landmarks[firstJointIndex][0],
-          landmarks[firstJointIndex][1]
-        )
-        ctx.lineTo(
-          landmarks[secondJointIndex][0],
-          landmarks[secondJointIndex][1]
-        )
-        ctx.strokeStyle = 'gold'
-        ctx.lineWidth = 2
+        ctx.moveTo(landmarks[firstJointIndex].x, landmarks[firstJointIndex].y)
+        ctx.lineTo(landmarks[secondJointIndex].x, landmarks[secondJointIndex].y)
         ctx.stroke()
       }
     }
-    for (const [x, y] of landmarks) {
+    for (const {x, y} of landmarks) {
       this._drawPoint(ctx, x, y)
     }
   }

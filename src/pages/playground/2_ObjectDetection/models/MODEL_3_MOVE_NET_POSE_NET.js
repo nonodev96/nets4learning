@@ -76,11 +76,18 @@ export class MODEL_3_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
       </details>
     </>
   }
+  /**
+   * @type {poseDetection.PoseDetector} 
+   */
+  _modelDetector
 
   // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/src/movenet
   // https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/src/posenet
   async ENABLE_MODEL () {
     const model = poseDetection.SupportedModels.MoveNet
+    /**
+     * @type {poseDetection.MoveNetModelConfig}
+     */
     const modelConfig__MoveNet = {
       modelType      : poseDetection.movenet.modelType.MULTIPOSE_LIGHTNING,
       enableTracking : true,
@@ -91,18 +98,26 @@ export class MODEL_3_MOVE_NET_POSE_NET extends I_MODEL_OBJECT_DETECTION {
     this._modelDetector = await poseDetection.createDetector(model, modelConfig__MoveNet)
   }
 
-  async PREDICTION (img_or_video) {
+  async PREDICTION (input_image_or_video, config = { flipHorizontal: false }) {
     if (this._modelDetector === null) return []
+    /**
+     * @type {poseDetection.MoveNetEstimationConfig}
+     */
     const estimationConfig__MoveNet = {
+      flipHorizontal: config.flipHorizontal,
+      maxPoses      : 5
     }
+    /**
+     * @type {poseDetection.PoseNetEstimationConfig}
+    */
     // eslint-disable-next-line no-unused-vars
     const estimationConfig__PoseNet = {
       maxPoses      : 5,
-      flipHorizontal: true,
+      flipHorizontal: config.flipHorizontal,
       scoreThreshold: 0.3,
       nmsRadius     : 20
     }
-    return await this._modelDetector.estimatePoses(img_or_video, estimationConfig__MoveNet)
+    return await this._modelDetector.estimatePoses(input_image_or_video, estimationConfig__MoveNet)
   }
 
   RENDER (ctx, poses) {
