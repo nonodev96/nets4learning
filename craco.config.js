@@ -5,7 +5,6 @@ module.exports = {
   presets: 'es2017',
   webpack: {
     configure: (webpackConfig) => {
-      console.log(webpackConfig)
       webpackConfig.module.rules.push({
         test: /face-api\.esm-nobundle\.js/, 
         type: 'javascript/esm'
