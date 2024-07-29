@@ -25,10 +25,12 @@ export default function N4LLayerDesign({ layers, show = true, glossary_action = 
         <h3><Trans i18nKey={prefix + 'layer-design'} /></h3>
         <div className={'ms-3'}>
           <Form.Group controlId={'mode'}>
-            <Form.Select aria-label={t(prefix + 'neural_network_modes.title')}
-                         size={'sm'}
-                         defaultValue={NEURAL_NETWORK_MODES.COMPACT}
-                         onChange={(e) => handleChange_mode(e)}>
+            <Form.Select 
+              disabled={show === false}
+              aria-label={t(prefix + 'neural_network_modes.title')}
+              size={'sm'}
+              defaultValue={NEURAL_NETWORK_MODES.COMPACT}
+              onChange={(e) => handleChange_mode(e)}>
               <option value={NEURAL_NETWORK_MODES.COMPACT}>{t(prefix + 'neural_network_modes.compact')}</option>
               <option value={NEURAL_NETWORK_MODES.EXTEND}>{t(prefix + 'neural_network_modes.extend')}</option>
             </Form.Select>

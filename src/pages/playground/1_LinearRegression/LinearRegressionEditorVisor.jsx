@@ -4,20 +4,26 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
  * 
  * @deprecated
  */
-export default function LinearRegressionEditorVisor () {
+export default function LinearRegressionEditorVisor() {
 
   const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
 
-  const { params, setParams } = useContext(LinearRegressionContext)
+  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    setShow(datasetLocal.is_dataset_processed)
+  }, [setShow, datasetLocal.is_dataset_processed])
 
   useEffect(() => {
     const params_visor = []
@@ -47,38 +53,45 @@ export default function LinearRegressionEditorVisor () {
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
       </Card.Header>
       <Card.Body>
-        <Row>
-          <Col>
-            <Form.Check type={'checkbox'}
-                        label={t(prefix + 'rmse')}
-                        checked={params.params_visor.includes('rmse')}
-                        onChange={() => updateVisorOptions('rmse', !visorOptions.rmse)}
-                        id={'rmse'}
-            />
-            <Form.Check type={'checkbox'}
-
-                        label={t(prefix + 'val_rmse')}
-                        checked={params.params_visor.includes('val_rmse')}
-                        onChange={() => updateVisorOptions('val_rmse', !visorOptions.val_rmse)}
-                        id={'val_rmse'}
-            />
-          </Col>
-          <Col>
-            <Form.Check type={'checkbox'}
-                        label={t(prefix + 'mae')}
-                        checked={params.params_visor.includes('mae')}
-                        onChange={() => updateVisorOptions('mae', !visorOptions.mae)}
-                        id={'mae'}
-            />
-
-            <Form.Check type={'checkbox'}
-                        label={t(prefix + 'val_mae')}
-                        checked={params.params_visor.includes('val_mae')}
-                        onChange={() => updateVisorOptions('val_mae', !visorOptions.val_mae)}
-                        id={'val_mae'}
-            />
-          </Col>
-        </Row>
+        {!show && <>
+          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+        </>}
+        {show && <>
+          <Row>
+            <Col>
+              <Form.Check
+                type={'checkbox'}
+                label={t(prefix + 'rmse')}
+                checked={params.params_visor.includes('rmse')}
+                onChange={() => updateVisorOptions('rmse', !visorOptions.rmse)}
+                id={'rmse'}
+              />
+              <Form.Check
+                type={'checkbox'}
+                label={t(prefix + 'val_rmse')}
+                checked={params.params_visor.includes('val_rmse')}
+                onChange={() => updateVisorOptions('val_rmse', !visorOptions.val_rmse)}
+                id={'val_rmse'}
+              />
+            </Col>
+            <Col>
+              <Form.Check 
+                type={'checkbox'}
+                label={t(prefix + 'mae')}
+                checked={params.params_visor.includes('mae')}
+                onChange={() => updateVisorOptions('mae', !visorOptions.mae)}
+                id={'mae'}
+              />
+              <Form.Check 
+                type={'checkbox'}
+                label={t(prefix + 'val_mae')}
+                checked={params.params_visor.includes('val_mae')}
+                onChange={() => updateVisorOptions('val_mae', !visorOptions.val_mae)}
+                id={'val_mae'}
+              />
+            </Col>
+          </Row>
+        </>}
       </Card.Body>
     </Card>
   </>

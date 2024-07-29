@@ -1,10 +1,11 @@
 import styles from './LinearRegression.module.css'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card, Form } from 'react-bootstrap'
 import { Trans } from 'react-i18next'
 
 import { VERBOSE } from '@/CONSTANTS'
 import LinearRegressionContext from '@context/LinearRegressionContext'
+import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
  * 
@@ -13,11 +14,13 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 export default function LinearRegressionEditorFeaturesSelector () {
 
   const prefix = 'pages.playground.generator.editor-feature-selector.'
-  const {
-    datasetLocal,
-    params,
-    setParams
-  } = useContext(LinearRegressionContext)
+  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
+
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    setShow(datasetLocal.is_dataset_processed)
+  }, [setShow, datasetLocal.is_dataset_processed])
 
   const handleChange_FeatureSelector_Y = (e) => {
     setParams((prevState) => {
@@ -73,38 +76,45 @@ export default function LinearRegressionEditorFeaturesSelector () {
         */}
       </Card.Header>
       <Card.Body>
-        <Form.Group controlId={'feature-selector-X'}>
-          <Form.Label>
-            <Trans i18nKey={prefix + 'feature-selector-x'} />
-          </Form.Label>
-          <Form.Select aria-label={'feature selector x'}
-                       className={styles.border_blue}
-                       value={params.params_features.X_feature}
-                       onChange={(e) => handleChange_FeatureSelector_X(e)}>
-            <>
-              {datasetLocal.dataframe_processed.columns
-                .map((value, index) => {
-                  return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
-                })}
-            </>
-          </Form.Select>
-        </Form.Group>
-        <Form.Group controlId={'feature-selector-y'} className={'mt-3'}>
-          <Form.Label>
-            <Trans i18nKey={prefix + 'feature-selector-y'} />
-          </Form.Label>
-          <Form.Select aria-label={'feature selector y'}
-                       className={styles.border_green}
-                       value={params.params_features.Y_target}
-                       onChange={(e) => handleChange_FeatureSelector_Y(e)}>
-            <>
-              {datasetLocal.dataframe_processed.columns
-                .map((value, index) => {
-                  return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
-                })}
-            </>
-          </Form.Select>
-        </Form.Group>
+
+        {!show && <>
+          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+        </>}
+        {show && <>
+          <Form.Group controlId={'feature-selector-X'}>
+            <Form.Label>
+              <Trans i18nKey={prefix + 'feature-selector-x'} />
+            </Form.Label>
+            <Form.Select aria-label={'feature selector x'}
+                        className={styles.border_blue}
+                        value={params.params_features.X_feature}
+                        onChange={(e) => handleChange_FeatureSelector_X(e)}>
+              <>
+                {datasetLocal.dataframe_processed.columns
+                  .map((value, index) => {
+                    return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
+                  })}
+              </>
+            </Form.Select>
+          </Form.Group>
+          <Form.Group controlId={'feature-selector-y'} className={'mt-3'}>
+            <Form.Label>
+              <Trans i18nKey={prefix + 'feature-selector-y'} />
+            </Form.Label>
+            <Form.Select aria-label={'feature selector y'}
+                        className={styles.border_green}
+                        value={params.params_features.Y_target}
+                        onChange={(e) => handleChange_FeatureSelector_Y(e)}>
+              <>
+                {datasetLocal.dataframe_processed.columns
+                  .map((value, index) => {
+                    return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
+                  })}
+              </>
+            </Form.Select>
+          </Form.Group>
+        </>}
+
       </Card.Body>
     </Card>
   </>

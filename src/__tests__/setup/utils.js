@@ -15,9 +15,9 @@ export const renderWithRouter = (ui, route = {}) => {
   const slash = route.path.length > 0 ? '/' : ''
   const _address = route.basename + slash + route.path.join('/')
 
-  window.history.pushState({}, 'Test page', _address)
+  window.history.pushState({}, '', _address)
   return {
-    user: userEvent.setup(),
+    // user: userEvent.setup(),
     ...render(ui, { wrapper: BrowserRouter }),
   }
 }

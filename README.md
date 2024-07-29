@@ -48,6 +48,39 @@ npm install
 NODE_OPTIONS=--max-old-space-size=4096
 ```
 
+
+## Deploy with Traefik and Docker
+
+<details>
+<summary> `docker-compose.yml` </summary>
+
+```yml
+networks:
+ - proxy
+
+services:
+  # traefik: ...
+
+  n4l:
+    container_name: "${PROJECT_NAME}_n4l"
+    build:
+      context: ./Path/To/n4l-repository/
+      dockerfile: Dockerfile
+      args:
+        ARG_BUILD: simidat
+    networks:
+      - proxy
+    labels:
+      - "traefik.http.routers.${PROJECT_NAME}_n4l.entrypoints=https"
+      - "traefik.http.routers.${PROJECT_NAME}_n4l.rule=Host(`example.com`) && PathPrefix(`/n4l`)"
+      - "traefik.http.routers.${PROJECT_NAME}_n4l.tls=true"
+      - "traefik.http.routers.${PROJECT_NAME}_n4l.middlewares=secure-public@file,n4l-stripprefix"
+      - "traefik.http.middlewares.n4l-stripprefix.stripprefix.prefixes=/n4l"
+      - "traefik.http.services.n4l.loadbalancer.server.port=3000"
+```
+
+</details>
+
 ### Project environment variables
 
 Create the files `.env.development` or `.env.production`.
