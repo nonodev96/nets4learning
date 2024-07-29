@@ -17,7 +17,7 @@ export const renderWithRouter = (ui, route = {}) => {
 
   window.history.pushState({}, '', _address)
   return {
-    // user: userEvent.setup(),
+    user: userEvent.setup(),
     ...render(ui, { wrapper: BrowserRouter }),
   }
 }
