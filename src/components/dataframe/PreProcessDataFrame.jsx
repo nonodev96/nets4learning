@@ -147,7 +147,7 @@ export default function PreProcessDataFrame(props) {
     dataframe_processed
       .plot(plotDataFrameProcessedID)
       .table({ 
-        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, columnNameTarget),
+        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, listColumnNameTransformations, columnNameTarget),
         layout: {
           title: t('dataframe-processed'),
         },

@@ -12,11 +12,12 @@ import LinearRegressionDatasetProcessForm from './LinearRegressionDatasetProcess
 export default function LinearRegressionDatasetProcess() {
 
   const {
-    datasetLocal, 
+    datasets,
+    indexDatasetSelected 
   } = useContext(LinearRegressionContext)
 
   const showDatasetProcess = () => {
-    return datasetLocal.is_dataset_upload
+    return datasets[indexDatasetSelected].is_dataset_upload
   }
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetProcess')

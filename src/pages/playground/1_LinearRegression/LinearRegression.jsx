@@ -1,7 +1,7 @@
-import React, { lazy, Suspense, useContext, useEffect, useRef } from 'react'
+import React, { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { useHistory, Link } from 'react-router-dom'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans, useSSR, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 
@@ -22,6 +22,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
+import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import('./LinearRegressionManual'))
@@ -30,7 +31,7 @@ const LinearRegressionDatasetProcess = lazy(() => import('./LinearRegressionData
 const LinearRegressionDatasetShow = lazy(() => import('./LinearRegressionDatasetShow'))
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import('./LinearRegressionEditorLayers'))
-const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
+// const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
 const LinearRegressionEditorHyperparameters = lazy(() => import('./LinearRegressionEditorHyperparameters'))
 // const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
 // Models
@@ -61,6 +62,9 @@ export default function LinearRegression(props) {
     datasets,
     setDatasets,
 
+    indexDatasetSelected,
+    setIndexDatasetSelected,
+
     tmpModel,
     setTmpModel,
 
@@ -70,8 +74,8 @@ export default function LinearRegression(props) {
     isTraining,
     setIsTraining,
 
-    datasetLocal,
-    setDatasetLocal,
+    // datasetLocal,
+    // setDatasetLocal,
 
     setListModels,
 
@@ -82,14 +86,21 @@ export default function LinearRegression(props) {
     setIModelInstance,
   } = useContext(LinearRegressionContext)
 
+  const [ready, setReady] = useState(false)
   const refJoyrideButton = useRef({})
 
   const TrainModel = async () => {
     const modelController = new LinearRegressionModelController_Multiple(t)
-    modelController.setDataFrame(datasetLocal.dataframe_processed)
+    // modelController.setDataFrame(datasetLocal.dataframe_processed)
+    modelController.setDataFrame(datasets[indexDatasetSelected].dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
-      layers: [...params.params_layers.map(value => ({ activation: value.activation, units: value.units }))],
+      layers: [
+        ...params.params_layers.map((value) => ({ 
+          activation: value.activation, 
+          units     : value.units 
+        }))
+      ],
       output: { units: 1 },
     })
     modelController.setCompile({
@@ -105,7 +116,7 @@ export default function LinearRegression(props) {
       X_feature           : params.params_features.X_feature, // Simple
       Y_target            : params.params_features.Y_target,
       categorical_count   : new Map(), // K => column_name, V => number
-      categorical_features: new Set(),
+      categorical_features: new Set(), // V => column_name
     })
     modelController.setFit({
       testSize : params.params_training.test_size,
@@ -127,7 +138,7 @@ export default function LinearRegression(props) {
       params_layers  : [ ...params.params_layers ],
       params_training: { ...params.params_training },
       params_features: { ...params.params_features },
-      dataframe      : datasetLocal.dataframe_processed,
+      dataframe      : datasets[indexDatasetSelected].dataframe_processed,
     }])
   }
 
@@ -145,6 +156,10 @@ export default function LinearRegression(props) {
     setIsTraining(false)
   }
 
+  useEffect(()=>{
+    setReady(datasets.length > 0 && indexDatasetSelected > 0)
+  }, [setReady, datasets, indexDatasetSelected])
+
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[init]')
     ReactGA.send({ hitType: 'pageview', page: '/LinearRegression/' + dataset, title: dataset })
@@ -160,14 +175,17 @@ export default function LinearRegression(props) {
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
         setDatasets(_datasets)
-        setParams(prevState=>({
+        setIndexDatasetSelected(0)
+        // setDatasetLocal((prevState) => ({
+        //   ...prevState,
+        //   is_dataset_upload   : false,
+        //   is_dataset_processed: true,
+        //   // dataframe_original  : _datasets[0].dataframe_original,
+        //   // dataframe_processed : _datasets[0].dataframe_processed
+        // }))
+        setParams((prevState) => ({
           ...prevState,
           params_layers: _iModelInstance.DEFAULT_LAYERS()
-        }))
-        setDatasetLocal((prevState)=> ({
-          ...prevState,
-           is_dataset_upload   : false,
-           is_dataset_processed: true,
         }))
       } else {
         await alertHelper.alertError('Error in selection of model')
@@ -176,7 +194,7 @@ export default function LinearRegression(props) {
       }
     }
     init().then(() => undefined)
-  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setParams, setDatasetLocal, history])
+  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setIndexDatasetSelected, setParams, history])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -263,25 +281,32 @@ export default function LinearRegression(props) {
         <N4LDivider i18nKey={'hr.model'} />
         <Row>
           <Col className={'joyride-step-5-layer'}>
-            <N4LLayerDesign 
-              layers={params.params_layers}
-              show={datasetLocal.is_dataset_processed}
-              actions={[
-                <>
-                  <Trans i18nKey={'more-information-in-link'}
-                    components={{
-                      link1: <Link
-                        className={'text-info'}
-                        to={{
-                          pathname: '/glossary/',
-                          state   : {
-                            action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
-                          },
-                        }} />,
-                    }} />
-                </>
-              ]}
-            />
+            {!(ready) && <>
+              <WaitingPlaceholder title='waiting' />
+            </>} 
+            
+            {(ready) && <>
+              <N4LLayerDesign 
+                layers={params.params_layers}
+                // show={datasetLocal.is_dataset_processed}
+                show={datasets[indexDatasetSelected].is_dataset_processed}
+                actions={[
+                  <>
+                    <Trans i18nKey={'more-information-in-link'}
+                      components={{
+                        link1: <Link
+                          className={'text-info'}
+                          to={{
+                            pathname: '/glossary/',
+                            state   : {
+                              action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
+                            },
+                          }} />,
+                      }} />
+                  </>
+                ]}
+              />
+            </>}
           </Col>
         </Row>
 
@@ -293,10 +318,12 @@ export default function LinearRegression(props) {
                 <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               </div>
 
+              {/* 
               <hr />
               <div className={'joyride-step-6-editor-selector-features'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>
+              */}
 
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>
@@ -308,7 +335,8 @@ export default function LinearRegression(props) {
             <Col xl={12}>
               <div className="d-grid gap-2">
                 <Button type={'submit'}
-                  disabled={isTraining || !datasetLocal.is_dataset_processed}
+                  // disabled={isTraining || !datasetLocal.is_dataset_processed}
+                  disabled={!ready || isTraining || !datasets[indexDatasetSelected].is_dataset_processed}
                   size={'lg'}
                   variant="primary">
                   <Trans i18nKey={prefix + 'models.button-submit'} />
@@ -335,7 +363,7 @@ export default function LinearRegression(props) {
           </Col>
         </Row>
 
-        {process.env.REACT_APP_ENVIRONMENT === 'development' &&
+        {process.env.REACT_APP_ENVIRONMENT === 'development' && ready &&
           <Row className={'mt-3'}>
             <Col>
               <Card>
@@ -347,16 +375,16 @@ export default function LinearRegression(props) {
                     <Col>
                       <DebugJSON
                         obj={{
-                          is_dataset_upload   : datasetLocal.is_dataset_upload,
-                          is_dataset_processed: datasetLocal.is_dataset_processed,
-                          container_info      : datasetLocal.container_info,
+                          is_dataset_upload   : datasets[indexDatasetSelected].is_dataset_upload,
+                          is_dataset_processed: datasets[indexDatasetSelected].is_dataset_processed,
+                          container_info      : datasets[indexDatasetSelected].container_info,
                         }} />
                     </Col>
                     <Col>
                       <DebugJSON
                         obj={{
-                          datasets    : datasets.length,
-                          datasetLocal: Object.keys(datasetLocal)
+                          datasets            : datasets.length,
+                          indexDatasetSelected: indexDatasetSelected
                         }} />
                     </Col>
                   </Row>

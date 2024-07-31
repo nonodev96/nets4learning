@@ -54,28 +54,29 @@ export default function LinearRegressionPredictionExample () {
         <h3><Trans i18nKey={'pages.playground.1-linear-regression.prediction'} /></h3>
       </Card.Header>
       <Card.Body>
-        <Plot ref={refPlotJS}
-              data={[
-                {
-                  name  : dataPredictionExample.dataOriginal_label,
-                  x     : dataPredictionExample.dataOriginal_x,
-                  y     : dataPredictionExample.dataOriginal_y,
-                  type  : 'scatter',
-                  mode  : 'markers',
-                  marker: { color: 'blue' },
-                },
-                {
-                  name  : dataPredictionExample.dataPredicted_label,
-                  x     : dataPredictionExample.dataPredicted_x,
-                  y     : dataPredictionExample.dataPredicted_y,
-                  type  : 'scatter',
-                  mode  : 'lines+markers',
-                  marker: { color: 'red' },
-                },
-              ]}
-              useResizeHandler={true}
-              style={PLOTLY_CONFIG_DEFAULT.STYLES}
-              layout={{ title: '', ...PLOTLY_CONFIG_DEFAULT.LAYOUT }}
+        <Plot 
+          ref={refPlotJS}
+          data={[
+            {
+              name  : dataPredictionExample.dataOriginal_label,
+              x     : dataPredictionExample.dataOriginal_x,
+              y     : dataPredictionExample.dataOriginal_y,
+              type  : 'scatter',
+              mode  : 'markers',
+              marker: { color: 'blue' },
+            },
+            {
+              name  : dataPredictionExample.dataPredicted_label,
+              x     : dataPredictionExample.dataPredicted_x,
+              y     : dataPredictionExample.dataPredicted_y,
+              type  : 'scatter',
+              mode  : 'lines+markers',
+              marker: { color: 'red' },
+            },
+          ]}
+          useResizeHandler={true}
+          style={PLOTLY_CONFIG_DEFAULT.STYLES}
+          layout={{ title: '', ...PLOTLY_CONFIG_DEFAULT.LAYOUT }}
         />
       </Card.Body>
     </Card>

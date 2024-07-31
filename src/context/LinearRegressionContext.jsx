@@ -101,8 +101,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {CustomDataset_t[]} datasets
  * @property {React.Dispatch<React.SetStateAction<CustomDataset_t[]>>} setDatasets
  *
- * @property {CustomDatasetLocal_t} datasetLocal
- * @property {React.Dispatch<React.SetStateAction<CustomDatasetLocal_t>>} setDatasetLocal
+ * @property {number} indexDatasetSelected
+ * @property {React.Dispatch<React.SetStateAction<number>>} setIndexDatasetSelected
  *
  * @property {CustomParams_t} params
  * @property {React.Dispatch<React.SetStateAction<CustomParams_t>>} setParams
@@ -122,6 +122,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {I_MODEL_LINEAR_REGRESSION} iModelInstance
  * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModelInstance
  *
+ * @//property {CustomDatasetLocal_t} datasetLocal
+ * @//property {React.Dispatch<React.SetStateAction<CustomDatasetLocal_t>>} setDatasetLocal
  *
  */
 
@@ -135,16 +137,16 @@ export function LinearRegressionProvider ({ children }) {
   const { t } = useTranslation()
 
   // @formatter:off
-  /**
-   * @type {CustomDatasetLocal_t}
-   */
-  const DEFAULT_DATASET_LOCAL = {
-    is_dataset_upload   : false,
-    is_dataset_processed: false,
-    dataframe_original  : new DataFrame(),
-    dataframe_processed : new DataFrame(),
-    container_info      : '',
-  }
+  // /**
+  //  * @type {CustomDatasetLocal_t}
+  //  */
+  // const DEFAULT_DATASET_LOCAL = {
+  //   is_dataset_upload   : false,
+  //   is_dataset_processed: false,
+  //   dataframe_original  : new DataFrame(),
+  //   dataframe_processed : new DataFrame(),
+  //   container_info      : '',
+  // }
 
   // @formatter:off
   /** @type {CustomDataset_t[]} */
@@ -188,9 +190,13 @@ export function LinearRegressionProvider ({ children }) {
    */
   const [datasets, setDatasets] = useState(DEFAULT_DATASETS)
   /**
-   * @type {ReturnType<typeof useState<CustomDatasetLocal_t>>}
+   * @type {ReturnType<typeof useState<number>>}
    */
-  const [datasetLocal, setDatasetLocal] = useState(DEFAULT_DATASET_LOCAL)
+  const [indexDatasetSelected, setIndexDatasetSelected] = useState(-1)
+  // /**
+  //  * @type {ReturnType<typeof useState<CustomDatasetLocal_t>>}
+  //  */
+  // const [datasetLocal, setDatasetLocal] = useState(DEFAULT_DATASET_LOCAL)
   /**
    * @type {ReturnType<typeof useState<CustomParams_t>>}
    */
@@ -221,8 +227,11 @@ export function LinearRegressionProvider ({ children }) {
       datasets,
       setDatasets,
 
-      datasetLocal,
-      setDatasetLocal,
+      indexDatasetSelected, 
+      setIndexDatasetSelected,
+
+      // datasetLocal,
+      // setDatasetLocal,
 
       params,
       setParams,

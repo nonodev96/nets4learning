@@ -12,12 +12,20 @@ export default function LinearRegressionEditorLayers() {
 
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
-  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
+  const { 
+    // datasetLocal
+    datasets, 
+    indexDatasetSelected,
+
+    params,
+    setParams,
+   } = useContext(LinearRegressionContext)
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasetLocal.is_dataset_processed)
-  }, [setShow, datasetLocal.is_dataset_processed])
+    // setShow(datasetLocal.is_dataset_processed)
+    setShow(datasets[indexDatasetSelected].is_dataset_processed)
+  }, [setShow, datasets, indexDatasetSelected])
 
   const handlerClick_AddLayer_Start = async () => {
     if (params.params_layers.length <= 10) {

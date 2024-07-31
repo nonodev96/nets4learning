@@ -35,15 +35,16 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
         return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
-            <Form.Control type="number"
-                          step={1}
-                          size={'sm'}
-                          placeholder={'int32'}
-                          data-column_name={column_name}
-                          value={dynamicObject[column_name] ?? 0}
-                          className={getColor(column_name)}
-                          disabled={isDisabled(column_name)}
-                          onChange={handleChange_DynamicObject}
+            <Form.Control 
+              type="number"
+              step={1}
+              size={'sm'}
+              placeholder={'int32'}
+              data-column_name={column_name}
+              value={dynamicObject[column_name] ?? 0}
+              className={getColor(column_name)}
+              disabled={isDisabled(column_name)}
+              onChange={handleChange_DynamicObject}
             />
             <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
           </Form.Group>
@@ -53,15 +54,16 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
         return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
-            <Form.Control type="number"
-                          step={0.1}
-                          placeholder={'float32'}
-                          size={'sm'}
-                          data-column_name={column_name}
-                          value={dynamicObject[column_name] ?? 0.0}
-                          className={getColor(column_name)}
-                          disabled={isDisabled(column_name)}
-                          onChange={handleChange_DynamicObject}
+            <Form.Control
+              type="number"
+              step={0.1}
+              placeholder={'float32'}
+              size={'sm'}
+              data-column_name={column_name}
+              value={dynamicObject[column_name] ?? 0.0}
+              className={getColor(column_name)}
+              disabled={isDisabled(column_name)}
+              onChange={handleChange_DynamicObject}
             />
             <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
           </Form.Group>
@@ -73,13 +75,15 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
         return <Col className="mb-3" key={index}>
           <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
             <Form.Label><b>{column_name}</b></Form.Label>
-            <Form.Select aria-label={'linear-regression-dynamic-form-' + column_name}
-                         data-column_name={column_name}
-                         size={'sm'}
-                         value={dynamicObject[column_name] ?? ''}
-                         className={getColor(column_name)}
-                         disabled={isDisabled(column_name)}
-                         onChange={handleChange_DynamicObject}>
+            <Form.Select
+              aria-label={'linear-regression-dynamic-form-' + column_name}
+              data-column_name={column_name}
+              size={'sm'}
+              value={dynamicObject[column_name] ?? ''}
+              className={getColor(column_name)}
+              disabled={isDisabled(column_name)}
+              onChange={handleChange_DynamicObject}
+            >
               <>
                 {Object.entries(labelEncoder.$labels)
                   .map(([key, value], index_options) => {

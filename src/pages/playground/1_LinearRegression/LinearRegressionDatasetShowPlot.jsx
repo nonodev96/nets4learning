@@ -7,14 +7,17 @@ import DataFramePlot from '@components/dataframe/DataFramePlot'
 
 export default function LinearRegressionDatasetShowPlot() {
 
-  const { datasetLocal } = useContext(LinearRegressionContext)
+  const { 
+    datasets, 
+    indexDatasetSelected 
+  } = useContext(LinearRegressionContext)
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetShowPlot')
   return <>
     <DataFramePlotProvider>
       <DataFramePlot
-        is_dataset_processed={datasetLocal.is_dataset_processed}
-        dataframe={datasetLocal.dataframe_processed}
+        is_dataset_processed={datasets[indexDatasetSelected].is_dataset_processed}
+        dataframe={datasets[indexDatasetSelected].dataframe_processed}
       />
     </DataFramePlotProvider>
   </>

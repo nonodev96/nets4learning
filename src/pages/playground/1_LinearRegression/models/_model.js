@@ -52,7 +52,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
    * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
    *
    *
-   * @return {Array<CustomDatasetInfo_t>}
+   * @return {Promise<Array<CustomDatasetInfo_t>>}
    */
   async DATASETS () {
     return []

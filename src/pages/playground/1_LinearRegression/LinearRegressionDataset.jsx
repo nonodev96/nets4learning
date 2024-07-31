@@ -16,8 +16,11 @@ export default function LinearRegressionDataset({ dataset }) {
     datasets,
     setDatasets,
 
-    datasetLocal,
-    setDatasetLocal,
+    indexDatasetSelected,
+    setIndexDatasetSelected,
+
+    // datasetLocal,
+    // setDatasetLocal,
 
     iModelInstance,
   } = useContext(LinearRegressionContext)
@@ -44,15 +47,16 @@ export default function LinearRegressionDataset({ dataset }) {
         dataframe_processed : _dataframeProcessed,
         dataframe_transforms: []
       }]))
-      setDatasetLocal((prevState) => ({
-        ...prevState,
-        is_dataset_upload   : true,
-        is_dataset_processed: false,
-        dataframe_original  : _dataframeOriginal,
-        dataframe_processed : _dataframeProcessed,
-        container_info      : '',
-        csv                 : files[0].name,
-      }))
+      setIndexDatasetSelected(datasets.length)
+      // setDatasetLocal((prevState) => ({
+      //   ...prevState,
+      //   is_dataset_upload   : true,
+      //   is_dataset_processed: false,
+      //   dataframe_original  : _dataframeOriginal,
+      //   dataframe_processed : _dataframeProcessed,
+      //   container_info      : '',
+      //   csv                 : files[0].name,
+      // }))
       setShowDatasetInfo(true)
       await alertHelper.alertSuccess(t('alert.file-upload-success'))
     } catch (error) {
@@ -83,7 +87,7 @@ export default function LinearRegressionDataset({ dataset }) {
             return <li key={index}>{dataset.csv}</li>
           })}
         </ol>
-        <p><strong>{datasetLocal.csv}</strong></p>
+        <p><strong>{datasets[indexDatasetSelected].csv}</strong></p>
       </>}
     </>}
     {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}

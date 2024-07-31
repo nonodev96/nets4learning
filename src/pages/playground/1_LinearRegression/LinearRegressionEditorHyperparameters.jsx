@@ -19,13 +19,20 @@ export default function LinearRegressionEditorHyperparameters() {
 
   const prefix = 'pages.playground.generator.general-parameters.'
   const { t } = useTranslation()
-  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
+  const { 
+    datasets,
+    
+    indexDatasetSelected,
+
+    params, 
+    setParams, 
+  } = useContext(LinearRegressionContext)
 
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasetLocal.is_dataset_processed)
-  }, [setShow, datasetLocal.is_dataset_processed])
+    setShow(datasets[indexDatasetSelected].is_dataset_processed)
+  }, [setShow,datasets, indexDatasetSelected])
 
 
   // 1 - 100

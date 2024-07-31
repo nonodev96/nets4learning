@@ -15,15 +15,24 @@ export default function LinearRegressionEditorVisor() {
   const prefix = 'pages.playground.generator.visor.'
   const { t } = useTranslation()
 
-  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
+  const { 
+    // datasetLocal,
+    datasets,
+    
+    indexDatasetSelected,
+
+    params, 
+    setParams, 
+  } = useContext(LinearRegressionContext)
 
   const DEFAULT_VISOR_OPTIONS = { rmse: true, val_rmse: true, mae: true, val_mae: true }
   const [visorOptions, setVisorOptions] = useState(DEFAULT_VISOR_OPTIONS)
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasetLocal.is_dataset_processed)
-  }, [setShow, datasetLocal.is_dataset_processed])
+    // setShow(datasetLocal.is_dataset_processed)
+    setShow(datasets[indexDatasetSelected].is_dataset_processed)
+  }, [setShow, datasets, indexDatasetSelected])
 
   useEffect(() => {
     const params_visor = []

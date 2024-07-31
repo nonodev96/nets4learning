@@ -150,9 +150,10 @@ export default function LinearRegressionPrediction() {
               <Form.Select
                 aria-label={'model-selector'}
                 size={'sm'}
-                value={indexModel}
+                defaultValue={indexModel}
                 disabled={!showPrediction}
-                onChange={(e) => handleChange_Model(e)}>
+                onChange={(e) => handleChange_Model(e)}
+              >
                 <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
                 <>
                   {listModels
@@ -171,20 +172,23 @@ export default function LinearRegressionPrediction() {
               <Form.Select 
                 aria-label={'dataframe-selector-value'}
                 size={'sm'}
+                defaultValue={indexInstance}
                 disabled={!showPrediction}
-                value={indexInstance}
-                onChange={(e) => handleChange_Instance(e)}>
+                onChange={(e) => handleChange_Instance(e)}
+              >
                 <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-instances'} /></option>
-                {listModels.length > 0 && indexModel >= 0 && <>
-                  {Array(listModels[indexModel].dataframe.values.length)
-                    .fill(0)
-                    .map((value, index) => {
-                      return <option key={index} value={index}>
-                        <Trans i18nKey={prefix + 'instance.__index__'}
-                          values={{ index: index + 1 }} />
-                      </option>
-                    })}
-                </>}
+                <>
+                  {listModels.length > 0 && indexModel >= 0 && <>
+                    {Array(listModels[indexModel].dataframe.values.length)
+                      .fill(0)
+                      .map((value, index) => {
+                        return <option key={index} value={index}>
+                          <Trans i18nKey={prefix + 'instance.__index__'}
+                            values={{ index: index + 1 }} />
+                        </option>
+                      })}
+                  </>}
+                </>
               </Form.Select>
             </Form.Group>
           </div>

@@ -1,5 +1,5 @@
 import './N4LTablePagination.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pagination, Table } from 'react-bootstrap'
 
 export default function N4LTablePagination ({ data_head, data_body, rows_per_page = 10 }) {
@@ -14,6 +14,10 @@ export default function N4LTablePagination ({ data_head, data_body, rows_per_pag
   const handleClick_ChangePage = (pageNumber) => {
     setActivePage(pageNumber)
   }
+
+  useEffect(() => {
+    setActivePage(0)
+  }, [data_body])
 
   return <>
     <div className={'n4l-table-paginator-table-wrapper-scroll-x'}>

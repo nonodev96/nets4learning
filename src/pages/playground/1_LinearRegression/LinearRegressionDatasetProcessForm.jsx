@@ -4,7 +4,10 @@ import { Trans, useTranslation } from 'react-i18next'
 
 import * as _Types from '@/core/types'
 import { VERBOSE } from '@/CONSTANTS'
-import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
+import {
+  TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1,
+  F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2
+} from '@/CONSTANTS_DanfoJS'
 import LinearRegressionContext from '@/context/LinearRegressionContext'
 import { DataFrameTransform, DataFrameDeepCopy } from '@core/dataframe/DataFrameUtils'
 
@@ -27,8 +30,12 @@ export default function LinearRegressionDatasetProcessForm() {
   const plot_processed_ID = useId()
 
   const {
-    datasetLocal,
-    setDatasetLocal
+    datasets,
+    setDatasets,
+
+    indexDatasetSelected,
+    // datasetLocal,
+    // setDatasetLocal
   } = useContext(LinearRegressionContext)
 
   /**
@@ -51,24 +58,32 @@ export default function LinearRegressionDatasetProcessForm() {
 
   const handleSubmit_ProcessDataset = async (event) => {
     event.preventDefault()
-    
-    let dataframe_processed = DataFrameDeepCopy(datasetLocal.dataframe_original)
+
+    // let dataframe_processed = DataFrameDeepCopy(datasetLocal.dataframe_original)
+    let dataframe_processed = DataFrameDeepCopy(datasets[indexDatasetSelected].dataframe_original)
     dataframe_processed = DataFrameTransform(dataframe_processed, listColumnNameTransformations)
 
     dataframe_processed
       .plot(plot_processed_ID)
       .table({
-        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, columnNameTarget),
+        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, listColumnNameTransformations, columnNameTarget),
         layout: {
           title: t('dataframe-processed'),
         },
       })
 
-    setDatasetLocal((prevState)=>({
-      ...prevState,
-      is_dataset_processed: true,
-      dataframe_processed : dataframe_processed
-    }))
+    // setDatasetLocal((prevState) => ({
+    //   ...prevState,
+    //   is_dataset_processed: true,
+    //   dataframe_processed : dataframe_processed
+    // }))
+
+    setDatasets((prevState) => {
+      const _datasets = [...prevState] 
+      _datasets[indexDatasetSelected].is_dataset_processed = true
+      _datasets[indexDatasetSelected].dataframe_processed = dataframe_processed
+      return _datasets
+    })
 
     setShowDetails({
       show_dataframe_original : false,
@@ -76,9 +91,11 @@ export default function LinearRegressionDatasetProcessForm() {
       show_dataframe_processed: true,
     })
   }
-  
+
   useEffect(() => {
-    const { dataframe_original } = datasetLocal
+    console.log('datasetLocal')
+    // const dataframe_original = datasetLocal.dataframe_original
+    const dataframe_original = datasets[indexDatasetSelected].dataframe_original
     /** 
      * @type {_Types.DataFrameColumnType_t[]}
      */
@@ -92,8 +109,8 @@ export default function LinearRegressionDatasetProcessForm() {
     })
     const _listTransformations = _listColumnNameType.map(({ column_name, column_type, column_enable }) => {
       const _column_transform = (column_type === 'string') ? 'label-encoder' : column_type
-      return { 
-        column_name     : column_name, 
+      return {
+        column_name     : column_name,
         column_type     : column_type,
         column_enable   : column_enable,
         column_transform: _column_transform,
@@ -102,10 +119,11 @@ export default function LinearRegressionDatasetProcessForm() {
     setColumnNameTarget(dataframe_original.columns[dataframe_original.columns.length - 1])
     setListColumnNameTypes(_listColumnNameType)
     setListColumnNameTransformations(_listTransformations)
-  }, [datasetLocal])
+  }, [datasets, indexDatasetSelected])
 
   useEffect(() => {
-    datasetLocal
+    // datasetLocal
+    datasets[indexDatasetSelected]
       .dataframe_original
       .plot(plot_original_ID)
       .table({
@@ -114,12 +132,12 @@ export default function LinearRegressionDatasetProcessForm() {
           title: t('dataframe-original'),
         },
       })
-  }, [datasetLocal, t, plot_original_ID])
+  }, [/* datasetLocal */ datasets, indexDatasetSelected, t, plot_original_ID/*, plot_processed_ID, listColumnNameTransformations, columnNameTarget */])
 
   const handleChange_ColumnTransformEnable = (e, column_name) => {
-    setListColumnNameTransformations((prevState) =>{
+    setListColumnNameTransformations((prevState) => {
       return prevState.map((oldColumn) => {
-        if (oldColumn.column_name === column_name){
+        if (oldColumn.column_name === column_name) {
           return { ...oldColumn, column_enable: e.target.checked, column_transform: 'drop' }
         }
         return { ...oldColumn }
@@ -175,9 +193,9 @@ export default function LinearRegressionDatasetProcessForm() {
                 <Form.Group controlId="FormControl_Scaler">
                   <Form.Label><b><Trans i18nKey={'Scaler'} /></b> {typeScaler}</Form.Label>
                   <Form.Select aria-label="Selecciona un escalador"
-                               size="sm"
-                               defaultValue="min-max-scaler"
-                               onChange={(e) => setTypeScaler(e.target.value)}>
+                    size="sm"
+                    defaultValue="min-max-scaler"
+                    onChange={(e) => setTypeScaler(e.target.value)}>
                     <option value="min-max-scaler">MinMaxScaler</option>
                     <option value="standard-scaler">StandardScaler</option>
                   </Form.Select>
@@ -188,9 +206,9 @@ export default function LinearRegressionDatasetProcessForm() {
                 <Form.Group controlId="FormControl_ColumnNameTarget">
                   <Form.Label><b><Trans i18nKey={'Column target'} /></b> {columnNameTarget}</Form.Label>
                   <Form.Select aria-label={'Column target'}
-                               size={'sm'}
-                               value={columnNameTarget}
-                               onChange={handleChange_ColumnNameTarget}>
+                    size={'sm'}
+                    value={columnNameTarget}
+                    onChange={handleChange_ColumnNameTarget}>
                     {listColumnNameType.map(({ column_name, column_enable }, index) => {
                       return <option value={column_name} disabled={!column_enable} key={index}>{column_name}</option>
                     })}
@@ -199,15 +217,15 @@ export default function LinearRegressionDatasetProcessForm() {
                 </Form.Group>
               </Col>
             </Row>
-            
+
             <hr />
             <Row>
               <Col><h4><Trans i18nKey="preprocessing.transformations-columns" /></h4></Col>
             </Row>
             <Row xs={1} sm={2} md={3} lg={3} xl={4} xxl={4} className='g-2'>
-              {listColumnNameTransformations.map(({ column_enable, column_name, column_type, column_transform,  }, index) => {
+              {listColumnNameTransformations.map(({ column_enable, column_name, column_type, column_transform, }, index) => {
                 return <Col key={'listColumnNameTransformations_' + index} >
-                  <div className={'border border-1 rounded p-2 ' + (column_name === columnNameTarget ? 'border-info':'')} >
+                  <div className={'border border-1 rounded p-2 ' + (column_name === columnNameTarget ? 'border-info' : '')} >
                     <Form.Check
                       type="switch"
                       id={'column-switch-' + column_name}

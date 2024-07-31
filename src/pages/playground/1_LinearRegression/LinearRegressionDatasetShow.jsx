@@ -14,47 +14,57 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 export default function LinearRegressionDatasetShow() {
   const {
     datasets,
+    setDatasets,
 
-    datasetLocal,
-    setDatasetLocal,
+    indexDatasetSelected,
+    setIndexDatasetSelected,
+
+    // datasetLocal,
+    // setDatasetLocal,
   } = useContext(LinearRegressionContext)
 
-  const dataframe_original_plotID = useId()
-  const dataframe_processed_plotID = useId()
+  const dataframe_original_describe_plotID = useId()
+  const dataframe_processed_describe_plotID = useId()
 
   const { t } = useTranslation()
 
   // i18n
   const prefix = 'pages.playground.generator.dataset.'
-  const [indexDatasetSelected, setIndexDatasetSelected] = useState(0)
 
   const [dataframe, setDataframe] = useState(new DataFrame())
   const [showProcessed, setShowProcessed] = useState(false)
   const [showDataset, setShowDataset] = useState(false)
 
-
+  /**
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} e 
+   */
   const handleChange_DatasetProcessed = (e) => {
     const checked = e.target.checked
     setShowProcessed(!!checked)
-    if (!!checked) {
-      setDataframe(datasetLocal.dataframe_processed)
+    if (checked === true) {
+      setDataframe(datasets[indexDatasetSelected].dataframe_processed)
     } else {
-      setDataframe(datasetLocal.dataframe_original)
+      setDataframe(datasets[indexDatasetSelected].dataframe_original)
     }
   }
 
+  /**
+   * 
+   * @param {React.ChangeEvent<HTMLSelectElement>} e 
+   */
   const handleChange_DatasetSelected = async (e) => {
-    const { index } = JSON.parse(e.target.value)
+    const index = parseInt(e.target.value)
     setIndexDatasetSelected(index)
   }
 
   useEffect(() => {
-    const canRenderDataset = datasets && datasets.length > 0 && datasetLocal.is_dataset_processed
+    const canRenderDataset = datasets.length > 0 && datasets[indexDatasetSelected].is_dataset_processed
     setShowDataset(canRenderDataset)
     if (canRenderDataset){
-      setDataframe(datasetLocal.dataframe_original)
+      setDataframe(datasets[indexDatasetSelected].dataframe_original)
     }
-  }, [datasets, datasetLocal])
+  }, [datasets, indexDatasetSelected])
 
 
   const updateDataFrameLocal = useCallback(
@@ -68,39 +78,49 @@ export default function LinearRegressionDatasetShow() {
         console.debug('!showDataset')
         return
       }
-      const dataframe_original = _datasetSelected.dataframe_original
-      const dataframe_processed = _datasetSelected.dataframe_processed
       let container_info = ''
       if (!_datasetSelected.is_dataset_upload) {
         const promise_info = await fetch(_datasetSelected.path + _datasetSelected.info)
         container_info = await promise_info.text()
       }
+      const dataframe_original = _datasetSelected.dataframe_original
+      const dataframe_processed = _datasetSelected.dataframe_processed
 
       dataframe_original
         .describe()
         .T
-        .plot(dataframe_original_plotID)
+        .plot(dataframe_original_describe_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
       dataframe_processed
         .describe()
         .T
-        .plot(dataframe_processed_plotID)
+        .plot(dataframe_processed_describe_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
 
-      setDatasetLocal((prevState) => {
-        return {
-          ...prevState,
-          dataframe_original : dataframe_original,
-          dataframe_processed: dataframe_processed,
-          container_info     : container_info,
-        }
+      // setDatasetLocal((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     dataframe_original : dataframe_original,
+      //     dataframe_processed: dataframe_processed,
+      //     container_info     : container_info,
+      //   }
+      // })
+
+      setDatasets((prevState)=> {
+        const newDatasets = [...prevState]
+        newDatasets[indexDatasetSelected].dataframe_original = dataframe_original
+        newDatasets[indexDatasetSelected].dataframe_processed = dataframe_processed
+        newDatasets[indexDatasetSelected].info = container_info
+        
+        return 
       })
-    }, [setDatasetLocal, showDataset, dataframe_original_plotID, dataframe_processed_plotID])
+    }, [/* setDatasetLocal, */ setDatasets, indexDatasetSelected, showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasets, indexDatasetSelected, updateDataFrameLocal]')
     const init = async () => {
-      if (datasets?.length >= 1) {
+      if (datasets.length >= 1 && indexDatasetSelected >= 0) {
+        console.log({datasets, indexDatasetSelected, update: datasets[indexDatasetSelected]})
         await updateDataFrameLocal(datasets[indexDatasetSelected])
       }
     }
@@ -113,24 +133,29 @@ export default function LinearRegressionDatasetShow() {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
         <div className={'ms-2 d-flex align-items-center gap-4'}>
-          <Form.Check type="switch"
-                      id={'linear-regression-switch-dataframe-processed'}
-                      reverse={true}
-                      size={'sm'}
-                      name={'linear-regression-switch-dataframe-processed'}
-                      disabled={!showDataset}
-                      label={t('Processed')}
-                      value={showProcessed.toString()}
-                      onChange={(e) => handleChange_DatasetProcessed(e)}
+          <Form.Check 
+            type="switch"
+            id={'linear-regression-switch-dataframe-processed'}
+            reverse={true}
+            size={'sm'}
+            name={'linear-regression-switch-dataframe-processed'}
+            disabled={!showDataset}
+            label={t('Processed')}
+            value={showProcessed.toString()}
+            onChange={(e) => handleChange_DatasetProcessed(e)}
           />
           <Form.Group controlId={'dataset'}>
-            <Form.Select aria-label={'dataset'}
-                         size={'sm'}
-                         disabled={!showDataset}
-                         onChange={(e) => handleChange_DatasetSelected(e)}>
+            <Form.Select 
+              aria-label={'dataset'}
+              size={'sm'}
+              value={indexDatasetSelected}
+              disabled={!showDataset}
+              onChange={(e) => handleChange_DatasetSelected(e)}
+            >
+              <option value={-1} disabled={true}>Select Dataset</option>
               {datasets
-                .map(({ csv, info }, index) => {
-                  return <option key={'option_' + index} value={(JSON.stringify({ index, info }))}>{csv}</option>
+                .map(({ csv }, index) => {
+                  return <option key={'option_' + index} value={index}>{csv}</option>
                 })}
             </Form.Select>
           </Form.Group>
@@ -152,18 +177,18 @@ export default function LinearRegressionDatasetShow() {
           <hr />
           <Row>
             <Col>
-              {!datasetLocal.is_dataset_upload && <>
+              {!datasets[indexDatasetSelected].is_dataset_upload && <>
                 {/* TEXTO DEL DATASET car.info */}
                 <N4LSummary
                   title={<Trans i18nKey={prefix + 'details.info'} />}
-                  info={datasetLocal.container_info} />
+                  info={datasets[indexDatasetSelected].container_info} />
               </>}
               <N4LSummary
                 title={<Trans i18nKey={prefix + 'details.description-original'} />}
-                info={<div id={dataframe_original_plotID}></div>} />
+                info={<div id={dataframe_original_describe_plotID}></div>} />
               <N4LSummary
                 title={<Trans i18nKey={prefix + 'details.description-processed'} />}
-                info={<div id={dataframe_processed_plotID}></div>} />
+                info={<div id={dataframe_processed_describe_plotID}></div>} />
             </Col>
           </Row>
         </>}
