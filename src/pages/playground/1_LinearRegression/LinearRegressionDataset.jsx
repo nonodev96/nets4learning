@@ -16,9 +16,6 @@ export default function LinearRegressionDataset({ dataset }) {
     datasets,
     setDatasets,
 
-    indexDatasetSelected,
-    setIndexDatasetSelected,
-
     // datasetLocal,
     // setDatasetLocal,
 
@@ -37,17 +34,23 @@ export default function LinearRegressionDataset({ dataset }) {
       const _dataframeOriginal = await dfd.readCSV(file_csv)
       const _dataframeProcessed = await dfd.readCSV(file_csv)
       
-      setDatasets((prevState) => ([...prevState, {
-        is_dataset_upload   : true,
-        is_dataset_processed: false,
-        csv                 : files[0].name,
-        info                : '',
-        path                : '',
-        dataframe_original  : _dataframeOriginal,
-        dataframe_processed : _dataframeProcessed,
-        dataframe_transforms: []
-      }]))
-      setIndexDatasetSelected(datasets.length)
+      setDatasets((prevState) => {
+        return {
+          data: [...prevState.data, {
+            is_dataset_upload   : true,
+            is_dataset_processed: false,
+            csv                 : files[0].name,
+            path                : '',
+            info                : '',
+            container_info      : '',
+            dataframe_original  : _dataframeOriginal,
+            dataframe_processed : _dataframeProcessed,
+            dataframe_transforms: []
+          }],
+          index: datasets.data.length
+        }
+      })
+      // setIndexDatasetSelected(datasets.length)
       // setDatasetLocal((prevState) => ({
       //   ...prevState,
       //   is_dataset_upload   : true,
@@ -83,11 +86,11 @@ export default function LinearRegressionDataset({ dataset }) {
       </>}
       {showDatasetInfo && <>
         <ol>
-          {datasets.map((dataset, index) => {
+          {datasets.data.map((dataset, index) => {
             return <li key={index}>{dataset.csv}</li>
           })}
         </ol>
-        <p><strong>{datasets[indexDatasetSelected].csv}</strong></p>
+        <p><strong>{datasets.data[datasets.index].csv}</strong></p>
       </>}
     </>}
     {dataset !== UPLOAD && <>{iModelInstance.DESCRIPTION()}</>}

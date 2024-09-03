@@ -98,8 +98,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
 /**
  * @typedef  CustomLinearRegressionContext_t
  *
- * @property {CustomDataset_t[]} datasets
- * @property {React.Dispatch<React.SetStateAction<CustomDataset_t[]>>} setDatasets
+ * @property {{data: CustomDataset_t[], index: number}} datasets
+ * @property {React.Dispatch<React.SetStateAction<{data: CustomDataset_t[], index: number}>>} setDatasets
  *
  * @property {number} indexDatasetSelected
  * @property {React.Dispatch<React.SetStateAction<number>>} setIndexDatasetSelected
@@ -188,11 +188,14 @@ export function LinearRegressionProvider ({ children }) {
   /**
    * @type {ReturnType<typeof useState<Array<CustomDataset_t>>>}
    */
-  const [datasets, setDatasets] = useState(DEFAULT_DATASETS)
-  /**
-   * @type {ReturnType<typeof useState<number>>}
-   */
-  const [indexDatasetSelected, setIndexDatasetSelected] = useState(-1)
+  const [datasets, setDatasets] = useState({
+    data : DEFAULT_DATASETS, 
+    index: -1
+  })
+  // /**
+  //  * @type {ReturnType<typeof useState<number>>}
+  //  */
+  // const [indexDatasetSelected, setIndexDatasetSelected] = useState(-1)
   // /**
   //  * @type {ReturnType<typeof useState<CustomDatasetLocal_t>>}
   //  */
@@ -227,8 +230,8 @@ export function LinearRegressionProvider ({ children }) {
       datasets,
       setDatasets,
 
-      indexDatasetSelected, 
-      setIndexDatasetSelected,
+      // indexDatasetSelected, 
+      // setIndexDatasetSelected,
 
       // datasetLocal,
       // setDatasetLocal,

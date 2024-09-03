@@ -62,9 +62,6 @@ export default function LinearRegression(props) {
     datasets,
     setDatasets,
 
-    indexDatasetSelected,
-    setIndexDatasetSelected,
-
     tmpModel,
     setTmpModel,
 
@@ -92,7 +89,7 @@ export default function LinearRegression(props) {
   const TrainModel = async () => {
     const modelController = new LinearRegressionModelController_Multiple(t)
     // modelController.setDataFrame(datasetLocal.dataframe_processed)
-    modelController.setDataFrame(datasets[indexDatasetSelected].dataframe_processed)
+    modelController.setDataFrame(datasets.data[datasets.index].dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
       layers: [
@@ -138,7 +135,7 @@ export default function LinearRegression(props) {
       params_layers  : [ ...params.params_layers ],
       params_training: { ...params.params_training },
       params_features: { ...params.params_features },
-      dataframe      : datasets[indexDatasetSelected].dataframe_processed,
+      dataframe      : datasets.data[datasets.index].dataframe_processed,
     }])
   }
 
@@ -157,8 +154,8 @@ export default function LinearRegression(props) {
   }
 
   useEffect(()=>{
-    setReady(datasets.length > 0 && indexDatasetSelected > 0)
-  }, [setReady, datasets, indexDatasetSelected])
+    setReady(datasets && datasets.data.length > 0 && datasets.index >= 0)
+  }, [setReady, datasets])
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[init]')
@@ -174,8 +171,14 @@ export default function LinearRegression(props) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
-        setDatasets(_datasets)
-        setIndexDatasetSelected(0)
+        console.log({____: _datasets})
+        setDatasets(() => {
+          return {
+            data : _datasets,
+            index: 0
+          }
+        })
+
         // setDatasetLocal((prevState) => ({
         //   ...prevState,
         //   is_dataset_upload   : false,
@@ -194,7 +197,7 @@ export default function LinearRegression(props) {
       }
     }
     init().then(() => undefined)
-  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setIndexDatasetSelected, setParams, history])
+  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setParams, history])
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -289,7 +292,7 @@ export default function LinearRegression(props) {
               <N4LLayerDesign 
                 layers={params.params_layers}
                 // show={datasetLocal.is_dataset_processed}
-                show={datasets[indexDatasetSelected].is_dataset_processed}
+                show={datasets.data[datasets.index].is_dataset_processed}
                 actions={[
                   <>
                     <Trans i18nKey={'more-information-in-link'}
@@ -336,7 +339,7 @@ export default function LinearRegression(props) {
               <div className="d-grid gap-2">
                 <Button type={'submit'}
                   // disabled={isTraining || !datasetLocal.is_dataset_processed}
-                  disabled={!ready || isTraining || !datasets[indexDatasetSelected].is_dataset_processed}
+                  disabled={!ready || isTraining || !datasets.data[datasets.index].is_dataset_processed}
                   size={'lg'}
                   variant="primary">
                   <Trans i18nKey={prefix + 'models.button-submit'} />
@@ -375,16 +378,16 @@ export default function LinearRegression(props) {
                     <Col>
                       <DebugJSON
                         obj={{
-                          is_dataset_upload   : datasets[indexDatasetSelected].is_dataset_upload,
-                          is_dataset_processed: datasets[indexDatasetSelected].is_dataset_processed,
-                          container_info      : datasets[indexDatasetSelected].container_info,
+                          is_dataset_upload   : datasets.data[datasets.index].is_dataset_upload,
+                          is_dataset_processed: datasets.data[datasets.index].is_dataset_processed,
+                          container_info      : datasets.data[datasets.index].container_info,
                         }} />
                     </Col>
                     <Col>
                       <DebugJSON
                         obj={{
-                          datasets            : datasets.length,
-                          indexDatasetSelected: indexDatasetSelected
+                          datasets      : datasets.data.length,
+                          datasets_index: datasets.index
                         }} />
                     </Col>
                   </Row>

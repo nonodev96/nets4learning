@@ -16,8 +16,8 @@ export default function LinearRegressionDatasetShow() {
     datasets,
     setDatasets,
 
-    indexDatasetSelected,
-    setIndexDatasetSelected,
+    // indexDatasetSelected,
+    // setIndexDatasetSelected,
 
     // datasetLocal,
     // setDatasetLocal,
@@ -43,9 +43,9 @@ export default function LinearRegressionDatasetShow() {
     const checked = e.target.checked
     setShowProcessed(!!checked)
     if (checked === true) {
-      setDataframe(datasets[indexDatasetSelected].dataframe_processed)
+      setDataframe(datasets.data[datasets.index].dataframe_processed)
     } else {
-      setDataframe(datasets[indexDatasetSelected].dataframe_original)
+      setDataframe(datasets.data[datasets.index].dataframe_original)
     }
   }
 
@@ -55,25 +55,25 @@ export default function LinearRegressionDatasetShow() {
    */
   const handleChange_DatasetSelected = async (e) => {
     const index = parseInt(e.target.value)
-    setIndexDatasetSelected(index)
+    setDatasets((prevState) => {
+      return {
+        data : prevState.data,
+        index: index
+      }
+    })
   }
 
   useEffect(() => {
-    const canRenderDataset = datasets.length > 0 && datasets[indexDatasetSelected].is_dataset_processed
+    const canRenderDataset = datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed
     setShowDataset(canRenderDataset)
     if (canRenderDataset){
-      setDataframe(datasets[indexDatasetSelected].dataframe_original)
+      setDataframe(datasets.data[datasets.index].dataframe_original)
     }
-  }, [datasets, indexDatasetSelected])
+  }, [datasets, datasets.index])
 
 
-  const updateDataFrameLocal = useCallback(
-    /**
-     *
-     * @param {import('@context/LinearRegressionContext').CustomDataset_t} _datasetSelected
-     * @return {Promise<void>}
-     */
-    async (_datasetSelected) => {
+  const updateDataFrameLocal = useCallback(async (_datasetSelected) => {
+      console.log({_datasetSelected})
       if (!showDataset) {
         console.debug('!showDataset')
         return
@@ -106,26 +106,33 @@ export default function LinearRegressionDatasetShow() {
       //   }
       // })
 
-      setDatasets((prevState)=> {
-        const newDatasets = [...prevState]
-        newDatasets[indexDatasetSelected].dataframe_original = dataframe_original
-        newDatasets[indexDatasetSelected].dataframe_processed = dataframe_processed
-        newDatasets[indexDatasetSelected].info = container_info
-        
-        return 
-      })
-    }, [/* setDatasetLocal, */ setDatasets, indexDatasetSelected, showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
+      updateDatasetsState(dataframe_original, dataframe_processed, container_info)
+  }, [/* setDatasetLocal, */ setDatasets, datasets.index, showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
 
+  const updateDatasetsState = (dataframe_original, dataframe_processed, container_info) => {
+    setDatasets((prevState) => {
+      const newDatasets_data = [...prevState.data]
+      newDatasets_data[prevState.index].dataframe_original = dataframe_original
+      newDatasets_data[prevState.index].dataframe_processed = dataframe_processed
+      newDatasets_data[prevState.index].container_info = container_info
+  
+      return {
+        ...prevState,
+        data: newDatasets_data,
+      }
+    })
+  }
+  
   useEffect(() => {
-    if (VERBOSE) console.debug('useEffect [datasets, indexDatasetSelected, updateDataFrameLocal]')
+    if (VERBOSE) console.debug('useEffect [datasets, updateDataFrameLocal]')
     const init = async () => {
-      if (datasets.length >= 1 && indexDatasetSelected >= 0) {
-        console.log({datasets, indexDatasetSelected, update: datasets[indexDatasetSelected]})
-        await updateDataFrameLocal(datasets[indexDatasetSelected])
+      if (datasets.data.length >= 1 && datasets.index >= 0) {
+        console.log({data: datasets.data, index: datasets.index, update: datasets.data[datasets.index]})
+        await updateDataFrameLocal(datasets.data[datasets.index])
       }
     }
     init().then(() => undefined)
-  }, [datasets, indexDatasetSelected, updateDataFrameLocal])
+  }, [datasets, updateDataFrameLocal])
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetShow')
   return <>
@@ -148,12 +155,12 @@ export default function LinearRegressionDatasetShow() {
             <Form.Select 
               aria-label={'dataset'}
               size={'sm'}
-              value={indexDatasetSelected}
+              value={datasets.index}
               disabled={!showDataset}
               onChange={(e) => handleChange_DatasetSelected(e)}
             >
               <option value={-1} disabled={true}>Select Dataset</option>
-              {datasets
+              {datasets.data
                 .map(({ csv }, index) => {
                   return <option key={'option_' + index} value={index}>{csv}</option>
                 })}
@@ -177,11 +184,11 @@ export default function LinearRegressionDatasetShow() {
           <hr />
           <Row>
             <Col>
-              {!datasets[indexDatasetSelected].is_dataset_upload && <>
+              {datasets.data.length >= 1 && datasets.index >= 0 && !datasets.data[datasets.index].is_dataset_upload && <>
                 {/* TEXTO DEL DATASET car.info */}
                 <N4LSummary
                   title={<Trans i18nKey={prefix + 'details.info'} />}
-                  info={datasets[indexDatasetSelected].container_info} />
+                  info={datasets.data[datasets.index].container_info} />
               </>}
               <N4LSummary
                 title={<Trans i18nKey={prefix + 'details.description-original'} />}

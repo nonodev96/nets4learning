@@ -13,11 +13,10 @@ export default function LinearRegressionDatasetProcess() {
 
   const {
     datasets,
-    indexDatasetSelected 
   } = useContext(LinearRegressionContext)
 
   const showDatasetProcess = () => {
-    return datasets[indexDatasetSelected].is_dataset_upload
+    return datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_upload
   }
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetProcess')

@@ -18,8 +18,6 @@ export default function LinearRegressionEditorVisor() {
   const { 
     // datasetLocal,
     datasets,
-    
-    indexDatasetSelected,
 
     params, 
     setParams, 
@@ -31,8 +29,8 @@ export default function LinearRegressionEditorVisor() {
 
   useEffect(() => {
     // setShow(datasetLocal.is_dataset_processed)
-    setShow(datasets[indexDatasetSelected].is_dataset_processed)
-  }, [setShow, datasets, indexDatasetSelected])
+    setShow(datasets.data[datasets.index].is_dataset_processed)
+  }, [setShow, datasets])
 
   useEffect(() => {
     const params_visor = []

@@ -33,7 +33,6 @@ export default function LinearRegressionDatasetProcessForm() {
     datasets,
     setDatasets,
 
-    indexDatasetSelected,
     // datasetLocal,
     // setDatasetLocal
   } = useContext(LinearRegressionContext)
@@ -60,7 +59,7 @@ export default function LinearRegressionDatasetProcessForm() {
     event.preventDefault()
 
     // let dataframe_processed = DataFrameDeepCopy(datasetLocal.dataframe_original)
-    let dataframe_processed = DataFrameDeepCopy(datasets[indexDatasetSelected].dataframe_original)
+    let dataframe_processed = DataFrameDeepCopy(datasets.data[datasets.index].dataframe_original)
     dataframe_processed = DataFrameTransform(dataframe_processed, listColumnNameTransformations)
 
     dataframe_processed
@@ -79,10 +78,10 @@ export default function LinearRegressionDatasetProcessForm() {
     // }))
 
     setDatasets((prevState) => {
-      const _datasets = [...prevState] 
-      _datasets[indexDatasetSelected].is_dataset_processed = true
-      _datasets[indexDatasetSelected].dataframe_processed = dataframe_processed
-      return _datasets
+      const _datasets_data = [...prevState.data] 
+      _datasets_data[datasets.index].is_dataset_processed = true
+      _datasets_data[datasets.index].dataframe_processed = dataframe_processed
+      return _datasets_data
     })
 
     setShowDetails({
@@ -95,7 +94,7 @@ export default function LinearRegressionDatasetProcessForm() {
   useEffect(() => {
     console.log('datasetLocal')
     // const dataframe_original = datasetLocal.dataframe_original
-    const dataframe_original = datasets[indexDatasetSelected].dataframe_original
+    const dataframe_original = datasets.data[datasets.index].dataframe_original
     /** 
      * @type {_Types.DataFrameColumnType_t[]}
      */
@@ -119,11 +118,11 @@ export default function LinearRegressionDatasetProcessForm() {
     setColumnNameTarget(dataframe_original.columns[dataframe_original.columns.length - 1])
     setListColumnNameTypes(_listColumnNameType)
     setListColumnNameTransformations(_listTransformations)
-  }, [datasets, indexDatasetSelected])
+  }, [datasets])
 
   useEffect(() => {
     // datasetLocal
-    datasets[indexDatasetSelected]
+    datasets.data[datasets.index]
       .dataframe_original
       .plot(plot_original_ID)
       .table({
@@ -132,7 +131,7 @@ export default function LinearRegressionDatasetProcessForm() {
           title: t('dataframe-original'),
         },
       })
-  }, [/* datasetLocal */ datasets, indexDatasetSelected, t, plot_original_ID/*, plot_processed_ID, listColumnNameTransformations, columnNameTarget */])
+  }, [/* datasetLocal */ datasets, t, plot_original_ID/*, plot_processed_ID, listColumnNameTransformations, columnNameTarget */])
 
   const handleChange_ColumnTransformEnable = (e, column_name) => {
     setListColumnNameTransformations((prevState) => {

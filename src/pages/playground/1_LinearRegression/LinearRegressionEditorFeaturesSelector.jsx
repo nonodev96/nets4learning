@@ -14,13 +14,17 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 export default function LinearRegressionEditorFeaturesSelector () {
 
   const prefix = 'pages.playground.generator.editor-feature-selector.'
-  const { params, setParams, datasetLocal } = useContext(LinearRegressionContext)
+  const { 
+    datasets, 
+    params, 
+    setParams, 
+  } = useContext(LinearRegressionContext)
 
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasetLocal.is_dataset_processed)
-  }, [setShow, datasetLocal.is_dataset_processed])
+    setShow(datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed)
+  }, [setShow, datasets])
 
   const handleChange_FeatureSelector_Y = (e) => {
     setParams((prevState) => {
@@ -47,9 +51,9 @@ export default function LinearRegressionEditorFeaturesSelector () {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasetLocal.dataframe_processed, setParams]')
     setParams((prevState) => {
-      const X_features = new Set(datasetLocal.dataframe_processed.columns)
-      const X_feature = datasetLocal.dataframe_processed.columns[0]
-      const y_target = datasetLocal.dataframe_processed.columns[datasetLocal.dataframe_processed.columns.length - 1]
+      const X_features = new Set(datasets.data[datasets.index].dataframe_processed.columns)
+      const X_feature = datasets.data[datasets.index].dataframe_processed.columns[0]
+      const y_target = datasets.data[datasets.index].dataframe_processed.columns[datasets.data[datasets.index].dataframe_processed.columns.length - 1]
       return Object.assign({}, prevState, {
         params_features: {
           X_features: X_features,
@@ -58,7 +62,7 @@ export default function LinearRegressionEditorFeaturesSelector () {
         }
       })
     })
-  }, [datasetLocal.dataframe_processed, setParams])
+  }, [datasets, setParams])
 
   if (VERBOSE) console.debug('render LinearRegressionEditorFeaturesSelector')
   return <>
@@ -90,9 +94,12 @@ export default function LinearRegressionEditorFeaturesSelector () {
                         value={params.params_features.X_feature}
                         onChange={(e) => handleChange_FeatureSelector_X(e)}>
               <>
-                {datasetLocal.dataframe_processed.columns
+                {datasets
+                  .data[datasets.index]
+                  .dataframe_processed
+                  .columns
                   .map((value, index) => {
-                    return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
+                    return (<option key={index} value={value}>{value} - {datasets.data[datasets.index].dataframe_processed.dtypes[index]}</option>)
                   })}
               </>
             </Form.Select>
@@ -106,9 +113,12 @@ export default function LinearRegressionEditorFeaturesSelector () {
                         value={params.params_features.Y_target}
                         onChange={(e) => handleChange_FeatureSelector_Y(e)}>
               <>
-                {datasetLocal.dataframe_processed.columns
+                {datasets
+                  .data[datasets.index]
+                  .dataframe_processed
+                  .columns
                   .map((value, index) => {
-                    return (<option key={index} value={value}>{value} - {datasetLocal.dataframe_processed.dtypes[index]}</option>)
+                    return (<option key={index} value={value}>{value} - {datasets.data[datasets.index].dataframe_processed.dtypes[index]}</option>)
                   })}
               </>
             </Form.Select>

@@ -22,8 +22,6 @@ export default function LinearRegressionEditorHyperparameters() {
   const { 
     datasets,
     
-    indexDatasetSelected,
-
     params, 
     setParams, 
   } = useContext(LinearRegressionContext)
@@ -31,8 +29,8 @@ export default function LinearRegressionEditorHyperparameters() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasets[indexDatasetSelected].is_dataset_processed)
-  }, [setShow,datasets, indexDatasetSelected])
+    setShow(datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed)
+  }, [setShow, datasets, datasets.index])
 
 
   // 1 - 100
