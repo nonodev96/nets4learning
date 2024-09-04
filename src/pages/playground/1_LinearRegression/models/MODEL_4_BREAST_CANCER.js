@@ -93,9 +93,22 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
-    const path_dataset_1 = dataset_path + 'breast-cancer-wisconsin.csv'
-    const path_dataset_2 = dataset_path + 'wdbc.csv'
-    const path_dataset_3 = dataset_path + 'wpbc.csv'
+    const path_dataset_1 = dataset_path + 'breast-cancer-wisconsin.names'
+    const path_dataset_2 = dataset_path + 'wdbc.names'
+    const path_dataset_3 = dataset_path + 'wpbc.names'
+
+    const [dataset_promise_info_1, dataset_promise_info_2, dataset_promise_info_3] = await Promise.all([
+      fetch(path_dataset_1),
+      fetch(path_dataset_2),
+      fetch(path_dataset_3),
+    ])
+    
+    const [dataset_container_info_1, dataset_container_info_2, dataset_container_info_3] = await Promise.all([
+      dataset_promise_info_1.text(),
+      dataset_promise_info_2.text(),
+      dataset_promise_info_3.text(),
+    ])
+    
 
     let dataframe_original_1 = await dfd.readCSV(path_dataset_1)
     let dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
@@ -121,6 +134,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         path                : dataset_path,
         info                : 'breast-cancer-wisconsin.names',
         csv                 : 'breast-cancer-wisconsin.csv',
+        container_info      : dataset_container_info_1,
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataset_transforms  : dataset_transforms_1,
@@ -129,8 +143,9 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : dataset_path,
-        info                : 'wdbc.names',
         csv                 : 'wdbc.csv',
+        info                : 'wdbc.names',
+        container_info      : dataset_container_info_2,
         dataframe_original  : dataframe_original_2,
         dataframe_processed : dataframe_processed_2,
         dataset_transforms  : [],
@@ -141,6 +156,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         path                : dataset_path,
         info                : 'wpbc.names',
         csv                 : 'wpbc.csv',
+        container_info      : dataset_container_info_3,
         dataframe_original  : dataframe_original_3,
         dataframe_processed : dataframe_processed_3,
         dataset_transforms  : [],

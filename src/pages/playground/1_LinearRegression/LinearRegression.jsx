@@ -89,6 +89,7 @@ export default function LinearRegression(props) {
   const TrainModel = async () => {
     const modelController = new LinearRegressionModelController_Multiple(t)
     // modelController.setDataFrame(datasetLocal.dataframe_processed)
+    console.log({datasets: datasets.data[datasets.index]})
     modelController.setDataFrame(datasets.data[datasets.index].dataframe_processed)
     modelController.setLayers({
       input : { units: 1 },
@@ -171,7 +172,6 @@ export default function LinearRegression(props) {
         const _iModelInstance = new MAP_LR_CLASSES[dataset](t, setAccordionActive)
         const _datasets = await _iModelInstance.DATASETS()
         setIModelInstance(_iModelInstance)
-        console.log({____: _datasets})
         setDatasets(() => {
           return {
             data : _datasets,

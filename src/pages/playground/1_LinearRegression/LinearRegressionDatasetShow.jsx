@@ -78,11 +78,6 @@ export default function LinearRegressionDatasetShow() {
         console.debug('!showDataset')
         return
       }
-      let container_info = ''
-      if (!_datasetSelected.is_dataset_upload) {
-        const promise_info = await fetch(_datasetSelected.path + _datasetSelected.info)
-        container_info = await promise_info.text()
-      }
       const dataframe_original = _datasetSelected.dataframe_original
       const dataframe_processed = _datasetSelected.dataframe_processed
 
@@ -96,32 +91,7 @@ export default function LinearRegressionDatasetShow() {
         .T
         .plot(dataframe_processed_describe_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
-
-      // setDatasetLocal((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     dataframe_original : dataframe_original,
-      //     dataframe_processed: dataframe_processed,
-      //     container_info     : container_info,
-      //   }
-      // })
-
-      updateDatasetsState(dataframe_original, dataframe_processed, container_info)
-  }, [/* setDatasetLocal, */ setDatasets, datasets.index, showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
-
-  const updateDatasetsState = (dataframe_original, dataframe_processed, container_info) => {
-    setDatasets((prevState) => {
-      const newDatasets_data = [...prevState.data]
-      newDatasets_data[prevState.index].dataframe_original = dataframe_original
-      newDatasets_data[prevState.index].dataframe_processed = dataframe_processed
-      newDatasets_data[prevState.index].container_info = container_info
-  
-      return {
-        ...prevState,
-        data: newDatasets_data,
-      }
-    })
-  }
+  }, [showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
   
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasets, updateDataFrameLocal]')

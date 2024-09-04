@@ -64,15 +64,22 @@ export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
 
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/boston-housing/'
-    const dataframe_original = await dfd.readCSV(datasets_path + 'housing.csv')
-    const dataframe_processed = await dfd.readCSV(datasets_path + 'housing.csv')
+    const dataset_info = 'housing.names'
+    const dataset_csv = 'housing.csv'
+
+    const dataset_promise_info = await fetch(datasets_path + dataset_info)
+    const dataset_container_info = await dataset_promise_info.text()
+    
+    const dataframe_original = await dfd.readCSV(datasets_path + dataset_csv)
+    const dataframe_processed = await dfd.readCSV(datasets_path + dataset_csv)
 
     return [{
       is_dataset_upload   : false,
       is_dataset_processed: true,
       path                : datasets_path,
-      csv                 : 'housing.csv',
-      info                : 'housing.names',
+      csv                 : dataset_csv,
+      info                : dataset_info,
+      container_info      : dataset_container_info,
       dataframe_original  : dataframe_original,
       dataframe_processed : dataframe_processed,
       dataset_transforms  : [],

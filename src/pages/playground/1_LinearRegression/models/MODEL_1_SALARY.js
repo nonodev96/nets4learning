@@ -56,18 +56,24 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
-    const dataframe_original_1 = await dfd.readCSV(dataset_path + 'salary.csv')
-    const dataframe_transforms = []
-    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + 'salary.csv'), dataframe_transforms)
+    const dataset_info = 'salary.names'
+    const dataset_csv = 'salary.csv'
 
+    const dataset_promise_info = await fetch(dataset_path + dataset_info)
+    const dataset_container_info = await dataset_promise_info.text()
+    
+    const dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    const dataframe_transforms = []
+    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + dataset_csv), dataframe_transforms)
     // dataframe_processed_1.print()
 
     return [{
       is_dataset_upload   : false,
       is_dataset_processed: true,
       path                : dataset_path,
-      info                : 'salary.names',
-      csv                 : 'salary.csv',
+      info                : dataset_info,
+      csv                 : dataset_csv,
+      container_info      : dataset_container_info,
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataframe_transforms: dataframe_transforms,

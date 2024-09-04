@@ -71,16 +71,32 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
 
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
+    const path_dataset_1 = datasets_path + 'student-mat.csv'
+    const path_dataset_2 = datasets_path + 'student-por.csv'
+
+    const [dataset_promise_info_1, dataset_promise_info_2] = await Promise.all([
+      fetch(path_dataset_1),
+      fetch(path_dataset_2),
+    ])
+    
+    const [dataset_container_info_1, dataset_container_info_2] = await Promise.all([
+      dataset_promise_info_1.text(),
+      dataset_promise_info_2.text(),
+    ])
+    
     const dataframe_original_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
     const dataframe_processed_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
     const dataframe_original_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
     const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
+
+
     return [{
       is_dataset_upload   : false,
       is_dataset_processed: true,
       path                : datasets_path,
       info                : 'student.txt',
       csv                 : 'student-mat.csv',
+      container_info      : dataset_container_info_1,
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataset_transforms  : [],
@@ -90,6 +106,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
       path                : datasets_path,
       info                : 'student.txt',
       csv                 : 'student-por.csv',
+      container_info      : dataset_container_info_2,
       dataframe_original  : dataframe_original_2,
       dataframe_processed : dataframe_processed_2,
       dataset_transforms  : [],
