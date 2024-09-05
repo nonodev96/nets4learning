@@ -18,7 +18,7 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
 /**
  * @typedef  LRConfigFeatures_t
  * @property {string} X_feature
- * @property {string} y_target
+ * @property {string} Y_target
  * @property {Map<string, number>} categorical
  */
 
@@ -111,7 +111,7 @@ export default class LinearRegressionModelController_Simple {
     this.config = {
       features: {
         X_feature  : '',
-        y_target   : '',
+        Y_target   : '',
         categorical: new Map()
       },
       compile: {
@@ -160,7 +160,7 @@ export default class LinearRegressionModelController_Simple {
    **/
   setFeatures (features) {
     this.config.features.X_feature = features.X_feature
-    this.config.features.y_target = features.y_target
+    this.config.features.Y_target = features.Y_target
     // features.categorical
     this.config.features.categorical = new Map()
   }
@@ -234,11 +234,11 @@ export default class LinearRegressionModelController_Simple {
    */
   async GetData () {
     if (!this.dataframe.columns.includes(this.config.features.X_feature)) throw Error(`The dataset need to contain a column named ${this.config.features.X_feature}`)
-    if (!this.dataframe.columns.includes(this.config.features.y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.y_target}`)
+    if (!this.dataframe.columns.includes(this.config.features.Y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.Y_target}`)
 
     const columns = [
       this.config.features.X_feature,
-      this.config.features.y_target,
+      this.config.features.Y_target,
     ]
 
     if (this.dataframe[this.config.features.X_feature].dtype === 'string') {
@@ -254,13 +254,13 @@ export default class LinearRegressionModelController_Simple {
     if (this.config.visor.scatterplot) {
       let series_values = data.map((d) => ({
         x: d[this.config.features.X_feature],
-        y: d[this.config.features.y_target],
+        y: d[this.config.features.Y_target],
       }))
       await tfvis.render.scatterplot(
         {
           name: this.t('pages.playground.generator.visor.scatterplot.__feature____target__', {
             feature: this.config.features.X_feature,
-            target : this.config.features.y_target
+            target : this.config.features.Y_target
           }),
           tab: this.t('pages.playground.generator.visor.dataset'),
         },
@@ -269,14 +269,14 @@ export default class LinearRegressionModelController_Simple {
         },
         {
           xLabel: this.config.features.X_feature,
-          yLabel: this.config.features.y_target,
+          yLabel: this.config.features.Y_target,
         }
       )
     }
     if (this.config.visor.linechart) {
       const series = []
       const series_values = []
-      for (const serie_name of [this.config.features.X_feature, this.config.features.y_target]) {
+      for (const serie_name of [this.config.features.X_feature, this.config.features.Y_target]) {
         series.push(serie_name)
         const serie_value = data
           .map((d) => d[serie_name])
@@ -316,7 +316,7 @@ export default class LinearRegressionModelController_Simple {
         { values: _values },
         {
           xLabel: this.config.features.X_feature,
-          yLabel: this.config.features.y_target,
+          yLabel: this.config.features.Y_target,
         }
       )
     }
@@ -374,18 +374,18 @@ export default class LinearRegressionModelController_Simple {
    *
    * @param {Object[]} data
    * @param X_feature
-   * @param y_target
+   * @param Y_target
    * @return {{inputMax: Tensor<Rank>, inputs: Tensor<Rank>, inputMin: Tensor<Rank>, labelMax: Tensor<Rank>, labelMin: Tensor<Rank>, labels: Tensor<Rank>}}
    * @constructor
    */
-  static ConvertToTensor (data, X_feature, y_target) {
+  static ConvertToTensor (data, X_feature, Y_target) {
     return tfjs.tidy(() => {
       // Step 1. Shuffle the data
       tfjs.util.shuffle(data)
 
       // Step 2. Convert data to Tensor
       const inputs = data.map(d => d[X_feature])
-      const labels = data.map(d => d[y_target])
+      const labels = data.map(d => d[Y_target])
 
       const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
       const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
@@ -455,12 +455,12 @@ export default class LinearRegressionModelController_Simple {
       return [unNormXs.dataSync(), unNormPreds.dataSync()]
     })
     const feature = this.config.features.X_feature
-    const y_target = this.config.features.y_target
+    const Y_target = this.config.features.Y_target
 
     /** @type {Point_t[]} */
     const originalPoints = inputData.map(d => ({
       x: d[this.config.features.X_feature],
-      y: d[this.config.features.y_target],
+      y: d[this.config.features.Y_target],
     }))
 
     /** @type {Point_t[]} */
@@ -478,13 +478,13 @@ export default class LinearRegressionModelController_Simple {
         {
           values: [originalPoints, predictedPoints],
           series: [
-            this.t('pages.playground.generator.visor.scatterplot.__feature____target__', { feature, target: y_target }),
+            this.t('pages.playground.generator.visor.scatterplot.__feature____target__', { feature, target: Y_target }),
             this.t('pages.playground.generator.visor.predicted'),
           ]
         },
         {
           xLabel: this.config.features.X_feature,
-          yLabel: this.config.features.y_target,
+          yLabel: this.config.features.Y_target,
         }
       )
     }
@@ -503,7 +503,7 @@ export default class LinearRegressionModelController_Simple {
   async run () {
     const data = await this.GetData()
     const model = await this.CreateModel()
-    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.y_target)
+    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
     await this.TrainModel(model, normalizationTensorData)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
     return { original, model, predicted, predictedLinear }
@@ -516,7 +516,7 @@ export default class LinearRegressionModelController_Simple {
    */
   async runModel (model) {
     const data = await this.GetData()
-    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.y_target)
+    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
     return { original, model, predicted, predictedLinear }
   }

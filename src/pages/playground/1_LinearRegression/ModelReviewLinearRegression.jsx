@@ -88,7 +88,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
         linear.setDataFrame(datasets_DataFrame)
         linear.setFeatures({
           X_feature  : column_name_X,
-          y_target   : column_name_Y,
+          Y_target   : column_name_Y,
           categorical: new Map()
         })
         linear.setVisor({

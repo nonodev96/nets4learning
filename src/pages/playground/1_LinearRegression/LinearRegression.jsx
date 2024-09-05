@@ -31,7 +31,7 @@ const LinearRegressionDatasetProcess = lazy(() => import('./LinearRegressionData
 const LinearRegressionDatasetShow = lazy(() => import('./LinearRegressionDatasetShow'))
 // Editors
 const LinearRegressionEditorLayers = lazy(() => import('./LinearRegressionEditorLayers'))
-// const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
+const LinearRegressionEditorFeaturesSelector = lazy(() => import('./LinearRegressionEditorFeaturesSelector'))
 const LinearRegressionEditorHyperparameters = lazy(() => import('./LinearRegressionEditorHyperparameters'))
 // const LinearRegressionEditorVisor = lazy(() => import( './LinearRegressionEditorVisor'))
 // Models
@@ -109,6 +109,7 @@ export default function LinearRegression(props) {
         learningRate: params.params_training.learning_rate,
       },
     })
+    console.log({params})
     modelController.setFeatures({
       X_features          : params.params_features.X_features, // Multiple
       X_feature           : params.params_features.X_feature, // Simple
@@ -321,12 +322,11 @@ export default function LinearRegression(props) {
                 <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               </div>
 
-              {/* 
+               
               <hr />
               <div className={'joyride-step-6-editor-selector-features'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>
-              */}
 
             </Col>
             <Col className={'joyride-step-7-editor-trainer'}>

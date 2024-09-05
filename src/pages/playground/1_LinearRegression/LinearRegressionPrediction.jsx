@@ -101,11 +101,11 @@ export default function LinearRegressionPrediction() {
         params_features,
         /* predictedLinear */
       } = listModels[indexModel]
-      const { X_feature, Y_target: y_target } = params_features
+      const { X_feature, Y_target } = params_features
       const trace = {
         x      : original.map((v) => v.x),
         y      : original.map((v) => v.y),
-        name   : t('{{X_feature}} x {{target}}', { X_feature, target: y_target }),
+        name   : t('{{X_feature}} x {{target}}', { X_feature, target: Y_target }),
         mode   : 'markers',
         type   : 'scatter',
         opacity: 1,

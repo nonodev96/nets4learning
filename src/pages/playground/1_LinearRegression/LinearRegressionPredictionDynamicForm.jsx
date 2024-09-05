@@ -11,7 +11,7 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
     if (generatedModel.params_features.X_feature === column_name) {
       return styles.border_blue
     }
-    if (generatedModel.params_features.y_target === column_name) {
+    if (generatedModel.params_features.Y_target === column_name) {
       return styles.border_green
     }
     return styles.border_red
@@ -21,7 +21,7 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
     if (generatedModel.params_features.X_feature === column_name) {
       return false
     }
-    if (generatedModel.params_features.y_target === column_name) {
+    if (generatedModel.params_features.Y_target === column_name) {
       return true
     }
     return true
