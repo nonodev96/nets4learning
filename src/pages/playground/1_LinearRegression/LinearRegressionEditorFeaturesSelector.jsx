@@ -26,23 +26,49 @@ export default function LinearRegressionEditorFeaturesSelector() {
     setShow(datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed)
   }, [setShow, datasets])
 
-  const handleChange_FeatureSelector_Y = (e) => {
+  const handleChange_FeatureSelector_Y = (event_Y_target) => {
     setParams((prevState) => {
+
+      // Añades el antiguo target a la lista de características 
+      prevState.params_features.X_features.add(prevState.params_features.Y_target)
+      // Eliminas de la lista de características el nuevo objetivo
+      prevState.params_features.X_features.delete(event_Y_target.target.value)
+      
+
+      // S
+      console.log({
+        s: prevState.params_features.X_features
+      })
       return Object.assign({}, prevState, {
         params_features: {
           ...prevState.params_features,
-          Y_target: e.target.value
+          // Multiple
+          X_features: prevState.params_features.X_features,
+          // Simple
+          X_feature : prevState.params_features.X_feature,
+          // Target
+          Y_target  : event_Y_target.target.value,
         }
       })
     })
   }
 
-  const handleChange_FeatureSelector_X = (e) => {
+  const handleChange_FeatureSelector_X = (event_X_features, column_name) => {
     setParams((prevState) => {
+      if (event_X_features.target.checked === false) {
+        prevState.params_features.X_features.delete(column_name)
+      } else {
+        prevState.params_features.X_features.add(column_name)
+      }
+
       return Object.assign({}, prevState, {
         params_features: {
           ...prevState.params_features,
-          X_feature: e.target.value
+          // Multiple
+          X_features: prevState.params_features.X_features,
+          // Simple
+          X_feature : prevState.params_features.X_feature
+          // X_feature: event.target.value
         }
       })
     })
@@ -93,7 +119,6 @@ export default function LinearRegressionEditorFeaturesSelector() {
           <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {show && <>
-
           <Accordion defaultActiveKey="Target">
           <Accordion.Item eventKey="Target">
               <Accordion.Header><Trans i18nKey={prefix + 'feature-selector-y'} /></Accordion.Header>
@@ -120,35 +145,9 @@ export default function LinearRegressionEditorFeaturesSelector() {
                 </Form.Group>
               </Accordion.Body>
             </Accordion.Item>
-
             <Accordion.Item eventKey="Features">
               <Accordion.Header><Trans i18nKey={prefix + 'feature-selector-x'} /></Accordion.Header>
               <Accordion.Body>
-
-                {/* SIMPLE */}
-                {/* 
-                <Form.Group controlId={'feature-selector-X'} className='mb-3'>
-                  <Form.Label>
-                    <Trans i18nKey={prefix + 'feature-selector-x'} />
-                  </Form.Label>
-                  <Form.Select
-                    aria-label={'feature selector x'}
-                    className={styles.border_blue}
-                    value={params.params_features.X_feature}
-                    onChange={(e) => handleChange_FeatureSelector_X(e)}>
-                    <>
-                      {datasets
-                        .data[datasets.index]
-                        .dataframe_processed
-                        .columns
-                        .map((value, index) => {
-                          return (<option key={index} value={value}>{value} - {datasets.data[datasets.index].dataframe_processed.dtypes[index]}</option>)
-                        })}
-                    </>
-                  </Form.Select>
-                </Form.Group> 
-                */}
-
                 {datasets
                   .data[datasets.index]
                   .dataframe_processed
@@ -157,13 +156,11 @@ export default function LinearRegressionEditorFeaturesSelector() {
                     <div key={`column-${column_name}`}>
                       <Form.Check 
                         type={'switch'}
-                        checked={column_name !== params.params_features.Y_target}
+                        checked={params.params_features.X_features.has(column_name)}
                         disabled={column_name === params.params_features.Y_target}
                         id={`column-${column_name}`}
                         label={`${column_name}`}
-                        onChange={() => {
-
-                        }}
+                        onChange={(e) => handleChange_FeatureSelector_X(e, column_name)}
                       />
 
                     </div>

@@ -73,7 +73,6 @@ export default function LinearRegressionDatasetShow() {
 
 
   const updateDataFrameLocal = useCallback(async (_datasetSelected) => {
-      console.log({_datasetSelected})
       if (!showDataset) {
         console.debug('!showDataset')
         return
@@ -97,7 +96,6 @@ export default function LinearRegressionDatasetShow() {
     if (VERBOSE) console.debug('useEffect [datasets, updateDataFrameLocal]')
     const init = async () => {
       if (datasets.data.length >= 1 && datasets.index >= 0) {
-        console.log({data: datasets.data, index: datasets.index, update: datasets.data[datasets.index]})
         await updateDataFrameLocal(datasets.data[datasets.index])
       }
     }

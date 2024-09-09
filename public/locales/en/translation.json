@@ -16,6 +16,7 @@
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
   "Predicted": "Predicted",
   "Waiting": "Waiting",
+  "waiting": "Waiting",
   "and": "and",
   "model": {
     "__index__": "Model {{index}}"
@@ -120,7 +121,7 @@
         "1-linear-regression": {
           "salary": "Salary data set",
           "auto-mpg": "Fuel consumption data set",
-          "boston": "Boston Houses Dataset",
+          "housing-prices": "House Prices Dataset",
           "breast-cancer-wdbc": "Breast Cancer Wisconsin Dataset (Diagnostic)",
           "breast-cancer-wpbc": "Breast Cancer Wisconsin Dataset (Prognostic)",
           "student-performance-mathematics": "Mathematics student Data set",
@@ -133,8 +134,10 @@
   },
   "dataframe-original": "DataFrame | Original",
   "dataframe-form": "DataFrame | Pre-processing data set form",
-  "dataframe-processed": "DataFrame | Processed",
   "dataframe": {
+    "dataframe": {
+      "title": "DataFrame | Data set"
+    },
     "dataset": {
       "title": "Data set"
     },
@@ -179,8 +182,9 @@
       "link": "Consult more information in the following <link1> link </link1>"
     }
   },
+  "dataframe-processed": "DataFrame | Processed",
   "dataframe-scatterplot": {
-    "title": "Scatter plot"
+    "title": "scatter plot"
   },
   "model-selector": {
     "title": "Model selector"
@@ -577,44 +581,79 @@
           }
         }
       },
-      "boston-housing": {
-        "title": "The Boston Housing",
+      "housing-prices": {
+        "title": "The Housing prices",
         "description": {
           "text": {
             "0": null,
             "1": "The data set is designed to address house price modeling and regression problems in different neighborhoods in Boston, Massachusetts, United States. This data set is commonly used for examples and practices in education and research."
           },
           "link": "<link1>UCI data set info</link1>",
-          "details-1-input": {
+          "details-input": {
             "title": "Input",
-            "list": {
-              "0": "<strong>CRIM</strong> per capita crime rate by town",
-              "1": "<strong>ZN</strong> proportion of residential land zoned for lots over 25,000 sq.ft.",
-              "2": "<strong>INDUS</strong> proportion of non-retail business acres per town",
-              "3": "<strong>CHAS</strong> Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)",
-              "4": "<strong>NOX</strong> nitric oxides concentration (parts per 10 million)",
-              "5": "<strong>RM</strong> average number of rooms per dwelling",
-              "6": "<strong>AGE</strong> proportion of owner-occupied units built prior to 1940",
-              "7": "<strong>DIS</strong> weighted distances to five Boston employment centres",
-              "8": "<strong>RAD</strong> index of accessibility to radial highways",
-              "9": "<strong>TAX</strong> full-value property-tax rate per $10,000",
-              "10": "<strong>PTRATIO</strong> pupil-teacher ratio by town",
-              "11": "<strong>B</strong> 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town",
-              "12": "<strong>LSTAT</strong> % lower status of the population",
-              "13": "<strong>MEDV</strong> Median value of owner-occupied homes in $1000's"
+            "california": {
+              "list": {
+                "0": "<strong>Median House Value</strong>: Median house value for households within a block (measured in US Dollars) [$]",
+                "1": "<strong>Median Income</strong>: Median income for households within a block of houses (measured in tens of thousands of US Dollars) [10k$]",
+                "2": "<strong>Median Age</strong>: Median age of a house within a block; a lower number is a newer building [years]",
+                "3": "<strong>Total Rooms</strong>: Total number of rooms within a block",
+                "4": "<strong>Total Bedrooms</strong>: Total number of bedrooms within a block",
+                "5": "<strong>Population</strong>: Total number of people residing within a block",
+                "6": "<strong>Households</strong>: Total number of households, a group of people residing within a home unit, for a block",
+                "7": "<strong>Latitude</strong>: A measure of how far north a house is; a higher value is farther north [°]",
+                "8": "<strong>Longitude</strong>: A measure of how far west a house is; a higher value is farther west [°]",
+                "9": "<strong>Distance to coast</strong>: Distance to the nearest coast point [m]",
+                "10": "<strong>Distance to Los Angeles</strong>: Distance to the centre of Los Angeles [m]",
+                "11": "<strong>Distance to San Diego</strong>: Distance to the centre of San Diego [m]",
+                "12": "<strong>Distance to San Jose</strong>: Distance to the centre of San Jose [m]",
+                "13": "<strong>Distance to San Francisco</strong>: Distance to the centre of San Francisco [m]",
+                "14": null
+              }
+            },
+            "boston": {
+              "list": {
+                "0": "<strong>CRIM</strong> per capita crime rate by town",
+                "1": "<strong>ZN</strong> proportion of residential land zoned for lots over 25,000 sq.ft.",
+                "2": "<strong>INDUS</strong> proportion of non-retail business acres per town",
+                "3": "<strong>CHAS</strong> Charles River dummy variable (= 1 if tract bounds river; 0 otherwise)",
+                "4": "<strong>NOX</strong> nitric oxides concentration (parts per 10 million)",
+                "5": "<strong>RM</strong> average number of rooms per dwelling",
+                "6": "<strong>AGE</strong> proportion of owner-occupied units built prior to 1940",
+                "7": "<strong>DIS</strong> weighted distances to five Boston employment centres",
+                "8": "<strong>RAD</strong> index of accessibility to radial highways",
+                "9": "<strong>TAX</strong> full-value property-tax rate per $10,000",
+                "10": "<strong>PTRATIO</strong> pupil-teacher ratio by town",
+                "11": "<strong>B</strong> 1000(Bk - 0.63)^2 where Bk is the proportion of blacks by town",
+                "12": "<strong>LSTAT</strong> % lower status of the population",
+                "13": "<strong>MEDV</strong> Median value of owner-occupied homes in $1000's"
+              }
             }
           },
-          "details-2-output": {
+          "details-output": {
             "title": "Output",
-            "list": {
-              "0": "Calculated Linear Regression"
+            "california": {
+              "list": {
+                "0": "Calculated Linear Regression"
+              }
+            },
+            "boston": {
+              "list": {
+                "1": "Calculated Linear Regression"
+              }
             }
           },
-          "details-3-references": {
+          "details-references": {
             "title": "References",
-            "list": {
-              "0": "<link1>UCI data set info</link1>",
-              "1": "<link1>Boston housing dataset controversy</link1>"
+            "california": {
+              "list": {
+                "0": "<link1>Kaggle California Housing Prices Data (5 new features!)</link1>"
+              }
+            },
+            "boston": {
+              "list": {
+                "0": "<link1>UCI data set info</link1>",
+                "1": "<link1>Boston housing dataset controversy</link1>"
+              }
             }
           }
         }
@@ -766,7 +805,7 @@
       "list-datasets": {
         "salary": "Data set - Salary",
         "auto-mpg": "Data set - Auto MPG",
-        "boston-housing": "Data set - Boston Housing",
+        "housing-prices": "Data set - Housing Prices",
         "breast-cancer": "Data set - Breast cancer",
         "student-performance": "Data set - Student performance",
         "wine": "Data set - Wine"
@@ -774,7 +813,7 @@
       "list-models": {
         "salary": "Model - Salary",
         "auto-mpg": "Model - Auto MPG",
-        "boston-housing": "Model - Boston Housing",
+        "housing-prices": "Model - Housing prices",
         "breast-cancer": "Model - Breast cancer",
         "student-performance": "Model - Student performance",
         "wine": "Model - Wine"
@@ -1135,8 +1174,8 @@
       "title": "Chart type description"
     },
     "configuration": {
-      "title": "Setting",
-      "reset": "Restart",
+      "title": "Configuration",
+      "reset": "Reboot",
       "select-all-columns": "Select all columns",
       "delete-all-columns": "Drop all columns",
       "layout": {
@@ -1155,7 +1194,7 @@
       }
     },
     "buttons": {
-      "configuration": "Setting",
+      "configuration": "Configuration",
       "description": "Description"
     },
     "bar-charts": {
@@ -1188,11 +1227,11 @@
           "2": "Box type charts have several notable features and applications:"
         },
         "list": {
-          "0": "Statistical Summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
+          "0": "Statistical summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
           "1": "Identification of asymmetries and outliers: By observing a Box type chart, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
           "2": "Comparison between groups or categories: Box charts are also used to compare the distribution of data between different groups or categories.\nBy overlaying multiple boxplots on the same graph, it is possible to visualize differences in medians, interquartile ranges, and the presence of outliers between groups.",
-          "3": "Detect biases and distributions: Box graphs allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias towards the opposite direction.",
-          "4": "Viewing dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to view the dispersion and variability of the data in a single chart.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
+          "3": "Detect biases and distributions: Box graphs allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias toward the opposite direction.",
+          "4": "Visualization of dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to visualize the dispersion and variability of the data in a single graph.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
         },
         "end": {
           "0": "Box plots are a useful tool for visualizing the distribution, statistical summaries, and variability of a numerical data set.\nThey allow you to identify asymmetries, outliers and compare distributions between groups.\nTheir concise and effective visual representation makes them a commonly used tool in data analysis and communication."
@@ -1290,7 +1329,7 @@
         "list": {
           "0": "Trend Analysis: Time series graphs allow you to identify and analyze long-term trends in data.\nThis can be useful for predicting how data will behave in the future and making informed decisions.",
           "1": "Identifying seasonal patterns: In many data sets, there are seasonal patterns that repeat regularly over time, such as holiday sales or seasonal fluctuations in agricultural production.\nTime series charts help identify these seasonal patterns and understand their impact on the data.",
-          "2": "Detection of changes and anomalies: By observing a time series graph, it is possible to identify sudden changes or anomalies in the data.\nThese changes may indicate important or unusual events that require further investigation and analysis.",
+          "2": "Detection of changes and anomalies: By observing a time series graph, it is possible to identify abrupt changes or anomalies in the data.\nThese changes may indicate important or unusual events that require further investigation and analysis.",
           "3": "Modeling and forecasting: Time series graphs are a fundamental tool for developing models and forecasts.\nBy looking at past patterns, it is possible to build mathematical or statistical models that capture relationships and allow predictions about the future.",
           "4": "Comparative Analysis: Time series charts are also used to compare different sets of data that are collected during the same time period.\nThis can help identify differences, similarities and relationships between the observed variables."
         },
@@ -1559,7 +1598,7 @@
         },
         "editor-feature-selector": {
           "title": "Feature selector",
-          "feature-selector-x": "Feature selector / Set (x)",
+          "feature-selector-x": "Feature selector / Set (X)",
           "feature-selector-y": "Feature selector / Target (Y)",
           "add-feature": "Add feature",
           "delete-feature": "Delete feature {{value}}"
@@ -1594,6 +1633,7 @@
         "load": "Load",
         "waiting-for-file": "Waiting for file",
         "waiting-for-process": "Waiting for data set processing",
+        "waiting-for-training": "Waiting for model training",
         "models": {
           "title": "Models",
           "history-train": "Training history",
@@ -1862,7 +1902,7 @@
         "2-description-2": "On the left we have an editor of the different layers that the neural network has. The last layer of the network must be allowed to have the same number of neurons as the classes to be predicted.",
         "2-description-3": "<b>Number of epochs</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neural network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
         "2-description-4": "We must press the \"Create and train model\" button to start the neural network training process. If all the configuration and selection of the functions is correct then an entry with the trained model will be added to the table below.",
-        "2-description-5": "Once a model has been trained from the data, we can make predictions. To do this, a dynamic form is included with the characteristics of the data set. The model's prediction accuracy may be higher or lower depending on the training and the selected options."
+        "2-description-5": "Once a model has been trained from the data, we can make predictions. To do this, a dynamic form is included with the characteristics of the data set. The precision of the model in the prediction may be higher or lower depending on the training and the selected options."
       },
       "1-linear-regression": {
         "title": "Linear regression",

@@ -16,6 +16,7 @@
   "{{X_feature}} x {{target}}": "{{X_feature}} x {{target}}",
   "Predicted": "Predicción",
   "Waiting": "Esperando",
+  "waiting": "Esperando",
   "and": "y",
   "model": {
     "__index__": "Model {{index}}"
@@ -120,7 +121,7 @@
         "1-linear-regression": {
           "salary": "Conjunto de datos de salarios",
           "auto-mpg": "Conjunto de datos consumo de combustible",
-          "boston": "Conjunto de datos casas de Boston",
+          "housing-prices": "Conjunto de datos precios de casas",
           "breast-cancer-wdbc": "Conjunto de datos Breast Cancer Wisconsin (Diagnostic)",
           "breast-cancer-wpbc": "Conjunto de datos Breast Cancer Wisconsin (Prognostic)",
           "student-performance-mathematics": "Conjunto de datos de de estudiantes de matemáticas",
@@ -133,8 +134,10 @@
   },
   "dataframe-original": "DataFrame | Original",
   "dataframe-form": "DataFrame | Formulario de procesamiento",
-  "dataframe-processed": "DataFrame | Procesado",
   "dataframe": {
+    "dataframe": {
+      "title": "DataFrame | Conjunto de datos"
+    },
     "dataset": {
       "title": "Conjunto de datos"
     },
@@ -179,6 +182,7 @@
       "link": "Consulta más información en el siguiente <link1>enlace</link1>"
     }
   },
+  "dataframe-processed": "DataFrame | Procesado",
   "dataframe-scatterplot": {
     "title": "Gráfico de dispersión"
   },
@@ -577,44 +581,79 @@
           }
         }
       },
-      "boston-housing": {
-        "title": "Las viviendas en Boston",
+      "housing-prices": {
+        "title": "Precio de las viviendas",
         "description": {
           "text": {
             "0": "El conjunto de datos de viviendas de Boston se deriva de la información recopilada por el Servicio del Censo de EE. UU. sobre viviendas en el área de Boston.",
             "1": "El conjunto de datos está diseñado para abordar problemas de regresión y modelado de precios de viviendas en diferentes vecindarios de Boston, Massachusetts, Estados Unidos. Este conjunto de datos es comúnmente utilizado para ejemplos y prácticas en la educación y la investigación."
           },
           "link": "<link1>Entrada del conjunto de datos UCI</link1>",
-          "details-1-input": {
+          "details-input": {
             "title": "Datos de entrada",
-            "list": {
-              "0": "<strong>CRIM</strong> Tasa de criminalidad del crimen per cápita por ciudad",
-              "1": "<strong>Zn</strong> Proporción de tierras residenciales zonas por lotes de más de 25,000 pies cuadrados.",
-              "2": "<strong>INDUS</strong> Proporción de acres comerciales no reales por ciudad",
-              "3": "<strong>CHAS</strong> Charles River Variable Dummy (= 1 if tract bounds river; 0 en otro caso)",
-              "4": "<strong>NOX</strong> Concentración de óxidos nítricos (partes por 10 millones)",
-              "5": "<strong>RM</strong> Número promedio de habitaciones por vivienda",
-              "6": "<strong>AGE</strong> Proporción de unidades ocupadas por los propietarios construidas antes de 1940",
-              "7": "<strong>DIS</strong> Distancias ponderadas a cinco centros de empleo de Boston",
-              "8": "<strong>RAD</strong> Índice de accesibilidad a carreteras radiales",
-              "9": "<strong>TAX</strong> Impuesto a la propiedad de la propiedad de valor completo por cada $ 10,000",
-              "10": "<strong>PRATIO</strong> Ratio alumnos-profesor por ciudad",
-              "11": "<strong>B</strong> 1000 (BK - 0.63)^2 donde BK es la proporción de negros por ciudad",
-              "12": "<strong>LSTAT</strong> LSTAT % más bajo estado de la población",
-              "13": "<strong>MEDV</strong>Valor mediano de las casas ocupadas por el propietario en $ 1000"
+            "california": {
+              "list": {
+                "0": "<strong>Median House Value</strong>: Valor medio de la vivienda para los hogares de un bloque (medido en dólares estadounidenses) [$].",
+                "1": "<strong>Median Income</strong>: Mediana de ingresos de los hogares de un bloque de casas (medida en decenas de miles de dólares estadounidenses) [10k$].",
+                "2": "<strong>Median Age</strong>: Edad mediana de una casa dentro de un bloque; un número más bajo corresponde a un edificio más nuevo [años].",
+                "3": "<strong>Total Rooms</strong>: Número total de habitaciones de un bloque",
+                "4": "<strong>Total Bedrooms</strong>: Número total de dormitorios en un bloque",
+                "5": "<strong>Population</strong>: Número total de personas que residen en un bloque",
+                "6": "<strong>Households</strong>: Número total de hogares, un grupo de personas que residen dentro de una unidad doméstica, para una manzana",
+                "7": "<strong>Latitude</strong>: Medida de la distancia al norte a la que se encuentra una vivienda; un valor más alto significa más al norte [°].",
+                "8": "<strong>Longitude</strong>: Medida de la distancia al oeste de una vivienda; cuanto mayor sea el valor, más al oeste [°].",
+                "9": "<strong>Distance to coast</strong>: Distancia al punto costero más cercano [m]",
+                "10": "<strong>Distance to Los Angeles</strong>: Distancia al centro de Los Ángeles [m].",
+                "11": "<strong>Distance to San Diego</strong>: Distancia al centro de San Diego [m]",
+                "12": "<strong>Distance to San Jose</strong>: Distancia al centro de San José [m]",
+                "13": "<strong>Distance to San Francisco</strong>: Distancia al centro de San Francisco [m Distancia al centro de San Francisco [m].",
+                "14": null
+              }
+            },
+            "boston": {
+              "list": {
+                "0": "<strong>CRIM</strong> Tasa de criminalidad del crimen per cápita por ciudad",
+                "1": "<strong>Zn</strong> Proporción de tierras residenciales zonas por lotes de más de 25,000 pies cuadrados.",
+                "2": "<strong>INDUS</strong> Proporción de acres comerciales no reales por ciudad",
+                "3": "<strong>CHAS</strong> Charles River Variable Dummy (= 1 if tract bounds river; 0 en otro caso)",
+                "4": "<strong>NOX</strong> Concentración de óxidos nítricos (partes por 10 millones)",
+                "5": "<strong>RM</strong> Número promedio de habitaciones por vivienda",
+                "6": "<strong>AGE</strong> Proporción de unidades ocupadas por los propietarios construidas antes de 1940",
+                "7": "<strong>DIS</strong> Distancias ponderadas a cinco centros de empleo de Boston",
+                "8": "<strong>RAD</strong> Índice de accesibilidad a carreteras radiales",
+                "9": "<strong>TAX</strong> Impuesto a la propiedad de la propiedad de valor completo por cada $ 10,000",
+                "10": "<strong>PRATIO</strong> Ratio alumnos-profesor por ciudad",
+                "11": "<strong>B</strong> 1000 (BK - 0.63)^2 donde BK es la proporción de negros por ciudad",
+                "12": "<strong>LSTAT</strong> LSTAT % más bajo estado de la población",
+                "13": "<strong>MEDV</strong>Valor mediano de las casas ocupadas por el propietario en $ 1000"
+              }
             }
           },
-          "details-2-output": {
+          "details-output": {
             "title": "Datos de salida",
-            "list": {
-              "0": "Regresión lineal calculada"
+            "california": {
+              "list": {
+                "0": "Regresión lineal calculada"
+              }
+            },
+            "boston": {
+              "list": {
+                "1": "Regresión lineal calculada"
+              }
             }
           },
-          "details-3-references": {
+          "details-references": {
             "title": "Referencias",
-            "list": {
-              "0": "<link1>Entrada del conjunto de datos UCI</link1>",
-              "1": "<link1>Controversia sobre el conjunto de datos de vivienda de Boston</link1>"
+            "california": {
+              "list": {
+                "0": "<link1>Kaggle California Housing Prices Data (5 new features!)</link1>"
+              }
+            },
+            "boston": {
+              "list": {
+                "0": "<link1>Entrada del conjunto de datos UCI</link1>",
+                "1": "<link1>Controversia sobre el conjunto de datos de vivienda de Boston</link1>"
+              }
             }
           }
         }
@@ -766,7 +805,7 @@
       "list-datasets": {
         "salary": "Conjunto de datos - Salary",
         "auto-mpg": "Conjunto de datos - Auto MPG",
-        "boston-housing": "Conjunto de datos - Boston Housing",
+        "housing-prices": "Conjunto de datos - Housing Prices",
         "breast-cancer": "Conjunto de datos - Breast cancer",
         "student-performance": "Conjunto de datos - Student performance",
         "wine": "Conjunto de datos - Wine"
@@ -774,7 +813,7 @@
       "list-models": {
         "salary": "Modelo - Salary",
         "auto-mpg": "Modelo - Auto MPG",
-        "boston-housing": "Modelo - Boston Housing",
+        "housing-prices": "Modelo - Housing prices",
         "breast-cancer": "Modelo - Breast cancer",
         "student-performance": "Modelo - Student performance",
         "wine": "Modelo - Wine"
@@ -1594,6 +1633,7 @@
         "load": "Cargar",
         "waiting-for-file": "Esperando archivo",
         "waiting-for-process": "Esperando el procesamiento del conjunto de datos",
+        "waiting-for-training": "Esperando el entrenamiento del modelo",
         "models": {
           "title": "Modelos",
           "history-train": "Historial del entrenamiento",

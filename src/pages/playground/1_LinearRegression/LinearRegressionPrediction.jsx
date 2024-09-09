@@ -200,11 +200,38 @@ export default function LinearRegressionPrediction() {
         </>}
         {showPrediction && <>
           <Row>
-            <N4LSummary title={t('Features')}>
-              <Card.Text><strong>X</strong> {listModels[indexModel]?.params_features.X_features ?? []}</Card.Text>
-              <Card.Text><strong>X</strong> {listModels[indexModel]?.params_features.X_feature ?? ''}</Card.Text>
-              <Card.Text><strong>Y</strong> {listModels[indexModel]?.params_features.Y_target ?? ''}</Card.Text>
-            </N4LSummary>
+            <Col>
+              <N4LSummary title={t('Features')}>
+                <Row>
+                  <Col>
+                    <strong>X Multiple</strong> 
+                    <ol>
+                    {
+                      Array
+                      .from(listModels[indexModel]?.params_features.X_features ?? [])
+                      .map((value, index) => {
+                        return <li key={index}>{value}</li>
+                      })
+                    }
+                    </ol>
+                  </Col>
+                  <Col>
+                    <strong>X Simple</strong> 
+                    <ol>
+                      <li>{listModels[indexModel]?.params_features.X_feature}</li>
+                    </ol>
+                  </Col>
+                </Row>
+              </N4LSummary>
+            </Col>
+            <Col>
+              <N4LSummary title={t('Target')}>
+                <strong>Y Target</strong> 
+                <ol>
+                  <li>{listModels[indexModel]?.params_features.Y_target}</li>
+                </ol>
+              </N4LSummary>
+            </Col>
           </Row>
           <hr />
           <Form onSubmit={handleSubmit_Predict}>

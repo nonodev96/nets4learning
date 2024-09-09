@@ -1,5 +1,6 @@
 import * as dfd from 'danfojs'
 import { E_PLOTS, LIST_PLOTS } from '@components/_context/CONSTANTS'
+import { VERBOSE } from '@/CONSTANTS'
 
 // E_PLOTS.LINE_CHARTS
 // E_PLOTS.BAR_CHARTS
@@ -207,10 +208,10 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         break
       }
       case 'replace_?_NaN': {
-        console.debug('TODO', column_name, _dataframe[column_name])
+        if (VERBOSE) console.debug(`replace_${column_name}_?_NaN`, { _dataframe, column_name, c: _dataframe[column_name] })
         const new_serie = _dataframe[column_name].apply((val) => {
           if (val === '?') {
-            console.log('FOUND')
+            if (VERBOSE) console.debug('FOUND')
             return NaN
           }
           return val
@@ -219,7 +220,7 @@ export function DataFrameTransform (dataframe, dataframe_transforms) {
         break
       }
       case 'replace_<match>_NaN': {
-        console.debug('TODO replace {match} NaN', column_name, _dataframe[column_name])
+        if (VERBOSE) console.debug(`replace_${column_name}_${match}_NaN`, { _dataframe, column_name, c: _dataframe[column_name] })
         const new_serie = _dataframe[column_name].apply((val) => {
           if (val === match) {
             return Number.NaN

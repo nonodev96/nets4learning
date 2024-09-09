@@ -72,11 +72,11 @@ export default function Datasets () {
       i18n        : 'datasets.download.dataset.1-linear-regression.auto-mpg',
     },
     {
-      title       : 'boston-housing/housing.csv',
-      url_download: 'boston-housing/housing.csv',
+      title       : 'housing-prices/housing.csv',
+      url_download: 'housing-prices/housing.csv',
       url_original: 'https://archive.ics.uci.edu/ml/datasets/Housing',
       size        : 506,
-      i18n        : 'datasets.download.dataset.1-linear-regression.boston',
+      i18n        : 'datasets.download.dataset.1-linear-regression.housing-prices',
     },
     {
       title       : 'breast-cancer/wdbc.csv',

@@ -23,7 +23,7 @@ There are some classical problems prepared and reviewed to make predictions, the
 2. Linear regression
    - [MODEL_1_SALARY.js](src/pages/playground/1_LinearRegression/models/MODEL_1_SALARY.js)
    - [MODEL_2_AUTO_MPG.js](src/pages/playground/1_LinearRegression/models/MODEL_2_AUTO_MPG.js)
-   - [MODEL_3_BOSTON_HOUSING.js](src/pages/playground/1_LinearRegression/models/MODEL_3_BOSTON_HOUSING.js)
+   - [MODEL_3_HOUSING_PRICES.js](src/pages/playground/1_LinearRegression/models/MODEL_3_HOUSING_PRICES.js)
    - [MODEL_4_BREAST_CANCER.js](src/pages/playground/1_LinearRegression/models/MODEL_4_BREAST_CANCER.js)
    - [MODEL_5_STUDENT_PERFORMANCE.js](src/pages/playground/1_LinearRegression/models/MODEL_5_STUDENT_PERFORMANCE.js) 
    - [MODEL_6_WINE.js](src/pages/playground/1_LinearRegression/models/MODEL_6_WINE.js) 

@@ -8,9 +8,12 @@ import { VERBOSE } from '@/CONSTANTS'
 export default function LinearRegressionPredictionDynamicForm ({ generatedModel, dynamicObject, handleChange_DynamicObject }) {
 
   const getColor = (column_name) => {
-    if (generatedModel.params_features.X_feature === column_name) {
+    if (generatedModel.params_features.X_features.has(column_name)) {
       return styles.border_blue
     }
+    // if (generatedModel.params_features.X_feature === column_name) {
+    //   return styles.border_blue
+    // }
     if (generatedModel.params_features.Y_target === column_name) {
       return styles.border_green
     }
@@ -18,9 +21,12 @@ export default function LinearRegressionPredictionDynamicForm ({ generatedModel,
   }
 
   const isDisabled = (column_name) => {
-    if (generatedModel.params_features.X_feature === column_name) {
+    if (generatedModel.params_features.X_features.has(column_name)) {
       return false
     }
+    // if (generatedModel.params_features.X_feature === column_name) {
+    //   return false
+    // }
     if (generatedModel.params_features.Y_target === column_name) {
       return true
     }

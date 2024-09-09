@@ -6,7 +6,7 @@ import {
 import {
   MODEL_1_SALARY,
   MODEL_2_AUTO_MPG,
-  MODEL_3_BOSTON_HOUSING,
+  MODEL_3_HOUSING_PRICES,
   MODEL_4_BREAST_CANCER,
   MODEL_5_STUDENT_PERFORMANCE,
   MODEL_6_WINE,
@@ -44,7 +44,7 @@ const TASK_MODEL_OPTIONS = {
   [TASKS.LINEAR_REGRESSION]: [
     { i18n: 'datasets-models.1-linear-regression.list-models.salary', value: MODEL_1_SALARY.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-models.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-models.boston-housing', value: MODEL_3_BOSTON_HOUSING.KEY },
+    { i18n: 'datasets-models.1-linear-regression.list-models.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-models.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
     // { i18n: 'datasets-models.1-linear-regression.list-models.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY, },
     { i18n: 'datasets-models.1-linear-regression.list-models.wine', value: MODEL_6_WINE.KEY },
@@ -71,7 +71,7 @@ const TASK_MODEL_OPTIONS_CLASS = {
   [TASKS.LINEAR_REGRESSION]: {
     [MODEL_1_SALARY.KEY]        : { _class_: MODEL_1_SALARY },
     [MODEL_2_AUTO_MPG.KEY]      : { _class_: MODEL_2_AUTO_MPG },
-    [MODEL_3_BOSTON_HOUSING.KEY]: { _class_: MODEL_3_BOSTON_HOUSING },
+    [MODEL_3_HOUSING_PRICES.KEY]: { _class_: MODEL_3_HOUSING_PRICES },
     [MODEL_4_BREAST_CANCER.KEY] : { _class_: MODEL_4_BREAST_CANCER },
     // [MODEL_5_STUDENT_PERFORMANCE.KEY]: { _class_: MODEL_5_STUDENT_PERFORMANCE, },
     [MODEL_6_WINE.KEY]          : { _class_: MODEL_6_WINE },
@@ -100,7 +100,7 @@ const TASK_DATASET_OPTIONS = {
     { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.boston-housing', value: MODEL_3_BOSTON_HOUSING.KEY },
+    { i18n: 'datasets-models.1-linear-regression.list-datasets.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
     // { i18n: 'datasets-models.1-linear-regression.list-datasets.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.wine', value: MODEL_6_WINE.KEY },
@@ -129,7 +129,7 @@ export {
   // Regresión lineal
   MODEL_1_SALARY,
   MODEL_2_AUTO_MPG,
-  MODEL_3_BOSTON_HOUSING,
+  MODEL_3_HOUSING_PRICES,
   MODEL_4_BREAST_CANCER,
   MODEL_5_STUDENT_PERFORMANCE,
   MODEL_6_WINE,

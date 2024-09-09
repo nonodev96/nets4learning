@@ -4,68 +4,102 @@ import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 import I_MODEL_LINEAR_REGRESSION from './_model'
 
-export default class MODEL_3_BOSTON_HOUSING extends I_MODEL_LINEAR_REGRESSION {
+export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
 
-  static KEY = 'BOSTON_HOUSING'
-  static URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
+  static KEY = 'HOUSING_PRICES'
+  static URL = 'https://www.kaggle.com/datasets/fedesoriano/california-housing-prices-data-extra-features'
 
-  URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
-  URL_MEDIUM = 'https://medium.com/@docintangible/racist-data-destruction-113e3eff54a8'
-  i18n_TITLE = 'datasets-models.1-linear-regression.boston-housing.title'
-  _KEY = 'BOSTON_HOUSING'
+  URL_CALIFORNIA = 'https://www.kaggle.com/datasets/fedesoriano/california-housing-prices-data-extra-features'
+
+  URL_BOSTON = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
+  URL_BOSTON_MEDIUM = 'https://medium.com/@docintangible/racist-data-destruction-113e3eff54a8'
+
+
+  i18n_TITLE = 'datasets-models.1-linear-regression.housing-prices.title'
+  _KEY = 'HOUSING_PRICES'
 
   DESCRIPTION () {
-    const prefix = 'datasets-models.1-linear-regression.boston-housing.description.'
+    const prefix = 'datasets-models.1-linear-regression.housing-prices.description.'
     return <>
       <p><Trans i18nKey={prefix + 'text.0'} /></p>
       <p><Trans i18nKey={prefix + 'text.1'} /></p>
       <p>
         <Trans i18nKey={prefix + 'link'}
                components={{
-                 link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                 link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
                }} />
       </p>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-1-input.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-input.title'} /></summary>
         <ol>
-          {Object.entries(this.t(prefix + 'details-1-input.list', { returnObjects: true, defaultValue: [] }))
+          {Object.entries(this.t(prefix + 'details-input.california.list', { returnObjects: true, defaultValue: [] }))
             .map((value, index) => {
-              return <li key={index}><Trans i18nKey={prefix + 'details-1-input.list.' + index} /></li>
-            })}        </ol>
+              return <li key={index}><Trans i18nKey={prefix + 'details-input.california.list.' + index} /></li>
+            })}        
+        </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-2-output.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-output.title'} /></summary>
         <ol>
-          {Object.entries(this.t(prefix + 'details-2-output.list', { returnObjects: true, defaultValue: [] }))
+          {Object.entries(this.t(prefix + 'details-output.california.list', { returnObjects: true, defaultValue: [] }))
             .map((value, index) => {
-              return <li key={index}><Trans i18nKey={prefix + 'details-2-output.list.' + index} /></li>
+              return <li key={index}><Trans i18nKey={prefix + 'details-output.california.list.' + index} /></li>
             })}
         </ol>
       </details>
       <details>
-        <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
+        <summary><Trans i18nKey={prefix + 'details-references.title'} /></summary>
         <ol>
           <li>
-            <Trans i18nKey={prefix + 'details-3-references.list.0'}
+            <Trans i18nKey={prefix + 'details-references.california.list.0'}
                    components={{
-                     link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+                     link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
                    }} />
           </li>
-          <li>
-            <Trans i18nKey={prefix + 'details-3-references.list.1'}
-                   components={{
-                     link1: <a href={this.URL_MEDIUM} target={'_blank'} rel="noreferrer">link</a>,
-                   }} />
-          </li>
+
         </ol>
       </details>
+      
+      <hr />
+
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-input.title'} /></summary>
+        <ol>
+          {Object.entries(this.t(prefix + 'details-input.boston.list', { returnObjects: true, defaultValue: [] }))
+            .map((value, index) => {
+              return <li key={index}><Trans i18nKey={prefix + 'details-input.boston.list.' + index} /></li>
+            })}        
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-output.title'} /></summary>
+        <ol>
+          {Object.entries(this.t(prefix + 'details-output.boston.list', { returnObjects: true, defaultValue: [] }))
+            .map((value, index) => {
+              return <li key={index}><Trans i18nKey={prefix + 'details-output.boston.list.' + index} /></li>
+            })}
+        </ol>
+      </details>
+      <details>
+        <summary><Trans i18nKey={prefix + 'details-references.title'} /></summary>
+        <ol>
+          <li>
+            <Trans i18nKey={prefix + 'details-references.boston.list.0'}
+                   components={{
+                     link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
+                   }} />
+          </li>
+
+        </ol>
+      </details>
+
     </>
   }
 
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/boston-housing/'
-    const dataset_info = 'housing.names'
-    const dataset_csv = 'housing.csv'
+    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/housing-prices/'
+    const dataset_info = 'boston-housing.names'
+    const dataset_csv = 'boston-housing.csv'
 
     const dataset_promise_info = await fetch(datasets_path + dataset_info)
     const dataset_container_info = await dataset_promise_info.text()

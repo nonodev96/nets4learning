@@ -93,25 +93,28 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
-    const path_dataset_1 = dataset_path + 'breast-cancer-wisconsin.names'
-    const path_dataset_2 = dataset_path + 'wdbc.names'
-    const path_dataset_3 = dataset_path + 'wpbc.names'
+    const path_dataset_1_info = dataset_path + 'breast-cancer-wisconsin.names'
+    const path_dataset_2_info = dataset_path + 'wdbc.names'
+    const path_dataset_3_info = dataset_path + 'wpbc.names'
+    const path_dataset_1_csv = dataset_path + 'breast-cancer-wisconsin.csv'
+    const path_dataset_2_csv = dataset_path + 'wdbc.csv'
+    const path_dataset_3_csv = dataset_path + 'wpbc.csv'
 
-    const [dataset_promise_info_1, dataset_promise_info_2, dataset_promise_info_3] = await Promise.all([
-      fetch(path_dataset_1),
-      fetch(path_dataset_2),
-      fetch(path_dataset_3),
+    const [dataset_promise_1_info, dataset_promise_2_info, dataset_promise_3_info] = await Promise.all([
+      fetch(path_dataset_1_info),
+      fetch(path_dataset_2_info),
+      fetch(path_dataset_3_info),
     ])
     
     const [dataset_container_info_1, dataset_container_info_2, dataset_container_info_3] = await Promise.all([
-      dataset_promise_info_1.text(),
-      dataset_promise_info_2.text(),
-      dataset_promise_info_3.text(),
-    ])
-    
+      dataset_promise_1_info.text(),
+      dataset_promise_2_info.text(),
+      dataset_promise_3_info.text(),
+    ])  
 
-    let dataframe_original_1 = await dfd.readCSV(path_dataset_1)
-    let dataframe_processed_1 = await dfd.readCSV(path_dataset_1)
+    let dataframe_original_1 = await dfd.readCSV(path_dataset_1_csv)
+    let dataframe_processed_1 = await dfd.readCSV(path_dataset_1_csv)
+
     const dataset_transforms_1 = [
       // { column_name: 'Bare Nuclei', column_transform: 'drop_?' },
       { column_name: 'Bare Nuclei', column_transform: 'replace_?_NaN' },
@@ -121,11 +124,11 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     dataframe_original_1 = DataFrameTransform(dataframe_original_1, dataset_transforms_1)
     dataframe_processed_1 = DataFrameTransform(dataframe_processed_1, dataset_transforms_1)
 
-    const dataframe_original_2 = await dfd.readCSV(path_dataset_2)
-    const dataframe_processed_2 = await dfd.readCSV(path_dataset_2)
+    const dataframe_original_2 = await dfd.readCSV(path_dataset_2_csv)
+    const dataframe_processed_2 = await dfd.readCSV(path_dataset_2_csv)
 
-    const dataframe_original_3 = await dfd.readCSV(path_dataset_3)
-    const dataframe_processed_3 = await dfd.readCSV(path_dataset_3)
+    const dataframe_original_3 = await dfd.readCSV(path_dataset_3_csv)
+    const dataframe_processed_3 = await dfd.readCSV(path_dataset_3_csv)
 
     return [
       {
