@@ -113,11 +113,16 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     }]
   }
 
-  async MODELS (_dataset) {
+  // TODO
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
-    return [
-      { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
-    ]
+    const models = {
+      'student-mat.csv': [
+        { model_path: path + '/0/lr-model-0.json', column_name_X: '', column_name_Y: '' },
+      ],
+      'student-por.csv': []
+    }
+    return models[dataset]
   }
 
   DEFAULT_LAYERS () {

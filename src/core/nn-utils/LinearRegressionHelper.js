@@ -1,6 +1,47 @@
 import * as tfjs from '@tensorflow/tfjs'
 
 export default class LinearRegressionHelper {
+
+  /**
+   *
+   * @param {Object[]} data
+   * @param X_feature
+   * @param Y_target
+   * @return {{inputMax: Tensor<Rank>, inputs: Tensor<Rank>, inputMin: Tensor<Rank>, labelMax: Tensor<Rank>, labelMin: Tensor<Rank>, labels: Tensor<Rank>}}
+   * @constructor
+   */
+  static ConvertToTensor (data, X_feature, Y_target) {
+    return tfjs.tidy(() => {
+      // Step 1. Shuffle the data
+      tfjs.util.shuffle(data)
+
+      // Step 2. Convert data to Tensor
+      const inputs = data.map(d => d[X_feature])
+      const labels = data.map(d => d[Y_target])
+
+      const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
+      const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
+
+      //Step 3. Normalize the data to the range 0 - 1 using min-max scaling
+      const inputMax = inputTensor.max()
+      const inputMin = inputTensor.min()
+      const labelMax = labelTensor.max()
+      const labelMin = labelTensor.min()
+
+      const normalizedInputs = inputTensor.sub(inputMin).div(inputMax.sub(inputMin))
+      const normalizedLabels = labelTensor.sub(labelMin).div(labelMax.sub(labelMin))
+
+      return {
+        inputs: normalizedInputs,
+        labels: normalizedLabels,
+        inputMax,
+        inputMin,
+        labelMax,
+        labelMin,
+      }
+    })
+  }
+
   static CREATE_OPTIMIZER (idOptimizer, params) {
     // if (!isProduction()) console.debug('>> createOptimizer', { idOptimizer, params })
     const defaultParams = {

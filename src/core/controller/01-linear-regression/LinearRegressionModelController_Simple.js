@@ -132,9 +132,10 @@ export default class LinearRegressionModelController_Simple {
         container_name: 'Training Performance',
       },
       visor: {
-        scatterplot     : true,
-        linechart       : true,
-        confusion_matrix: false,
+        scatterplot      : true,
+        linechart        : true,
+        confusion_matrix : false,
+        description_model: false
       },
       layers: {
         input : { units: 1, activation: 'linear', inputShape: [1] },
@@ -370,46 +371,6 @@ export default class LinearRegressionModelController_Simple {
     return model
   }
 
-  /**
-   *
-   * @param {Object[]} data
-   * @param X_feature
-   * @param Y_target
-   * @return {{inputMax: Tensor<Rank>, inputs: Tensor<Rank>, inputMin: Tensor<Rank>, labelMax: Tensor<Rank>, labelMin: Tensor<Rank>, labels: Tensor<Rank>}}
-   * @constructor
-   */
-  static ConvertToTensor (data, X_feature, Y_target) {
-    return tfjs.tidy(() => {
-      // Step 1. Shuffle the data
-      tfjs.util.shuffle(data)
-
-      // Step 2. Convert data to Tensor
-      const inputs = data.map(d => d[X_feature])
-      const labels = data.map(d => d[Y_target])
-
-      const inputTensor = tfjs.tensor2d(inputs, [inputs.length, 1])
-      const labelTensor = tfjs.tensor2d(labels, [labels.length, 1])
-
-      //Step 3. Normalize the data to the range 0 - 1 using min-max scaling
-      const inputMax = inputTensor.max()
-      const inputMin = inputTensor.min()
-      const labelMax = labelTensor.max()
-      const labelMin = labelTensor.min()
-
-      const normalizedInputs = inputTensor.sub(inputMin).div(inputMax.sub(inputMin))
-      const normalizedLabels = labelTensor.sub(labelMin).div(labelMax.sub(labelMin))
-
-      return {
-        inputs: normalizedInputs,
-        labels: normalizedLabels,
-        inputMax,
-        inputMin,
-        labelMax,
-        labelMin,
-      }
-    })
-  }
-
   async TrainModel (model, tensorData) {
     return await model.fit(tensorData.inputs, tensorData.labels, {
       batchSize      : this.config.fit.batchSize,
@@ -503,7 +464,7 @@ export default class LinearRegressionModelController_Simple {
   async run () {
     const data = await this.GetData()
     const model = await this.CreateModel()
-    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
+    const normalizationTensorData = LinearRegressionHelper.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
     await this.TrainModel(model, normalizationTensorData)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
     return { original, model, predicted, predictedLinear }
@@ -516,7 +477,7 @@ export default class LinearRegressionModelController_Simple {
    */
   async runModel (model) {
     const data = await this.GetData()
-    const normalizationTensorData = LinearRegressionModelController_Simple.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
+    const normalizationTensorData = LinearRegressionHelper.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
     const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
     return { original, model, predicted, predictedLinear }
   }

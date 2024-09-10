@@ -13,7 +13,8 @@ import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 
 import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
-import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
+// import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
+import LinearRegressionModelController_Multiple from '@core/controller/01-linear-regression/LinearRegressionModelController_Multiple'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
 import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
 import { UPLOAD } from '@/DATA_MODEL'
@@ -32,7 +33,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const [datasets_Index, setDatasets_Index] = useState(0)
   const [datasets_DataFrame, setDatasets_DataFrame] = useState(new dfd.DataFrame())
 
-  const [listModels, setListModels] = useState(/**@type []*/[])
+  const [listModels, setListModels] = useState([])
   const [listModels_Index, setListModels_Index] = useState('select-model')
   const [dataPlot, setDataPlot] = useState({ original: [], predicted: [], column_name_X: '', column_name_Y: '' })
 
@@ -62,6 +63,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   useEffect(() => {
     async function init () {
       if (datasets.length > 0) {
+        console.log({ datasets, datasets_Index, d: datasets[datasets_Index].csv})
         const _listModels = (await iModelInstance.current.MODELS(datasets[datasets_Index].csv))
         setListModels(_listModels)
       }
@@ -84,12 +86,19 @@ export default function ModelReviewLinearRegression ({ dataset }) {
       if (listModels_Index !== 'select-model' && listModels.length > 0) {
         const { model_path, column_name_X, column_name_Y } = listModels[listModels_Index]
         const model = await tfjs.loadLayersModel(model_path)
-        const linear = new LinearRegressionModelController_Simple(t)
+        
+        // const linear = new LinearRegressionModelController_Simple(t)
+        const linear = new LinearRegressionModelController_Multiple(t)
         linear.setDataFrame(datasets_DataFrame)
         linear.setFeatures({
-          X_feature  : column_name_X,
-          Y_target   : column_name_Y,
-          categorical: new Map()
+          // Mutltiple
+          X_features          : new Set([]),
+          // Simple
+          X_feature           : column_name_X,
+          // Target
+          Y_target            : column_name_Y,
+          categorical_count   : new Map(),
+          categorical_features: new Set()
         })
         linear.setVisor({
           description_model: false,
@@ -99,6 +108,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
         })
         const { original, predicted } = await linear.runModel(model)
 
+        console.log({ original, predicted })
         setDataPlot({
           original,
           predicted,
@@ -126,6 +136,8 @@ export default function ModelReviewLinearRegression ({ dataset }) {
     setListModels_Index(event.target.value)
   }
 
+  console.log({listModels_Index})
+
   if (VERBOSE) console.debug('render ModelReviewLinearRegression')
   return (
     <>
@@ -149,10 +161,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 <Card.Body>
                   <Form.Group className="mb-3" controlId="FormSelectDatasetOption">
                     <Form.Label><Trans i18nKey={'form.select-dataset.title'} /></Form.Label>
-                    <Form.Select aria-label={t('form.select-dataset.title')}
-                                 size={'sm'}
-                                 value={datasets_Index}
-                                 onChange={handleChange_Datasets_Index}>
+                    <Form.Select 
+                      aria-label={t('form.select-dataset.title')}
+                      size={'sm'}
+                      value={datasets_Index}
+                      onChange={handleChange_Datasets_Index}
+                    >
                       {datasets.map(({ csv }, index) => {
                         return (<option key={index} value={index}>{csv}</option>)
                       })}
@@ -178,10 +192,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                   <h2><Trans i18nKey={prefix + 'model-selector.title'} /></h2>
                   <div className={'d-flex'}>
                     <Form.Group controlId={'FormModelSelector_X'}>
-                      <Form.Select aria-label={'plot'}
-                                   size={'sm'}
-                                   value={listModels_Index}
-                                   onChange={handleChange_ListModels_Index}>
+                      <Form.Select 
+                        aria-label={'plot'}
+                        size={'sm'}
+                        value={listModels_Index}
+                        onChange={handleChange_ListModels_Index}
+                      >
                         <option value={'select-model'} disabled={true}><Trans i18nKey={prefix + 'model-selector.option'} /></option>
                         {listModels.map((value, index) => {
                           return <option key={index} value={index}>
@@ -194,40 +210,41 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 </Card.Header>
                 <Card.Body>
 
-                  <Plot ref={refPlotJS}
-                        data={[...(() => {
-                          const traceOriginal = {
-                            x      : dataPlot.original.map((v) => v.x),
-                            y      : dataPlot.original.map((v) => v.y),
-                            name   : t('{{X_feature}} x {{target}}', { X_feature: dataPlot.column_name_X, target: dataPlot.column_name_Y }),
-                            mode   : 'markers',
-                            type   : 'scatter',
-                            opacity: 1,
-                            marker : {
-                              color: 'blue'
-                            }
-                          }
-                          const tracePredicted = {
-                            x      : dataPlot.predicted.map((v) => v.x),
-                            y      : dataPlot.predicted.map((v) => v.y),
-                            name   : t('Predicted'),
-                            mode   : 'lines+markers',
-                            type   : 'scatter',
-                            opacity: 0.5,
-                            marker : {
-                              color: 'forestgreen'
-                            }
-                          }
-                          return [traceOriginal, tracePredicted]
-                        })()]}
-                        useResizeHandler={true}
-                        style={PLOTLY_CONFIG_DEFAULT.STYLES}
-                        layout={{
-                          ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
-                          title: '',
-                          // plot_bgcolor : 'rgb(33,37,41)',
-                          // paper_bgcolor: 'rgb(33,37,41)'
-                        }}
+                  <Plot
+                    ref={refPlotJS}
+                    data={[...(() => {
+                      const traceOriginal = {
+                        x      : dataPlot.original.map((v) => v.x),
+                        y      : dataPlot.original.map((v) => v.y),
+                        name   : t('{{X_feature}} x {{target}}', { X_feature: dataPlot.column_name_X, target: dataPlot.column_name_Y }),
+                        mode   : 'markers',
+                        type   : 'scatter',
+                        opacity: 0.5,
+                        marker : {
+                          color: 'blue'
+                        }
+                      }
+                      const tracePredicted = {
+                        x      : dataPlot.predicted.map((v) => v.x),
+                        y      : dataPlot.predicted.map((v) => v.y),
+                        name   : t('Predicted'),
+                        mode   : 'lines+markers',
+                        type   : 'scatter',
+                        opacity: 0.85,
+                        marker : {
+                          color: 'forestgreen'
+                        }
+                      }
+                      return [traceOriginal, tracePredicted]
+                    })()]}
+                    useResizeHandler={true}
+                    style={PLOTLY_CONFIG_DEFAULT.STYLES}
+                    layout={{
+                      ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
+                      title: '',
+                      // plot_bgcolor : 'rgb(33,37,41)',
+                      // paper_bgcolor: 'rgb(33,37,41)'
+                    }}
                   />
 
                 </Card.Body>

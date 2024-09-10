@@ -98,34 +98,57 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
 
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/housing-prices/'
-    const dataset_info = 'boston-housing.names'
-    const dataset_csv = 'boston-housing.csv'
 
-    const dataset_promise_info = await fetch(datasets_path + dataset_info)
-    const dataset_container_info = await dataset_promise_info.text()
-    
-    const dataframe_original = await dfd.readCSV(datasets_path + dataset_csv)
-    const dataframe_processed = await dfd.readCSV(datasets_path + dataset_csv)
+    const dataset_california_info = 'california-housing.names'
+    const dataset_california_csv = 'california-housing.csv'
+    const dataset_california_promise_info = await fetch(datasets_path + dataset_california_info)
+    const dataset_california_container_info = await dataset_california_promise_info.text()
+    const dataframe_california_original = await dfd.readCSV(datasets_path + dataset_california_csv)
+    const dataframe_california_processed = await dfd.readCSV(datasets_path + dataset_california_csv)
 
-    return [{
-      is_dataset_upload   : false,
-      is_dataset_processed: true,
-      path                : datasets_path,
-      csv                 : dataset_csv,
-      info                : dataset_info,
-      container_info      : dataset_container_info,
-      dataframe_original  : dataframe_original,
-      dataframe_processed : dataframe_processed,
-      dataset_transforms  : [],
-    }]
+    const dataset_boston_info = 'boston-housing.names'
+    const dataset_boston_csv = 'boston-housing.csv'
+    const dataset_boston_promise_info = await fetch(datasets_path + dataset_boston_info)
+    const dataset_boston_container_info = await dataset_boston_promise_info.text()
+    const dataframe_boston_original = await dfd.readCSV(datasets_path + dataset_boston_csv)
+    const dataframe_boston_processed = await dfd.readCSV(datasets_path + dataset_boston_csv)
+
+    return [
+      {
+        is_dataset_upload   : false,
+        is_dataset_processed: true,
+        path                : datasets_path,
+        csv                 : dataset_california_csv,
+        info                : dataset_california_info,
+        container_info      : dataset_california_container_info,
+        dataframe_original  : dataframe_california_original,
+        dataframe_processed : dataframe_california_processed,
+        dataset_transforms  : [],
+      },
+      {
+        is_dataset_upload   : false,
+        is_dataset_processed: true,
+        path                : datasets_path,
+        csv                 : dataset_boston_csv,
+        info                : dataset_boston_info,
+        container_info      : dataset_boston_container_info,
+        dataframe_original  : dataframe_boston_original,
+        dataframe_processed : dataframe_boston_processed,
+        dataset_transforms  : [],
+      }
+    ]
   }
 
-  async MODELS (_dataset) {
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/boston-housing'
-    return [
-      { model_path: path + '/0/lr-model-0.json', column_name_X: 'LSTAT', column_name_Y: 'MEDV',  },
-      { model_path: path + '/1/lr-model-1.json', column_name_X: 'RM',    column_name_Y: 'MEDV' },
-    ]
+    const models = {
+      'california-housing.csv': [],
+      'boston-housing.csv'    : [
+        { model_path: path + '/0/lr-model-0.json', column_name_X: 'LSTAT', column_name_Y: 'MEDV',  },
+        { model_path: path + '/1/lr-model-1.json', column_name_X: 'RM',    column_name_Y: 'MEDV' },
+      ]
+    }
+    return models[dataset]
   }
 
   LAYERS () {

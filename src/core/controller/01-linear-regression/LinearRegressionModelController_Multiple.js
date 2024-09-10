@@ -18,6 +18,7 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
 /**
  * @typedef  LRConfigFeatures_t
  * @property {Set<string>} X_features
+ * @property {string} X_feature
  * @property {string} Y_target
  * @property {Map<string, number>} categorical_count
  * @property {Set<string>} categorical_features
@@ -76,11 +77,20 @@ import LinearRegressionHelper from '@core/nn-utils/LinearRegressionHelper'
  */
 
 /**
+ * @typedef LRConfigVisor_t
+ * @property {boolean} scatterplot
+ * @property {boolean} linechart
+ * @property {boolean} confusion_matrix
+ * @property {boolean} description_model
+ */
+
+/**
  * @typedef  LRConfig_t
  * @property {LRConfigFit_t} fit
  * @property {LRConfigCompile_t} compile
  * @property {LRConfigFeatures_t} features
  * @property {LRConfigLayers_t} layers
+ * @property {LRConfigVisor_t} visor
  */
 
 /**
@@ -107,6 +117,7 @@ export default class LinearRegressionModelController {
     this.config = {
       features: {
         X_features          : new Set(),
+        X_feature           : '',
         Y_target            : '',
         categorical_count   : new Map(),
         categorical_features: new Set()
@@ -135,6 +146,12 @@ export default class LinearRegressionModelController {
         ],
         output: { units: 1, activation: 'linear' },
       },
+      visor: {
+        scatterplot      : true,
+        linechart        : true,
+        confusion_matrix : false,
+        description_model: false
+      }
     }
   }
 
@@ -151,11 +168,22 @@ export default class LinearRegressionModelController {
    * @param {LRConfigFeatures_t} features
    **/
   setFeatures (features) {
-    // this.config.features.X_feature = features.X_feature // Simple
     this.config.features.X_features = features.X_features // Multiple
+    this.config.features.X_feature = features.X_feature // Simple
     this.config.features.Y_target = features.Y_target
     this.config.features.categorical_count = features.categorical_count
     this.config.features.categorical_features = features.categorical_features
+  }
+
+  /**
+   *
+   * @param {LRConfigVisor_t} visor
+   **/
+  setVisor (visor) {
+    this.config.visor.description_model = visor.description_model ?? this.config.visor.description_model
+    this.config.visor.confusion_matrix = visor.confusion_matrix ?? this.config.visor.confusion_matrix
+    this.config.visor.linechart = visor.linechart ?? this.config.visor.linechart
+    this.config.visor.scatterplot = visor.scatterplot ?? this.config.visor.scatterplot
   }
 
   /**
@@ -218,7 +246,7 @@ export default class LinearRegressionModelController {
     if (!this.dataframe.columns.includes(this.config.features.Y_target)) throw Error(`The dataset need to contain a column named ${this.config.features.Y_target}`)
 
     const missingColumns = []
-    const X_list = Array.from(this.config.features.X_features)
+    const X_list = Array.from([this.config.features.X_feature])
     for (let i = 0; i < X_list.length; i++) {
       if (!this.dataframe.columns.includes(X_list[i])) {
         missingColumns.push(X_list[i])
@@ -231,7 +259,7 @@ export default class LinearRegressionModelController {
     ]
     const data = Array.from(JSON.parse(JSON.stringify(dfd.toJSON(this.dataframe.loc({ columns })))))
 
-    for (const feature of [...this.config.features.X_features]) {
+    for (const feature of [this.config.features.X_feature]) {
       let values = data.map((d) => ({
         x: d[feature],
         y: d[this.config.features.Y_target],
@@ -393,6 +421,71 @@ export default class LinearRegressionModelController {
 
   /**
    *
+   * @param {Sequential} model
+   * @param {Object[]} inputData
+   * @param {any} normalizationData
+   * @return {Promise<{original: Point_t[], predicted: Point_t[], predictedLinear: Point_t[]}>}
+   */
+  async TestModel (model, inputData, normalizationData) {
+    const { inputMax, inputMin, labelMin, labelMax } = normalizationData
+
+    // Crea un tensor xs que contiene 100 valores equidistantes en el rango de 0 a 1.
+    // Estos valores se utilizan como datos de entrada para hacer predicciones con un modelo de aprendizaje automático
+    // El modelo toma xs como entrada y produce un tensor preds que contiene las predicciones correspondientes.
+    const [xs, preds] = tfjs.tidy(() => {
+      const xs = tfjs.linspace(0, 1, 100)
+      const preds = model.predict(xs.reshape([100, 1]))
+      // Realiza una operación de desnormalización en los datos de entrada xs
+      const unNormXs = xs.mul(inputMax.sub(inputMin)).add(inputMin)
+      // Realiza una operación de desnormalización en las predicciones preds
+      const unNormPreds = preds.mul(labelMax.sub(labelMin)).add(labelMin)
+
+      return [unNormXs.dataSync(), unNormPreds.dataSync()]
+    })
+    const feature = this.config.features.X_feature
+    const Y_target = this.config.features.Y_target
+
+    /** @type {Point_t[]} */
+    const originalPoints = inputData.map(d => ({
+      x: d[this.config.features.X_feature],
+      y: d[this.config.features.Y_target],
+    }))
+
+    /** @type {Point_t[]} */
+    const predictedPoints = Array.from(xs).map((value, i) => ({
+      x: value,
+      y: preds[i]
+    }))
+
+    if (this.config.visor.scatterplot) {
+      await tfvis.render.scatterplot(
+        {
+          name: this.t('pages.playground.generator.visor.original-vs-predictions'),
+          tab : this.t('pages.playground.generator.visor.predictions')
+        },
+        {
+          values: [originalPoints, predictedPoints],
+          series: [
+            this.t('pages.playground.generator.visor.scatterplot.__feature____target__', { feature, target: Y_target }),
+            this.t('pages.playground.generator.visor.predicted'),
+          ]
+        },
+        {
+          xLabel: this.config.features.X_feature,
+          yLabel: this.config.features.Y_target,
+        }
+      )
+    }
+
+    return {
+      original       : originalPoints,
+      predicted      : predictedPoints,
+      predictedLinear: []
+    }
+  }
+
+  /**
+   *
    * TODO
    * El método no está probado completamente y puede fallar.
    *
@@ -418,4 +511,10 @@ export default class LinearRegressionModelController {
     return { original, predicted, model }
   }
 
+  async runModel (model) {
+    const data = await this.GetData()
+    const normalizationTensorData = LinearRegressionHelper.ConvertToTensor(data, this.config.features.X_feature, this.config.features.Y_target)
+    const { original, predicted, predictedLinear } = await this.TestModel(model, data, normalizationTensorData)
+    return { original, model, predicted, predictedLinear }
+  }
 }
