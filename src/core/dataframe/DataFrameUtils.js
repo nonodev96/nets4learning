@@ -18,6 +18,19 @@ export function columnsTimeSeriesValidForIndex (_dataFrameLocal, _columns) {
   })
 }
 
+/**
+ * 
+ * @param {dfd.DataFrame} _dataFrameLocal 
+ * @param {Array<string>} _columns 
+ * @returns {boolean}
+ */
+export function columnsScatterValidForIndex (_dataFrameLocal, _columns) {
+  return _columns.filter((column) => {
+    if (_dataFrameLocal.columns.includes(column)) return true
+    return false
+  })
+}
+
 export function isTimeSeriesDataFrameValidForIndex (_dataFrameLocal, _columns) {
   return columnsTimeSeriesValidForIndex(_dataFrameLocal, _columns).length > 0
 }

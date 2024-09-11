@@ -142,7 +142,10 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
             }
             break
           case E_PLOTS.SCATTER_PLOTS:
-            sub_df.plot(dataframe_plot_ID).scatter({ layout })
+            sub_df.plot(dataframe_plot_ID).scatter({ 
+              layout,
+              config: { x: dataframePlotConfig.SCATTER_PLOTS.config.x, y: dataframePlotConfig.SCATTER_PLOTS.config.y }
+            })
             break
           case E_PLOTS.TIME_SERIES_PLOTS:
             // TODO
@@ -280,6 +283,6 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
 
     {/*<DebugJSON obj={dataframePlotConfig} />*/}
     <DataFramePlotModalDescription />
-    <DataFramePlotModalConfiguration />
+    <DataFramePlotModalConfiguration updateUI={updateUI} />
   </>
 }

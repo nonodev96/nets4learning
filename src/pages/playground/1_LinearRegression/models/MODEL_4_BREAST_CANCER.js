@@ -9,10 +9,12 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'BREAST_CANCER'
   static URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
-  static URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
+  static URL_2 = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  static URL_3 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
 
   URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
-  URL_2 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
+  URL_2 = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  URL_3 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
   URL_IMAGE = 'https://www.cs.wisc.edu/~street/images/'
 
   i18n_TITLE = 'datasets-models.1-linear-regression.breast-cancer.title'
@@ -23,16 +25,22 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     return <>
       <p><Trans i18nKey={prefix + 'text.0'} /></p>
       <p><Trans i18nKey={prefix + 'text.1'} /></p>
-      <p><Trans i18nKey={prefix + 'text.2'}
-                components={{
-                  link1: <a href={this.URL_IMAGE} target={'_blank'} rel="noreferrer">link</a>,
-                }} /></p>
+      <p>
+        <Trans 
+          i18nKey={prefix + 'text.2'}
+          components={{
+            link1: <a href={this.URL_IMAGE} target={'_blank'} rel="noreferrer">link</a>,
+          }} 
+          />
+      </p>
       <p><Trans i18nKey={prefix + 'text.3'} /></p>
       <p>
-        <Trans i18nKey={prefix + 'link'}
-               components={{
-                 link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
-               }} />
+        <Trans 
+          i18nKey={prefix + 'link'}
+          components={{
+            link1: <a href={this.URL} target={'_blank'} rel="noreferrer">link</a>,
+          }} 
+          />
       </p>
       <details>
         <summary><Trans i18nKey={prefix + 'details-1-input.title'} /></summary>
@@ -55,14 +63,22 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
       <details>
         <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
         <ol>
-          <li><Trans i18nKey={prefix + 'details-3-references.list.0'}
-                     components={{
-                       link1: <a href={this.URL} target={'_blank'} rel={'noreferrer'}>TEXT</a>
-                     }} /></li>
-          <li><Trans i18nKey={prefix + 'details-3-references.list.1'}
-                     components={{
-                       link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
-                     }} /></li>
+          <li>
+            <Trans 
+              i18nKey={prefix + 'details-3-references.list.0'}
+              components={{
+                link1: <a href={this.URL} target={'_blank'} rel={'noreferrer'}>TEXT</a>
+              }} 
+            />
+          </li>
+          <li>
+            <Trans
+              i18nKey={prefix + 'details-3-references.list.1'}
+              components={{
+                link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
+              }} 
+              />
+          </li>
         </ol>
       </details>
       <details>

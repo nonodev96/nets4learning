@@ -24,7 +24,7 @@ export const LIST_PLOTS = Object.entries(E_PLOTS).map(([_key, value]) => value)
  * @property {any} HISTOGRAMS
  * @property {any} LINE_CHARTS
  * @property {{config: {labels: string}}} PIE_CHARTS
- * @property {any} SCATTER_PLOTS
+ * @property {{config: {x: string, y: string}}} SCATTER_PLOTS
  * @property {{config: {index: string}}} TIME_SERIES_PLOTS
  * @property {any} VIOLIN_PLOTS
  * @property {{config: {x: string, y: string}}} _DEFAULT_
@@ -44,7 +44,7 @@ export const DEFAULT_DATAFRAME_PLOT_CONFIG = {
   HISTOGRAMS             : {},
   LINE_CHARTS            : {},
   PIE_CHARTS             : { config: { labels: '' } },
-  SCATTER_PLOTS          : {},
+  SCATTER_PLOTS          : { config: { x: '', y: '' }},
   TIME_SERIES_PLOTS      : { config: { index: '' } },
   VIOLIN_PLOTS           : {},
   _DEFAULT_              : { config: { x: '', y: '' } }

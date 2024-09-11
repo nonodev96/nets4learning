@@ -1,4 +1,5 @@
 import React, { useState, useId, useEffect } from 'react'
+import { flushSync  } from 'react-dom'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
@@ -56,6 +57,7 @@ export default function PreProcessDataFrame(props) {
   const [listColumnNameTransformations, setListColumnNameTransformations] = useState([])
   const [columnNameTarget, setColumnNameTarget] = useState('')
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
   const [typeScaler, setTypeScaler] = useState('min-max-scaler')
   
@@ -136,34 +138,45 @@ export default function PreProcessDataFrame(props) {
     )
   }
 
-
-  const handleSubmit_ProcessDataFrame = async (event) => {
-    event.preventDefault()
-
+  const exec = async () => {
+    console.log('exec ')
     let dataframe_processed = DataFrameDeepCopy(dataFrameOriginal)
     dataframe_processed = DataFrameTransform(dataframe_processed, listColumnNameTransformations)
-    console.log({dataframe_processed})
-
+    
     dataframe_processed
-      .plot(plotDataFrameProcessedID)
-      .table({ 
-        config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, listColumnNameTransformations, columnNameTarget),
-        layout: {
-          title: t('dataframe-processed'),
-        },
-      })
-
-    setDataFrameProcessed(dataframe_processed)
-    setIsDataFrameProcessed(true)
-    setShowDetails(() => {
-      return {
+    .plot(plotDataFrameProcessedID)
+    .table({ 
+      config: F_TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2(dataframe_processed.columns, listColumnNameTransformations, columnNameTarget),
+      layout: {
+        title: t('dataframe-processed'),
+      },
+    })
+    flushSync(() => {
+      setDataFrameProcessed(dataframe_processed)
+      setIsDataFrameProcessed(true)
+      setShowDetails((prevState) => ({
+        ...prevState,
         show_dataframe_original : false,
         show_dataframe_form     : false,
         show_dataframe_processed: true,
-      }
+      }))
     })
+  }
 
+  const handleSubmit_ProcessDataFrame = async (event) => {
+    event.preventDefault()
+    setIsButtonDisabled(() => {
+      return true
+    })
+    
+    // Simula un delay de 2 segundos
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await exec()
     await AlertHelper.alertSuccess(t('preprocessing.title'), { text: t('alert.success') })
+
+    setIsButtonDisabled(() => {
+      return false
+    })
   }
 
   if (VERBOSE) console.log('render PreProcessDataFrame')
@@ -271,7 +284,9 @@ export default function PreProcessDataFrame(props) {
             <Row>
               <Col>
                 <div className="d-grid gap-2">
-                  <Button type="submit" className="mt-3">
+                  <Button type="submit" 
+                          disabled={isButtonDisabled}
+                          className="mt-3">
                     <Trans i18nKey={prefix + 'submit'} />
                   </Button>
                 </div>
