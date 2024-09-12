@@ -51,6 +51,7 @@
     "jszip": "^3.10.1",
     "jszip-utils": "^0.1.0",
     "mathjs": "^11.9.1",
+    "ml-regression-multivariate-linear": "^2.0.4",
     "mnist": "^1.1.0",
     "npyjs": "^0.5.0",
     "npyz": "^0.4.2",

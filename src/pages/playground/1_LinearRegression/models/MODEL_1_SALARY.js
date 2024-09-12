@@ -66,6 +66,15 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_transforms = []
     const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + dataset_csv), dataframe_transforms)
     // dataframe_processed_1.print()
+    
+    const column_name_target = 'Salary'
+    const dataframe_X = dataframe_processed_1.drop({ columns: [column_name_target] })
+    const dataframe_y = dataframe_original_1[column_name_target]
+
+    const scaler = new dfd.MinMaxScaler()
+    scaler.fit(dataframe_X)
+    const X = scaler.transform(dataframe_X)
+    const y = dataframe_y
 
     return [{
       is_dataset_upload   : false,
@@ -77,6 +86,13 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
       dataframe_original  : dataframe_original_1,
       dataframe_processed : dataframe_processed_1,
       dataframe_transforms: dataframe_transforms,
+      data_processed      : {
+        scaler            : scaler,
+        X                 : X,
+        y                 : y,
+        missing_values    : false,
+        column_name_target: column_name_target,
+      }
     }]
   }
 

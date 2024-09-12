@@ -7,7 +7,7 @@ import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/Archi
 sk.setBackend(dfd.tensorflow)
 
 /**
- * @typedef {Object} CustomDatasetParams_t
+ * @typedef {Object} CustomTabularClassification_DatasetParams_t
  * @property {DatasetProcessed_t} dataset_processed
  * @property {Array} layerList
  * @property {number} learningRate
@@ -20,7 +20,7 @@ sk.setBackend(dfd.tensorflow)
 
 /**
  *
- * @param {CustomDatasetParams_t} params
+ * @param {CustomTabularClassification_DatasetParams_t} params
  * @returns {Promise<tf.Sequential>}
  */
 export async function createTabularClassificationCustomModel (params) {

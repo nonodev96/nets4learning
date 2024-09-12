@@ -319,8 +319,8 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
         path                : dataset_path,
         info                : 'lymphography.names',
         csv                 : 'lymphography.csv',
-        dataframe_original  : dataframe_original,
         dataset_transforms  : dataset_transforms,
+        dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         data_processed      : {
           X                 : X,
