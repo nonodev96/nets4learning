@@ -113,7 +113,7 @@ export default function TestPageEasy () {
     const generateDataset = (numSamples) => {
       const sizes = Array.from(
         { length: numSamples },
-        (_v, i) => i * 3000 + 500
+        (_v, i) => i + 500
       )
       const bedrooms = Array.from(
         { length: numSamples },
@@ -121,15 +121,15 @@ export default function TestPageEasy () {
       )
       const distances = Array.from(
         { length: numSamples },
-        (_v, i) => i * 20
+        (_v, i) => i + 20
       )
 
       const prices = sizes.map(
         (size, i) =>
-          1000 * size +
-          20000 * bedrooms[i] -
-          1000 * distances[i] +
-          i * 10000
+          size +
+          bedrooms[i] -
+          distances[i] +
+          i 
       )
 
       return { sizes, bedrooms, distances, prices }
@@ -154,22 +154,34 @@ export default function TestPageEasy () {
     model.add(tfjs.layers.dense({ activation: 'relu', units: 32 }))
     model.add(tfjs.layers.dense({ activation: 'relu', units: 16 }))
     model.add(tfjs.layers.dense({ activation: 'relu', units: 8 }))
-    model.add(tfjs.layers.dense({ activation: 'relu', units: 1 }))
+    model.add(tfjs.layers.dense({ activation: 'linear', units: 1 }))
 
     model.compile({ optimizer: 'adam', loss: 'meanSquaredError' })
+
+    await tfvis.show.modelSummary({
+      name: 'Model Summary',
+      tab : 'Example 2',
+    }, model)
 
     // Training
     await model.fit(xs, ys, {
       epochs   : 10, 
       callbacks: tfvis.show.fitCallbacks(
-        { name: 'Training Performance' },
-        ['loss', 'mse'],
-        { height: 200, callbacks: ['onEpochEnd', 'onBatchEnd'] }
+        { 
+          name: 'Training Performance' ,
+          tab : 'Example 2',
+        },
+        ['loss', 'val_loss', 'acc', 'val_acc'],
+        { 
+          height   : 200, 
+          callbacks: ['onEpochEnd', 'onBatchEnd'] 
+        }
       )
      })
     // Model is trained
     // You can use the trained model to make predictions
-    const newHouseFeatures = tfjs.tensor2d([[1500, 3, 10]])
+    const to_predict_size_bedroom_distance = [500, 1, 0]
+    const newHouseFeatures = tfjs.tensor2d([to_predict_size_bedroom_distance])
     const prediction = model.predict(newHouseFeatures)
     console.log('Predicted Price:', prediction.dataSync()[0])
   }
@@ -190,12 +202,19 @@ export default function TestPageEasy () {
       layerList        : [
         {units: 64, activation: 'relu'},
         {units: 32, activation: 'relu'},
-        {units: 16, activation: 'relu'}
+        {units: 16, activation: 'relu'},
+        {units: 8, activation: 'relu'},
+        {units: 4, activation: 'relu'},
+        {units: 2, activation: 'relu'},
+        {units: 1, activation: 'relu'},
       ],
 
     })
 
     console.log({ model })
+
+    const years = 7.1
+    console.log({ p: model.predict( tfjs.tensor2d([[years]])).dataSync() })
   }
 
   if (VERBOSE) console.debug('render TestPageEasy')

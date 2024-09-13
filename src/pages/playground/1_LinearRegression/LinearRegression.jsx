@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 import { useHistory, Link } from 'react-router-dom'
-import { Trans, useSSR, useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 

@@ -96,24 +96,29 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
 
     
-    return [{
-      is_dataset_upload   : false,
-      is_dataset_processed: true,
-      path                : dataset_path,
-      csv                 : dataset_csv,
-      info                : dataset_info,
-      container_info      : dataset_container_info,
-      dataframe_original  : dataframe_original_1,
-      dataframe_processed : dataframe_processed_1,
-      dataset_transforms  : [],
-    }]
+    return [
+      {
+        is_dataset_upload   : false,
+        is_dataset_processed: true,
+        path                : dataset_path,
+        csv                 : dataset_csv,
+        info                : dataset_info,
+        container_info      : dataset_container_info,
+        dataframe_original  : dataframe_original_1,
+        dataframe_processed : dataframe_processed_1,
+        dataset_transforms  : [],
+      }
+    ]
   }
 
-  async MODELS (_dataset) {
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/auto-mpg'
-    return [
-      { model_path: path + '/0/lr-model-0.json', column_name_X: 'horsepower', column_name_Y: 'mpg' },
-    ]
+    const models = {
+      'auto-mpg.csv': [
+        { model_path: path + '/0/lr-model-0.json', column_name_X: 'horsepower', column_name_Y: 'mpg' },
+      ]
+    }
+    return models[dataset]
   }
 
   LAYERS () {
@@ -133,8 +138,8 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const model = tfjs.sequential()
     model.compile({
       optimizer: tfjs.train.rmsprop(0.01),
-      loss     : 'mean_squared_error',
-      metrics  : ['mean_squared_error', 'mean_absolute_error']
+      loss     : 'meanSquaredError',
+      metrics  : ['meanSquaredError', 'meanAbsoluteError']
     })
     return model
   }

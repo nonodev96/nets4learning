@@ -76,39 +76,44 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const X = scaler.transform(dataframe_X)
     const y = dataframe_y
 
-    return [{
-      is_dataset_upload   : false,
-      is_dataset_processed: true,
-      path                : dataset_path,
-      info                : dataset_info,
-      csv                 : dataset_csv,
-      container_info      : dataset_container_info,
-      dataframe_original  : dataframe_original_1,
-      dataframe_processed : dataframe_processed_1,
-      dataframe_transforms: dataframe_transforms,
-      data_processed      : {
-        scaler            : scaler,
-        X                 : X,
-        y                 : y,
-        missing_values    : false,
-        column_name_target: column_name_target,
+    return [
+      {
+        is_dataset_upload   : false,
+        is_dataset_processed: true,
+        path                : dataset_path,
+        info                : dataset_info,
+        csv                 : dataset_csv,
+        container_info      : dataset_container_info,
+        dataframe_original  : dataframe_original_1,
+        dataframe_processed : dataframe_processed_1,
+        dataframe_transforms: dataframe_transforms,
+        data_processed      : {
+          scaler            : scaler,
+          X                 : X,
+          y                 : y,
+          missing_values    : false,
+          column_name_target: column_name_target,
+        }
       }
-    }]
+    ]
   }
 
-  async MODELS (_dataset) {
+  async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
-    return [
-      { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
-    ]
+    const models = {
+      'salary.csv': [
+        { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
+      ]
+    }
+    return models[dataset]
   }
 
   COMPILE () {
     const model = tfjs.sequential()
     model.compile({
       optimizer: tfjs.train.rmsprop(0.01),
-      loss     : 'mean_squared_error',
-      metrics  : ['mean_squared_error', 'mean_absolute_error']
+      loss     : 'meanSquaredError',
+      metrics  : ['meanSquaredError', 'meanAbsoluteError']
     })
     return model
   }
@@ -125,7 +130,12 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
   DEFAULT_LAYERS () {
     return [
       { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 32, activation: 'relu' },
+      { is_disabled: false, units: 16, activation: 'relu' },
+      { is_disabled: false, units: 8,  activation: 'relu' },
+      { is_disabled: false, units: 4,  activation: 'relu' },
+      { is_disabled: false, units: 2,  activation: 'relu' },
+      // { is_disabled: false, units: 1,  activation: 'relu' },
       { is_disabled: true,  units: 1,  activation: 'linear' }
     ]
   }

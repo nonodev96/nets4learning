@@ -15,7 +15,7 @@ import * as tf from '@tensorflow/tfjs'
  *
  *
  * @param idOptimizer
- * @param params
+ * @param {{ idOptimizer: number, momentum: number }} params
  * @returns {Optimizer_t} optimizador
  */
 export function createOptimizer (idOptimizer, params) {

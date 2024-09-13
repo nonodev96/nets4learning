@@ -10,7 +10,7 @@ sk.setBackend(dfd.tensorflow)
  * @typedef {Object} CustomLinearRegression_DatasetParams_t
  * @property {DatasetProcessed_t} dataset_processed
  * @property {Array} layerList
- * @property {number} learningRate
+ * @property {number} learningRate Rango [0 - 1]
  * @property {number} testSize
  * @property {number} numberOfEpoch
  * @property {string} idOptimizer
@@ -67,16 +67,22 @@ export async function createLinearRegressionCustomModel (params) {
 
   await tfvis.show.modelSummary({
     name: 'Model Summary',
-    tab : 'Model Summary',
+    tab : 'Example 3',
   }, model)
 
   
   const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
   const fit_callbacks_container = {
     name: 'Training',
-    tab : 'Training',
+    tab : 'Example 3',
   }
-  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: ['onBatchEnd', 'onEpochEnd'] })
+
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { 
+    callbacks: [
+      'onBatchEnd',
+      'onEpochEnd'
+    ] 
+  })
   await model.fit(XTrain_tensor, yTrain_tensor, {
     batchSize     : 32,
     shuffle       : true,

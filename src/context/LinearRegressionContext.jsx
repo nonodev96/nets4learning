@@ -1,7 +1,7 @@
 import React from 'react'
 import { createContext, useState } from 'react'
 import { Sequential } from '@tensorflow/tfjs'
-import { DataFrame } from 'danfojs'
+import * as _dfd from 'danfojs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
 
@@ -18,8 +18,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {string} csv
  * @property {string} info
  * @property {string} path
- * @property {DataFrame} dataframe_original
- * @property {DataFrame} dataframe_processed
+ * @property {_dfd.DataFrame} dataframe_original
+ * @property {_dfd.DataFrame} dataframe_processed
  * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
  */
 
@@ -86,13 +86,13 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @typedef CustomDatasetLocal_t
  * @property {boolean} is_dataset_upload
  * @property {boolean} is_dataset_processed
- * @property {DataFrame} dataframe_original
- * @property {DataFrame} dataframe_processed
+ * @property {_dfd.DataFrame} dataframe_original
+ * @property {_dfd.DataFrame} dataframe_processed
  * @property {string} container_info
  */
 
 /**
- * @typedef {CustomModel_t & CustomParams_t & {dataframe: DataFrame}} CustomModelGenerated_t
+ * @typedef {CustomModel_t & CustomParams_t & {dataframe: _dfd.DataFrame}} CustomModelGenerated_t
  */
 
 /**

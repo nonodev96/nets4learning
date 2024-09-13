@@ -178,8 +178,8 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     const model = tfjs.sequential()
     model.compile({
       optimizer: tfjs.train.rmsprop(0.01),
-      loss     : 'mean_squared_error',
-      metrics  : ['mean_squared_error', 'mean_absolute_error']
+      loss     : 'meanSquaredError',
+      metrics  : ['meanSquaredError', 'meanAbsoluteError']
     })
     return model
   }
