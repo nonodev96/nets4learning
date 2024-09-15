@@ -16,4 +16,6 @@
     "conventionalCommits.scopes": [
       "LinearRegression"
     ],
+    "CodeGPT.apiKey": "Ollama",
+    "CodeGPT.Autocomplete.maxTokens": 496,
 }

@@ -3,16 +3,18 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import * as _Type from '@core/types'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'HOUSING_PRICES'
   static URL = 'https://www.kaggle.com/datasets/fedesoriano/california-housing-prices-data-extra-features'
 
-  URL_CALIFORNIA = 'https://www.kaggle.com/datasets/fedesoriano/california-housing-prices-data-extra-features'
+  CALIFORNIA_URL = 'https://www.kaggle.com/datasets/fedesoriano/california-housing-prices-data-extra-features'
 
-  URL_BOSTON = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
-  URL_BOSTON_MEDIUM = 'https://medium.com/@docintangible/racist-data-destruction-113e3eff54a8'
+  BOSTON_URL = 'https://www.cs.toronto.edu/~delve/data/boston/bostonDetail.html'
+  BOSTON_URL_MEDIUM = 'https://medium.com/@docintangible/racist-data-destruction-113e3eff54a8'
 
 
   i18n_TITLE = 'datasets-models.1-linear-regression.housing-prices.title'
@@ -26,7 +28,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       <p>
         <Trans i18nKey={prefix + 'link'}
                components={{
-                 link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
+                 link1: <a href={this.CALIFORNIA_URL} target={'_blank'} rel="noreferrer">link</a>,
                }} />
       </p>
       <details>
@@ -53,7 +55,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
           <li>
             <Trans i18nKey={prefix + 'details-references.california.list.0'}
                    components={{
-                     link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
+                     link1: <a href={this.CALIFORNIA_URL} target={'_blank'} rel="noreferrer">link</a>,
                    }} />
           </li>
 
@@ -86,7 +88,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
           <li>
             <Trans i18nKey={prefix + 'details-references.boston.list.0'}
                    components={{
-                     link1: <a href={this.URL_CALIFORNIA} target={'_blank'} rel="noreferrer">link</a>,
+                     link1: <a href={this.CALIFORNIA_URL} target={'_blank'} rel="noreferrer">link</a>,
                    }} />
           </li>
 
@@ -96,45 +98,122 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/housing-prices/'
+    
+    const california_dataset_info = 'california-housing.names'
+    const california_dataset_csv = 'california-housing.csv'
+    const california_dataset_promise_info = await fetch(datasets_path + california_dataset_info)
+    const california_dataset_container_info = await california_dataset_promise_info.text()
+    let california_dataframe_original = await dfd.readCSV(datasets_path + california_dataset_csv)
+    let california_dataframe_processed = await dfd.readCSV(datasets_path + california_dataset_csv)
+    
+    const california_dataset_encoder = [
+      // {  column_transform: 'label-encoder', column_name: 'Tot_Rooms' },
+      // {  column_transform: 'label-encoder', column_name: 'Tot_Bedrooms' },
+      // {  column_transform: 'label-encoder', column_name: 'Population' },
+      // {  column_transform: 'label-encoder', column_name: 'Households' },
+    ]
+    
+    const california_dataset_transforms = [
+      // { column_transform: 'label-encoder', column_name: 'Tot_Rooms' },
+      // { column_transform: 'label-encoder', column_name: 'Tot_Bedrooms' },
+      // { column_transform: 'label-encoder', column_name: 'Population' },
+      // { column_transform: 'label-encoder', column_name: 'Households' },
+      // { column_transform: 'drop', column_name: 'Latitude' },
+      // { column_transform: 'drop', column_name: 'Longitude' },
+      { column_transform: 'drop', column_name: 'Distance_to_coast' },
+      { column_transform: 'drop', column_name: 'Distance_to_LA' },
+      { column_transform: 'drop', column_name: 'Distance_to_SanDiego' },
+      { column_transform: 'drop', column_name: 'Distance_to_SanJose' },
+      { column_transform: 'drop', column_name: 'Distance_to_SanFrancisco' },
+    ]
+    const california_column_name_target = 'Median_House_Value'
+    
+    const california_encoders_map = DataFrameUtils.DataFrameEncoder(california_dataframe_processed, california_dataset_encoder)
+    california_dataframe_processed = DataFrameUtils.DataFrameTransform(california_dataframe_processed, california_dataset_transforms)
+    
+    const california_dataframe_X = california_dataframe_processed.drop({ columns: [california_column_name_target] })
+    const california_dataframe_y = california_dataframe_original[california_column_name_target]
 
-    const dataset_california_info = 'california-housing.names'
-    const dataset_california_csv = 'california-housing.csv'
-    const dataset_california_promise_info = await fetch(datasets_path + dataset_california_info)
-    const dataset_california_container_info = await dataset_california_promise_info.text()
-    const dataframe_california_original = await dfd.readCSV(datasets_path + dataset_california_csv)
-    const dataframe_california_processed = await dfd.readCSV(datasets_path + dataset_california_csv)
+    const california_scaler = new dfd.StandardScaler()
+    california_scaler.fit(california_dataframe_X)
+    const c_X = california_scaler.transform(california_dataframe_X)
+    const c_y = california_dataframe_y
 
-    const dataset_boston_info = 'boston-housing.names'
-    const dataset_boston_csv = 'boston-housing.csv'
-    const dataset_boston_promise_info = await fetch(datasets_path + dataset_boston_info)
-    const dataset_boston_container_info = await dataset_boston_promise_info.text()
-    const dataframe_boston_original = await dfd.readCSV(datasets_path + dataset_boston_csv)
-    const dataframe_boston_processed = await dfd.readCSV(datasets_path + dataset_boston_csv)
+    // ------------------------
+
+        
+    const boston_dataset_info = 'boston-housing.names'
+    const boston_dataset_csv = 'boston-housing.csv'
+    const boston_dataset_promise_info = await fetch(datasets_path + boston_dataset_info)
+    const boston_dataset_container_info = await boston_dataset_promise_info.text()
+    let boston_dataframe_original = await dfd.readCSV(datasets_path + boston_dataset_csv)
+    let boston_dataframe_processed = await dfd.readCSV(datasets_path + boston_dataset_csv)
+
+
+    
+    const boston_dataset_encoder = [
+      {  column_transform: 'label-encoder', column_name: 'CHAS' },
+    ]
+    const boston_dataset_transforms = [
+      { column_transform: 'drop', column_name: 'B' },
+    ]
+    const boston_column_name_target = 'MEDV'
+    
+    const boston_encoders_map = DataFrameUtils.DataFrameEncoder(boston_dataframe_processed, boston_dataset_encoder)
+    boston_dataframe_processed = DataFrameUtils.DataFrameTransform(boston_dataframe_processed, boston_dataset_transforms)
+    
+    const boston_dataframe_X = boston_dataframe_processed.drop({ columns: [boston_column_name_target] })
+    const boston_dataframe_y = boston_dataframe_original[boston_column_name_target]
+
+    const boston_scaler = new dfd.StandardScaler()
+    boston_scaler.fit(boston_dataframe_X)
+    const b_X = boston_scaler.transform(boston_dataframe_X)
+    const b_y = boston_dataframe_y
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : datasets_path,
-        csv                 : dataset_california_csv,
-        info                : dataset_california_info,
-        container_info      : dataset_california_container_info,
-        dataframe_original  : dataframe_california_original,
-        dataframe_processed : dataframe_california_processed,
+        csv                 : california_dataset_csv,
+        info                : california_dataset_info,
+        container_info      : california_dataset_container_info,
+        dataframe_original  : california_dataframe_original,
+        dataframe_processed : california_dataframe_processed,
         dataset_transforms  : [],
+        data_processed      : {
+          missing_values    : false,
+          scaler            : california_scaler,
+          encoders          : california_encoders_map,
+          X                 : c_X,
+          y                 : c_y,
+          column_name_target: california_column_name_target,
+        }
       },
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : datasets_path,
-        csv                 : dataset_boston_csv,
-        info                : dataset_boston_info,
-        container_info      : dataset_boston_container_info,
-        dataframe_original  : dataframe_boston_original,
-        dataframe_processed : dataframe_boston_processed,
+        csv                 : boston_dataset_csv,
+        info                : boston_dataset_info,
+        container_info      : boston_dataset_container_info,
+        dataframe_original  : boston_dataframe_original,
+        dataframe_processed : boston_dataframe_processed,
         dataset_transforms  : [],
+        data_processed      : {
+          missing_values    : false,
+          scaler            : boston_scaler,
+          encoders          : boston_encoders_map,
+          X                 : c_X,
+          y                 : c_y,
+          column_name_target: boston_column_name_target,
+        }
       }
     ]
   }

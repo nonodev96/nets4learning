@@ -6,13 +6,14 @@ import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tfjs from '@tensorflow/tfjs'
 import MLR from 'ml-regression-multivariate-linear'
 
-import * as LinearRegressionModelExample from '@core/controller/01-linear-regression/LinearRegressionModelExample'
 import { VERBOSE } from '@/CONSTANTS'
 import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import AlertHelper from '@utils/alertHelper'
 import TestComponentEasy from '@components/TestComponentEasy'
-import { MODEL_1_SALARY } from '@/DATA_MODEL'
+import { MODEL_1_SALARY, MODEL_2_AUTO_MPG, MODEL_3_HOUSING_PRICES } from '@/DATA_MODEL'
 import { createLinearRegressionCustomModel } from '@/core/controller/01-linear-regression/LinearRegressionModelController'
+import * as LinearRegressionModelExample from '@core/controller/01-linear-regression/LinearRegressionModelExample'
+import { X } from 'react-bootstrap-icons'
 
 export default function TestPageEasy () {
 
@@ -43,7 +44,7 @@ export default function TestPageEasy () {
 
     const newPrediction_group = [
       {
-        name  : columns.x_name,
+        name  : columns.X.join(','),
         x     : original_x,
         y     : original_y,
         type  : 'scatter',
@@ -51,7 +52,7 @@ export default function TestPageEasy () {
         marker: { color: 'blue' },
       },
       {
-        name  : columns.y_name,
+        name  : columns.Y,
         x     : predicted_x,
         y     : predicted_y,
         type  : 'scatter',
@@ -85,27 +86,49 @@ export default function TestPageEasy () {
   }
   
   const handleClick_TFJSMultiple = async () =>{
-    // // Sample data: let's assume X1, X2 are independent variables and Y is the dependent variable.
+    // Sample data: let's assume X1, X2 are independent variables and Y is the dependent variable.
     // const X1 = [1, 2, 3, 4]
     // const X2 = [2, 2, 4, 3]
     const X = [[1,2], [2,2], [3,4], [4,3], [5,5]]
-    const Y = [2, 4, 6, 8, 12]
+    const Y = [2,     4,      6,    8,     12]
 
     // Convert data to tensors
-    const xs = tfjs.tensor2d(X) // Shape is [num_samples, num_features]
+    const xs = tfjs.tensor2d(X)
     const ys = tfjs.tensor1d(Y)
 
     // Build a model
     const model = tfjs.sequential()
     // inputShape is 2 because we have 2 independent variables
-    model.add(tfjs.layers.dense({units: 1, inputShape: [2]})) 
+    model.add(tfjs.layers.dense({units: 64, inputShape: [2]})) 
+    model.add(tfjs.layers.dense({units: 32, activation: 'relu'})) 
+    model.add(tfjs.layers.dense({units: 16, activation: 'relu'})) 
+    model.add(tfjs.layers.dense({units: 8, activation: 'relu'})) 
+    model.add(tfjs.layers.dense({units: 1, activation: 'linear'})) 
 
     // Compile the model
     model.compile({loss: 'meanSquaredError', optimizer: 'sgd'})
 
+    await tfvis.show.modelSummary({
+      name: 'Model Summary',
+      tab : 'Example 1',
+    }, model)
+
     // Train the model
-    await model.fit(xs, ys, { epochs: 100 })
-    model.predict(tfjs.tensor2d([[5, 5], [6, 7]])).print() // Predicting for new data
+    await model.fit(xs, ys, { 
+      epochs   : 100,
+      callbacks: tfvis.show.fitCallbacks(
+        { 
+          name: 'Training Performance' ,
+          tab : 'Example 1',
+        },
+        ['loss', 'val_loss', 'acc', 'val_acc'],
+        { 
+          callbacks: ['onEpochEnd', 'onBatchEnd'] 
+        }
+      )
+    })
+    const p = model.predict(tfjs.tensor2d([[5, 5], [6, 7]])).dataSync() 
+    console.log({ predict_1: p })
   }
   
   const handleClick_TFJSMultiple_2 = async () => {
@@ -173,7 +196,6 @@ export default function TestPageEasy () {
         },
         ['loss', 'val_loss', 'acc', 'val_acc'],
         { 
-          height   : 200, 
           callbacks: ['onEpochEnd', 'onBatchEnd'] 
         }
       )
@@ -181,40 +203,119 @@ export default function TestPageEasy () {
     // Model is trained
     // You can use the trained model to make predictions
     const to_predict_size_bedroom_distance = [500, 1, 0]
-    const newHouseFeatures = tfjs.tensor2d([to_predict_size_bedroom_distance])
-    const prediction = model.predict(newHouseFeatures)
-    console.log('Predicted Price:', prediction.dataSync()[0])
+    const prediction = model.predict( tfjs.tensor2d([to_predict_size_bedroom_distance]) )
+    console.log('Predicted Price:', { predict_2: prediction.dataSync() })
   }
 
   const handleClick_TFJSMultiple_3 = async () => {
     const model_salary = new MODEL_1_SALARY(t)
     const datasets_salary = await model_salary.DATASETS()
     console.log({ datasets_salary })
+    const salary = datasets_salary[0]
+    const { scaler, X, y } = salary.data_processed
+    console.log({ scaler, X, y })
+    
 
     const model = await createLinearRegressionCustomModel({
-      dataset_processed: datasets_salary[0],
+      dataset_processed: salary,
       learningRate     : 0.01,
       testSize         : 0.3,
-      numberOfEpoch    : 20,
+      numberOfEpoch    : 40,
       idOptimizer      : 'sgd',
       idLoss           : 'losses-meanSquaredError',
       idMetrics        : 'meanSquaredError',
       layerList        : [
-        {units: 64, activation: 'relu'},
-        {units: 32, activation: 'relu'},
-        {units: 16, activation: 'relu'},
-        {units: 8, activation: 'relu'},
-        {units: 4, activation: 'relu'},
-        {units: 2, activation: 'relu'},
-        {units: 1, activation: 'relu'},
+        {units: 64, activation: 'sigmoid'},
+        {units: 1, activation: 'linear'},
       ],
 
     })
 
     console.log({ model })
+    const years = 7.7200
+    
+    const years_n = scaler.transform([years])
+    console.log(years_n)
 
-    const years = 7.1
-    console.log({ p: model.predict( tfjs.tensor2d([[years]])).dataSync() })
+    console.log({ 
+      predict_3: model.predict( tfjs.tensor2d([years_n])).dataSync()[0],
+      objetivo : 13 
+    })
+  }
+
+
+  const handleClick_TFJSMultiple_4 = async () => {
+    const model_auto = new MODEL_2_AUTO_MPG(t)
+    const datasets_auto = await model_auto.DATASETS()
+    console.log({ datasets_auto })
+    const auto = datasets_auto[0]
+    const { scaler, X, y } = auto.data_processed
+    console.log({ scaler, X, y })
+    
+    const model = await createLinearRegressionCustomModel({
+      dataset_processed: auto,
+      learningRate     : 0.01,
+      testSize         : 0.3,
+      numberOfEpoch    : 40,
+      idOptimizer      : 'sgd',
+      idLoss           : 'losses-meanSquaredError',
+      idMetrics        : 'meanSquaredError',
+      layerList        : [
+        {units: 64, activation: 'sigmoid'},
+        {units: 1, activation: 'linear'},
+      ],
+    })
+
+    console.log({ model })
+    const example_instance = [2,250,100,3329,15.5,1]
+    
+    const example_instance_n = scaler.transform(example_instance)
+    console.log({example_instance_n})
+
+    console.log({ 
+      predict_3: model.predict( tfjs.tensor2d([example_instance_n])).dataSync()[0],
+      objetivo : 17 
+    })
+  }
+  
+
+  const handleClick_TFJSMultiple_5 = async () => {
+    const model_housing_prices = new MODEL_3_HOUSING_PRICES(t)
+    const datasets_housing_prices = await model_housing_prices.DATASETS()
+    console.log({ datasets_housing_prices })
+    const housing_prices = datasets_housing_prices[1]
+    const { scaler, encoders, X, y } = housing_prices.data_processed
+    console.log({ scaler, encoders, X, y })
+    
+    const model = await createLinearRegressionCustomModel({
+      dataset_processed: housing_prices,
+      learningRate     : 0.01,
+      testSize         : 0.3,
+      numberOfEpoch    : 25,
+      idOptimizer      : 'sgd',
+      idLoss           : 'losses-meanSquaredError',
+      idMetrics        : 'meanSquaredError',
+      layerList        : [
+        {units: 16, activation: 'sigmoid'},
+        {units: 1, activation: 'linear'},
+      ],
+    })
+
+
+    console.log({ model })
+    // California
+    const _example_instance_c = [2.4038,41,535,123,317,119,37.85,-122.28]
+
+    const example_instance = [0.00632,18.00,2.310,0,0.5380,6.5750,65.20,4.0900,296.0,15.30,396.90,4.98]
+    
+    const example_instance_n = scaler.transform(example_instance)
+    console.log({example_instance_n})
+
+    console.log({ 
+      predict_3 : model.predict( tfjs.tensor2d([example_instance_n])).dataSync()[0],
+      objetivo_c: 107500,
+      objetivo_b: 24.00 
+    })
   }
 
   if (VERBOSE) console.debug('render TestPageEasy')
@@ -254,41 +355,55 @@ export default function TestPageEasy () {
               <hr />
               <TestComponentEasy />
 
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      onClick={handleClick_init}>
-                Init
-              </Button>
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      className={'ms-2'}
-                      onClick={handleClick_toggle}>
-                Toggle visor
-              </Button>
-              <hr />
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      onClick={handleClick_Simple}>
-                ml-regression-multivariate-linear
-              </Button>
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      className={'ms-2'}
-                      onClick={handleClick_TFJSMultiple}>
-                TFJS Multiple
-              </Button>
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      className={'ms-2'}
-                      onClick={handleClick_TFJSMultiple_2}>
-                TFJS Multiple 2
-              </Button>
-              <Button variant={'outline-primary'}
-                      size={'sm'}
-                      className={'ms-2'}
-                      onClick={handleClick_TFJSMultiple_3}>
-                TFJS Multiple 3
-              </Button>
+              <div className='d-grid gap-2 mt-3'>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        onClick={handleClick_init}>
+                  Init
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_toggle}>
+                  Toggle visor
+                </Button>
+                <hr />
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        onClick={handleClick_Simple}>
+                  ml-regression-multivariate-linear
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_TFJSMultiple}>
+                  TFJS Multiple
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_TFJSMultiple_2}>
+                  TFJS Multiple 2
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_TFJSMultiple_3}>
+                  TFJS Multiple 3
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_TFJSMultiple_4}>
+                  TFJS Multiple 4
+                </Button>
+                <Button variant={'outline-primary'}
+                        size={'sm'}
+                        className={'ms-2'}
+                        onClick={handleClick_TFJSMultiple_5}>
+                  TFJS Multiple 5
+                </Button>
+              </div>
 
               <Container>
                 <Row>

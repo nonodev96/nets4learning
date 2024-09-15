@@ -8,11 +8,6 @@ import { useHistory } from 'react-router-dom'
 import Webcam from 'react-webcam'
 import * as tfjs from '@tensorflow/tfjs'
 
-// import * as tfjs_core from '@tensorflow/tfjs-core'
-// import * as tfjs_cpu from '@tensorflow/tfjs-backend-cpu'
-// import * as tfjs_webgl from '@tensorflow/tfjs-backend-webgl'
-// import * as tfjs_wasm from '@tensorflow/tfjs-backend-wasm'
-
 import { VERBOSE } from '@/CONSTANTS'
 import { UPLOAD } from '@/DATA_MODEL'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'

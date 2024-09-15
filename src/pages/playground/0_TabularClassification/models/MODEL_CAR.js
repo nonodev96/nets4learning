@@ -1,5 +1,5 @@
 import React from 'react'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
 import * as dfd from 'danfojs'
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
@@ -182,13 +182,13 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async LOAD_GRAPH_MODEL (callbacks) {
-    return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
+    return await tfjs.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
       onProgress: callbacks.onProgress,
     })
   }
 
   async LOAD_LAYERS_MODEL (callbacks) {
-    return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
+    return tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
       onProgress: callbacks.onProgress,
     })
   }

@@ -1,5 +1,7 @@
 import React from 'react'
 import { ACTIONS, LIFECYCLE } from 'react-joyride'
+
+import * as _Types from '@/core/types'
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
 
@@ -38,21 +40,8 @@ export default class I_MODEL_LINEAR_REGRESSION {
   }
 
   /**
-   * @typedef {Object} CustomPreprocessDataset_t
-   * @property {string} column_name
-   * @property {string} column_transform
    *
-   * @typedef {Object} CustomDatasetInfo_t
-   * @property {string} csv
-   * @property {string} info
-   * @property {string} path
-   * @property {dataframe} dataframe_original
-   * @property {dataframe} dataframe_processed
-   * @property {boolean} is_dataset_processed
-   * @property {Array<CustomPreprocessDataset_t>} dataframe_transforms
-   *
-   *
-   * @return {Promise<Array<CustomDatasetInfo_t>>}
+   * @return {Promise<Array<_Types.DatasetProcessed_t>>}
    */
   async DATASETS () {
     return []

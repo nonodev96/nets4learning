@@ -4,7 +4,7 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 
 import I_MODEL_LINEAR_REGRESSION from './_model'
-import { DataFrameTransform } from '@core/dataframe/DataFrameUtils'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
@@ -54,6 +54,10 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
     const dataset_info = 'salary.names'
@@ -62,9 +66,12 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const dataset_promise_info = await fetch(dataset_path + dataset_info)
     const dataset_container_info = await dataset_promise_info.text()
     
-    const dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
-    const dataframe_transforms = []
-    const dataframe_processed_1 = DataFrameTransform(await dfd.readCSV(dataset_path + dataset_csv), dataframe_transforms)
+    const dataframe_transforms = [
+
+    ]
+    let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataframe_transforms)
     // dataframe_processed_1.print()
     
     const column_name_target = 'Salary'
@@ -88,10 +95,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : dataframe_processed_1,
         dataframe_transforms: dataframe_transforms,
         data_processed      : {
+          missing_values    : false,
           scaler            : scaler,
+          encoders          : {},
           X                 : X,
           y                 : y,
-          missing_values    : false,
           column_name_target: column_name_target,
         }
       }

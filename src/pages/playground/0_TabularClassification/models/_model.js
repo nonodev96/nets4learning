@@ -1,42 +1,9 @@
 import React from 'react'
 import { ACTIONS, LIFECYCLE } from 'react-joyride'
+
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
-// eslint-disable-next-line no-unused-vars
-import * as dfd from 'danfojs'
-
-/**
- * @typedef {Object} DataFrameColumnTypeTransform_t
- * @property {'drop'|'ignore'|'int32'|'float32'|'label-encoder'} type
- * @property {string} name
- * @property {Array<{value: string, text: string}>} options
- */
-
-/**
- * @typedef {Object} DataProcessed_t
- * @property {boolean} missing_values
- * @property {string} missing_value_key
- * @property {string[]} classes
- * @property {Object<string, any>} encoders
- * @property {dfd.MinMaxScaler|dfd.StandardScaler} scaler
- * @property {string} column_name_target
- * @property {Array<DataFrameColumnTypeTransform_t>} attributes
- * @property {dfd.DataFrame} X
- * @property {dfd.DataFrame|dfd.Series} y
- */
-
-/**
- * @typedef {Object} DatasetProcessed_t
- * @property {boolean} is_dataset_processed
- * @property {boolean} is_dataset_upload
- * @property {string} path
- * @property {string} info
- * @property {string} csv
- * @property {Array<DataFrameColumnTransform_t>} dataset_transforms
- * @property {dfd.DataFrame} dataframe_original
- * @property {dfd.DataFrame} dataframe_processed
- * @property {DataProcessed_t?} data_processed
- */
+import * as _Types from '@/core/types'
 
 export default class I_MODEL_TABULAR_CLASSIFICATION {
   TITLE = ''
@@ -61,8 +28,7 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
 
   /**
    *
-   * @returns {Promise<DatasetProcessed_t[]>}
-   * @constructor
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     return []

@@ -1,10 +1,10 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
-import * as dfd from 'danfojs'
+// import * as dfd from 'danfojs'
 import * as sk from 'scikitjs'
 import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
-sk.setBackend(dfd.tensorflow)
+// sk.setBackend(dfd.tensorflow)
 
 /**
  * @typedef {Object} CustomTabularClassification_DatasetParams_t

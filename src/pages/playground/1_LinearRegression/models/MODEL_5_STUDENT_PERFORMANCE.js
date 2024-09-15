@@ -69,6 +69,10 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
     const path_dataset_1 = datasets_path + 'student-mat.csv'

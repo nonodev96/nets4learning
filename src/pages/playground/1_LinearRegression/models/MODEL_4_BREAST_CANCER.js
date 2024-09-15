@@ -107,6 +107,10 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
     const path_dataset_1_info = dataset_path + 'breast-cancer-wisconsin.names'

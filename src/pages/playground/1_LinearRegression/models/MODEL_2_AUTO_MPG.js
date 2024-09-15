@@ -2,7 +2,10 @@ import React from 'react'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
+
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import * as _Type from '@core/types'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 
 export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
@@ -84,6 +87,10 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
     const dataset_csv = 'auto-mpg.csv'
@@ -92,10 +99,30 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const dataset_promise_info = await fetch(dataset_path + dataset_info)
     const dataset_container_info = await dataset_promise_info.text()
     
-    const dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
-    const dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
-
+    let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
     
+    
+    const dataset_transforms = [
+      {  column_transform: 'label-encoder', column_name: 'cylinders' },
+      {  column_transform: 'label-encoder', column_name: 'model-year' },
+      // {  column_transform: 'label-encoder', column_name: 'origin' },
+    ]
+    const column_name_target = 'mpg'
+
+    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms)
+    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms)
+
+    console.log({encoders_map})
+    
+    const dataframe_X = dataframe_processed_1.drop({ columns: [column_name_target] })
+    const dataframe_y = dataframe_original_1[column_name_target]
+
+    const scaler = new dfd.MinMaxScaler()
+    scaler.fit(dataframe_X)
+    const X = scaler.transform(dataframe_X)
+    const y = dataframe_y
+
     return [
       {
         is_dataset_upload   : false,
@@ -106,7 +133,15 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         container_info      : dataset_container_info,
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
-        dataset_transforms  : [],
+        dataset_transforms  : dataset_transforms,
+        data_processed      : {
+          missing_values    : true,
+          scaler            : scaler,
+          encoders          : encoders_map,
+          X                 : X,
+          y                 : y,
+          column_name_target: column_name_target,
+        }
       }
     ]
   }

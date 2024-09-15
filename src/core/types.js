@@ -19,13 +19,11 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 /**
- * @typedef {Object} EncoderObject_t
- * @property {'label-encoder' | 'one-hot-encoder'} type
- * @property {_dfd.LabelEncoder | _dfd.OneHotEncoder} encoder
- */
-
-/**
  * @typedef {_dfd.DataFrame} DataFrame_t
+ * @typedef {_dfd.Series} Series_t
+ * @typedef {_dfd.MinMaxScaler} MinMaxScaler_t
+ * @typedef {_dfd.StandardScaler} StandardScaler_t
+ * @typedef {_dfd.LabelEncoder} LabelEncoder_t
  */
 
 /**
@@ -35,9 +33,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @typedef {_I_MODEL_IMAGE_CLASSIFICATION} I_MODEL_IMAGE_CLASSIFICATION_t
  */
 
-/**
- * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
- */
+
 
 /**
  * @typedef {Object} File_t
@@ -136,3 +132,45 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {string} y_axis
  */
 
+/**
+ * @typedef {Object} DataFrameColumnTypeTransform_t
+ * @property {'drop'|'ignore'|'int32'|'float32'|'label-encoder'} type
+ * @property {string} name
+ * @property {Array<{value: string, text: string}>} options
+ */
+
+/**
+ * @typedef {Object} EncoderObject_t
+ * @property {'label-encoder' | 'one-hot-encoder'} type
+ * @property {_dfd.LabelEncoder | _dfd.OneHotEncoder} encoder
+ */
+
+/**
+ * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
+ */
+
+/**
+ * @typedef {Object} DataProcessed_t
+ * @property {boolean} missing_values
+ * @property {string} missing_value_key
+ * @property {string} column_name_target
+ * @property {string[]} classes
+ * @property {EncoderMap_t} encoders
+ * @property {Array<DataFrameColumnTypeTransform_t>} attributes
+ * @property {MinMaxScaler_t|StandardScaler_t} scaler
+ * @property {DataFrame_t} X
+ * @property {DataFrame_t|Series_t} y
+ */
+
+/**
+ * @typedef {Object} DatasetProcessed_t
+ * @property {boolean} is_dataset_processed
+ * @property {boolean} is_dataset_upload
+ * @property {string} path
+ * @property {string} info
+ * @property {string} csv
+ * @property {Array<DataFrameColumnTransform_t>} dataset_transforms
+ * @property {DataFrame_t} dataframe_original
+ * @property {DataFrame_t} dataframe_processed
+ * @property {DataProcessed_t} [data_processed] - Data processed 
+ */

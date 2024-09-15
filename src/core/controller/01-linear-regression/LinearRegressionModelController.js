@@ -4,7 +4,7 @@ import * as dfd from 'danfojs'
 import * as sk from 'scikitjs'
 import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
-sk.setBackend(dfd.tensorflow)
+sk.setBackend(tfjs)
 
 /**
  * @typedef {Object} CustomLinearRegression_DatasetParams_t
@@ -35,6 +35,8 @@ export async function createLinearRegressionCustomModel (params) {
     idMetrics,
   } = params
   tfvis.visor().open()
+  console.log({ tfjs_backend: tfjs.getBackend() })
+
 
   const { data_processed } = dataset_processed
   const { X, y } = data_processed
@@ -45,11 +47,15 @@ export async function createLinearRegressionCustomModel (params) {
   const XTest_tensor = tfjs.tensor(XTest)
   const yTrain_tensor = tfjs.tensor(yTrain)
   const yTest_tensor = tfjs.tensor(yTest)
+
+  console.log({
+    o: [XTrain, XTest, yTrain, yTest], 
+    t: [XTrain_tensor, XTest_tensor, yTrain_tensor, yTest_tensor]
+  })
   
   // region Define model
   const model = tfjs.sequential()
-  for (const layer of layerList) {
-    const index = layerList.indexOf(layer)
+  for (const [index, layer] of layerList.entries()) {
     const _layer = tfjs.layers.dense({
       units     : layer.units,
       activation: layer.activation.toLowerCase(),

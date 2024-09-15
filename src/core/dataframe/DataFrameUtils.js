@@ -110,6 +110,7 @@ export function TransformArrayToSeriesTensor (series) {
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
   /** @type {EncoderMap_t} */
   const encoders_map = {}
+  console.log({dataframe, dataframe_transforms})
   for (const { column_transform, column_name } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {

@@ -68,6 +68,10 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     </>
   }
 
+  /**
+   * 
+   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
     const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
     const dataframe_original = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
