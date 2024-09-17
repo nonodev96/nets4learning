@@ -23,10 +23,6 @@ export default class I_MODEL_LINEAR_REGRESSION {
     return <></>
   }
 
-  LAYERS () {
-
-  }
-
   /**
    * 
    * @returns {Array<CustomParamsLayerModel_t>}

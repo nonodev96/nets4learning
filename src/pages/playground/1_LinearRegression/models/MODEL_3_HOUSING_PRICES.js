@@ -2,9 +2,10 @@ import React from 'react'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
-import I_MODEL_LINEAR_REGRESSION from './_model'
+
 import * as _Type from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_LINEAR_REGRESSION from './_model'
 
 export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
 
@@ -154,25 +155,24 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     const boston_dataset_container_info = await boston_dataset_promise_info.text()
     let boston_dataframe_original = await dfd.readCSV(datasets_path + boston_dataset_csv)
     let boston_dataframe_processed = await dfd.readCSV(datasets_path + boston_dataset_csv)
-
-
-    
+  
     const boston_dataset_encoder = [
-      {  column_transform: 'label-encoder', column_name: 'CHAS' },
+      // {  column_transform: 'label-encoder', column_name: 'CHAS' },
     ]
     const boston_dataset_transforms = [
       { column_transform: 'drop', column_name: 'B' },
+      { column_transform: 'drop', column_name: 'MEDV' },
     ]
     const boston_column_name_target = 'MEDV'
     
     const boston_encoders_map = DataFrameUtils.DataFrameEncoder(boston_dataframe_processed, boston_dataset_encoder)
     boston_dataframe_processed = DataFrameUtils.DataFrameTransform(boston_dataframe_processed, boston_dataset_transforms)
     
-    const boston_dataframe_X = boston_dataframe_processed.drop({ columns: [boston_column_name_target] })
+    const boston_dataframe_X = boston_dataframe_processed.copy()
     const boston_dataframe_y = boston_dataframe_original[boston_column_name_target]
 
-    const boston_scaler = new dfd.StandardScaler()
-    boston_scaler.fit(boston_dataframe_X)
+    const scaler = new dfd.MinMaxScaler()
+    const boston_scaler = scaler.fit(boston_dataframe_X)
     const b_X = boston_scaler.transform(boston_dataframe_X)
     const b_y = boston_dataframe_y
 
@@ -186,7 +186,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         container_info      : california_dataset_container_info,
         dataframe_original  : california_dataframe_original,
         dataframe_processed : california_dataframe_processed,
-        dataset_transforms  : [],
+        dataset_transforms  : california_dataset_transforms,
         data_processed      : {
           missing_values    : false,
           scaler            : california_scaler,
@@ -205,13 +205,13 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         container_info      : boston_dataset_container_info,
         dataframe_original  : boston_dataframe_original,
         dataframe_processed : boston_dataframe_processed,
-        dataset_transforms  : [],
+        dataset_transforms  : boston_dataset_transforms,
         data_processed      : {
           missing_values    : false,
           scaler            : boston_scaler,
           encoders          : boston_encoders_map,
-          X                 : c_X,
-          y                 : c_y,
+          X                 : b_X,
+          y                 : b_y,
           column_name_target: boston_column_name_target,
         }
       }
@@ -230,26 +230,19 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     return models[dataset]
   }
 
-  LAYERS () {
-    const inputShape = 7
-    const model = tfjs.sequential()
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu', inputShape: [inputShape] }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1,  activation: 'relu' }))
-    return model
-  }
-
-  DEFAULT_LAYERS () {
-    return [
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: true,  units: 1,  activation: 'linear' }
-    ]
+  DEFAULT_LAYERS (_dataset) {
+    const models = {
+      'california-housing.csv': [
+      ],
+      'boston-housing.csv': [
+        { is_disabled: false, units: 64, activation: 'sigmoid'   },
+        { is_disabled: false, units: 32, activation: 'sigmoid'   },
+        { is_disabled: false, units: 16, activation: 'relu'      },
+        { is_disabled: false, units: 8,  activation: 'relu'      },
+        { is_disabled: true,  units: 1,  activation: 'linear'    }
+      ]
+    }
+    return models['boston-housing.csv']
   }
 
   COMPILE () {

@@ -26,6 +26,7 @@ import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/Archi
 export async function createTabularClassificationCustomModel (params) {
   const {
     dataset_processed,
+    name_model = 'Tabular classification',
 
     layerList,
     learningRate,
@@ -42,13 +43,11 @@ export async function createTabularClassificationCustomModel (params) {
   const { data_processed } = dataset_processed
   const { X, y } = data_processed
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
-
   const XTrain_tensor = tf.tensor(XTrain)
   const XTest_tensor = tf.tensor(XTest)
   const yTrain_tensor = tf.tensor(yTrain)
   const yTest_tensor = tf.tensor(yTest)
 
-  // region Define model
   const model = tf.sequential()
   for (const layer of layerList) {
     const index = layerList.indexOf(layer)
@@ -69,14 +68,13 @@ export async function createTabularClassificationCustomModel (params) {
   model.compile({ optimizer, loss, metrics })
   await tfvis.show.modelSummary({
     name: 'Model Summary',
-    tab : 'Model Summary',
+    tab : name_model,
   }, model)
-  // endregion
 
   const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
   const fit_callbacks_container = {
     name: 'Training',
-    tab : 'Training',
+    tab : name_model,
   }
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: [/* 'onBatchEnd', */ 'onEpochEnd'] })
   await model.fit(XTrain_tensor, yTrain_tensor, {

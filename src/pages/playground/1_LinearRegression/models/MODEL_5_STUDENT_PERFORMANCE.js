@@ -1,7 +1,10 @@
 import React from 'react'
 import * as dfd from 'danfojs'
-import I_MODEL_LINEAR_REGRESSION from './_model'
 import { Trans } from 'react-i18next'
+
+import * as _Type from '@core/types'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_LINEAR_REGRESSION from './_model'
 
 export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSION {
 
@@ -74,48 +77,123 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
-    const path_dataset_1 = datasets_path + 'student-mat.csv'
-    const path_dataset_2 = datasets_path + 'student-por.csv'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
+    const dataset_info = 'student.names'
+    const mat_dataset_csv = 'student-mat.csv'
+    const por_dataset_csv = 'student-por.csv'
 
-    const [dataset_promise_info_1, dataset_promise_info_2] = await Promise.all([
-      fetch(path_dataset_1),
-      fetch(path_dataset_2),
+    const [mat_dataset_promise_info, por_dataset_promise_info] = await Promise.all([
+      fetch(path_datasets + mat_dataset_csv),
+      fetch(path_datasets + por_dataset_csv),
     ])
     
-    const [dataset_container_info_1, dataset_container_info_2] = await Promise.all([
-      dataset_promise_info_1.text(),
-      dataset_promise_info_2.text(),
+    const [mat_container_info, por_container_info] = await Promise.all([
+      mat_dataset_promise_info.text(),
+      por_dataset_promise_info.text(),
     ])
     
-    const dataframe_original_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
-    const dataframe_processed_1 = await dfd.readCSV(datasets_path + 'student-mat.csv')
-    const dataframe_original_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
-    const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'student-por.csv')
+    // #region Student Mat
+    let mat_dataframe_original = await dfd.readCSV(path_datasets + mat_dataset_csv)
+    let mat_dataframe_processed = await dfd.readCSV(path_datasets + mat_dataset_csv)
+    const mat_dataset_encoder = [
+      { column_transform: 'label-encoder', column_name: 'school',     column_type: 'Categorical',   column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'sex',        column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'age',        column_type: 'Integer',       column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'address',    column_type: 'Categorical',   column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'famsize',    column_type: 'Categorical',   column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'Pstatus',    column_type: 'Categorical',   column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'Medu',       column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'Fedu',       column_type: 'Integer',       column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'Mjob',       column_type: 'Categorical',   column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'Fjob',       column_type: 'Categorical',   column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'reason',     column_type: 'Categorical',   column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'guardian',   column_type: 'Categorical',   column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'traveltime', column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'studytime',  column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'failures',   column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'schoolsup',  column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'famsup',     column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'paid',       column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'activities', column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'nursery',    column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'higher',     column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'internet',   column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'romantic',   column_type: 'Binary',        column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'famrel',     column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'freetime',   column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'goout',      column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'Dalc',       column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'Walc',       column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'health',     column_type: 'Integer',       column_role: 'Feature'   },
+      // { column_transform: 'label-encoder', column_name: 'absences',   column_type: 'Integer',       column_role: 'Feature'   },
+      { column_transform: 'label-encoder', column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target'    },
+      { column_transform: 'label-encoder', column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target'    },
+      // { column_transform: 'label-encoder', column_name: 'G3',         column_type: 'Integer',       column_role: 'Target'    },
+    ]
+    const mat_dataset_transforms = [
+      // { column_name: '', column_transform: 'replace_?_NaN' },
+      // { column_name: '', column_transform: 'dropNa' },
+    ]
+    const mat_target = 'G1' // G1;G2;G3
+    const mat_encoders_map = DataFrameUtils.DataFrameEncoder(mat_dataframe_processed, mat_dataset_encoder)
+    mat_dataframe_processed = DataFrameUtils.DataFrameTransform(mat_dataframe_processed, mat_dataset_transforms)
+
+    const mat_dataframe_X = mat_dataframe_processed.copy()
+    const mat_dataframe_y = mat_dataframe_original[mat_target]
+    
+    const scaler = new dfd.MinMaxScaler()
+    const mat_scaler = scaler.fit(mat_dataframe_X)
+    const mat_X = mat_scaler.transform(mat_dataframe_X)
+    const mat_y = mat_dataframe_y
+    // #endregion
+    
+    
+    // #region Student Por
+    let por_dataframe_original = await dfd.readCSV(path_datasets + por_dataset_csv)
+    let por_dataframe_processed = await dfd.readCSV(path_datasets + por_dataset_csv)
+    // #endregion
 
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : datasets_path,
-        info                : 'student.txt',
-        csv                 : 'student-mat.csv',
-        container_info      : dataset_container_info_1,
-        dataframe_original  : dataframe_original_1,
-        dataframe_processed : dataframe_processed_1,
-        dataset_transforms  : [],
+        path                : path_datasets,
+        info                : dataset_info,
+        csv                 : mat_dataset_csv,
+        container_info      : mat_container_info,
+        dataframe_original  : mat_dataframe_original,
+        dataframe_processed : mat_dataframe_processed,
+        dataset_transforms  : mat_dataset_transforms,
+        data_processed      : {
+          missing_values    : false,
+          missing_value_key : '',
+          scaler            : mat_scaler,
+          encoders          : mat_encoders_map,
+          X                 : mat_X,
+          y                 : mat_y,
+          column_name_target: mat_target,
+        }
       }, 
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : datasets_path,
-        info                : 'student.txt',
-        csv                 : 'student-por.csv',
-        container_info      : dataset_container_info_2,
-        dataframe_original  : dataframe_original_2,
-        dataframe_processed : dataframe_processed_2,
+        path                : path_datasets,
+        info                : dataset_info,
+        csv                 : por_dataset_csv,
+        container_info      : por_container_info,
+        dataframe_original  : por_dataframe_original,
+        dataframe_processed : por_dataframe_processed,
         dataset_transforms  : [],
+        data_processed      : {
+          missing_values    : false,
+          missing_value_key : '',
+          scaler            : null,
+          encoders          : null,
+          X                 : null,
+          y                 : null,
+          column_name_target: null,
+        }
       }
     ]
   }

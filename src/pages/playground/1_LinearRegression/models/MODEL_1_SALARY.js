@@ -3,8 +3,9 @@ import { Trans } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 
-import I_MODEL_LINEAR_REGRESSION from './_model'
+import * as _Type from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_LINEAR_REGRESSION from './_model'
 
 export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
@@ -79,8 +80,8 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_y = dataframe_original_1[column_name_target]
 
     const scaler = new dfd.MinMaxScaler()
-    scaler.fit(dataframe_X)
-    const X = scaler.transform(dataframe_X)
+    const salary_scaler = scaler.fit(dataframe_X)
+    const X = salary_scaler.transform(dataframe_X)
     const y = dataframe_y
 
     return [
@@ -96,7 +97,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         dataframe_transforms: dataframe_transforms,
         data_processed      : {
           missing_values    : false,
-          scaler            : scaler,
+          scaler            : salary_scaler,
           encoders          : {},
           X                 : X,
           y                 : y,
@@ -123,15 +124,6 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
       loss     : 'meanSquaredError',
       metrics  : ['meanSquaredError', 'meanAbsoluteError']
     })
-    return model
-  }
-
-  LAYERS () {
-    const inputShape = 7
-    const model = tfjs.sequential()
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu', inputShape: [inputShape] }))
-    model.add(tfjs.layers.dense({ units: 64, activation: 'relu' }))
-    model.add(tfjs.layers.dense({ units: 1,  activation: 'relu' }))
     return model
   }
 

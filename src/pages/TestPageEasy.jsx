@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tfjs from '@tensorflow/tfjs'
+import * as dfd from 'danfojs'
 import MLR from 'ml-regression-multivariate-linear'
 
 import { VERBOSE } from '@/CONSTANTS'
@@ -254,27 +255,35 @@ export default function TestPageEasy () {
     
     const model = await createLinearRegressionCustomModel({
       dataset_processed: auto,
+      name_model       : 'Auto MPG',
       learningRate     : 0.01,
       testSize         : 0.3,
-      numberOfEpoch    : 40,
+      numberOfEpoch    : 50,
       idOptimizer      : 'sgd',
       idLoss           : 'losses-meanSquaredError',
       idMetrics        : 'meanSquaredError',
       layerList        : [
         {units: 64, activation: 'sigmoid'},
-        {units: 1, activation: 'linear'},
+        {units: 1,  activation: 'linear'},
       ],
     })
 
     console.log({ model })
-    const example_instance = [2,250,100,3329,15.5,1]
+    const example_instance_1 = [2, 250, 100, 3329, 15.5, 1  ]
+    const example_instance_2 = [6, 198, 95,  2833, 15.5, 70 ]
+    const example_instance_3 = [8, 350, 175, 4100, 13,   73 ]
     
-    const example_instance_n = scaler.transform(example_instance)
-    console.log({example_instance_n})
+    const example_instance_n1 = scaler.transform(example_instance_1)
+    const example_instance_n2 = scaler.transform(example_instance_2)
+    const example_instance_n3 = scaler.transform(example_instance_3)
 
     console.log({ 
-      predict_3: model.predict( tfjs.tensor2d([example_instance_n])).dataSync()[0],
-      objetivo : 17 
+      predict_auto_1: model.predict( tfjs.tensor2d([example_instance_n1])).dataSync()[0],
+      target_auto_1 : 17, 
+      predict_auto_2: model.predict( tfjs.tensor2d([example_instance_n2])).dataSync()[0],
+      target_auto_2 : 24,
+      predict_auto_3: model.predict( tfjs.tensor2d([example_instance_n3])).dataSync()[0],
+      target_auto_3 : 13,
     })
   }
   
@@ -288,34 +297,51 @@ export default function TestPageEasy () {
     console.log({ scaler, encoders, X, y })
     
     const model = await createLinearRegressionCustomModel({
+      name_model       : 'Housing Prices',
       dataset_processed: housing_prices,
-      learningRate     : 0.01,
+      learningRate     : 0.02,
       testSize         : 0.3,
-      numberOfEpoch    : 25,
-      idOptimizer      : 'sgd',
+      numberOfEpoch    : 50,
+      idOptimizer      : 'adam',
       idLoss           : 'losses-meanSquaredError',
-      idMetrics        : 'meanSquaredError',
+      idMetrics        : ['meanSquaredError', 'meanAbsoluteError'],
       layerList        : [
-        {units: 16, activation: 'sigmoid'},
-        {units: 1, activation: 'linear'},
+        { units: 20, activation: 'relu' },
+        { units: 20, activation: 'relu' },
+        { units: 20, activation: 'relu' },
+        { units: 20, activation: 'relu' },
+        { units: 1,  activation: 'linear'  },
       ],
     })
 
 
     console.log({ model })
     // California
-    const _example_instance_c = [2.4038,41,535,123,317,119,37.85,-122.28]
+    const _example_instance_c = [2.4038, 41, 535, 123, 317, 119, 37.85, -122.28]
 
-    const example_instance = [0.00632,18.00,2.310,0,0.5380,6.5750,65.20,4.0900,296.0,15.30,396.90,4.98]
+    const example_instance_b1 = [0.00632, 18.00, 2.310,    0,    0.5380, 6.5750,   65.20,  4.0900, 1,  296.0,  15.30,  4.98]
     
-    const example_instance_n = scaler.transform(example_instance)
-    console.log({example_instance_n})
+    const data = [
+      [0.00632, 18.00, 2.310,    0,    0.5380, 6.5750,   65.20,  4.0900, 1,  296.0,  15.30,  4.98],
+      [0.02731, 0.00,  7.070,    0,    0.4690, 6.4210,   78.90,  4.9671, 2,  242.0,  17.80,  9.14],
+      [0.02729, 0.00,  7.070,    0,    0.4690, 7.1850,   61.10,  4.9671, 2,  242.0,  17.80,  4.03],
+      [0.03237, 0.00,  2.180,    0,    0.4580, 6.9980,   45.80,  6.0622, 3,  222.0,  18.70,  2.94]
+    ]
+    const columns = ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'LSTAT']
+    const df = new dfd.DataFrame(data, { columns: columns })
+    
+    const example_instance_df_n = scaler.transform(df)
+    const example_instance_n = scaler.transform(example_instance_b1)
+    console.log({example_instance_df_n, example_instance_n, p: model.predict(tfjs.tensor2d([example_instance_n])).dataSync()[0]})
 
-    console.log({ 
-      predict_3 : model.predict( tfjs.tensor2d([example_instance_n])).dataSync()[0],
-      objetivo_c: 107500,
-      objetivo_b: 24.00 
-    })
+    const list = []
+    for (let index = 0; index < 10; index++) {
+      const element_n = X.values[index]
+      const element_o = y.values[index]
+      const element_p  = model.predict(tfjs.tensor2d([element_n])).dataSync()[0]
+      list.push([element_p, element_o])
+    }
+    console.log(list)
   }
 
   if (VERBOSE) console.debug('render TestPageEasy')
@@ -348,14 +374,14 @@ export default function TestPageEasy () {
           <Card>
             <Card.Header><h2>TestPage-Easy</h2></Card.Header>
             <Card.Body>
-              <Button variant={'primary'}
-                      onClick={() => setCounter(c => c + 1)}>
-                Counter {counter}
-              </Button>
-              <hr />
-              <TestComponentEasy />
+            <div className='d-grid gap-2 mt-3'>
+                <Button variant={'primary'}
+                        onClick={() => setCounter(c => c + 1)}>
+                  Counter {counter}
+                </Button>
+                <hr />
+                <TestComponentEasy />
 
-              <div className='d-grid gap-2 mt-3'>
                 <Button variant={'outline-primary'}
                         size={'sm'}
                         onClick={handleClick_init}>
@@ -363,7 +389,6 @@ export default function TestPageEasy () {
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_toggle}>
                   Toggle visor
                 </Button>
@@ -375,31 +400,26 @@ export default function TestPageEasy () {
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_TFJSMultiple}>
                   TFJS Multiple
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_TFJSMultiple_2}>
                   TFJS Multiple 2
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_TFJSMultiple_3}>
                   TFJS Multiple 3
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_TFJSMultiple_4}>
                   TFJS Multiple 4
                 </Button>
                 <Button variant={'outline-primary'}
                         size={'sm'}
-                        className={'ms-2'}
                         onClick={handleClick_TFJSMultiple_5}>
                   TFJS Multiple 5
                 </Button>

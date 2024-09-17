@@ -3,9 +3,9 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 
-import I_MODEL_LINEAR_REGRESSION from './_model'
 import * as _Type from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_LINEAR_REGRESSION from './_model'
 
 export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
@@ -119,8 +119,8 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_y = dataframe_original_1[column_name_target]
 
     const scaler = new dfd.MinMaxScaler()
-    scaler.fit(dataframe_X)
-    const X = scaler.transform(dataframe_X)
+    const salary_scaler = scaler.fit(dataframe_X)
+    const X = salary_scaler.transform(dataframe_X)
     const y = dataframe_y
 
     return [
@@ -136,7 +136,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         dataset_transforms  : dataset_transforms,
         data_processed      : {
           missing_values    : true,
-          scaler            : scaler,
+          scaler            : salary_scaler,
           encoders          : encoders_map,
           X                 : X,
           y                 : y,
@@ -154,11 +154,6 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
       ]
     }
     return models[dataset]
-  }
-
-  LAYERS () {
-    const model = tfjs.sequential()
-    return model
   }
 
   DEFAULT_LAYERS () {

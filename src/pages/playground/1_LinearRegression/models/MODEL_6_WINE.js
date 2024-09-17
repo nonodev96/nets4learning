@@ -1,7 +1,10 @@
 import React from 'react'
 import * as dfd from 'danfojs'
-import I_MODEL_LINEAR_REGRESSION from './_model'
 import { Trans } from 'react-i18next'
+
+import * as _Type from '@core/types'
+import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_LINEAR_REGRESSION from './_model'
 
 export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
@@ -89,6 +92,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         dataset_transforms  : [],
+        data_processed      : [],
       },
       {
         is_dataset_upload   : false,
