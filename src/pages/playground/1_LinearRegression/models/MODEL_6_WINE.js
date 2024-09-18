@@ -76,33 +76,105 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const datasets_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
-    const dataframe_original = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
-    const dataframe_processed = await dfd.readCSV(datasets_path + 'wine-quality-red.csv')
-    const dataframe_original_2 = await dfd.readCSV(datasets_path + 'wine-quality-white.csv')
-    const dataframe_processed_2 = await dfd.readCSV(datasets_path + 'wine-quality-white.csv')
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
+
+    const info_datasets = 'wine-quality.names'
+    const red_dataset_csv  = 'wine-quality-red.csv'
+    const white_dataset_csv = 'wine-quality-white.csv'
+
+    const dataset_fetch_info = await fetch(path_datasets + info_datasets)
+    const dataset_container_info = await dataset_fetch_info.text()
+
+    const red_dataset = [
+      // { column_name: 'fixed_acidity',          column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'volatile_acidity',       column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'citric_acid',            column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'residual_sugar',         column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'chlorides',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'free_sulfur_dioxide',    column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'total_sulfur_dioxide',   column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'density',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'pH',                     column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'sulphates',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'alcohol',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'quality',                column_role: 'Target',       column_type: 'Integer',     column_missing_values: false },
+      // { column_name: 'color',                  column_role: 'Other',        column_type: 'Categorical', column_missing_values: false },
+    ]
+    const red_dataset_transforms = [
+      ...red_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+    ]
+    
+    // #region Wine Red
+    let red_dataframe_original = await dfd.readCSV(path_datasets + red_dataset_csv)
+    let red_dataframe_processed = await dfd.readCSV(path_datasets + red_dataset_csv)
+    const red_target = 'quality'
+    const red_encoders_map = DataFrameUtils.DataFrameEncoder(red_dataframe_processed, red_dataset_transforms)
+    red_dataframe_processed = DataFrameUtils.DataFrameTransform(red_dataframe_processed, red_dataset_transforms)
+    const red_dataframe_X = red_dataframe_processed.copy()
+    const red_dataframe_y = red_dataframe_original[red_target]
+    const minMaxScaler_1 = new dfd.MinMaxScaler()
+    const red_scaler = minMaxScaler_1.fit(red_dataframe_processed)
+    const red_X = red_scaler.transform(red_dataframe_X)
+    const red_y = red_dataframe_y
+    // #endregion
+
+
+    // #region Wine Red
+    let white_dataframe_original = await dfd.readCSV(path_datasets + white_dataset_csv)
+    let white_dataframe_processed = await dfd.readCSV(path_datasets + white_dataset_csv)
+    const white_dataset_transforms = [
+      // { column_name: '',               column_transform: 'replace_?_NaN' },
+      // { column_name: '',               column_transform: 'dropNa' },
+    ]
+    const white_target = 'quality'
+    const white_encoders_map = DataFrameUtils.DataFrameEncoder(white_dataframe_processed, white_dataset_transforms)
+    white_dataframe_processed = DataFrameUtils.DataFrameTransform(white_dataframe_processed, white_dataset_transforms)
+    const white_dataframe_X = white_dataframe_processed.copy()
+    const white_dataframe_y = white_dataframe_original[white_target]
+    const minMaxScaler_2 = new dfd.MinMaxScaler()
+    const white_scaler = minMaxScaler_2.fit(white_dataframe_processed)
+    const white_X = white_scaler.transform(white_dataframe_X)
+    const white_y = white_dataframe_y
+    // #endregion
+
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : datasets_path,
-        info                : 'wine-quality.names',
-        csv                 : 'wine-quality-red.csv',
-        dataframe_original  : dataframe_original,
-        dataframe_processed : dataframe_processed,
-        dataset_transforms  : [],
-        data_processed      : [],
+        path                : path_datasets,
+        info                : info_datasets,
+        container_info      : dataset_container_info,
+        csv                 : red_dataset_csv,
+        dataframe_original  : red_dataframe_original,
+        dataframe_processed : red_dataframe_processed,
+        dataset_transforms  : red_dataset_transforms,
+        data_processed      : {
+          X                 : red_X,
+          y                 : red_y,
+          column_name_target: red_target,
+          scaler            : red_scaler,
+          encoders          : red_encoders_map
+        },
       },
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : datasets_path,
-        csv                 : 'wine-quality-white.csv',
-        info                : 'wine-quality.names',
-        dataframe_original  : dataframe_original_2,
-        dataframe_processed : dataframe_processed_2,
-        dataset_transforms  : [],
+        path                : path_datasets,
+        info                : info_datasets,
+        container_info      : dataset_container_info,
+        csv                 : white_dataset_csv,
+        dataframe_original  : white_dataframe_original,
+        dataframe_processed : white_dataframe_processed,
+        dataset_transforms  : white_dataset_transforms,
+        data_processed      : {
+          X                 : white_X, 
+          y                 : white_y, 
+          scaler            : white_scaler, 
+          encoders          : white_encoders_map,
+          column_name_target: white_target, 
+        },
+
       }
     ]
   } 

@@ -274,43 +274,64 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataframe_original = await dfd.readCSV(dataset_path + 'lymphography.csv')
     let dataframe_processed = await dfd.readCSV(dataset_path + 'lymphography.csv')
     const dataset_transforms = [
-      { column_transform: 'label-encoder', column_name: 'lymphatics' },
-      { column_transform: 'label-encoder', column_name: 'block of affere' },
-      { column_transform: 'label-encoder', column_name: 'bl. of lymph. c' },
-      { column_transform: 'label-encoder', column_name: 'bl. of lymph. s' },
-      { column_transform: 'label-encoder', column_name: 'by pass' },
-      { column_transform: 'label-encoder', column_name: 'extravasates' },
-      { column_transform: 'label-encoder', column_name: 'regeneration of' },
-      { column_transform: 'label-encoder', column_name: 'early uptake in' },
-      { column_transform: 'label-encoder', column_name: 'lym.nodes dimin' },
-      { column_transform: 'label-encoder', column_name: 'lym.nodes enlar' },
-      { column_transform: 'label-encoder', column_name: 'changes in lym.' },
-      { column_transform: 'label-encoder', column_name: 'defect in node' },
-      { column_transform: 'label-encoder', column_name: 'changes in node' },
-      { column_transform: 'label-encoder', column_name: 'changes in stru' },
-      { column_transform: 'label-encoder', column_name: 'special forms' },
-      { column_transform: 'label-encoder', column_name: 'dislocation of' },
-      { column_transform: 'label-encoder', column_name: 'exclusion of no' },
-      { column_transform: 'label-encoder', column_name: 'no. of nodes in' },
-      { column_transform: 'label-encoder', column_name: 'class' },
+      // { column_transform: 'label-encoder', column_name: 'lymphatics' },
+      // { column_transform: 'label-encoder', column_name: 'block of affere' },
+      // { column_transform: 'label-encoder', column_name: 'bl. of lymph. c' },
+      // { column_transform: 'label-encoder', column_name: 'bl. of lymph. s' },
+      // { column_transform: 'label-encoder', column_name: 'by pass' },
+      // { column_transform: 'label-encoder', column_name: 'extravasates' },
+      // { column_transform: 'label-encoder', column_name: 'regeneration of' },
+      // { column_transform: 'label-encoder', column_name: 'early uptake in' },
+      // { column_transform: 'label-encoder', column_name: 'lym.nodes dimin' },
+      // { column_transform: 'label-encoder', column_name: 'lym.nodes enlar' },
+      // { column_transform: 'label-encoder', column_name: 'changes in lym.' },
+      // { column_transform: 'label-encoder', column_name: 'defect in node' },
+      // { column_transform: 'label-encoder', column_name: 'changes in node' },
+      // { column_transform: 'label-encoder', column_name: 'changes in stru' },
+      // { column_transform: 'label-encoder', column_name: 'special forms' },
+      // { column_transform: 'label-encoder', column_name: 'dislocation of' },
+      // { column_transform: 'label-encoder', column_name: 'exclusion of no' },
+      // { column_transform: 'label-encoder', column_name: 'no. of nodes in' },
+      // { column_transform: 'label-encoder', column_name: 'class' },
+      { column_transform: 'label-encoder', column_name: 'class',             column_role: 'Target',    column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'lymphatics',        column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'block of affere',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'bl. of lymph. c',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'bl. of lymph. s',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'by pass',           column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'extravasates',      column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'regeneration of',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'early uptake in',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'lym.nodes dimin',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'lym.nodes enlar',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'changes in lym',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'defect in node',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'changes in stru',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'special forms',     column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'dislocation of',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'exclusion of no',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_transform: '',              column_name: 'no. of nodes in',   column_role: 'Feature',   column_type: 'Categorical', column_missing_values: false },
     ]
     const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
     const column_name_target = 'class'
+
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
     const dataframe_y = dataframe_original[column_name_target]
 
-    const scaler = new dfd.MinMaxScaler()
-    scaler.fit(dataframe_X)
-    const X = scaler.transform(dataframe_X)
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const lymphography_minMaxScaler = minMaxScaler.fit(dataframe_X)
+    const X = lymphography_minMaxScaler.transform(dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
-    oneHotEncoder.fit(dataframe_y)
-    const y = oneHotEncoder.transform(dataframe_y)
+    const lymphography_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
+    const y = lymphography_oneHotEncoder.transform(dataframe_y)
 
-    const label_encoder_y = new dfd.LabelEncoder()
-    label_encoder_y.fit(dataframe_y.values)
-    const classes = Object.keys(label_encoder_y.$labels)
+    const labelEncoder = new dfd.LabelEncoder()
+    const lymphography_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const classes = Object.keys(lymphography_labelEncoder.$labels)
 
     return [
       {
@@ -325,10 +346,8 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
         data_processed      : {
           X                 : X,
           y                 : y,
-          missing_values    : false,
-          missing_value_key : '',
           encoders          : encoders,
-          scaler            : scaler,
+          scaler            : lymphography_minMaxScaler,
           column_name_target: column_name_target,
           classes           : classes,
           attributes        : this.FORM,
@@ -352,9 +371,9 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   DEFAULT_LAYERS () {
     return [
       { units: 18, activation: 'sigmoid' },
-      { units: 10, activation: 'relu' },
-      { units: 10, activation: 'relu' },
-      { units: 4, activation: 'softmax' },
+      { units: 10, activation: 'relu'    },
+      { units: 10, activation: 'relu'    },
+      { units: 4,  activation: 'softmax' },
     ]
   }
 

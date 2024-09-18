@@ -152,7 +152,6 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 /**
  * @typedef {Object} DataProcessed_t
  * @property {boolean} missing_values
- * @property {string} missing_value_key
  * @property {string} column_name_target
  * @property {string[]} classes
  * @property {EncoderMap_t} encoders
@@ -168,6 +167,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {boolean} is_dataset_upload
  * @property {string} path
  * @property {string} info
+ * @property {string} container_info
  * @property {string} csv
  * @property {Array<DataFrameColumnTransform_t>} dataset_transforms
  * @property {DataFrame_t} dataframe_original

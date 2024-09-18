@@ -119,9 +119,9 @@ export default function TabularClassificationDatasetProcessForm(props) {
     const dataframe_X = dataframe_processed.drop({ columns: [columnNameTarget] })
     const dataframe_y = dataframe_original[columnNameTarget]
 
-    const label_encoder_y = new dfd.LabelEncoder()
-    label_encoder_y.fit(dataframe_y.values)
-    const classes = Object.keys(label_encoder_y.$labels)
+    const labelEncoder = new dfd.LabelEncoder()
+    const dataset_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const classes = Object.keys(dataset_labelEncoder.$labels)
 
     let attributes = listColumnNameTransformations.map(({ column_name, column_transform }) => {
       if (column_transform === 'label-encoder') {
@@ -144,8 +144,6 @@ export default function TabularClassificationDatasetProcessForm(props) {
     const y = oneHotEncoder.transform(dataframe_y)
 
     const data_processed = {
-      missing_values    : false,
-      missing_value_key : '',
       column_name_target: columnNameTarget,
       encoders          : encoders_map,
       scaler            : scaler,

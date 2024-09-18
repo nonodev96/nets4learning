@@ -103,11 +103,16 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
 
   async DATASETS () {
     const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
-    const dataframe_original = await dfd.readCSV(dataset_path + 'iris.csv')
+    let dataframe_original = await dfd.readCSV(dataset_path + 'iris.csv')
     let dataframe_processed = await dfd.readCSV(dataset_path + 'iris.csv')
 
     const dataset_transforms = [
-      { column_transform: 'label-encoder', column_name: 'class' },
+      // { column_transform: 'label-encoder', column_name: 'class' },
+      // { column_transform: '',              column_name: 'sepal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      // { column_transform: '',              column_name: 'sepal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      // { column_transform: '',              column_name: 'petal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      // { column_transform: '',              column_name: 'petal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      { column_transform: 'label-encoder', column_name: 'class',         column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
     ]
     const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
@@ -116,17 +121,17 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
     const dataframe_y = dataframe_original[column_name_target]
 
-    const scaler = new dfd.MinMaxScaler()
-    scaler.fit(dataframe_X)
-    const X = scaler.transform(dataframe_X)
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const iris_minMaxScaler = minMaxScaler.fit(dataframe_X)
+    const X = iris_minMaxScaler.transform(dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
-    oneHotEncoder.fit(dataframe_y)
-    const y = oneHotEncoder.transform(dataframe_y)
+    const iris_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
+    const y = iris_oneHotEncoder.transform(dataframe_y)
 
-    const label_encoder_y = new dfd.LabelEncoder()
-    label_encoder_y.fit(dataframe_y.values)
-    const classes = Object.keys(label_encoder_y.$labels)
+    const labelEncoder = new dfd.LabelEncoder()
+    const iris_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const classes = Object.keys(iris_labelEncoder.$labels)
 
     return [
       {
@@ -141,10 +146,8 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
         data_processed      : {
           X                 : X,
           y                 : y,
-          missing_values    : false,
-          missing_value_key : '',
           encoders          : encoders_map,
-          scaler            : scaler,
+          scaler            : minMaxScaler,
           column_name_target: column_name_target,
           classes           : classes,
           attributes        : [

@@ -67,22 +67,26 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const dataset_promise_info = await fetch(dataset_path + dataset_info)
     const dataset_container_info = await dataset_promise_info.text()
     
-    const dataframe_transforms = [
+    const salary_dataset = [
+      // { column_name: 'YearsExperience',  column_role: 'Feature', column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
+      // { column_name: 'Salary',           column_role: 'Target',  column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
+    ]
 
+    const salary_dataset_transforms = [
     ]
     let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
-    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataframe_transforms)
-    // dataframe_processed_1.print()
+    const salary_encoder = DataFrameUtils.DataFrameEncoder(dataframe_processed_1, salary_dataset_transforms)
+    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, salary_dataset_transforms)
     
-    const column_name_target = 'Salary'
-    const dataframe_X = dataframe_processed_1.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_original_1[column_name_target]
+    const salary_target = 'Salary'
+    const dataframe_X = dataframe_processed_1.drop({ columns: [salary_target] })
+    const dataframe_y = dataframe_original_1[salary_target]
 
-    const scaler = new dfd.MinMaxScaler()
-    const salary_scaler = scaler.fit(dataframe_X)
-    const X = salary_scaler.transform(dataframe_X)
-    const y = dataframe_y
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const salary_scaler = minMaxScaler.fit(dataframe_X)
+    const salary_X = salary_scaler.transform(dataframe_X)
+    const salary_y = dataframe_y
 
     return [
       {
@@ -94,14 +98,13 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         container_info      : dataset_container_info,
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
-        dataframe_transforms: dataframe_transforms,
+        dataset_transforms  : salary_dataset_transforms,
         data_processed      : {
-          missing_values    : false,
+          X                 : salary_X,
+          y                 : salary_y,
           scaler            : salary_scaler,
-          encoders          : {},
-          X                 : X,
-          y                 : y,
-          column_name_target: column_name_target,
+          encoders          : salary_encoder,
+          column_name_target: salary_target,
         }
       }
     ]

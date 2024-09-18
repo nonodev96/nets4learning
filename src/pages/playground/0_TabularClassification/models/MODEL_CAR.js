@@ -119,13 +119,13 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     let dataframe_processed = await dfd.readCSV(dataset_path + 'car.csv')
     // @formatter:off
     const dataset_transforms = [
-      {  column_transform: 'label-encoder', column_name: 'Buying' },
-      {  column_transform: 'label-encoder', column_name: 'Maint' },
-      {  column_transform: 'label-encoder', column_name: 'Doors' },
-      {  column_transform: 'label-encoder', column_name: 'Persons' },
-      {  column_transform: 'label-encoder', column_name: 'Lug_boot' },
-      {  column_transform: 'label-encoder', column_name: 'Safety' },
-      {  column_transform: 'label-encoder', column_name: 'Result' },
+      {  column_transform: 'label-encoder', column_name: 'Buying',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Maint',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Doors',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Persons',  column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Lug_boot', column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Safety',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      {  column_transform: 'label-encoder', column_name: 'Result',   column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
     ]
     // @formatter:on
     const column_name_target = 'Result'
@@ -135,17 +135,17 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
     const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
     const dataframe_y = dataframe_original[column_name_target]
 
-    const scaler = new dfd.MinMaxScaler()
-    scaler.fit(dataframe_X)
-    const X = scaler.transform(dataframe_X)
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const car_minMaxScaler = minMaxScaler.fit(dataframe_X)
+    const X = car_minMaxScaler.transform(dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
-    oneHotEncoder.fit(dataframe_y)
-    const y = oneHotEncoder.transform(dataframe_y)
+    const car_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
+    const y = car_oneHotEncoder.transform(dataframe_y)
 
-    const label_encoder_y = new dfd.LabelEncoder()
-    label_encoder_y.fit(dataframe_y.values)
-    const classes = Object.keys(label_encoder_y.$labels)
+    const labelEncoder = new dfd.LabelEncoder()
+    const car_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const car_classes = Object.keys(car_labelEncoder.$labels)
 
     return [
       {
@@ -160,12 +160,10 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
         data_processed      : {
           X                 : X,
           y                 : y,
-          missing_values    : false,
-          missing_value_key : '',
           encoders          : encoders_map,
-          scaler            : scaler,
+          scaler            : car_minMaxScaler,
           column_name_target: column_name_target,
-          classes           : classes,
+          classes           : car_classes,
           // @formatter:off
           attributes        : [
             { type: 'label-encoder', name: 'Buying',   options: [{ value: 'vhigh', text: 'vhigh' }, { value: 'high', text: 'high' }, { value: 'med',  text: 'med'  }, { value: 'low',   text: 'low'   } ] },

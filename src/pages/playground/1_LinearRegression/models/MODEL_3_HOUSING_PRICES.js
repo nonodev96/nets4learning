@@ -133,49 +133,63 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       { column_transform: 'drop', column_name: 'Distance_to_SanJose' },
       { column_transform: 'drop', column_name: 'Distance_to_SanFrancisco' },
     ]
-    const california_column_name_target = 'Median_House_Value'
+    const california_target = 'Median_House_Value'
     
     const california_encoders_map = DataFrameUtils.DataFrameEncoder(california_dataframe_processed, california_dataset_encoder)
     california_dataframe_processed = DataFrameUtils.DataFrameTransform(california_dataframe_processed, california_dataset_transforms)
     
-    const california_dataframe_X = california_dataframe_processed.drop({ columns: [california_column_name_target] })
-    const california_dataframe_y = california_dataframe_original[california_column_name_target]
+    const california_dataframe_X = california_dataframe_processed.drop({ columns: [california_target] })
+    const california_dataframe_y = california_dataframe_original[california_target]
 
-    const california_scaler = new dfd.StandardScaler()
-    california_scaler.fit(california_dataframe_X)
-    const c_X = california_scaler.transform(california_dataframe_X)
-    const c_y = california_dataframe_y
+    const standardScaler = new dfd.StandardScaler()
+    const california_scaler = standardScaler.fit(california_dataframe_X)
+    const california_X = california_scaler.transform(california_dataframe_X)
+    const california_y = california_dataframe_y
+
 
     // ------------------------
-
-        
+    // #region Boston housing
     const boston_dataset_info = 'boston-housing.names'
     const boston_dataset_csv = 'boston-housing.csv'
     const boston_dataset_promise_info = await fetch(datasets_path + boston_dataset_info)
     const boston_dataset_container_info = await boston_dataset_promise_info.text()
+    const boston_dataset = [
+      // { column_name: 'CRIM',    column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'ZN',      column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'INDUS',   column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'CHAS',    column_type: 'Binary',       column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'NOX',     column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'RM',      column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'AGE',     column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'DIS',     column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'RAD',     column_type: 'Integer',      column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'TAX',     column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'PTRATIO', column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'B',       column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'LSTAT',   column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'MEDV',    column_type: 'Continuous',   column_role: 'Target',  column_missing_values: false }
+    ]
+    
     let boston_dataframe_original = await dfd.readCSV(datasets_path + boston_dataset_csv)
     let boston_dataframe_processed = await dfd.readCSV(datasets_path + boston_dataset_csv)
-  
-    const boston_dataset_encoder = [
-      // {  column_transform: 'label-encoder', column_name: 'CHAS' },
-    ]
     const boston_dataset_transforms = [
-      { column_transform: 'drop', column_name: 'B' },
-      { column_transform: 'drop', column_name: 'MEDV' },
+      ...boston_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_transform: 'drop', column_name: 'B'    },
+      { column_transform: 'drop', column_name: 'MEDV' }
     ]
-    const boston_column_name_target = 'MEDV'
-    
-    const boston_encoders_map = DataFrameUtils.DataFrameEncoder(boston_dataframe_processed, boston_dataset_encoder)
+    const boston_target = 'MEDV'
+    const boston_encoders_map = DataFrameUtils.DataFrameEncoder(boston_dataframe_processed, boston_dataset_transforms)
     boston_dataframe_processed = DataFrameUtils.DataFrameTransform(boston_dataframe_processed, boston_dataset_transforms)
     
     const boston_dataframe_X = boston_dataframe_processed.copy()
-    const boston_dataframe_y = boston_dataframe_original[boston_column_name_target]
-
-    const scaler = new dfd.MinMaxScaler()
-    const boston_scaler = scaler.fit(boston_dataframe_X)
-    const b_X = boston_scaler.transform(boston_dataframe_X)
-    const b_y = boston_dataframe_y
-
+    const boston_dataframe_y = boston_dataframe_original[boston_target]
+    
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const boston_scaler = minMaxScaler.fit(boston_dataframe_X)
+    const boston_X = boston_scaler.transform(boston_dataframe_X)
+    const boston_y = boston_dataframe_y
+    // #endregion
+    
     return [
       {
         is_dataset_upload   : false,
@@ -188,12 +202,11 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : california_dataframe_processed,
         dataset_transforms  : california_dataset_transforms,
         data_processed      : {
-          missing_values    : false,
+          X                 : california_X,
+          y                 : california_y,
           scaler            : california_scaler,
           encoders          : california_encoders_map,
-          X                 : c_X,
-          y                 : c_y,
-          column_name_target: california_column_name_target,
+          column_name_target: california_target,
         }
       },
       {
@@ -207,12 +220,11 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : boston_dataframe_processed,
         dataset_transforms  : boston_dataset_transforms,
         data_processed      : {
-          missing_values    : false,
+          X                 : boston_X,
+          y                 : boston_y,
           scaler            : boston_scaler,
           encoders          : boston_encoders_map,
-          X                 : b_X,
-          y                 : b_y,
-          column_name_target: boston_column_name_target,
+          column_name_target: boston_target,
         }
       }
     ]

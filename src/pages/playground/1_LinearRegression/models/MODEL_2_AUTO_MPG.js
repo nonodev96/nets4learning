@@ -103,25 +103,34 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
     
     
-    const dataset_transforms = [
-      {  column_transform: 'label-encoder', column_name: 'cylinders' },
-      {  column_transform: 'label-encoder', column_name: 'model-year' },
-      // {  column_transform: 'label-encoder', column_name: 'origin' },
+    const dataset = [
+      // { column_name: 'displacement',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      // { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
+      // { column_name: 'cylinders',        column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      // { column_name: 'horsepower',       column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: true    },
+      // { column_name: 'weight',           column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      // { column_name: 'acceleration',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      // { column_name: 'model_year',       column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      // { column_name: 'origin',           column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      // { column_name: 'car_name',         column_role: 'ID',        column_type: 'Categorical',   column_missing_values: false   },
     ]
-    const column_name_target = 'mpg'
+    const dataset_transforms = [
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
 
-    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms)
+    ]
+    const salary_target = 'mpg'
+    const salary_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms)
 
-    console.log({encoders_map})
+    console.log({encoders_map: salary_encoders_map})
     
-    const dataframe_X = dataframe_processed_1.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_original_1[column_name_target]
+    const dataframe_X = dataframe_processed_1.drop({ columns: [salary_target] })
+    const dataframe_y = dataframe_original_1[salary_target]
 
     const scaler = new dfd.MinMaxScaler()
     const salary_scaler = scaler.fit(dataframe_X)
-    const X = salary_scaler.transform(dataframe_X)
-    const y = dataframe_y
+    const salary_X = salary_scaler.transform(dataframe_X)
+    const salary_y = dataframe_y
 
     return [
       {
@@ -135,12 +144,11 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : dataframe_processed_1,
         dataset_transforms  : dataset_transforms,
         data_processed      : {
-          missing_values    : true,
+          X                 : salary_X,
+          y                 : salary_y,
           scaler            : salary_scaler,
-          encoders          : encoders_map,
-          X                 : X,
-          y                 : y,
-          column_name_target: column_name_target,
+          encoders          : salary_encoders_map,
+          column_name_target: salary_target,
         }
       }
     ]

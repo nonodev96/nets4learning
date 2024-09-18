@@ -1,4 +1,4 @@
-"Median_House_Value","Median_Income","Median_Age","Tot_Rooms","Tot_Bedrooms","Population","Households","Latitude","Longitude","Distance_to_coast","Distance_to_LA","Distance_to_SanDiego","Distance_to_SanJose","Distance_to_SanFrancisco"
+Median_House_Value,Median_Income,Median_Age,Tot_Rooms,Tot_Bedrooms,Population,Households,Latitude,Longitude,Distance_to_coast,Distance_to_LA,Distance_to_SanDiego,Distance_to_SanJose,Distance_to_SanFrancisco
 452600,8.3252,41,880,129,322,126,37.88,-122.23,9263.04077285038,556529.1583418,735501.80698384,67432.5170008434,21250.2137667799
 358500,8.3014,21,7099,1106,2401,1138,37.86,-122.22,10225.7330715424,554279.850068765,733236.884360166,65049.9085739663,20880.6003997074
 352100,7.2574,52,1467,190,496,177,37.85,-122.24,8259.08510932293,554610.717069378,733525.68293736,64867.2898334847,18811.4874496884
