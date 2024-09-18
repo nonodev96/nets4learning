@@ -73,6 +73,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     ]
 
     const salary_dataset_transforms = [
+      ...salary_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
     ]
     let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
     let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
