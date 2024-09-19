@@ -144,13 +144,11 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       { column_transform: 'drop', column_name: 'Distance_to_SanFrancisco' },
     ]
     const california_target = 'Median_House_Value'
-    console.log({ california_dataframe_processed })
     
-    const {
-      dataframe_processed: _california_dataframe_processed, 
-      encoder_map        : california_encoders_map
-    } = DataFrameUtils.DataFrameTransformAndEncoder(california_dataframe_processed, california_dataset_transforms)
-    
+    const california_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(california_dataframe_processed, california_dataset_transforms)
+    const california_encoders_map = california_dataframe_encoder.encoder_map
+    california_dataframe_processed = california_dataframe_encoder.dataframe_processed
+
     const california_dataframe_X = california_dataframe_processed.drop({ columns: [california_target] })
     const california_dataframe_y = california_dataframe_original[california_target]
 
@@ -162,10 +160,10 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
 
     // ------------------------
     // #region Boston housing
-    const boston_dataset_info = 'boston-housing.names'
-    const boston_dataset_csv = 'boston-housing.csv'
-    const boston_dataset_promise_info = await fetch(path_datasets + boston_dataset_info)
-    const boston_dataset_container_info = await boston_dataset_promise_info.text()
+    const boston_info = 'boston-housing.names'
+    const boston_csv = 'boston-housing.csv'
+    const boston_dataset_promise_info = await fetch(path_datasets + boston_info)
+    const boston_container_info = await boston_dataset_promise_info.text()
     const boston_dataset = [
       { column_name: 'CRIM',    column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'ZN',      column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
@@ -183,8 +181,8 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'MEDV',    column_type: 'Continuous',   column_role: 'Target',  column_missing_values: false }
     ]
     
-    let boston_dataframe_original = await dfd.readCSV(path_datasets + boston_dataset_csv)
-    let boston_dataframe_processed = await dfd.readCSV(path_datasets + boston_dataset_csv)
+    let boston_dataframe_original = await dfd.readCSV(path_datasets + boston_csv)
+    let boston_dataframe_processed = await dfd.readCSV(path_datasets + boston_csv)
     const boston_dataset_transforms = [
       ...boston_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
       { column_transform: 'drop', column_name: 'B'    },
@@ -226,9 +224,9 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : path_datasets,
-        csv                 : boston_dataset_csv,
-        info                : boston_dataset_info,
-        container_info      : boston_dataset_container_info,
+        csv                 : boston_csv,
+        info                : boston_info,
+        container_info      : boston_container_info,
         dataframe_original  : boston_dataframe_original,
         dataframe_processed : boston_dataframe_processed,
         dataset_transforms  : boston_dataset_transforms,
@@ -255,9 +253,14 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     return models[dataset]
   }
 
-  DEFAULT_LAYERS (_dataset) {
+  DEFAULT_LAYERS (dataset) {
     const models = {
       'california-housing.csv': [
+        { is_disabled: false, units: 20, activation: 'relu' },
+        { is_disabled: false, units: 20, activation: 'relu' },
+        { is_disabled: false, units: 20, activation: 'relu' },
+        { is_disabled: false, units: 20, activation: 'relu' },
+        { is_disabled: true,  units: 1,  activation: 'linear' },
       ],
       'boston-housing.csv': [
         { is_disabled: false, units: 64, activation: 'sigmoid'   },
@@ -267,7 +270,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         { is_disabled: true,  units: 1,  activation: 'linear'    }
       ]
     }
-    return models['boston-housing.csv']
+    return models[dataset]
   }
 
   COMPILE () {

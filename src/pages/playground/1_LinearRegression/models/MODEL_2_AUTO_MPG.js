@@ -92,63 +92,61 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_dataset = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
-    const auto_csv = 'auto-mpg.csv'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
     const auto_info = 'auto-mpg.names'
+    const auto_csv = 'auto-mpg.csv'
 
-    const dataset_promise_info = await fetch(path_dataset + auto_info)
-    const auto_container_info = await dataset_promise_info.text()
+    const auto_promise_info = await fetch(path_datasets + auto_info)
+    const auto_container_info = await auto_promise_info.text()
     
-    let dataframe_original_1 = await dfd.readCSV(path_dataset + auto_csv)
-    let dataframe_processed_1 = await dfd.readCSV(path_dataset + auto_csv)
+    let auto_dataframe_original = await dfd.readCSV(path_datasets + auto_csv)
+    let auto_dataframe_processed = await dfd.readCSV(path_datasets + auto_csv)
     
-    
-    const dataset = [
-      // { column_name: 'displacement',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      // { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
-      // { column_name: 'cylinders',        column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
-      // { column_name: 'horsepower',       column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: true    },
-      // { column_name: 'weight',           column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      // { column_name: 'acceleration',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      // { column_name: 'model_year',       column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
-      // { column_name: 'origin',           column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+    const auto_dataset = [
+      { column_name: 'displacement',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
+      { column_name: 'cylinders',        column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      { column_name: 'horsepower',       column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: true    },
+      { column_name: 'weight',           column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      { column_name: 'acceleration',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
+      { column_name: 'model_year',       column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      { column_name: 'origin',           column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
       // { column_name: 'car_name',         column_role: 'ID',        column_type: 'Categorical',   column_missing_values: false   },
     ]
-    const dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
-
+    const auto_dataset_transforms = [
+      ...auto_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
     ]
-    const salary_target = 'mpg'
-    const salary_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original_1, dataset_transforms)
-    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, dataset_transforms)
+    const auto_target = 'mpg'
 
-    console.log({encoders_map: salary_encoders_map})
+    const auto_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(auto_dataframe_processed, auto_dataset_transforms)
+    const auto_encoders_map = auto_dataframe_encoder.encoder_map
+    auto_dataframe_processed = auto_dataframe_encoder.dataframe_processed
     
-    const dataframe_X = dataframe_processed_1.drop({ columns: [salary_target] })
-    const dataframe_y = dataframe_original_1[salary_target]
+    const dataframe_X = auto_dataframe_processed.drop({ columns: [auto_target] })
+    const dataframe_y = auto_dataframe_original[auto_target]
 
     const minMaxScaler = new dfd.MinMaxScaler()
-    const salary_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const salary_X = salary_minMaxScaler.transform(dataframe_X)
-    const salary_y = dataframe_y
+    const auto_minMaxScaler = minMaxScaler.fit(dataframe_X)
+    const auto_X = auto_minMaxScaler.transform(dataframe_X)
+    const auto_y = dataframe_y
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : path_dataset,
+        path                : path_datasets,
         csv                 : auto_csv,
         info                : auto_info,
         container_info      : auto_container_info,
-        dataframe_original  : dataframe_original_1,
-        dataframe_processed : dataframe_processed_1,
-        dataset_transforms  : dataset_transforms,
+        dataframe_original  : auto_dataframe_original,
+        dataframe_processed : auto_dataframe_processed,
+        dataset_transforms  : auto_dataset_transforms,
         data_processed      : {
-          X                 : salary_X,
-          y                 : salary_y,
-          scaler            : salary_minMaxScaler,
-          encoders          : salary_encoders_map,
-          column_name_target: salary_target,
+          X                 : auto_X,
+          y                 : auto_y,
+          scaler            : auto_minMaxScaler,
+          encoders          : auto_encoders_map,
+          column_name_target: auto_target,
         }
       }
     ]
@@ -166,9 +164,8 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
   DEFAULT_LAYERS () {
     return [
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: true,  units: 1,  activation: 'linear' }
+      { is_disabled: false, units: 64, activation: 'sigmoid' },
+      { is_disabled: true,  units: 1,  activation: 'linear'  }
     ]
   }
 

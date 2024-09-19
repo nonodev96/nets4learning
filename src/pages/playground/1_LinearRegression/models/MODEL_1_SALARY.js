@@ -60,11 +60,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_dataset = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
     const salary_info = 'salary.names'
     const salary_csv = 'salary.csv'
 
-    const dataset_promise_info = await fetch(path_dataset + salary_info)
+    const dataset_promise_info = await fetch(path_datasets + salary_info)
     const salary_container_info = await dataset_promise_info.text()
     
     const salary_dataset = [
@@ -75,14 +75,16 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const salary_dataset_transforms = [
       ...salary_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
     ]
-    let dataframe_original_1 = await dfd.readCSV(path_dataset + salary_csv)
-    let dataframe_processed_1 = await dfd.readCSV(path_dataset + salary_csv)
-    const salary_encoder = DataFrameUtils.DataFrameEncoder(dataframe_processed_1, salary_dataset_transforms)
-    dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, salary_dataset_transforms)
+    let salary_dataframe_original = await dfd.readCSV(path_datasets + salary_csv)
+    let salary_dataframe_processed = await dfd.readCSV(path_datasets + salary_csv)
+
+    const salary_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(salary_dataframe_processed, salary_dataset_transforms)
+    const salary_encoders_map = salary_dataframe_encoder.encoder_map
+    salary_dataframe_processed = salary_dataframe_encoder.dataframe_processed
     
     const salary_target = 'Salary'
-    const dataframe_X = dataframe_processed_1.drop({ columns: [salary_target] })
-    const dataframe_y = dataframe_original_1[salary_target]
+    const dataframe_X = salary_dataframe_processed.drop({ columns: [salary_target] })
+    const dataframe_y = salary_dataframe_original[salary_target]
 
     const minMaxScaler = new dfd.MinMaxScaler()
     const salary_scaler = minMaxScaler.fit(dataframe_X)
@@ -93,18 +95,18 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : path_dataset,
+        path                : path_datasets,
         info                : salary_info,
         csv                 : salary_csv,
         container_info      : salary_container_info,
-        dataframe_original  : dataframe_original_1,
-        dataframe_processed : dataframe_processed_1,
+        dataframe_original  : salary_dataframe_original,
+        dataframe_processed : salary_dataframe_processed,
         dataset_transforms  : salary_dataset_transforms,
         data_processed      : {
           X                 : salary_X,
           y                 : salary_y,
           scaler            : salary_scaler,
-          encoders          : salary_encoder,
+          encoders          : salary_encoders_map,
           column_name_target: salary_target,
         }
       }
@@ -131,16 +133,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     return model
   }
 
-  DEFAULT_LAYERS () {
+  DEFAULT_LAYERS (_dataset) {
     return [
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 32, activation: 'relu' },
-      { is_disabled: false, units: 16, activation: 'relu' },
-      { is_disabled: false, units: 8,  activation: 'relu' },
-      { is_disabled: false, units: 4,  activation: 'relu' },
-      { is_disabled: false, units: 2,  activation: 'relu' },
-      // { is_disabled: false, units: 1,  activation: 'relu' },
-      { is_disabled: true,  units: 1,  activation: 'linear' }
+      { is_disabled: false, units: 10, activation: 'sigmoid' },
+      { is_disabled: false, units: 20, activation: 'relu'    },
+      { is_disabled: true,  units: 1,  activation: 'linear'  }
     ]
   }
 

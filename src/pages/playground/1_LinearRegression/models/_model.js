@@ -24,11 +24,14 @@ export default class I_MODEL_LINEAR_REGRESSION {
   }
 
   /**
-   * 
+   * @property {string} dataset
    * @returns {Array<CustomParamsLayerModel_t>}
    */
-  DEFAULT_LAYERS () {
-    return []
+  DEFAULT_LAYERS (dataset) {
+    const list_map = {
+      '': []
+    }
+    return list_map[dataset] || []
   }
 
   COMPILE () {

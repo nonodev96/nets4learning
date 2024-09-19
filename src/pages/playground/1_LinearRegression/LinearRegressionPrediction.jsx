@@ -95,35 +95,30 @@ export default function LinearRegressionPrediction() {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [listModels, indexModel, setDataPrediction]')
     if (listModels.length > 0 && indexModel >= 0 && listModels[indexModel]) {
-      const {
-        original,
-        predicted,
-        params_features,
-        /* predictedLinear */
-      } = listModels[indexModel]
-      const { X_feature, Y_target } = params_features
-      const trace = {
-        x      : original.map((v) => v.x),
-        y      : original.map((v) => v.y),
-        name   : t('{{X_feature}} x {{target}}', { X_feature, target: Y_target }),
-        mode   : 'markers',
-        type   : 'scatter',
-        opacity: 1,
-        marker : {
-          color: 'blue',
-        },
-      }
-      const rTrace = {
-        x      : predicted.map((v) => v.x),
-        y      : predicted.map((v) => v.y),
-        name   : t('Predicted'),
-        mode   : 'lines+markers',
-        type   : 'scatter',
-        opacity: 0.5,
-        marker : {
-          color: 'forestgreen',
-        },
-      }
+      const { params_features } = listModels[indexModel]
+      // const { X_feature, Y_target } = params_features
+      // const trace = {
+      //   x      : original.map((v) => v.x),
+      //   y      : original.map((v) => v.y),
+      //   name   : t('{{X_feature}} x {{target}}', { X_feature, target: Y_target }),
+      //   mode   : 'markers',
+      //   type   : 'scatter',
+      //   opacity: 1,
+      //   marker : {
+      //     color: 'blue',
+      //   },
+      // }
+      // const rTrace = {
+      //   x      : predicted.map((v) => v.x),
+      //   y      : predicted.map((v) => v.y),
+      //   name   : t('Predicted'),
+      //   mode   : 'lines+markers',
+      //   type   : 'scatter',
+      //   opacity: 0.5,
+      //   marker : {
+      //     color: 'forestgreen',
+      //   },
+      // }
       // const lrTrace = {
       //   x      : predictedLinear.map((v) => v.x),
       //   y      : predictedLinear.map((v) => v.y),
@@ -135,7 +130,7 @@ export default function LinearRegressionPrediction() {
       //     color: 'orange'
       //   }
       // }
-      setDataPrediction([trace, rTrace])
+      // setDataPrediction([trace, rTrace])
     }
   }, [listModels, indexModel, setDataPrediction, t])
 
@@ -254,7 +249,7 @@ export default function LinearRegressionPrediction() {
             </Row>
             <Row>
               <Col>
-                <Plot 
+                {/* <Plot 
                   ref={refPlotJS}
                   data={dataPrediction}
                   useResizeHandler={true}
@@ -263,7 +258,7 @@ export default function LinearRegressionPrediction() {
                     title: '',
                     ...PLOTLY_CONFIG_DEFAULT.LAYOUT,
                   }}
-                />
+                /> */}
               </Col>
             </Row>
           </Form>

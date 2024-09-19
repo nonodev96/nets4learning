@@ -1,6 +1,6 @@
 import React from 'react'
 import { createContext, useState } from 'react'
-import { Sequential } from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import * as _dfd from 'danfojs'
 import { useTranslation } from 'react-i18next'
 import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegression/models'
@@ -53,10 +53,7 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
 
 /**
  * @typedef CustomModel_t
- * @property {Sequential} model
- * @property {Point_t[]} original
- * @property {Point_t[]} predicted
- * @property {Point_t[]} predictedLinear
+ * @property {tfjs.Sequential} model
  */
 
 /**
@@ -107,8 +104,8 @@ import { I_MODEL_LINEAR_REGRESSION } from '../pages/playground/1_LinearRegressio
  * @property {CustomParams_t} params
  * @property {React.Dispatch<React.SetStateAction<CustomParams_t>>} setParams
  *
- * @property {CustomModel_t} tmpModel
- * @property {React.Dispatch<React.SetStateAction<CustomModel_t>>} setTmpModel
+ * @property {CustomModel_t} modelState
+ * @property {React.Dispatch<React.SetStateAction<CustomModel_t>>} setModelState
  *
  * @property {Array<CustomModelGenerated_t>} listModels
  * @property {React.Dispatch<React.SetStateAction<Array<CustomModelGenerated_t>>>} setListModels
@@ -178,10 +175,7 @@ export function LinearRegressionProvider ({ children }) {
   }
   /** @type {CustomModel_t} */
   const DEFAULT_MODEL = {
-    model          : new Sequential(),
-    original       : [],
-    predicted      : [],
-    predictedLinear: []
+    model: new tfjs.Sequential(),
   }
   // @formatter:on
   
@@ -207,7 +201,7 @@ export function LinearRegressionProvider ({ children }) {
   /**
    * @type {ReturnType<typeof useState<CustomModel_t>>}
    */
-  const [tmpModel, setTmpModel] = useState(DEFAULT_MODEL)
+  const [modelState, setModelState] = useState(DEFAULT_MODEL)
   /**
    * @type {ReturnType<typeof useState<Array<CustomModelGenerated_t>>>}
    */
@@ -239,8 +233,8 @@ export function LinearRegressionProvider ({ children }) {
       params,
       setParams,
 
-      tmpModel,
-      setTmpModel,
+      modelState,
+      setModelState,
 
       listModels,
       setListModels,

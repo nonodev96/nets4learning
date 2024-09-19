@@ -17,9 +17,8 @@ import { MAP_LR_CLASSES } from './models'
 
 import * as _Types from '@/core/types'
 // import LinearRegressionModelController_Simple from '@core/controller/01-linear-regression/LinearRegressionModelController_Simple'
-import LinearRegressionModelController_Multiple from '@core/controller/01-linear-regression/LinearRegressionModelController_Multiple'
+import { createLinearRegressionCustomModel } from '@core/controller/01-linear-regression/LinearRegressionModelController'
 import LinearRegressionContext from '@context/LinearRegressionContext'
-import { cloneTmpModel } from '@pages/playground/1_LinearRegression/utils'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
 import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
@@ -62,8 +61,8 @@ export default function LinearRegression(props) {
     datasets,
     setDatasets,
 
-    tmpModel,
-    setTmpModel,
+    modelState,
+    setModelState,
 
     params,
     setParams,
@@ -87,58 +86,74 @@ export default function LinearRegression(props) {
   const refJoyrideButton = useRef({})
 
   const TrainModel = async () => {
-    const modelController = new LinearRegressionModelController_Multiple(t)
-    // modelController.setDataFrame(datasetLocal.dataframe_processed)
-    console.log({datasets: datasets.data[datasets.index]})
-    modelController.setDataFrame(datasets.data[datasets.index].dataframe_processed)
-    modelController.setLayers({
-      input : { units: 1 },
-      layers: [
-        ...params.params_layers.map((value) => ({ 
-          activation: value.activation, 
-          units     : value.units 
-        }))
-      ],
-      output: { units: 1 },
+    const dataset_processed = datasets.data[datasets.index]
+    const model = await createLinearRegressionCustomModel({
+      dataset_processed: dataset_processed,
+      layerList        : params.params_layers,
+      learningRate     : params.params_training.learning_rate,
+      numberOfEpoch    : params.params_training.n_of_epochs,
+      testSize         : params.params_training.test_size,
+      idOptimizer      : params.params_training.id_optimizer,
+      idLoss           : params.params_training.id_loss,
+      idMetrics        : params.params_training.list_id_metrics,
     })
-    modelController.setCompile({
-      id_optimizer: params.params_training.id_optimizer,
-      id_loss     : params.params_training.id_loss,
-      id_metrics  : params.params_training.list_id_metrics,
-      params      : {
-        learningRate: params.params_training.learning_rate,
-      },
+    // const modelController = new LinearRegressionModelController_Multiple(t)
+    // // modelController.setDataFrame(datasetLocal.dataframe_processed)
+    // console.log({datasets: datasets.data[datasets.index]})
+    // modelController.setDataFrame(datasets.data[datasets.index].dataframe_processed)
+    // modelController.setLayers({
+    //   input : { units: 1 },
+    //   layers: [
+    //     ...params.params_layers.map((value) => ({ 
+    //       activation: value.activation, 
+    //       units     : value.units 
+    //     }))
+    //   ],
+    //   output: { units: 1 },
+    // })
+    // modelController.setCompile({
+    //   id_optimizer: params.params_training.id_optimizer,
+    //   id_loss     : params.params_training.id_loss,
+    //   id_metrics  : params.params_training.list_id_metrics,
+    //   params      : {
+    //     learningRate: params.params_training.learning_rate,
+    //   },
+    // })
+    // console.log({params})
+    // modelController.setFeatures({
+    //   X_features          : params.params_features.X_features, // Multiple
+    //   X_feature           : params.params_features.X_feature, // Simple
+    //   Y_target            : params.params_features.Y_target,
+    //   categorical_count   : new Map(), // K => column_name, V => number
+    //   categorical_features: new Set(), // V => column_name
+    // })
+    // modelController.setFit({
+    //   testSize : params.params_training.test_size,
+    //   epochs   : params.params_training.n_of_epochs,
+    //   shuffle  : true,
+    //   batchSize: 32,
+    //   metrics  : [...params.params_training.list_id_metrics],
+    // })
+    // const { model, original, predicted, /* predictedLinear */ } = await modelController.run()
+    // const updatedTmpModel = {
+    //   model    : model,
+    //   original : Array.from(original),
+    //   predicted: Array.from(predicted), // Multiple 
+    //   // predictedLinear: Array.from(predictedLinear), // Simple
+    // }
+    setModelState({
+      model: model
     })
-    console.log({params})
-    modelController.setFeatures({
-      X_features          : params.params_features.X_features, // Multiple
-      X_feature           : params.params_features.X_feature, // Simple
-      Y_target            : params.params_features.Y_target,
-      categorical_count   : new Map(), // K => column_name, V => number
-      categorical_features: new Set(), // V => column_name
-    })
-    modelController.setFit({
-      testSize : params.params_training.test_size,
-      epochs   : params.params_training.n_of_epochs,
-      shuffle  : true,
-      batchSize: 32,
-      metrics  : [...params.params_training.list_id_metrics],
-    })
-    const { model, original, predicted, /* predictedLinear */ } = await modelController.run()
-    const updatedTmpModel = {
-      model    : model,
-      original : Array.from(original),
-      predicted: Array.from(predicted), // Multiple 
-      // predictedLinear: Array.from(predictedLinear), // Simple
-    }
-    setTmpModel(updatedTmpModel)
-    setListModels((prevState) => [...prevState, {
-      ...cloneTmpModel(updatedTmpModel),
-      params_layers  : [ ...params.params_layers ],
-      params_training: { ...params.params_training },
-      params_features: { ...params.params_features },
-      dataframe      : datasets.data[datasets.index].dataframe_processed,
-    }])
+    setListModels((prevState) => [
+      ...prevState,
+      {
+        model          : model,
+        params_layers  : [ ...params.params_layers ],
+        params_training: { ...params.params_training },
+        params_features: { ...params.params_features },
+        dataframe      : datasets.data[datasets.index].dataframe_processed,
+      }
+    ])
   }
 
   const handleSubmit_TrainModel = async (event) => {
@@ -187,10 +202,8 @@ export default function LinearRegression(props) {
         //   // dataframe_original  : _datasets[0].dataframe_original,
         //   // dataframe_processed : _datasets[0].dataframe_processed
         // }))
-        setParams((prevState) => ({
-          ...prevState,
-          params_layers: _iModelInstance.DEFAULT_LAYERS()
-        }))
+        console.error({_datasets})
+
       } else {
         await alertHelper.alertError('Error in selection of model')
         console.error('Error, option not valid', { ID: dataset })
@@ -198,7 +211,23 @@ export default function LinearRegression(props) {
       }
     }
     init().then(() => undefined)
-  }, [dataset, t, setIModelInstance, setTmpModel, setAccordionActive, setDatasets, setParams, history])
+  }, [dataset, t, setIModelInstance, setModelState, setAccordionActive, setDatasets, setParams, history])
+
+
+  useEffect(() => {
+    if (dataset === UPLOAD) {
+      console.debug('Linear regression upload csv')
+    } else if (dataset in MAP_LR_CLASSES) {
+      if (iModelInstance && datasets && datasets.data && datasets.index != -1 && datasets.data[datasets.index] && datasets.data[datasets.index].csv) {
+        console.log('entre', datasets)
+        setParams((prevState) => ({
+          ...prevState,
+          params_layers: iModelInstance.DEFAULT_LAYERS(datasets.data[datasets.index].csv)
+        }))
+      }
+    }
+  }, [dataset, iModelInstance, datasets, setParams])
+
 
   const accordionToggle = (value) => {
     const copy = JSON.parse(JSON.stringify(accordionActive))
@@ -392,8 +421,8 @@ export default function LinearRegression(props) {
                     </Col>
                   </Row>
                   <Row lg={2}>
-                    <Col><DebugJSON obj={tmpModel.params_training} /></Col>
-                    <Col><DebugJSON obj={tmpModel.params_visor} /></Col>
+                    <Col><DebugJSON obj={params.params_training} /></Col>
+                    <Col><DebugJSON obj={params.params_visor} /></Col>
                   </Row>
                 </Card.Body>
               </Card>

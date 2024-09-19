@@ -113,32 +113,29 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_dataset = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
-    const bcw_dataset_info = 'breast-cancer-wisconsin.names'
-    const bcw_dataset_csv = 'breast-cancer-wisconsin.csv'
-    const wdbc_dataset_info = 'wdbc.names'
-    const wdbc_dataset_csv = 'wdbc.csv'
-    const wpbc_dataset_info = 'wpbc.names'
-    const wpbc_dataset_csv = 'wpbc.csv'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
+    const bcw_info = 'breast-cancer-wisconsin.names'
+    const bcw_csv = 'breast-cancer-wisconsin.csv'
+    const wdbc_info = 'wdbc.names'
+    const wdbc_csv = 'wdbc.csv'
+    const wpbc_info = 'wpbc.names'
+    const wpbc_csv = 'wpbc.csv'
 
-    const [bcw_dataset_promise_info, wdbc_dataset_promise_info, wpbc_dataset_promise_info] = await Promise.all([
-      fetch(path_dataset + bcw_dataset_info),
-      fetch(path_dataset + wdbc_dataset_info),
-      fetch(path_dataset + wpbc_dataset_info),
+    const [bcw_promise_info, wdbc_promise_info, wpbc_promise_info] = await Promise.all([
+      fetch(path_datasets + bcw_info),
+      fetch(path_datasets + wdbc_info),
+      fetch(path_datasets + wpbc_info),
     ])
     const [bcw_container_info, wdbc_container_info, wpbc_container_info] = await Promise.all([
-      bcw_dataset_promise_info.text(),
-      wdbc_dataset_promise_info.text(),
-      wpbc_dataset_promise_info.text(),
+      bcw_promise_info.text(),
+      wdbc_promise_info.text(),
+      wpbc_promise_info.text(),
     ])
     
     // --------------------
     // #region Dataset Breast cancer wisconsin (Original)
-    let bcw_dataframe_original = await dfd.readCSV(path_dataset + bcw_dataset_csv)
-    let bcw_dataframe_processed = await dfd.readCSV(path_dataset + bcw_dataset_csv)
-    const bcw_dataset_encoder = [
-      // { column_transform: 'label-encoder', column_name: '' },
-    ]
+    let bcw_dataframe_original = await dfd.readCSV(path_datasets + bcw_csv)
+    let bcw_dataframe_processed = await dfd.readCSV(path_datasets + bcw_csv)
     const bcw_dataset = [
       { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false, column_missing_value_key: null },
       { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
@@ -155,12 +152,16 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     const bcw_dataset_transforms = [
       ...bcw_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
       { column_name: 'Sample_code_number', column_transform: 'drop' },
+      // { column_name: 'Bare_Nuclei', column_transform: 'drop' },
       { column_name: 'Bare_Nuclei', column_transform: 'replace_?_NaN' },
       { column_name: 'Bare_Nuclei', column_transform: 'dropNa' },
     ]
     const bcw_target = 'Class'
-    const bcw_encoders_map = DataFrameUtils.DataFrameEncoder(bcw_dataframe_processed, bcw_dataset_encoder)
-    bcw_dataframe_processed = DataFrameUtils.DataFrameTransform(bcw_dataframe_processed, bcw_dataset_transforms)
+    
+    const bcw_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(bcw_dataframe_processed, bcw_dataset_transforms)
+    const bcw_encoders_map = bcw_dataframe_encoder.encoder_map
+    bcw_dataframe_processed = bcw_dataframe_encoder.dataframe_processed
+    
     const bcw_dataframe_X = bcw_dataframe_processed.copy()
     const bcw_dataframe_y = bcw_dataframe_original[bcw_target]
     const minMaxScaler_1 = new dfd.MinMaxScaler()
@@ -172,8 +173,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     
     // --------------------
     // #region Breast Cancer Wisconsin (Diagnostic)
-    let wdbc_dataframe_original = await dfd.readCSV(path_dataset + wdbc_dataset_csv)
-    let wdbc_dataframe_processed = await dfd.readCSV(path_dataset + wdbc_dataset_csv)
+    let wdbc_dataframe_original = await dfd.readCSV(path_datasets + wdbc_csv)
+    let wdbc_dataframe_processed = await dfd.readCSV(path_datasets + wdbc_csv)
     const wdbc_dataset = [
       { column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false, column_missing_value_key: null },
       { column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false, column_missing_value_key: null },
@@ -215,8 +216,9 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     ]
     const wdbc_target = ''
     
-    const wdbc_encoders_map = DataFrameUtils.DataFrameEncoder(wdbc_dataframe_processed, wdbc_dataset_transforms)
-    wdbc_dataframe_processed = DataFrameUtils.DataFrameTransform(wdbc_dataframe_processed, wdbc_dataset_transforms)
+    const wdbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wdbc_dataframe_processed, wdbc_dataset_transforms)
+    const wdbc_encoders_map = wdbc_dataframe_encoder.encoder_map
+    wdbc_dataframe_processed = wdbc_dataframe_encoder.dataframe_processed
     
     const wdbc_dataframe_X = wdbc_dataframe_processed.copy()
     const wdbc_dataframe_y = wdbc_dataframe_original[wdbc_target]
@@ -229,8 +231,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
     // --------------------
     // #region Breast Cancer Wisconsin (Prognostic)
-    let wpbc_dataframe_original = await dfd.readCSV(path_dataset + wpbc_dataset_csv)
-    let wpbc_dataframe_processed = await dfd.readCSV(path_dataset + wpbc_dataset_csv)
+    let wpbc_dataframe_original = await dfd.readCSV(path_datasets + wpbc_csv)
+    let wpbc_dataframe_processed = await dfd.readCSV(path_datasets + wpbc_csv)
     const wpbc_dataset = [
       { column_name: 'ID',                   column_role: 'ID',             column_type: 'Integer',        column_missing_values: false },
       { column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
@@ -271,13 +273,14 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     const wpbc_dataset_transforms = [
       ...wpbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
 
-      { column_name: 'ID', column_transform: 'drop' },
+      { column_name: 'ID',                column_transform: 'drop' },
       { column_name: 'lymph_node_status', column_transform: 'drop' }
     ]
     const wpbc_target = 'Outcome'
 
-    const wpbc_encoders_map = DataFrameUtils.DataFrameEncoder(wpbc_dataframe_processed, wpbc_dataset_transforms)
-    wpbc_dataframe_processed = DataFrameUtils.DataFrameTransform(wpbc_dataframe_processed, wpbc_dataset_transforms)
+    const wpbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wpbc_dataframe_processed, wpbc_dataset_transforms)
+    const wpbc_encoders_map = wpbc_dataframe_encoder.encoder_map
+    wpbc_dataframe_processed = wpbc_dataframe_encoder.dataframe_processed
     
     const wpbc_dataframe_X = wpbc_dataframe_processed.copy()
     const wpbc_dataframe_y = wpbc_dataframe_original[wpbc_target]
@@ -291,12 +294,11 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
     return [
       {
-        // Original
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : path_dataset,
-        info                : bcw_dataset_info,
-        csv                 : bcw_dataset_csv,
+        path                : path_datasets,
+        info                : bcw_info,
+        csv                 : bcw_csv,
         container_info      : bcw_container_info,
         dataframe_original  : bcw_dataframe_original,
         dataframe_processed : bcw_dataframe_processed,
@@ -310,12 +312,11 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         }
       },
       {
-        // Pronostico
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : path_dataset,
-        csv                 : wdbc_dataset_csv,
-        info                : wdbc_dataset_info,
+        path                : path_datasets,
+        csv                 : wdbc_csv,
+        info                : wdbc_info,
         container_info      : wdbc_container_info,
         dataframe_original  : wdbc_dataframe_original,
         dataframe_processed : wdbc_dataframe_processed,
@@ -329,12 +330,11 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         }
       },
       {
-        // Diagnostico
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : path_dataset,
-        info                : wpbc_dataset_info,
-        csv                 : wpbc_dataset_csv,
+        path                : path_datasets,
+        info                : wpbc_info,
+        csv                 : wpbc_csv,
         container_info      : wpbc_container_info,
         dataframe_original  : wpbc_dataframe_original,
         dataframe_processed : wpbc_dataframe_processed,

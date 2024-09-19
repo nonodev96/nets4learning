@@ -41,7 +41,7 @@ export async function createLinearRegressionCustomModel (params) {
 
   const { data_processed } = dataset_processed
   const { X, y } = data_processed
-  // console.log({ dataset_processed, X, y })
+  console.log({ dataset_processed, X, y })
 
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
   const XTrain_tensor = tfjs.tensor(XTrain)
@@ -73,13 +73,13 @@ export async function createLinearRegressionCustomModel (params) {
 
   await tfvis.show.modelSummary({
     name: 'Model Summary',
-    tab : name_model,
+    tab : name_model + ' Summary',
   }, model)
 
   
   const fit_callbacks_container = {
     name: 'Training',
-    tab : name_model,
+    tab : name_model + ' Training',
   }
   const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { 

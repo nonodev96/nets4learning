@@ -130,8 +130,10 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
       // { column_name: '',               column_transform: 'dropNa' },
     ]
     const mat_target = 'G1' // G1;G2;G3
-    const mat_encoders_map = DataFrameUtils.DataFrameEncoder(mat_dataframe_processed, mat_dataset_transforms)
-    mat_dataframe_processed = DataFrameUtils.DataFrameTransform(mat_dataframe_processed, mat_dataset_transforms)
+
+    const mat_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(mat_dataframe_processed, mat_dataset_transforms)
+    const mat_encoders_map = mat_dataframe_encoder.encoder_map
+    mat_dataframe_processed = mat_dataframe_encoder.dataframe_processed
 
     const mat_dataframe_X = mat_dataframe_processed.copy()
     const mat_dataframe_y = mat_dataframe_original[mat_target]
@@ -151,8 +153,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
 
     ]
     const por_target = 'G1' // G1;G2;G3
-    const por_encoders_map = DataFrameUtils.DataFrameEncoder(por_dataframe_processed, por_dataset_transforms)
-    por_dataframe_processed = DataFrameUtils.DataFrameTransform(por_dataframe_processed, por_dataset_transforms)
+    const por_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(por_dataframe_processed, por_dataset_transforms)
+    const por_encoders_map = por_dataframe_encoder.encoder_map
+    por_dataframe_processed = por_dataframe_encoder.dataframe_processed
 
     const por_dataframe_X = por_dataframe_processed.copy()
     const por_dataframe_y = por_dataframe_original[por_target]
