@@ -78,52 +78,52 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
-    const dataset_info = 'student.names'
-    const mat_dataset_csv = 'student-mat.csv'
-    const por_dataset_csv = 'student-por.csv'
+    const student_info = 'student.names'
+    const mat_csv = 'student-mat.csv'
+    const por_csv = 'student-por.csv'
 
-    const dataset_fetch_info = await fetch(path_datasets + dataset_info)
-    const dataset_container_info = await dataset_fetch_info.text()
+    const dataset_fetch_info = await fetch(path_datasets + student_info)
+    const student_container_info = await dataset_fetch_info.text()
 
     const dataset = [
       { column_name: 'school',     column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'sex',        column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'age',        column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'sex',        column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'age',        column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'address',    column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'famsize',    column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'Pstatus',    column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'Medu',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'Fedu',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'Medu',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'Fedu',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'Mjob',       column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'Fjob',       column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'reason',     column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'guardian',   column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'traveltime', column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'studytime',  column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'failures',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'schoolsup',  column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'famsup',     column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'paid',       column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'activities', column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'nursery',    column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'higher',     column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'internet',   column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'romantic',   column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'famrel',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'freetime',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'goout',      column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'Dalc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'Walc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'health',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      // { column_name: 'absences',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'traveltime', column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'studytime',  column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'failures',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'schoolsup',  column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'famsup',     column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'paid',       column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'activities', column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'nursery',    column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'higher',     column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'internet',   column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'romantic',   column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
+      { column_name: 'famrel',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'freetime',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'goout',      column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'Dalc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'Walc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'health',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
+      { column_name: 'absences',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target', column_missing_values: false },
       { column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target', column_missing_values: false },
-      // { column_name: 'G3',         column_type: 'Integer',       column_role: 'Target', column_missing_values: false },
+      { column_name: 'G3',         column_type: 'Integer',       column_role: 'Target', column_missing_values: false },
     ]
     
     // #region Student Mat
-    let mat_dataframe_original = await dfd.readCSV(path_datasets + mat_dataset_csv)
-    let mat_dataframe_processed = await dfd.readCSV(path_datasets + mat_dataset_csv)
+    let mat_dataframe_original = await dfd.readCSV(path_datasets + mat_csv)
+    let mat_dataframe_processed = await dfd.readCSV(path_datasets + mat_csv)
     const mat_dataset_transforms = [
       ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
       // { column_name: '',               column_transform: 'replace_?_NaN' },
@@ -136,16 +136,16 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const mat_dataframe_X = mat_dataframe_processed.copy()
     const mat_dataframe_y = mat_dataframe_original[mat_target]
     
-    const scaler = new dfd.MinMaxScaler()
-    const mat_scaler = scaler.fit(mat_dataframe_X)
+    const minMaxScaler1 = new dfd.MinMaxScaler()
+    const mat_scaler = minMaxScaler1.fit(mat_dataframe_X)
     const mat_X = mat_scaler.transform(mat_dataframe_X)
     const mat_y = mat_dataframe_y
     // #endregion
     
     
     // #region Student Por
-    let por_dataframe_original = await dfd.readCSV(path_datasets + por_dataset_csv)
-    let por_dataframe_processed = await dfd.readCSV(path_datasets + por_dataset_csv)
+    let por_dataframe_original = await dfd.readCSV(path_datasets + por_csv)
+    let por_dataframe_processed = await dfd.readCSV(path_datasets + por_csv)
     const por_dataset_transforms = [
       ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
 
@@ -157,8 +157,8 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const por_dataframe_X = por_dataframe_processed.copy()
     const por_dataframe_y = por_dataframe_original[por_target]
     
-    const minMaxScaler = new dfd.MinMaxScaler()
-    const por_minMaxScaler = minMaxScaler.fit(por_dataframe_X)
+    const minMaxScaler2 = new dfd.MinMaxScaler()
+    const por_minMaxScaler = minMaxScaler2.fit(por_dataframe_X)
     const por_X = por_minMaxScaler.transform(por_dataframe_X)
     const por_y = por_dataframe_y
     // #endregion
@@ -169,9 +169,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : path_datasets,
-        info                : dataset_info,
-        container_info      : dataset_container_info,
-        csv                 : mat_dataset_csv,
+        info                : student_info,
+        container_info      : student_container_info,
+        csv                 : mat_csv,
         dataframe_original  : mat_dataframe_original,
         dataframe_processed : mat_dataframe_processed,
         dataset_transforms  : mat_dataset_transforms,
@@ -187,9 +187,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         is_dataset_upload   : false,
         is_dataset_processed: true,
         path                : path_datasets,
-        info                : dataset_info,
-        container_info      : dataset_container_info,
-        csv                 : por_dataset_csv,
+        info                : student_info,
+        container_info      : student_container_info,
+        csv                 : por_csv,
         dataframe_original  : por_dataframe_original,
         dataframe_processed : por_dataframe_processed,
         dataset_transforms  : por_dataset_transforms,

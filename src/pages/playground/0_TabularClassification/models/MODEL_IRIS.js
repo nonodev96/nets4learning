@@ -102,54 +102,64 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
-    let dataframe_original = await dfd.readCSV(dataset_path + 'iris.csv')
-    let dataframe_processed = await dfd.readCSV(dataset_path + 'iris.csv')
+    const path_dataset = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
+    const iris_info = 'iris.names'
+    const iris_csv = 'iris.csv'
 
-    const dataset_transforms = [
-      // { column_transform: 'label-encoder', column_name: 'class' },
-      // { column_transform: '',              column_name: 'sepal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      // { column_transform: '',              column_name: 'sepal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      // { column_transform: '',              column_name: 'petal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      // { column_transform: '',              column_name: 'petal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      { column_transform: 'label-encoder', column_name: 'class',         column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
+    const dataset_promise_info = await fetch(path_dataset + iris_info)
+    const iris_container_info = await dataset_promise_info.text()
+
+    let dataframe_original = await dfd.readCSV(path_dataset + iris_csv)
+    let dataframe_processed = await dfd.readCSV(path_dataset + iris_csv)
+
+    const dataset = [
+      { column_name: 'sepal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      { column_name: 'sepal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      { column_name: 'petal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      { column_name: 'petal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
+      { column_name: 'class',         column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
     ]
-    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
+    const dataset_transforms = [
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+      // { column_transform: 'label-encoder', column_name: 'class' },
+    ]
+    const iris_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
 
-    const column_name_target = 'class'
-    const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_original[column_name_target]
+    const iris_target = 'class'
+    const dataframe_X = dataframe_processed.drop({ columns: [iris_target] })
+    const dataframe_y = dataframe_original[iris_target]
 
     const minMaxScaler = new dfd.MinMaxScaler()
     const iris_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const X = iris_minMaxScaler.transform(dataframe_X)
+    const iris_X = iris_minMaxScaler.transform(dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
     const iris_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
-    const y = iris_oneHotEncoder.transform(dataframe_y)
+    const iris_y = iris_oneHotEncoder.transform(dataframe_y)
 
     const labelEncoder = new dfd.LabelEncoder()
     const iris_labelEncoder = labelEncoder.fit(dataframe_y.values)
-    const classes = Object.keys(iris_labelEncoder.$labels)
+    const iris_classes = Object.keys(iris_labelEncoder.$labels)
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : dataset_path,
-        info                : 'iris.names',
-        csv                 : 'iris.csv',
+        path                : path_dataset,
+        info                : iris_info,
+        container_info      : iris_container_info,
+        csv                 : iris_csv,
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         dataset_transforms  : dataset_transforms,
         data_processed      : {
-          X                 : X,
-          y                 : y,
-          encoders          : encoders_map,
-          scaler            : minMaxScaler,
-          column_name_target: column_name_target,
-          classes           : classes,
+          X                 : iris_X,
+          y                 : iris_y,
+          encoders          : iris_encoders_map,
+          scaler            : iris_minMaxScaler,
+          column_name_target: iris_target,
+          classes           : iris_classes,
           attributes        : [
             // @formatter:off
             { type: 'float32', name: 'sepal_length' },

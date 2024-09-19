@@ -92,15 +92,15 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
-    const dataset_csv = 'auto-mpg.csv'
-    const dataset_info = 'auto-mpg.names'
+    const path_dataset = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
+    const auto_csv = 'auto-mpg.csv'
+    const auto_info = 'auto-mpg.names'
 
-    const dataset_promise_info = await fetch(dataset_path + dataset_info)
-    const dataset_container_info = await dataset_promise_info.text()
+    const dataset_promise_info = await fetch(path_dataset + auto_info)
+    const auto_container_info = await dataset_promise_info.text()
     
-    let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
-    let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    let dataframe_original_1 = await dfd.readCSV(path_dataset + auto_csv)
+    let dataframe_processed_1 = await dfd.readCSV(path_dataset + auto_csv)
     
     
     const dataset = [
@@ -127,26 +127,26 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const dataframe_X = dataframe_processed_1.drop({ columns: [salary_target] })
     const dataframe_y = dataframe_original_1[salary_target]
 
-    const scaler = new dfd.MinMaxScaler()
-    const salary_scaler = scaler.fit(dataframe_X)
-    const salary_X = salary_scaler.transform(dataframe_X)
+    const minMaxScaler = new dfd.MinMaxScaler()
+    const salary_minMaxScaler = minMaxScaler.fit(dataframe_X)
+    const salary_X = salary_minMaxScaler.transform(dataframe_X)
     const salary_y = dataframe_y
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : dataset_path,
-        csv                 : dataset_csv,
-        info                : dataset_info,
-        container_info      : dataset_container_info,
+        path                : path_dataset,
+        csv                 : auto_csv,
+        info                : auto_info,
+        container_info      : auto_container_info,
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataset_transforms  : dataset_transforms,
         data_processed      : {
           X                 : salary_X,
           y                 : salary_y,
-          scaler            : salary_scaler,
+          scaler            : salary_minMaxScaler,
           encoders          : salary_encoders_map,
           column_name_target: salary_target,
         }

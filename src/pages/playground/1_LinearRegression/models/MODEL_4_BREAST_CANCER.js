@@ -139,20 +139,22 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     const bcw_dataset_encoder = [
       // { column_transform: 'label-encoder', column_name: '' },
     ]
-    const _bcw_dataset = [
-      // { column_transform: '', column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     missing_values: true,  column_missing_value_key: '?'  },
-      // { column_transform: '', column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      missing_values: false, column_missing_value_key: null },
+    const bcw_dataset = [
+      { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false, column_missing_value_key: null },
+      { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     missing_values: true,  column_missing_value_key: '?'  },
+      { column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
+      { column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      missing_values: false, column_missing_value_key: null },
     ]
     const bcw_dataset_transforms = [
+      ...bcw_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'Sample_code_number', column_transform: 'drop' },
       { column_name: 'Bare_Nuclei', column_transform: 'replace_?_NaN' },
       { column_name: 'Bare_Nuclei', column_transform: 'dropNa' },
     ]
@@ -172,45 +174,48 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     // #region Breast Cancer Wisconsin (Diagnostic)
     let wdbc_dataframe_original = await dfd.readCSV(path_dataset + wdbc_dataset_csv)
     let wdbc_dataframe_processed = await dfd.readCSV(path_dataset + wdbc_dataset_csv)
-    const wdbc_dataset_encoder = [
+    const wdbc_dataset = [
+      { column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'radius1',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'texture1',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'perimeter1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'area1',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'smoothness1',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'compactness1',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concavity1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concave_points1',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'symmetry1',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'fractal_dimension1',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'radius2',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'texture2',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'perimeter2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'area2',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'smoothness2',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'compactness2',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concavity2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concave_points2',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'symmetry2',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'fractal_dimension2',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'radius3',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'texture3',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'perimeter3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'area3',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'smoothness3',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'compactness3',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concavity3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'concave_points3',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'symmetry3',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'fractal_dimension3',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
     ]
     const wdbc_dataset_transforms = [
-      // { column_transform: '', column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'radius1',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'texture1',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'perimeter1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'area1',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'smoothness1',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'compactness1',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concavity1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concave_points1',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'symmetry1',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'fractal_dimension1',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'radius2',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'texture2',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'perimeter2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'area2',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'smoothness2',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'compactness2',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concavity2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concave_points2',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'symmetry2',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'fractal_dimension2',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'radius3',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'texture3',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'perimeter3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'area3',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'smoothness3',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'compactness3',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concavity3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'concave_points3',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'symmetry3',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      // { column_transform: '', column_name: 'fractal_dimension3',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      ...wdbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'ID', column_transform: 'drop' },
+
     ]
     const wdbc_target = ''
     
-    const wdbc_encoders_map = DataFrameUtils.DataFrameEncoder(wdbc_dataframe_processed, wdbc_dataset_encoder)
+    const wdbc_encoders_map = DataFrameUtils.DataFrameEncoder(wdbc_dataframe_processed, wdbc_dataset_transforms)
     wdbc_dataframe_processed = DataFrameUtils.DataFrameTransform(wdbc_dataframe_processed, wdbc_dataset_transforms)
     
     const wdbc_dataframe_X = wdbc_dataframe_processed.copy()
@@ -226,49 +231,52 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     // #region Breast Cancer Wisconsin (Prognostic)
     let wpbc_dataframe_original = await dfd.readCSV(path_dataset + wpbc_dataset_csv)
     let wpbc_dataframe_processed = await dfd.readCSV(path_dataset + wpbc_dataset_csv)
-    const wpbc_dataset_encoder = [
-
+    const wpbc_dataset = [
+      { column_name: 'ID',                   column_role: 'ID',             column_type: 'Integer',        column_missing_values: false },
+      { column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
+      { column_name: 'radius1',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'texture1',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'perimeter1',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'area1',                column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'smoothness1',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'compactness1',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concavity1',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concave_points1',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'symmetry1',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'fractal_dimension1',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'radius2',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'texture2',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'perimeter2',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'area2',                column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'smoothness2',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'compactness2',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concavity2',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concave_points2',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'symmetry2',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'fractal_dimension2',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'radius3',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'texture3',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'perimeter3',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'area3',                column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
+      { column_name: 'smoothness3',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'compactness3',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concavity3',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'concave_points3',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'symmetry3',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'fractal_dimension3',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'tumor_size',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true  },
+      { column_name: 'Outcome',              column_role: 'Target',         column_type: 'Categorical',    column_missing_values: false },
     ]
     const wpbc_dataset_transforms = [
-      // { column_transform: '', column_name: 'ID',                   column_role: 'ID',             column_type: 'Integer',        column_missing_values: false },
-      // { column_transform: '', column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
-      // { column_transform: '', column_name: 'radius1',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'texture1',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'perimeter1',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'area1',                column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'smoothness1',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'compactness1',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concavity1',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concave_points1',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'symmetry1',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'fractal_dimension1',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'radius2',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'texture2',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'perimeter2',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'area2',                column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'smoothness2',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'compactness2',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concavity2',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concave_points2',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'symmetry2',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'fractal_dimension2',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'radius3',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'texture3',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'perimeter3',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'area3',                column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
-      // { column_transform: '', column_name: 'smoothness3',          column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'compactness3',         column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concavity3',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'concave_points3',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'symmetry3',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'fractal_dimension3',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'tumor_size',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      // { column_transform: '', column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true  },
-      // { column_transform: '', column_name: 'Outcome',              column_role: 'Target',         column_type: 'Categorical',    column_missing_values: false },
-    ]
-    const wpbc_target = ''
+      ...wpbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
 
-    const wpbc_encoders_map = DataFrameUtils.DataFrameEncoder(wpbc_dataframe_processed, wpbc_dataset_encoder)
+      { column_name: 'ID', column_transform: 'drop' },
+      { column_name: 'lymph_node_status', column_transform: 'drop' }
+    ]
+    const wpbc_target = 'Outcome'
+
+    const wpbc_encoders_map = DataFrameUtils.DataFrameEncoder(wpbc_dataframe_processed, wpbc_dataset_transforms)
     wpbc_dataframe_processed = DataFrameUtils.DataFrameTransform(wpbc_dataframe_processed, wpbc_dataset_transforms)
     
     const wpbc_dataframe_X = wpbc_dataframe_processed.copy()

@@ -86,19 +86,19 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     const dataset_container_info = await dataset_fetch_info.text()
 
     const red_dataset = [
-      // { column_name: 'fixed_acidity',          column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'volatile_acidity',       column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'citric_acid',            column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'residual_sugar',         column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'chlorides',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'free_sulfur_dioxide',    column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'total_sulfur_dioxide',   column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'density',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'pH',                     column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'sulphates',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'alcohol',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
-      // { column_name: 'quality',                column_role: 'Target',       column_type: 'Integer',     column_missing_values: false },
-      // { column_name: 'color',                  column_role: 'Other',        column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'fixed_acidity',          column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'volatile_acidity',       column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'citric_acid',            column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'residual_sugar',         column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'chlorides',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'free_sulfur_dioxide',    column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'total_sulfur_dioxide',   column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'density',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'pH',                     column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'sulphates',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'alcohol',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'quality',                column_role: 'Target',       column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'color',                  column_role: 'Other',        column_type: 'Categorical', column_missing_values: false },
     ]
     const red_dataset_transforms = [
       ...red_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))

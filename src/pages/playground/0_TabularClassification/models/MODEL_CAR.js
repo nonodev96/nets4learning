@@ -114,34 +114,43 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/'
-    const dataframe_original = await dfd.readCSV(dataset_path + 'car.csv')
-    let dataframe_processed = await dfd.readCSV(dataset_path + 'car.csv')
+    const path_dataset = process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/'
+    const car_info = 'car.names'
+    const car_csv = 'car.csv'
+
+    const dataset_promise_info = await fetch(path_dataset + car_info)
+    const car_container_info = await dataset_promise_info.text()
+
+    let dataframe_original = await dfd.readCSV(path_dataset + car_csv)
+    let dataframe_processed = await dfd.readCSV(path_dataset + car_csv)
     // @formatter:off
+    const dataset = [
+      { column_name: 'Buying',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Maint',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Doors',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Persons',  column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Lug_boot', column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Safety',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Result',   column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
+    ]
     const dataset_transforms = [
-      {  column_transform: 'label-encoder', column_name: 'Buying',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Maint',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Doors',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Persons',  column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Lug_boot', column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Safety',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      {  column_transform: 'label-encoder', column_name: 'Result',   column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
     ]
     // @formatter:on
-    const column_name_target = 'Result'
-    const encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
+    const car_target = 'Result'
+    const car_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
 
-    const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_original[column_name_target]
+    const dataframe_X = dataframe_processed.drop({ columns: [car_target] })
+    const dataframe_y = dataframe_original[car_target]
 
     const minMaxScaler = new dfd.MinMaxScaler()
     const car_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const X = car_minMaxScaler.transform(dataframe_X)
+    const car_X = car_minMaxScaler.transform(dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
     const car_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
-    const y = car_oneHotEncoder.transform(dataframe_y)
+    const car_y = car_oneHotEncoder.transform(dataframe_y)
 
     const labelEncoder = new dfd.LabelEncoder()
     const car_labelEncoder = labelEncoder.fit(dataframe_y.values)
@@ -151,18 +160,19 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : dataset_path,
-        info                : 'car.names',
-        csv                 : 'car.csv',
+        path                : path_dataset,
+        info                : car_info,
+        container_info      : car_container_info,
+        csv                 : car_csv,
         dataset_transforms  : dataset_transforms,
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         data_processed      : {
-          X                 : X,
-          y                 : y,
-          encoders          : encoders_map,
+          X                 : car_X,
+          y                 : car_y,
           scaler            : car_minMaxScaler,
-          column_name_target: column_name_target,
+          encoders          : car_encoders_map,
+          column_name_target: car_target,
           classes           : car_classes,
           // @formatter:off
           attributes        : [

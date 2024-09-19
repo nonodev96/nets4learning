@@ -60,23 +60,23 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Type.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
-    const dataset_info = 'salary.names'
-    const dataset_csv = 'salary.csv'
+    const path_dataset = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
+    const salary_info = 'salary.names'
+    const salary_csv = 'salary.csv'
 
-    const dataset_promise_info = await fetch(dataset_path + dataset_info)
-    const dataset_container_info = await dataset_promise_info.text()
+    const dataset_promise_info = await fetch(path_dataset + salary_info)
+    const salary_container_info = await dataset_promise_info.text()
     
     const salary_dataset = [
-      // { column_name: 'YearsExperience',  column_role: 'Feature', column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
-      // { column_name: 'Salary',           column_role: 'Target',  column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
+      { column_name: 'YearsExperience',  column_role: 'Feature', column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
+      { column_name: 'Salary',           column_role: 'Target',  column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
     ]
 
     const salary_dataset_transforms = [
       ...salary_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
     ]
-    let dataframe_original_1 = await dfd.readCSV(dataset_path + dataset_csv)
-    let dataframe_processed_1 = await dfd.readCSV(dataset_path + dataset_csv)
+    let dataframe_original_1 = await dfd.readCSV(path_dataset + salary_csv)
+    let dataframe_processed_1 = await dfd.readCSV(path_dataset + salary_csv)
     const salary_encoder = DataFrameUtils.DataFrameEncoder(dataframe_processed_1, salary_dataset_transforms)
     dataframe_processed_1 = DataFrameUtils.DataFrameTransform(dataframe_processed_1, salary_dataset_transforms)
     
@@ -93,10 +93,10 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : dataset_path,
-        info                : dataset_info,
-        csv                 : dataset_csv,
-        container_info      : dataset_container_info,
+        path                : path_dataset,
+        info                : salary_info,
+        csv                 : salary_csv,
+        container_info      : salary_container_info,
         dataframe_original  : dataframe_original_1,
         dataframe_processed : dataframe_processed_1,
         dataset_transforms  : salary_dataset_transforms,

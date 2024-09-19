@@ -269,87 +269,82 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     </>
   }
 
+  /**
+   *
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
+   */
   async DATASETS () {
-    const dataset_path = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
-    const dataframe_original = await dfd.readCSV(dataset_path + 'lymphography.csv')
-    let dataframe_processed = await dfd.readCSV(dataset_path + 'lymphography.csv')
-    const dataset_transforms = [
-      // { column_transform: 'label-encoder', column_name: 'lymphatics' },
-      // { column_transform: 'label-encoder', column_name: 'block of affere' },
-      // { column_transform: 'label-encoder', column_name: 'bl. of lymph. c' },
-      // { column_transform: 'label-encoder', column_name: 'bl. of lymph. s' },
-      // { column_transform: 'label-encoder', column_name: 'by pass' },
-      // { column_transform: 'label-encoder', column_name: 'extravasates' },
-      // { column_transform: 'label-encoder', column_name: 'regeneration of' },
-      // { column_transform: 'label-encoder', column_name: 'early uptake in' },
-      // { column_transform: 'label-encoder', column_name: 'lym.nodes dimin' },
-      // { column_transform: 'label-encoder', column_name: 'lym.nodes enlar' },
-      // { column_transform: 'label-encoder', column_name: 'changes in lym.' },
-      // { column_transform: 'label-encoder', column_name: 'defect in node' },
-      // { column_transform: 'label-encoder', column_name: 'changes in node' },
-      // { column_transform: 'label-encoder', column_name: 'changes in stru' },
-      // { column_transform: 'label-encoder', column_name: 'special forms' },
-      // { column_transform: 'label-encoder', column_name: 'dislocation of' },
-      // { column_transform: 'label-encoder', column_name: 'exclusion of no' },
-      // { column_transform: 'label-encoder', column_name: 'no. of nodes in' },
-      // { column_transform: 'label-encoder', column_name: 'class' },
-      { column_transform: 'label-encoder', column_name: 'class',             column_role: 'Target',    column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'lymphatics',        column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'block of affere',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'bl. of lymph. c',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'bl. of lymph. s',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'by pass',           column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'extravasates',      column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'regeneration of',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'early uptake in',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'lym.nodes dimin',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'lym.nodes enlar',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'changes in lym',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'defect in node',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'changes in stru',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'special forms',     column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'dislocation of',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'exclusion of no',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
-      { column_transform: '',              column_name: 'no. of nodes in',   column_role: 'Feature',   column_type: 'Categorical', column_missing_values: false },
-    ]
-    const encoders = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
-    dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
-    const column_name_target = 'class'
+    const path_dataset = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
+    const lymphography_info = 'lymphography.names'
+    const lymphography_csv = 'lymphography.csv'
 
-    const dataframe_X = dataframe_processed.drop({ columns: [column_name_target] })
-    const dataframe_y = dataframe_original[column_name_target]
+    const lymphography_promise_info = await fetch(path_dataset + lymphography_info)
+    const lymphography_container_info = await lymphography_promise_info.text()
+
+    let dataframe_original = await dfd.readCSV(path_dataset + lymphography_csv)
+    let dataframe_processed = await dfd.readCSV(path_dataset + lymphography_csv)
+    const dataset = [
+      { column_name: 'lymphatics',        column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'block of affere',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'bl. of lymph. c',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'bl. of lymph. s',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'by pass',           column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'extravasates',      column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'regeneration of',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'early uptake in',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'lym.nodes dimin',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'lym.nodes enlar',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'changes in lym',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'defect in node',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'changes in node',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'changes in stru',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'special forms',     column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'dislocation of',    column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'exclusion of no',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'no. of nodes in',   column_role: 'Feature',   column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'class',             column_role: 'Target',    column_type: 'Integer',     column_missing_values: false },
+    ]
+    const dataset_transforms = [
+        ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+    ]
+    const lymphography_encoders = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
+    dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
+    const lymphography_target = 'class'
+
+    const lymphography_dataframe_X = dataframe_processed.drop({ columns: [lymphography_target] })
+    const lymphography_dataframe_y = dataframe_original[lymphography_target]
 
     const minMaxScaler = new dfd.MinMaxScaler()
-    const lymphography_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const X = lymphography_minMaxScaler.transform(dataframe_X)
+    const lymphography_minMaxScaler = minMaxScaler.fit(lymphography_dataframe_X)
+    const lymphography_X = lymphography_minMaxScaler.transform(lymphography_dataframe_X)
 
     const oneHotEncoder = new dfd.OneHotEncoder()
-    const lymphography_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
-    const y = lymphography_oneHotEncoder.transform(dataframe_y)
+    const lymphography_oneHotEncoder = oneHotEncoder.fit(lymphography_dataframe_y)
+    const lymphography_y = lymphography_oneHotEncoder.transform(lymphography_dataframe_y)
 
     const labelEncoder = new dfd.LabelEncoder()
-    const lymphography_labelEncoder = labelEncoder.fit(dataframe_y.values)
-    const classes = Object.keys(lymphography_labelEncoder.$labels)
+    const lymphography_labelEncoder = labelEncoder.fit(lymphography_dataframe_y.values)
+    const lymphography_classes = Object.keys(lymphography_labelEncoder.$labels)
 
     return [
       {
         is_dataset_upload   : false,
         is_dataset_processed: true,
-        path                : dataset_path,
-        info                : 'lymphography.names',
-        csv                 : 'lymphography.csv',
+        path                : path_dataset,
+        info                : lymphography_info,
+        container_info      : lymphography_container_info,
+        csv                 : lymphography_csv,
         dataset_transforms  : dataset_transforms,
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         data_processed      : {
-          X                 : X,
-          y                 : y,
-          encoders          : encoders,
+          X                 : lymphography_X,
+          y                 : lymphography_y,
           scaler            : lymphography_minMaxScaler,
-          column_name_target: column_name_target,
-          classes           : classes,
+          encoders          : lymphography_encoders,
+          column_name_target: lymphography_target,
+          classes           : lymphography_classes,
           attributes        : this.FORM,
         },
       }
