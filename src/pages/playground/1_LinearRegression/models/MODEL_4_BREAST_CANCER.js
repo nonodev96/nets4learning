@@ -9,11 +9,11 @@ import I_MODEL_LINEAR_REGRESSION from './_model'
 export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   static KEY = 'BREAST_CANCER'
-  static URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  static URL = 'https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original'
   static URL_2 = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
   static URL_3 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
 
-  URL = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
+  URL = 'https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original'
   URL_2 = 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic'
   URL_3 = 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic'
   URL_IMAGE = 'https://www.cs.wisc.edu/~street/images/'
@@ -65,20 +65,22 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         <summary><Trans i18nKey={prefix + 'details-3-references.title'} /></summary>
         <ol>
           <li>
-            <Trans 
-              i18nKey={prefix + 'details-3-references.list.0'}
-              components={{
-                link1: <a href={this.URL} target={'_blank'} rel={'noreferrer'}>TEXT</a>
-              }} 
-            />
+            <Trans i18nKey={prefix + 'details-3-references.list.0'}
+                   components={{
+                    link1: <a href={this.URL} target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                   }} />
           </li>
           <li>
-            <Trans
-              i18nKey={prefix + 'details-3-references.list.1'}
-              components={{
-                link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
-              }} 
-              />
+            <Trans i18nKey={prefix + 'details-3-references.list.1'}
+                   components={{
+                    link1: <a href={this.URL_2} target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                   }} />
+          </li>
+          <li>
+            <Trans i18nKey={prefix + 'details-3-references.list.2'}
+                   components={{
+                    link1: <a href={this.URL_3} target={'_blank'} rel={'noreferrer'}>TEXT</a>
+                   }} />
           </li>
         </ol>
       </details>
@@ -137,24 +139,25 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     let bcw_dataframe_original = await dfd.readCSV(path_datasets + bcw_csv)
     let bcw_dataframe_processed = await dfd.readCSV(path_datasets + bcw_csv)
     const bcw_dataset = [
-      { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false, column_missing_value_key: null },
-      { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     missing_values: true,  column_missing_value_key: '?'  },
-      { column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     missing_values: false, column_missing_value_key: null },
-      { column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      missing_values: false, column_missing_value_key: null },
+      { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false },
+      { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     missing_values: true, column_missing_value_key: '?' },
+      { column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
+      { column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      missing_values: false },
     ]
     const bcw_dataset_transforms = [
       ...bcw_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
       { column_name: 'Sample_code_number', column_transform: 'drop' },
-      // { column_name: 'Bare_Nuclei', column_transform: 'drop' },
-      { column_name: 'Bare_Nuclei', column_transform: 'replace_?_NaN' },
-      { column_name: 'Bare_Nuclei', column_transform: 'dropNa' },
+      { column_name: 'Bare_Nuclei',        column_transform: 'drop' },
+      // { column_name: 'Bare_Nuclei',        column_transform: 'replace_?_NaN' },
+      // { column_name: 'Bare_Nuclei',        column_transform: 'dropNa' },
+      { column_name: 'Class',              column_transform: 'drop' },
     ]
     const bcw_target = 'Class'
     
@@ -176,45 +179,46 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     let wdbc_dataframe_original = await dfd.readCSV(path_datasets + wdbc_csv)
     let wdbc_dataframe_processed = await dfd.readCSV(path_datasets + wdbc_csv)
     const wdbc_dataset = [
-      { column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'radius1',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'texture1',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'perimeter1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'area1',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'smoothness1',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'compactness1',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concavity1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concave_points1',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'symmetry1',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'fractal_dimension1',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'radius2',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'texture2',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'perimeter2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'area2',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'smoothness2',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'compactness2',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concavity2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concave_points2',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'symmetry2',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'fractal_dimension2',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'radius3',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'texture3',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'perimeter3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'area3',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'smoothness3',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'compactness3',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concavity3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'concave_points3',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'symmetry3',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
-      { column_name: 'fractal_dimension3',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false, column_missing_value_key: null },
+      { column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false },
+      { column_name: 'radius1',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'texture1',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'perimeter1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'area1',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'smoothness1',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'compactness1',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concavity1',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concave_points1',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'symmetry1',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'fractal_dimension1',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'radius2',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'texture2',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'perimeter2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'area2',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'smoothness2',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'compactness2',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concavity2',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concave_points2',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'symmetry2',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'fractal_dimension2',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'radius3',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'texture3',            column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'perimeter3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'area3',               column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'smoothness3',         column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'compactness3',        column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concavity3',          column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'concave_points3',     column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'symmetry3',           column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'fractal_dimension3',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
+      { column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false },
     ]
     const wdbc_dataset_transforms = [
       ...wdbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
-      { column_name: 'ID', column_transform: 'drop' },
+      { column_name: 'ID',        column_transform: 'drop' },
+      { column_name: 'Diagnosis', column_transform: 'drop' },
 
     ]
-    const wdbc_target = ''
+    const wdbc_target = 'Diagnosis'
     
     const wdbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wdbc_dataframe_processed, wdbc_dataset_transforms)
     const wdbc_encoders_map = wdbc_dataframe_encoder.encoder_map
@@ -235,7 +239,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     let wpbc_dataframe_processed = await dfd.readCSV(path_datasets + wpbc_csv)
     const wpbc_dataset = [
       { column_name: 'ID',                   column_role: 'ID',             column_type: 'Integer',        column_missing_values: false },
-      { column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false },
+      { column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false }, // empiezan los 3 ciclos
       { column_name: 'radius1',              column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
       { column_name: 'texture1',             column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
       { column_name: 'perimeter1',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
@@ -265,22 +269,26 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'concavity3',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
       { column_name: 'concave_points3',      column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
       { column_name: 'symmetry3',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      { column_name: 'fractal_dimension3',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
+      { column_name: 'fractal_dimension3',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false }, // Fin 3 ciclos
       { column_name: 'tumor_size',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      { column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true  },
+      { column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true,  column_missing_value_key: '?' },
       { column_name: 'Outcome',              column_role: 'Target',         column_type: 'Categorical',    column_missing_values: false },
     ]
     const wpbc_dataset_transforms = [
       ...wpbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
-
-      { column_name: 'ID',                column_transform: 'drop' },
-      { column_name: 'lymph_node_status', column_transform: 'drop' }
+      { column_name: 'ID',                column_transform: 'drop'          },
+      { column_name: 'lymph_node_status', column_transform: 'drop'          },
+      // { column_name: 'lymph_node_status', column_transform: 'replace_?_NaN' },
+      // { column_name: 'lymph_node_status', column_transform: 'dropNa'        },
+      // { column_name: 'lymph_node_status', column_transform: 'drop'          },
+      { column_name: 'Outcome',           column_transform: 'drop'          },
     ]
     const wpbc_target = 'Outcome'
 
     const wpbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wpbc_dataframe_processed, wpbc_dataset_transforms)
     const wpbc_encoders_map = wpbc_dataframe_encoder.encoder_map
     wpbc_dataframe_processed = wpbc_dataframe_encoder.dataframe_processed
+    console.log({wpbc_dataframe_processed})
     
     const wpbc_dataframe_X = wpbc_dataframe_processed.copy()
     const wpbc_dataframe_y = wpbc_dataframe_original[wpbc_target]
@@ -361,11 +369,50 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/breast-cancer'
+    const wdbc_columns_X = [
+      'Time',
+      'radius1',
+      'texture1',
+      'perimeter1',
+      'area1',
+      'smoothness1',
+      'compactness1',
+      'concavity1',
+      'concave_points1',
+      'symmetry1',
+      'fractal_dimension1',
+      'radius2',
+      'texture2',
+      'perimeter2',
+      'area2',
+      'smoothness2',
+      'compactness2',
+      'concavity2',
+      'concave_points2',
+      'symmetry2',
+      'fractal_dimension2',
+      'radius3',
+      'texture3',
+      'perimeter3',
+      'area3',
+      'smoothness3',
+      'compactness3',
+      'concavity3',
+      'concave_points3',
+      'symmetry3',
+      'fractal_dimension3',
+      'tumor_size',
+      'lymph_node_status',
+    ]
     const models = {
       'breast-cancer-wisconsin.csv': [],
       'wpbc.csv'                   : [],
       'wdbc.csv'                   : [
-        { model_path: path + '/0/lr-model-0.json', column_name_X: 'area_mean', column_name_Y: 'perimeter_mean' }
+        { 
+          model_path: path + '/0/lr-model-0.json', 
+          X         : wdbc_columns_X, 
+          y         : 'Outcome'
+        }
       ],
     }
     return models[dataset]

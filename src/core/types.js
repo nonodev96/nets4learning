@@ -174,3 +174,11 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {DataFrame_t} dataframe_processed
  * @property {DataProcessed_t} [data_processed] - Data processed 
  */
+
+
+/**
+ * @typedef {Object} CustomModel_t
+ * @property {string[]} X
+ * @property {string} y
+ * @property {string} model_path
+ */

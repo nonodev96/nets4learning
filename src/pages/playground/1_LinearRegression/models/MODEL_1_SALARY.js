@@ -117,7 +117,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
     const models = {
       'salary.csv': [
-        { model_path: path + '/0/lr-model-0.json', column_name_X: 'YearsExperience', column_name_Y: 'Salary' },
+        { 
+          model_path: path + '/0/lr-model-0.json', 
+          X         : ['YearsExperience'], 
+          y         : 'Salary'
+        },
       ]
     }
     return models[dataset]

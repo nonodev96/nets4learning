@@ -98,14 +98,15 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'sulphates',              column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
       { column_name: 'alcohol',                column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
       { column_name: 'quality',                column_role: 'Target',       column_type: 'Integer',     column_missing_values: false },
-      { column_name: 'color',                  column_role: 'Other',        column_type: 'Categorical', column_missing_values: false },
+      // { column_name: 'color',                  column_role: 'Other',        column_type: 'Categorical', column_missing_values: false },
     ]
     
     // #region Wine Red
     let red_dataframe_original = await dfd.readCSV(path_datasets + red_dataset_csv)
     let red_dataframe_processed = await dfd.readCSV(path_datasets + red_dataset_csv)
     const red_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+      // ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'quality', column_transform: 'drop' },
     ]
     const red_target = 'quality'
     const red_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(red_dataframe_processed, red_dataset_transforms)
@@ -124,9 +125,8 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     let white_dataframe_original = await dfd.readCSV(path_datasets + white_dataset_csv)
     let white_dataframe_processed = await dfd.readCSV(path_datasets + white_dataset_csv)
     const white_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
-      // { column_name: '',               column_transform: 'replace_?_NaN' },
-      // { column_name: '',               column_transform: 'dropNa' },
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'quality', column_transform: 'drop' },
     ]
     const white_target = 'quality'
     const white_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(white_dataframe_processed, white_dataset_transforms)
@@ -193,10 +193,26 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/wine'
+    const wine_columns_X = [
+      'fixed_acidity',
+      'volatile_acidity',
+      'citric_acid',
+      'residual_sugar',
+      'chlorides',
+      'free_sulfur_dioxide',
+      'total_sulfur_dioxide',
+      'density',
+      'pH',
+      'sulphates',
+      'alcohol'
+    ]
     const models = {
       'wine-quality-red.csv': [
-        { model_path: path + '/0/lr-model-0.json', column_name_X: 'fixed acidity', column_name_Y: 'density' },
-        { model_path: path + '/1/lr-model-1.json', column_name_X: 'fixed acidity', column_name_Y: 'pH' },
+        { 
+          model_path: path + '/0/lr-model-0.json', 
+          X         : wine_columns_X,
+          y         : 'quality' 
+        },
       ],
       'wine-quality-white.csv': []
     }

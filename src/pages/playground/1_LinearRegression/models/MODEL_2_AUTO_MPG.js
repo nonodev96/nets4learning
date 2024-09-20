@@ -104,13 +104,13 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     
     const auto_dataset = [
       { column_name: 'displacement',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
       { column_name: 'cylinders',        column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
       { column_name: 'horsepower',       column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: true    },
       { column_name: 'weight',           column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
       { column_name: 'acceleration',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
       { column_name: 'model_year',       column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
       { column_name: 'origin',           column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
+      { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
       // { column_name: 'car_name',         column_role: 'ID',        column_type: 'Categorical',   column_missing_values: false   },
     ]
     const auto_dataset_transforms = [
@@ -156,7 +156,11 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/auto-mpg'
     const models = {
       'auto-mpg.csv': [
-        { model_path: path + '/0/lr-model-0.json', column_name_X: 'horsepower', column_name_Y: 'mpg' },
+        { 
+          model_path: path + '/0/lr-model-0.json', 
+          X         : ['displacement', 'cylinders', 'horsepower', 'weight', 'acceleration', 'model_year', 'origin'],
+          y         : 'mpg'
+        },
       ]
     }
     return models[dataset]

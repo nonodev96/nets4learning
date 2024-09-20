@@ -47,13 +47,9 @@ export default class I_MODEL_LINEAR_REGRESSION {
   }
 
   /**
-   * @typedef {Object} CustomModel_t
-   * @property {string} column_name_X
-   * @property {string} column_name_Y
-   * @property {string} model_path
-   *
+ 
    * @param {string} [_dataset='']
-   * @return {Promise<CustomModel_t[]>}
+   * @return {Promise<_Types.CustomModel_t[]>}
    * @constructor
    */
   async MODELS (_dataset = '') {

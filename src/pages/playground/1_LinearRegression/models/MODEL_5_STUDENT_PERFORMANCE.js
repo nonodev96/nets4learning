@@ -116,20 +116,21 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
       { column_name: 'Walc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'health',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'absences',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      { column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target', column_missing_values: false },
-      { column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target', column_missing_values: false },
-      { column_name: 'G3',         column_type: 'Integer',       column_role: 'Target', column_missing_values: false },
+      { column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
+      { column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
+      { column_name: 'G3',         column_type: 'Integer',       column_role: 'Target',  column_missing_values: false },
     ]
     
     // #region Student Mat
     let mat_dataframe_original = await dfd.readCSV(path_datasets + mat_csv)
     let mat_dataframe_processed = await dfd.readCSV(path_datasets + mat_csv)
     const mat_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
-      // { column_name: '',               column_transform: 'replace_?_NaN' },
-      // { column_name: '',               column_transform: 'dropNa' },
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'G1',             column_transform: 'drop' },
+      { column_name: 'G2',             column_transform: 'drop' },
+      { column_name: 'G3',             column_transform: 'drop' },
     ]
-    const mat_target = 'G1' // G1;G2;G3
+    const mat_target = 'G3' // G1;G2;G3
 
     const mat_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(mat_dataframe_processed, mat_dataset_transforms)
     const mat_encoders_map = mat_dataframe_encoder.encoder_map
@@ -149,10 +150,12 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     let por_dataframe_original = await dfd.readCSV(path_datasets + por_csv)
     let por_dataframe_processed = await dfd.readCSV(path_datasets + por_csv)
     const por_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
-
+      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      { column_name: 'G1',             column_transform: 'drop' },
+      { column_name: 'G2',             column_transform: 'drop' },
+      { column_name: 'G3',             column_transform: 'drop' },
     ]
-    const por_target = 'G1' // G1;G2;G3
+    const por_target = 'G3' // G1;G2;G3
     const por_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(por_dataframe_processed, por_dataset_transforms)
     const por_encoders_map = por_dataframe_encoder.encoder_map
     por_dataframe_processed = por_dataframe_encoder.dataframe_processed
@@ -207,12 +210,47 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     ]
   }
 
-  // TODO
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
+    const mat_columns_X = [
+      'school',
+      'sex',
+      'age',
+      'address',
+      'famsize',
+      'Pstatus',
+      'Medu',
+      'Fedu',
+      'Mjob',
+      'Fjob',
+      'reason',
+      'guardian',
+      'traveltime',
+      'studytime',
+      'failures',
+      'schoolsup',
+      'famsup',
+      'paid',
+      'activities',
+      'nursery',
+      'higher',
+      'internet',
+      'romantic',
+      'famrel',
+      'freetime',
+      'goout',
+      'Dalc',
+      'Walc',
+      'health',
+      'absences'
+    ]
     const models = {
       'student-mat.csv': [
-        { model_path: path + '/0/lr-model-0.json', column_name_X: '',               column_name_Y: '' },
+        { 
+          model_path: path + '/0/lr-model-0.json', 
+          X         : mat_columns_X,               
+          y         : 'G3' 
+        },
       ],
       'student-por.csv': []
     }
