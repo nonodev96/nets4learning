@@ -15,8 +15,12 @@
   border: 1px solid blue;
 }
 
+.border_pink {
+  border: 1px solid rgb(255, 0, 234);
+}
+
 .border_green {
-  border: 1px solid green;
+  border: 1px solid lime;
 }
 
 .border_red {

@@ -2,21 +2,34 @@ import React from 'react'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
+
 import { UPLOAD } from '@/DATA_MODEL'
 import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import { VERBOSE } from '@/CONSTANTS'
 import TabularClassificationPredictionForm from '@pages/playground/0_TabularClassification/TabularClassificationPredictionForm'
 import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import * as _Types from '@core/types'
 
+/**
+ * @typedef TabularClassificationPredictionProps_t
+ * @property {_Types.DatasetProcessed_t[]} datasets
+ */
+
+/**
+ * 
+ * @param {TabularClassificationPredictionProps_t} props 
+ * @returns 
+ */
 export default function TabularClassificationPrediction (props) {
   const {
     dataset,
-    /** @type DatasetProcessed_t[] */
+
     datasets,
     datasetIndex,
 
     generatedModels,
+
     generatedModelsIndex,
     setGeneratedModelsIndex,
 
@@ -25,6 +38,7 @@ export default function TabularClassificationPrediction (props) {
 
     inputDataToPredict,
     setInputDataToPredict,
+
     inputVectorToPredict,
     setInputVectorToPredict,
 
@@ -107,7 +121,7 @@ export default function TabularClassificationPrediction (props) {
           </>}
           {generatedModels.length !== 0 && <>
             <Form.Group controlId={'MODEL'} className={'ms-3 joyride-step-select-model'}>
-              <Form.Select aria-label={t(prefix + 'selector-model')}
+              <Form.Select aria-label={t('selector-model')}
                            size={'sm'}
                            onChange={(e) => handleChange_Model(e)}>
                 {generatedModels.map((row, index) => {

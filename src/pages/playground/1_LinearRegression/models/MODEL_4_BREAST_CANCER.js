@@ -307,6 +307,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         info                : bcw_info,
         csv                 : bcw_csv,
         container_info      : bcw_container_info,
+        dataset             : bcw_dataset,
         dataframe_original  : bcw_dataframe_original,
         dataframe_processed : bcw_dataframe_processed,
         dataset_transforms  : bcw_dataset_transforms,
@@ -327,6 +328,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         csv                 : wdbc_csv,
         info                : wdbc_info,
         container_info      : wdbc_container_info,
+        dataset             : wdbc_dataset,
         dataframe_original  : wdbc_dataframe_original,
         dataframe_processed : wdbc_dataframe_processed,
         dataset_transforms  : wdbc_dataset_transforms,
@@ -347,6 +349,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         info                : wpbc_info,
         csv                 : wpbc_csv,
         container_info      : wpbc_container_info,
+        dataset             : wpbc_dataset,
         dataframe_original  : wpbc_dataframe_original,
         dataframe_processed : wpbc_dataframe_processed,
         dataset_transforms  : wpbc_dataset_transforms,
@@ -365,9 +368,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   DEFAULT_LAYERS () {
     return [
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 32, activation: 'relu'   },
+      { is_disabled: false, units: 16, activation: 'relu'   },
       { is_disabled: true,  units: 1,  activation: 'linear' }
     ]
   }

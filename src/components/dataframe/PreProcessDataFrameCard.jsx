@@ -37,7 +37,7 @@ export default function PreProcessDataFrameCard(props) {
       </Card.Header>
       <Card.Body>
         {!isDataFrameUpload && <>
-          <WaitingPlaceholder title={''} />
+          <WaitingPlaceholder title={'Waiting'} />
         </>}
         {isDataFrameUpload && <>
           <PreProcessDataFrame

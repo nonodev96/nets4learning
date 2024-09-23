@@ -109,7 +109,6 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
    * @returns {Promise<handPoseDetection.Hand[]>}
    */
   async PREDICTION (input_image_or_video, config = { flipHorizontal: false }) {
-    console.log('hello', { config })
     return await this._modelDetector.estimateHands(input_image_or_video, { flipHorizontal: config.flipHorizontal })
   }
 
@@ -120,9 +119,7 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
    */
   RENDER(ctx, predictions = []) {
     const font = '32px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
-    // const font2 = '12px Barlow-SemiBold, Barlow-Regular, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
     for (const hand of predictions) {
-      //const landmark = hand.keypoints.map(({ x, y, z }) => [x, y, z])
       this._drawFinger(ctx, hand.keypoints)
       const keypoints3D = hand.keypoints3D.map(({ x, y, z }) => [x, y, z])
       const estimatedGestures = this.gestureEstimator.estimate(keypoints3D, 7)

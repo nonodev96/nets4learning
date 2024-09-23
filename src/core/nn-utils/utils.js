@@ -26,5 +26,5 @@ export function F_FILTER_Categorical (value, _index, _array) {
   // if (!array.map(v=> (v.column_name)).includes(value.column_name)) {
   //   console.error({array})
   // }
-  return value.column_type === 'Categorical'
+  return value.column_type === 'Categorical' || value.column_type === 'Binary'
 }

@@ -131,15 +131,15 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     /** @type {_Types.DataFrameColumnTransform_t[]} */
     const mat_dataset_transforms = [
       ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
-      { column_name: 'G1',             column_transform: 'drop' },
-      { column_name: 'G2',             column_transform: 'drop' },
-      { column_name: 'G3',             column_transform: 'drop' },
+      // { column_name: 'G1',             column_transform: 'drop' },
+      // { column_name: 'G2',             column_transform: 'drop' },
+      // { column_name: 'G3',             column_transform: 'drop' },
     ]
     const mat_target = 'G3' // G1;G2;G3
     const mat_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(mat_dataframe_processed, mat_dataset_transforms)
     const mat_encoders_map = mat_dataframe_encoder.encoder_map
     mat_dataframe_processed = mat_dataframe_encoder.dataframe_processed
-    const mat_dataframe_X = mat_dataframe_processed.copy()
+    const mat_dataframe_X = mat_dataframe_processed.drop({ columns: ['G1', 'G2', 'G3'] }).copy()
     /**@type {_Types.Series_t}*/
     const mat_dataframe_y = mat_dataframe_original[mat_target]
     const minMaxScaler1 = new dfd.MinMaxScaler()
@@ -155,15 +155,15 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     /** @type {_Types.DataFrameColumnTransform_t[]} */
     const por_dataset_transforms = [
       ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
-      { column_name: 'G1',             column_transform: 'drop' },
-      { column_name: 'G2',             column_transform: 'drop' },
-      { column_name: 'G3',             column_transform: 'drop' },
+      // { column_name: 'G1',             column_transform: 'drop' },
+      // { column_name: 'G2',             column_transform: 'drop' },
+      // { column_name: 'G3',             column_transform: 'drop' },
     ]
     const por_target = 'G3' // G1;G2;G3
     const por_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(por_dataframe_processed, por_dataset_transforms)
     const por_encoders_map = por_dataframe_encoder.encoder_map
     por_dataframe_processed = por_dataframe_encoder.dataframe_processed
-    const por_dataframe_X = por_dataframe_processed.copy()
+    const por_dataframe_X = por_dataframe_processed.drop({ columns: ['G1', 'G2', 'G3'] }).copy()
     /**@type {_Types.Series_t}*/
     const por_dataframe_y = por_dataframe_original[por_target]
     const minMaxScaler2 = new dfd.MinMaxScaler()
@@ -182,6 +182,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         info                : student_info,
         container_info      : student_container_info,
         csv                 : mat_csv,
+        dataset             : dataset,
         dataframe_original  : mat_dataframe_original,
         dataframe_processed : mat_dataframe_processed,
         dataset_transforms  : mat_dataset_transforms,
@@ -202,6 +203,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         info                : student_info,
         container_info      : student_container_info,
         csv                 : por_csv,
+        dataset             : dataset,
         dataframe_original  : por_dataframe_original,
         dataframe_processed : por_dataframe_processed,
         dataset_transforms  : por_dataset_transforms,
@@ -267,10 +269,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
 
   DEFAULT_LAYERS () {
     return [
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: false, units: 64, activation: 'relu'   },
-      { is_disabled: true,  units: 1,  activation: 'linear' }
+      { is_disabled: false, units: 32, activation: 'sigmoid' },
+      { is_disabled: false, units: 16, activation: 'sigmoid' },
+      { is_disabled: true,  units: 1,  activation: 'linear'  }
     ]
   }
 

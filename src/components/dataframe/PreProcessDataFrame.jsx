@@ -281,12 +281,12 @@ export default function PreProcessDataFrame(props) {
             </Row>
 
             <hr />
-            <Row>
+
+            <Row className="mt-3">
               <Col>
                 <div className="d-grid gap-2">
                   <Button type="submit" 
-                          disabled={isButtonDisabled}
-                          className="mt-3">
+                          disabled={isButtonDisabled}>
                     <Trans i18nKey={prefix + 'submit'} />
                   </Button>
                 </div>

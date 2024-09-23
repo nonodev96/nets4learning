@@ -198,6 +198,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {string} info
  * @property {string} container_info
  * @property {string} csv
+ * @property {Dataset_t} dataset
  * @property {DataFrameColumnTransform_t[]} dataset_transforms
  * @property {DataFrame_t} dataframe_original
  * @property {DataFrame_t} dataframe_processed
@@ -207,6 +208,19 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 // ================================ LINEAR REGRESSION
 
+/**
+ * @typedef Prediction_t
+ * @property {_dfd.DataFrame} dataframe
+ */
+
+/**
+ * @typedef StatePrediction_t
+ * @property {[]} input_raw - Incluye el target
+ * @property {[]} input - Sin el target
+ * @property {[]} input_encoding
+ * @property {[]} input_scaling
+ * @property {[]} result
+ */
 
 
 /**
@@ -256,3 +270,22 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {DatasetProcessed_t} dataset_processed
  */
 
+/**
+ * @typedef StateDatasetProcessed_t
+ * @property {Array<DatasetProcessed_t>} data
+ * @property {number|"select-dataset"} index
+ */
+
+/**
+ * @typedef StateModel_t
+ * @property {Array<CustomModel_t>} data
+ * @property {number|"select-model"} index
+ */
+
+/**
+ * TODO
+ * 
+ * @typedef StateInstance_t
+ * @property {Array<>} data
+ * @property {number|"select-instance"} index
+ */

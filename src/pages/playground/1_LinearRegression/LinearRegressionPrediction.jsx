@@ -13,44 +13,26 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionPredictionForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionForm'
 import LinearRegressionPredictionInfo from '@pages/playground/1_LinearRegression/LinearRegressionPredictionInfo'
 
-export default function LinearRegressionPrediction({dataFrameToPredict, setDataFrameToPredict}) {
+export default function LinearRegressionPrediction() {
   const prefix = 'pages.playground.1-linear-regression.predict.'
   const { t } = useTranslation()
 
   const {
+    predictionInstanceRef,
+
+    prediction,
+    setPrediction,
+
     listModels,
     setListModels,
   } = useContext(LinearRegressionContext)
 
-  // const [dynamicObject, setDynamicObject] = useState({})
   const [showPrediction, setShowPrediction] = useState(false)
   
-  /**
-   * @type {ReturnType<typeof useState<{input: (number|string)[], input_processed: number[], result: number[]}>>}
-   */
-  const [prediction, setPrediction] = useState({
-    input          : [],
-    input_processed: [],
-    result         : []
-  })
   /**
    * @type {ReturnType<typeof useState<string|number>>}
    */
   const [indexInstance, setIndexInstance] = useState('__disabled__')
-
-  // ESTE DEBE CAMBIAR EL DATAFRAME 
-  const handleChange_InstanceToPredict = (e, _column_name) => {
-    const _new_value = e.target.value
-
-    const { dataset_processed } = listModels.data[listModels.index]
-    console.log({ dataset_processed })
-    // setDynamicObject((prevState) => {
-    //   return {
-    //     ...prevState,
-    //     [_column_name]: _new_value,
-    //   }
-    // })
-  }
 
   // ESTE DEBE CAMBIAR EL DATAFRAME escalando y procesando los datos para predecir
   // TODO
@@ -58,68 +40,81 @@ export default function LinearRegressionPrediction({dataFrameToPredict, setDataF
     e.preventDefault()
 
     // @ts-ignore
-    const tensor = tfjs.tensor2d([prediction.input_processed])
+    const tensor = tfjs.tensor2d([prediction.input_scaling])
     // @ts-ignore
-    console.log(listModels.data[listModels.index].model.predict(tensor).dataSync())
+    const result = listModels.data[listModels.index].model.predict(tensor).dataSync()
+    
+    console.log(result)
+    setPrediction((prevState) => ({
+      ...prevState,
+      result: result
+    }))
+    
   }
 
   const handleChange_Model = (e) => {
-    setListModels(e.target.value)
-  }
-
-  const handleChange_Instance = (e) => {
-    const instanceIndex = e.target.value
-    setIndexInstance(instanceIndex)
-    // const _dynamic_object = listModels.data[listModels.index]
-    // .dataframe
-    // .columns
-    //   .reduce((o, column_name) => {
-    //     let new_value = listModels.data[listModels.index].dataframe[column_name].values[instanceIndex]
-    //     return Object.assign(o, { [column_name]: new_value })
-    //   }, {})
-    // setDynamicObject(_dynamic_object)
-    
-    const prediction_input = listModels.data[listModels.index].dataset_processed.data_processed.dataframe_X.values[instanceIndex]
-    const prediction_input_processed = listModels.data[listModels.index].dataset_processed.data_processed.X.values[instanceIndex]
-    setPrediction((prevState) => ({
+    setListModels((prevState) => ({
       ...prevState,
-      input          : prediction_input,
-      input_processed: prediction_input_processed
+      index: parseInt(e.target.value)
     }))
   }
 
-  useEffect(() => {
-    if (VERBOSE) console.debug('useEffect [listModels, listModels.index]')
-    if (listModels.length > 0 && listModels.index >= 0) {
-      // listModels.data[listModels.index]
-      //   .dataframe
-      //   .describe()
-      //   .T
-      //   .plot(idDataFrameDescribe)
-      //   .table({ config: TABLE_PLOT_STYLE_CONFIG })
-      // const _dynamic_object = listModels.data[listModels.index]
-      //   .dataframe
-      //   .columns
-      //   .reduce((o, column_name) => {
-      //     let new_value = listModels.data[listModels.index].dataframe[column_name].values[0]
-      //     return Object.assign(o, { [column_name]: new_value })
-      //   }, {})
-      // setDynamicObject(_dynamic_object)
-    }
-  }, [listModels, listModels.data, listModels.index])
+  const handleChange_Row = (e) => {
+    e.preventDefault()
+
+    const _indexInstance = e.target.value
+    setIndexInstance(_indexInstance)
+    const dataset_processed = listModels.data[listModels.index].dataset_processed
+    
+    const dataframe_original = dataset_processed.dataframe_original.copy()
+    const dataframe_processed = dataset_processed.dataframe_processed.copy()
+    const dataframe_X = dataset_processed.data_processed.dataframe_X.copy()
+    const X = dataset_processed.data_processed.X.copy()
+
+    // Step 1 Los datos en crudo
+    const prediction_input_raw = Array.from(dataframe_original.$data[_indexInstance])
+    
+    // Step 2 Los datos con el encoding, sin scaling y con target
+    const _prediction_input_encoding = Array.from(dataframe_processed.$data[_indexInstance])
+    
+    // Step 3 Los datos con el encoding, sin scaling y sin target
+    const prediction_input_encoding = Array.from(dataframe_X.$data[_indexInstance])
+    // Step 3 Los datos con el encoding, con scaling y sin target
+    const prediction_input_scaling = Array.from(X.$data[_indexInstance])
+
+    // Step 4 Los datos para transformarlos (con el encoding, pero sin el scaling)
+    // const size = dataframe_X.shape[1]
+    const prediction_input = dataframe_X.$data[_indexInstance]
+
+    // Con los datos escalados
+    // const prediction_input_processed = dataset_processed.data_processed.scaler.transform(prediction_input)
+    
+    // Creamos estructura vacia pero con formato    
+    const df_void = new dfd.DataFrame([], { 
+      columns: dataframe_X.columns, 
+      dtypes : dataframe_X.dtypes
+    })
+    // Insertamos los datos en el dataframe
+    const new_df = df_void.append([prediction_input], [0])
+    // Guardamos
+    predictionInstanceRef.current.dataframe = new_df.copy()
+
+    setPrediction((prevState)=>({
+      ...prevState,
+      input_raw     : prediction_input_raw,
+      input         : prediction_input,
+      input_encoding: prediction_input_encoding,
+      input_scaling : prediction_input_scaling
+    }))
+  }
 
   useEffect(() => {
     setShowPrediction((listModels.data.length > 0 && listModels.index >= 0))
   }, [listModels, listModels.data, listModels.index, setShowPrediction])
 
   useEffect(() => {
-    if (VERBOSE) console.debug('useEffect [listModels, t]')
-    if (listModels.data.length > 0 && listModels.index >= 0 && listModels.data[listModels.index]) {
-      const { params_features } = listModels.data[listModels.index]
-      console.log({params_features})
-      // TODO
-    }
-  }, [listModels, t])
+    console.log(prediction)
+  }, [prediction])
 
   if (VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
@@ -127,35 +122,13 @@ export default function LinearRegressionPrediction({dataFrameToPredict, setDataF
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className="d-flex">
-          <div className={'ms-3'}>
-            <Form.Group controlId={'model-selector'}>
-              <Form.Select aria-label={'model-selector'}
-                           size={'sm'}
-                           defaultValue={listModels.index}
-                           disabled={!showPrediction}
-                           onChange={(e) => handleChange_Model(e)}
-              >
-                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models-generated'} /></option>
-                <>
-                  {listModels
-                    .data
-                    .map((_, index) => {
-                      return <option key={index} value={index}>
-                        <Trans i18nKey={'model.__index__'}
-                          values={{ index: index + 1 }} />
-                      </option>
-                    })}
-                </>
-              </Form.Select>
-            </Form.Group>
-          </div>
-          <div className={'ms-3'}>
+          <div>
             <Form.Group controlId={'instance-selector'}>
               <Form.Select aria-label={'instance-selector'}
                            size={'sm'}
                            defaultValue={indexInstance}
                            disabled={!showPrediction}
-                           onChange={(e) => handleChange_Instance(e)}
+                           onChange={(e) => handleChange_Row(e)}
               >
                 <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-instances'} /></option>
                 <>
@@ -169,6 +142,28 @@ export default function LinearRegressionPrediction({dataFrameToPredict, setDataF
                         </option>
                       })}
                   </>}
+                </>
+              </Form.Select>
+            </Form.Group>
+          </div>
+          <div className={'ms-3'}>
+            <Form.Group controlId={'model-selector'}>
+              <Form.Select aria-label={'model-selector'}
+                           size={'sm'}
+                           value={listModels.index}
+                           disabled={!showPrediction}
+                           onChange={(e) => handleChange_Model(e)}
+              >
+                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models'} /></option>
+                <>
+                  {listModels
+                    .data
+                    .map((_, index) => {
+                      return <option key={index} value={index}>
+                        <Trans i18nKey={'model.__index__'}
+                          values={{ index: index + 1 }} />
+                      </option>
+                    })}
                 </>
               </Form.Select>
             </Form.Group>
@@ -204,9 +199,7 @@ export default function LinearRegressionPrediction({dataFrameToPredict, setDataF
           <hr />
           <Form onSubmit={handleSubmit_Predict}>
             
-            <LinearRegressionPredictionForm generatedModel={listModels.data[listModels.index]}
-                                            handleChange_InstanceToPredict={handleChange_InstanceToPredict}
-            />
+            <LinearRegressionPredictionForm generatedModel={listModels.data[listModels.index]} />
 
             <LinearRegressionPredictionInfo prediction={prediction} />
 

@@ -11,11 +11,11 @@ sk.setBackend(dfd.tensorflow)
 /**
  * @typedef {Object} CustomLinearRegression_DatasetParams_t
  * @property {_Types.DatasetProcessed_t} dataset_processed
- * @property {string} [name_model='Linear Regression']
+ * @property {string} [name_model = 'Linear Regression']
  * @property {Array} layerList
- * @property {number} learningRate Rango [0 - 1]
- * @property {number} [momentum=0]
- * @property {number} testSize
+ * @property {number} [learningRate = 0.01] Rango [0 - 1]
+ * @property {number} [momentum = 0]
+ * @property {number} [testSize = 0.3]
  * @property {number} numberOfEpoch
  * @property {string} idOptimizer
  * @property {string} idLoss
@@ -32,9 +32,9 @@ export async function createLinearRegressionCustomModel (params) {
     dataset_processed,
     name_model = 'Linear regression',
     layerList,
-    learningRate,
+    learningRate = 0.01,
     momentum = 0,
-    testSize,
+    testSize = 0.3,
     numberOfEpoch,
     idOptimizer,
     idLoss,
@@ -92,8 +92,7 @@ export async function createLinearRegressionCustomModel (params) {
   })
   await model.fit(XTrain_tensor, yTrain_tensor, {
     batchSize     : 32,
-    // TODO
-    shuffle       : false,
+    shuffle       : true,
     validationData: [XTest_tensor, yTest_tensor],
     epochs        : numberOfEpoch,
     callbacks     : fitCallbacks,

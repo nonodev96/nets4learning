@@ -604,7 +604,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
                 </Card.Body>
                 <Card.Footer>
                   <details>
-                    <summary>Device info</summary>
+                    <summary>{t('Device info')}</summary>
                     <ol>
                       {devices.map((device, index) => {
                         return (

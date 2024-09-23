@@ -12,6 +12,7 @@ import AlertHelper from '@utils/alertHelper'
 import TestComponentEasy from '@components/TestComponentEasy'
 import { MODEL_1_SALARY, MODEL_2_AUTO_MPG, MODEL_3_HOUSING_PRICES } from '@/DATA_MODEL'
 import { createLinearRegressionCustomModel } from '@/core/controller/01-linear-regression/LinearRegressionModelController'
+import { DataFrameInstanceSetCellValue } from '@/core/dataframe/DataFrameUtils'
 
 export default function TestPageEasy () {
 
@@ -22,7 +23,31 @@ export default function TestPageEasy () {
   const handleClick_init = async () => {
     // const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/auto-mpg.csv'
 
+  }
 
+  const handleClick_dataframe = () => {
+    let data = [
+      [0, 2, 4, 'b'],
+      [360, 180, 360, 'a'],
+      [2, 4, 6, 'c']
+    ]
+    let df = new dfd.DataFrame(data)
+    let df_vacio = new dfd.DataFrame([], { columns: df.columns, dtypes: df.dtypes })
+    let new_df = df_vacio.append([[20, 40, 60, 'd']], [0])
+    new_df.print()
+  }
+
+  const handleClick_dataframeEditCell = () => {
+    // Crea un DataFrame de ejemplo
+    let df = new dfd.DataFrame({
+      'Nombre': ['Carlos', 'Ana', 'Pedro'],
+      'Edad'  : [28, 22, 34],
+      'Peso'  : [28, 22, 34]
+    })
+    const column_name = 'Edad'
+
+    const df2 = DataFrameInstanceSetCellValue(df, 0, column_name, 300)
+    df2.print()
   }
 
   const handleClick_toggle = () => {
@@ -349,6 +374,16 @@ export default function TestPageEasy () {
                   Counter {counter}
                 </Button>
                 <hr />
+                <TestComponentEasy />
+<Row>
+  <Col>
+    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframe}>Dataframe test append</Button>
+  </Col>
+  <Col>
+    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframeEditCell}>Dataframe test edit cell</Button>
+  </Col>
+</Row>
+                
                 <TestComponentEasy />
 
                 <Button variant={'outline-primary'}

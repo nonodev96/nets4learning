@@ -1,12 +1,16 @@
+import { useRef } from 'react'
+import { Trans } from 'react-i18next'
 import { Button, Col, Form, Row } from 'react-bootstrap'
+import * as dfd from 'danfojs'
+
+import { VERBOSE } from '@/CONSTANTS'
 import ModelReviewLinearRegressionPredictForm from './ModelReviewLinearRegressionPredictForm'
 import LinearRegressionPredictionInfo from './LinearRegressionPredictionInfo'
-import { Trans } from 'react-i18next'
-import { useState } from 'react'
 
-export default function ModelReviewLinearRegressionPredict ({ model, dataframe }) {
+export default function ModelReviewLinearRegressionPredict ({ dataset, model, dataframe }) {
 
-  const [prediction, setPrediction] = useState({
+  const prediction = useRef({
+    dataframe      : new dfd.DataFrame(),
     input          : [],
     input_processed: [],
     result         : []
@@ -16,26 +20,27 @@ export default function ModelReviewLinearRegressionPredict ({ model, dataframe }
    * 
    * @param {import('react').FormEvent<HTMLFormElement>} event 
    */
-  function handleSubmit_PredictVector(event) {
+  function handleSubmit_Predict(event) {
     event.preventDefault()
 
     // TODO
-    setPrediction((_prevState) => {
-      return {
+    prediction.current = {
+        dataframe      : [],
         input          : [],
         input_processed: [],
         result         : []
-      }
-    })
+    }
 
   }
 
+  if (VERBOSE) console.debug('ModelReviewLinearRegressionPredict')
   return (
-    <Form onSubmit={handleSubmit_PredictVector}>
+    <Form onSubmit={handleSubmit_Predict}>
 
-      <ModelReviewLinearRegressionPredictForm dataframe={dataframe} />
+      <ModelReviewLinearRegressionPredictForm dataset={dataset}
+                                              dataframe={dataframe} />
       
-      <LinearRegressionPredictionInfo prediction={prediction} />
+      <LinearRegressionPredictionInfo prediction={prediction.current} />
 
       <Row className={'mt-3'}>
         <Col>
@@ -43,7 +48,7 @@ export default function ModelReviewLinearRegressionPredict ({ model, dataframe }
             <Button variant={'primary'}
                     size={'lg'}
                     type={'submit'}>
-              <Trans i18nKey={'button-check-result'} />
+              <Trans i18nKey={'Predict'} />
             </Button>
           </div>
         </Col>

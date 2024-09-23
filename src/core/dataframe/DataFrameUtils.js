@@ -369,3 +369,25 @@ export function DataFrameTransformAndEncoder (dataframe, dataframe_transforms) {
   }
   return { dataframe_processed: dataframe_processed, encoder_map: encoder_map }
 }
+
+/**
+ * 
+ * @param {dfd.DataFrame} dataframe 
+ * @param {number} row 
+ * @param {number|string} column_name 
+ * @param {number|string} value 
+ * @returns 
+ */
+export function DataFrameInstanceSetCellValue(dataframe, row, column_name, value) {
+  const oldValuesRows = dataframe.loc({rows: [row]}).values[0]
+  
+  const columnIndex = dataframe.columns.indexOf(column_name)
+
+  const newValuesRows = Array.from(oldValuesRows)
+  newValuesRows[columnIndex] = (value)
+
+  const df_void = new dfd.DataFrame([], { columns: dataframe.columns, dtypes: dataframe.dtypes })
+  let new_df = df_void.append(newValuesRows, [0])
+
+  return new_df
+}

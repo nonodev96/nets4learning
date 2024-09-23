@@ -6,11 +6,27 @@ import * as _dfd from 'danfojs'
 
 import { I_MODEL_LINEAR_REGRESSION } from '@/pages/playground/1_LinearRegression/models'
 import * as _Types from '@core/types'
+import { 
+  DEFAULT_LEARNING_RATE,
+  DEFAULT_TEST_SIZE,
+  DEFAULT_NUMBER_OF_EPOCHS,
+  DEFAULT_ID_OPTIMIZER,
+  DEFAULT_ID_LOSS,
+  DEFAULT_ID_METRICS,
+} from '@/pages/playground/1_LinearRegression/CONSTANTS'
+
 
 /**
  * @typedef CustomLinearRegressionContext_t
  *
  * @property {ReturnType<typeof useRef<_Types.CustomModel_t>>} modelRef
+ * 
+ * Este contiene el dataframe 
+ * @property {ReturnType<typeof useRef<_Types.Prediction_t>>} predictionInstanceRef
+ * 
+ * Este contiene los datos de predicción
+ * @property {_Types.StatePrediction_t} prediction
+ * @property {React.Dispatch<React.SetStateAction<_Types.StatePrediction_t>>} setPrediction
  *
  * @property {{data: _Types.DatasetProcessed_t[], index: number}} datasets
  * @property {React.Dispatch<React.SetStateAction<{data: _Types.DatasetProcessed_t[], index: number}>>} setDatasets
@@ -26,6 +42,7 @@ import * as _Types from '@core/types'
  *
  * @property {string[]} accordionActive
  * @property {React.Dispatch<React.SetStateAction<string[]>>} setAccordionActive
+ *
  *
  * @property {I_MODEL_LINEAR_REGRESSION} iModelInstance
  * @property {React.Dispatch<React.SetStateAction<I_MODEL_LINEAR_REGRESSION>>} setIModelInstance
@@ -49,12 +66,12 @@ export function LinearRegressionProvider ({ children }) {
   /** @type {_Types.CustomParams_t} */
   const DEFAULT_PARAMS = {
     params_training: {
-      learning_rate  : 1,  // 1%  [0-100]
-      n_of_epochs    : 20,
-      test_size      : 10, // 10% [0-100]
-      id_optimizer   : 'train-adam',
-      id_loss        : 'losses-meanSquaredError',
-      list_id_metrics: ['metrics-meanSquaredError', 'metrics-meanAbsoluteError']
+      learning_rate  : DEFAULT_LEARNING_RATE,
+      n_of_epochs    : DEFAULT_NUMBER_OF_EPOCHS,
+      test_size      : DEFAULT_TEST_SIZE,
+      id_optimizer   : DEFAULT_ID_OPTIMIZER,
+      id_loss        : DEFAULT_ID_LOSS,
+      list_id_metrics: DEFAULT_ID_METRICS
     },
     params_layers: [
       { is_disabled: false, units: 10, activation: 'relu' },
@@ -87,10 +104,30 @@ export function LinearRegressionProvider ({ children }) {
    * @type {ReturnType<typeof useRef<_Types.CustomModel_t>>}
    */
   const modelRef = useRef(DEFAULT_MODEL)
+
+  /**
+   * @type {ReturnType<typeof useRef<_Types.Prediction_t>>}
+   */
+  const predictionInstanceRef = useRef({
+    dataframe: new _dfd.DataFrame(),
+  })
+
+  /**
+   * @type {ReturnType<typeof useState<_Types.StatePrediction_t>>}
+   */
+  const [prediction, setPrediction] = useState({
+    input_raw     : [],
+    input         : [],
+    input_encoding: [],
+    input_scaling : [],
+    result        : [],    
+  })
+
   /**
    * @type {ReturnType<typeof useState<_Types.CustomParams_t>>}
    */
   const [params, setParams] = useState(DEFAULT_PARAMS)
+
   /**
    * @type {ReturnType<typeof useState<{data: _Types.CustomModelGenerated_t[], index: number}>>}
    */
@@ -100,10 +137,12 @@ export function LinearRegressionProvider ({ children }) {
    * @type {ReturnType<typeof useState<boolean>>}
    */
   const [isTraining, setIsTraining] = useState(false)
+
   /**
    * @type {ReturnType<typeof useState<Array<string>>>}
    */
   const [accordionActive, setAccordionActive] = useState(['dataset_info'])
+
   /**
    * @type {ReturnType<typeof useState<I_MODEL_LINEAR_REGRESSION>>}
    */
@@ -112,6 +151,11 @@ export function LinearRegressionProvider ({ children }) {
   return (
     <LinearRegressionContext.Provider value={{
       modelRef,
+      
+      predictionInstanceRef,
+
+      prediction,
+      setPrediction,
 
       datasets,
       setDatasets,
@@ -121,12 +165,14 @@ export function LinearRegressionProvider ({ children }) {
 
       listModels,
       setListModels,
+      
       isTraining,
       setIsTraining,
 
       accordionActive,
       setAccordionActive,
 
+      
       iModelInstance,
       setIModelInstance,
     }}>

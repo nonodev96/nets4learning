@@ -8,8 +8,6 @@ import {
   DEFAULT_LEARNING_RATE,
   DEFAULT_NUMBER_OF_EPOCHS, 
   DEFAULT_TEST_SIZE, 
-  DEFAULT_OPTIMIZER,
-  DEFAULT_LOSS
 } from './CONSTANTS'
 import { TYPE_LOSSES, TYPE_METRICS, TYPE_OPTIMIZER } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
@@ -108,55 +106,61 @@ export default function LinearRegressionEditorHyperparameters() {
           <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {show && <>
-          <Form.Group className="mb-3" controlId="formTrainer-LearningRate">
+          <Form.Group className="mb-3" controlId={'FormControl_Trainer-LearningRate'}>
             <Form.Label>
               <Trans i18nKey={prefix + 'learning-rate'} />
             </Form.Label>
             <Form.Control type="number"
-              min={1} max={100} step={1}
-              placeholder={t(prefix + 'learning-rate-placeholder')}
-              defaultValue={DEFAULT_LEARNING_RATE}
-              onChange={(e) => {
-                const value = parseInt(e.target.value)
-                const isValidNumber = !isNaN(value) && value >= 0 && value <= 100
-                handlerChange_LearningRate(isValidNumber ? value : 1)
-              }} />
+                          min={1} 
+                          max={100}
+                          step={1}
+                          placeholder={t(prefix + 'learning-rate-placeholder')}
+                          defaultValue={DEFAULT_LEARNING_RATE}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value)
+                            const isValidNumber = !isNaN(value) && value >= 0 && value <= 100
+                            handlerChange_LearningRate(isValidNumber ? value : 1)
+                          }} />
             <Form.Text className="text-muted">
               <Trans i18nKey={prefix + 'learning-rate-info'} />
             </Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formTrainer_n_of_epochs">
+          <Form.Group className="mb-3" controlId={'FormControl_Trainer_n_of_epochs'}>
             <Form.Label>
               <Trans i18nKey={prefix + 'number-of-epochs'} />
             </Form.Label>
             <Form.Control type="number"
-              min={1} max={1000} step={1}
-              placeholder={t(prefix + 'number-of-epochs-placeholder')}
-              defaultValue={DEFAULT_NUMBER_OF_EPOCHS}
-              onChange={(e) => {
-                const value = parseInt(e.target.value)
-                const isValidNumber = !isNaN(value) && value >= 0 && value <= 1000
-                handlerChange_NumberOfEpochs(isValidNumber ? value : 1)
-              }} />
+                          min={1}
+                          max={1000}
+                          step={1}
+                          placeholder={t(prefix + 'number-of-epochs-placeholder')}
+                          defaultValue={DEFAULT_NUMBER_OF_EPOCHS}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value)
+                            const isValidNumber = !isNaN(value) && value >= 0 && value <= 1000
+                            handlerChange_NumberOfEpochs(isValidNumber ? value : 1)
+                          }} />
             <Form.Text className="text-muted">
               <Trans i18nKey={prefix + 'number-of-epochs-info'} />
             </Form.Text>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formTrainer_train_rate">
+          <Form.Group className="mb-3" controlId={'FormControl_Trainer_train_rate'}>
             <Form.Label>
               <Trans i18nKey={prefix + 'train-rate'} />
             </Form.Label>
             <Form.Control type="number"
-              min={1} max={100} step={1}
-              placeholder={t(prefix + 'train-rate-placeholder')}
-              defaultValue={DEFAULT_TEST_SIZE}
-              onChange={(e) => {
-                const value = parseInt(e.target.value)
-                const isValidNumber = !isNaN(value) && value >= 0 && value <= 100
-                handlerChange_TestSize(isValidNumber ? value : 1)
-              }} />
+                          min={1}
+                          max={100}
+                          step={1}
+                          placeholder={t(prefix + 'train-rate-placeholder')}
+                          defaultValue={DEFAULT_TEST_SIZE}
+                          onChange={(e) => {
+                            const value = parseInt(e.target.value)
+                            const isValidNumber = !isNaN(value) && value >= 0 && value <= 100
+                            handlerChange_TestSize(isValidNumber ? value : 1)
+                          }} />
             <Form.Text className="text-muted">
               <Trans i18nKey={prefix + 'train-rate-info'} />
             </Form.Text>
@@ -164,13 +168,13 @@ export default function LinearRegressionEditorHyperparameters() {
 
           <hr />
 
-          <Form.Group className="mb-3" controlId={'formIdOptimizer'}>
+          <Form.Group className="mb-3" controlId={'FormControl_IdOptimizer'}>
             <Form.Label>
               <Trans i18nKey={prefix + 'optimizer-id'} />
             </Form.Label>
             <Form.Select aria-label={t(prefix + 'optimizer-id')}
-              defaultValue={DEFAULT_OPTIMIZER}
-              onChange={(e) => handlerChange_IdOptimizer(e.target.value)}>
+                         value={params.params_training.id_optimizer}
+                         onChange={(e) => handlerChange_IdOptimizer(e.target.value)}>
               {TYPE_OPTIMIZER.map(({ key, label }, index) => {
                 return (<option key={index} value={'train-' + key}>{label}</option>)
               })}
@@ -182,13 +186,13 @@ export default function LinearRegressionEditorHyperparameters() {
 
           <hr />
 
-          <Form.Group className="mb-3" controlId={'formIdLoss'}>
+          <Form.Group className="mb-3" controlId={'FormControl_IdLoss'}>
             <Form.Label>
               <Trans i18nKey={prefix + 'loss-id'} />
             </Form.Label>
-            <Form.Select aria-label={t(prefix + 'optimizer-id-info')}
-              defaultValue={DEFAULT_LOSS}
-              onChange={(e) => handlerChange_IdLoss(e.target.value)}>
+            <Form.Select aria-label={t(prefix + 'loss-id-info')}
+                         value={params.params_training.id_loss}
+                         onChange={(e) => handlerChange_IdLoss(e.target.value)}>
               {TYPE_LOSSES.map(({ key, label }, index) => {
                 return (<option key={index} value={'losses-' + key}>{label}</option>)
               })}
@@ -211,19 +215,19 @@ export default function LinearRegressionEditorHyperparameters() {
                     <Accordion.Body>
                       <div className="d-grid gap-2">
                         <Button variant={'outline-danger'}
-                          onClick={() => handlerClick_RemoveMetric(index)}>
+                                onClick={() => handlerClick_RemoveMetric(index)}>
                           <Trans i18nKey={prefix + 'delete-metric'}
                             values={{ index: index + 1 }} />
                         </Button>
                       </div>
 
-                      <Form.Group className="mb-3" controlId={`FormMetrics_${index}`}>
+                      <Form.Group className="mb-3" controlId={`FormControl_Metrics_${index}`}>
                         <Form.Label>
                           <Trans i18nKey={prefix + 'metric-id-select'} />
                         </Form.Label>
                         <Form.Select aria-label={t(prefix + 'metric-id-info')}
-                          value={metric}
-                          onChange={(e) => handleChange_Metric(index, e.target.value)}>
+                                     value={metric}
+                                     onChange={(e) => handleChange_Metric(index, e.target.value)}>
                           {TYPE_METRICS.map(({ key, label }, index) => {
                             return (<option key={index} value={'metrics-' + key}>{label}</option>)
                           })}

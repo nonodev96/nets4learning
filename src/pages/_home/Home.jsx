@@ -187,7 +187,8 @@ export default function Home () {
                 </div>
               </Card.Body>
             </Card>
-
+            
+          {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&<>
             <Card className={'mt-3 border-info'}>
               <Card.Header>
                 <h2><Trans i18nKey={'pages.index.image-classification.2-title'} /></h2>
@@ -203,6 +204,7 @@ export default function Home () {
                 </div>
               </Card.Body>
             </Card>
+          </>}
           </>
         )
       default:

@@ -62,6 +62,10 @@ export default function LinearRegression(props) {
 
   const {
     modelRef,
+    predictionInstanceRef,
+
+    prediction,
+    setPrediction,
 
     datasets,
     setDatasets,
@@ -81,8 +85,6 @@ export default function LinearRegression(props) {
     setIModelInstance,
   } = useContext(LinearRegressionContext)
 
-  const [dataFrameToPredict, setDataFrameToPredict] = useState(new dfd.DataFrame())
-
   const [ready, setReady] = useState(false)
   const joyrideButton_ref = useRef({})
 
@@ -91,16 +93,16 @@ export default function LinearRegression(props) {
     const model = await createLinearRegressionCustomModel({
       dataset_processed: dataset_processed,
       layerList        : params.params_layers,
-      learningRate     : params.params_training.learning_rate,
+      learningRate     : params.params_training.learning_rate / 100,
       numberOfEpoch    : params.params_training.n_of_epochs,
-      testSize         : params.params_training.test_size,
+      testSize         : params.params_training.test_size / 100,
       idOptimizer      : params.params_training.id_optimizer,
       idLoss           : params.params_training.id_loss,
       idMetrics        : params.params_training.list_id_metrics,
     })
     modelRef.current.model = model
 
-    setDataFrameToPredict(dataset_processed.data_processed.dataframe_X.copy().iloc({ rows: ['0:1'] }))
+    // setDataFrameToPredict(dataset_processed.data_processed.dataframe_X.copy().iloc({ rows: ['0:1'] }))
 
     /** @type {_Types.CustomModelGenerated_t} */
     const newModel = {
@@ -117,6 +119,41 @@ export default function LinearRegression(props) {
       }
     })
 
+
+    const dataframe_original = dataset_processed.dataframe_original.copy()
+    const dataframe_processed = dataset_processed.dataframe_processed.copy()
+    const dataframe_X = dataset_processed.data_processed.dataframe_X.copy()
+    const X = dataset_processed.data_processed.X.copy()
+
+
+    // Step 1 Los datos en crudo
+    const prediction_input_raw = Array.from(dataframe_original.values[0])
+    
+    // Step 2 Los datos on el encoding 
+    const prediction_input_encoding = Array.from(dataframe_processed.values[0])
+    
+    // Step 3 Los datos en el scaling
+    const prediction_input_scaling = Array.from(X.values[0])
+
+    // Step 4: Los datos para transformarlos (con el encoding, pero sin el scaling)
+    const size = dataframe_X.shape[1]
+    const prediction_input = dataframe_original.values[0].slice(0, size)
+
+    const df_void = new dfd.DataFrame([], { 
+      columns: dataframe_X.columns, 
+      dtypes : dataframe_X.dtypes 
+    })
+    const new_df = df_void.append([prediction_input], [0])
+    predictionInstanceRef.current.dataframe = new_df
+
+    setPrediction((prevState) => ({
+      ...prevState,
+      input_raw     : prediction_input_raw,
+      input         : prediction_input,
+      input_encoding: prediction_input_encoding,
+      input_scaling : prediction_input_scaling,
+      result        : []
+    }))
 
   }
 
@@ -333,8 +370,7 @@ export default function LinearRegression(props) {
         <Row className={'mt-3'}>
           <Col className={'joyride-step-9-predict-visualization'}>
             <Suspense fallback={<></>}>
-              <LinearRegressionPrediction dataFrameToPredict={dataFrameToPredict}
-                                          setDataFrameToPredict={setDataFrameToPredict} />
+              <LinearRegressionPrediction />
             </Suspense>
           </Col>
         </Row>
@@ -363,8 +399,6 @@ export default function LinearRegression(props) {
                           datasets_index: datasets.index
                         }} />
                     </Col>
-                  </Row>
-                  <Row lg={2}>
                     <Col><DebugJSON obj={params.params_training} /></Col>
                     <Col><DebugJSON obj={params.params_visor} /></Col>
                   </Row>

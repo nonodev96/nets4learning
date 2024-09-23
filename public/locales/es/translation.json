@@ -42,6 +42,20 @@
   "SSL": "Lengua de signos española",
   "Info Hand sign": "Información sobre la lengua de signos",
   "Info": "Información",
+  "Target": "Objetivo",
+  "Update": "Actualizar",
+  "Reference": "Referencia",
+  "Predict": "Predicción",
+  "selector-dataset": "Selector del conjunto de datos",
+  "selector-model": "Selector de modelo",
+  "selector-instance": "Selector de instancia",
+  "Device info": "Información del dispositivo",
+  "prediction-input": "Datos originales",
+  "prediction-input-description": "Datos originales antes de escalar y codificar",
+  "prediction-input-processed": "Datos procesados",
+  "prediction-input-processed-description": "Datos procesados despues de escalar y codificar",
+  "prediction-result": "Resultado",
+  "prediction-result-description": "Resultado de la predicción",
   "equations": {
     "title": "Formulas",
     "title-metrics": "Formulas de las funciones de métricas",
@@ -115,6 +129,7 @@
     "dataset-name": "Nombre del conjunto de datos",
     "dataset-size": "Número de muestras",
     "dataset-web": "Web original",
+    "dataset-reference": "Referencia",
     "download-dataset-car": "Conjunto de datos de evaluación de coches",
     "download-dataset-hepatitis-c": "Conjunto de datos de hepatitis C",
     "download-dataset-iris": "Conjunto de datos de iris",
@@ -128,6 +143,7 @@
           "salary": "Conjunto de datos de salarios",
           "auto-mpg": "Conjunto de datos consumo de combustible",
           "housing-prices": "Conjunto de datos precios de casas",
+          "breast-cancer-original": "Conjunto de datos Breast Cancer Wisconsin",
           "breast-cancer-wdbc": "Conjunto de datos Breast Cancer Wisconsin (Diagnostic)",
           "breast-cancer-wpbc": "Conjunto de datos Breast Cancer Wisconsin (Prognostic)",
           "student-performance-mathematics": "Conjunto de datos de de estudiantes de matemáticas",
@@ -702,8 +718,9 @@
           "details-3-references": {
             "title": "Referencias",
             "list": {
-              "0": "<link1>Breast Cancer Wisconsin (Prognostic)</link1>",
-              "1": "<link1>Breast Cancer Wisconsin (Diagnostic)</link1>"
+              "0": "<link1>Breast Cancer Wisconsin</link1>",
+              "1": "<link1>Breast Cancer Wisconsin (Prognostic)</link1>",
+              "2": "<link1>Breast Cancer Wisconsin (Diagnostic)</link1>"
             }
           }
         }
@@ -1322,6 +1339,11 @@
         "end": {
           "0": "Los gráficos de dispersión son una herramienta poderosa para explorar y visualizar la relación entre dos variables.\nPermiten identificar patrones, tendencias y valores atípicos en los datos, y son útiles en diversas aplicaciones, como análisis de correlación, detección de clusters y visualización de datos multidimensionales."
         }
+      },
+      "index-info": "Eje de coordenadas",
+      "form": {
+        "x": "Eje X",
+        "y": "Eje Y"
       }
     },
     "time-series-plots": {
@@ -1573,6 +1595,7 @@
             "classes": "Clases"
           },
           "details": {
+            "dataframe-processed": null,
             "description-original": "Descripción del dataframe original",
             "description-processed": "Descripción del dataframe procesado",
             "data": "Información del conjunto de datos",
@@ -1785,6 +1808,7 @@
           },
           "button-submit": "Predecir",
           "list-models-generated": "Lista de modelos generados",
+          "list-models": "Lista de modelos generados",
           "list-instances": "Lsta de instancias"
         },
         "model-selector": {

@@ -79,18 +79,25 @@ export default function Datasets () {
       i18n        : 'datasets.download.dataset.1-linear-regression.housing-prices',
     },
     {
-      title       : 'breast-cancer/wdbc.csv',
-      url_download: 'breast-cancer/wdbc.csv',
-      url_original: 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic',
-      size        : 570,
-      i18n        : 'datasets.download.dataset.1-linear-regression.breast-cancer-wdbc',
+      title       : 'breast-cancer/breast-cancer-wisconsin.csv',
+      url_download: 'breast-cancer/breast-cancer-wisconsin.csv',
+      url_original: 'https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original',
+      size        : 699,
+      i18n        : 'datasets.download.dataset.1-linear-regression.breast-cancer-original',
     },
     {
       title       : 'breast-cancer/wpbc.csv',
       url_download: 'breast-cancer/wpbc.csv',
-      url_original: 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic',
-      size        : 199,
+      url_original: 'https://archive.ics.uci.edu/dataset/16/breast+cancer+wisconsin+prognostic',
+      size        : 198,
       i18n        : 'datasets.download.dataset.1-linear-regression.breast-cancer-wpbc',
+    },
+    {
+      title       : 'breast-cancer/wdbc.csv',
+      url_download: 'breast-cancer/wdbc.csv',
+      url_original: 'https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic',
+      size        : 569,
+      i18n        : 'datasets.download.dataset.1-linear-regression.breast-cancer-wdbc',
     },
     {
       title       : 'student-performance/student-mat.csv',
@@ -140,7 +147,7 @@ export default function Datasets () {
                       <tr>
                         <th>{t('datasets.dataset-name')}</th>
                         <th>{t('datasets.dataset-size')}</th>
-                        <th>{t('datasets.dataset-web')}</th>
+                        <th>{t('datasets.dataset-reference')}</th>
                         <th>{t('download')}</th>
                       </tr>
                       </thead>
@@ -150,7 +157,7 @@ export default function Datasets () {
                         return <tr key={index}>
                           <td>{t(value.i18n)}</td>
                           <td>{value.size}</td>
-                          <td><a className="link-secondary" href={value.url_original} rel="noreferrer" target="_blank">web</a></td>
+                          <td><a className="link-secondary" href={value.url_original} rel="noreferrer" target="_blank">{t('Reference')}</a></td>
                           <td>
                             <a href={process.env.REACT_APP_PATH + '/datasets/' + value.url_download}
                                className={'btn btn-outline-primary btn-sm mt-2'}
@@ -170,7 +177,7 @@ export default function Datasets () {
                         <tr>
                           <th>{t('datasets.dataset-name')}</th>
                           <th>{t('datasets.dataset-size')}</th>
-                          <th>{t('datasets.dataset-web')}</th>
+                          <th>{t('datasets.dataset-reference')}</th>
                           <th>{t('download')}</th>
                         </tr>
                         </thead>
@@ -179,7 +186,7 @@ export default function Datasets () {
                           return <tr key={index}>
                             <td>{t(_value.i18n)}</td>
                             <td>{_value.size}</td>
-                            <td><a className="link-secondary" href={_value.url_original} rel="noreferrer" target="_blank">web</a></td>
+                            <td><a className="link-secondary" href={_value.url_original} rel="noreferrer" target="_blank">{t('Reference')}</a></td>
                             <td>
                               <a download href={process.env.REACT_APP_PATH + '/datasets/01-linear-regression/' + _value.url_download}
                                  className={'btn btn-outline-primary btn-sm mt-2'}>

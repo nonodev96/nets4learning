@@ -7,8 +7,8 @@ import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
 
-import * as _Type from '@/core/types'
-import { VERBOSE } from '@/CONSTANTS'
+import * as _Types from '@/core/types'
+import { VERBOSE, DEFAULT_SELECTOR_DATASET, DEFAULT_SELECTOR_MODEL, DEFAULT_SELECTOR_INSTANCE } from '@/CONSTANTS'
 import { UPLOAD } from '@/DATA_MODEL'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import N4LSummary from '@components/summary/N4LSummary'
@@ -17,9 +17,7 @@ import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlot
 import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
 import ModelReviewLinearRegressionPredict from './ModelReviewLinearRegressionPredict'
 
-const DEFAULT_SELECTOR_DATASET = 'select-dataset'
-const DEFAULT_SELECTOR_MODEL = 'select-model'
-const DEFAULT_SELECTOR_INSTANCE = 'select-instance'
+
 
 export default function ModelReviewLinearRegression ({ dataset }) {
   /**
@@ -37,17 +35,17 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const [dataframe_X, setDataFrame_X] = useState(new dfd.DataFrame())
 
   /**
-   * @type {ReturnType<typeof useState<{data: Array<_Type.DatasetProcessed_t>, index: number|"select-dataset"}>>}
+   * @type {ReturnType<typeof useState<_Types.StateDatasetProcessed_t>>}
    */
   const [datasets, setDatasets] = useState({data: [], index: DEFAULT_SELECTOR_DATASET})
 
   /**
-   * @type {ReturnType<typeof useState<{data: Array<_Type.CustomModel_t>, index: number|"select-model"}>>}
+   * @type {ReturnType<typeof useState<_Types.StateModel_t>>}
    */
   const [models, setModels] = useState({data: [], index: DEFAULT_SELECTOR_MODEL})
 
   /**
-   * @type {ReturnType<typeof useState<{data: Array<{}>, index: number|"select-instance"}>>}
+   * @type {ReturnType<typeof useState<_Types.StateInstance_t>>}
    */
   const [instances, setInstances] = useState({data: [], index: DEFAULT_SELECTOR_INSTANCE})
 
@@ -65,7 +63,10 @@ export default function ModelReviewLinearRegression ({ dataset }) {
         const _iModelClass = MAP_LR_CLASSES[dataset]
         iModelInstance_ref.current = new _iModelClass(t, {})
         const _datasets = await iModelInstance_ref.current.DATASETS()
-        setDatasets({data: _datasets, index: 0})
+        setDatasets({
+          data : _datasets,
+          index: 0
+        })
       } else {
         console.error('Error, option not valid', { ID: dataset })
         history.push('/404')
@@ -185,13 +186,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 <Card.Body>
                   <Form.Group controlId="FormSelector_Dataset">
                     <Form.Label><Trans i18nKey={'form.select-dataset.title'} /></Form.Label>
-                    <Form.Select 
-                      aria-label={t('form.select-dataset.title')}
-                      size={'sm'}
-                      value={datasets.index}
-                      onChange={handleChange_Datasets_Index}
+                    <Form.Select aria-label={t('form.select-dataset.title')}
+                                 size={'sm'}
+                                 value={datasets.index}
+                                 onChange={handleChange_Datasets_Index}
                     >
-                      <option value={DEFAULT_SELECTOR_DATASET} disabled={true}><Trans i18nKey={prefix + 'selector-dataset.option'} /></option>
+                      <option value={DEFAULT_SELECTOR_DATASET} disabled={true}><Trans i18nKey={'selector-dataset'} /></option>
                       {datasets.data.map(({ csv }, index) => {
                         return (<option key={index} value={index}>{csv}</option>)
                       })}
@@ -232,13 +232,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                   <h2><Trans i18nKey={prefix + 'model-selector.title'} /></h2>
                   <div className={'d-flex gap-2'}>
                     <Form.Group controlId={'FormSelector_Models'}>
-                      <Form.Select 
-                        aria-label={'plot'}
-                        size={'sm'}
-                        value={models.index}
-                        onChange={handleChange_Models_Index}
+                      <Form.Select aria-label={'plot'}
+                                   size={'sm'}
+                                   value={models.index}
+                                   onChange={handleChange_Models_Index}
                       >
-                        <option value={DEFAULT_SELECTOR_MODEL} disabled={true}><Trans i18nKey={prefix + 'selector-model.option'} /></option>
+                        <option value={DEFAULT_SELECTOR_MODEL} disabled={true}><Trans i18nKey={'selector-model'} /></option>
                         {models.data.map((_value, index) => {
                           return <option key={index} value={index}>
                             <Trans i18nKey={'model.__index__'} values={{ index: index }} />
@@ -247,13 +246,12 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                       </Form.Select>
                     </Form.Group>
                     <Form.Group controlId={'FormSelector_Instances'}>
-                      <Form.Select 
-                        aria-label={'plot'}
-                        size={'sm'}
-                        value={instances.index}
-                        onChange={handleChange_Instance_Index}
+                      <Form.Select aria-label={'plot'}
+                                   size={'sm'}
+                                   value={instances.index}
+                                   onChange={handleChange_Instance_Index}
                       >
-                        <option value={'select-instance'} disabled={true}><Trans i18nKey={prefix + 'selector-instance.option'} /></option>
+                        <option value={DEFAULT_SELECTOR_INSTANCE} disabled={true}><Trans i18nKey={'selector-instance'} /></option>
                         {instances.data.map((_value, index) => {
                           return <option key={index} value={index}>
                             <Trans i18nKey={'instance.__index__'} values={{ index: index }} />
@@ -265,7 +263,9 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 </Card.Header>
                 <Card.Body>
                   
-                  <ModelReviewLinearRegressionPredict model={models.data[models.index]} dataframe={dataframe_X} />
+                  <ModelReviewLinearRegressionPredict model={models.data[models.index]}
+                                                      dataset={datasets.data[datasets.index]}
+                                                      dataframe={dataframe_X} />
 
                 </Card.Body>
               </Card>

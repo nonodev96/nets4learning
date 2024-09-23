@@ -97,13 +97,14 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         info                : salary_info,
         csv                 : salary_csv,
         container_info      : salary_container_info,
-        dataframe_original  : salary_dataframe_original,
-        dataframe_processed : salary_dataframe_processed,
+        dataset             : salary_dataset,
+        dataframe_original  : salary_dataframe_original,  // Antes de aplicar los transformers
+        dataframe_processed : salary_dataframe_processed, // Despues de aplicar los transformers
         dataset_transforms  : salary_dataset_transforms,
         data_processed      : {
-          dataframe_X       : salary_dataframe_X,
+          dataframe_X       : salary_dataframe_X, // Antes de hacer el escalado y sin el target
           dataframe_y       : salary_dataframe_y,
-          X                 : salary_X,
+          X                 : salary_X,           // Despues de hacer el escalado y sin el target
           y                 : salary_y,
           scaler            : salary_scaler,
           encoders          : salary_encoders_map,

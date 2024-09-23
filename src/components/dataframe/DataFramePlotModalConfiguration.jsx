@@ -312,9 +312,9 @@ export default function DataFramePlotModalConfiguration ({ updateUI }) {
               </>}
 
             </Row>
-            <Row>
+            <Row className={'mt-3'}>
               <Col>
-              <div className="d-grid">
+                <div className="d-grid">
                   <Button variant={'outline-primary'}
                           onClick={() => updateUI()} >
                     <Trans i18nKey={'Update'}/>
