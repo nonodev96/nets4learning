@@ -1,5 +1,6 @@
 import React from 'react'
 import { ACTIONS, LIFECYCLE } from 'react-joyride'
+import * as _tfjs from '@tensorflow/tfjs'
 
 import { delay } from '@utils/utils'
 import Errors from '@shared/Errors'
@@ -34,10 +35,20 @@ export default class I_MODEL_TABULAR_CLASSIFICATION {
     return []
   }
 
+  /**
+   * 
+   * @param {any} _callbacks 
+   * @returns {Promise<ReturnType<typeof _tfjs.LayersModel>>}
+   */
   async LOAD_GRAPH_MODEL (_callbacks) {
-    // throw new Error('Error')
+   // throw new Error('Error')
   }
-
+  
+  /**
+   * 
+   * @param {any} _callbacks 
+   * @returns {Promise<ReturnType<typeof _tfjs.LayersModel>>}
+   */
   async LOAD_LAYERS_MODEL (_callbacks) {
     // throw new Error('Error')
   }

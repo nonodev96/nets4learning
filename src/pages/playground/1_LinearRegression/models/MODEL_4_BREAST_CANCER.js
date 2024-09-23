@@ -2,9 +2,10 @@ import React from 'react'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
@@ -112,7 +113,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   /**
    * 
-   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
@@ -138,37 +139,38 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     // #region Dataset Breast cancer wisconsin (Original)
     let bcw_dataframe_original = await dfd.readCSV(path_datasets + bcw_csv)
     let bcw_dataframe_processed = await dfd.readCSV(path_datasets + bcw_csv)
+    
+    /** @type {_Types.Dataset_t} */
     const bcw_dataset = [
-      { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', missing_values: false },
-      { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     missing_values: true, column_missing_value_key: '?' },
-      { column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     missing_values: false },
-      { column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      missing_values: false },
+      { column_name: 'Sample_code_number',           column_role: 'ID',       column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Clump_thickness',              column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Uniformity_of_cell_size',      column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Uniformity_of_cell_shape',     column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Marginal_adhesion',            column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Single_epithelial_cell_size',  column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Bare_nuclei',                  column_role: 'Feature',  column_type: 'Integer',     column_missing_values: true, column_missing_values_key: '?' },
+      { column_name: 'Bland_chromatin',              column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Normal_nucleoli',              column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Mitoses',                      column_role: 'Feature',  column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'Class',                        column_role: 'Target',   column_type: 'Binary',      column_missing_values: false },
     ]
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const bcw_dataset_transforms = [
-      ...bcw_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      ...bcw_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
       { column_name: 'Sample_code_number', column_transform: 'drop' },
       { column_name: 'Bare_Nuclei',        column_transform: 'drop' },
       // { column_name: 'Bare_Nuclei',        column_transform: 'replace_?_NaN' },
       // { column_name: 'Bare_Nuclei',        column_transform: 'dropNa' },
-      { column_name: 'Class',              column_transform: 'drop' },
+      // { column_name: 'Class',              column_transform: 'drop' },
     ]
     const bcw_target = 'Class'
-    
     const bcw_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(bcw_dataframe_processed, bcw_dataset_transforms)
     const bcw_encoders_map = bcw_dataframe_encoder.encoder_map
     bcw_dataframe_processed = bcw_dataframe_encoder.dataframe_processed
-    
-    const bcw_dataframe_X = bcw_dataframe_processed.copy()
+    const bcw_dataframe_X = bcw_dataframe_processed.drop({ columns: [bcw_target] }).copy()
     const bcw_dataframe_y = bcw_dataframe_original[bcw_target]
     const minMaxScaler_1 = new dfd.MinMaxScaler()
-    const bcw_scaler = minMaxScaler_1.fit(bcw_dataframe_processed)
+    const bcw_scaler = minMaxScaler_1.fit(bcw_dataframe_X)
     const bcw_X = bcw_scaler.transform(bcw_dataframe_X)
     const bcw_y = bcw_dataframe_y
     // #endregion
@@ -178,6 +180,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     // #region Breast Cancer Wisconsin (Diagnostic)
     let wdbc_dataframe_original = await dfd.readCSV(path_datasets + wdbc_csv)
     let wdbc_dataframe_processed = await dfd.readCSV(path_datasets + wdbc_csv)
+    /**@type {_Types.Dataset_t} */
     const wdbc_dataset = [
       { column_name: 'ID',                  column_type: 'Categorical', column_role: 'ID',      column_missing_values: false },
       { column_name: 'radius1',             column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
@@ -212,23 +215,21 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'fractal_dimension3',  column_type: 'Continuous',  column_role: 'Feature', column_missing_values: false },
       { column_name: 'Diagnosis',           column_type: 'Categorical', column_role: 'Target',  column_missing_values: false },
     ]
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const wdbc_dataset_transforms = [
-      ...wdbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
-      { column_name: 'ID',        column_transform: 'drop' },
-      { column_name: 'Diagnosis', column_transform: 'drop' },
+      ...wdbc_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
+      // { column_name: 'ID',        column_transform: 'drop' },
+      // { column_name: 'Diagnosis', column_transform: 'drop' },
 
     ]
     const wdbc_target = 'Diagnosis'
-    
     const wdbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wdbc_dataframe_processed, wdbc_dataset_transforms)
     const wdbc_encoders_map = wdbc_dataframe_encoder.encoder_map
     wdbc_dataframe_processed = wdbc_dataframe_encoder.dataframe_processed
-    
-    const wdbc_dataframe_X = wdbc_dataframe_processed.copy()
+    const wdbc_dataframe_X = wdbc_dataframe_processed.drop({ columns: [wdbc_target] }).copy()
     const wdbc_dataframe_y = wdbc_dataframe_original[wdbc_target]
-    
     const minMaxScaler_2 = new dfd.MinMaxScaler()
-    const wdbc_scaler = minMaxScaler_2.fit(wdbc_dataframe_processed)
+    const wdbc_scaler = minMaxScaler_2.fit(wdbc_dataframe_X)
     const wdbc_X = wdbc_scaler.transform(wdbc_dataframe_X)
     const wdbc_y = wdbc_dataframe_y
     // #endregion
@@ -237,6 +238,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     // #region Breast Cancer Wisconsin (Prognostic)
     let wpbc_dataframe_original = await dfd.readCSV(path_datasets + wpbc_csv)
     let wpbc_dataframe_processed = await dfd.readCSV(path_datasets + wpbc_csv)
+    /** @type {_Types.Dataset_t} */
     const wpbc_dataset = [
       { column_name: 'ID',                   column_role: 'ID',             column_type: 'Integer',        column_missing_values: false },
       { column_name: 'Time',                 column_role: 'Feature',        column_type: 'Integer',        column_missing_values: false }, // empiezan los 3 ciclos
@@ -271,28 +273,25 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'symmetry3',            column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
       { column_name: 'fractal_dimension3',   column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false }, // Fin 3 ciclos
       { column_name: 'tumor_size',           column_role: 'Feature',        column_type: 'Continuous',     column_missing_values: false },
-      { column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true,  column_missing_value_key: '?' },
+      { column_name: 'lymph_node_status',    column_role: 'Feature',        column_type: 'Integer',        column_missing_values: true,  column_missing_values_key: '?' },
       { column_name: 'Outcome',              column_role: 'Target',         column_type: 'Categorical',    column_missing_values: false },
     ]
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const wpbc_dataset_transforms = [
-      ...wpbc_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      ...wpbc_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
       { column_name: 'ID',                column_transform: 'drop'          },
       { column_name: 'lymph_node_status', column_transform: 'drop'          },
       // { column_name: 'lymph_node_status', column_transform: 'replace_?_NaN' },
       // { column_name: 'lymph_node_status', column_transform: 'dropNa'        },
       // { column_name: 'lymph_node_status', column_transform: 'drop'          },
-      { column_name: 'Outcome',           column_transform: 'drop'          },
+      // { column_name: 'Outcome',           column_transform: 'drop'          },
     ]
     const wpbc_target = 'Outcome'
-
     const wpbc_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(wpbc_dataframe_processed, wpbc_dataset_transforms)
     const wpbc_encoders_map = wpbc_dataframe_encoder.encoder_map
     wpbc_dataframe_processed = wpbc_dataframe_encoder.dataframe_processed
-    console.log({wpbc_dataframe_processed})
-    
-    const wpbc_dataframe_X = wpbc_dataframe_processed.copy()
+    const wpbc_dataframe_X = wpbc_dataframe_processed.drop({ columns: [wpbc_target] }).copy()
     const wpbc_dataframe_y = wpbc_dataframe_original[wpbc_target]
-    
     const minMaxScaler_3 = new dfd.MinMaxScaler()
     const wpbc_scaler = minMaxScaler_3.fit(wpbc_dataframe_X)
     const wpbc_X = wpbc_scaler.transform(wpbc_dataframe_X)
@@ -312,6 +311,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : bcw_dataframe_processed,
         dataset_transforms  : bcw_dataset_transforms,
         data_processed      : {
+          dataframe_X       : bcw_dataframe_X,
+          dataframe_y       : bcw_dataframe_y,
           X                 : bcw_X,
           y                 : bcw_y,
           scaler            : bcw_scaler,
@@ -330,6 +331,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : wdbc_dataframe_processed,
         dataset_transforms  : wdbc_dataset_transforms,
         data_processed      : {
+          dataframe_X       : wdbc_dataframe_X,
+          dataframe_y       : wdbc_dataframe_y,
           X                 : wdbc_X,
           y                 : wdbc_y,
           scaler            : wdbc_scaler,
@@ -348,6 +351,8 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : wpbc_dataframe_processed,
         dataset_transforms  : wpbc_dataset_transforms,
         data_processed      : {
+          dataframe_X       : wpbc_dataframe_X,
+          dataframe_y       : wpbc_dataframe_y,
           X                 : wpbc_X,
           y                 : wpbc_y,
           scaler            : wpbc_scaler,
@@ -420,9 +425,5 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
 
   ATTRIBUTE_INFORMATION () {
     return <></>
-  }
-
-  JOYRIDE () {
-    return super.JOYRIDE()
   }
 }

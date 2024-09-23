@@ -25,7 +25,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
 
   /**
    * @property {string} dataset
-   * @returns {Array<CustomParamsLayerModel_t>}
+   * @returns {Array<_Types.CustomParamsLayerModel_t>}
    */
   DEFAULT_LAYERS (dataset) {
     const list_map = {
@@ -50,7 +50,6 @@ export default class I_MODEL_LINEAR_REGRESSION {
  
    * @param {string} [_dataset='']
    * @return {Promise<_Types.CustomModel_t[]>}
-   * @constructor
    */
   async MODELS (_dataset = '') {
     return []

@@ -5,13 +5,10 @@ import MODEL_3_HOUSING_PRICES from './MODEL_3_HOUSING_PRICES'
 import MODEL_4_BREAST_CANCER from './MODEL_4_BREAST_CANCER'
 import MODEL_5_STUDENT_PERFORMANCE from './MODEL_5_STUDENT_PERFORMANCE'
 import MODEL_6_WINE from './MODEL_6_WINE'
+import * as _Types from '@/core/types'
 
 /**
- * @typedef MAP_LR_CLASSES_t
- * @property {Object<string, I_MODEL_LINEAR_REGRESSION>}
- */
-/**
- * @type {MAP_LR_CLASSES_t}
+ * @type {_Types.MAP_LR_CLASSES_t}
  */
 const MAP_LR_CLASSES = {
   [MODEL_1_SALARY.KEY]             : MODEL_1_SALARY,

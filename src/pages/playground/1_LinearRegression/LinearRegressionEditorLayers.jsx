@@ -13,7 +13,6 @@ export default function LinearRegressionEditorLayers() {
   const prefix = 'pages.playground.generator.editor-layers.'
   const { t } = useTranslation()
   const { 
-    // datasetLocal
     datasets, 
 
     params,
@@ -22,7 +21,6 @@ export default function LinearRegressionEditorLayers() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // setShow(datasetLocal.is_dataset_processed)
     setShow(datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed)
   }, [setShow, datasets, datasets.index])
 

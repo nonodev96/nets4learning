@@ -1,8 +1,12 @@
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 import MODEL_CAR from './MODEL_CAR'
 import MODEL_IRIS from './MODEL_IRIS'
-import MODEL_LYMPHOGRAPHY from './MODEL_LYMPHOGRAPHY.js'
+import MODEL_LYMPHOGRAPHY from './MODEL_LYMPHOGRAPHY'
+import * as _Types from '@/core/types'
 
+/**
+ * @type {_Types.MAP_TC_CLASSES_t}
+ */
 const MAP_TC_CLASSES = {
   [MODEL_IRIS.KEY]        : MODEL_IRIS,
   [MODEL_CAR.KEY]         : MODEL_CAR,

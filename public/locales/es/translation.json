@@ -18,8 +18,14 @@
   "Waiting": "Esperando",
   "waiting": "Esperando",
   "and": "y",
+  "dataset": {
+    "__index__": "Conjunto de datos {{index}}"
+  },
   "model": {
-    "__index__": "Model {{index}}"
+    "__index__": "Modelo {{index}}"
+  },
+  "instance": {
+    "__index__": "Instancia {{index}}"
   },
   "more-information-in-link": "Más información en el siguiente <link1>enlace</link1>",
   "more-information-in-tutorial": "Puedes seguir este <link1>tutorial</link1>",
@@ -638,7 +644,7 @@
             },
             "boston": {
               "list": {
-                "1": "Regresión lineal calculada"
+                "0": "Regresión lineal calculada"
               }
             }
           },
@@ -1753,6 +1759,21 @@
           },
           "simple-linear-regression": "Regresión linear simple",
           "multiple-linear-regression": "Regresión linear multiple"
+        },
+        "dataframe": {
+          "title": "Dataframe procesado"
+        },
+        "selector-instance": {
+          "option": "Selector de instancia"
+        },
+        "selector-model": {
+          "option": "Selector de modelo"
+        },
+        "details": {
+          "description-processed": {
+            "dataset": "Conjunto de datos procesado",
+            "describe": "Conjunto de datos estadísticas descriptivas"
+          }
         },
         "predict": {
           "title": "Predicción",

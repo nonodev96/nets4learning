@@ -1,9 +1,12 @@
 import React from 'react'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
-import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 import * as dfd from 'danfojs'
+
+import * as _Types from '@core/types'
+import I_MODEL_TABULAR_CLASSIFICATION from './_model'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   static KEY = 'LYMPHOGRAPHY'
@@ -277,12 +280,11 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
     const path_dataset = process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/'
     const lymphography_info = 'lymphography.names'
     const lymphography_csv = 'lymphography.csv'
-
     const lymphography_promise_info = await fetch(path_dataset + lymphography_info)
     const lymphography_container_info = await lymphography_promise_info.text()
-
     let dataframe_original = await dfd.readCSV(path_dataset + lymphography_csv)
     let dataframe_processed = await dfd.readCSV(path_dataset + lymphography_csv)
+    /** @type {_Types.Dataset_t} */
     const dataset = [
       { column_name: 'lymphatics',        column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
       { column_name: 'block of affere',   column_role: 'Feature',   column_type: 'Integer',     column_missing_values: false },
@@ -305,26 +307,24 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
       { column_name: 'no. of nodes in',   column_role: 'Feature',   column_type: 'Categorical', column_missing_values: false },
       { column_name: 'class',             column_role: 'Target',    column_type: 'Integer',     column_missing_values: false },
     ]
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const dataset_transforms = [
-        ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+        ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
     ]
     const lymphography_encoders = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
     const lymphography_target = 'class'
-
     const lymphography_dataframe_X = dataframe_processed.drop({ columns: [lymphography_target] })
     const lymphography_dataframe_y = dataframe_original[lymphography_target]
-
     const minMaxScaler = new dfd.MinMaxScaler()
     const lymphography_minMaxScaler = minMaxScaler.fit(lymphography_dataframe_X)
     const lymphography_X = lymphography_minMaxScaler.transform(lymphography_dataframe_X)
-
     const oneHotEncoder = new dfd.OneHotEncoder()
     const lymphography_oneHotEncoder = oneHotEncoder.fit(lymphography_dataframe_y)
     const lymphography_y = lymphography_oneHotEncoder.transform(lymphography_dataframe_y)
-
     const labelEncoder = new dfd.LabelEncoder()
     const lymphography_labelEncoder = labelEncoder.fit(lymphography_dataframe_y.values)
+    // @ts-ignore
     const lymphography_classes = Object.keys(lymphography_labelEncoder.$labels)
 
     return [
@@ -339,6 +339,8 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         data_processed      : {
+          dataframe_X       : lymphography_dataframe_X,
+          dataframe_y       : lymphography_dataframe_y,
           X                 : lymphography_X,
           y                 : lymphography_y,
           scaler            : lymphography_minMaxScaler,
@@ -352,13 +354,13 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async LOAD_GRAPH_MODEL (callbacks) {
-    return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
+    return await tfjs.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
       onProgress: callbacks.onProgress,
     })
   }
 
   async LOAD_LAYERS_MODEL (callbacks) {
-    return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
+    return await tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/lymphography/my-model-lymphography.json', {
       onProgress: callbacks.onProgress,
     })
   }

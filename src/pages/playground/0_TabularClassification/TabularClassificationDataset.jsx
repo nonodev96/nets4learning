@@ -14,10 +14,11 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
  * @typedef {object} PropsTabularClassificationDataset
+ * @property {string} dataset
  * @property {_Types.I_MODEL_TABULAR_CLASSIFICATION_t} iModelInstance
- * @property {DatasetProcessed_t[]} datasets
- * @property {React.Dispatch<Array<DatasetProcessed_t>>} setDatasets
- * @property {React.Dispatch<number>} setDatasetIndex
+ * @property {_Types.DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<React.SetStateAction<_Types.DatasetProcessed_t[]>>} setDatasets
+ * @property {React.Dispatch<React.SetStateAction<number>>} setDatasetIndex
  */
 
 /**
@@ -47,18 +48,23 @@ export default function TabularClassificationDataset (props) {
       // la función dataframe.copy() no funciona correctamente
       const D_original = await dfd.readCSV(file_csv)
       const D_processed = await dfd.readCSV(file_csv)
+      /**@type {_Types.DatasetProcessed_t} */
+      const newDataset = {
+        is_dataset_upload   : true,
+        is_dataset_processed: false,
+        path                : '',
+        info                : '',
+        csv                 : '',
+        dataset_transforms  : [],
+        dataframe_original  : D_original,
+        dataframe_processed : D_processed,
+        data_processed      : {}
+      }
       setDatasets((prevState) => {
-        return [...prevState, {
-          is_dataset_upload   : true,
-          is_dataset_processed: false,
-          path                : '',
-          info                : '',
-          csv                 : '',
-          dataset_transforms  : [],
-          dataframe_original  : D_original,
-          dataframe_processed : D_processed,
-          data_processed      : {}
-        }]
+        return [
+          ...prevState, 
+          newDataset
+        ]
       })
       setDatasetIndex((prevState) => prevState + 1)
       await alertHelper.alertSuccess(t('success.file-upload'))
@@ -76,7 +82,8 @@ export default function TabularClassificationDataset (props) {
   if (VERBOSE) console.debug('render TabularClassificationDataset')
   return <>
     {dataset === UPLOAD && <>
-      <DragAndDrop name={'csv'}
+      <DragAndDrop id='drag-zone-tabular-classification'
+                   name={'csv'}
                    accept={{ 'text/csv': ['.csv'] }}
                    text={t('drag-and-drop.csv')}
                    labelFiles={t('drag-and-drop.label-files-one')}

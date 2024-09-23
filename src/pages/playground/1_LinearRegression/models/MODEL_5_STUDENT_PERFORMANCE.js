@@ -2,9 +2,10 @@ import React from 'react'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSION {
 
@@ -74,7 +75,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
 
   /**
    * 
-   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
@@ -85,6 +86,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const dataset_fetch_info = await fetch(path_datasets + student_info)
     const student_container_info = await dataset_fetch_info.text()
 
+    /**
+     * @type {_Types.Dataset_t}
+     */
     const dataset = [
       { column_name: 'school',     column_type: 'Categorical',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'sex',        column_type: 'Binary',        column_role: 'Feature', column_missing_values: false },
@@ -124,21 +128,20 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     // #region Student Mat
     let mat_dataframe_original = await dfd.readCSV(path_datasets + mat_csv)
     let mat_dataframe_processed = await dfd.readCSV(path_datasets + mat_csv)
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const mat_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
       { column_name: 'G1',             column_transform: 'drop' },
       { column_name: 'G2',             column_transform: 'drop' },
       { column_name: 'G3',             column_transform: 'drop' },
     ]
     const mat_target = 'G3' // G1;G2;G3
-
     const mat_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(mat_dataframe_processed, mat_dataset_transforms)
     const mat_encoders_map = mat_dataframe_encoder.encoder_map
     mat_dataframe_processed = mat_dataframe_encoder.dataframe_processed
-
     const mat_dataframe_X = mat_dataframe_processed.copy()
+    /**@type {_Types.Series_t}*/
     const mat_dataframe_y = mat_dataframe_original[mat_target]
-    
     const minMaxScaler1 = new dfd.MinMaxScaler()
     const mat_scaler = minMaxScaler1.fit(mat_dataframe_X)
     const mat_X = mat_scaler.transform(mat_dataframe_X)
@@ -149,8 +152,9 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     // #region Student Por
     let por_dataframe_original = await dfd.readCSV(path_datasets + por_csv)
     let por_dataframe_processed = await dfd.readCSV(path_datasets + por_csv)
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const por_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
       { column_name: 'G1',             column_transform: 'drop' },
       { column_name: 'G2',             column_transform: 'drop' },
       { column_name: 'G3',             column_transform: 'drop' },
@@ -159,12 +163,12 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const por_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(por_dataframe_processed, por_dataset_transforms)
     const por_encoders_map = por_dataframe_encoder.encoder_map
     por_dataframe_processed = por_dataframe_encoder.dataframe_processed
-
     const por_dataframe_X = por_dataframe_processed.copy()
+    /**@type {_Types.Series_t}*/
     const por_dataframe_y = por_dataframe_original[por_target]
-    
     const minMaxScaler2 = new dfd.MinMaxScaler()
     const por_minMaxScaler = minMaxScaler2.fit(por_dataframe_X)
+    /**@type {_Types.DataFrame_t}*/
     const por_X = por_minMaxScaler.transform(por_dataframe_X)
     const por_y = por_dataframe_y
     // #endregion
@@ -182,6 +186,8 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         dataframe_processed : mat_dataframe_processed,
         dataset_transforms  : mat_dataset_transforms,
         data_processed      : {
+          dataframe_X       : mat_dataframe_X,
+          dataframe_y       : mat_dataframe_y,
           X                 : mat_X,
           y                 : mat_y,
           scaler            : mat_scaler,
@@ -200,6 +206,8 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
         dataframe_processed : por_dataframe_processed,
         dataset_transforms  : por_dataset_transforms,
         data_processed      : {
+          dataframe_X       : por_dataframe_X,
+          dataframe_y       : por_dataframe_y,
           X                 : por_X,
           y                 : por_y,
           scaler            : por_minMaxScaler,
@@ -270,9 +278,5 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     return <>
 
     </>
-  }
-
-  JOYRIDE () {
-    return super.JOYRIDE()
   }
 }

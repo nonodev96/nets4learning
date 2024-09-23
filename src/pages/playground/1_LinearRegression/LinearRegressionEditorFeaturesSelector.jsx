@@ -28,25 +28,15 @@ export default function LinearRegressionEditorFeaturesSelector() {
 
   const handleChange_FeatureSelector_Y = (event_Y_target) => {
     setParams((prevState) => {
-
       // Añades el antiguo target a la lista de características 
       prevState.params_features.X_features.add(prevState.params_features.Y_target)
       // Eliminas de la lista de características el nuevo objetivo
       prevState.params_features.X_features.delete(event_Y_target.target.value)
       
-
-      // S
-      console.log({
-        s: prevState.params_features.X_features
-      })
       return Object.assign({}, prevState, {
         params_features: {
           ...prevState.params_features,
-          // Multiple
           X_features: prevState.params_features.X_features,
-          // Simple
-          X_feature : prevState.params_features.X_feature,
-          // Target
           Y_target  : event_Y_target.target.value,
         }
       })
@@ -64,11 +54,7 @@ export default function LinearRegressionEditorFeaturesSelector() {
       return Object.assign({}, prevState, {
         params_features: {
           ...prevState.params_features,
-          // Multiple
           X_features: prevState.params_features.X_features,
-          // Simple
-          X_feature : prevState.params_features.X_feature
-          // X_feature: event.target.value
         }
       })
     })
@@ -78,19 +64,13 @@ export default function LinearRegressionEditorFeaturesSelector() {
     if (VERBOSE) console.debug('useEffect [datasetLocal.dataframe_processed, setParams]')
     if (datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed) {
       setParams((prevState) => {
-        // Target
         const Y_target = datasets.data[datasets.index].dataframe_processed.columns[datasets.data[datasets.index].dataframe_processed.columns.length - 1]
-        // Simple
-        const X_feature = datasets.data[datasets.index].dataframe_processed.columns[0]
-        // Multiple
         const X_features = new Set(datasets.data[datasets.index].dataframe_processed.columns)
         X_features.delete(Y_target)
-
 
         return Object.assign({}, prevState, {
           params_features: {
             X_features: X_features,
-            X_feature : X_feature,
             Y_target  : Y_target
           }
         })

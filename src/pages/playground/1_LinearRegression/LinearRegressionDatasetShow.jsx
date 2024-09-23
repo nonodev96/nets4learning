@@ -15,15 +15,9 @@ export default function LinearRegressionDatasetShow() {
   const {
     datasets,
     setDatasets,
-
-    // indexDatasetSelected,
-    // setIndexDatasetSelected,
-
-    // datasetLocal,
-    // setDatasetLocal,
   } = useContext(LinearRegressionContext)
 
-  const dataframe_original_describe_plotID = useId()
+  const dataframe_processed_plotID = useId()
   const dataframe_processed_describe_plotID = useId()
 
   const { t } = useTranslation()
@@ -77,20 +71,17 @@ export default function LinearRegressionDatasetShow() {
         console.debug('!showDataset')
         return
       }
-      const dataframe_original = _datasetSelected.dataframe_original
       const dataframe_processed = _datasetSelected.dataframe_processed
 
-      dataframe_original
-        .describe()
-        .T
-        .plot(dataframe_original_describe_plotID)
+      dataframe_processed
+        .plot(dataframe_processed_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
       dataframe_processed
         .describe()
         .T
         .plot(dataframe_processed_describe_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
-  }, [showDataset, dataframe_original_describe_plotID, dataframe_processed_describe_plotID])
+  }, [showDataset, dataframe_processed_plotID, dataframe_processed_describe_plotID])
   
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasets, updateDataFrameLocal]')
@@ -108,24 +99,22 @@ export default function LinearRegressionDatasetShow() {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
         <div className={'ms-2 d-flex align-items-center gap-4'}>
-          <Form.Check 
-            type="switch"
-            id={'linear-regression-switch-dataframe-processed'}
-            reverse={true}
-            size={'sm'}
-            name={'linear-regression-switch-dataframe-processed'}
-            disabled={!showDataset}
-            label={t('Processed')}
-            value={showProcessed.toString()}
-            onChange={(e) => handleChange_DatasetProcessed(e)}
+          <Form.Check type="switch"
+                      id={'linear-regression-switch-dataframe-processed'}
+                      reverse={true}
+                      size={'sm'}
+                      name={'linear-regression-switch-dataframe-processed'}
+                      disabled={!showDataset}
+                      label={t('Processed')}
+                      value={showProcessed.toString()}
+                      onChange={(e) => handleChange_DatasetProcessed(e)}
           />
           <Form.Group controlId={'dataset'}>
-            <Form.Select 
-              aria-label={'dataset'}
-              size={'sm'}
-              value={datasets.index}
-              disabled={!showDataset}
-              onChange={(e) => handleChange_DatasetSelected(e)}
+            <Form.Select aria-label={'dataset'}
+                         size={'sm'}
+                         value={datasets.index}
+                         disabled={!showDataset}
+                         onChange={(e) => handleChange_DatasetSelected(e)}
             >
               <option value={-1} disabled={true}>Select Dataset</option>
               {datasets.data
@@ -143,10 +132,8 @@ export default function LinearRegressionDatasetShow() {
         {showDataset && <>
           <Row>
             <Col className={'overflow-x-auto'}>
-              <N4LTablePagination
-                data_head={dataframe.columns}
-                data_body={DataFrameUtils.DataFrameIterRows(dataframe)}
-              />
+              <N4LTablePagination data_head={dataframe.columns}
+                                  data_body={DataFrameUtils.DataFrameIterRows(dataframe)} />
             </Col>
           </Row>
           <hr />
@@ -154,16 +141,13 @@ export default function LinearRegressionDatasetShow() {
             <Col>
               {datasets.data.length >= 1 && datasets.index >= 0 && !datasets.data[datasets.index].is_dataset_upload && <>
                 {/* TEXTO DEL DATASET car.info */}
-                <N4LSummary
-                  title={<Trans i18nKey={prefix + 'details.info'} />}
-                  info={datasets.data[datasets.index].container_info} />
+                <N4LSummary title={<Trans i18nKey={prefix + 'details.info'} />}
+                            info={datasets.data[datasets.index].container_info} />
               </>}
-              <N4LSummary
-                title={<Trans i18nKey={prefix + 'details.description-original'} />}
-                info={<div id={dataframe_original_describe_plotID}></div>} />
-              <N4LSummary
-                title={<Trans i18nKey={prefix + 'details.description-processed'} />}
-                info={<div id={dataframe_processed_describe_plotID}></div>} />
+              <N4LSummary title={<Trans i18nKey={prefix + 'details.dataframe-processed'} />}
+                          info={<div id={dataframe_processed_plotID}></div>} />
+              <N4LSummary title={<Trans i18nKey={prefix + 'details.description-processed'} />}
+                          info={<div id={dataframe_processed_describe_plotID}></div>} />
             </Col>
           </Row>
         </>}

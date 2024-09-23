@@ -7,6 +7,7 @@ import AlertHelper from '@utils/alertHelper'
 import { VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_1, TABLE_PLOT_STYLE_CONFIG__STYLE_N4L_2 } from '@/CONSTANTS_DanfoJS'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import * as _Types from '@core/types'
 
 // @formatter:off
 const DEFAULT_OPTIONS = [
@@ -20,8 +21,8 @@ const DEFAULT_OPTIONS = [
 
 /**
  * @typedef TabularClassificationDatasetProcessFormProps_t
- * @property {DatasetProcessed_t[]} datasets
- * @property {React.Dispatch<React.SetStateAction<DatasetProcessed_t[]>>} setDatasets
+ * @property {_Types.DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<React.SetStateAction<_Types.DatasetProcessed_t[]>>} setDatasets
  * @property {number} datasetIndex
  */
 /**
@@ -36,11 +37,11 @@ export default function TabularClassificationDatasetProcessForm(props) {
     datasetIndex,
   } = props
   /**
-   * @type {ReturnType<typeof useState<DataFrameColumnType_t[]>>}
+   * @type {ReturnType<typeof useState<_Types.DataFrameColumnType_t[]>>}
    */
   const [listColumnNameType, setListColumnNameType] = useState([])
   /**
-   * @type {ReturnType<typeof useState<DataFrameColumnTransform_t[]>>}
+   * @type {ReturnType<typeof useState<_Types.DataFrameColumnTransform_t[]>>}
    */
   const [listColumnNameTransformations, setListColumnNameTransformations] = useState([])
   const [columnNameTarget, setColumnNameTarget] = useState('')
@@ -233,9 +234,9 @@ export default function TabularClassificationDatasetProcessForm(props) {
                 <Form.Group controlId="FormControl_ColumnNameTarget">
                   <Form.Label><b><Trans i18nKey={'Column target'} /></b> {columnNameTarget}</Form.Label>
                   <Form.Select aria-label={'Selecciona un '}
-                    size="sm"
-                    value={columnNameTarget}
-                    onChange={handleChange_ColumnNameTarget}>
+                               size="sm"
+                               value={columnNameTarget}
+                               onChange={handleChange_ColumnNameTarget}>
                     <>
                       {listColumnNameType.map(({ column_name }, index) => {
                         return <option value={column_name} key={index}>{column_name}</option>
@@ -258,12 +259,11 @@ export default function TabularClassificationDatasetProcessForm(props) {
                     <div className={'border border-1 rounded p-2 ' + (column_name === columnNameTarget ? 'border-info' : '')} >
                       <Form.Group controlId={'FormControl_' + column_name} className="mt-2">
                         <Form.Label><b>{column_name}</b></Form.Label>
-                        <Form.Select 
-                          aria-label="select transform"
-                          size="sm"
-                          disabled={column_name === columnNameTarget}
-                          value={column_transform}
-                          onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
+                        <Form.Select aria-label="select transform"
+                                     size="sm"
+                                     disabled={column_name === columnNameTarget}
+                                     value={column_transform}
+                                     onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
                           <>
                             {DEFAULT_OPTIONS.map((optionValue, optionIndex) => {
                               return <option key={column_name + '_option_' + optionIndex}

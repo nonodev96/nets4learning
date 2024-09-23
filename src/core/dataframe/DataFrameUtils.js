@@ -1,7 +1,7 @@
 import * as dfd from 'danfojs'
 import { E_PLOTS, LIST_PLOTS } from '@components/_context/CONSTANTS'
 import { VERBOSE } from '@/CONSTANTS'
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 
 // E_PLOTS.LINE_CHARTS
 // E_PLOTS.BAR_CHARTS
@@ -23,7 +23,7 @@ export function columnsTimeSeriesValidForIndex (_dataFrameLocal, _columns) {
  * 
  * @param {dfd.DataFrame} _dataFrameLocal 
  * @param {Array<string>} _columns 
- * @returns {boolean}
+ * @returns {string[]}
  */
 export function columnsScatterValidForIndex (_dataFrameLocal, _columns) {
   return _columns.filter((column) => {
@@ -51,9 +51,9 @@ export function listPlotsAvailable (_dataframeLocal, _columns) {
 /**
  *
  * @param {dfd.DataFrame} dataframe
- * @param {DataframePlotConfig_t} dataframePlotConfig
+ * @param {_Types.DataframePlotConfig_t} dataframePlotConfig
  *
- * @return {_Type.TimeSeriesPlotsValidConfigResponse_t}
+ * @return {_Types.TimeSeriesPlotsValidConfigResponse_t}
  */
 export function timeSeriesPlotsValidConfig (dataframe, dataframePlotConfig) {
   // const notContainIndexInColumnsToShow = !dataframePlotConfig.COLUMNS.includes(dataframePlotConfig.TIME_SERIES_PLOTS.config.index)
@@ -105,14 +105,14 @@ export function TransformArrayToSeriesTensor (series) {
 /**
  *
  * @param {dfd.DataFrame} dataframe
- * @param {Array<{column_name: string, column_transform:'label-encoder'|'one-hot-encoder'}>} dataframe_transforms
- * @return {_Type.EncoderMap_t}
+ * @param {Array<_Types.DataFrameColumnTransform_t>} dataframe_transforms
+ * @return {_Types.EncoderMap_t}
  */
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
-  /** @type {_Type.EncoderMap_t} */
+  /** @type {_Types.EncoderMap_t} */
   const encoder_map = {}
   console.log({dataframe, dataframe_transforms})
-  for (const { column_transform, column_name } of dataframe_transforms) {
+  for (const { column_name, column_transform } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
         const encoder = new dfd.LabelEncoder()
@@ -145,7 +145,7 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
 
 /**
  *
- * @param {_Type.EncoderMap_t}         encoders_map
+ * @param {_Types.EncoderMap_t}         encoders_map
  * @param {Object.<string, any>} values_map
  * @param {string[]}             column_name_list
  * @returns {number[]}
@@ -166,7 +166,7 @@ export function DataFrameApplyEncoders (encoders_map, values_map, column_name_li
 
 /**
  *
- * @param {_Type.EncoderMap_t} encoders_map
+ * @param {_Types.EncoderMap_t} encoders_map
  * @param {Array<string|number>} input_data
  * @param {string[]} column_name_list
  * @return {number[]}
@@ -187,7 +187,7 @@ export function DataFrameApplyEncodersVector (encoders_map, input_data, column_n
 
 /**
  * @param {dfd.DataFrame} dataframe
- * @param {Array<_Type.DataFrameColumnTransform_t>} dataframe_transforms
+ * @param {Array<_Types.DataFrameColumnTransform_t>} dataframe_transforms
  * @return {dfd.DataFrame}
  */
 export function DataFrameTransform (dataframe, dataframe_transforms) {
@@ -273,9 +273,10 @@ export function DataFrameDeepCopy (dataframe) {
 
 /**
  * @param {dfd.DataFrame} dataframe
- * @return {Array<Array<string|float32|int32|boolean>>}
+ * @return {Array<Array<string|number|boolean>>}
  */
 export function DataFrameIterRows (dataframe) {
+  // @ts-ignore
   return dataframe.$data
 }
 
@@ -283,11 +284,14 @@ export function DataFrameIterRows (dataframe) {
 
 /**
  * @param {dfd.DataFrame} dataframe
- * @param {Array<_Type.DataFrameColumnTransform_t>} dataframe_transforms
- * @return {{dataframe_processed: dfd.DataFrame, encoder_map: _Type.EncoderMap_t}}
+ * @param {_Types.DataFrameColumnTransform_t[]} dataframe_transforms
+ * @return {{dataframe_processed: dfd.DataFrame, encoder_map: _Types.EncoderMap_t}}
  */
 export function DataFrameTransformAndEncoder (dataframe, dataframe_transforms) {
   const dataframe_processed = dataframe.copy()
+  /**
+   * @type {_Types.EncoderMap_t}
+   */
   const encoder_map = {}
   for (const { column_name, column_transform, match } of dataframe_transforms) {
     switch (column_transform) {

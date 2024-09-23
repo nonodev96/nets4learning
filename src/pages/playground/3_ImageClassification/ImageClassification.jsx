@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useRef, useState } from 'react'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
@@ -65,7 +66,7 @@ export default function ImageClassification (props) {
   const [NumberEpochs, setNumberEpochs] = useState(DEFAULT_NUMBER_EPOCHS)
   const [TestSize, setTestSize] = useState(DEFAULT_TEST_SIZE)
 
-  const refJoyrideButton = useRef({})
+  const joyrideButton_ref = useRef({})
   /**
    * @type {ReturnType<typeof useState<tf.Sequential>>}
    */
@@ -238,7 +239,7 @@ export default function ImageClassification (props) {
   if (VERBOSE) console.debug('render ImageClassification')
   return (
     <>
-      <N4LJoyride refJoyrideButton={refJoyrideButton}
+      <N4LJoyride joyrideButton_ref={joyrideButton_ref}
                   JOYRIDE_state={iModelInstance.current.JOYRIDE()}
                   TASK={'image-classification'}
                   KEY={'ImageClassification'}
@@ -252,7 +253,7 @@ export default function ImageClassification (props) {
               <h1><Trans i18nKey={'modality.3'} /></h1>
               <Button size={'sm'}
                       variant={'outline-primary'}
-                      onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                      onClick={joyrideButton_ref.current.handleClick_StartJoyride}>
                 <Trans i18nKey={'datasets-models.3-image-classification.joyride.title'} />
               </Button>
             </div>

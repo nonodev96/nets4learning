@@ -2,8 +2,11 @@ import React from 'react'
 import * as tfjs from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
 import * as dfd from 'danfojs'
-import I_MODEL_TABULAR_CLASSIFICATION from './_model'
+
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import I_MODEL_TABULAR_CLASSIFICATION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   static KEY = 'CAR'
@@ -123,37 +126,35 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
 
     let dataframe_original = await dfd.readCSV(path_dataset + car_csv)
     let dataframe_processed = await dfd.readCSV(path_dataset + car_csv)
-    // @formatter:off
+    /** @type {_Types.Dataset_t} */
     const dataset = [
-      { column_name: 'Buying',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Maint',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Doors',    column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Persons',  column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Lug_boot', column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Safety',   column_role: 'Feature', column_type: 'Categorical', column_missing_value: false },
-      { column_name: 'Result',   column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'Buying',   column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Maint',    column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Doors',    column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Persons',  column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Lug_boot', column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Safety',   column_role: 'Feature', column_type: 'Categorical', column_missing_values: false },
+      { column_name: 'Result',   column_role: 'Target',  column_type: 'Categorical', column_missing_values: false },
     ]
+    /** @type {Array<_Types.DataFrameColumnTransform_t>} */
     const dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder)
     ]
-    // @formatter:on
     const car_target = 'Result'
     const car_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
 
-    const dataframe_X = dataframe_processed.drop({ columns: [car_target] })
-    const dataframe_y = dataframe_original[car_target]
-
+    const car_dataframe_X = dataframe_processed.drop({ columns: [car_target] })
+    const car_dataframe_y = dataframe_original[car_target]
     const minMaxScaler = new dfd.MinMaxScaler()
-    const car_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const car_X = car_minMaxScaler.transform(dataframe_X)
-
+    const car_minMaxScaler = minMaxScaler.fit(car_dataframe_X)
+    const car_X = car_minMaxScaler.transform(car_dataframe_X)
     const oneHotEncoder = new dfd.OneHotEncoder()
-    const car_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
-    const car_y = car_oneHotEncoder.transform(dataframe_y)
-
+    const car_oneHotEncoder = oneHotEncoder.fit(car_dataframe_y)
+    const car_y = car_oneHotEncoder.transform(car_dataframe_y)
     const labelEncoder = new dfd.LabelEncoder()
-    const car_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const car_labelEncoder = labelEncoder.fit(car_dataframe_y.values)
+    // @ts-ignore
     const car_classes = Object.keys(car_labelEncoder.$labels)
 
     return [
@@ -168,6 +169,8 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,
         data_processed      : {
+          dataframe_X       : car_dataframe_X,
+          dataframe_y       : car_dataframe_y,
           X                 : car_X,
           y                 : car_y,
           scaler            : car_minMaxScaler,
@@ -196,7 +199,7 @@ export default class MODEL_CAR extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async LOAD_LAYERS_MODEL (callbacks) {
-    return tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
+    return await tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/car/my-model-car.json', {
       onProgress: callbacks.onProgress,
     })
   }

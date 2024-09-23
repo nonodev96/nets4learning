@@ -8,6 +8,7 @@ import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
+import * as _Types from '@core/types'
 import { UPLOAD } from '@/DATA_MODEL'
 import { MAP_TC_CLASSES } from '@pages/playground/0_TabularClassification/models'
 import { createTabularClassificationCustomModel } from '@core/controller/00-tabular-classification/TabularClassificationModelController'
@@ -22,12 +23,9 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import TabularClassificationManual from '@pages/playground/0_TabularClassification/TabularClassificationManual'
 import TabularClassificationDataset from '@pages/playground/0_TabularClassification/TabularClassificationDataset'
 import TabularClassificationDatasetShow from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShow'
-
 import TabularClassificationEditorHyperparameters from '@pages/playground/0_TabularClassification/TabularClassificationEditorHyperparameters'
 import TabularClassificationEditorLayers from '@pages/playground/0_TabularClassification/TabularClassificationEditorLayers'
-
 import TabularClassificationTableModels from '@pages/playground/0_TabularClassification/TabularClassificationTableModels'
-
 import TabularClassificationPrediction from '@pages/playground/0_TabularClassification/TabularClassificationPrediction'
 
 import I_MODEL_TABULAR_CLASSIFICATION from './models/_model'
@@ -47,10 +45,10 @@ import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 /**
  * @typedef {Object} GeneratedModel_t
- * @property {number} idMODEL
- * @property {any} model
- * @property {any} TARGET_SET_CLASSES
- * @property {any} DATA_SET_CLASSES
+ * @property {number} [idMODEL]
+ * @property {any} [TARGET_SET_CLASSES]
+ * @property {any} [DATA_SET_CLASSES]
+ * @property {tfjs.Sequential} model
  * @property {number} learningRate
  * @property {number} testSize
  * @property {number} numberOfEpoch
@@ -126,7 +124,7 @@ export default function TabularClassification (props) {
 
   // Datasets
   /** 
-   * @type {ReturnType<typeof useState<Array<DatasetProcessed_t>>>}
+   * @type {ReturnType<typeof useState<Array<_Types.DatasetProcessed_t>>>}
    */
   const [datasets, setDatasets] = useState([])
   const [datasetIndex, setDatasetIndex] = useState(-1)
@@ -150,11 +148,11 @@ export default function TabularClassification (props) {
   const [inputDataToPredict, setInputDataToPredict] = useState([])
   const [inputVectorToPredict, setInputVectorToPredict] = useState([])
   const [predictionBar, setPredictionBar] = useState({
-    list_encoded_classes: [],
-    labels              : [],
-    data                : [],
+    classes: [],
+    labels : [],
+    data   : [],
   })
-  const refJoyrideButton = useRef({})
+  const joyrideButton_ref = useRef({})
 
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/TabularClassification/' + dataset, title: dataset })
@@ -227,19 +225,21 @@ export default function TabularClassification (props) {
         idLoss           : _idLoss,
         idMetrics        : _idMetrics,
       })
-      setGeneratedModels((oldArray) => [
+      /**@type {GeneratedModel_t} */
+      const newModel = {
+        model        : model,
+        layerList    : _layerList,
+        learningRate : _learningRate,
+        testSize     : _testSize,
+        numberOfEpoch: _numberOfEpoch,
+        idOptimizer  : _idOptimizer,
+        idLoss       : _idLoss,
+        idMetrics    : _idMetrics,
+      }
+      setGeneratedModels((oldArray) => ([
         ...oldArray,
-        {
-          model        : model,
-          layerList    : JSON.parse(JSON.stringify(_layerList)),
-          learningRate : _learningRate,
-          testSize     : _testSize,
-          numberOfEpoch: _numberOfEpoch,
-          idOptimizer  : _idOptimizer,
-          idLoss       : _idLoss,
-          idMetrics    : _idMetrics,
-        }],
-      )
+        newModel 
+      ]))
       setIsTraining(false)
 
       setModel(model)
@@ -274,7 +274,7 @@ export default function TabularClassification (props) {
       const predictionDataSync = prediction.dataSync()
       const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
       if (VERBOSE) console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
-      setPredictionBar(() => {
+      setPredictionBar((_prevState) => {
         return {
           classes: classes,
           labels : classes,
@@ -291,7 +291,7 @@ export default function TabularClassification (props) {
   if (VERBOSE) console.debug('render TabularClassificationCustomDataset')
   return (
     <>
-      <N4LJoyride refJoyrideButton={refJoyrideButton}
+      <N4LJoyride joyrideButton_ref={joyrideButton_ref}
                   JOYRIDE_state={iModelInstance.current.JOYRIDE()}
                   TASK={'tabular-classification'}
                   KEY={'TabularClassification'}
@@ -305,7 +305,7 @@ export default function TabularClassification (props) {
               {process.env.REACT_APP_SHOW_NEW_FEATURE === 'true' &&
                 <Button size={'sm'}
                         variant={'outline-primary'}
-                        onClick={refJoyrideButton.current.handleClick_StartJoyride}>
+                        onClick={joyrideButton_ref.current.handleClick_StartJoyride}>
                   <Trans i18nKey={'datasets-models.0-tabular-classification.joyride.title'} />
                 </Button>
               }

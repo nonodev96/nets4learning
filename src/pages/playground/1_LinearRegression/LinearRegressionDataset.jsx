@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
+import * as _Types from '@core/types'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import DragAndDrop from '@components/dragAndDrop/DragAndDrop'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
@@ -34,19 +35,24 @@ export default function LinearRegressionDataset({ dataset }) {
       const _dataframeOriginal = await dfd.readCSV(file_csv)
       const _dataframeProcessed = await dfd.readCSV(file_csv)
       
+      /**@type {_Types.DatasetProcessed_t} */
+      const newDataset = {
+        is_dataset_upload   : true,
+        is_dataset_processed: false,
+        csv                 : files[0].name,
+        path                : '',
+        info                : '',
+        container_info      : '',
+        dataframe_original  : _dataframeOriginal,
+        dataframe_processed : _dataframeProcessed,
+        dataset_transforms  : []
+      }
       setDatasets((prevState) => {
         return {
-          data: [...prevState.data, {
-            is_dataset_upload   : true,
-            is_dataset_processed: false,
-            csv                 : files[0].name,
-            path                : '',
-            info                : '',
-            container_info      : '',
-            dataframe_original  : _dataframeOriginal,
-            dataframe_processed : _dataframeProcessed,
-            dataframe_transforms: []
-          }],
+          data: [
+            ...prevState.data, 
+            newDataset
+          ],
           index: datasets.data.length
         }
       })
@@ -74,12 +80,13 @@ export default function LinearRegressionDataset({ dataset }) {
   if (VERBOSE) console.debug('render LinearRegressionDataset')
   return <>
     {dataset === UPLOAD && <>
-      <DragAndDrop name={'csv'}
-        accept={{ 'text/csv': ['.csv'] }}
-        text={t('drag-and-drop.csv')}
-        labelFiles={t('drag-and-drop.label-files-one')}
-        function_DropAccepted={handleChange_FileUpload_CSV}
-        function_DropRejected={handleChange_FileUpload_CSV_reject} />
+      <DragAndDrop id={'drop-zone-linear-regression-dataset'}
+                   name={'csv'}
+                   accept={{ 'text/csv': ['.csv'] }}
+                   text={t('drag-and-drop.csv')}
+                   labelFiles={t('drag-and-drop.label-files-one')}
+                   function_DropAccepted={handleChange_FileUpload_CSV}
+                   function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
       {!showDatasetInfo && <>
         <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />

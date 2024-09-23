@@ -16,7 +16,6 @@ export default function LinearRegressionEditorVisor() {
   const { t } = useTranslation()
 
   const { 
-    // datasetLocal,
     datasets,
 
     params, 
@@ -28,7 +27,6 @@ export default function LinearRegressionEditorVisor() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // setShow(datasetLocal.is_dataset_processed)
     setShow(datasets.data[datasets.index].is_dataset_processed)
   }, [setShow, datasets])
 

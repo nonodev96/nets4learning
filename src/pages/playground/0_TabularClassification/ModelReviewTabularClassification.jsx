@@ -112,8 +112,7 @@ export default function ModelReviewTabularClassification (props) {
     }
 
     try {
-      const input = [vectorToPredict, [1, vectorToPredict.length]]
-      const tensor = tfjs.tensor2d(input[0], input[1])
+      const tensor = tfjs.tensor2d(vectorToPredict, [1, vectorToPredict.length])
       const model_prediction = model_ref.current.predict(tensor)
       const model_prediction_data = model_prediction.dataSync()
       const _prediction = {

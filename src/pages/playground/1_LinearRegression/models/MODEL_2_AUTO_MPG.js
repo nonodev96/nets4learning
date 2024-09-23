@@ -3,9 +3,10 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
@@ -89,7 +90,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
   /**
    * 
-   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
@@ -98,37 +99,34 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
     const auto_promise_info = await fetch(path_datasets + auto_info)
     const auto_container_info = await auto_promise_info.text()
-    
     let auto_dataframe_original = await dfd.readCSV(path_datasets + auto_csv)
     let auto_dataframe_processed = await dfd.readCSV(path_datasets + auto_csv)
-    
+    /** @type {_Types.Dataset_t} */
     const auto_dataset = [
-      { column_name: 'displacement',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      { column_name: 'cylinders',        column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
-      { column_name: 'horsepower',       column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: true    },
-      { column_name: 'weight',           column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      { column_name: 'acceleration',     column_role: 'Feature',   column_type: 'Continuous',    column_missing_values: false   },
-      { column_name: 'model_year',       column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
-      { column_name: 'origin',           column_role: 'Feature',   column_type: 'Integer',       column_missing_values: false   },
-      { column_name: 'mpg',              column_role: 'Target',    column_type: 'Continuous',    column_missing_values: false   },
-      // { column_name: 'car_name',         column_role: 'ID',        column_type: 'Categorical',   column_missing_values: false   },
+      { column_name: 'cylinders',    column_role: 'Feature', column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'displacement', column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'horsepower',   column_role: 'Feature', column_type: 'Continuous',  column_missing_values: true  },
+      { column_name: 'weight',       column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'acceleration', column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'model-year',   column_role: 'Feature', column_type: 'Integer',     column_missing_values: false },
+      // { column_name: 'origin',       column_role: 'Feature', column_type: 'Integer',     column_missing_values: false },
+      { column_name: 'mpg',          column_role: 'Target',  column_type: 'Continuous',  column_missing_values: false },
+      // { column_name: 'car_name',     column_role: 'ID',      column_type: 'Categorical', column_missing_values: false },
     ]
     const auto_dataset_transforms = [
-      ...auto_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+      ...auto_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
+      // { column_name: 'mpg', column_type: 'drop' }
     ]
     const auto_target = 'mpg'
-
     const auto_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(auto_dataframe_processed, auto_dataset_transforms)
     const auto_encoders_map = auto_dataframe_encoder.encoder_map
     auto_dataframe_processed = auto_dataframe_encoder.dataframe_processed
-    
-    const dataframe_X = auto_dataframe_processed.drop({ columns: [auto_target] })
-    const dataframe_y = auto_dataframe_original[auto_target]
-
+    const auto_dataframe_X = auto_dataframe_processed.drop({ columns: [auto_target] }).copy()
+    const auto_dataframe_y = auto_dataframe_original[auto_target]
     const minMaxScaler = new dfd.MinMaxScaler()
-    const auto_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const auto_X = auto_minMaxScaler.transform(dataframe_X)
-    const auto_y = dataframe_y
+    const auto_minMaxScaler = minMaxScaler.fit(auto_dataframe_X)
+    const auto_X = auto_minMaxScaler.transform(auto_dataframe_X)
+    const auto_y = auto_dataframe_y
 
     return [
       {
@@ -142,6 +140,8 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : auto_dataframe_processed,
         dataset_transforms  : auto_dataset_transforms,
         data_processed      : {
+          dataframe_X       : auto_dataframe_X,
+          dataframe_y       : auto_dataframe_y,
           X                 : auto_X,
           y                 : auto_y,
           scaler            : auto_minMaxScaler,
@@ -158,8 +158,6 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
       'auto-mpg.csv': [
         { 
           model_path: path + '/0/lr-model-0.json', 
-          X         : ['displacement', 'cylinders', 'horsepower', 'weight', 'acceleration', 'model_year', 'origin'],
-          y         : 'mpg'
         },
       ]
     }
@@ -174,7 +172,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
   }
 
   COMPILE () {
-    const model = tfjs.sequential()
+    const model = new tfjs.Sequential()
     model.compile({
       optimizer: tfjs.train.rmsprop(0.01),
       loss     : 'meanSquaredError',
@@ -185,9 +183,5 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
 
   ATTRIBUTE_INFORMATION () {
     return <></>
-  }
-
-  JOYRIDE () {
-    return super.JOYRIDE()
   }
 }

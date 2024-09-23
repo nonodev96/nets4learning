@@ -2,21 +2,24 @@ import * as tfjs from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as dfd from 'danfojs'
 import * as sk from 'scikitjs'
+
+import * as _Types from '@core/types'
 import { createLoss, createMetrics, createOptimizer } from '@core/nn-utils/ArchitectureHelper'
 
 sk.setBackend(dfd.tensorflow)
 
 /**
  * @typedef {Object} CustomLinearRegression_DatasetParams_t
- * @property {DatasetProcessed_t} dataset_processed
+ * @property {_Types.DatasetProcessed_t} dataset_processed
  * @property {string} [name_model='Linear Regression']
  * @property {Array} layerList
  * @property {number} learningRate Rango [0 - 1]
+ * @property {number} [momentum=0]
  * @property {number} testSize
  * @property {number} numberOfEpoch
  * @property {string} idOptimizer
  * @property {string} idLoss
- * @property {string} idMetrics
+ * @property {string|string[]} idMetrics
  */
 
 /**
@@ -30,6 +33,7 @@ export async function createLinearRegressionCustomModel (params) {
     name_model = 'Linear regression',
     layerList,
     learningRate,
+    momentum = 0,
     testSize,
     numberOfEpoch,
     idOptimizer,
@@ -43,6 +47,7 @@ export async function createLinearRegressionCustomModel (params) {
   const { X, y } = data_processed
   console.log({ dataset_processed, X, y })
 
+  // @ts-ignore
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
   const XTrain_tensor = tfjs.tensor(XTrain)
   const XTest_tensor = tfjs.tensor(XTest)
@@ -54,7 +59,7 @@ export async function createLinearRegressionCustomModel (params) {
   //   t: [XTrain_tensor, XTest_tensor, yTrain_tensor, yTest_tensor]
   // })
   
-  const model = tfjs.sequential()
+  const model = new tfjs.Sequential()
   for (const [index, layer] of layerList.entries()) {
     const _layer = tfjs.layers.dense({
       units     : layer.units,
@@ -66,20 +71,17 @@ export async function createLinearRegressionCustomModel (params) {
     model.add(_layer)
   }
 
-  const optimizer = createOptimizer(idOptimizer, { learningRate })
+  const optimizer = createOptimizer(idOptimizer, { learningRate, momentum })
   const loss = createLoss(idLoss, {})
   const metrics = createMetrics(idMetrics, {})
   model.compile({ optimizer, loss, metrics })
 
-  await tfvis.show.modelSummary({
-    name: 'Model Summary',
-    tab : name_model + ' Summary',
-  }, model)
-
+  // @ts-ignore
+  await tfvis.show.modelSummary({ name: 'Model Summary', tab: name_model }, model)
   
   const fit_callbacks_container = {
     name: 'Training',
-    tab : name_model + ' Training',
+    tab : name_model,
   }
   const fit_callbacks_metrics_labels = ['loss', 'val_loss', 'acc', 'val_acc']
   const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { 
@@ -90,7 +92,8 @@ export async function createLinearRegressionCustomModel (params) {
   })
   await model.fit(XTrain_tensor, yTrain_tensor, {
     batchSize     : 32,
-    shuffle       : true,
+    // TODO
+    shuffle       : false,
     validationData: [XTest_tensor, yTest_tensor],
     epochs        : numberOfEpoch,
     callbacks     : fitCallbacks,

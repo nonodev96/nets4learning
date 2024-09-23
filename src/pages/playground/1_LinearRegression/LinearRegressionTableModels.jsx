@@ -10,7 +10,9 @@ import { VERBOSE } from '@/CONSTANTS'
 export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
   const prefix = 'generator.table-models.'
 
-  const { listModels } = useContext(LinearRegressionContext)
+  const { 
+    listModels 
+  } = useContext(LinearRegressionContext)
   const [showTable, setShowTable] = useState(false)
 
   const [activePage, setActivePage] = useState(0)
@@ -18,19 +20,19 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
   const startPage = 0
 
   useEffect(() => {
-    if (VERBOSE) console.debug('useEffect[listModels.length, rowsPerPage]')
+    if (VERBOSE) console.debug('useEffect[listModels.data, rowsPerPage]')
     const rowsCount = listModels.length
     const pageCount = Math.ceil(rowsCount / rowsPerPage)
 
     setPageCount(pageCount)
-  }, [listModels.length, rowsPerPage])
+  }, [listModels, listModels.data, listModels.index, rowsPerPage])
 
   useEffect(() => {
-    if (VERBOSE) console.debug('useEffect[listModels.length, rowsPerPage]')
-    if (listModels.length > 0) {
+    if (VERBOSE) console.debug('useEffect[listModels.data]')
+    if (listModels.data.length > 0) {
       setShowTable(true)
     }
-  }, [listModels.length])
+  }, [listModels, listModels.data, listModels.index])
 
   const handleClick_ChangePage = (pageNumber) => {
     setActivePage(pageNumber)
@@ -51,20 +53,18 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
   return <>
     <Card>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h2><Trans i18nKey={prefix + 'list-models-generated'} /> | {listModels.length}</h2>
+        <h2><Trans i18nKey={prefix + 'list-models-generated'} /> | {listModels.data.length}</h2>
         <div className="d-flex">
-          <Button
-            variant={'outline-primary'}
-            size={'sm'}
-            className={'ms-3'}
-            onClick={handleClick_OpenVisor}>
+          <Button variant={'outline-primary'}
+                  size={'sm'}
+                  className={'ms-3'}
+                  onClick={handleClick_OpenVisor}>
             <Trans i18nKey={prefix + 'open-visor'} />
           </Button>
-          <Button
-            variant={'outline-primary'}
-            size={'sm'}
-            className={'ms-1'}
-            onClick={handleClick_CloseVisor}>
+          <Button variant={'outline-primary'}
+                  size={'sm'}
+                  className={'ms-1'}
+                  onClick={handleClick_CloseVisor}>
             <Trans i18nKey={prefix + 'close-visor'} />
           </Button>
         </div>
@@ -85,7 +85,7 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
                       <th><Trans i18nKey={prefix + 'test-size'} /></th>
                       <th><Trans i18nKey={prefix + 'n-of-epochs'} /></th>
                       <th><Trans i18nKey={prefix + 'layers'} /></th>
-                      <th><Trans i18nKey={prefix + 'features'} /></th>
+                      {/* <th><Trans i18nKey={prefix + 'features'} /></th> */}
                       <th><Trans i18nKey={prefix + 'id-optimizer'} /></th>
                       <th><Trans i18nKey={prefix + 'id-loss'} /></th>
                       <th><Trans i18nKey={prefix + 'id-metrics'} /></th>
@@ -95,7 +95,7 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
 
                   <tbody>
                     {Array
-                      .from(listModels)
+                      .from(listModels.data)
                       .slice(activePage * rowsPerPage, (activePage * rowsPerPage) + rowsPerPage)
                       .map((value, index) => {
                         // const formatter = new Intl.ListFormat(i18n.language, { style: 'long', type: 'conjunction' })
@@ -113,10 +113,12 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
                                 </span>)
                               })}
                           </td>
+                          {/* 
                           <td>
-                            <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X: {value.params_features.X_feature}</span><br />
+                            <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>X: {value.params_features.X_features}</span><br />
                             <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y: {value.params_features.Y_target}</span>
                           </td>
+                          */}
                           <td>{value.params_training.id_optimizer}</td>
                           <td>
                             <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.params_training.id_loss}</span>

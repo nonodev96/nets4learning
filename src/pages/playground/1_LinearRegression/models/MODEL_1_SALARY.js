@@ -3,9 +3,10 @@ import { Trans } from 'react-i18next'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
@@ -57,7 +58,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
   /**
    * 
-   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/'
@@ -66,30 +67,27 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
     const dataset_promise_info = await fetch(path_datasets + salary_info)
     const salary_container_info = await dataset_promise_info.text()
-    
+    /** @type {_Types.Dataset_t} */
     const salary_dataset = [
-      { column_name: 'YearsExperience',  column_role: 'Feature', column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
-      { column_name: 'Salary',           column_role: 'Target',  column_type: 'Continuous', missing_values: false, column_missing_value_key: null },
+      { column_name: 'YearsExperience',  column_role: 'Feature', column_type: 'Continuous', column_missing_values: false },
+      { column_name: 'Salary',           column_role: 'Target',  column_type: 'Continuous', column_missing_values: false },
     ]
-
     const salary_dataset_transforms = [
-      ...salary_dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
+      ...salary_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
+      // { column_name: 'Salary', column_type: 'drop' }
     ]
     let salary_dataframe_original = await dfd.readCSV(path_datasets + salary_csv)
     let salary_dataframe_processed = await dfd.readCSV(path_datasets + salary_csv)
-
     const salary_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(salary_dataframe_processed, salary_dataset_transforms)
     const salary_encoders_map = salary_dataframe_encoder.encoder_map
     salary_dataframe_processed = salary_dataframe_encoder.dataframe_processed
-    
     const salary_target = 'Salary'
-    const dataframe_X = salary_dataframe_processed.drop({ columns: [salary_target] })
-    const dataframe_y = salary_dataframe_original[salary_target]
-
+    const salary_dataframe_X = salary_dataframe_processed.drop({ columns: [salary_target] }).copy()
+    const salary_dataframe_y = salary_dataframe_original[salary_target]
     const minMaxScaler = new dfd.MinMaxScaler()
-    const salary_scaler = minMaxScaler.fit(dataframe_X)
-    const salary_X = salary_scaler.transform(dataframe_X)
-    const salary_y = dataframe_y
+    const salary_scaler = minMaxScaler.fit(salary_dataframe_X)
+    const salary_X = salary_scaler.transform(salary_dataframe_X)
+    const salary_y = salary_dataframe_y
 
     return [
       {
@@ -103,6 +101,8 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : salary_dataframe_processed,
         dataset_transforms  : salary_dataset_transforms,
         data_processed      : {
+          dataframe_X       : salary_dataframe_X,
+          dataframe_y       : salary_dataframe_y,
           X                 : salary_X,
           y                 : salary_y,
           scaler            : salary_scaler,
@@ -113,6 +113,11 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
     ]
   }
 
+  /**
+   * 
+   * @param {string} dataset 
+   * @returns 
+   */
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
     const models = {
@@ -128,7 +133,7 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
   }
 
   COMPILE () {
-    const model = tfjs.sequential()
+    const model = new tfjs.Sequential()
     model.compile({
       optimizer: tfjs.train.rmsprop(0.01),
       loss     : 'meanSquaredError',
@@ -147,9 +152,5 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
   ATTRIBUTE_INFORMATION () {
     return <></>
-  }
-
-  JOYRIDE () {
-    return super.JOYRIDE()
   }
 }

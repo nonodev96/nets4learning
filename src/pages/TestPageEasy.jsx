@@ -1,67 +1,28 @@
-import React, { useRef, useState } from 'react'
+// @ts-nocheck
+import React, { useState } from 'react'
 import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import Plot from 'react-plotly.js'
 import * as tfvis from '@tensorflow/tfjs-vis'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
 import MLR from 'ml-regression-multivariate-linear'
 
 import { VERBOSE } from '@/CONSTANTS'
-import { PLOTLY_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import AlertHelper from '@utils/alertHelper'
 import TestComponentEasy from '@components/TestComponentEasy'
 import { MODEL_1_SALARY, MODEL_2_AUTO_MPG, MODEL_3_HOUSING_PRICES } from '@/DATA_MODEL'
 import { createLinearRegressionCustomModel } from '@/core/controller/01-linear-regression/LinearRegressionModelController'
-import * as LinearRegressionModelExample from '@core/controller/01-linear-regression/LinearRegressionModelExample'
-import { X } from 'react-bootstrap-icons'
 
 export default function TestPageEasy () {
 
-  const refPlotly = useRef()
 
-  const [dataPredictionList, setDataPredictionList] = useState([])
   const [counter, setCounter] = useState(0)
   const { t } = useTranslation()
 
   const handleClick_init = async () => {
     // const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/auto-mpg.csv'
-    // const columns = { x_name: 'horsepower', y_name: 'mpg' }
-    // const columns = { x_name: 'cylinders', y_name: 'mpg' }
 
-    // const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/salary/salary.csv'
-    // const columns = { X: ['YearsExperience'], Y: 'Salary' }
 
-    const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/housing-prices/boston-housing.csv'
-    // const columns = { x_name: 'LSTAT', y_name: 'MEDV' } // features = ['LSTAT', 'RM']
-    const columns = { X: ['LSTAT', 'RM'], Y: 'MEDV' } // features = ['LSTAT', 'RM']
-
-    const { original, predicted } = await LinearRegressionModelExample.run(filename, columns)
-
-    const original_x = original.map((v) => v.x)
-    const original_y = original.map((v) => v.y)
-    const predicted_x = predicted.map((v) => v.x)
-    const predicted_y = predicted.map((v) => v.y)
-
-    const newPrediction_group = [
-      {
-        name  : columns.X.join(','),
-        x     : original_x,
-        y     : original_y,
-        type  : 'scatter',
-        mode  : 'markers',
-        marker: { color: 'blue' },
-      },
-      {
-        name  : columns.Y,
-        x     : predicted_x,
-        y     : predicted_y,
-        type  : 'scatter',
-        mode  : 'lines+markers',
-        marker: { color: 'red' },
-      },
-    ]
-    setDataPredictionList((prevState) => [...prevState, ...newPrediction_group])
   }
 
   const handleClick_toggle = () => {
@@ -98,7 +59,7 @@ export default function TestPageEasy () {
     const ys = tfjs.tensor1d(Y)
 
     // Build a model
-    const model = tfjs.sequential()
+    const model = new tfjs.Sequential()
     // inputShape is 2 because we have 2 independent variables
     model.add(tfjs.layers.dense({units: 64, inputShape: [2]})) 
     model.add(tfjs.layers.dense({units: 32, activation: 'relu'})) 
@@ -112,6 +73,7 @@ export default function TestPageEasy () {
     await tfvis.show.modelSummary({
       name: 'Model Summary',
       tab : 'Example 1',
+    // @ts-ignore
     }, model)
 
     // Train the model
@@ -128,6 +90,7 @@ export default function TestPageEasy () {
         }
       )
     })
+    // @ts-ignore
     const p = model.predict(tfjs.tensor2d([[5, 5], [6, 7]])).dataSync() 
     console.log({ predict_1: p })
   }
@@ -173,7 +136,7 @@ export default function TestPageEasy () {
     const ys = tfjs.tensor2d(prices, [numSamples, 1])
 
     // Model architecture
-    const model = tfjs.sequential()
+    const model = new tfjs.Sequential()
     model.add(tfjs.layers.dense({ units: 64, inputShape: [3], activation: 'relu' }))
     model.add(tfjs.layers.dense({ activation: 'relu', units: 32 }))
     model.add(tfjs.layers.dense({ activation: 'relu', units: 16 }))
@@ -185,6 +148,7 @@ export default function TestPageEasy () {
     await tfvis.show.modelSummary({
       name: 'Model Summary',
       tab : 'Example 2',
+    // @ts-ignore
     }, model)
 
     // Training
@@ -205,6 +169,7 @@ export default function TestPageEasy () {
     // You can use the trained model to make predictions
     const to_predict_size_bedroom_distance = [500, 1, 0]
     const prediction = model.predict( tfjs.tensor2d([to_predict_size_bedroom_distance]) )
+    // @ts-ignore
     console.log('Predicted Price:', { predict_2: prediction.dataSync() })
   }
 
@@ -220,6 +185,7 @@ export default function TestPageEasy () {
     const model = await createLinearRegressionCustomModel({
       dataset_processed: salary,
       learningRate     : 0.01,
+      momentum         : 0,
       testSize         : 0.3,
       numberOfEpoch    : 40,
       idOptimizer      : 'sgd',
@@ -239,6 +205,7 @@ export default function TestPageEasy () {
     console.log(years_n)
 
     console.log({ 
+      // @ts-ignore
       predict_3: model.predict( tfjs.tensor2d([years_n])).dataSync()[0],
       objetivo : 13 
     })
@@ -278,10 +245,13 @@ export default function TestPageEasy () {
     const example_instance_n3 = scaler.transform(example_instance_3)
 
     console.log({ 
+      // @ts-ignore
       predict_auto_1: model.predict( tfjs.tensor2d([example_instance_n1])).dataSync()[0],
       target_auto_1 : 17, 
+      // @ts-ignore
       predict_auto_2: model.predict( tfjs.tensor2d([example_instance_n2])).dataSync()[0],
       target_auto_2 : 24,
+      // @ts-ignore
       predict_auto_3: model.predict( tfjs.tensor2d([example_instance_n3])).dataSync()[0],
       target_auto_3 : 13,
     })
@@ -318,7 +288,6 @@ export default function TestPageEasy () {
     console.log({ model })
     // California
     const _example_instance_c = [2.4038, 41, 535, 123, 317, 119, 37.85, -122.28]
-
     const example_instance_b1 = [0.00632, 18.00, 2.310,    0,    0.5380, 6.5750,   65.20,  4.0900, 1,  296.0,  15.30,  4.98]
     
     const data = [
@@ -424,19 +393,6 @@ export default function TestPageEasy () {
                   TFJS Multiple 5
                 </Button>
               </div>
-
-              <Container>
-                <Row>
-                  <Col>
-                    <Plot ref={refPlotly}
-                          data={dataPredictionList}
-                          useResizeHandler={true}
-                          style={PLOTLY_CONFIG_DEFAULT.STYLES}
-                          layout={{ title: 'A Fancy Plot', autoSize: true, height: undefined, width: undefined }}
-                    />
-                  </Col>
-                </Row>
-              </Container>
 
             </Card.Body>
           </Card>

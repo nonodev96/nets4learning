@@ -2,9 +2,10 @@ import React from 'react'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
 
-import * as _Type from '@core/types'
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_LINEAR_REGRESSION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
@@ -73,7 +74,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
   /**
    * 
-   * @returns {Promise<_Type.DatasetProcessed_t[]>}
+   * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
@@ -104,18 +105,19 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     // #region Wine Red
     let red_dataframe_original = await dfd.readCSV(path_datasets + red_dataset_csv)
     let red_dataframe_processed = await dfd.readCSV(path_datasets + red_dataset_csv)
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const red_dataset_transforms = [
-      // ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
-      { column_name: 'quality', column_transform: 'drop' },
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
+      // { column_name: 'quality', column_transform: 'drop' },
     ]
     const red_target = 'quality'
     const red_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(red_dataframe_processed, red_dataset_transforms)
     const red_encoders_map = red_dataframe_encoder.encoder_map
     red_dataframe_processed = red_dataframe_encoder.dataframe_processed
-    const red_dataframe_X = red_dataframe_processed.copy()
+    const red_dataframe_X = red_dataframe_processed.drop({ columns: [red_target] }).copy()
     const red_dataframe_y = red_dataframe_original[red_target]
     const minMaxScaler_1 = new dfd.MinMaxScaler()
-    const red_scaler = minMaxScaler_1.fit(red_dataframe_processed)
+    const red_scaler = minMaxScaler_1.fit(red_dataframe_X)
     const red_X = red_scaler.transform(red_dataframe_X)
     const red_y = red_dataframe_y
     // #endregion
@@ -124,18 +126,19 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     // #region Wine White
     let white_dataframe_original = await dfd.readCSV(path_datasets + white_dataset_csv)
     let white_dataframe_processed = await dfd.readCSV(path_datasets + white_dataset_csv)
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const white_dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' })),
-      { column_name: 'quality', column_transform: 'drop' },
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
+      // { column_name: 'quality', column_transform: 'drop' },
     ]
     const white_target = 'quality'
     const white_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(white_dataframe_processed, white_dataset_transforms)
     const white_encoders_map = white_dataframe_encoder.encoder_map
     white_dataframe_processed = white_dataframe_encoder.dataframe_processed
-    const white_dataframe_X = white_dataframe_processed.copy()
+    const white_dataframe_X = white_dataframe_processed.drop({ columns: [white_target] }).copy()
     const white_dataframe_y = white_dataframe_original[white_target]
     const minMaxScaler_2 = new dfd.MinMaxScaler()
-    const white_scaler = minMaxScaler_2.fit(white_dataframe_processed)
+    const white_scaler = minMaxScaler_2.fit(white_dataframe_X)
     const white_X = white_scaler.transform(white_dataframe_X)
     const white_y = white_dataframe_y
     // #endregion
@@ -153,6 +156,8 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : red_dataframe_processed,
         dataset_transforms  : red_dataset_transforms,
         data_processed      : {
+          dataframe_X       : red_dataframe_X,
+          dataframe_y       : red_dataframe_y,
           X                 : red_X,
           y                 : red_y,
           column_name_target: red_target,
@@ -171,6 +176,8 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
         dataframe_processed : white_dataframe_processed,
         dataset_transforms  : white_dataset_transforms,
         data_processed      : {
+          dataframe_X       : white_dataframe_X,
+          dataframe_y       : white_dataframe_y,
           X                 : white_X, 
           y                 : white_y, 
           scaler            : white_scaler, 
@@ -221,9 +228,5 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
 
   ATTRIBUTE_INFORMATION () {
     return <></>
-  }
-
-  JOYRIDE () {
-    return super.JOYRIDE()
   }
 }

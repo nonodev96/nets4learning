@@ -39,12 +39,12 @@ const rejectStyle = {
  * @typedef {Object} DragAndDropProps
  * @property {string} name - The name of the drop zone.
  * @property {string} id - The ID of the drop zone.
- * @property {string} accept - The accepted file types.
+ * @property {import('react-dropzone').Accept} accept - The accepted file types.
  * @property {string} text - The text to display in the drop zone.
  * @property {string} [labelFiles='Files'] - The label for files (default is 'Files').
  * @property {boolean} [multiple=false] - Whether multiple files can be dropped (default is false).
- * @property {function(File[], DropEvent): void} [function_DropAccepted] - Function called when files are accepted.
- * @property {function(FileRejection[], DropEvent): void} [function_DropRejected] - Function called when files are rejected.
+ * @property {function(File[], import('react-dropzone').DropEvent): void} [function_DropAccepted] - Function called when files are accepted.
+ * @property {function(import('react-dropzone').FileRejection[], import('react-dropzone').DropEvent): void} [function_DropRejected] - Function called when files are rejected.
  */
 
 /**
@@ -80,7 +80,7 @@ export default function DragAndDrop (props) {
     accept        : accept,
     multiple      : multiple,
   })
-  const style = useMemo(() => ({
+  const styles = useMemo(() => ({
     ...baseStyle,
     ...(isFocused ? focusedStyle : {}),
     ...(isDragAccept ? acceptStyle : {}),
@@ -109,7 +109,7 @@ export default function DragAndDrop (props) {
 
   return (
     <section className="container p-0">
-      <div {...getRootProps({ style, name })}>
+      <div {...getRootProps({ style: styles, name })}>
         <input id={id}{...getInputProps()} />
         <p className={'mb-0'}>{text}</p>
       </div>

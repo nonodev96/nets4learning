@@ -32,9 +32,6 @@ export default function LinearRegressionDatasetProcessForm() {
   const {
     datasets,
     setDatasets,
-
-    // datasetLocal,
-    // setDatasetLocal
   } = useContext(LinearRegressionContext)
 
   /**
@@ -58,7 +55,6 @@ export default function LinearRegressionDatasetProcessForm() {
   const handleSubmit_ProcessDataset = async (event) => {
     event.preventDefault()
 
-    // let dataframe_processed = DataFrameDeepCopy(datasetLocal.dataframe_original)
     let dataframe_processed = DataFrameDeepCopy(datasets.data[datasets.index].dataframe_original)
     dataframe_processed = DataFrameTransform(dataframe_processed, listColumnNameTransformations)
 
@@ -92,17 +88,16 @@ export default function LinearRegressionDatasetProcessForm() {
   }
 
   useEffect(() => {
-    console.log('datasetLocal')
     // const dataframe_original = datasetLocal.dataframe_original
-    const dataframe_original = datasets.data[datasets.index].dataframe_original
+    const { dataframe_original } = datasets.data[datasets.index]
     /** 
      * @type {_Types.DataFrameColumnType_t[]}
      */
     const _listColumnNameType = dataframe_original.columns.map((_, index) => {
       return {
+        column_enable   : true,
         column_name     : dataframe_original.columns[index],
         column_type     : dataframe_original.dtypes[index],
-        column_enable   : true,
         column_transform: dataframe_original.dtypes[index],
       }
     })

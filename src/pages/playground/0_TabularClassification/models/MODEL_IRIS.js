@@ -1,9 +1,12 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
+
+import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
 import I_MODEL_TABULAR_CLASSIFICATION from './_model'
+import { F_FILTER_Categorical, F_MAP_LabelEncoder } from '@/core/nn-utils/utils'
 
 export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
 
@@ -105,41 +108,37 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
     const path_dataset = process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/'
     const iris_info = 'iris.names'
     const iris_csv = 'iris.csv'
-
     const dataset_promise_info = await fetch(path_dataset + iris_info)
     const iris_container_info = await dataset_promise_info.text()
-
     let dataframe_original = await dfd.readCSV(path_dataset + iris_csv)
     let dataframe_processed = await dfd.readCSV(path_dataset + iris_csv)
-
+    /** @type {_Types.Dataset_t} */
     const dataset = [
-      { column_name: 'sepal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      { column_name: 'sepal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      { column_name: 'petal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      { column_name: 'petal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_value: false },
-      { column_name: 'class',         column_role: 'Target',  column_type: 'Categorical', column_missing_value: false },
+      { column_name: 'sepal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'sepal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'petal length',  column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'petal width',   column_role: 'Feature', column_type: 'Continuous',  column_missing_values: false },
+      { column_name: 'class',         column_role: 'Target',  column_type: 'Categorical', column_missing_values: false },
     ]
+    /** @type {_Types.DataFrameColumnTransform_t[]} */
     const dataset_transforms = [
-      ...dataset.filter(v=> v.column_type === 'Categorical').map(v => ({ ...v, column_transform: 'label-encoder' }))
+      ...dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder)
       // { column_transform: 'label-encoder', column_name: 'class' },
     ]
     const iris_encoders_map = DataFrameUtils.DataFrameEncoder(dataframe_original, dataset_transforms)
     dataframe_processed = DataFrameUtils.DataFrameTransform(dataframe_processed, dataset_transforms)
-
     const iris_target = 'class'
-    const dataframe_X = dataframe_processed.drop({ columns: [iris_target] })
-    const dataframe_y = dataframe_original[iris_target]
-
+    const iris_dataframe_X = dataframe_processed.drop({ columns: [iris_target] })
+    const iris_dataframe_y = dataframe_original[iris_target]
     const minMaxScaler = new dfd.MinMaxScaler()
-    const iris_minMaxScaler = minMaxScaler.fit(dataframe_X)
-    const iris_X = iris_minMaxScaler.transform(dataframe_X)
-
+    const iris_minMaxScaler = minMaxScaler.fit(iris_dataframe_X)
+    const iris_X = iris_minMaxScaler.transform(iris_dataframe_X)
     const oneHotEncoder = new dfd.OneHotEncoder()
-    const iris_oneHotEncoder = oneHotEncoder.fit(dataframe_y)
-    const iris_y = iris_oneHotEncoder.transform(dataframe_y)
-
+    const iris_oneHotEncoder = oneHotEncoder.fit(iris_dataframe_y)
+    const iris_y = iris_oneHotEncoder.transform(iris_dataframe_y)
     const labelEncoder = new dfd.LabelEncoder()
-    const iris_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    const iris_labelEncoder = labelEncoder.fit(iris_dataframe_y.values)
+    // @ts-ignore
     const iris_classes = Object.keys(iris_labelEncoder.$labels)
 
     return [
@@ -154,6 +153,8 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
         dataframe_processed : dataframe_processed,
         dataset_transforms  : dataset_transforms,
         data_processed      : {
+          dataframe_X       : iris_dataframe_X,
+          dataframe_y       : iris_dataframe_y,
           X                 : iris_X,
           y                 : iris_y,
           encoders          : iris_encoders_map,
@@ -174,13 +175,13 @@ export default class MODEL_IRIS extends I_MODEL_TABULAR_CLASSIFICATION {
   }
 
   async LOAD_GRAPH_MODEL (callbacks) {
-    return await tf.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
+    return await tfjs.loadGraphModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
       onProgress: callbacks.onProgress
     })
   }
 
   async LOAD_LAYERS_MODEL (callbacks) {
-    return tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
+    return await tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/00-tabular-classification/iris/my-model-iris.json', {
       onProgress: callbacks.onProgress
     })
   }

@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom'
 import TabularClassificationDatasetProcessForm from '@pages/playground/0_TabularClassification/TabularClassificationDatasetProcessForm'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
-
+import * as _Types from  '@core/types'
 /**
  * @typedef PropsTabularClassificationDatasetProcess
- * @property {DatasetProcessed_t[]} datasets
- * @property {React.Dispatch<Array<DatasetProcessed_t>>} setDatasets
+ * @property {_Types.DatasetProcessed_t[]} datasets
+ * @property {React.Dispatch<React.SetStateAction<Array<_Types.DatasetProcessed_t>>>} setDatasets
  * @property {number} datasetIndex
- * @property {React.Dispatch<number>} setDatasetIndex
+ * @property {React.Dispatch<React.SetStateAction<number>>} setDatasetIndex
  */
 
 /**
