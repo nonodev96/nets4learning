@@ -5,7 +5,7 @@ import * as dfd from 'danfojs'
 
 import * as _Types from '@core/types'
 import { VERBOSE } from '@/CONSTANTS'
-import { DataFrameInstanceSetCellValue as DataFrameSetCellValue } from '@/core/dataframe/DataFrameUtils'
+import { DataFrameSetCellValue } from '@/core/dataframe/DataFrameUtils'
 import LinearRegressionContext from '@/context/LinearRegressionContext'
 
 /**
@@ -26,7 +26,6 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
     setPrediction
   } = useContext(LinearRegressionContext)
 
-  
   const getColor = (generatedModel, column_name) => {
     if (generatedModel.params_features.Y_target === column_name) {
       return styles.border_green
@@ -98,7 +97,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
       .columns
       .map((column_name, index) => {
       const column_type = generatedModel.dataset_processed.dataframe_original[column_name].dtype
-      const column_value = prediction.input_1_dataframe_original.values[0][index]
+      const column_value = prediction.input_1_dataframe_original[column_name].values[0]
       
       switch (column_type) {
         case 'int32': {

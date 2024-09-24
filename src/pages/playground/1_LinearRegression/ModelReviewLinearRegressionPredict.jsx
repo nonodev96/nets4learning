@@ -1,36 +1,49 @@
-import { useRef } from 'react'
+import { useState } from 'react'
 import { Trans } from 'react-i18next'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import * as dfd from 'danfojs'
+import * as tfjs from '@tensorflow/tfjs'
 
+import * as _Types from '@core/types'
 import { VERBOSE } from '@/CONSTANTS'
 import ModelReviewLinearRegressionPredictForm from './ModelReviewLinearRegressionPredictForm'
 import LinearRegressionPredictionInfo from './LinearRegressionPredictionInfo'
 
-export default function ModelReviewLinearRegressionPredict ({ dataset, model, dataframe }) {
+/**
+ * @typedef ModelReviewLinearRegressionPredictProps_t
+ * @property {_Types.CustomModel_t} model  
+ * @property {_Types.DatasetProcessed_t} dataset
+ * @property {_Types.StatePrediction_t} prediction
+ * @property {React.Dispatch<React.SetStateAction<_Types.StatePrediction_t>>} setPrediction
+ */
+/**
+ * 
+ * @param {ModelReviewLinearRegressionPredictProps_t} props 
+ * @returns 
+ */
+export default function ModelReviewLinearRegressionPredict (props) {
+  const {
+    model, 
+    dataset,
+    prediction,
+    setPrediction 
+  } = props
 
-  const prediction = useRef({
-    dataframe      : new dfd.DataFrame(),
-    input          : [],
-    input_processed: [],
-    result         : []
-  })
 
-  /**
-   * 
-   * @param {import('react').FormEvent<HTMLFormElement>} event 
-   */
-  function handleSubmit_Predict(event) {
+  const handleSubmit_Predict = (event) => {
     event.preventDefault()
 
-    // TODO
-    prediction.current = {
-        dataframe      : [],
-        input          : [],
-        input_processed: [],
-        result         : []
-    }
+    const vector = prediction.input_3_dataframe_scaling.values[0]
+    // @ts-ignore
+    const tensor = tfjs.tensor2d([vector])
 
+    console.log({model: model.model})
+    const result = model.model.predict(tensor).dataSync()
+    
+    setPrediction((prevState) => ({
+      ...prevState,
+      result: result
+    }))
   }
 
   if (VERBOSE) console.debug('ModelReviewLinearRegressionPredict')
@@ -38,9 +51,10 @@ export default function ModelReviewLinearRegressionPredict ({ dataset, model, da
     <Form onSubmit={handleSubmit_Predict}>
 
       <ModelReviewLinearRegressionPredictForm dataset={dataset}
-                                              dataframe={dataframe} />
+                                              prediction={prediction}
+                                              setPrediction={setPrediction} />
       
-      <LinearRegressionPredictionInfo prediction={prediction.current} />
+      <LinearRegressionPredictionInfo prediction={prediction} />
 
       <Row className={'mt-3'}>
         <Col>

@@ -67,13 +67,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
    *   e.type      :"tour:start"
    * }
    *
-   * @return {{
-   *    run                   : boolean,
-   *    continuous            : boolean,
-   *    handleJoyrideCallback : (data) => Promise<void>,
-   *    steps                 : Array<{content: string, target: string}>
-   * }}
-   * @constructor
+   * @return {_Types.Joyride_t}
    */
   JOYRIDE () {
     const handleJoyrideCallback = async (data) => {

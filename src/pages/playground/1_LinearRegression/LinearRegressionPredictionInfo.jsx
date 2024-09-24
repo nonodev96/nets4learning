@@ -2,6 +2,7 @@ import styles from '@pages/playground/1_LinearRegression/LinearRegression.module
 import { Row, Col, Form } from 'react-bootstrap'
 import { Trans } from'react-i18next'
 import * as _Types from '@core/types'
+import { useEffect, useState } from 'react'
 
 /**
  * 
@@ -9,9 +10,21 @@ import * as _Types from '@core/types'
  * @returns 
  */
 export default function LinearRegressionPredictionInfo({ prediction }) {
+
+  const [ready, setReady] = useState(false)
+
+  useEffect(()=>{
+    setReady(
+      prediction 
+      && prediction.input_1_dataframe_original 
+      && Array.isArray(prediction.input_1_dataframe_original.values) 
+      && prediction.input_1_dataframe_original.values.length >= 1
+    )
+  }, [prediction, prediction.input_1_dataframe_original])
   
   return <>
-    <Row xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}>
+    {ready && <>
+    <Row xs={2} sm={2} md={4} lg={4} xl={4} xxl={4}>
       <Col>
         <Form.Group controlId={'FormInputRaw'}>
           <Form.Label>
@@ -19,8 +32,8 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           </Form.Label>
           <Form.Control size={'sm'}
                         disabled={true}
-                        className={styles.border_blue}
-                        value={prediction.input_1_dataframe_original.values[0].join(',')} />
+                        className={`${styles.border_blue} ${styles.monospace}`}
+                        value={[prediction.input_1_dataframe_original.values[0]].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-description'} />
           </Form.Text>
@@ -33,8 +46,8 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           </Form.Label>
           <Form.Control size={'sm'}
                         disabled={true}
-                        className={styles.border_pink}
-                        value={prediction.input_2_dataframe_encoding.values[0].join(',')} />
+                        className={`${styles.border_pink} ${styles.monospace}`}
+                        value={[prediction.input_2_dataframe_encoding.values[0]].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-processed-description'} />
           </Form.Text>
@@ -47,8 +60,8 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           </Form.Label>
           <Form.Control size={'sm'}
                         disabled={true}
-                        className={styles.border_pink}
-                        value={prediction.input_3_dataframe_scaling.values[0].join(',')} />
+                        className={`${styles.border_pink} ${styles.monospace}`}
+                        value={[prediction.input_3_dataframe_scaling.values[0]].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-processed-description'} />
           </Form.Text>
@@ -61,7 +74,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           </Form.Label>
           <Form.Control size={'sm'}
                         disabled={true}
-                        className={styles.border_green}
+                        className={`${styles.border_green} ${styles.monospace}`}
                         value={prediction.result.join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-result-description'} />
@@ -69,5 +82,6 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
         </Form.Group>
       </Col>
     </Row>
+    </>}
   </>
 }

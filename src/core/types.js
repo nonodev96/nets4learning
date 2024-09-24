@@ -206,6 +206,34 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 
+// ================================ TABULAR CLASSIFICATION
+
+
+/**
+ * @typedef TabularClassificationPredictionBar_t
+ * @property {Array<any>} classes
+ * @property {Array<any>} labels
+ * @property {Array<any>} data
+ * 
+ */
+
+/**
+ * @typedef TabularClassificationGeneratedModel_t
+ * @property {number} [idMODEL]
+ * @property {any} [TARGET_SET_CLASSES]
+ * @property {any} [DATA_SET_CLASSES]
+ * @property {_tfjs.Sequential} model
+ * @property {number} learningRate
+ * @property {number} testSize
+ * @property {number} numberOfEpoch
+ * @property {Array<{units: number, activation: string}>} layerList
+ * @property {string} idOptimizer
+ * @property {string} idLoss
+ * @property {string} idMetrics
+ */
+
+
+
 // ================================ LINEAR REGRESSION
 
 /**
@@ -215,12 +243,12 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 /**
  * @typedef StatePrediction_t
- * @property {[]} input_0_raw - Incluye el target
+ * @property {any[]} input_0_raw - Incluye el target
  * @property {_dfd.DataFrame} input_1_dataframe_original
  * @property {_dfd.DataFrame} input_1_dataframe_processed
  * @property {_dfd.DataFrame} input_2_dataframe_encoding
  * @property {_dfd.DataFrame} input_3_dataframe_scaling
- * @property {[]} result
+ * @property {any[]} result
  */
 
 
@@ -266,9 +294,9 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {Array<CustomParamsLayerModel_t>} params_layers
  * @property {CustomParamsFeaturesSelector_t} params_features
  * @property {CustomParamsTrainModel_t} params_training
- * 
- * @property {_dfd.DataFrame} dataframe
  * @property {DatasetProcessed_t} dataset_processed
+ * 
+ * @property {_dfd.DataFrame} [dataframe]
  */
 
 /**
@@ -287,6 +315,29 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * TODO
  * 
  * @typedef StateInstance_t
- * @property {Array<>} data
+ * @property {Array<any>} data
  * @property {number|"select-instance"} index
  */
+
+/**
+ * @typedef JoyrideStep_t
+ * @property {string} title
+ * @property {string} content
+ * @property {string} target
+ * @property {'top'|'right'|'bottom'|'left'|'left-start'} placement
+ */
+
+
+/**
+ * @typedef Joyride_t
+ * @property {boolean} run
+ * @property {boolean} continuous
+ * @property {(data: any) => Promise<void>} [handleJoyrideCallback]
+ * @property {(data: any) => Promise<void>} [handleClick_StartJoyride]
+ * @property {Array<JoyrideStep_t>} steps
+ */
+
+  /**
+   * @typedef Joyride_void_t
+   * @property {any} [handleClick_StartJoyride]
+   */

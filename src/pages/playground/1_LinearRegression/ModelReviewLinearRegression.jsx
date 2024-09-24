@@ -16,6 +16,7 @@ import DataFrameDatasetCard from '@components/dataframe/DataFrameDatasetCard'
 import DataFrameScatterPlotCard from '@components/dataframe/DataFrameScatterPlotCard'
 import { I_MODEL_LINEAR_REGRESSION, MAP_LR_CLASSES } from '@pages/playground/1_LinearRegression/models'
 import ModelReviewLinearRegressionPredict from './ModelReviewLinearRegressionPredict'
+import { TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION } from './utils'
 
 
 
@@ -50,6 +51,21 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const [instances, setInstances] = useState({data: [], index: DEFAULT_SELECTOR_INSTANCE})
 
 
+  /**
+   * @type {ReturnType<typeof useState<_Types.StatePrediction_t>>}
+   */
+  const [prediction, setPrediction] = useState({
+    input_0_raw                : [],
+    // 
+    input_1_dataframe_original : new dfd.DataFrame(),
+    input_1_dataframe_processed: new dfd.DataFrame(),
+    input_2_dataframe_encoding : new dfd.DataFrame(),
+    input_3_dataframe_scaling  : new dfd.DataFrame(),
+    // 
+    result                     : [],    
+  })
+
+
   useEffect(() => {
     ReactGA.send({ hitType: 'pageview', page: '/ModelReviewLinearRegression/' + dataset, title: dataset, })
   }, [dataset])
@@ -67,6 +83,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
           data : _datasets,
           index: 0
         })
+        
       } else {
         console.error('Error, option not valid', { ID: dataset })
         history.push('/404')
@@ -94,25 +111,28 @@ export default function ModelReviewLinearRegression ({ dataset }) {
 
     async function init () {
       if (models.index !== DEFAULT_SELECTOR_MODEL && models.data.length > 0) {
-        const { 
-          // is_dataset_upload,
-          // is_dataset_processed,
-          // path,
-          // info,
-          // csv,
-          // container_info,
-          dataframe_original,
-          // dataframe_processed,
-          // dataset_transforms,
-          data_processed
-        } = datasets.data[datasets.index]
-        const { dataframe_X } = data_processed
-        setDataFrame_X(dataframe_X)
+        const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (datasets.data[datasets.index]))
+        const { dataframe_original, /* data_processed */ } = dataset_processed
 
+        setDataFrame_X(dataframe_original)
         setInstances((_prevState) => ({
-          data : dataframe_X.values,
+          data : dataframe_original.values,
           index: DEFAULT_SELECTOR_INSTANCE
         }))
+
+
+        const state = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed)
+        setPrediction((prevState) => {
+          return {
+            ...prevState,
+            input_0_raw                : state.input_0_raw,
+            input_1_dataframe_original : state.input_1_dataframe_original,
+            input_1_dataframe_processed: state.input_1_dataframe_processed,
+            input_2_dataframe_encoding : state.input_2_dataframe_encoding,
+            input_3_dataframe_scaling  : state.input_3_dataframe_scaling,
+            result                     : state.result,
+          }
+        })
 
         // const model = await tfjs.loadLayersModel(model_path)
         // model.predict(tfjs.tensor2d(dataframe_X.values[16]))
@@ -154,9 +174,24 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }
   
   const handleChange_Instance_Index = async (event) => {
+    const newInstanceIndex = parseInt(event.target.value)
+    
+    const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (datasets.data[datasets.index]))
+    const state = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed, newInstanceIndex)
+    setPrediction((prevState) => {
+      return {
+        ...prevState,
+        input_0_raw                : state.input_0_raw,
+        input_1_dataframe_original : state.input_1_dataframe_original,
+        input_1_dataframe_processed: state.input_1_dataframe_processed,
+        input_2_dataframe_encoding : state.input_2_dataframe_encoding,
+        input_3_dataframe_scaling  : state.input_3_dataframe_scaling,
+        result                     : state.result,
+      }
+    })
     setInstances((prevState) => ({
       ...prevState,
-      index: parseInt(event.target.value)
+      index: newInstanceIndex
     }))
   }
 
@@ -262,7 +297,8 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                   
                   <ModelReviewLinearRegressionPredict model={models.data[models.index]}
                                                       dataset={datasets.data[datasets.index]}
-                                                      dataframe={dataframe_X} />
+                                                      prediction={prediction}
+                                                      setPrediction={setPrediction} />
 
                 </Card.Body>
               </Card>

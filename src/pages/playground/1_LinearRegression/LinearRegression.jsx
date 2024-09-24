@@ -6,8 +6,9 @@ import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootst
 import ReactGA from 'react-ga4'
 import * as tfjs from '@tensorflow/tfjs'
 import * as dfd from 'danfojs'
+import Joyride from 'react-joyride'
 
-import { VERBOSE } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_DATASET, VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 import N4LDivider from '@components/divider/N4LDivider'
@@ -24,6 +25,7 @@ import LinearRegressionContext from '@context/LinearRegressionContext'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
 import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
+import { TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION } from './utils'
 
 // Manual and datasets
 const LinearRegressionManual = lazy(() => import('./LinearRegressionManual'))
@@ -62,7 +64,6 @@ export default function LinearRegression(props) {
 
   const {
     modelRef,
-    predictionInstanceRef,
 
     prediction,
     setPrediction,
@@ -86,6 +87,9 @@ export default function LinearRegression(props) {
   } = useContext(LinearRegressionContext)
 
   const [ready, setReady] = useState(false)
+  /**
+   * @type {ReturnType<typeof useRef<_Types.Joyride_t|_Types.Joyride_void_t>>}
+   */
   const joyrideButton_ref = useRef({})
 
   const TrainModel = async () => {
@@ -102,8 +106,6 @@ export default function LinearRegression(props) {
     })
     modelRef.current.model = model
 
-    // setDataFrameToPredict(dataset_processed.data_processed.dataframe_X.copy().iloc({ rows: ['0:1'] }))
-
     /** @type {_Types.CustomModelGenerated_t} */
     const newModel = {
       model            : model,
@@ -119,36 +121,14 @@ export default function LinearRegression(props) {
       }
     })
 
-    const dataframe_original = dataset_processed.dataframe_original.copy()
-    const dataframe_processed = dataset_processed.dataframe_processed.copy()
-    const dataframe_X = dataset_processed.data_processed.dataframe_X.copy()
-    const X = dataset_processed.data_processed.X.copy()
-
-    const input_raw = Array.from(dataframe_original.values[0])
-
-    const prediction_input_original = dataframe_original.$data[0]
-    const prediction_input_processed = dataframe_processed.$data[0]
-    const prediction_input_dataframe_X = dataframe_X.$data[0]
-    const prediction_input_X = X.$data[0]
-
-    const df_void_input_original = new dfd.DataFrame([], { columns: dataframe_original.columns, dtypes: dataframe_original.dtypes })
-    const df_void_input_processed = new dfd.DataFrame([], { columns: dataframe_processed.columns, dtypes: dataframe_original.dtypes })
-    const df_void_dataframe_X = new dfd.DataFrame([], { columns: dataframe_X.columns, dtypes: dataframe_X.dtypes })
-    const df_void_X = new dfd.DataFrame([], { columns: X.columns, dtypes: X.dtypes })
-
-    const new_df_original = df_void_input_original.append([prediction_input_original], [0])
-    const new_df_processed = df_void_input_processed.append([prediction_input_processed], [0])
-    const new_df_dataframe_X = df_void_dataframe_X.append([prediction_input_dataframe_X], [0])
-    const new_df_X = df_void_X.append([prediction_input_X], [0])
-
+    const newPredictionState = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed, 0)
     setPrediction((prevState) => ({
       ...prevState,
-      input_0_raw                : input_raw,
-      input_1_dataframe_original : new_df_original.copy(),
-      input_1_dataframe_processed: new_df_processed.copy(),
-      input_2_dataframe_encoding : new_df_dataframe_X.copy(),
-      input_3_dataframe_scaling  : new_df_X.copy(),
-      result                     : []
+      input_0_raw                : newPredictionState.input_0_raw,
+      input_1_dataframe_original : newPredictionState.input_1_dataframe_original,
+      input_1_dataframe_processed: newPredictionState.input_1_dataframe_processed,
+      input_2_dataframe_encoding : newPredictionState.input_2_dataframe_encoding,
+      input_3_dataframe_scaling  : newPredictionState.input_3_dataframe_scaling,
     }))
 
   }
@@ -167,7 +147,7 @@ export default function LinearRegression(props) {
   }
 
   useEffect(()=>{
-    setReady(datasets && datasets.data.length > 0 && datasets.index >= 0)
+    setReady(datasets && datasets.data.length > 0 && datasets.index !== DEFAULT_SELECTOR_DATASET && datasets.index >= 0)
   }, [setReady, datasets])
 
   useEffect(() => {

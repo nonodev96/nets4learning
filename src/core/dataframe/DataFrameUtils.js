@@ -372,13 +372,14 @@ export function DataFrameTransformAndEncoder (dataframe, dataframe_transforms) {
  * 
  * @param {dfd.DataFrame} dataframe 
  * @param {number} row 
- * @param {number|string} column_name 
+ * @param {string} column_name 
  * @param {number|string} value 
  * @returns 
  */
-export function DataFrameInstanceSetCellValue(dataframe, row, column_name, value) {
+export function DataFrameSetCellValue(dataframe, row, column_name, value) {
   const oldValuesRows = dataframe.loc({rows: [row]}).values[0]
   const columnIndex = dataframe.columns.indexOf(column_name)
+  // @ts-ignore
   const newValuesRows = Array.from(oldValuesRows)
   newValuesRows[columnIndex] = (value)
   const df_void = new dfd.DataFrame([], { columns: dataframe.columns, dtypes: dataframe.dtypes })

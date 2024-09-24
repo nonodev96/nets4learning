@@ -12,7 +12,7 @@ import AlertHelper from '@utils/alertHelper'
 import TestComponentEasy from '@components/TestComponentEasy'
 import { MODEL_1_SALARY, MODEL_2_AUTO_MPG, MODEL_3_HOUSING_PRICES } from '@/DATA_MODEL'
 import { createLinearRegressionCustomModel } from '@/core/controller/01-linear-regression/LinearRegressionModelController'
-import { DataFrameInstanceSetCellValue } from '@/core/dataframe/DataFrameUtils'
+import { DataFrameSetCellValue } from '@/core/dataframe/DataFrameUtils'
 
 export default function TestPageEasy () {
 
@@ -46,7 +46,7 @@ export default function TestPageEasy () {
     })
     const column_name = 'Edad'
 
-    const df2 = DataFrameInstanceSetCellValue(df, 0, column_name, 300)
+    const df2 = DataFrameSetCellValue(df, 0, column_name, 300)
     df2.print()
   }
 

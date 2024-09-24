@@ -44,21 +44,6 @@ import TabularClassificationDatasetProcess from '@pages/playground/0_TabularClas
 import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 
 /**
- * @typedef {Object} GeneratedModel_t
- * @property {number} [idMODEL]
- * @property {any} [TARGET_SET_CLASSES]
- * @property {any} [DATA_SET_CLASSES]
- * @property {tfjs.Sequential} model
- * @property {number} learningRate
- * @property {number} testSize
- * @property {number} numberOfEpoch
- * @property {Array<{units: number, activation: string}>} layerList
- * @property {string} idOptimizer
- * @property {string} idLoss
- * @property {string} idMetrics
- */
-
-/**
  * @typedef {Object | null} DataProcessedState_t
  * @property {dfd.DataFrame} dataframeProcessed
  * @property {string} column_name_target
@@ -131,7 +116,7 @@ export default function TabularClassification (props) {
   // Models upload && review
   const [isTraining, setIsTraining] = useState(false)
   /**
-   * @type {ReturnType<typeof useState<Array<GeneratedModel_t>>>}
+   * @type {ReturnType<typeof useState<Array<_Types.TabularClassificationGeneratedModel_t>>>}
    */
   const [generatedModels, setGeneratedModels] = useState([])
   const [generatedModelsIndex, setGeneratedModelsIndex] = useState(-1)
@@ -152,6 +137,9 @@ export default function TabularClassification (props) {
     labels : [],
     data   : [],
   })
+  /**
+   * @type {ReturnType<typeof useRef<_Types.Joyride_t|_Types.Joyride_void_t>>}
+   */
   const joyrideButton_ref = useRef({})
 
   useEffect(() => {
@@ -225,7 +213,7 @@ export default function TabularClassification (props) {
         idLoss           : _idLoss,
         idMetrics        : _idMetrics,
       })
-      /**@type {GeneratedModel_t} */
+      /**@type {_Types.TabularClassificationGeneratedModel_t} */
       const newModel = {
         model        : model,
         layerList    : _layerList,
@@ -271,8 +259,8 @@ export default function TabularClassification (props) {
       const input_vector_to_predict_scaled = scaler.transform(inputVectorToPredict)
       const tensor = tfjs.tensor([input_vector_to_predict_scaled])
       const prediction = Model.predict(tensor)
-      const predictionDataSync = prediction.dataSync()
-      const predictionWithArgMaxDataSync = prediction.argMax(-1).dataSync()
+      const predictionDataSync = (/** @type {tfjs.Tensor} */(prediction)).dataSync()
+      const predictionWithArgMaxDataSync = (/** @type {tfjs.Tensor} */(prediction)).argMax(-1).dataSync()
       if (VERBOSE) console.debug({ prediction, predictionDataSync, predictionWithArgMaxDataSync })
       setPredictionBar((_prevState) => {
         return {

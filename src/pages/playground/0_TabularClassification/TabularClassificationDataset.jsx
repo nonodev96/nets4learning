@@ -13,17 +13,18 @@ import { GLOSSARY_ACTIONS, MANUAL_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
 /**
- * @typedef {object} PropsTabularClassificationDataset
+ * @typedef {object} PropsTabularClassificationDatasetProps_t
  * @property {string} dataset
  * @property {_Types.I_MODEL_TABULAR_CLASSIFICATION_t} iModelInstance
  * @property {_Types.DatasetProcessed_t[]} datasets
  * @property {React.Dispatch<React.SetStateAction<_Types.DatasetProcessed_t[]>>} setDatasets
+ * @property {number} datasetIndex
  * @property {React.Dispatch<React.SetStateAction<number>>} setDatasetIndex
  */
 
 /**
  * 
- * @param {PropsTabularClassificationDataset} props 
+ * @param {PropsTabularClassificationDatasetProps_t} props 
  * @returns 
  */
 export default function TabularClassificationDataset (props) {

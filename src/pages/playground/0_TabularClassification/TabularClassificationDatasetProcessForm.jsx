@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
@@ -57,8 +58,12 @@ export default function TabularClassificationDatasetProcessForm(props) {
 
   useEffect(() => {
     const _columns = datasets[datasetIndex].dataframe_original.columns
-    const _dtypes = datasets[datasetIndex].dataframe_original.dtypes
 
+    const _dtypes = /** @type {_Types.ColumnType_t[]} */ (datasets[datasetIndex].dataframe_original.dtypes)
+
+    /**
+     * @type {_Types.DataFrameColumnType_t[]}
+     */
     const _listColumnNameType = _columns.map((_, index) => {
       return { column_name: _columns[index], column_type: _dtypes[index] }
     })
@@ -68,7 +73,7 @@ export default function TabularClassificationDatasetProcessForm(props) {
       return { 
         column_name     : column_name, 
         column_type     : column_type, 
-        column_transform: _column_transform 
+        column_transform: _column_transform
       }
     })
     setColumnNameTarget(_columns[_columns.length - 1])
@@ -122,10 +127,12 @@ export default function TabularClassificationDatasetProcessForm(props) {
 
     const labelEncoder = new dfd.LabelEncoder()
     const dataset_labelEncoder = labelEncoder.fit(dataframe_y.values)
+    // @ts-ignore
     const classes = Object.keys(dataset_labelEncoder.$labels)
 
     let attributes = listColumnNameTransformations.map(({ column_name, column_transform }) => {
       if (column_transform === 'label-encoder') {
+        // @ts-ignore
         const _options = Object.keys(encoders_map[column_name].encoder.$labels).map((label) => ({ value: label, text: label }))
         return { type: column_transform, name: column_name, options: _options }
       } else {
@@ -163,6 +170,7 @@ export default function TabularClassificationDatasetProcessForm(props) {
         },
       })
 
+    // @ts-ignore
     setDatasets((prevDatasets) => {
       return prevDatasets.map((_dataset, _datasetIndex) => {
         if (datasetIndex === _datasetIndex) {

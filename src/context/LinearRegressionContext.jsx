@@ -14,7 +14,7 @@ import {
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
 } from '@/pages/playground/1_LinearRegression/CONSTANTS'
-import { DEFAULT_SELECTOR_MODEL } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_DATASET, DEFAULT_SELECTOR_MODEL } from '@/CONSTANTS'
 
 
 /**
@@ -26,14 +26,14 @@ import { DEFAULT_SELECTOR_MODEL } from '@/CONSTANTS'
  * @property {_Types.StatePrediction_t} prediction
  * @property {React.Dispatch<React.SetStateAction<_Types.StatePrediction_t>>} setPrediction
  *
- * @property {{data: _Types.DatasetProcessed_t[], index: number}} datasets
- * @property {React.Dispatch<React.SetStateAction<{data: _Types.DatasetProcessed_t[], index: number}>>} setDatasets
+ * @property {{data: _Types.DatasetProcessed_t[], index: ('select-dataset'|number)}} datasets
+ * @property {React.Dispatch<React.SetStateAction<{data: _Types.DatasetProcessed_t[], index: ('select-dataset'|number)}>>} setDatasets
  *
  * @property {_Types.CustomParams_t} params
  * @property {React.Dispatch<React.SetStateAction<_Types.CustomParams_t>>} setParams
  *
- * @property {{data: _Types.CustomModelGenerated_t[], index: number}} listModels
- * @property {React.Dispatch<React.SetStateAction<{data: _Types.CustomModelGenerated_t[], index: number}>>} setListModels
+ * @property {{data: _Types.CustomModelGenerated_t[], index: ('select-model'|number)}} listModels
+ * @property {React.Dispatch<React.SetStateAction<{data: _Types.CustomModelGenerated_t[], index: ('select-model'|number)}>>} setListModels
  * 
  * @property {boolean} isTraining
  * @property {React.Dispatch<React.SetStateAction<boolean>>} setIsTraining
@@ -82,7 +82,6 @@ export function LinearRegressionProvider ({ children }) {
     params_visor   : [],
     params_features: {
       X_features: new Set(),
-      X_feature : '',
       Y_target  : '',
     }
   }
@@ -92,11 +91,11 @@ export function LinearRegressionProvider ({ children }) {
   }
   
   /**
-   * @type {ReturnType<typeof useState<{data: _Types.DatasetProcessed_t[], index: number}>>}
+   * @type {ReturnType<typeof useState<{data: _Types.DatasetProcessed_t[], index: ('select-dataset'|number)}>>}
    */
   const [datasets, setDatasets] = useState({
     data : DEFAULT_DATASETS, 
-    index: -1
+    index: DEFAULT_SELECTOR_DATASET
   })
   /**
    * @type {ReturnType<typeof useRef<_Types.CustomModel_t>>}
@@ -107,16 +106,14 @@ export function LinearRegressionProvider ({ children }) {
    * @type {ReturnType<typeof useState<_Types.StatePrediction_t>>}
    */
   const [prediction, setPrediction] = useState({
-    input_raw         : [],
+    input_0_raw                : [],
     // 
-    input             : [],
-    dataframe_input   : new _dfd.DataFrame(),
-    input_encoding    : [],
-    dataframe_encoding: new _dfd.DataFrame(),
-    input_scaling     : [],
-    dataframe_scaling : new _dfd.DataFrame(),
+    input_1_dataframe_original : new _dfd.DataFrame(),
+    input_1_dataframe_processed: new _dfd.DataFrame(),
+    input_2_dataframe_encoding : new _dfd.DataFrame(),
+    input_3_dataframe_scaling  : new _dfd.DataFrame(),
     // 
-    result            : [],    
+    result                     : [],    
   })
 
   /**
@@ -125,9 +122,12 @@ export function LinearRegressionProvider ({ children }) {
   const [params, setParams] = useState(DEFAULT_PARAMS)
 
   /**
-   * @type {ReturnType<typeof useState<{data: _Types.CustomModelGenerated_t[], index: number|string}>>}
+   * @type {ReturnType<typeof useState<{data: _Types.CustomModelGenerated_t[], index: ('select-model'|number)}>>}
    */
-  const [listModels, setListModels] = useState({data: [], index: DEFAULT_SELECTOR_MODEL})
+  const [listModels, setListModels] = useState({
+    data : [],
+    index: DEFAULT_SELECTOR_MODEL
+  })
 
   /**
    * @type {ReturnType<typeof useState<boolean>>}
@@ -165,7 +165,6 @@ export function LinearRegressionProvider ({ children }) {
 
       accordionActive,
       setAccordionActive,
-
       
       iModelInstance,
       setIModelInstance,

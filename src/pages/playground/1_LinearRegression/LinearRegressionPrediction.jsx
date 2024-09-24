@@ -12,6 +12,7 @@ import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionPredictionForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionForm'
 import LinearRegressionPredictionInfo from '@pages/playground/1_LinearRegression/LinearRegressionPredictionInfo'
+import { TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION } from './utils'
 
 export default function LinearRegressionPrediction() {
   const prefix = 'pages.playground.1-linear-regression.predict.'
@@ -38,6 +39,7 @@ export default function LinearRegressionPrediction() {
     e.preventDefault()
 
     const vector = prediction.input_3_dataframe_scaling.values[0]
+    // @ts-ignore
     const tensor = tfjs.tensor2d([vector])
     const result = listModels.data[listModels.index].model.predict(tensor).dataSync()
     
@@ -48,61 +50,28 @@ export default function LinearRegressionPrediction() {
     
   }
 
-  const handleChange_Model = (e) => {
+  const handleChange_Model_Index = (e) => {
     setListModels((prevState) => ({
       ...prevState,
       index: parseInt(e.target.value)
     }))
   }
 
-  const handleChange_Row = (e) => {
+  const handleChange_Instance_Index = (e) => {
     e.preventDefault()
-
-    const _indexInstance = e.target.value
+    const _indexInstance = parseInt(e.target.value)
     setIndexInstance(_indexInstance)
+
     const dataset_processed = listModels.data[listModels.index].dataset_processed
+    const newPredictionState = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed, _indexInstance)
     
-    const dataframe_original = dataset_processed.dataframe_original.copy()
-    const dataframe_processed = dataset_processed.dataframe_processed.copy()
-    const dataframe_X = dataset_processed.data_processed.dataframe_X.copy()
-    const X = dataset_processed.data_processed.X.copy()
-
-    // Step 1 Los datos en crudo
-    const prediction_input_raw = Array.from(dataframe_original.$data[_indexInstance])
-    
-    // Step 2 Los datos con el encoding, sin scaling y con target
-    const _prediction_input_encoding = Array.from(dataframe_processed.$data[_indexInstance])
-    
-    // Step 3 Los datos con el encoding, sin scaling y sin target
-    const prediction_input_encoding = Array.from(dataframe_X.$data[_indexInstance])
-    
-    // Step 4 Los datos con el encoding, con scaling y sin target
-    const prediction_input_scaling = Array.from(X.$data[_indexInstance])
-
-    const prediction_input = dataframe_processed.$data[_indexInstance]
-    const prediction_input_dataframe_X = dataframe_X.$data[_indexInstance]
-    const prediction_input_X = X.$data[_indexInstance]
-
-    // Con los datos escalados
-    // const prediction_input_processed = dataset_processed.data_processed.scaler.transform(prediction_input)
-
-    // Creamos estructura vacia pero con formato    
-    const df_void_input = new dfd.DataFrame([], { columns: dataframe_processed.columns, dtypes: dataframe_processed.dtypes })
-    const df_void_dataframe_X = new dfd.DataFrame([], { columns: dataframe_X.columns, dtypes: dataframe_X.dtypes })
-    const df_void_X = new dfd.DataFrame([], { columns: X.columns, dtypes: X.dtypes })
-
-    // Insertamos los datos en el dataframe
-    const new_df = df_void_input.append([prediction_input], [0])
-    const new_df_dataframe_X = df_void_dataframe_X.append([prediction_input_dataframe_X], [0])
-    const new_df_X = df_void_X.append([prediction_input_X], [0])
-    // Guardamos
-
-    setPrediction((prevState)=>({
+    setPrediction((prevState) => ({
       ...prevState,
-      input_0_raw               : prediction_input_raw,
-      input_1_dataframe_original         : new_df.copy(),
-      input_2_dataframe_encoding: new_df_dataframe_X.copy(),
-      input_3_dataframe_scaling : new_df_X.copy(),
+      input_0_raw                : newPredictionState.input_0_raw,
+      input_1_dataframe_original : newPredictionState.input_1_dataframe_original,
+      input_1_dataframe_processed: newPredictionState.input_1_dataframe_processed,
+      input_2_dataframe_encoding : newPredictionState.input_2_dataframe_encoding,
+      input_3_dataframe_scaling  : newPredictionState.input_3_dataframe_scaling,
     }))
   }
 
@@ -126,7 +95,7 @@ export default function LinearRegressionPrediction() {
                            size={'sm'}
                            defaultValue={indexInstance}
                            disabled={!showPrediction}
-                           onChange={(e) => handleChange_Row(e)}>
+                           onChange={(e) => handleChange_Instance_Index(e)}>
                 <option disabled={true} value={DEFAULT_SELECTOR_INSTANCE}><Trans i18nKey={prefix + 'list-instances'} /></option>
                 <>
                   {showPrediction && <>
@@ -150,7 +119,7 @@ export default function LinearRegressionPrediction() {
                            data-value={listModels.index}
                            value={listModels.index}
                            disabled={!showPrediction}
-                           onChange={(e) => handleChange_Model(e)}
+                           onChange={(e) => handleChange_Model_Index(e)}
               >
                 <option disabled={true} value={DEFAULT_SELECTOR_MODEL}><Trans i18nKey={prefix + 'list-models'} /></option>
                 <>

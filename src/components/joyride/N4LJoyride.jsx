@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Joyride from 'react-joyride'

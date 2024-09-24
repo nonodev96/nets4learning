@@ -2,18 +2,34 @@ import React from 'react'
 import { Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
+import * as _tfjs from '@tensorflow/tfjs'
 
+import * as _Types from '@core/types'
 import { UPLOAD } from '@/DATA_MODEL'
-import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import { VERBOSE } from '@/CONSTANTS'
+import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import TabularClassificationPredictionForm from '@pages/playground/0_TabularClassification/TabularClassificationPredictionForm'
 import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
-import * as _Types from '@core/types'
 
 /**
  * @typedef TabularClassificationPredictionProps_t
+ * @property {string} dataset - KEY
  * @property {_Types.DatasetProcessed_t[]} datasets
+ * @property {number} datasetIndex
+ * @property {_Types.TabularClassificationGeneratedModel_t[]} generatedModels
+ * @property {React.Dispatch<React.SetStateAction<_Types.TabularClassificationGeneratedModel_t[]>>} setGeneratedModels
+ * @property {number} generatedModelsIndex
+ * @property {React.Dispatch<React.SetStateAction<number>>} setGeneratedModelsIndex
+ * @property {_tfjs.Sequential} Model
+ * @property {React.Dispatch<React.SetStateAction<_tfjs.Sequential>>} setModel
+ * @property {Array<any>} inputDataToPredict
+ * @property {React.Dispatch<React.SetStateAction<Array<any>>>} setInputDataToPredict
+ * @property {Array<any>} inputVectorToPredict
+ * @property {React.Dispatch<React.SetStateAction<Array<any>>>} setInputVectorToPredict
+ * @property {_Types.TabularClassificationPredictionBar_t} predictionBar
+ * @property {(e: any) => Promise<void>} handleSubmit_PredictVector
+ * 
  */
 
 /**

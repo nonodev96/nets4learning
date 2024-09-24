@@ -31,3 +31,7 @@
   max-height: clamp(20em, 10vh, 250px);
   overflow: auto;
 }
+
+.monospace {
+  font-family: 'Courier New', Courier, monospace;
+}
