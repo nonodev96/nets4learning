@@ -113,7 +113,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
     // ------------------------
     // #region Boston housing
     const boston_info = 'boston-housing.names'
-    const boston_csv = 'boston-housing.csv'
+    const boston_csv = 'boston-housing-2020.csv'
     const boston_dataset_promise_info = await fetch(path_datasets + boston_info)
     const boston_container_info = await boston_dataset_promise_info.text()
     let boston_dataframe_original = await dfd.readCSV(path_datasets + boston_csv)
@@ -131,14 +131,14 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       { column_name: 'RAD',     column_type: 'Integer',      column_role: 'Feature', column_missing_values: false },
       { column_name: 'TAX',     column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'PTRATIO', column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
-      { column_name: 'B',       column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
+      // { column_name: 'B',       column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'LSTAT',   column_type: 'Continuous',   column_role: 'Feature', column_missing_values: false },
       { column_name: 'MEDV',    column_type: 'Continuous',   column_role: 'Target',  column_missing_values: false }
     ]
     /** @type {_Types.DataFrameColumnTransform_t[]} */
     const boston_dataset_transforms = [
       ...boston_dataset.filter(F_FILTER_Categorical).map(F_MAP_LabelEncoder),
-      { column_name: 'B',    column_transform: 'drop'    },
+      // { column_name: 'B',    column_transform: 'drop'    },
       // { column_name: 'MEDV', column_transform: 'drop'    },
     ]
     const boston_target = 'MEDV'
@@ -272,7 +272,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         { is_disabled: false, units: 20, activation: 'sigmoid' },
         { is_disabled: true,  units: 1,  activation: 'linear' },
       ],
-      'boston-housing.csv': [
+      'boston-housing-2020.csv': [
         { is_disabled: false, units: 32, activation: 'sigmoid'   },
         { is_disabled: false, units: 16, activation: 'sigmoid'   },
         { is_disabled: true,  units: 1,  activation: 'linear'    }

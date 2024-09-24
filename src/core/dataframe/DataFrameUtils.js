@@ -111,13 +111,12 @@ export function TransformArrayToSeriesTensor (series) {
 export function DataFrameEncoder (dataframe, dataframe_transforms) {
   /** @type {_Types.EncoderMap_t} */
   const encoder_map = {}
-  console.log({dataframe, dataframe_transforms})
+  const dataframe_local = dataframe.copy()
   for (const { column_name, column_transform } of dataframe_transforms) {
     switch (column_transform) {
       case 'label-encoder': {
         const encoder = new dfd.LabelEncoder()
-        const serie = dataframe[column_name]
-        encoder.fit(serie)
+        encoder.fit(dataframe_local[column_name])
         encoder_map[column_name] = {
           type   : 'label-encoder',
           encoder: encoder,
@@ -126,8 +125,7 @@ export function DataFrameEncoder (dataframe, dataframe_transforms) {
       }
       case 'one-hot-encoder': {
         const encoder = new dfd.OneHotEncoder()
-        const serie = dataframe[column_name]
-        encoder.fit(serie)
+        encoder.fit(dataframe_local[column_name])
         encoder_map[column_name] = {
           type   : 'label-encoder',
           encoder: encoder,
@@ -380,14 +378,10 @@ export function DataFrameTransformAndEncoder (dataframe, dataframe_transforms) {
  */
 export function DataFrameInstanceSetCellValue(dataframe, row, column_name, value) {
   const oldValuesRows = dataframe.loc({rows: [row]}).values[0]
-  
   const columnIndex = dataframe.columns.indexOf(column_name)
-
   const newValuesRows = Array.from(oldValuesRows)
   newValuesRows[columnIndex] = (value)
-
   const df_void = new dfd.DataFrame([], { columns: dataframe.columns, dtypes: dataframe.dtypes })
   let new_df = df_void.append(newValuesRows, [0])
-
   return new_df
 }

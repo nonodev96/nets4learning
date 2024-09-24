@@ -14,15 +14,13 @@ import {
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
 } from '@/pages/playground/1_LinearRegression/CONSTANTS'
+import { DEFAULT_SELECTOR_MODEL } from '@/CONSTANTS'
 
 
 /**
  * @typedef CustomLinearRegressionContext_t
  *
  * @property {ReturnType<typeof useRef<_Types.CustomModel_t>>} modelRef
- * 
- * Este contiene el dataframe 
- * @property {ReturnType<typeof useRef<_Types.Prediction_t>>} predictionInstanceRef
  * 
  * Este contiene los datos de predicción
  * @property {_Types.StatePrediction_t} prediction
@@ -106,21 +104,19 @@ export function LinearRegressionProvider ({ children }) {
   const modelRef = useRef(DEFAULT_MODEL)
 
   /**
-   * @type {ReturnType<typeof useRef<_Types.Prediction_t>>}
-   */
-  const predictionInstanceRef = useRef({
-    dataframe: new _dfd.DataFrame(),
-  })
-
-  /**
    * @type {ReturnType<typeof useState<_Types.StatePrediction_t>>}
    */
   const [prediction, setPrediction] = useState({
-    input_raw     : [],
-    input         : [],
-    input_encoding: [],
-    input_scaling : [],
-    result        : [],    
+    input_raw         : [],
+    // 
+    input             : [],
+    dataframe_input   : new _dfd.DataFrame(),
+    input_encoding    : [],
+    dataframe_encoding: new _dfd.DataFrame(),
+    input_scaling     : [],
+    dataframe_scaling : new _dfd.DataFrame(),
+    // 
+    result            : [],    
   })
 
   /**
@@ -129,9 +125,9 @@ export function LinearRegressionProvider ({ children }) {
   const [params, setParams] = useState(DEFAULT_PARAMS)
 
   /**
-   * @type {ReturnType<typeof useState<{data: _Types.CustomModelGenerated_t[], index: number}>>}
+   * @type {ReturnType<typeof useState<{data: _Types.CustomModelGenerated_t[], index: number|string}>>}
    */
-  const [listModels, setListModels] = useState({data: [], index: -1})
+  const [listModels, setListModels] = useState({data: [], index: DEFAULT_SELECTOR_MODEL})
 
   /**
    * @type {ReturnType<typeof useState<boolean>>}
@@ -152,8 +148,6 @@ export function LinearRegressionProvider ({ children }) {
     <LinearRegressionContext.Provider value={{
       modelRef,
       
-      predictionInstanceRef,
-
       prediction,
       setPrediction,
 

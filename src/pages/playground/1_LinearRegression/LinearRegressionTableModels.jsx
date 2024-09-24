@@ -119,9 +119,15 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
                             <span className={'text-nowrap'} style={{ fontFamily: 'monospace' }}>Y: {value.params_features.Y_target}</span>
                           </td>
                           */}
-                          <td>{value.params_training.id_optimizer}</td>
                           <td>
-                            <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>{value.params_training.id_loss}</span>
+                            <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
+                              {value.params_training.id_optimizer}
+                            </span>
+                          </td>
+                          <td>
+                            <span style={{ fontFamily: 'monospace' }} className={'text-nowrap'}>
+                              {value.params_training.id_loss}
+                            </span>
                           </td>
                           <td>
                             {value.params_training.list_id_metrics

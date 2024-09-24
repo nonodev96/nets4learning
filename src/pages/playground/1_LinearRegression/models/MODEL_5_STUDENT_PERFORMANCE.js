@@ -80,8 +80,8 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   async DATASETS () {
     const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
     const student_info = 'student.names'
-    const mat_csv = 'student-mat.csv'
-    const por_csv = 'student-por.csv'
+    const mat_csv = 'student-mat-2024.csv'
+    const por_csv = 'student-por-2024.csv'
 
     const dataset_fetch_info = await fetch(path_datasets + student_info)
     const student_container_info = await dataset_fetch_info.text()
@@ -120,8 +120,8 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
       { column_name: 'Walc',       column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'health',     column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
       { column_name: 'absences',   column_type: 'Integer',       column_role: 'Feature', column_missing_values: false },
-      { column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
-      { column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
+      // { column_name: 'G1',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
+      // { column_name: 'G2',         column_type: 'Categorical',   column_role: 'Target',  column_missing_values: false },
       { column_name: 'G3',         column_type: 'Integer',       column_role: 'Target',  column_missing_values: false },
     ]
     
@@ -139,7 +139,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const mat_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(mat_dataframe_processed, mat_dataset_transforms)
     const mat_encoders_map = mat_dataframe_encoder.encoder_map
     mat_dataframe_processed = mat_dataframe_encoder.dataframe_processed
-    const mat_dataframe_X = mat_dataframe_processed.drop({ columns: ['G1', 'G2', 'G3'] }).copy()
+    const mat_dataframe_X = mat_dataframe_processed.drop({ columns: ['G3'] }).copy()
     /**@type {_Types.Series_t}*/
     const mat_dataframe_y = mat_dataframe_original[mat_target]
     const minMaxScaler1 = new dfd.MinMaxScaler()
@@ -163,7 +163,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     const por_dataframe_encoder = DataFrameUtils.DataFrameTransformAndEncoder(por_dataframe_processed, por_dataset_transforms)
     const por_encoders_map = por_dataframe_encoder.encoder_map
     por_dataframe_processed = por_dataframe_encoder.dataframe_processed
-    const por_dataframe_X = por_dataframe_processed.drop({ columns: ['G1', 'G2', 'G3'] }).copy()
+    const por_dataframe_X = por_dataframe_processed.drop({ columns: ['G3'] }).copy()
     /**@type {_Types.Series_t}*/
     const por_dataframe_y = por_dataframe_original[por_target]
     const minMaxScaler2 = new dfd.MinMaxScaler()
@@ -255,14 +255,14 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
       'absences'
     ]
     const models = {
-      'student-mat.csv': [
+      'student-mat-2024.csv': [
         { 
           model_path: path + '/0/lr-model-0.json', 
           X         : mat_columns_X,               
           y         : 'G3' 
         },
       ],
-      'student-por.csv': []
+      'student-por-2024.csv': []
     }
     return models[dataset]
   }

@@ -20,7 +20,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           <Form.Control size={'sm'}
                         disabled={true}
                         className={styles.border_blue}
-                        value={prediction.input.join(',')} />
+                        value={prediction.input_1_dataframe_original.values[0].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-description'} />
           </Form.Text>
@@ -34,7 +34,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           <Form.Control size={'sm'}
                         disabled={true}
                         className={styles.border_pink}
-                        value={prediction.input_encoding.join(',')} />
+                        value={prediction.input_2_dataframe_encoding.values[0].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-processed-description'} />
           </Form.Text>
@@ -48,7 +48,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           <Form.Control size={'sm'}
                         disabled={true}
                         className={styles.border_pink}
-                        value={prediction.input_scaling.join(',')} />
+                        value={prediction.input_3_dataframe_scaling.values[0].join(',')} />
           <Form.Text className={'text-muted'}>
             <Trans i18nKey={'prediction-input-processed-description'} />
           </Form.Text>

@@ -5,7 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import * as dfd from  'danfojs'
 import * as tfjs from  '@tensorflow/tfjs'
 
-import { VERBOSE } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_INSTANCE, DEFAULT_SELECTOR_MODEL, VERBOSE } from '@/CONSTANTS'
 import N4LSummary from '@components/summary/N4LSummary'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 
@@ -18,8 +18,6 @@ export default function LinearRegressionPrediction() {
   const { t } = useTranslation()
 
   const {
-    predictionInstanceRef,
-
     prediction,
     setPrediction,
 
@@ -32,19 +30,17 @@ export default function LinearRegressionPrediction() {
   /**
    * @type {ReturnType<typeof useState<string|number>>}
    */
-  const [indexInstance, setIndexInstance] = useState('__disabled__')
+  const [indexInstance, setIndexInstance] = useState(DEFAULT_SELECTOR_INSTANCE)
 
   // ESTE DEBE CAMBIAR EL DATAFRAME escalando y procesando los datos para predecir
   // TODO
   const handleSubmit_Predict = async (e) => {
     e.preventDefault()
 
-    // @ts-ignore
-    const tensor = tfjs.tensor2d([prediction.input_scaling])
-    // @ts-ignore
+    const vector = prediction.input_3_dataframe_scaling.values[0]
+    const tensor = tfjs.tensor2d([vector])
     const result = listModels.data[listModels.index].model.predict(tensor).dataSync()
     
-    console.log(result)
     setPrediction((prevState) => ({
       ...prevState,
       result: result
@@ -79,37 +75,39 @@ export default function LinearRegressionPrediction() {
     
     // Step 3 Los datos con el encoding, sin scaling y sin target
     const prediction_input_encoding = Array.from(dataframe_X.$data[_indexInstance])
-    // Step 3 Los datos con el encoding, con scaling y sin target
+    
+    // Step 4 Los datos con el encoding, con scaling y sin target
     const prediction_input_scaling = Array.from(X.$data[_indexInstance])
 
-    // Step 4 Los datos para transformarlos (con el encoding, pero sin el scaling)
-    // const size = dataframe_X.shape[1]
-    const prediction_input = dataframe_X.$data[_indexInstance]
+    const prediction_input = dataframe_processed.$data[_indexInstance]
+    const prediction_input_dataframe_X = dataframe_X.$data[_indexInstance]
+    const prediction_input_X = X.$data[_indexInstance]
 
     // Con los datos escalados
     // const prediction_input_processed = dataset_processed.data_processed.scaler.transform(prediction_input)
-    
+
     // Creamos estructura vacia pero con formato    
-    const df_void = new dfd.DataFrame([], { 
-      columns: dataframe_X.columns, 
-      dtypes : dataframe_X.dtypes
-    })
+    const df_void_input = new dfd.DataFrame([], { columns: dataframe_processed.columns, dtypes: dataframe_processed.dtypes })
+    const df_void_dataframe_X = new dfd.DataFrame([], { columns: dataframe_X.columns, dtypes: dataframe_X.dtypes })
+    const df_void_X = new dfd.DataFrame([], { columns: X.columns, dtypes: X.dtypes })
+
     // Insertamos los datos en el dataframe
-    const new_df = df_void.append([prediction_input], [0])
+    const new_df = df_void_input.append([prediction_input], [0])
+    const new_df_dataframe_X = df_void_dataframe_X.append([prediction_input_dataframe_X], [0])
+    const new_df_X = df_void_X.append([prediction_input_X], [0])
     // Guardamos
-    predictionInstanceRef.current.dataframe = new_df.copy()
 
     setPrediction((prevState)=>({
       ...prevState,
-      input_raw     : prediction_input_raw,
-      input         : prediction_input,
-      input_encoding: prediction_input_encoding,
-      input_scaling : prediction_input_scaling
+      input_0_raw               : prediction_input_raw,
+      input_1_dataframe_original         : new_df.copy(),
+      input_2_dataframe_encoding: new_df_dataframe_X.copy(),
+      input_3_dataframe_scaling : new_df_X.copy(),
     }))
   }
 
   useEffect(() => {
-    setShowPrediction((listModels.data.length > 0 && listModels.index >= 0))
+    setShowPrediction((listModels.data.length > 0 && listModels.index !== DEFAULT_SELECTOR_MODEL && listModels.index >= 0))
   }, [listModels, listModels.data, listModels.index, setShowPrediction])
 
   useEffect(() => {
@@ -128,11 +126,10 @@ export default function LinearRegressionPrediction() {
                            size={'sm'}
                            defaultValue={indexInstance}
                            disabled={!showPrediction}
-                           onChange={(e) => handleChange_Row(e)}
-              >
-                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-instances'} /></option>
+                           onChange={(e) => handleChange_Row(e)}>
+                <option disabled={true} value={DEFAULT_SELECTOR_INSTANCE}><Trans i18nKey={prefix + 'list-instances'} /></option>
                 <>
-                  {listModels.data.length > 0 && listModels.index >= 0 && <>
+                  {showPrediction && <>
                     {Array(listModels.data[listModels.index].dataset_processed.data_processed.dataframe_X.values.length)
                       .fill(0)
                       .map((value, index) => {
@@ -150,11 +147,12 @@ export default function LinearRegressionPrediction() {
             <Form.Group controlId={'model-selector'}>
               <Form.Select aria-label={'model-selector'}
                            size={'sm'}
+                           data-value={listModels.index}
                            value={listModels.index}
                            disabled={!showPrediction}
                            onChange={(e) => handleChange_Model(e)}
               >
-                <option disabled={true} value="__disabled__"><Trans i18nKey={prefix + 'list-models'} /></option>
+                <option disabled={true} value={DEFAULT_SELECTOR_MODEL}><Trans i18nKey={prefix + 'list-models'} /></option>
                 <>
                   {listModels
                     .data

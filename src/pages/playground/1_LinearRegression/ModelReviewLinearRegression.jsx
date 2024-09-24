@@ -109,9 +109,6 @@ export default function ModelReviewLinearRegression ({ dataset }) {
         const { dataframe_X } = data_processed
         setDataFrame_X(dataframe_X)
 
-        const { model_path } = models.data[models.index]
-        console.log({model_path, dataframe_original, dataframe_X })
-        
         setInstances((_prevState) => ({
           data : dataframe_X.values,
           index: DEFAULT_SELECTOR_INSTANCE

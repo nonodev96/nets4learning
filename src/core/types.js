@@ -215,10 +215,11 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 /**
  * @typedef StatePrediction_t
- * @property {[]} input_raw - Incluye el target
- * @property {[]} input - Sin el target
- * @property {[]} input_encoding
- * @property {[]} input_scaling
+ * @property {[]} input_0_raw - Incluye el target
+ * @property {_dfd.DataFrame} input_1_dataframe_original
+ * @property {_dfd.DataFrame} input_1_dataframe_processed
+ * @property {_dfd.DataFrame} input_2_dataframe_encoding
+ * @property {_dfd.DataFrame} input_3_dataframe_scaling
  * @property {[]} result
  */
 

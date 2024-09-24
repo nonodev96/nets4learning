@@ -5,7 +5,7 @@ import * as dfd from 'danfojs'
 
 import * as _Types from '@core/types'
 import { VERBOSE } from '@/CONSTANTS'
-import { DataFrameInstanceSetCellValue } from '@/core/dataframe/DataFrameUtils'
+import { DataFrameInstanceSetCellValue as DataFrameSetCellValue } from '@/core/dataframe/DataFrameUtils'
 import LinearRegressionContext from '@/context/LinearRegressionContext'
 
 /**
@@ -22,8 +22,6 @@ import LinearRegressionContext from '@/context/LinearRegressionContext'
 export default function LinearRegressionPredictionForm ({ generatedModel }) {
 
   const {
-    predictionInstanceRef, 
-    
     prediction,
     setPrediction
   } = useContext(LinearRegressionContext)
@@ -50,40 +48,46 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
   }
 
   const handleChange_EditInstanceEncoding = (column_name, new_value) => {
-    const newDataFrameInstance = DataFrameInstanceSetCellValue(predictionInstanceRef.current.dataframe, 0, column_name, new_value)
-    predictionInstanceRef.current.dataframe = newDataFrameInstance.copy()
-  
+    const [new_value_encoding] = generatedModel.dataset_processed.data_processed.encoders[column_name].encoder.transform([new_value])
+    const newInputDataFrameOriginal = DataFrameSetCellValue(prediction.input_1_dataframe_original, 0, column_name, new_value)
+    const newInputDataFrameProcessed = DataFrameSetCellValue(prediction.input_1_dataframe_processed, 0, column_name, new_value)
+    const newInputDataFrameEncoding = DataFrameSetCellValue(prediction.input_2_dataframe_encoding, 0, column_name, new_value_encoding)
+    const newInputDataFrameScaling = generatedModel.dataset_processed.data_processed.scaler.transform(newInputDataFrameEncoding)
+    
+    setPrediction((prevState) => {
+      // console.log({
+      //   prevState, 
+      //   newInputDataFrameOriginal,
+      //   newInputDataFrameProcessed,
+      //   newInputDataFrameEncoding,
+      //   newInputDataFrameScaling,
+      // })
+      return {
+        ...prevState,
+        input_1_dataframe_original : newInputDataFrameOriginal,
+        input_1_dataframe_processed: newInputDataFrameProcessed,
+        input_2_dataframe_encoding : newInputDataFrameEncoding,
+        input_3_dataframe_scaling  : newInputDataFrameScaling
+      }
+    })
   }
   
   const handleChange_EditInstance = (column_name, new_value) => {
-    const newDataFrameInstance = DataFrameInstanceSetCellValue(predictionInstanceRef.current.dataframe, 0, column_name, new_value)
-    predictionInstanceRef.current.dataframe = newDataFrameInstance.copy()
-
-
-
     setPrediction((prevState) => {
-      const columnIndex = predictionInstanceRef.current.dataframe.columns.indexOf(column_name)
-      
-      prevState.input[columnIndex] = new_value
-      prevState.input_encoding[columnIndex] = new_value
-
-      const newInput = prevState.input
-      const newInputEncoding = prevState.input_encoding
-      // const newInputScaling = prevState.input_scaling
-      // console.log({newInputEncoding})
-      // // Con los datos escalados
-      const newInputScaling = dataset_processed.data_processed.scaler.transform(newInputEncoding)
+      const newInputDataFrameOriginal = DataFrameSetCellValue(prediction.input_1_dataframe_original, 0, column_name, new_value)
+      const newInputDataFrameProcessed = DataFrameSetCellValue(prediction.input_1_dataframe_processed, 0, column_name, new_value)
+      const newInputDataFrameEncoding = DataFrameSetCellValue(prediction.input_2_dataframe_encoding, 0, column_name, new_value)
+      // const newInputDataFrameScaling = DataFrameSetCellValue(prediction.input_2_dataframe_encoding, 0, column_name, new_value)
+      const newInputDataFrameScaling = generatedModel.dataset_processed.data_processed.scaler.transform(newInputDataFrameEncoding)
 
       return {
         ...prevState,
-        input         : newInput,
-        input_encoding: newInputEncoding,
-        input_scaling : newInputScaling
+        input_1_dataframe_original : newInputDataFrameOriginal,
+        input_1_dataframe_processed: newInputDataFrameProcessed,
+        input_2_dataframe_encoding : newInputDataFrameEncoding,
+        input_3_dataframe_scaling  : newInputDataFrameScaling
       }
     })
-
-    const { dataset_processed } = generatedModel
-    console.log({ dataset_processed, d: predictionInstanceRef.current.dataframe })
   }
 
   if (VERBOSE) console.debug('render LinearRegressionPredictionForm')
@@ -94,11 +98,8 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
       .columns
       .map((column_name, index) => {
       const column_type = generatedModel.dataset_processed.dataframe_original[column_name].dtype
-      const column_value = prediction.input[index]
+      const column_value = prediction.input_1_dataframe_original.values[0][index]
       
-      
-      // console.log({ column_name, column_type, column_value })
-
       switch (column_type) {
         case 'int32': {
           return <Col className="mb-3" key={index}>
@@ -140,14 +141,14 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
               <Form.Label><b>{column_name}</b></Form.Label>
               <Form.Select aria-label={'linear-regression-dynamic-form-' + column_name}
                            size={'sm'}
-                           value={prediction.input_encoding[index]}
+                           value={column_value}
                            className={getColor(generatedModel, column_name)}
                            disabled={isDisabled(generatedModel, column_name)}
                            onChange={e => handleChange_EditInstanceEncoding(column_name, e.target.value)}>
                 <>
                   {Object.entries(labelEncoder.$labels)
                     .map(([text, value], index_options) => {
-                        return <option key={index_options} value={value}>{text}</option>
+                        return <option key={index_options} value={text}>{text}</option>
                     })
                   }
                 </>
