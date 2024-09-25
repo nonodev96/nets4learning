@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/
+HostUrl=https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.14/model/ssd_mobilenetv1_model.bin

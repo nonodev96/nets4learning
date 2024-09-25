@@ -97,8 +97,8 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
   }
 
   async ENABLE_MODEL() {
-    // const modelPath = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
-    const modelPath = process.env.REACT_APP_PATH + '/models/02-object-detection/face-api-js/'
+    // const modelPath = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/'
+    const modelPath = process.env.REACT_APP_PATH + '/models/02-object-detection/face-api-js/v1.7.14/'
     await Promise.all([
       faceapi.nets.ssdMobilenetv1.load(modelPath),
       faceapi.nets.tinyFaceDetector.load(modelPath),
