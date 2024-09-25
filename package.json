@@ -43,7 +43,7 @@
     "fabric": "^5.3.0",
     "face-api.js": "^0.22.2",
     "fingerpose": "^0.1.0",
-    "handsign-multilingual": "file:../handsign-multilingual",
+    "handsign-multilingual": "^0.3.0",
     "history": "^5.3.0",
     "i18next": "^22.5.1",
     "i18next-browser-languagedetector": "^7.1.0",
