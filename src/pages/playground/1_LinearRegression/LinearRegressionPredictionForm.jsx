@@ -1,6 +1,7 @@
 import styles from '@pages/playground/1_LinearRegression/LinearRegression.module.css'
 import React, { useContext } from 'react'
 import { Row, Col, Form } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
 import * as _Types from '@core/types'
@@ -25,6 +26,8 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
     prediction,
     setPrediction
   } = useContext(LinearRegressionContext)
+
+  const { t } = useTranslation()
 
   const getColor = (generatedModel, column_name) => {
     if (generatedModel.params_features.Y_target === column_name) {
@@ -54,13 +57,6 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
     const newInputDataFrameScaling = generatedModel.dataset_processed.data_processed.scaler.transform(newInputDataFrameEncoding)
     
     setPrediction((prevState) => {
-      // console.log({
-      //   prevState, 
-      //   newInputDataFrameOriginal,
-      //   newInputDataFrameProcessed,
-      //   newInputDataFrameEncoding,
-      //   newInputDataFrameScaling,
-      // })
       return {
         ...prevState,
         input_1_dataframe_original : newInputDataFrameOriginal,
@@ -90,7 +86,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
   }
 
   if (VERBOSE) console.debug('render LinearRegressionPredictionForm')
-  return <Row xs={6} sm={6} md={4} lg={4} xl={4} xxl={6}>
+  return <Row xs={4} sm={4} md={4} lg={4} xl={4} xxl={6}>
     {generatedModel
       .dataset_processed
       .dataframe_processed
@@ -103,7 +99,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
         case 'int32': {
           return <Col className="mb-3" key={index}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
+              <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Control type="number"
                             step={1}
                             size={'sm'}
@@ -112,14 +108,14 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
                             className={getColor(generatedModel, column_name)}
                             disabled={isDisabled(generatedModel, column_name)}
                             onChange={e => handleChange_EditInstance(column_name, parseInt(e.target.value))} />
-              <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
+              <Form.Text className="text-muted"><small>Dtype: {column_type}</small></Form.Text>
             </Form.Group>
           </Col>
         }
         case 'float32': {
           return <Col className="mb-3" key={index}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
+              <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Control type="number"
                             step={0.1}
                             placeholder={'float32'}
@@ -128,7 +124,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
                             className={getColor(generatedModel, column_name)}
                             disabled={isDisabled(generatedModel, column_name)}
                             onChange={e => handleChange_EditInstance(column_name, parseFloat(e.target.value))} />
-              <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
+              <Form.Text className="text-muted"><small>Dtype: {column_type}</small></Form.Text>
             </Form.Group>
           </Col>
         }
@@ -137,7 +133,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
           labelEncoder.fit(generatedModel.dataset_processed.dataframe_original[column_name])
           return <Col className={'mb-3'} key={index}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
-              <Form.Label><b>{column_name}</b></Form.Label>
+              <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Select aria-label={'linear-regression-dynamic-form-' + column_name}
                            size={'sm'}
                            value={column_value}
@@ -146,13 +142,13 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
                            onChange={e => handleChange_EditInstanceEncoding(column_name, e.target.value)}>
                 <>
                   {Object.entries(labelEncoder.$labels)
-                    .map(([text, value], index_options) => {
+                    .map(([text, _value], index_options) => {
                         return <option key={index_options} value={text}>{text}</option>
                     })
                   }
                 </>
               </Form.Select>
-              <Form.Text className="text-muted">Dtype: {column_type}</Form.Text>
+              <Form.Text className="text-muted"><small>Dtype: {column_type}</small></Form.Text>
             </Form.Group>
           </Col>
         }

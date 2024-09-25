@@ -22,6 +22,42 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
   i18n_TITLE = 'datasets-models.1-linear-regression.breast-cancer.title'
   _KEY = 'BREAST_CANCER'
 
+  wdbc_columns_X = [
+    'Time',
+    'radius1',
+    'texture1',
+    'perimeter1',
+    'area1',
+    'smoothness1',
+    'compactness1',
+    'concavity1',
+    'concave_points1',
+    'symmetry1',
+    'fractal_dimension1',
+    'radius2',
+    'texture2',
+    'perimeter2',
+    'area2',
+    'smoothness2',
+    'compactness2',
+    'concavity2',
+    'concave_points2',
+    'symmetry2',
+    'fractal_dimension2',
+    'radius3',
+    'texture3',
+    'perimeter3',
+    'area3',
+    'smoothness3',
+    'compactness3',
+    'concavity3',
+    'concave_points3',
+    'symmetry3',
+    'fractal_dimension3',
+    'tumor_size',
+    'lymph_node_status',
+  ]
+
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.breast-cancer.description.'
     return <>
@@ -374,50 +410,20 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
     ]
   }
 
+  /**
+   * 
+   * @param {string} [dataset='']
+   * @return {Promise<_Types.CustomModel_t[]>}
+   */
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/breast-cancer'
-    const wdbc_columns_X = [
-      'Time',
-      'radius1',
-      'texture1',
-      'perimeter1',
-      'area1',
-      'smoothness1',
-      'compactness1',
-      'concavity1',
-      'concave_points1',
-      'symmetry1',
-      'fractal_dimension1',
-      'radius2',
-      'texture2',
-      'perimeter2',
-      'area2',
-      'smoothness2',
-      'compactness2',
-      'concavity2',
-      'concave_points2',
-      'symmetry2',
-      'fractal_dimension2',
-      'radius3',
-      'texture3',
-      'perimeter3',
-      'area3',
-      'smoothness3',
-      'compactness3',
-      'concavity3',
-      'concave_points3',
-      'symmetry3',
-      'fractal_dimension3',
-      'tumor_size',
-      'lymph_node_status',
-    ]
     const models = {
       'breast-cancer-wisconsin.csv': [],
       'wpbc.csv'                   : [],
       'wdbc.csv'                   : [
         { 
           model_path: path + '/0/lr-model-0.json', 
-          X         : wdbc_columns_X, 
+          X         : this.wdbc_columns_X, 
           y         : 'Outcome'
         }
       ],

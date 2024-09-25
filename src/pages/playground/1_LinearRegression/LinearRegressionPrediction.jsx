@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button, Card, Col, Row, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
-
-import * as dfd from  'danfojs'
 import * as tfjs from  '@tensorflow/tfjs'
 
 import { DEFAULT_SELECTOR_INSTANCE, DEFAULT_SELECTOR_MODEL, VERBOSE } from '@/CONSTANTS'
 import N4LSummary from '@components/summary/N4LSummary'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
-
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import LinearRegressionPredictionForm from '@pages/playground/1_LinearRegression/LinearRegressionPredictionForm'
 import LinearRegressionPredictionInfo from '@pages/playground/1_LinearRegression/LinearRegressionPredictionInfo'
@@ -33,15 +30,15 @@ export default function LinearRegressionPrediction() {
    */
   const [indexInstance, setIndexInstance] = useState(DEFAULT_SELECTOR_INSTANCE)
 
-  // ESTE DEBE CAMBIAR EL DATAFRAME escalando y procesando los datos para predecir
-  // TODO
   const handleSubmit_Predict = async (e) => {
     e.preventDefault()
 
     const vector = prediction.input_3_dataframe_scaling.values[0]
     // @ts-ignore
     const tensor = tfjs.tensor2d([vector])
-    const result = listModels.data[listModels.index].model.predict(tensor).dataSync()
+    const model = (/**@type {tfjs.LayersModel}*/(listModels.data[listModels.index].model))
+    const predictTensor = (/**@type {tfjs.Tensor}*/(model.predict(tensor)))
+    const result = [predictTensor.dataSync()]
     
     setPrediction((prevState) => ({
       ...prevState,
@@ -78,10 +75,6 @@ export default function LinearRegressionPrediction() {
   useEffect(() => {
     setShowPrediction((listModels.data.length > 0 && listModels.index !== DEFAULT_SELECTOR_MODEL && listModels.index >= 0))
   }, [listModels, listModels.data, listModels.index, setShowPrediction])
-
-  useEffect(() => {
-    console.log(prediction)
-  }, [prediction])
 
   if (VERBOSE) console.debug('render LinearRegressionPrediction')
   return <>
@@ -164,7 +157,7 @@ export default function LinearRegressionPrediction() {
             </Col>
           </Row>
           <hr />
-          <Form onSubmit={handleSubmit_Predict}>
+          <Form onSubmit={handleSubmit_Predict} noValidate>
             
             <LinearRegressionPredictionForm generatedModel={listModels.data[listModels.index]} />
 

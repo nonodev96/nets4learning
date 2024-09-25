@@ -2,6 +2,7 @@ import { Modal } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import DataFramePlotContext from '../_context/DataFramePlotContext'
+import { VERBOSE } from '@/CONSTANTS'
 
 export default function DataFramePlotModalDescription () {
   const {
@@ -32,7 +33,7 @@ export default function DataFramePlotModalDescription () {
   }, [dataframePlotConfig.PLOT_ENABLE, t, setPlotDescription])
 
   useEffect(() => {
-    console.debug('useEffect [ descriptionPlot() ]')
+    if (VERBOSE) console.debug('useEffect [ descriptionPlot() ]')
     descriptionPlot()
   }, [descriptionPlot])
 

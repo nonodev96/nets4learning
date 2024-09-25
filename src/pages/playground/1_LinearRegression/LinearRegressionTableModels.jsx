@@ -21,7 +21,7 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
 
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect[listModels.data, rowsPerPage]')
-    const rowsCount = listModels.length
+    const rowsCount = listModels.data.length
     const pageCount = Math.ceil(rowsCount / rowsPerPage)
 
     setPageCount(pageCount)

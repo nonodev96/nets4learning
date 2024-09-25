@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Accordion, Button, Card, Form } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
 
-import { VERBOSE } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_DATASET, VERBOSE } from '@/CONSTANTS'
 import alertHelper from '@utils/alertHelper'
 import { TYPE_ACTIVATION } from '@core/nn-utils/ArchitectureTypesHelper'
 import LinearRegressionContext from '@context/LinearRegressionContext'
@@ -21,7 +21,11 @@ export default function LinearRegressionEditorLayers() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    setShow(datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed)
+    setShow(datasets 
+      && datasets.data.length > 0
+      && datasets.index !== DEFAULT_SELECTOR_DATASET
+      && datasets.index >= 0
+      && datasets.data[datasets.index].is_dataset_processed)
   }, [setShow, datasets, datasets.index])
 
   const handlerClick_AddLayer_Start = async () => {

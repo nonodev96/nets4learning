@@ -1,6 +1,7 @@
 import React from 'react'
 import * as dfd from 'danfojs'
 import { Trans } from 'react-i18next'
+import * as tfjs from '@tensorflow/tfjs'
 
 import * as _Types from '@core/types'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
@@ -15,6 +16,20 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   URL = 'https://archive.ics.uci.edu/dataset/186/wine+quality'
   i18n_TITLE = 'datasets-models.1-linear-regression.wine.title'
   _KEY = 'WINE'
+
+  wine_columns_X = [
+    'fixed_acidity',
+    'volatile_acidity',
+    'citric_acid',
+    'residual_sugar',
+    'chlorides',
+    'free_sulfur_dioxide',
+    'total_sulfur_dioxide',
+    'density',
+    'pH',
+    'sulphates',
+    'alcohol'
+  ]
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.wine.description.'
@@ -86,6 +101,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
     const dataset_fetch_info = await fetch(path_datasets + info)
     const container_info = await dataset_fetch_info.text()
 
+    /** @type {_Types.Dataset_t} */
     const dataset = [
       { column_name: 'fixed_acidity',          column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
       { column_name: 'volatile_acidity',       column_role: 'Feature',      column_type: 'Continuous',  column_missing_values: false },
@@ -193,36 +209,34 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   
   DEFAULT_LAYERS () {
     return [
-      { is_disabled: false, units: 32, activation: 'sigmoid'   },
-      { is_disabled: false, units: 16, activation: 'sigmoid'   },
+      { is_disabled: false, units: 64, activation: 'relu'   },
+      { is_disabled: false, units: 32, activation: 'relu'   },
+      { is_disabled: false, units: 16, activation: 'relu'   },
       { is_disabled: true,  units: 1,  activation: 'linear' }
     ]
   }
 
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/wine'
-    const wine_columns_X = [
-      'fixed_acidity',
-      'volatile_acidity',
-      'citric_acid',
-      'residual_sugar',
-      'chlorides',
-      'free_sulfur_dioxide',
-      'total_sulfur_dioxide',
-      'density',
-      'pH',
-      'sulphates',
-      'alcohol'
-    ]
+    const red_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-red.json')
+    const white_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-white.json')
     const models = {
       'wine-quality-red.csv': [
         { 
-          model_path: path + '/0/lr-model-0.json', 
-          X         : wine_columns_X,
+          model     : red_model_0, 
+          model_path: path + '/0/lr-model-red.json', 
+          X         : this.wine_columns_X,
           y         : 'quality' 
         },
       ],
-      'wine-quality-white.csv': []
+      'wine-quality-white.csv': [
+        {
+          model     : white_model_0, 
+          model_path: path + '/0/lr-model-white.json', 
+          X         : this.wine_columns_X,
+          y         : 'quality' 
+        }
+      ]
     }
     return models[dataset]
   }

@@ -47,7 +47,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
   }
 
   /**
- 
+   * 
    * @param {string} [_dataset='']
    * @return {Promise<_Types.CustomModel_t[]>}
    */

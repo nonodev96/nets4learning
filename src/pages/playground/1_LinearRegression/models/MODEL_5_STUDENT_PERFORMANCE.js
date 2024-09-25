@@ -1,5 +1,6 @@
 import React from 'react'
 import * as dfd from 'danfojs'
+import * as tfjs from '@tensorflow/tfjs'
 import { Trans } from 'react-i18next'
 
 import * as _Types from '@core/types'
@@ -15,6 +16,39 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
   URL = 'https://archive.ics.uci.edu/dataset/320/student+performance'
   i18n_TITLE = 'datasets-models.1-linear-regression.student-performance.title'
   _KEY = 'STUDENT_PERFORMANCE'
+
+  student_performance_columns_X = [
+    'school',
+    'sex',
+    'age',
+    'address',
+    'famsize',
+    'Pstatus',
+    'Medu',
+    'Fedu',
+    'Mjob',
+    'Fjob',
+    'reason',
+    'guardian',
+    'traveltime',
+    'studytime',
+    'failures',
+    'schoolsup',
+    'famsup',
+    'paid',
+    'activities',
+    'nursery',
+    'higher',
+    'internet',
+    'romantic',
+    'famrel',
+    'freetime',
+    'goout',
+    'Dalc',
+    'Walc',
+    'health',
+    'absences'
+  ]
 
   DESCRIPTION () {
     const prefix = 'datasets-models.1-linear-regression.student-performance.description.'
@@ -220,49 +254,32 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
     ]
   }
 
+  /**
+   * 
+   * @param {string} [dataset='']
+   * @return {Promise<_Types.CustomModel_t[]>}
+   */
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
-    const mat_columns_X = [
-      'school',
-      'sex',
-      'age',
-      'address',
-      'famsize',
-      'Pstatus',
-      'Medu',
-      'Fedu',
-      'Mjob',
-      'Fjob',
-      'reason',
-      'guardian',
-      'traveltime',
-      'studytime',
-      'failures',
-      'schoolsup',
-      'famsup',
-      'paid',
-      'activities',
-      'nursery',
-      'higher',
-      'internet',
-      'romantic',
-      'famrel',
-      'freetime',
-      'goout',
-      'Dalc',
-      'Walc',
-      'health',
-      'absences'
-    ]
+    const mat_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-mat.json')
+    const por_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-por.json')
     const models = {
       'student-mat-2024.csv': [
         { 
-          model_path: path + '/0/lr-model-0.json', 
-          X         : mat_columns_X,               
+          model     : mat_model_0,
+          model_path: path + '/0/lr-model-mat.json', 
+          X         : this.student_performance_columns_X,               
           y         : 'G3' 
         },
       ],
-      'student-por-2024.csv': []
+      'student-por-2024.csv': [
+        { 
+          model     : por_model_0,
+          model_path: path + '/0/lr-model-por.json', 
+          X         : this.student_performance_columns_X,               
+          y         : 'G3' 
+        },
+      ]
     }
     return models[dataset]
   }

@@ -3,7 +3,7 @@ import React from 'react'
 /**
  * @typedef {Object} N4LSummaryProps
  * @property {React.JSX.Element|string} title
- * @property {React.JSX.Element} [info=<></>]
+ * @property {React.JSX.Element|string} [info=<></>]
  * @property {React.ReactNode} [children=<></>]
  */
 /** 

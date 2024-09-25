@@ -52,6 +52,10 @@
   "Device info": "Información del dispositivo",
   "prediction-input": "Datos originales",
   "prediction-input-description": "Datos originales antes de escalar y codificar",
+  "prediction-input-encoding": "Datos procesados codificados",
+  "prediction-input-encoding-description": "Datos procesados despues de codificar con 'label encoder'",
+  "prediction-input-scaling": "Datos procesados escalados",
+  "prediction-input-scaling-description": "Datos procesados despues de realizar un escalado con 'MinMaxScaler'",
   "prediction-input-processed": "Datos procesados",
   "prediction-input-processed-description": "Datos procesados despues de escalar y codificar",
   "prediction-result": "Resultado",
@@ -1595,7 +1599,7 @@
             "classes": "Clases"
           },
           "details": {
-            "dataframe-processed": null,
+            "dataframe-processed": "Dataframe procesado",
             "description-original": "Descripción del dataframe original",
             "description-processed": "Descripción del dataframe procesado",
             "data": "Información del conjunto de datos",

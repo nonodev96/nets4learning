@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
-import { VERBOSE } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_DATASET, VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
 import LinearRegressionDatasetProcessForm from './LinearRegressionDatasetProcessForm'
 
@@ -16,7 +16,11 @@ export default function LinearRegressionDatasetProcess() {
   } = useContext(LinearRegressionContext)
 
   const showDatasetProcess = () => {
-    return datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_upload
+    return datasets 
+      && datasets.data.length > 0 
+      && datasets.index !== DEFAULT_SELECTOR_DATASET
+      && datasets.index >= 0 
+      && datasets.data[datasets.index].is_dataset_upload
   }
 
   if (VERBOSE) console.debug('render LinearRegressionDatasetProcess')

@@ -5,7 +5,6 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
 import * as dfd from 'danfojs'
-import * as tfjs from '@tensorflow/tfjs'
 
 import * as _Types from '@/core/types'
 import { VERBOSE, DEFAULT_SELECTOR_DATASET, DEFAULT_SELECTOR_MODEL, DEFAULT_SELECTOR_INSTANCE } from '@/CONSTANTS'
@@ -36,14 +35,14 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const [dataframe_X, setDataFrame_X] = useState(new dfd.DataFrame())
 
   /**
-   * @type {ReturnType<typeof useState<_Types.StateDatasetProcessed_t>>}
+   * @type {ReturnType<typeof useState<_Types.StateListDatasetProcessed_t>>}
    */
-  const [datasets, setDatasets] = useState({data: [], index: DEFAULT_SELECTOR_DATASET})
+  const [listDatasets, setDatasets] = useState({data: [], index: DEFAULT_SELECTOR_DATASET})
 
   /**
-   * @type {ReturnType<typeof useState<_Types.StateModel_t>>}
+   * @type {ReturnType<typeof useState<_Types.StateListCustomModel_t>>}
    */
-  const [models, setModels] = useState({data: [], index: DEFAULT_SELECTOR_MODEL})
+  const [listCustomModels, setListCustomModels] = useState({data: [], index: DEFAULT_SELECTOR_MODEL})
 
   /**
    * @type {ReturnType<typeof useState<_Types.StateInstance_t>>}
@@ -71,7 +70,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }, [dataset])
 
   useEffect(() => {
-    console.debug('useEffect[dataset, t]')
+    if(VERBOSE) console.debug('useEffect[dataset, t]')
     const init = async () => {
       if (dataset === UPLOAD) {
         console.warn('Error, option not valid', { ID: dataset })
@@ -94,9 +93,9 @@ export default function ModelReviewLinearRegression ({ dataset }) {
 
   useEffect(() => {
     async function init () {
-      if (datasets.index !== DEFAULT_SELECTOR_DATASET && datasets.data.length > 0 && iModelInstance_ref.current) {
-        const _models = (await iModelInstance_ref.current.MODELS(datasets.data[datasets.index].csv))
-        setModels({
+      if (listDatasets.index !== DEFAULT_SELECTOR_DATASET && listDatasets.data.length > 0 && iModelInstance_ref.current) {
+        const _models = (await iModelInstance_ref.current.MODELS(listDatasets.data[listDatasets.index].csv))
+        setListCustomModels({
           data : _models,
           index: 0
         })
@@ -104,23 +103,19 @@ export default function ModelReviewLinearRegression ({ dataset }) {
     }
 
     init().then(() => undefined)
-  }, [datasets])
+  }, [listDatasets])
 
   useEffect(() => {
-    console.debug('useEffect[ datasets, datasets.data, datasets.index, models, models.data, models.index ]')
-
+    if (VERBOSE) console.debug('useEffect[ datasets, datasets.data, datasets.index, models, models.data, models.index ]')
     async function init () {
-      if (models.index !== DEFAULT_SELECTOR_MODEL && models.data.length > 0) {
-        const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (datasets.data[datasets.index]))
+      if (listCustomModels.index !== DEFAULT_SELECTOR_MODEL && listCustomModels.data.length > 0) {
+        const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (listDatasets.data[listDatasets.index]))
         const { dataframe_original, /* data_processed */ } = dataset_processed
-
         setDataFrame_X(dataframe_original)
         setInstances((_prevState) => ({
           data : dataframe_original.values,
           index: DEFAULT_SELECTOR_INSTANCE
         }))
-
-
         const state = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed)
         setPrediction((prevState) => {
           return {
@@ -133,21 +128,16 @@ export default function ModelReviewLinearRegression ({ dataset }) {
             result                     : state.result,
           }
         })
-
-        // const model = await tfjs.loadLayersModel(model_path)
-        // model.predict(tfjs.tensor2d(dataframe_X.values[16]))
-
       }
     }
 
     init().then(() => undefined)
-  }, [datasets, datasets.data, datasets.index, models, models.data, models.index])
+  }, [listDatasets, listDatasets.data, listDatasets.index, listCustomModels, listCustomModels.data, listCustomModels.index])
 
   useEffect(() => {
-    console.debug('useEffect[ datasets, datasets.data, datasets.index, dataframe_processed_dataset_plotID, dataframe_processed_describe_plotID ]')
-    if (datasets.index !== DEFAULT_SELECTOR_DATASET && datasets.data.length > 0) {
-      const { dataframe_processed } = datasets.data[datasets.index]
-      // TODO
+    if (VERBOSE) console.debug('useEffect[ datasets, datasets.data, datasets.index, dataframe_processed_dataset_plotID, dataframe_processed_describe_plotID ]')
+    if (listDatasets.index !== DEFAULT_SELECTOR_DATASET && listDatasets.data.length > 0) {
+      const { dataframe_processed } = listDatasets.data[listDatasets.index]
       dataframe_processed
         .plot(dataframe_processed_dataset_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
@@ -157,7 +147,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
         .plot(dataframe_processed_describe_plotID)
         .table({ config: TABLE_PLOT_STYLE_CONFIG })
     }
-  }, [datasets, datasets.data, datasets.index, dataframe_processed_dataset_plotID, dataframe_processed_describe_plotID])
+  }, [listDatasets, listDatasets.data, listDatasets.index, dataframe_processed_dataset_plotID, dataframe_processed_describe_plotID])
 
   const handleChange_Datasets_Index = (event) => {
     setDatasets((prevState) => ({
@@ -167,7 +157,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   }
 
   const handleChange_Models_Index = async (event) => {
-    setModels((prevState) => ({
+    setListCustomModels((prevState) => ({
       ...prevState,
       index: parseInt(event.target.value)
     }))
@@ -176,7 +166,7 @@ export default function ModelReviewLinearRegression ({ dataset }) {
   const handleChange_Instance_Index = async (event) => {
     const newInstanceIndex = parseInt(event.target.value)
     
-    const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (datasets.data[datasets.index]))
+    const dataset_processed = (/**@type {_Types.DatasetProcessed_t}*/ (listDatasets.data[listDatasets.index]))
     const state = TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION(dataset_processed, newInstanceIndex)
     setPrediction((prevState) => {
       return {
@@ -220,11 +210,11 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                     <Form.Label><Trans i18nKey={'form.select-dataset.title'} /></Form.Label>
                     <Form.Select aria-label={t('form.select-dataset.title')}
                                  size={'sm'}
-                                 value={datasets.index}
+                                 value={listDatasets.index}
                                  onChange={handleChange_Datasets_Index}
                     >
                       <option value={DEFAULT_SELECTOR_DATASET} disabled={true}><Trans i18nKey={'selector-dataset'} /></option>
-                      {datasets.data.map(({ csv }, index) => {
+                      {listDatasets.data.map(({ csv }, index) => {
                         return (<option key={index} value={index}>{csv}</option>)
                       })}
                     </Form.Select>
@@ -263,26 +253,11 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                 <Card.Header className={'d-flex justify-content-between'}>
                   <h2><Trans i18nKey={prefix + 'model-selector.title'} /></h2>
                   <div className={'d-flex gap-2'}>
-                    <Form.Group controlId={'FormSelector_Models'}>
-                      <Form.Select aria-label={'plot'}
-                                   size={'sm'}
-                                   value={models.index}
-                                   onChange={handleChange_Models_Index}
-                      >
-                        <option value={DEFAULT_SELECTOR_MODEL} disabled={true}><Trans i18nKey={'selector-model'} /></option>
-                        {models.data.map((_value, index) => {
-                          return <option key={index} value={index}>
-                            <Trans i18nKey={'model.__index__'} values={{ index: index }} />
-                          </option>
-                        })}
-                      </Form.Select>
-                    </Form.Group>
-                    <Form.Group controlId={'FormSelector_Instances'}>
+                  <Form.Group controlId={'FormSelector_Instances'}>
                       <Form.Select aria-label={'plot'}
                                    size={'sm'}
                                    value={instances.index}
-                                   onChange={handleChange_Instance_Index}
-                      >
+                                   onChange={handleChange_Instance_Index} >
                         <option value={DEFAULT_SELECTOR_INSTANCE} disabled={true}><Trans i18nKey={'selector-instance'} /></option>
                         {instances.data.map((_value, index) => {
                           return <option key={index} value={index}>
@@ -291,12 +266,26 @@ export default function ModelReviewLinearRegression ({ dataset }) {
                         })}
                       </Form.Select>
                     </Form.Group>
+                    <Form.Group controlId={'FormSelector_Models'}>
+                      <Form.Select aria-label={'plot'}
+                                   size={'sm'}
+                                   value={listCustomModels.index}
+                                   onChange={handleChange_Models_Index}
+                      >
+                        <option value={DEFAULT_SELECTOR_MODEL} disabled={true}><Trans i18nKey={'selector-model'} /></option>
+                        {listCustomModels.data.map((_value, index) => {
+                          return <option key={index} value={index}>
+                            <Trans i18nKey={'model.__index__'} values={{ index: index }} />
+                          </option>
+                        })}
+                      </Form.Select>
+                    </Form.Group>
                   </div>
                 </Card.Header>
                 <Card.Body>
                   
-                  <ModelReviewLinearRegressionPredict model={models.data[models.index]}
-                                                      dataset={datasets.data[datasets.index]}
+                  <ModelReviewLinearRegressionPredict customModel={listCustomModels.data[listCustomModels.index]}
+                                                      dataset={listDatasets.data[listDatasets.index]}
                                                       prediction={prediction}
                                                       setPrediction={setPrediction} />
 

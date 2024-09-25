@@ -1,7 +1,5 @@
-import { useState } from 'react'
 import { Trans } from 'react-i18next'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import * as dfd from 'danfojs'
 import * as tfjs from '@tensorflow/tfjs'
 
 import * as _Types from '@core/types'
@@ -11,7 +9,7 @@ import LinearRegressionPredictionInfo from './LinearRegressionPredictionInfo'
 
 /**
  * @typedef ModelReviewLinearRegressionPredictProps_t
- * @property {_Types.CustomModel_t} model  
+ * @property {_Types.CustomModel_t} customModel  
  * @property {_Types.DatasetProcessed_t} dataset
  * @property {_Types.StatePrediction_t} prediction
  * @property {React.Dispatch<React.SetStateAction<_Types.StatePrediction_t>>} setPrediction
@@ -23,7 +21,7 @@ import LinearRegressionPredictionInfo from './LinearRegressionPredictionInfo'
  */
 export default function ModelReviewLinearRegressionPredict (props) {
   const {
-    model, 
+    customModel, 
     dataset,
     prediction,
     setPrediction 
@@ -37,8 +35,7 @@ export default function ModelReviewLinearRegressionPredict (props) {
     // @ts-ignore
     const tensor = tfjs.tensor2d([vector])
 
-    console.log({model: model.model})
-    const result = model.model.predict(tensor).dataSync()
+    const result = [(/**@type {tfjs.Tensor}*/(customModel.model.predict(tensor))).dataSync()]
     
     setPrediction((prevState) => ({
       ...prevState,
@@ -48,9 +45,10 @@ export default function ModelReviewLinearRegressionPredict (props) {
 
   if (VERBOSE) console.debug('ModelReviewLinearRegressionPredict')
   return (
-    <Form onSubmit={handleSubmit_Predict}>
+    <Form onSubmit={handleSubmit_Predict} noValidate>
 
-      <ModelReviewLinearRegressionPredictForm dataset={dataset}
+      <ModelReviewLinearRegressionPredictForm customModel={customModel}
+                                              dataset={dataset}
                                               prediction={prediction}
                                               setPrediction={setPrediction} />
       

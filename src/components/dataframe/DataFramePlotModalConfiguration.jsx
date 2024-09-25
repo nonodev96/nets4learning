@@ -29,7 +29,7 @@ export default function DataFramePlotModalConfiguration ({ updateUI }) {
   const { t } = useTranslation()
 
   useEffect(() => {
-    console.debug('useEffect [dataFrameLocal.columns]')
+    if (VERBOSE) console.debug('useEffect [dataFrameLocal.columns]')
     setListColumns(dataFrameLocal.columns)
   }, [dataFrameLocal.columns])
 

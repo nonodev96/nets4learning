@@ -2,6 +2,7 @@ import '@styles/ScrollBar.css'
 import React, { useCallback, useContext, useEffect, useId, useState } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 import { Trans, useTranslation } from 'react-i18next'
+import * as _dfd from 'danfojs'
 
 import {
   lineChartsValidConfig,
@@ -17,6 +18,17 @@ import DataFramePlotContext from '../_context/DataFramePlotContext'
 import { E_PLOTS, LIST_PLOTS } from '../_context/CONSTANTS'
 import { VERBOSE } from '@/CONSTANTS'
 
+/**
+ * @typedef DataFramePlotProps_t
+ * @property {_dfd.DataFrame} dataframe
+ * @property {boolean} isDataFrameProcessed
+ */
+
+/**
+ * 
+ * @param {DataFramePlotProps_t} props 
+ * @returns 
+ */
 export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false }) {
 
   const {
@@ -101,7 +113,7 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
 
   const updateUI = useCallback(() => {
     if (!showDataframe){
-      console.debug('!showDataFrame')
+      if (VERBOSE) console.debug('!showDataFrame')
       return 
     }
     try {
@@ -134,7 +146,7 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
             }
             break
           case E_PLOTS.PIE_CHARTS:
-            const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig, columnsToShow)
+            const { isValidConfig_PieCharts, config_PieCharts } = pieChartsValidConfig(dataFrameLocal, dataframePlotConfig)
             if (isValidConfig_PieCharts) {
               sub_df.plot(dataframe_plot_ID).pie({ layout, config: config_PieCharts })
             } else {

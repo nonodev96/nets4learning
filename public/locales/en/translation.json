@@ -52,6 +52,10 @@
   "Device info": "Device info",
   "prediction-input": "Data original",
   "prediction-input-description": "Data original after scaling and encoding",
+  "prediction-input-encoding": "Encoded processed data",
+  "prediction-input-encoding-description": "Data processed after encoding with 'label encoder'",
+  "prediction-input-scaling": "Scaled processed data",
+  "prediction-input-scaling-description": "Data processed after scaling with 'MinMaxScaler'",
   "prediction-input-processed": "Data processed",
   "prediction-input-processed-description": "Data processed after scaling and encoding",
   "prediction-result": "Result",
@@ -143,7 +147,7 @@
           "salary": "Salary data set",
           "auto-mpg": "Fuel consumption data set",
           "housing-prices": "House Prices Dataset",
-          "breast-cancer-original": "Breast Cancer Wisconsin Dataset",
+          "breast-cancer-original": "Breast Cancer Wisconsin Data Set",
           "breast-cancer-wdbc": "Breast Cancer Wisconsin Dataset (Diagnostic)",
           "breast-cancer-wpbc": "Breast Cancer Wisconsin Dataset (Prognostic)",
           "student-performance-mathematics": "Mathematics student Data set",
@@ -950,7 +954,7 @@
       "move-net--pose-net": {
         "title": "MoveNet - Joint detector",
         "description": {
-          "text-0": "MoveNet is an automatic learning model capable of recognizing the body's position in real time. It can be used to estimate only one pose or several at the same time.",
+          "text-0": "MoveNet is an machine learning model capable of recognizing the body's position in real time. It can be used to estimate only one pose or several at the same time.",
           "text-1": "In the following example, so that its impact on performance is less only detects one pose at the same time.",
           "details-input": {
             "title": "Input data",
@@ -1088,7 +1092,7 @@
       "mnist": {
         "title": "MNIST - Number classification",
         "description": {
-          "text-0": "The <strong> mnist database </strong> is a large database of handwritten digits. The database is widely used for training and tests in the field of automatic learning.",
+          "text-0": "The <strong> mnist database </strong> is a large database of handwritten digits. The database is widely used for training and tests in the field of machine learning.",
           "text-1": "The samples of the original NIST data sets were created \"re-mixing\".",
           "text-2": "The NIST training dataset was taken from the United States Census Office. In addition, NIST's black and white images were normalized to fit into a <strong> 28 x 28 </strong> pixels and softened, which introduced gray scale levels.",
           "details-input": {
@@ -1251,9 +1255,9 @@
         },
         "list": {
           "0": "Statistical summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
-          "1": "Identification of asymmetries and outliers: By observing a Box graph, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
+          "1": "Identification of asymmetries and outliers: By observing a Box type chart, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
           "2": "Comparison between groups or categories: Box charts are also used to compare the distribution of data between different groups or categories.\nBy overlaying multiple boxplots on the same graph, it is possible to visualize differences in medians, interquartile ranges, and the presence of outliers between groups.",
-          "3": "Detect biases and distributions: Box type charts allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias toward the opposite direction.",
+          "3": "Detect biases and distributions: Box graphs allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias towards the opposite direction.",
           "4": "Visualization of dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to visualize the dispersion and variability of the data in a single graph.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
         },
         "end": {
@@ -1306,7 +1310,7 @@
       "description": {
         "intro": {
           "0": "Pie or pie charts are a visual representation that shows the proportion of different categories or parts in relation to the whole.\nThese graphs are based on a circle divided into sectors, where each sector represents a specific category and its relative size reflects the proportion that category represents in the data set.",
-          "1": "In a pie chart, the full circle represents 100% or the total data.\nEach sector is shown as a portion of the circle and is labeled with the name or label corresponding to the category it represents.\nThe sector angle measure is proportional to the proportion that category has in the data set.",
+          "1": "In a pie chart, the full circle represents 100% or the total data.\nEach sector is shown as a portion of the circle and is labeled with the name or label corresponding to the category it represents.\nThe sector angle measurement is proportional to the proportion that category has in the data set.",
           "2": "Pie charts have several notable features and applications:"
         },
         "list": {
@@ -1541,7 +1545,7 @@
                 "2": "<b>Test set size</b>: <br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
                 "3": "<b>Optimizer</b>: <br /> It is a function that is used to adjust the weights of the network.",
                 "4": "<b>loss function</b>: <br /> It is a error calculation method to measure model efficiency during training.",
-                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an machine learning model with test data."
               }
             },
             "details-hyper-parameters-info": {
@@ -1595,7 +1599,7 @@
             "classes": "Classes"
           },
           "details": {
-            "dataframe-processed": null,
+            "dataframe-processed": "Processed DataFrame",
             "description-original": "Description of the original DataFrame",
             "description-processed": "Description of the processed DataFrame",
             "data": "Data set information",
@@ -1746,7 +1750,7 @@
                 "2": "<b>Test set size</b>:<br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
                 "3": "<b>Optimizer</b>:<br /> It is a function that is used to adjust the weights of the network.",
                 "4": "<b>loss function</b>:<br /> It is a error calculation method to measure model efficiency during training.",
-                "5": "<b>Metric function</b>:<br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+                "5": "<b>Metric function</b>:<br /> It is the average evaluation used to assess the performance of an machine learning model with test data."
               }
             },
             "details-hyper-parameters-info": {
@@ -1809,7 +1813,7 @@
           "button-submit": "Predict",
           "list-models-generated": "List of generated models",
           "list-models": "List of generated models",
-          "list-instances": "Lista of instancies"
+          "list-instances": "List of instancies"
         },
         "model-selector": {
           "title": "Model selector",
@@ -1851,7 +1855,7 @@
                 "2": "<b>Test set size</b>: <br /> Percentage of the data set that will be used for model tests (test data). The rest of the data will be used for network training (training data).",
                 "3": "<b>Optimizer</b>: <br /> It is a function that is used to adjust the weights of the network.",
                 "4": "<b>loss function</b>: <br /> It is a error calculation method to measure model efficiency during training.",
-                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an automatic learning model with test data."
+                "5": "<b>Metric function</b>: <br /> It is the average evaluation used to assess the performance of an machine learning model with test data."
               }
             },
             "details-hyper-parameters-info": {
@@ -1930,10 +1934,10 @@
           },
           "2": {
             "title": "Technological innovation",
-            "description": "Neuronal networks are an innovative technology that continues to evolve and improve. Learning about neural networks can help professionals stay updated in the latest trends and developments in the field of automatic learning and artificial intelligence."
+            "description": "Neuronal networks are an innovative technology that continues to evolve and improve. Learning about neural networks can help professionals stay updated in the latest trends and developments in the field of machine learning and artificial intelligence."
           }
         },
-        "description-3": "Neuronal networks are a form of automatic learning that mimics the way the human brain works. These networks are designed to continue and improve from past data and experiences, allowing machines to perform complex tasks that were previously impossible or very difficult for traditional programmed systems.",
+        "description-3": "Neuronal networks are a form of machine learning that mimics the way the human brain works. These networks are designed to continue and improve from past data and experiences, allowing machines to perform complex tasks that were previously impossible or very difficult for traditional programmed systems.",
         "description-4": "In summary, learning neuronal networks is important because it can help professionals develop skills that are valuable in a wide variety of fields, solve complex problems more effectively and stay updated in technology and innovation."
       },
       "0-tabular-classification": {
@@ -2011,7 +2015,7 @@
         "title": "Tabular classification",
         "text-1": "Tabular classification is a type of supervised learning in which a set of labeled data is used to train a machine learning model, so that the model can predict the class of new data examples not used in training. In tabular classification, input and output data are represented in the form of a table with rows and columns, where each row represents an instance or example of the data, and each column represents a characteristic or attribute of the data.",
         "text-2": "For example, if you want to predict whether a bank of a bank is solvent or not, the characteristics or attributes that can be used are: income, debts, credit history, age, etc. In the tabular classification, each instance or example of the data set will have values for each of these characteristics and a label (class) that indicates whether the client is solvent or not.",
-        "text-3": "Once you have a set of data labeled, an automatic learning algorithm is used to train a model that can predict the label of new data sets. This model can be used to perform precise and fast predictions on new data instances.",
+        "text-3": "Once you have a set of data labeled, an machine learning algorithm is used to train a model that can predict the label of new data sets. This model can be used to perform precise and fast predictions on new data instances.",
         "text-4": "Tabular classification is a very useful technique to solve classification problems in a wide variety of fields, such as medicine, electronic commerce, banking, safety and many others."
       },
       "linear-regression": {
@@ -2183,12 +2187,12 @@
       },
       "optimization-functions": {
         "title": "Optimization functions",
-        "text-1": "An optimization function is a mathematical technique used to minimize or maximize an objective function. In the context of automatic learning, the target functions are usually error functions that measure the discrepancy between the neuronal network output and the desired output values for a given training dataset.",
+        "text-1": "An optimization function is a mathematical technique used to minimize or maximize an objective function. In the context of machine learning, the target functions are usually error functions that measure the discrepancy between the neuronal network output and the desired output values for a given training dataset.",
         "text-2": "The optimization function adjusts the parameters of the neuronal network to minimize the objective function and, therefore, improve its ability to make precise predictions in new entry data. Common examples of optimization functions are the descent of the stochastic gradient and the Adam algorithm.",
         "table": {
           "sgd": {
             "references": "Stochastic gradient descent\n (Autonomous Technological Institute of Mexico, 2017)",
-            "description": "The descent of the gradient is an algorithm that estimates where a function generates its lower values. In the event that the automatic learning model is large -scale this calculation can be very expensive.\n                          Because of this, the descent of the stochastic gradient that uses a constant and therefore the number of gradients to be calculated arises."
+            "description": "The descent of the gradient is an algorithm that estimates where a function generates its lower values. In the event that the machine learning model is large -scale this calculation can be very expensive.\n                          Because of this, the descent of the stochastic gradient that uses a constant and therefore the number of gradients to be calculated arises."
           },
           "momentum": {
             "references": "-",
@@ -2218,8 +2222,8 @@
       "loss-functions": {
         "title": "Loss functions",
         "text": {
-          "0": "In automatic learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how well the model conforms to training data.",
-          "1": "The objective of an automatic learning algorithm is to minimize the loss function, which means finding the model set of the model that best suits training data. Therefore, the choice of loss function is very important, since it can affect the model ability to correctly learn patterns in the data and make precise predictions in new data.",
+          "0": "In machine learning, a loss function (also called cost function) is a measure that quantifies the discrepancy between the predicted exit by a model and the real or desired output. In other words, the loss function measures how well the model conforms to training data.",
+          "1": "The objective of an machine learning algorithm is to minimize the loss function, which means finding the model set of the model that best suits training data. Therefore, the choice of loss function is very important, since it can affect the model ability to correctly learn patterns in the data and make precise predictions in new data.",
           "2": "In tensorflow.js there are different loss functions and the application of each of them depends on the type of problem we want to face. Some examples are shown below:"
         },
         "table": {
@@ -2294,7 +2298,7 @@
           },
           "MeanAbsoluteError": {
             "references": "Absolute half error",
-            "description": "In statistics, it is a measure of the difference between two continuous variables, applied to automatic learning models These variables are labels and predictions."
+            "description": "In statistics, it is a measure of the difference between two continuous variables, applied to machine learning models These variables are labels and predictions."
           },
           "MeanAbsolutePercentageError": {
             "references": "Average absolute error percentage",

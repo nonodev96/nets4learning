@@ -300,13 +300,13 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 /**
- * @typedef StateDatasetProcessed_t
+ * @typedef StateListDatasetProcessed_t
  * @property {Array<DatasetProcessed_t>} data
  * @property {number|"select-dataset"} index
  */
 
 /**
- * @typedef StateModel_t
+ * @typedef StateListCustomModel_t
  * @property {Array<CustomModel_t>} data
  * @property {number|"select-model"} index
  */

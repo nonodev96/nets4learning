@@ -4,9 +4,6 @@ import { useHistory, Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Accordion, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import ReactGA from 'react-ga4'
-import * as tfjs from '@tensorflow/tfjs'
-import * as dfd from 'danfojs'
-import Joyride from 'react-joyride'
 
 import { DEFAULT_SELECTOR_DATASET, VERBOSE } from '@/CONSTANTS'
 import { GLOSSARY_ACTIONS } from '@/CONSTANTS_ACTIONS'
@@ -65,7 +62,7 @@ export default function LinearRegression(props) {
   const {
     modelRef,
 
-    prediction,
+    // prediction,
     setPrediction,
 
     datasets,

@@ -93,10 +93,9 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
           <li>
             <Trans i18nKey={prefix + 'details-references.boston.list.0'}
                    components={{
-                     link1: <a href={this.CALIFORNIA_URL} target={'_blank'} rel="noreferrer">link</a>,
+                     link1: <a href={this.BOSTON_URL} target={'_blank'} rel="noreferrer">link</a>,
                    }} />
           </li>
-
         </ol>
       </details>
 
@@ -250,18 +249,25 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
       // }
     ]
   }
-
+  
+  /**
+   * 
+   * @param {string} [dataset='']
+   * @return {Promise<_Types.CustomModel_t[]>}
+   */
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/boston-housing'
+    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/housing-dataset'
+    const model = await tfjs.loadLayersModel(path + '/0/lr-model-0.json')
     const models = {
-      'california-housing-2024.csv': [],
-      'boston-housing.csv'         : [
+      'boston-housing-2020.csv': [
         { 
+          model     : model,
           model_path: path + '/0/lr-model-0.json', 
           X         : ['CRIM', 'ZN', 'INDUS', 'CHAS', 'NOX', 'RM', 'AGE', 'DIS', 'RAD', 'TAX', 'PTRATIO', 'LSTAT'], 
           y         : 'MEDV', 
         },
-      ]
+      ],
+      'california-housing-2024.csv': [],
     }
     return models[dataset]
   }

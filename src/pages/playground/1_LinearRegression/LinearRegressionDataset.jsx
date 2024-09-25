@@ -43,6 +43,7 @@ export default function LinearRegressionDataset({ dataset }) {
         path                : '',
         info                : '',
         container_info      : '',
+        dataset             : [], // TODO
         dataframe_original  : _dataframeOriginal,
         dataframe_processed : _dataframeProcessed,
         dataset_transforms  : []

@@ -4,7 +4,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { DataFrame } from 'danfojs'
 
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
-import { VERBOSE } from '@/CONSTANTS'
+import { DEFAULT_SELECTOR_DATASET, VERBOSE } from '@/CONSTANTS'
 import { TABLE_PLOT_STYLE_CONFIG } from '@/CONSTANTS_DanfoJS'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
 import N4LTablePagination from '@components/table/N4LTablePagination'
@@ -58,7 +58,11 @@ export default function LinearRegressionDatasetShow() {
   }
 
   useEffect(() => {
-    const canRenderDataset = datasets && datasets.data.length > 0 && datasets.index >= 0 && datasets.data[datasets.index].is_dataset_processed
+    const canRenderDataset = datasets 
+      && datasets.data.length > 0 
+      && datasets.index !== DEFAULT_SELECTOR_DATASET
+      && datasets.index >= 0 
+      && datasets.data[datasets.index].is_dataset_processed
     setShowDataset(canRenderDataset)
     if (canRenderDataset){
       setDataframe(datasets.data[datasets.index].dataframe_original)
@@ -86,7 +90,7 @@ export default function LinearRegressionDatasetShow() {
   useEffect(() => {
     if (VERBOSE) console.debug('useEffect [datasets, updateDataFrameLocal]')
     const init = async () => {
-      if (datasets.data.length >= 1 && datasets.index >= 0) {
+      if (datasets.data.length >= 1 && datasets.index !== DEFAULT_SELECTOR_DATASET && datasets.index >= 0) {
         await updateDataFrameLocal(datasets.data[datasets.index])
       }
     }
@@ -102,7 +106,6 @@ export default function LinearRegressionDatasetShow() {
           <Form.Check type="switch"
                       id={'linear-regression-switch-dataframe-processed'}
                       reverse={true}
-                      size={'sm'}
                       name={'linear-regression-switch-dataframe-processed'}
                       disabled={!showDataset}
                       label={t('Processed')}
@@ -139,7 +142,7 @@ export default function LinearRegressionDatasetShow() {
           <hr />
           <Row>
             <Col>
-              {datasets.data.length >= 1 && datasets.index >= 0 && !datasets.data[datasets.index].is_dataset_upload && <>
+              {datasets.data.length >= 1 && datasets.index !== DEFAULT_SELECTOR_DATASET && datasets.index >= 0 && !datasets.data[datasets.index].is_dataset_upload && <>
                 {/* TEXTO DEL DATASET car.info */}
                 <N4LSummary title={<Trans i18nKey={prefix + 'details.info'} />}
                             info={datasets.data[datasets.index].container_info} />

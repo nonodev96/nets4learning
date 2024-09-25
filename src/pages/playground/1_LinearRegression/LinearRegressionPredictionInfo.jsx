@@ -24,6 +24,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
   
   return <>
     {ready && <>
+    <hr />
     <Row xs={2} sm={2} md={4} lg={4} xl={4} xxl={4}>
       <Col>
         <Form.Group controlId={'FormInputRaw'}>
@@ -49,7 +50,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
                         className={`${styles.border_pink} ${styles.monospace}`}
                         value={[prediction.input_2_dataframe_encoding.values[0]].join(',')} />
           <Form.Text className={'text-muted'}>
-            <Trans i18nKey={'prediction-input-processed-description'} />
+            <Trans i18nKey={'prediction-input-encoding-description'} />
           </Form.Text>
         </Form.Group>
       </Col>
@@ -63,7 +64,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
                         className={`${styles.border_pink} ${styles.monospace}`}
                         value={[prediction.input_3_dataframe_scaling.values[0]].join(',')} />
           <Form.Text className={'text-muted'}>
-            <Trans i18nKey={'prediction-input-processed-description'} />
+            <Trans i18nKey={'prediction-input-scaling-description'} />
           </Form.Text>
         </Form.Group>
       </Col>

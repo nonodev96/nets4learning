@@ -45,7 +45,6 @@ export async function createLinearRegressionCustomModel (params) {
 
   const { data_processed } = dataset_processed
   const { X, y } = data_processed
-  console.log({ dataset_processed, X, y })
 
   // @ts-ignore
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)

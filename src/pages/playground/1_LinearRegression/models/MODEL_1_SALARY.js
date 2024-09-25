@@ -116,12 +116,12 @@ export default class MODEL_1_SALARY extends I_MODEL_LINEAR_REGRESSION {
 
   /**
    * 
-   * @param {string} dataset 
-   * @returns 
+   * @param {string} [dataset='']
+   * @return {Promise<_Types.CustomModel_t[]>}
    */
   async MODELS (dataset) {
     const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/salary'
-    const model_salary  =  await tfjs.loadLayersModel(path + '/2/lr-model-2.json')
+    const model_salary = await tfjs.loadLayersModel(path + '/2/lr-model-2.json')
     const models = {
       'salary.csv': [
         { 

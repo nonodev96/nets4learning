@@ -14,9 +14,8 @@ export default function LinearRegressionDatasetShowPlot() {
   if (VERBOSE) console.debug('render LinearRegressionDatasetShowPlot')
   return <>
     <DataFramePlotProvider>
-      <DataFramePlot
-        is_dataset_processed={datasets.data[datasets.index].is_dataset_processed}
-        dataframe={datasets.data[datasets.index].dataframe_processed}
+      <DataFramePlot dataframe={datasets.data[datasets.index].dataframe_processed}
+                    isDataFrameProcessed={datasets.data[datasets.index].is_dataset_processed}  
       />
     </DataFramePlotProvider>
   </>
