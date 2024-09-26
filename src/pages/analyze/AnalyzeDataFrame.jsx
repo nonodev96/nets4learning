@@ -70,7 +70,7 @@ export default function AnalyzeDataFrame() {
                   function_DropRejected={handleFileUpload_CSV_Rejected}
                 />
                 {!isDataFrameUpload && <>
-                  <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+                  <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-file'} />
                 </>}  
               </Card.Body>
             </Card>

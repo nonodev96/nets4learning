@@ -59,7 +59,7 @@ export default function LinearRegressionEditorVisor() {
       </Card.Header>
       <Card.Body>
         {!show && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {show && <>
           <Row>

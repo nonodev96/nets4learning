@@ -91,7 +91,7 @@ export default function TabularClassificationDataset (props) {
                    function_DropAccepted={handleChange_FileUpload_CSV}
                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
       {datasets.length === 0 && <>
-        <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+        <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-file'} />
 
         <p className={'text-end text-muted mb-0 pb-0'}>
           <Trans i18nKey={'more-information-in-link'}

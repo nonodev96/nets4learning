@@ -4,6 +4,7 @@ import { Trans } from 'react-i18next'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
 import { VERBOSE } from '@/CONSTANTS'
+import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
 
 export default function TabularClassificationTableModels (props) {
   const {
@@ -62,10 +63,8 @@ export default function TabularClassificationTableModels (props) {
       </Card.Header>
       <Card.Body>
         {listModels.length === 0 && <>
-          <p className="placeholder-glow">
-            <small className={'text-muted'}><Trans i18nKey={'pages.playground.generator.waiting-for-models'}/></small>
-            <span className="placeholder col-12"></span>
-          </p>
+          <WaitingPlaceholder />
+
         </>}
         {listModels.length > 0 && <>
           <Container fluid={true}>
@@ -120,7 +119,9 @@ export default function TabularClassificationTableModels (props) {
                     })}
                   </tbody>
                 </Table>
-                {isTraining && <p className="placeholder-glow"><span className="placeholder col-12"></span></p>}
+                {isTraining && <>
+                  <WaitingPlaceholder />
+                </>}
               </Col>
             </Row>
             <Row>

@@ -86,7 +86,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
   }
 
   if (VERBOSE) console.debug('render LinearRegressionPredictionForm')
-  return <Row xs={4} sm={4} md={4} lg={4} xl={4} xxl={6}>
+  return <Row xs={1} sm={2} md={3} lg={4} xl={4} xxl={4}>
     {generatedModel
       .dataset_processed
       .dataframe_processed
@@ -97,7 +97,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
       
       switch (column_type) {
         case 'int32': {
-          return <Col className="mb-3" key={index}>
+          return <Col key={index} className={'mb-md-3'}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
               <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Control type="number"
@@ -113,7 +113,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
           </Col>
         }
         case 'float32': {
-          return <Col className="mb-3" key={index}>
+          return <Col key={index} className={'mb-md-3'}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
               <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Control type="number"
@@ -131,7 +131,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
         case 'string': {
           const labelEncoder = new dfd.LabelEncoder()
           labelEncoder.fit(generatedModel.dataset_processed.dataframe_original[column_name])
-          return <Col className={'mb-3'} key={index}>
+          return <Col key={index} className={'mb-md-3'}>
             <Form.Group controlId={'linear-regression-dynamic-form-' + column_name}>
               <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
               <Form.Select aria-label={'linear-regression-dynamic-form-' + column_name}
@@ -141,7 +141,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
                            disabled={isDisabled(generatedModel, column_name)}
                            onChange={e => handleChange_EditInstanceEncoding(column_name, e.target.value)}>
                 <>
-                  {Object.entries(labelEncoder.$labels)
+                  {Object.entries(labelEncoder.classes)
                     .map(([text, _value], index_options) => {
                         return <option key={index_options} value={text}>{text}</option>
                     })
@@ -153,7 +153,7 @@ export default function LinearRegressionPredictionForm ({ generatedModel }) {
           </Col>
         }
         default: {
-          return <Col className="mb-3" key={index}>
+          return <Col key={index} className="mb-3">
             Error, option not valid
           </Col>
         }

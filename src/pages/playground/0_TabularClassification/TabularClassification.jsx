@@ -363,7 +363,7 @@ export default function TabularClassification (props) {
               <h3><Trans i18nKey={'pages.playground.generator.layer-design'} /></h3>
             </Card.Header>
             <Card.Body>
-              <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+              <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
             </Card.Body>
           </Card>
         </>}

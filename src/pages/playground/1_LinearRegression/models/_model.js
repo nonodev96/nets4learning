@@ -130,7 +130,7 @@ export default class I_MODEL_LINEAR_REGRESSION {
 
     const prefix = 'datasets-models.1-linear-regression.joyride.steps.'
     return {
-      run                  : true,
+      run                  : false,
       continuous           : true,
       handleJoyrideCallback: handleJoyrideCallback,
       steps                : [

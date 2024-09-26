@@ -44,7 +44,7 @@ export default function N4LLayerDesign({ layers, show = true, glossary_action = 
           mode={mode} />
         </>}
         {!show && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}
       </Card.Body>
       {(actions.length > 0 || glossary_action !== '' || manual_action !== '' ) && <>

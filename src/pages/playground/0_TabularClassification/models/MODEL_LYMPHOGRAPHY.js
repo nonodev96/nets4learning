@@ -335,6 +335,7 @@ export default class MODEL_LYMPHOGRAPHY extends I_MODEL_TABULAR_CLASSIFICATION {
         info                : lymphography_info,
         container_info      : lymphography_container_info,
         csv                 : lymphography_csv,
+        dataset             : dataset,
         dataset_transforms  : dataset_transforms,
         dataframe_original  : dataframe_original,
         dataframe_processed : dataframe_processed,

@@ -90,7 +90,7 @@ export default function LinearRegressionDataset({ dataset }) {
                    function_DropRejected={handleChange_FileUpload_CSV_reject} />
 
       {!showDatasetInfo && <>
-        <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+        <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-file'} />
       </>}
       {showDatasetInfo && <>
         <ol>

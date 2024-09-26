@@ -130,7 +130,7 @@ export default function LinearRegressionDatasetShow() {
       </Card.Header>
       <Card.Body>
         {!showDataset && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {showDataset && <>
           <Row>

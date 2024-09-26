@@ -11,6 +11,7 @@ import { CHARTJS_CONFIG_DEFAULT } from '@/CONSTANTS_ChartsJs'
 import TabularClassificationPredictionForm from '@pages/playground/0_TabularClassification/TabularClassificationPredictionForm'
 import TabularClassificationDatasetShowInfo from '@pages/playground/0_TabularClassification/TabularClassificationDatasetShowInfo'
 import * as DataFrameUtils from '@core/dataframe/DataFrameUtils'
+import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
 
 /**
  * @typedef TabularClassificationPredictionProps_t
@@ -153,10 +154,7 @@ export default function TabularClassificationPrediction (props) {
       <Card.Body>
 
         {generatedModels.length === 0 && <>
-          <p className="placeholder-glow">
-            <small className={'text-muted'}>{t('pages.playground.generator.waiting-for-models')}</small>
-            <span className="placeholder col-12"></span>
-          </p>
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-models'} />
         </>}
 
 
@@ -178,14 +176,16 @@ export default function TabularClassificationPrediction (props) {
             />
 
             {/* SUBMIT BUTTON */}
-            <div className="d-grid gap-2">
-              <Button type={'submit'}
+            <hr />
+            <div className={'d-grid gap-2'}>
+              <Button variant={'primary'}
                       size={'lg'}
-                      variant="primary">
-                <Trans i18nKey={'predict'} />
+                      type={'submit'}>
+                <Trans i18nKey={'Predict'} />
               </Button>
             </div>
             <hr />
+
             <TabularClassificationDatasetShowInfo datasets={datasets}
                                                   datasetIndex={datasetIndex} />
             <hr />

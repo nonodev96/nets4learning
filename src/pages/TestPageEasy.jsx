@@ -235,6 +235,20 @@ export default function TestPageEasy () {
       objetivo : 13 
     })
   }
+  
+  const handleClick_testLabelEncoder = () => {
+    const data = {
+      'B': ['bval1', 'bval2', 'bval3', 'bval4'],
+      'C': [10, 20, 30, 40],
+      'D': [1.2, 3.45, 60.1, 45],
+      'E': ['test', 'train', 'test', 'train']
+      }
+    const df = new dfd.DataFrame()
+    const encoder = new dfd.LabelEncoder()
+    encoder.fit(df.values)
+    console.log({c: encoder.classes})
+    console.log({c: encoder.$labels})
+  }
 
 
   const handleClick_TFJSMultiple_4 = async () => {
@@ -375,14 +389,18 @@ export default function TestPageEasy () {
                 </Button>
                 <hr />
                 <TestComponentEasy />
-<Row>
-  <Col>
-    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframe}>Dataframe test append</Button>
-  </Col>
-  <Col>
-    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframeEditCell}>Dataframe test edit cell</Button>
-  </Col>
-</Row>
+
+                <Row>
+                  <Col>
+                    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframe}>test Dataframe append</Button>
+                  </Col>
+                  <Col>
+                    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_dataframeEditCell}>test Dataframe edit cell</Button>
+                  </Col>
+                  <Col>
+                    <Button variant={'outline-primary'} size={'sm'} onClick={handleClick_testLabelEncoder}>test LabelEncoder</Button>
+                  </Col>
+                </Row>
                 
                 <TestComponentEasy />
 

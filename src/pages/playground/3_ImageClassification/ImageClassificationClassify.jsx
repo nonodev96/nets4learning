@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Card, Col, Row } from 'react-bootstrap'
 import CustomCanvasDrawer from '@pages/playground/3_ImageClassification/components/customCanvasDrawer'
+import { Trans } from 'react-i18next'
 
 export default function ImageClassificationClassify ({
   handleSubmit_VectorTest,
@@ -10,7 +11,7 @@ export default function ImageClassificationClassify ({
   return <>
     <Card className="mt-3">
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
-        <h3>Resultado</h3>
+        <Trans i18nKey={'Clasify'} />
       </Card.Header>
       <Card.Body>
         {/* VECTOR TEST */}
@@ -47,7 +48,7 @@ export default function ImageClassificationClassify ({
             <div className="d-grid gap-2 mt-3">
               <Button variant={'primary'}
                       onClick={handleSubmit_VectorTestImageUpload}>
-                Validar
+                <Trans i18nKey={'Validate'} />
               </Button>
             </div>
           </Col>

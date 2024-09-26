@@ -22,7 +22,7 @@ export default function TabularClassificationDatasetShowInfo ({ datasets, datase
                   {item.type === 'float32' && <p className={'mb-0'}><Trans i18nKey={prefix + 'attributes.float32'} /></p>}
                   {item.type === 'label-encoder' && <>
                     <p className={'mb-0'}>LabelEncoder:</p>
-                    <ol className={'n4l-ol-label-encoder'} start="0">
+                    <ol className={'n4l-ol-label-encoder'} start={0}>
                       {item.options.map((option, i2) => {
                         return <li key={i1 + '_' + i2}>{option.text}</li>
                       })}
@@ -42,7 +42,7 @@ export default function TabularClassificationDatasetShowInfo ({ datasets, datase
               <Col>
                 <p className={'mb-0'}><b>{datasets[datasetIndex].data_processed.column_name_target}</b></p>
                 <p className={'mb-0'}>LabelEncoder:</p>
-                <ol className={'n4l-ol-label-encoder'} start="0">
+                <ol className={'n4l-ol-label-encoder'} start={0}>
                   {datasets[datasetIndex].data_processed.classes.map((item, index) => {
                     return <li key={index}>{item}</li>
                   })}

@@ -14,7 +14,7 @@ export default function DataFrameShowCard({ dataframe, isDataFrameProcessed }) {
       </Card.Header>
       <Card.Body>
         {!isDataFrameProcessed &&
-          <WaitingPlaceholder title={'Waiting'} />
+          <WaitingPlaceholder i18nKey_title={'Waiting'} />
         }
         {isDataFrameProcessed && <>
           <DataFrameShow dataframe={dataframe} />

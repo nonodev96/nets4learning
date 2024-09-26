@@ -24,8 +24,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
   
   return <>
     {ready && <>
-    <hr />
-    <Row xs={2} sm={2} md={4} lg={4} xl={4} xxl={4}>
+    <Row xs={2} sm={2} md={2} lg={2} xl={2} xxl={2}>
       <Col>
         <Form.Group controlId={'FormInputRaw'}>
           <Form.Label>
@@ -40,6 +39,7 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
           </Form.Text>
         </Form.Group>
       </Col>
+      {/* 
       <Col>
         <Form.Group controlId={'FormInputProcessed'}>
           <Form.Label>
@@ -67,7 +67,8 @@ export default function LinearRegressionPredictionInfo({ prediction }) {
             <Trans i18nKey={'prediction-input-scaling-description'} />
           </Form.Text>
         </Form.Group>
-      </Col>
+      </Col> 
+      */}
       <Col>
         <Form.Group controlId={'FormPredictionResult'}>
           <Form.Label>

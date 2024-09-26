@@ -113,10 +113,10 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
   return <>
     <Row>
       {!ready && <>
-        <WaitingPlaceholder title={t('Waiting')} />
+        <WaitingPlaceholder i18nKey_title={'Waiting'} />
       </>}
     </Row>
-    <Row xs={6} sm={6} md={4} lg={4} xl={4} xxl={4}>
+    <Row xs={2} sm={2} md={3} lg={4} xl={4} xxl={4}>
       {ready && <>
         {dataset
           .dataframe_processed
@@ -127,7 +127,7 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
           
             switch (column_type) {
               case 'int32': {
-                return <Col key={'form' + index} className={'mb-3'}>
+                return <Col key={'form' + index} className={'mb-md-3'}>
                   <Form.Group controlId={'linear-regression-form-' + column_name}>
                     <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
                     <Form.Control type="number"
@@ -143,7 +143,7 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
                 </Col>
               }
               case 'float32': {
-                return <Col key={'form' + index} className={'mb-3'}>
+                return <Col key={'form' + index} className={'mb-md-3'}>
                   <Form.Group controlId={'linear-regression-form-' + column_name}>
                     <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
                     <Form.Control type="number"
@@ -159,10 +159,9 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
                 </Col>
               }
               case 'string': {
-
                 const labelEncoder = new dfd.LabelEncoder()
                 labelEncoder.fit(dataset.dataframe_original[column_name])
-                return <Col className={'mb-3'} key={index}>
+                return <Col key={'form' + index} className={'mb-md-3'}>
                   <Form.Group controlId={'linear-regression-form-' + column_name}>
                     <Form.Label><small>{t('pages.playground.form.parameter')}: <b>{column_name}</b></small></Form.Label>
                     <Form.Select aria-label={'linear-regression-form-' + column_name}
@@ -172,7 +171,7 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
                                 disabled={isDisabled(dataset, column_name)}
                                 onChange={e => handleChange_Parameter_string(column_name, e.target.value)}>
                       <>
-                        {Object.entries(labelEncoder.$labels)
+                        {Object.entries(labelEncoder.classes)
                           .map(([text, _value], index_options) => {
                               return <option key={index_options} value={text}>{text}</option>
                           })

@@ -72,7 +72,7 @@ export default function LinearRegressionTableModels({ rowsPerPage = 3 }) {
       <Card.Body>
         <Container fluid={true}>
           {!showTable && <>
-            <WaitingPlaceholder title={'pages.playground.generator.waiting-for-training'} />
+            <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-training'} />
           </>}
           {showTable && <>
             <Row>

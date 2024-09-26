@@ -34,7 +34,6 @@ export default function ModelReviewLinearRegressionPredict (props) {
     const vector = prediction.input_3_dataframe_scaling.values[0]
     // @ts-ignore
     const tensor = tfjs.tensor2d([vector])
-
     const result = [(/**@type {tfjs.Tensor}*/(customModel.model.predict(tensor))).dataSync()]
     
     setPrediction((prevState) => ({
@@ -52,9 +51,9 @@ export default function ModelReviewLinearRegressionPredict (props) {
                                               prediction={prediction}
                                               setPrediction={setPrediction} />
       
-      <LinearRegressionPredictionInfo prediction={prediction} />
+      <hr />
 
-      <Row className={'mt-3'}>
+      <Row>
         <Col>
           <div className={'d-grid gap-2'}>
             <Button variant={'primary'}
@@ -65,7 +64,11 @@ export default function ModelReviewLinearRegressionPredict (props) {
           </div>
         </Col>
       </Row>
+
+      <hr />
       
+      <LinearRegressionPredictionInfo prediction={prediction} />
+
     </Form>
   )
 }

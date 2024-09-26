@@ -132,7 +132,7 @@ export default function LinearRegressionPrediction() {
       </Card.Header>
       <Card.Body>
         {!showPrediction && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-models'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-models'} />
         </>}
         {showPrediction && <>
           <Row>
@@ -161,9 +161,9 @@ export default function LinearRegressionPrediction() {
             
             <LinearRegressionPredictionForm generatedModel={listModels.data[listModels.index]} />
 
-            <LinearRegressionPredictionInfo prediction={prediction} />
+            <hr />
 
-            <Row className={'mt-3'}>
+            <Row>
               <div className="d-grid gap-2">
                 <Button variant={'primary'}
                         size={'lg'}
@@ -172,6 +172,11 @@ export default function LinearRegressionPrediction() {
                 </Button>
               </div>
             </Row>
+
+            <hr />
+
+            <LinearRegressionPredictionInfo prediction={prediction} />
+
           </Form>
         </>}
       </Card.Body>

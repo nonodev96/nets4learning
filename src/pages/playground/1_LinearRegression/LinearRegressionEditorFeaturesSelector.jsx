@@ -85,7 +85,7 @@ export default function LinearRegressionEditorFeaturesSelector() {
 
   if (VERBOSE) console.debug('render LinearRegressionEditorFeaturesSelector')
   return <>
-    <Card>
+    <Card style={{'display': 'none'}}>
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h3><Trans i18nKey={prefix + 'title'} /></h3>
         {/*
@@ -101,7 +101,7 @@ export default function LinearRegressionEditorFeaturesSelector() {
       <Card.Body>
 
         {!show && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {show && <>
           <Accordion defaultActiveKey="Target">

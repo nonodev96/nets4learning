@@ -50,6 +50,7 @@
   "selector-model": "Selector de modelo",
   "selector-instance": "Selector de instancia",
   "Device info": "Información del dispositivo",
+  "__VOID__": null,
   "prediction-input": "Datos originales",
   "prediction-input-description": "Datos originales antes de escalar y codificar",
   "prediction-input-encoding": "Datos procesados codificados",
@@ -1007,7 +1008,7 @@
       "face-api": {
         "title": "FaceAPI - Expresiones en cara",
         "description": {
-          "text-0": "Multiples redes neuronales de distinto tipo agrupadas en un proyecto para la gestión de caras, permite detectar multiples caras, detectar su edad y genero, emociones, marcas en el rostro, extraer puntos claves como descriptores para comparar distintos tipos de caras.",
+          "text-0": "Multiples redes neuronales de distinto tipo agrupadas en un proyecto para la gestión de caras, permite detectar multiples caras, detectar su edad, emociones, marcas en el rostro, extraer puntos claves como descriptores para comparar distintos tipos de caras.",
           "details-input": {
             "title": "Datos de entrada",
             "text-0": "Imagen o vídeo (webcam) a color."

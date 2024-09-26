@@ -272,7 +272,7 @@ export default function LinearRegression(props) {
         <Row>
           <Col className={'joyride-step-5-layer'}>
             {!(ready) && <>
-              <WaitingPlaceholder title='waiting' />
+              <WaitingPlaceholder i18nKey_title={'Waiting'} />
             </>} 
             
             {(ready) && <>

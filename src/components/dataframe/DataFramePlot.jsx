@@ -272,7 +272,7 @@ export default function DataFramePlot ({ dataframe, isDataFrameProcessed = false
         <Row>
           <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
             {!showDataframe &&
-              <WaitingPlaceholder title={t('Waiting')} />
+              <WaitingPlaceholder i18nKey_title={'Waiting'} />
             }
             {showDataframe &&
               <div id={dataframe_plot_ID}></div>

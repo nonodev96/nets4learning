@@ -14,7 +14,7 @@ export default function DataFrameEchartCard({ /*dataframe, */ isDataFrameProcess
 			</Card.Header>
 			<Card.Body>
 				{!isDataFrameProcessed && <>
-					<WaitingPlaceholder title={'Waiting'} />
+					<WaitingPlaceholder i18nKey_title={'Waiting'} />
 				</>}
 				{isDataFrameProcessed && <>
 					<N4LEcharts

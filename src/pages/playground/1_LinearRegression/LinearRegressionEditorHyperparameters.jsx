@@ -107,7 +107,7 @@ export default function LinearRegressionEditorHyperparameters() {
       </Card.Header>
       <Card.Body>
         {!show && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-process'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}
         {show && <>
           <Form.Group className="mb-3" controlId={'FormControl_Trainer-LearningRate'}>

@@ -29,7 +29,7 @@ export default function DataFrameDescribeCard({ dataframe, isDataFrameProcessed 
       </Card.Header>
       <Card.Body>
         {!isDataFrameProcessed && <>
-          <WaitingPlaceholder title={t('Waiting')} />
+          <WaitingPlaceholder i18nKey_title={'Waiting'} />
         </>}
         {isDataFrameProcessed && <>
           <DataFrameDescribe dataframe={dataframe} />

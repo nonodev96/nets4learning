@@ -41,7 +41,7 @@ export default function TabularClassificationDatasetProcess (props) {
       <Card.Header><h3><Trans i18nKey={'Data set processing'} /></h3></Card.Header>
       <Card.Body>
         {(!isFileUploaded()) && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-file'} />
         </>}
         {(isFileUploaded()) && <>
           <TabularClassificationDatasetProcessForm datasets={datasets}

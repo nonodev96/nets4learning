@@ -1,6 +1,6 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import I_MODEL_IMAGE_CLASSIFICATION from './_model'
 import * as Train_MNIST from '@pages/playground/3_ImageClassification/custom/Train_MNIST'
 import { DEFAULT_BAR_DATA } from '@pages/playground/3_ImageClassification/CONSTANTS'
@@ -65,8 +65,13 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
     return LIST_OF_IMAGES_MNIST
   }
 
+  /**
+   * 
+   * @returns {Promise<tfjs.LayersModel>}
+   */
   async ENABLE_MODEL () {
-    return await tf.loadLayersModel(process.env.REACT_APP_PATH + '/models/03-image-classification/keras-mnist/model.json')
+    const model = await tfjs.loadLayersModel(process.env.REACT_APP_PATH + '/models/03-image-classification/keras-mnist/model.json')
+    return model
   }
 
   async PREDICTION_FORMAT (predictions) {
@@ -93,7 +98,7 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
       }
     }
 
-    let tensor4 = tf.tensor4d([arr])
+    let tensor4 = tfjs.tensor4d([arr])
     let predictions = model.predict(tensor4).dataSync()
     let index = predictions.indexOf(Math.max.apply(null, predictions))
     return { predictions, index }
@@ -115,7 +120,7 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
       }
     }
 
-    const tensor4 = tf.tensor4d([arr])
+    const tensor4 = tfjs.tensor4d([arr])
     const predictions = model.predict(tensor4).dataSync()
     const index = predictions.indexOf(Math.max.apply(null, predictions))
     return { predictions, index }

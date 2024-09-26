@@ -415,10 +415,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
   if (VERBOSE) console.debug('render ModelReviewObjectDetection')
   return (
     <>
-      <Container
-        id={'ModelReviewObjectDetection'}
-        data-testid={'Test-ModelReviewObjectDetection'}
-      >
+      <Container id={'ModelReviewObjectDetection'} data-testid={'Test-ModelReviewObjectDetection'}>
         <Row className={'mt-2'}>
           <Col>
             <h1>
@@ -642,6 +639,7 @@ export default function ModelReviewObjectDetection({ dataset }) {
                     <Row className={'mt-3'}>
                       <Col>
                         <DragAndDrop
+                          id={'drop-zone-object-detection'}
                           name={'doc'}
                           text={t('drag-and-drop.image')}
                           labelFiles={t('drag-and-drop.label-files-one')}

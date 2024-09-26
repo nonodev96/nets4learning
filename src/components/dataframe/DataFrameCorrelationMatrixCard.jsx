@@ -30,7 +30,7 @@ export default function DataFrameCorrelationMatrixCard ({ dataframe, isDataFrame
       </Card.Header>
       <Card.Body>
         {!isDataFrameProcessed &&
-          <WaitingPlaceholder title={t('Waiting')} />
+          <WaitingPlaceholder i18nKey_title={'Waiting'} />
         }
         {isDataFrameProcessed &&
           <DataFrameCorrelationMatrix dataframe={dataframe} />

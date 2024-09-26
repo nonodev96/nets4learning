@@ -180,7 +180,7 @@ export default function TabularClassificationPredictionForm (props) {
           <Form.Label><Trans i18nKey={prefix + 'test-input-data'} /></Form.Label>
           <Form.Control placeholder={t(prefix + 'input-data')}
                         disabled={true}
-                        value={inputDataToPredict.join(';')} />
+                        value={inputDataToPredict.join(',')} />
         </Form.Group>
       </Col>
       <Col>
@@ -188,7 +188,7 @@ export default function TabularClassificationPredictionForm (props) {
           <Form.Label><Trans i18nKey={prefix + 'test-input-vector'} /></Form.Label>
           <Form.Control placeholder={t(prefix + 'input-vector')}
                         disabled={true}
-                        value={inputVectorToPredict.join(';')} />
+                        value={inputVectorToPredict.join(',')} />
         </Form.Group>
       </Col>
     </Row>

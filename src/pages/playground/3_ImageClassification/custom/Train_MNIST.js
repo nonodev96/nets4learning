@@ -1,7 +1,8 @@
 import * as tfvis from '@tensorflow/tfjs-vis'
-import * as tf from '@tensorflow/tfjs'
+import * as tfjs from '@tensorflow/tfjs'
 import { MnistData } from '../models/MODEL_IMAGE_MNIST_Data'
 import { createOptimizer, createLoss, createMetricsList } from '@core/nn-utils/ArchitectureHelper'
+import { TAB_02_OJECT_DETECTION } from '@/CONSTANTS'
 
 const classNames = [
   'Zero',
@@ -20,7 +21,7 @@ async function showExamples (data) {
   // Create a container in the visor
   const surface = tfvis
     .visor()
-    .surface({ name: 'Examples', tab: 'Data set' })
+    .surface({ name: 'Data set: Examples', tab: TAB_02_OJECT_DETECTION })
 
   // Get the examples
   const examples = data.nextTestBatch(20)
@@ -28,7 +29,7 @@ async function showExamples (data) {
 
   // Create a canvas element to render each example
   for (let i = 0; i < numExamples; i++) {
-    const imageTensor = tf.tidy(() => {
+    const imageTensor = tfjs.tidy(() => {
       // Reshape the image to 28x28 px
       return examples.xs
         .slice([i, 0], [1, examples.xs.shape[1]])
@@ -39,7 +40,7 @@ async function showExamples (data) {
     canvas.width = 28
     canvas.height = 28
     canvas.style.margin = '4px'
-    await tf.browser.toPixels(imageTensor, canvas)
+    await tfjs.browser.toPixels(imageTensor, canvas)
     surface.drawArea.appendChild(canvas)
 
     imageTensor.dispose()
@@ -49,8 +50,8 @@ async function showExamples (data) {
 async function train (model, data, numberOfEpoch) {
   const metrics = ['loss', 'val_loss', 'acc', 'val_acc']
   const container = {
-    name: 'Train Model',
-    tab : 'Training'
+    name: 'Training: Train Model',
+    tab : TAB_02_OJECT_DETECTION
   }
   const fitCallbacks = tfvis.show.fitCallbacks(container, metrics)
 
@@ -58,12 +59,12 @@ async function train (model, data, numberOfEpoch) {
   const TRAIN_DATA_SIZE = 11000
   const TEST_DATA_SIZE = 2000
 
-  const [trainXs, trainYs] = tf.tidy(() => {
+  const [trainXs, trainYs] = tfjs.tidy(() => {
     const d = data.nextTrainBatch(TRAIN_DATA_SIZE)
     return [d.xs.reshape([TRAIN_DATA_SIZE, 28, 28, 1]), d.labels]
   })
 
-  const [testXs, testYs] = tf.tidy(() => {
+  const [testXs, testYs] = tfjs.tidy(() => {
     const d = data.nextTestBatch(TEST_DATA_SIZE)
     return [d.xs.reshape([TEST_DATA_SIZE, 28, 28, 1]), d.labels]
   })
@@ -97,7 +98,7 @@ function doPrediction (model, data, testDataSize = 500) {
 async function showAccuracy (model, data) {
   const [preds, labels] = doPrediction(model, data)
   const classAccuracy = await tfvis.metrics.perClassAccuracy(labels, preds)
-  const container = { name: 'Accuracy', tab: 'Evaluation' }
+  const container = { name: 'Evaluation: Accuracy', tab: TAB_02_OJECT_DETECTION }
   await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
 
   labels.dispose()
@@ -106,7 +107,7 @@ async function showAccuracy (model, data) {
 async function showConfusion (model, data) {
   const [preds, labels] = doPrediction(model, data)
   const confusionMatrix = await tfvis.metrics.confusionMatrix(labels, preds)
-  const container = { name: 'Confusion Matrix', tab: 'Evaluation' }
+  const container = { name: 'Evaluation: Confusion Matrix', tab: TAB_02_OJECT_DETECTION }
   await tfvis.render.confusionMatrix(container, {
     values    : confusionMatrix,
     tickLabels: classNames,
@@ -115,7 +116,7 @@ async function showConfusion (model, data) {
 }
 
 function getModel (layerList, idOptimizer, idLoss, idMetrics_list, learningRate) {
-  const model = tf.sequential()
+  const model = tfjs.sequential()
   const optimizer = createOptimizer(idOptimizer, { learningRate: (learningRate / 100), momentum: 0.99 })
   const loss = createLoss(idLoss, {})
   const metrics = createMetricsList(idMetrics_list, {})
@@ -124,7 +125,7 @@ function getModel (layerList, idOptimizer, idLoss, idMetrics_list, learningRate)
     switch (layer._class) {
       case 'conv2d': {
         const inputShape = layer._protected ? { inputShape: layer.inputShape } : {}
-        model.add(tf.layers.conv2d({
+        model.add(tfjs.layers.conv2d({
           ...inputShape,
           kernelSize: layer.kernelSize,
           filters   : layer.filters,
@@ -133,15 +134,15 @@ function getModel (layerList, idOptimizer, idLoss, idMetrics_list, learningRate)
         break
       }
       case 'maxPooling2d': {
-        model.add(tf.layers.maxPooling2d({ poolSize: layer.poolSize, strides: layer.strides }))
+        model.add(tfjs.layers.maxPooling2d({ poolSize: layer.poolSize, strides: layer.strides }))
         break
       }
       case 'flatten': {
-        model.add(tf.layers.flatten({}))
+        model.add(tfjs.layers.flatten({}))
         break
       }
       case 'dense': {
-        model.add(tf.layers.dense({ units: layer.units, activation: layer.activation }))
+        model.add(tfjs.layers.dense({ units: layer.units, activation: layer.activation }))
         break
       }
       default: {
@@ -170,12 +171,14 @@ export async function MNIST_run (params_data) {
     layerList,
   } = params_data
 
+  tfvis.visor().open()
+
   const data = new MnistData()
   await data.load()
   await showExamples(data)
 
   const model = getModel(layerList, idOptimizer, idLoss, idMetricsList, learningRate)
-  await tfvis.show.modelSummary({ name: 'Model summary', tab: 'Model' }, model)
+  await tfvis.show.modelSummary({ name: 'Model summary', tab: TAB_02_OJECT_DETECTION }, model)
 
   await train(model, data, numberOfEpoch)
 

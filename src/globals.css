@@ -239,3 +239,7 @@ h6 {
 .small {
   font-size: small;
 }
+
+.border_green {
+  border: 1px solid lime;
+}

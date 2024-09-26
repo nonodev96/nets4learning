@@ -29,7 +29,7 @@ export default function LinearRegressionDatasetProcess() {
       <Card.Header><h3><Trans i18nKey={'Data set processing'} /></h3></Card.Header>
       <Card.Body>
         {!showDatasetProcess() && <>
-          <WaitingPlaceholder title={'pages.playground.generator.waiting-for-file'} />
+          <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-file'} />
         </>}
 
         {showDatasetProcess() && <>
