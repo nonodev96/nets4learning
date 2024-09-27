@@ -98,7 +98,7 @@ const TASK_DATASET_OPTIONS = {
   ],
   [TASKS.LINEAR_REGRESSION]: [
     // TODO
-    // { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
+    { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-datasets.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },

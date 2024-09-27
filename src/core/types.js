@@ -76,6 +76,8 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 /**
  * @typedef {'int32'|'float32'|'string'|'boolean'} ColumnType_t
+ * @typedef {'Date'|'Integer'|'Continuous'|'Categorical'|'Binary'|'Other'} DatasetColumnType_t
+ * @typedef {'ID'|'Feature'|'Target'} DatasetColumnRole_t
  */
 
 /**
@@ -98,8 +100,8 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 /**
  * @typedef DatasetColumn_t
  * @property {string} column_name
- * @property {'Integer'|'Continuous'|'Categorical'|'Binary'|'Other'} column_type
- * @property {'ID'|'Feature'|'Target'} column_role
+ * @property {DatasetColumnType_t} column_type
+ * @property {DatasetColumnRole_t} column_role
  * @property {boolean} column_missing_values
  * @property {string} [column_missing_values_key]
  * 
@@ -115,7 +117,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @typedef DataFrameColumnTransform_t
  * @property {string} column_name
  * @property {ColumnTransform_t} column_transform
- * @property {'Integer'|'Continuous'|'Categorical'|'Binary'|'Other'} [column_type]
+ * @property {DatasetColumnType_t} [column_type]
  * @property {string} [match]
  */
 
