@@ -213,9 +213,9 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
         info                : boston_info,
         container_info      : boston_container_info,
         dataset             : boston_dataset,
+        dataset_transforms  : boston_dataset_transforms,
         dataframe_original  : boston_dataframe_original,
         dataframe_processed : boston_dataframe_processed,
-        dataset_transforms  : boston_dataset_transforms,
         data_processed      : {
           dataframe_X       : boston_dataframe_X,
           dataframe_y       : boston_dataframe_y,

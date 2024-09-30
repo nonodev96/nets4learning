@@ -83,7 +83,6 @@ export class MODEL_6_HAND_SIGN extends I_MODEL_OBJECT_DETECTION {
     } else {
       HandSign = HandSignsASL
     }
-    console.log({ HandSign })
     const signos = Object.values(HandSign.signs)
     this.gestureEstimator = new fp.GestureEstimator([
       // fp.Gestures.ThumbsUpGesture,

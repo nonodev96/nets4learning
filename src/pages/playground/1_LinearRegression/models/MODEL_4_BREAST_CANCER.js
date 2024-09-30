@@ -344,9 +344,9 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         csv                 : bcw_csv,
         container_info      : bcw_container_info,
         dataset             : bcw_dataset,
+        dataset_transforms  : bcw_dataset_transforms,
         dataframe_original  : bcw_dataframe_original,
         dataframe_processed : bcw_dataframe_processed,
-        dataset_transforms  : bcw_dataset_transforms,
         data_processed      : {
           dataframe_X       : bcw_dataframe_X,
           dataframe_y       : bcw_dataframe_y,
@@ -365,9 +365,9 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         info                : wdbc_info,
         container_info      : wdbc_container_info,
         dataset             : wdbc_dataset,
+        dataset_transforms  : wdbc_dataset_transforms,
         dataframe_original  : wdbc_dataframe_original,
         dataframe_processed : wdbc_dataframe_processed,
-        dataset_transforms  : wdbc_dataset_transforms,
         data_processed      : {
           dataframe_X       : wdbc_dataframe_X,
           dataframe_y       : wdbc_dataframe_y,
@@ -386,9 +386,9 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
         csv                 : wpbc_csv,
         container_info      : wpbc_container_info,
         dataset             : wpbc_dataset,
+        dataset_transforms  : wpbc_dataset_transforms,
         dataframe_original  : wpbc_dataframe_original,
         dataframe_processed : wpbc_dataframe_processed,
-        dataset_transforms  : wpbc_dataset_transforms,
         data_processed      : {
           dataframe_X       : wpbc_dataframe_X,
           dataframe_y       : wpbc_dataframe_y,

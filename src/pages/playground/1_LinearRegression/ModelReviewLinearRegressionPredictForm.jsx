@@ -122,7 +122,7 @@ export default function ModelReviewLinearRegressionPredictForm({ customModel, da
           .dataframe_processed
           .columns
           .map((column_name, index) => {
-            const column_type = (/** @type {_Types.ColumnType_t} */(dataset.dataframe_original[column_name].dtype))
+            const column_type = (/** @type {_Types.DataFrameColumnType_t} */(dataset.dataframe_original[column_name].dtype))
             const column_value = prediction.input_1_dataframe_original[column_name].values[0]
           
             switch (column_type) {

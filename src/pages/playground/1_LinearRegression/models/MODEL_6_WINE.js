@@ -169,9 +169,9 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
         container_info      : container_info,
         csv                 : red_dataset_csv,
         dataset             : dataset,
+        dataset_transforms  : red_dataset_transforms,
         dataframe_original  : red_dataframe_original,
         dataframe_processed : red_dataframe_processed,
-        dataset_transforms  : red_dataset_transforms,
         data_processed      : {
           dataframe_X       : red_dataframe_X,
           dataframe_y       : red_dataframe_y,
@@ -190,9 +190,9 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
         container_info      : container_info,
         csv                 : white_dataset_csv,
         dataset             : dataset,
+        dataset_transforms  : white_dataset_transforms,
         dataframe_original  : white_dataframe_original,
         dataframe_processed : white_dataframe_processed,
-        dataset_transforms  : white_dataset_transforms,
         data_processed      : {
           dataframe_X       : white_dataframe_X,
           dataframe_y       : white_dataframe_y,

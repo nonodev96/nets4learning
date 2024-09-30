@@ -43,8 +43,41 @@ export default class I_MODEL_OBJECT_DETECTION {
     ctx.strokeStyle = '#009ddf'
     ctx.strokeRect(x, y, width + padding, parseInt(font, 10) + padding)
 
-    ctx.fillStyle = '#009ddf'
+    ctx.fillStyle = '#000000'
     ctx.fillText(txt, x + padding / 2, y + padding / 2)
+  }
+
+  /**
+   * 
+   * @param {CanvasRenderingContext2D} ctx 
+   * @param {string} txt 
+   * @param {string} font 
+   * @param {number} x 
+   * @param {number} y 
+   * @param {number} padding 
+   * @param {boolean} threshold 
+   */
+  _drawTextBG_Opacity(ctx, txt, font, x, y, padding, threshold) {
+    ctx.font = font
+    ctx.textBaseline = 'top'
+    ctx.fillStyle = '#fff'
+
+    let width = ctx.measureText(txt).width
+
+    if (threshold) ctx.globalAlpha = 0.4
+    ctx.fillRect(x, y, width + padding, parseInt(font, 10) + padding)
+    if (threshold) ctx.globalAlpha = 1.0
+
+    ctx.lineWidth = 2
+    ctx.strokeStyle = '#009ddf'
+    if (threshold) ctx.globalAlpha = 0.4
+    ctx.strokeRect(x, y, width + padding, parseInt(font, 10) + padding)
+    if (threshold) ctx.globalAlpha = 1.0
+
+    ctx.fillStyle = '#000000'
+    if (threshold) ctx.globalAlpha = 0.8
+    ctx.fillText(txt, x + padding / 2, y + padding / 2)
+    if (threshold) ctx.globalAlpha = 1.0
   }
   
   _drawPoint(ctx, x, y, r = 3) {

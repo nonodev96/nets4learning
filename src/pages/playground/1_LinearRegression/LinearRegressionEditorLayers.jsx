@@ -85,19 +85,17 @@ export default function LinearRegressionEditorLayers() {
       <Card.Header className={'d-flex align-items-center justify-content-between'}>
         <h2><Trans i18nKey={prefix + 'title'} /></h2>
         <div className={'d-flex'}>
-          <Button
-            disabled={show === false}
-            variant={'outline-primary'}
-            size={'sm'}
-            onClick={() => handlerClick_AddLayer_Start()}>
+          <Button disabled={show === false}
+                  variant={'outline-primary'}
+                  size={'sm'}
+                  onClick={() => handlerClick_AddLayer_Start()}>
             <Trans i18nKey={prefix + 'add-layer-start'} />
           </Button>
-          <Button
-            disabled={show === false}
-            variant={'outline-primary'}
-            size={'sm'}
-            className={'ms-3'}
-            onClick={() => handlerClick_AddLayer_End()}>
+          <Button disabled={show === false}
+                  variant={'outline-primary'}
+                  size={'sm'}
+                  className={'ms-3'}
+                  onClick={() => handlerClick_AddLayer_End()}>
             <Trans i18nKey={prefix + 'add-layer-end'} />
           </Button>
         </div>
@@ -114,15 +112,13 @@ export default function LinearRegressionEditorLayers() {
                 .map((item, index) => {
                   return <Accordion.Item eventKey={index.toString()} key={index}>
                     <Accordion.Header>
-                      <Trans i18nKey={prefix + 'layer-id'}
-                        values={{ index: index + 1 }} />
+                      <Trans i18nKey={prefix + 'layer-id'} values={{ index: index + 1 }} />
                     </Accordion.Header>
                     <Accordion.Body>
                       <div className="d-grid gap-2">
-                        <Button 
-                          variant={'outline-danger'} 
-                          disabled={item.is_disabled}
-                          onClick={() => handlerClick_RemoveLayer(index)}>
+                        <Button variant={'outline-danger'} 
+                                disabled={item.is_disabled}
+                                onClick={() => handlerClick_RemoveLayer(index)}>
                           <Trans i18nKey={prefix + 'delete-layer'} values={{ index: index + 1 }} />
                         </Button>
                       </div>
@@ -130,33 +126,31 @@ export default function LinearRegressionEditorLayers() {
                         <Form.Label>
                           <Trans i18nKey={prefix + 'units'} />
                         </Form.Label>
-                        <Form.Control 
-                          type="number"
-                          disabled={item.is_disabled}
-                          min={1} 
-                          max={200}
-                          placeholder={t(prefix + 'units-placeholder')}
-                          value={item.units}
-                          onChange={(e) => handleChange_Layer(index, {
-                            is_disabled: item.is_disabled, 
-                            activation : item.activation,
-                            units      : parseInt(e.target.value),
-                          })} />
+                        <Form.Control type="number"
+                                      disabled={item.is_disabled}
+                                      min={1} 
+                                      max={200}
+                                      placeholder={t(prefix + 'units-placeholder')}
+                                      value={item.units}
+                                      onChange={(e) => handleChange_Layer(index, {
+                                        is_disabled: item.is_disabled, 
+                                        activation : item.activation,
+                                        units      : parseInt(e.target.value),
+                                      })} />
                       </Form.Group>
 
                       <Form.Group className="mt-3" controlId={'formActivationLayer' + index}>
                         <Form.Label>
                           <Trans i18nKey={prefix + 'activation-function-select'} />
                         </Form.Label>
-                        <Form.Select 
-                          aria-label={'Default select example: ' + item.activation}
-                          disabled={item.is_disabled}
-                          value={item.activation}
-                          onChange={(e) => handleChange_Layer(index, {
-                            is_disabled: item.is_disabled, 
-                            activation : e.target.value,
-                            units      : item.units,
-                          })}>
+                        <Form.Select aria-label={'Default select example: ' + item.activation}
+                                    disabled={item.is_disabled}
+                                    value={item.activation}
+                                    onChange={(e) => handleChange_Layer(index, {
+                                      is_disabled: item.is_disabled, 
+                                      activation : e.target.value,
+                                      units      : item.units,
+                                    })}>
                           {TYPE_ACTIVATION.map(({ key, label }, index) => {
                             return (<option key={index} value={key}>{label}</option>)
                           })}

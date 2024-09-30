@@ -38,7 +38,7 @@ export default function TabularClassificationDatasetProcessForm(props) {
     datasetIndex,
   } = props
   /**
-   * @type {ReturnType<typeof useState<_Types.DataFrameColumnType_t[]>>}
+   * @type {ReturnType<typeof useState<_Types.DataFrameColumnNameAndType_t[]>>}
    */
   const [listColumnNameType, setListColumnNameType] = useState([])
   /**
@@ -59,10 +59,10 @@ export default function TabularClassificationDatasetProcessForm(props) {
   useEffect(() => {
     const _columns = datasets[datasetIndex].dataframe_original.columns
 
-    const _dtypes = /** @type {_Types.ColumnType_t[]} */ (datasets[datasetIndex].dataframe_original.dtypes)
+    const _dtypes = /** @type {_Types.DataFrameColumnType_t[]} */ (datasets[datasetIndex].dataframe_original.dtypes)
 
     /**
-     * @type {_Types.DataFrameColumnType_t[]}
+     * @type {_Types.DataFrameColumnNameAndType_t[]}
      */
     const _listColumnNameType = _columns.map((_, index) => {
       return { column_name: _columns[index], column_type: _dtypes[index] }

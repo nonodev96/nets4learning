@@ -38,15 +38,25 @@ export default function LinearRegressionDataset({ dataset }) {
       /**@type {_Types.DatasetProcessed_t} */
       const newDataset = {
         is_dataset_upload   : true,
-        is_dataset_processed: false,
+        is_dataset_processed: true,
         csv                 : files[0].name,
         path                : '',
         info                : '',
         container_info      : '',
-        dataset             : [], // TODO
+        dataset             : [/* TODO */],
         dataframe_original  : _dataframeOriginal,
         dataframe_processed : _dataframeProcessed,
-        dataset_transforms  : []
+        dataset_transforms  : [],
+        data_processed      : {
+          /* TODO */
+          encoders          : {},
+          column_name_target: '',
+          scaler            : new dfd.MinMaxScaler(),
+          dataframe_X       : new dfd.DataFrame(),
+          dataframe_y       : new dfd.DataFrame(),
+          X                 : new dfd.DataFrame(),
+          y                 : new dfd.DataFrame(),
+        }
       }
       setDatasets((prevState) => {
         return {

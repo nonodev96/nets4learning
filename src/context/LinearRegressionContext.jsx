@@ -13,6 +13,7 @@ import {
   DEFAULT_ID_OPTIMIZER,
   DEFAULT_ID_LOSS,
   DEFAULT_ID_METRICS,
+  DEFAULT_LAYERS
 } from '@/pages/playground/1_LinearRegression/CONSTANTS'
 import { DEFAULT_SELECTOR_DATASET, DEFAULT_SELECTOR_MODEL } from '@/CONSTANTS'
 
@@ -71,14 +72,7 @@ export function LinearRegressionProvider ({ children }) {
       id_loss        : DEFAULT_ID_LOSS,
       list_id_metrics: DEFAULT_ID_METRICS
     },
-    params_layers: [
-      { is_disabled: false, units: 10, activation: 'relu' },
-      { is_disabled: false, units: 20, activation: 'relu' },
-      { is_disabled: false, units: 20, activation: 'relu' },
-      { is_disabled: false, units: 20, activation: 'relu' },
-      { is_disabled: false, units: 20, activation: 'sigmoid' },
-      { is_disabled: true,  units: 1,  activation: 'linear' },
-    ],
+    params_layers  : DEFAULT_LAYERS,
     params_visor   : [],
     params_features: {
       X_features: new Set(),

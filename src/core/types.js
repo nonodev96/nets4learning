@@ -39,6 +39,10 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @typedef {_dfd.MinMaxScaler} MinMaxScaler_t
  * @typedef {_dfd.StandardScaler} StandardScaler_t
  * @typedef {_dfd.LabelEncoder} LabelEncoder_t
+*/
+
+/**
+ * @typedef {'standard-scaler'|'min-max-scaler'} ScalerKey_t
  */
 
 /**
@@ -75,26 +79,35 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 /**
- * @typedef {'int32'|'float32'|'string'|'boolean'} ColumnType_t
- * @typedef {'Date'|'Integer'|'Continuous'|'Categorical'|'Binary'|'Other'} DatasetColumnType_t
+ * @typedef {'string'|'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'replace_<match>_NaN'|'replace_?_NaN'|'drop_?'|'drop'|'dropNa'|'ignored'} ColumnTransform_t
+ */
+
+/**
+ * @typedef {'int32'|'float32'|'string'|'boolean'|'datetime'} DataFrameColumnType_t
+ */
+
+/**
+ * @typedef {'Integer'|'Continuous'|'Categorical'|'Binary'|'Date'|'Other'} DatasetColumnType_t
+ */
+
+/**
  * @typedef {'ID'|'Feature'|'Target'} DatasetColumnRole_t
  */
 
 /**
- * @typedef DataFrameColumnType_t
+ * @typedef DataFrameColumnNameAndType_t
  * @property {string} column_name
- * @property {ColumnType_t} column_type
+ * @property {DataFrameColumnType_t} column_type
  */
 
 /**
- * @typedef DataFrameColumnTypeEnable_t
+ * @typedef DataFrameColumnNameTypeEnable_t
  * @property {string} column_name
- * @property {ColumnType_t} column_type
+ * @property {DataFrameColumnType_t} column_type
  * @property {boolean} column_enable
  */
 
 /**
- * @typedef {'string'|'one-hot-encoder'|'label-encoder'|'int32'|'float32'|'replace_<match>_NaN'|'replace_?_NaN'|'drop_?'|'drop'|'dropNa'|'ignored'} ColumnTransform_t
  */
 
 /**
@@ -124,6 +137,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 /**
  * @typedef DataFrameColumnTransformEnable_t
  * @property {boolean} column_enable
+ * @property {DataFrameColumnType_t} [column_type]
  * @property {string} column_name
  * @property {ColumnTransform_t} column_transform
  * @property {string} [match]
@@ -175,7 +189,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 /**
- * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t
+ * @typedef {Object.<string, EncoderObject_t>} EncoderMap_t - K: Column name, V: EncoderObject_t
  */
 
 /**

@@ -1401,6 +1401,16 @@
       }
     }
   },
+  "face-api": {
+    "years": "Años",
+    "neutral": "Neutral",
+    "happy": "Feliz",
+    "sad": "Triste",
+    "angry": "Enfadado",
+    "fearful": "Temeroso",
+    "disgusted": "Asqueado",
+    "surprised": "Sorprendido"
+  },
   "pages": {
     "version": {
       "title": "Versión"

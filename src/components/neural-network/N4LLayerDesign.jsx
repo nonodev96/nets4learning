@@ -6,8 +6,32 @@ import { Card, Form } from 'react-bootstrap'
 import { VERBOSE } from '@/CONSTANTS'
 import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
+import * as _Types from '@core/types'
 
-export default function N4LLayerDesign({ layers, show = true, glossary_action = '', manual_action = '', actions = [] }) {
+/**
+ * @typedef N4LLayerDesignProps_t
+ * @property {Array<_Types.CustomParamsLayerModel_t>} layers
+ * @property {boolean} [show=true]
+ * @property {boolean} [ready=true]
+ * @property {string} [glossary_action='']
+ * @property {string} [manual_action='']
+ * @property {Array} [actions=[]]
+ */
+
+/**
+ * 
+ * @param {N4LLayerDesignProps_t} props 
+ * @returns 
+ */
+export default function N4LLayerDesign(props) {
+  const {
+    layers,
+    show = true,
+    ready = true,
+    glossary_action = '',
+    manual_action = '', 
+    actions = []
+  } = props
 
   const prefix = 'pages.playground.generator.'
   const { t } = useTranslation()
@@ -25,12 +49,11 @@ export default function N4LLayerDesign({ layers, show = true, glossary_action = 
         <h3><Trans i18nKey={prefix + 'layer-design'} /></h3>
         <div className={'ms-3'}>
           <Form.Group controlId={'mode'}>
-            <Form.Select 
-              disabled={show === false}
-              aria-label={t(prefix + 'neural_network_modes.title')}
-              size={'sm'}
-              defaultValue={NEURAL_NETWORK_MODES.COMPACT}
-              onChange={(e) => handleChange_mode(e)}>
+            <Form.Select disabled={show === false}
+                         aria-label={t(prefix + 'neural_network_modes.title')}
+                         size={'sm'}
+                         defaultValue={NEURAL_NETWORK_MODES.COMPACT}
+                         onChange={(e) => handleChange_mode(e)}>
               <option value={NEURAL_NETWORK_MODES.COMPACT}>{t(prefix + 'neural_network_modes.compact')}</option>
               <option value={NEURAL_NETWORK_MODES.EXTEND}>{t(prefix + 'neural_network_modes.extend')}</option>
             </Form.Select>
@@ -40,8 +63,8 @@ export default function N4LLayerDesign({ layers, show = true, glossary_action = 
       <Card.Body id={'LinearRegressionLayerDesign'}>
         {show && <>
         <NeuralNetwork id_parent={'vis-network'}
-          layers={layers}
-          mode={mode} />
+                       layers={layers}
+                       mode={mode} />
         </>}
         {!show && <>
           <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />

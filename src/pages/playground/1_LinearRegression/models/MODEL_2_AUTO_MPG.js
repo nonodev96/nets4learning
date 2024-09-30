@@ -137,9 +137,9 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
         info                : auto_info,
         container_info      : auto_container_info,
         dataset             : auto_dataset,
+        dataset_transforms  : auto_dataset_transforms,
         dataframe_original  : auto_dataframe_original,
         dataframe_processed : auto_dataframe_processed,
-        dataset_transforms  : auto_dataset_transforms,
         data_processed      : {
           dataframe_X       : auto_dataframe_X,
           dataframe_y       : auto_dataframe_y,

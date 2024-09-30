@@ -48,7 +48,7 @@ export default function PreProcessDataFrame(props) {
   const plotDataFrameProcessedID = useId()
 
   /**
-   * @type {ReturnType<typeof useState<Array<_Types.DataFrameColumnTypeEnable_t>>>}
+   * @type {ReturnType<typeof useState<Array<_Types.DataFrameColumnNameTypeEnable_t>>>}
    */
   const [listColumnNameType, setListColumnNameTypes] = useState([])
   /**
@@ -64,7 +64,7 @@ export default function PreProcessDataFrame(props) {
   useEffect(() => {
     /** 
      * FIX
-     * @type {_Types.DataFrameColumnType_t[]} 
+     * @type {_Types.DataFrameColumnNameAndType_t[]} 
      */
     const _listColumnNameType = dataFrameOriginal.columns.map((_, index) => {
       return {

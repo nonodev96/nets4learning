@@ -1008,7 +1008,7 @@
       "face-api": {
         "title": "FaceAPI - Face Expressions",
         "description": {
-          "text-0": "Multiple neural networks of different types grouped in a project for managing faces, allow detecting multiple faces, detecting their age, emotions, marks on the face, extracting key points as descriptors to compare different types of faces.",
+          "text-0": "Multiple neural networks of different types grouped in a project for face management, allow detecting multiple faces, detecting their age, emotions, marks on the face, extracting key points as descriptors to compare different types of faces.",
           "details-input": {
             "title": "Input data",
             "text-0": "Color image or video (webcam)."
@@ -1252,14 +1252,14 @@
         "intro": {
           "0": "Box plots, also known as box-and-whisker plots or boxplots, are a visual representation used to show the distribution and statistical summaries of a set of numerical data.\nThis type of chart is based on a rectangle that represents the interquartile range (IQR), where the center line indicates the median and the extended lines, known as whiskers, represent the range of\nvalues beyond the IQR.",
           "1": "In a box chart, the rectangle is drawn vertically or horizontally, and is delimited by two lines, one at the bottom and one at the top.\nThe line in the middle of the rectangle represents the median, which is the value that divides the ordered data into two equal parts.\nThe whiskers extend from the edges of the rectangle toward the extreme values, with a length determined by the variability of the data.",
-          "2": "Box type charts have several notable features and applications:"
+          "2": "Box charts have several notable features and applications:"
         },
         "list": {
           "0": "Statistical summary: Box charts provide a visual summary of the key statistics of a data set.\nIn addition to the median, you can also display quartiles (Q1 and Q3), which divide the data into four equal parts, and outliers, which are displayed as dots or asterisks outside the whiskers.",
-          "1": "Identification of asymmetries and outliers: By observing a Box graph, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
+          "1": "Identification of asymmetries and outliers: By observing a Box type chart, it is possible to identify asymmetries in the distribution of the data.\nIf the whiskers are not the same length, it may indicate an asymmetry towards one of the ends.\nAdditionally, outliers outside the whiskers can be easily highlighted.",
           "2": "Comparison between groups or categories: Box charts are also used to compare the distribution of data between different groups or categories.\nBy overlaying multiple boxplots on the same graph, it is possible to visualize differences in medians, interquartile ranges, and the presence of outliers between groups.",
-          "3": "Detect biases and distributions: Box graphs allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias towards the opposite direction.",
-          "4": "Viewing dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to view the dispersion and variability of the data in a single chart.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
+          "3": "Detect biases and distributions: Box type charts allow you to visually identify whether the data distribution is symmetrical or skewed towards one extreme.\nIf the center line of the rectangle is not in the middle, it may indicate a bias towards the opposite direction.",
+          "4": "Visualization of dispersions: In addition to providing information about the central position and variability of the data, box charts also allow you to visualize the dispersion and variability of the data in a single graph.\nThis can be useful to get a quick idea of the overall distribution and variability of the data."
         },
         "end": {
           "0": "Box plots are a useful tool for visualizing the distribution, statistical summaries, and variability of a numerical data set.\nThey allow you to identify asymmetries, outliers and compare distributions between groups.\nTheir concise and effective visual representation makes them a commonly used tool in data analysis and communication."
@@ -1311,7 +1311,7 @@
       "description": {
         "intro": {
           "0": "Pie or pie charts are a visual representation that shows the proportion of different categories or parts in relation to the whole.\nThese graphs are based on a circle divided into sectors, where each sector represents a specific category and its relative size reflects the proportion that category represents in the data set.",
-          "1": "In a pie chart, the full circle represents 100% or the total data.\nEach sector is shown as a portion of the circle and is labeled with the name or label corresponding to the category it represents.\nThe sector angle measure is proportional to the proportion that category has in the data set.",
+          "1": "In a pie chart, the full circle represents 100% or the total data.\nEach sector is shown as a portion of the circle and is labeled with the name or label corresponding to the category it represents.\nThe sector angle measurement is proportional to the proportion that category has in the data set.",
           "2": "Pie charts have several notable features and applications:"
         },
         "list": {
@@ -1339,7 +1339,7 @@
           "1": "Identifying trends: A scatter plot can reveal trends or patterns in the data.\nBy looking at the general direction of the points, it is possible to identify whether there is a linear, non-linear, or even a curvilinear relationship between the variables.",
           "2": "Outlier Detection: Scatter plots can help identify outliers or extremes in data.\nThese points stand out and are far from the main grouping, suggesting unusual or exceptional observations that may require additional analysis.",
           "3": "Analysis of clusters or groups: If the points in the scatter plot group together or form distinct patterns, this may indicate the presence of clusters or groups.\nThis can be useful in data segmentation or classification analysis.",
-          "4": "Visualizing multidimensional data: By using additional colors or point sizes, scatter plots can also represent additional information in two-dimensional space.\nThis allows multidimensional data to be viewed more intuitively."
+          "4": "Multidimensional data visualization: By using additional colors or point sizes, scatter plots can also represent additional information in two-dimensional space.\nThis allows multidimensional data to be viewed more intuitively."
         },
         "end": {
           "0": "Scatter plots are a powerful tool for exploring and visualizing the relationship between two variables.\nThey allow you to identify patterns, trends, and outliers in data, and are useful in various applications, such as correlation analysis, cluster detection, and multidimensional data visualization."
@@ -1401,6 +1401,16 @@
       }
     }
   },
+  "face-api": {
+    "years": "Years",
+    "neutral": "Neutral",
+    "happy": "Happy",
+    "sad": "Sad",
+    "angry": "Angry",
+    "fearful": "Fearful",
+    "disgusted": "Disgusted",
+    "surprised": "Surprised"
+  },
   "pages": {
     "version": {
       "title": "Version"
@@ -1439,7 +1449,7 @@
           "3": "Define the number of epochs.",
           "4": "Define the optimizer.",
           "5": "Define the loss function",
-          "6": "Define the metrics for the evaluation",
+          "6": "Define the metrics for evaluation",
           "title": "To apply linear regression and model the relationship between variables, we must follow the following steps:"
         }
       },
@@ -1952,7 +1962,7 @@
         "2-description-2": "On the left we have an editor of the different layers that the neural network has. The last layer of the network must be allowed to have the same number of neurons as the classes to be predicted.",
         "2-description-3": "<b>Number of epochs</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neural network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
         "2-description-4": "We must press the \"Create and train model\" button to start the neural network training process. If all the configuration and selection of the functions is correct then an entry with the trained model will be added to the table below.",
-        "2-description-5": "Once a model has been trained from the data, we can make predictions. To do this, a dynamic form is included with the characteristics of the data set. The precision of the model in the prediction may be higher or lower depending on the training and the selected options."
+        "2-description-5": "Once a model has been trained from the data, we can make predictions. To do this, a dynamic form is included with the characteristics of the data set. The accuracy of the model in prediction may be higher or lower depending on the training and the selected options."
       },
       "1-linear-regression": {
         "title": "Linear regression",
@@ -2033,7 +2043,7 @@
         "text-1": "Object identification in neural networks is a technique used in the field of machine learning and computer vision to detect and recognize objects in images or videos. It is an important task in image analysis and is used in applications such as face recognition, real-time object tracking, object classification in medical images, and object detection in autonomous vehicles.",
         "text-2": "The neural networks used for the identification of objects are deep learning models that are trained in data sets labeled. The training process implies providing the neurons network for a large number of images tagged, and adjusting the weights of connections between neurons so that the network can identify objects in new images with high precision.",
         "text-3": "Once the neuronal network has been trained, it is used to identify objects in new images. The network examines the image and, by processing multiple layers, extracts important characteristics that are used to identify objects of interest. Then, the network uses these characteristics to assign a label to each object detected in the image.",
-        "text-4": "In summary, object identification in neural networks is an important technique in computer vision and machine learning that is used to detect and recognize objects in images and videos. It is based on the use of deep neural networks trained on labeled data sets to identify and classify objects in new images with high accuracy."
+        "text-4": "In summary, object identification in neural networks is an important technique in computer vision and machine learning that is used to detect and recognize objects in images and videos. It is based on the use of deep neural networks trained on labeled data sets to identify and classify objects in new images with high precision."
       },
       "image-classification": {
         "title": "Image classification",

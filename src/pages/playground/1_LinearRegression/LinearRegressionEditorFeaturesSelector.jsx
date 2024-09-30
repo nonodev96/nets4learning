@@ -99,7 +99,6 @@ export default function LinearRegressionEditorFeaturesSelector() {
         */}
       </Card.Header>
       <Card.Body>
-
         {!show && <>
           <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />
         </>}

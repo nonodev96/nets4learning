@@ -42,9 +42,9 @@ const TASK_MODEL_OPTIONS = {
     { i18n: 'datasets-models.0-tabular-classification.list-models.0-option-3', value: MODEL_LYMPHOGRAPHY.KEY },
   ],
   [TASKS.LINEAR_REGRESSION]: [
-    { i18n: 'datasets-models.1-linear-regression.list-models.salary', value: MODEL_1_SALARY.KEY },
+    // { i18n: 'datasets-models.1-linear-regression.list-models.salary', value: MODEL_1_SALARY.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-models.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-models.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
+    // { i18n: 'datasets-models.1-linear-regression.list-models.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
     // { i18n: 'datasets-models.1-linear-regression.list-models.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
     { i18n: 'datasets-models.1-linear-regression.list-models.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY, },
     { i18n: 'datasets-models.1-linear-regression.list-models.wine', value: MODEL_6_WINE.KEY },

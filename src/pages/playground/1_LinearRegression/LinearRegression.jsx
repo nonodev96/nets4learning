@@ -21,7 +21,6 @@ import { createLinearRegressionCustomModel } from '@core/controller/01-linear-re
 import LinearRegressionContext from '@context/LinearRegressionContext'
 import alertHelper from '@utils/alertHelper'
 import { UPLOAD } from '@/DATA_MODEL'
-import WaitingPlaceholder from '@/components/loading/WaitingPlaceholder'
 import { TRANSFORM_DATASET_PROCESSED_TO_STATE_PREDICTION } from './utils'
 
 // Manual and datasets
@@ -179,7 +178,13 @@ export default function LinearRegression(props) {
     if (dataset === UPLOAD) {
       console.debug('Linear regression upload csv')
     } else if (dataset in MAP_LR_CLASSES) {
-      if (iModelInstance && datasets && datasets.data && datasets.index != -1 && datasets.data[datasets.index] && datasets.data[datasets.index].csv) {
+      if (iModelInstance
+        && datasets 
+        && datasets.data 
+        && datasets.index != DEFAULT_SELECTOR_DATASET 
+        && datasets.data[datasets.index] 
+        && datasets.data[datasets.index].csv
+      ) {
         setParams((prevState) => ({
           ...prevState,
           params_layers: iModelInstance.DEFAULT_LAYERS(datasets.data[datasets.index].csv)
@@ -271,30 +276,24 @@ export default function LinearRegression(props) {
         <N4LDivider i18nKey={'hr.model'} />
         <Row>
           <Col className={'joyride-step-5-layer'}>
-            {!(ready) && <>
-              <WaitingPlaceholder i18nKey_title={'Waiting'} />
-            </>} 
-            
-            {(ready) && <>
-              <N4LLayerDesign layers={params.params_layers}
-                              show={datasets.data[datasets.index].is_dataset_processed}
-                              actions={[
-                                <>
-                                  <Trans i18nKey={'more-information-in-link'}
-                                    components={{
-                                      link1: <Link
-                                        className={'text-info'}
-                                        to={{
-                                          pathname: '/glossary/',
-                                          state   : {
-                                            action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
-                                          },
-                                        }} />,
-                                    }} />
-                                </>
-                              ]}
-                            />
-            </>}
+            <N4LLayerDesign layers={params.params_layers}
+                            show={ready}
+                            actions={[
+                              <>
+                                <Trans i18nKey={'more-information-in-link'}
+                                  components={{
+                                    link1: <Link
+                                      className={'text-info'}
+                                      to={{
+                                        pathname: '/glossary/',
+                                        state   : {
+                                          action: GLOSSARY_ACTIONS.TABULAR_CLASSIFICATION.STEP_3_0_LAYER_DESIGN,
+                                        },
+                                      }} />,
+                                  }} />
+                              </>
+                            ]}
+                          />
           </Col>
         </Row>
 
@@ -305,7 +304,6 @@ export default function LinearRegression(props) {
                 <Suspense fallback={<></>}><LinearRegressionEditorLayers /></Suspense>
               </div>
                
-              <hr />
               <div className={'joyride-step-6-editor-selector-features'}>
                 <Suspense fallback={<></>}><LinearRegressionEditorFeaturesSelector /></Suspense>
               </div>

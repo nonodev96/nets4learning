@@ -12,6 +12,18 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
   URL = 'https://justadudewhohacks.github.io/face-api.js/docs/index.html'
   mirror = false
 
+  i18n_face_api = {
+    years    : ('face-api.years'),
+    neutral  : ('face-api.neutral'),
+    happy    : ('face-api.happy'),
+    sad      : ('face-api.sad'),
+    angry    : ('face-api.angry'),
+    fearful  : ('face-api.fearful'),
+    disgusted: ('face-api.disgusted'),
+    surprised: ('face-api.surprised'),
+  }
+
+
   DESCRIPTION() {
     const prefix = 'datasets-models.2-object-detection.face-api.description.'
     return <>
@@ -107,6 +119,18 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
     ])
     // await faceapi.nets.faceLandmark68Net.load(modelPath);
     // await faceapi.nets.faceRecognitionNet.load(modelPath);
+    console.log('t', this.t)
+
+    this.i18n_face_api = {
+      years    : this.t('face-api.years'),
+      neutral  : this.t('face-api.neutral'),
+      happy    : this.t('face-api.happy'),
+      sad      : this.t('face-api.sad'),
+      angry    : this.t('face-api.angry'),
+      fearful  : this.t('face-api.fearful'),
+      disgusted: this.t('face-api.disgusted'),
+      surprised: this.t('face-api.surprised'),
+    }
   }
 
   async PREDICTION (input_image_or_video, _config = { }) {
@@ -114,7 +138,7 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
     if (input_image_or_video.constructor === ImageData) {
       _input = this._ImageData_To_Image(input_image_or_video)
     }
-    const minScore = 0.4
+    const minScore = 0.8
     const maxResults = 10
     const optionsSSDMobileNet = new faceapi.SsdMobilenetv1Options({ minConfidence: minScore, maxResults })
     const predictions = await faceapi
@@ -137,13 +161,13 @@ export class MODEL_5_FACE_API extends I_MODEL_OBJECT_DETECTION {
       let i = 0
       for (const [expresion, score] of Object.entries(expressions)) {
         const scoreParsed = Math.round(parseFloat(score) * 100)
-        const txt_expression = `${expresion} ${scoreParsed}%`
-        this._drawTextBG(ctx, txt_expression, font2, x + width, y + (38 * i), 12)
+        const txt_expression = `${this.i18n_face_api[expresion]} ${scoreParsed}%`
+        this._drawTextBG_Opacity(ctx, txt_expression, font2, x + width, y + (38 * i), 12, scoreParsed < 20)
         i++
       }
 
       const ageParsed = Math.round(parseFloat(age))
-      const txt = `${ageParsed} years`
+      const txt = `${ageParsed} ${this.i18n_face_api['years']}`
       this._drawTextBG(ctx, txt, font, x, y - 48, 16)
     }
   }

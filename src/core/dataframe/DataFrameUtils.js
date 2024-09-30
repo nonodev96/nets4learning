@@ -386,3 +386,28 @@ export function DataFrameSetCellValue(dataframe, row, column_name, value) {
   let new_df = df_void.append(newValuesRows, [0])
   return new_df
 }
+
+/**
+ * 
+ * @param {string|_Types.DataFrameColumnType_t} dtype 
+ * @returns {_Types.DatasetColumnType_t}
+ */
+export function DataFrameColumnType_To_DatasetColumnType (dtype) {
+
+  switch(dtype) {
+    case 'int32':
+      return 'Integer' 
+    case 'float32':
+      return 'Continuous' 
+    case 'string':
+      return 'Categorical'
+    case 'boolean':
+      return 'Binary'
+    case 'datetime':
+      return 'Date' 
+
+    default:
+      return 'Other'
+  }
+
+}

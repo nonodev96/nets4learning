@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import * as dfd from 'danfojs'
 
@@ -16,25 +16,26 @@ export default function TestPageAdvanced () {
   const { t } = useTranslation()
 
   const handleChange_FileUpload_CSV = async (files, _event) => {
-    if (files.length < 1) {
-      console.error(t('error.load-json-csv'))
-      return
-    }
-    const file = new File([files[0]], files[0].name, { type: files[0].type })
-    const _dataframeOriginal = await dfd.readJSON(file)
-    const _dataframeProcessed = await dfd.readJSON(file)
-
-
-    console.log({ _dataframeOriginal, _dataframeProcessed})
-    
-    // const content = await arff.parse(text)
-
     try {
+      if (files.length < 1) {
+        console.error(t('error.load-json-csv'))
+        return
+      }
+      const file = new File([files[0]], files[0].name, { type: files[0].type })
+      const _dataframeOriginal = await dfd.readJSON(file)
+      const _dataframeProcessed = await dfd.readJSON(file)
+
+      console.log({ _dataframeOriginal, _dataframeProcessed})
 
       await alertHelper.alertSuccess(t('alert.file-upload-success'))
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const handleClick_testDataFrame = () => {
+    const df = new dfd.DataFrame({'date': [new Date()]})
+    console.log({df})
   }
 
   const handleChange_FileUpload_CSV_reject = (files, _event) => {
@@ -53,6 +54,7 @@ export default function TestPageAdvanced () {
               <p><span data-testid={'Test-TestPageAdvanced-id'}>{id}</span></p>
               <p><span data-testid={'Test-TestPageAdvanced-option'}>{option}</span></p>
               <p><span data-testid={'Test-TestPageAdvanced-example'}>{example}</span></p>
+              <Button onClick={handleClick_testDataFrame}>DataFrame</Button>
 
               <TestComponentAdvanced />
 
