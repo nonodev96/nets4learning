@@ -54,19 +54,19 @@
   "prediction-input": "Datos originales",
   "prediction-input-description": "Datos originales antes de escalar y codificar",
   "prediction-input-encoding": "Datos procesados codificados",
-  "prediction-input-encoding-description": "Datos procesados despues de codificar con 'label encoder'",
+  "prediction-input-encoding-description": "Datos procesados después de codificar con 'label encoder'",
   "prediction-input-scaling": "Datos procesados escalados",
-  "prediction-input-scaling-description": "Datos procesados despues de realizar un escalado con 'MinMaxScaler'",
+  "prediction-input-scaling-description": "Datos procesados después de realizar un escalado con 'MinMaxScaler'",
   "prediction-input-processed": "Datos procesados",
-  "prediction-input-processed-description": "Datos procesados despues de escalar y codificar",
+  "prediction-input-processed-description": "Datos procesados después de escalar y codificar",
   "prediction-result": "Resultado",
   "prediction-result-description": "Resultado de la predicción",
   "equations": {
-    "title": "Formulas",
-    "title-metrics": "Formulas de las funciones de métricas",
-    "title-losses": "Formulas de las funciones de perdida",
-    "title-activation": "Formulas de las funciones de activación",
-    "title-optimization": "Formulas de las funciones de optimización",
+    "title": "Fórmulas",
+    "title-metrics": "Funciones de métricas",
+    "title-losses": "Funciones de perdida",
+    "title-activation": "Funciones de activación",
+    "title-optimization": "Funciones de optimización",
     "loss-functions": {
       "huber-loss": {
         "title": "Huber Loss",
@@ -151,7 +151,7 @@
           "breast-cancer-original": "Conjunto de datos Breast Cancer Wisconsin",
           "breast-cancer-wdbc": "Conjunto de datos Breast Cancer Wisconsin (Diagnostic)",
           "breast-cancer-wpbc": "Conjunto de datos Breast Cancer Wisconsin (Prognostic)",
-          "student-performance-mathematics": "Conjunto de datos de de estudiantes de matemáticas",
+          "student-performance-mathematics": "Conjunto de datos de estudiantes de matemáticas",
           "student-performance-portuguese": "Conjunto de datos de estudiantes de Portugués",
           "wine-red": "Conjunto de datos de vino tinto",
           "wine-white": "Conjunto de datos de vino blanco"
@@ -248,10 +248,10 @@
     "tensor-shape-change": "La capa de salida tiene la forma (* ,{{last_layer_units}}). <br> Debe tener la forma (*, {{classes_length}})",
     "need-one-feature": "Necesitas al menos una característica.",
     "new-element-need-to-be-unique": "El elemento del conjunto X debe ser único.",
-    "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de actvación",
+    "layers-length": "Debes tener al menos una capa con el número de neuronas y su función de activación",
     "parsing-csv": "Error en la preparación del conjunto de datos",
     "file-not-valid": "Error, fichero no válido",
-    "metrics-length": "Error, el numero de metricas debe estar entre 1 y 10"
+    "metrics-length": "Error, el número de métricas debe estar entre 1 y 10"
   },
   "warning": {
     "the-first-layer-need-to-be-__value__": "Advertencia, la primera capa debe ser de tipo {{value}}",
@@ -263,7 +263,7 @@
     "file-upload": "Archivo cargado correctamente"
   },
   "info": {
-    "the-class-is-__value__": "¿La clase tiene el indice {{value}}?"
+    "the-class-is-__value__": "¿La clase tiene el índice {{value}}?"
   },
   "alert": {
     "menu": {
@@ -423,7 +423,7 @@
         },
         "html-example": {
           "text": "Introduce los valores correspondientes a la flor que se va a evaluar:",
-          "items": "(longitud sépalo; anchura sépalo; longitud petalo; anchura petalo).",
+          "items": "(longitud sépalo; anchura sépalo; longitud pétalo; anchura pétalo).",
           "examples": "Ejemplos:"
         }
       },
@@ -491,19 +491,19 @@
         "steps": {
           "manual": {
             "title": "Manual",
-            "content": "Puedes consultar el manual en busqueda de información"
+            "content": "Puedes consultar el manual en búsqueda de información"
           },
           "dataset-info": {
             "title": "Información del conjunto de datos",
             "content": "Analiza el conjunto de datos"
           },
           "dataset": {
-            "title": "Conjuto de datos",
-            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+            "title": "Conjunto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadísticas de su descripciones"
           },
           "dataset-plot": {
-            "title": "Graficas de los conjuntos de datos",
-            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+            "title": "Gráficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas gráficas, diagrama de barras, diagramas de sectores, etc."
           },
           "layer-visualizer": {
             "title": "Visualizador de las capas de la red neuronal",
@@ -511,10 +511,10 @@
           },
           "layer-editor": {
             "title": "Editor de capas",
-            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la función de activación, añadir nuevas capas o eliminarlas."
           },
           "params-editor": {
-            "title": "Editor de hiperparametros",
+            "title": "Editor de hiperparámetros",
             "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
           },
           "list-of-models": {
@@ -851,23 +851,23 @@
         "steps": {
           "manual": {
             "title": "Manual",
-            "content": "Puedes consultar el manual en busqueda de información"
+            "content": "Puedes consultar el manual en búsqueda de información"
           },
           "dataset-info": {
             "title": "Información del conjunto de datos",
             "content": "Consulta la información del conjunto de datos"
           },
           "dataset": {
-            "title": "Conjuto de datos",
-            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+            "title": "Conjunto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadísticas de su descripciones"
           },
           "pre-process-dataset": {
             "title": "Pre procesamiento",
             "content": "Limpieza y preparación del conjunto de datos"
           },
           "dataset-plot": {
-            "title": "Graficas de los conjuntos de datos",
-            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+            "title": "Gráficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas gráficas, diagrama de barras, diagramas de sectores, etc."
           },
           "layer-visualizer": {
             "title": "Visualizador de las capas de la red neuronal",
@@ -875,10 +875,10 @@
           },
           "layer-editor": {
             "title": "Editor de capas",
-            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la función de activación, añadir nuevas capas o eliminarlas."
           },
           "params-editor": {
-            "title": "Editor de hiperparametros",
+            "title": "Editor de hiperparámetros",
             "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
           },
           "list-of-models": {
@@ -1008,7 +1008,7 @@
       "face-api": {
         "title": "FaceAPI - Expresiones en cara",
         "description": {
-          "text-0": "Multiples redes neuronales de distinto tipo agrupadas en un proyecto para la gestión de caras, permite detectar multiples caras, detectar su edad, emociones, marcas en el rostro, extraer puntos claves como descriptores para comparar distintos tipos de caras.",
+          "text-0": "Múltiples redes neuronales de distinto tipo agrupadas en un proyecto para la gestión de caras, permite detectar múltiples caras, detectar su edad, emociones, marcas en el rostro, extraer puntos claves como descriptores para comparar distintos tipos de caras.",
           "details-input": {
             "title": "Datos de entrada",
             "text-0": "Imagen o vídeo (webcam) a color."
@@ -1132,7 +1132,7 @@
           },
           "details-references": {
             "title": "Referencias",
-            "text-0": "Originalmente fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:",
+            "text-0": "Originalmente, fue publicado por Mark Sandler, Andrew Howard, Menglong Zhu, Andrey Zhmoginov, Liang-Chieh Chen:",
             "list": {
               "0": "<link1>Inverted Residuals and Linear Bottlenecks: Mobile Networks for Classification, Detection and Segmentation</link1> 2018"
             }
@@ -1157,19 +1157,19 @@
         "steps": {
           "manual": {
             "title": "Manual",
-            "content": "Puedes consultar el manual en busqueda de información"
+            "content": "Puedes consultar el manual en búsqueda de información"
           },
           "dataset-info": {
             "title": "Información del conjunto de datos",
             "content": "Consulta la información del conjunto de datos"
           },
           "dataset": {
-            "title": "Conjuto de datos",
-            "content": "Puedes ver el conjunto de datos y extraer estadisticas de su descripciones"
+            "title": "Conjunto de datos",
+            "content": "Puedes ver el conjunto de datos y extraer estadísticas de su descripciones"
           },
           "dataset-plot": {
-            "title": "Graficas de los conjuntos de datos",
-            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas graficas, diagrama de barras, diagramas de sectores, etc."
+            "title": "Gráficas de los conjuntos de datos",
+            "content": "Puedes extraer información muy relevante analizando el conjunto de datos usando las distintas gráficas, diagrama de barras, diagramas de sectores, etc."
           },
           "layer-visualizer": {
             "title": "Visualizador de las capas de la red neuronal",
@@ -1177,10 +1177,10 @@
           },
           "layer-editor": {
             "title": "Editor de capas",
-            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la funcion de activación, añadir nuevas capas o eliminarlas."
+            "content": "Puedes editar las capas de la red neuronal, modificar de las unidades de cada capa, la función de activación, añadir nuevas capas o eliminarlas."
           },
           "params-editor": {
-            "title": "Editor de hiperparametros",
+            "title": "Editor de hiperparámetros",
             "content": "Puedes configurar los hiperparámetros de tu red neuronal de forma que el entrenamiento sea personalizado para el conjunto de datos."
           },
           "list-of-models": {
@@ -1247,7 +1247,7 @@
       }
     },
     "box-plots": {
-      "title": "Grafico de Bigotes",
+      "title": "Gráfico de Bigotes",
       "description": {
         "intro": {
           "0": "Los gráficos de tipo Box, también conocidos como diagramas de caja y bigotes o boxplots en inglés, son una representación visual utilizada para mostrar la distribución y los resúmenes estadísticos de un conjunto de datos numéricos.\nEste tipo de gráfico se basa en un rectángulo que representa el rango intercuartil (IQR, por sus siglas en inglés), donde la línea central indica la mediana y las líneas extendidas, conocidas como bigotes, representan el rango de\nvalores más allá del IQR.",
@@ -1287,7 +1287,7 @@
       }
     },
     "line-charts": {
-      "title": "Grafico de tipo Linea",
+      "title": "Gráfico de tipo Línea",
       "description": {
         "intro": {
           "0": "Los gráficos de tipo línea, también conocidos como gráficos de series o gráficos de tendencia, son una representación visual que muestra la relación y la evolución de los datos a lo largo del tiempo o de una variable continua.\nEstos gráficos se construyen trazando puntos de datos en un sistema de coordenadas cartesianas, donde cada punto representa una medición o un valor específico de la variable en el eje vertical en función del tiempo o de la variable\nindependiente en el eje horizontal.",
@@ -1555,7 +1555,7 @@
                 "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
                 "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
-                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de error para medir la eficiencia del modelo durante el entrenamiento.",
                 "5": "<b>Función de métrica</b>:<br />Es la media de evaluación que se utiliza para valorar el rendimiento de un modelo de aprendizaje automático con los datos de prueba."
               }
             },
@@ -1667,7 +1667,7 @@
           "test-size": "Tamaño del conjunto de pruebas",
           "test-size-placeholder": "Tamaño del conjunto de pruebas",
           "test-size-info": "Valor entre 0 y 100 (es un porcentaje) del tamaño del conjunto de pruebas",
-          "delete-metric": "Eliminar funcion de métrica {{index}}",
+          "delete-metric": "Eliminar función de métrica {{index}}",
           "add-metric": "Añadir función de métrica",
           "metric-id-__index__": "Métrica {{index}}",
           "metric-id-select": "Selecciona la función de métrica",
@@ -1760,7 +1760,7 @@
                 "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
                 "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
-                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de error para medir la eficiencia del modelo durante el entrenamiento.",
                 "5": "<b>Función de métrica</b>:<br />Es la media de evaluación que se utiliza para valorar el rendimiento de un modelo de aprendizaje automático con los datos de prueba."
               }
             },
@@ -1865,7 +1865,7 @@
                 "1": "<b>Número de épocas</b>:<br />Cantidad de veces que se le pasa el conjunto de entrenamiento a la red (a mayor número, más tiempo tarda en entrenar).",
                 "2": "<b>Tamaño del conjunto de pruebas</b>:<br />Porcentaje del conjunto de datos que se utilizaran para las pruebas del modelo (datos de prueba).  El resto de datos se utilizarán para el entrenamiento de la red (datos de entrenamiento).",
                 "3": "<b>Optimizador</b>:<br />Es una función que se utiliza para ajustar los pesos de la red.",
-                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de eror para medir la eficiencia del modelo durante el entrenamiento.",
+                "4": "<b>Función de pérdida</b>:<br />Es un método de calculo de error para medir la eficiencia del modelo durante el entrenamiento.",
                 "5": "<b>Función de métrica</b>:<br />Es la media de evaluación que se utiliza para valorar el rendimiento de un modelo de aprendizaje automático con los datos de prueba."
               }
             },
@@ -1959,7 +1959,7 @@
         "1-description-3": "Al acceder a la sección de la herramienta en los modelos podremos editar las características de los elementos a predecir. La herramienta cuenta con formulario dinámico que permite cambiar los tipos de datos de entrada de la red neuronal.",
         "2-title": "Entrenar modelos",
         "2-description-1": "La herramienta cuenta con un visualizador de datos que permite mostrar las clases y los atributos del conjunto de datos. Así como un gestor para crear, diseñar, entrenar y exportar un modelo de datos.",
-        "2-description-2": "A la izquierda contamos con un editor de las distintas capas que tiene la red neuronal. Se debe dejar que la ultima capa de la red tenga el mismo numero de neuronas que clases a predecir.",
+        "2-description-2": "A la izquierda contamos con un editor de las distintas capas que tiene la red neuronal. Se debe dejar que la ultima capa de la red tenga el mismo número de neuronas que clases a predecir.",
         "2-description-3": "<b>Number of epochs</b>: <br /> The number of iterations refers to the number of times the training data is presented to the neuronal network during the training process. Each iteration implies an update of the weights of the network as a function of the calculated error.",
         "2-description-4": "Debemos pulsar el botón de \"Crear y entrenar modelo\" para que se inicie el proceso de entrenamiento de la red neuronal. Si toda la configuración y selección de las funciones es correcta entonces se añadirá en la tabla de abajo una entrada con el modelos entrenado.",
         "2-description-5": "Una vez entrenado un modelo a partir de los datos podremos realizar predicciones, para ello se incluye un formulario dinámico con las características del conjunto de datos. La precisión del modelo en la predicción podrá ser mayor o menor en función del entrenamiento y las opciones seleccionadas."
@@ -2417,8 +2417,8 @@
     "iris": {
       "sepal_length": "Longitud sépalo",
       "sepal_width": "Anchura sépalo",
-      "petal_length": "Longitud petalo",
-      "petal_width": "Anchura petalo",
+      "petal_length": "Longitud pétalo",
+      "petal_width": "Anchura pétalo",
       "class": "Clase",
       "Iris-setosa": "Iris setosa",
       "Iris-versicolor": "Iris versicolor",
