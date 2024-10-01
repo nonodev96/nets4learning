@@ -6,15 +6,17 @@ Web platform for the design and execution of deep learning models for learning a
 The tool proposes different classical machine learning problems with known data sets to study and model different neural network architectures and training parameters. The tool addresses different examples of deep learning models such as
 tabular classification, image classifier or object identification.
 
-There are some classical problems prepared and reviewed to make predictions, the tool has the feature to preprocess data sets that the user uploads, train models and predict in which class it would be classified.
+There are some classical problems prepared and reviewed to make predictions, the tool has the feature to pre process data sets that the user uploads, train models and predict in which class it would be classified.
 
+<!-- 
 ![sitemap](public/sitemap.png)
 
 ## Architecture Playground
 
 ![Architecture Playground](public/docs/n4l.svg)
+-->
 
-## MODELS
+## Datasets and Models
 
 1. Tabular classification
    - [MODEL_CAR.js](src/pages/playground/0_TabularClassification/models/MODEL_CAR.js)
@@ -41,18 +43,38 @@ There are some classical problems prepared and reviewed to make predictions, the
 ## Install local
 
 ```bash
+export NODE_OPTIONS="--max-old-space-size=8192"
 npm install
+npm start
 ```
+
+### Project environment
+
+Create the files `.env`, `.env.development`, `.env.production`, `.env.simidat`, `.env.simidat-beta`, .
 
 ```dosini
-NODE_OPTIONS=--max-old-space-size=4096
+WATCHPACK_POLLING=true
+FAST_REFRESH=true
+NODE_ENV="production"
+PUBLIC_URL="https://simidat.ujaen.es/n4l-beta"
+REACT_APP_PUBLIC_URL="https://simidat.ujaen.es/n4l-beta"
+REACT_APP_PATH="/n4l-beta"
+REACT_APP_ENVIRONMENT="production"
+REACT_APP_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
+REACT_APP_SHOW_NEW_FEATURE="true"
+REACT_APP_NEW_FEATURE="linear-regression"
 ```
-
 
 ## Deploy with Traefik and Docker
 
 <details>
-<summary> `docker-compose.yml` </summary>
+<summary> docker-compose.yml </summary>
+
+```bash
+docker compose down n4l
+docker compose build n4l
+docker compose up n4l
+```
 
 ```yml
 networks:
@@ -81,27 +103,13 @@ services:
 
 </details>
 
-### Project environment variables
+### Command matrix
 
-Create the files `.env.development` or `.env.production`.
-
-```dosini
-HTTPS=false
-WATCHPACK_POLLING=true
-FAST_REFRESH=true
-NODE_ENV="development"
-
-PUBLIC_URL="http://localhost:3000/n4l"
-
-REACT_APP_ENVIRONMENT="development"
-REACT_APP_PATH="/n4l"
-REACT_APP_PUBLIC_URL="http://localhost:3000/n4l"
-REACT_APP_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
-REACT_APP_SHOW_NEW_FEATURE="true"
-REACT_APP_NEW_FEATURE="regression"
-```
-
-### Development
+|              | development | build                       |
+|--------------|-------------|-----------------------------|
+| Development  | `npm start` |                             |
+| simidat      |             | `npm run build:simidat`     |
+| simidat-beta |             | `npm run build:simidat-beta`|
 
 
 ```bash
@@ -110,22 +118,3 @@ node -v
 npm -v 
 # 9.5.1
 ```
-
-```bash
-npm run start:development
-```
-
-### Build
-
-```bash
-npm run build:production
-```
-
-### Command matrix
-
-|             | development                 | build                      |
-|-------------|-----------------------------|----------------------------|
-| Development | `npm run start:development` |                            |
-| Production  | `npm run start:production`  | `npm run build:production` |
-| simidat     |                             | `npm run build:simidat`    |
-

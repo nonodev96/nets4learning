@@ -61,6 +61,8 @@
   "prediction-input-processed-description": "Datos procesados después de escalar y codificar",
   "prediction-result": "Resultado",
   "prediction-result-description": "Resultado de la predicción",
+  "Validate": "Validación",
+  "Classify": "Clasificación",
   "equations": {
     "title": "Fórmulas",
     "title-metrics": "Funciones de métricas",
@@ -2353,7 +2355,7 @@
       "features": "Características",
       "open-visor": "Abrir visor",
       "close-visor": "Cerrar visor",
-      "history": "Historial"
+      "history": "Resultados"
     }
   },
   "hr": {
