@@ -1,7 +1,7 @@
 import * as _dfd from 'danfojs'
 import * as _tfjs from '@tensorflow/tfjs'
 import _I_MODEL_TABULAR_CLASSIFICATION from '@/pages/playground/0_TabularClassification/models/_model'
-import _I_MODEL_LINEAR_REGRESSION from '@/pages/playground/1_LinearRegression/models/_model'
+import _I_MODEL_REGRESSION from '@/pages/playground/1_Regression/models/_model'
 import _I_MODEL_OBJECT_DETECTION from '@/pages/playground/2_ObjectDetection/models/_model'
 import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassification/models/_model'
 
@@ -14,13 +14,16 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 /**
  * @typedef {Object.<string, typeof _I_MODEL_TABULAR_CLASSIFICATION>} MAP_TC_CLASSES_t
- */ 
-/**
- * @typedef {Object.<string, typeof _I_MODEL_LINEAR_REGRESSION>} MAP_LR_CLASSES_t
  */
+
+/**
+ * @typedef {Object.<string, typeof _I_MODEL_REGRESSION>} MAP_LR_CLASSES_t
+ */
+
 /**
  * @typedef {Object.<string, typeof _I_MODEL_OBJECT_DETECTION>} MAP_OD_CLASSES_t
  */
+
 /**
  * @typedef {Object.<string, typeof _I_MODEL_IMAGE_CLASSIFICATION>} MAP_IC_CLASSES_t
  */
@@ -30,7 +33,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @typedef CustomParamsLayerModel_t
  * @property {number} units
  * @property {string} activation
- * @property {boolean} is_disabled
+ * @property {boolean} [is_disabled]
  */
 
 /**
@@ -46,8 +49,8 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  */
 
 /**
- * @typedef {_I_MODEL_LINEAR_REGRESSION} I_MODEL_LINEAR_REGRESSION_t
  * @typedef {_I_MODEL_TABULAR_CLASSIFICATION} I_MODEL_TABULAR_CLASSIFICATION_t
+ * @typedef {_I_MODEL_REGRESSION} I_MODEL_REGRESSION_t
  * @typedef {_I_MODEL_OBJECT_DETECTION} I_MODEL_OBJECT_DETECTION_t
  * @typedef {_I_MODEL_IMAGE_CLASSIFICATION} I_MODEL_IMAGE_CLASSIFICATION_t
  */
@@ -239,6 +242,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @property {any} [TARGET_SET_CLASSES]
  * @property {any} [DATA_SET_CLASSES]
  * @property {_tfjs.Sequential} model
+ * @property {_tfjs.History} history
  * @property {number} learningRate
  * @property {number} testSize
  * @property {number} numberOfEpoch
@@ -250,7 +254,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
 
 
 
-// ================================ LINEAR REGRESSION
+// ================================ REGRESSION
 
 /**
  * @typedef Prediction_t
@@ -306,6 +310,7 @@ import _I_MODEL_IMAGE_CLASSIFICATION from '@/pages/playground/3_ImageClassificat
  * @typedef CustomModelGenerated_t
  * CustomModel_t
  * @property {_tfjs.Sequential} model
+ * @property {_tfjs.History} history
  * CustomParams_t
  * @property {Array<CustomParamsLayerModel_t>} params_layers
  * @property {CustomParamsFeaturesSelector_t} params_features

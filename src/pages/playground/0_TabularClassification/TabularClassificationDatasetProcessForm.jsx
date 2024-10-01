@@ -227,11 +227,11 @@ export default function TabularClassificationDatasetProcessForm(props) {
               <Col>
                 <Form.Group controlId="FormControl_Scaler">
                   <Form.Label><b><Trans i18nKey={'Scaler'} /></b> {typeScaler}</Form.Label>
-                  <Form.Select 
-                    aria-label="Selecciona un escalador"
-                    size="sm"
-                    defaultValue="min-max-scaler"
-                    onChange={(e) => setTypeScaler(e.target.value)}>
+                  <Form.Select aria-label={'FormControl_Scaler'}
+                               size="sm"
+                               value={typeScaler}
+                               onChange={(e) => setTypeScaler(e.target.value)}
+                  >
                     <option value="min-max-scaler">MinMaxScaler</option>
                     <option value="standard-scaler">StandardScaler</option>
                   </Form.Select>
@@ -241,7 +241,7 @@ export default function TabularClassificationDatasetProcessForm(props) {
               <Col>
                 <Form.Group controlId="FormControl_ColumnNameTarget">
                   <Form.Label><b><Trans i18nKey={'Column target'} /></b> {columnNameTarget}</Form.Label>
-                  <Form.Select aria-label={'Selecciona un '}
+                  <Form.Select aria-label={'FormControl_ColumnNameTarget'}
                                size="sm"
                                value={columnNameTarget}
                                onChange={handleChange_ColumnNameTarget}>
@@ -274,8 +274,7 @@ export default function TabularClassificationDatasetProcessForm(props) {
                                      onChange={(e) => handleChange_ColumnTransform(e, column_name)}>
                           <>
                             {DEFAULT_OPTIONS.map((optionValue, optionIndex) => {
-                              return <option key={column_name + '_option_' + optionIndex}
-                                value={optionValue.value}>
+                              return <option key={column_name + '_option_' + optionIndex} value={optionValue.value}>
                                 <Trans i18nKey={prefix + optionValue.i18n} />
                               </option>
                             })}

@@ -30,7 +30,7 @@ export const CHARTJS_CONFIG_DEFAULT = {
     'rgb(153, 102, 255)',
     'rgb(175, 175, 175)',
   ],
-  LINEAR_REGRESSION_PREDICTION: {
+  REGRESSION_PREDICTION: {
     elements: {
       point: {
         pointStyle : 'circle',

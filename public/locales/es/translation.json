@@ -144,7 +144,7 @@
     "download-dataset-ecoli": "Conjunto de datos de ecoli",
     "download": {
       "dataset": {
-        "1-linear-regression": {
+        "1-regression": {
           "salary": "Conjunto de datos de salarios",
           "auto-mpg": "Conjunto de datos consumo de combustible",
           "housing-prices": "Conjunto de datos precios de casas",
@@ -291,7 +291,7 @@
     "datasets": "Conjuntos de datos",
     "theme": "Tema",
     "dataframe": "DataFrame",
-    "analyze": "Analizar"
+    "analyze": "AED"
   },
   "footer": {
     "description-app": "Plataforma Web para el diseño y ejecución de modelos de aprendizaje profundo.",
@@ -326,7 +326,7 @@
     "2": "Identificación de objetos",
     "3": "Clasificación de imágenes",
     "tabular-classification": "Clasificación tabular",
-    "linear-regression": "Regresión",
+    "regression": "Regresión",
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"
   },
@@ -528,7 +528,7 @@
         }
       }
     },
-    "1-linear-regression": {
+    "1-regression": {
       "salary": {
         "title": "Salario por años de experiencia",
         "description": {
@@ -1434,7 +1434,7 @@
         },
         "2-button": "Crear y entrenar un modelo"
       },
-      "linear-regression": {
+      "regression": {
         "1-title": "Regresión",
         "2-title": "Diseñar, crear y editar una arquitectura para calcular una regresión",
         "1-description-1": "La regresión es una tarea para determinar un valor numérico específico (variable dependiente) a partir de sus características (variables independientes).",
@@ -1497,7 +1497,7 @@
       "form-option-_-1": "Selecciona un conjunto de datos",
       "form-upload-description": "Ahora si lo deseas puedes cargar tu propia arquitectura, en caso contrario pulsa en continuar y se cargará una arquitectura por defecto de ejemplo.",
       "form-submit": "Continuar",
-      "1-linear-regression": {
+      "1-regression": {
         "csv": "Subir conjunto de datos - CSV",
         "csv-text": "Sube un fichero con un conjunto de datos tratado en formato <code>.csv</code>"
       }
@@ -1734,12 +1734,12 @@
         },
         "waiting-for-models": "Esperando a la creación de un modelo"
       },
-      "1-linear-regression": {
+      "1-regression": {
         "generator": {
           "manual": {
             "title": "Manual del generador de modelos",
-            "simple-linear-regression": "Regresión simple",
-            "multiple-linear-regression": "Regresión multiple",
+            "simple-regression": "Regresión simple",
+            "multiple-regression": "Regresión multiple",
             "details-edit-layers": {
               "title": "Editor de las capas",
               "text": {
@@ -1795,8 +1795,8 @@
               }
             }
           },
-          "simple-linear-regression": "Regresión simple",
-          "multiple-linear-regression": "Regresión multiple"
+          "simple-regression": "Regresión simple",
+          "multiple-regression": "Regresión multiple"
         },
         "dataframe": {
           "title": "Dataframe procesado"
@@ -1964,7 +1964,7 @@
         "2-description-4": "Debemos pulsar el botón de \"Crear y entrenar modelo\" para que se inicie el proceso de entrenamiento de la red neuronal. Si toda la configuración y selección de las funciones es correcta entonces se añadirá en la tabla de abajo una entrada con el modelos entrenado.",
         "2-description-5": "Una vez entrenado un modelo a partir de los datos podremos realizar predicciones, para ello se incluye un formulario dinámico con las características del conjunto de datos. La precisión del modelo en la predicción podrá ser mayor o menor en función del entrenamiento y las opciones seleccionadas."
       },
-      "1-linear-regression": {
+      "1-regression": {
         "title": "Regresión",
         "1-title": "Modelos pre-entrenados",
         "1-description": {
@@ -2029,7 +2029,7 @@
         "text-3": "Una vez que se tiene un conjunto de datos etiquetados, se utiliza un algoritmo de aprendizaje automático para entrenar un modelo que pueda predecir la etiqueta de nuevos conjuntos de datos. Este modelo puede ser utilizado para realizar predicciones precisas y rápidas sobre nuevas instancias de datos.",
         "text-4": "La clasificación tabular es una técnica muy útil para resolver problemas de clasificación en una amplia variedad de campos, como la medicina, el comercio electrónico, la banca, la seguridad y muchos otros."
       },
-      "linear-regression": {
+      "regression": {
         "title": "Regresión",
         "text": {
           "0": "La regresión es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación lineal entre una variable independiente y una variable dependiente, buscando encontrar la mejor línea recta que ajuste los datos y permita hacer predicciones.",
@@ -2352,7 +2352,8 @@
       "download": "Descargar",
       "features": "Características",
       "open-visor": "Abrir visor",
-      "close-visor": "Cerrar visor"
+      "close-visor": "Cerrar visor",
+      "history": "Historial"
     }
   },
   "hr": {
@@ -2366,7 +2367,7 @@
     "tasks": "Tareas",
     "00-tabular-classification": "Clasificación Tabular",
     "tutorial-00-tabular-classification": "Entrenar un modelo para clasificación tabular",
-    "01-linear-regression": "Regresión",
+    "01-regression": "Regresión",
     "02-object-detection": "Detección de objetos",
     "03-image-classification": "Clasificación de imágenes",
     "optimization-function": "Funciones de optimización",

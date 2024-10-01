@@ -47,6 +47,13 @@ async function showExamples (data) {
   }
 }
 
+/**
+ * 
+ * @param {tfjs.Sequential} model 
+ * @param {*} data 
+ * @param {number} numberOfEpoch 
+ * @returns 
+ */
 async function train (model, data, numberOfEpoch) {
   const metrics = ['loss', 'val_loss', 'acc', 'val_acc']
   const container = {
@@ -69,7 +76,7 @@ async function train (model, data, numberOfEpoch) {
     return [d.xs.reshape([TEST_DATA_SIZE, 28, 28, 1]), d.labels]
   })
 
-  return model.fit(trainXs, trainYs, {
+  return await model.fit(trainXs, trainYs, {
     batchSize     : BATCH_SIZE,
     validationData: [testXs, testYs],
     epochs        : numberOfEpoch,
@@ -180,9 +187,12 @@ export async function MNIST_run (params_data) {
   const model = getModel(layerList, idOptimizer, idLoss, idMetricsList, learningRate)
   await tfvis.show.modelSummary({ name: 'Model summary', tab: TAB_03_IMAGE_CLASIFICATION }, model)
 
-  await train(model, data, numberOfEpoch)
+  const history = await train(model, data, numberOfEpoch)
 
   await showAccuracy(model, data)
   await showConfusion(model, data)
-  return model
+  return {
+    model,
+    history
+  }
 }

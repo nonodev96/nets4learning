@@ -20,13 +20,13 @@ There are some classical problems prepared and reviewed to make predictions, the
    - [MODEL_CAR.js](src/pages/playground/0_TabularClassification/models/MODEL_CAR.js)
    - [MODEL_IRIS.js](src/pages/playground/0_TabularClassification/models/MODEL_IRIS.js)
    - [MODEL_LYMPHOGRAPHY.js](src/pages/playground/0_TabularClassification/models/MODEL_LYMPHOGRAPHY.js)
-2. Linear regression
-   - [MODEL_1_SALARY.js](src/pages/playground/1_LinearRegression/models/MODEL_1_SALARY.js)
-   - [MODEL_2_AUTO_MPG.js](src/pages/playground/1_LinearRegression/models/MODEL_2_AUTO_MPG.js)
-   - [MODEL_3_HOUSING_PRICES.js](src/pages/playground/1_LinearRegression/models/MODEL_3_HOUSING_PRICES.js)
-   - [MODEL_4_BREAST_CANCER.js](src/pages/playground/1_LinearRegression/models/MODEL_4_BREAST_CANCER.js)
-   - [MODEL_5_STUDENT_PERFORMANCE.js](src/pages/playground/1_LinearRegression/models/MODEL_5_STUDENT_PERFORMANCE.js) 
-   - [MODEL_6_WINE.js](src/pages/playground/1_LinearRegression/models/MODEL_6_WINE.js) 
+2. Regression
+   - [MODEL_1_SALARY.js](src/pages/playground/1_Regression/models/MODEL_1_SALARY.js)
+   - [MODEL_2_AUTO_MPG.js](src/pages/playground/1_Regression/models/MODEL_2_AUTO_MPG.js)
+   - [MODEL_3_HOUSING_PRICES.js](src/pages/playground/1_Regression/models/MODEL_3_HOUSING_PRICES.js)
+   - [MODEL_4_BREAST_CANCER.js](src/pages/playground/1_Regression/models/MODEL_4_BREAST_CANCER.js)
+   - [MODEL_5_STUDENT_PERFORMANCE.js](src/pages/playground/1_Regression/models/MODEL_5_STUDENT_PERFORMANCE.js) 
+   - [MODEL_6_WINE.js](src/pages/playground/1_Regression/models/MODEL_6_WINE.js) 
 3. Image classifier
     - [MODEL_IMAGE_MNIST.js](src/pages/playground/3_ImageClassification/models/MODEL_IMAGE_MNIST.js)
     - [MODEL_IMAGE_MOBILENET.js](src/pages/playground/3_ImageClassification/models/MODEL_IMAGE_MOBILENET.js)
@@ -98,7 +98,7 @@ REACT_APP_PATH="/n4l"
 REACT_APP_PUBLIC_URL="http://localhost:3000/n4l"
 REACT_APP_GA_MEASUREMENT_ID="G-XXXXXXXXXX"
 REACT_APP_SHOW_NEW_FEATURE="true"
-REACT_APP_NEW_FEATURE="linear-regression"
+REACT_APP_NEW_FEATURE="regression"
 ```
 
 ### Development

@@ -132,7 +132,7 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
   }
 
   async TRAIN_MODEL (params) {
-    return await Train_MNIST.MNIST_run({
+    const { model, history } = await Train_MNIST.MNIST_run({
       learningRate : params.learningRate,
       numberOfEpoch: params.numberEpochs,
       testSize     : params.testSize,
@@ -141,6 +141,11 @@ export default class MODEL_IMAGE_MNIST extends I_MODEL_IMAGE_CLASSIFICATION {
       idMetricsList: params.idMetricsList,
       layerList    : params.layers,
     })
+
+    return {
+      model, 
+      history
+    }
   }
 
   DEFAULT_LAYERS () {

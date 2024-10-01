@@ -52,7 +52,7 @@ export default class I_MODEL_IMAGE_CLASSIFICATION {
 
   /**
    * 
-   * @returns {Promise<_tfjs.LayersModel|string>}
+   * @returns {Promise<{model: _tfjs.Sequential, history: _tfjs.History} | string>}
    */
   async TRAIN_MODEL () {
     return new Promise((resolve) => {

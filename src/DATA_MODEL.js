@@ -10,7 +10,7 @@ import {
   MODEL_4_BREAST_CANCER,
   MODEL_5_STUDENT_PERFORMANCE,
   MODEL_6_WINE,
-} from '@pages/playground/1_LinearRegression/models'
+} from '@pages/playground/1_Regression/models'
 import {
   MODEL_1_FACE_DETECTOR,
   MODEL_2_FACE_MESH,
@@ -28,7 +28,7 @@ import {
 
 const TASKS = {
   TABULAR_CLASSIFICATION: 'tabular-classification',
-  LINEAR_REGRESSION     : 'linear-regression',
+  REGRESSION            : 'regression',
   IMAGE_CLASSIFICATION  : 'image-classification',
   OBJECT_DETECTION      : 'object-detection',
 }
@@ -41,13 +41,13 @@ const TASK_MODEL_OPTIONS = {
     { i18n: 'datasets-models.0-tabular-classification.list-models.0-option-2', value: MODEL_IRIS.KEY },
     { i18n: 'datasets-models.0-tabular-classification.list-models.0-option-3', value: MODEL_LYMPHOGRAPHY.KEY },
   ],
-  [TASKS.LINEAR_REGRESSION]: [
-    // { i18n: 'datasets-models.1-linear-regression.list-models.salary', value: MODEL_1_SALARY.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-models.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-    // { i18n: 'datasets-models.1-linear-regression.list-models.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
-    // { i18n: 'datasets-models.1-linear-regression.list-models.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-models.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY, },
-    { i18n: 'datasets-models.1-linear-regression.list-models.wine', value: MODEL_6_WINE.KEY },
+  [TASKS.REGRESSION]: [
+    // { i18n: 'datasets-models.1-regression.list-models.salary', value: MODEL_1_SALARY.KEY },
+    { i18n: 'datasets-models.1-regression.list-models.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
+    // { i18n: 'datasets-models.1-regression.list-models.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
+    // { i18n: 'datasets-models.1-regression.list-models.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
+    { i18n: 'datasets-models.1-regression.list-models.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY, },
+    { i18n: 'datasets-models.1-regression.list-models.wine', value: MODEL_6_WINE.KEY },
   ],
   [TASKS.OBJECT_DETECTION]: [
     { i18n: 'datasets-models.2-object-detection.list-models.2-option-1', value: MODEL_1_FACE_DETECTOR.KEY },
@@ -68,7 +68,7 @@ const TASK_MODEL_OPTIONS_CLASS = {
     [MODEL_IRIS.KEY]        : { _class_: MODEL_IRIS },
     [MODEL_LYMPHOGRAPHY.KEY]: { _class_: MODEL_LYMPHOGRAPHY },
   },
-  [TASKS.LINEAR_REGRESSION]: {
+  [TASKS.REGRESSION]: {
     [MODEL_1_SALARY.KEY]             : { _class_: MODEL_1_SALARY },
     [MODEL_2_AUTO_MPG.KEY]           : { _class_: MODEL_2_AUTO_MPG },
     [MODEL_3_HOUSING_PRICES.KEY]     : { _class_: MODEL_3_HOUSING_PRICES },
@@ -96,15 +96,15 @@ const TASK_DATASET_OPTIONS = {
     { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-2', value: MODEL_IRIS.KEY },
     { i18n: 'datasets-models.0-tabular-classification.list-datasets.0-option-3', value: MODEL_LYMPHOGRAPHY.KEY },
   ],
-  [TASKS.LINEAR_REGRESSION]: [
+  [TASKS.REGRESSION]: [
     // TODO
-    { i18n: 'pages.menu-selection-dataset.1-linear-regression.csv', value: UPLOAD },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
-    // { i18n: 'datasets-models.1-linear-regression.list-datasets.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY },
-    { i18n: 'datasets-models.1-linear-regression.list-datasets.wine', value: MODEL_6_WINE.KEY },
+    { i18n: 'pages.menu-selection-dataset.1-regression.csv', value: UPLOAD },
+    { i18n: 'datasets-models.1-regression.list-datasets.salary', value: MODEL_1_SALARY.KEY },
+    { i18n: 'datasets-models.1-regression.list-datasets.auto-mpg', value: MODEL_2_AUTO_MPG.KEY },
+    { i18n: 'datasets-models.1-regression.list-datasets.housing-prices', value: MODEL_3_HOUSING_PRICES.KEY },
+    // { i18n: 'datasets-models.1-regression.list-datasets.breast-cancer', value: MODEL_4_BREAST_CANCER.KEY },
+    { i18n: 'datasets-models.1-regression.list-datasets.student-performance', value: MODEL_5_STUDENT_PERFORMANCE.KEY },
+    { i18n: 'datasets-models.1-regression.list-datasets.wine', value: MODEL_6_WINE.KEY },
   ],
   [TASKS.OBJECT_DETECTION]    : [],
   [TASKS.IMAGE_CLASSIFICATION]: [

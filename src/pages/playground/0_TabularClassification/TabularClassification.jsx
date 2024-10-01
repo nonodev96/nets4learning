@@ -203,7 +203,7 @@ export default function TabularClassification (props) {
       let _idLoss = idLoss
       let _idMetrics = idMetrics
 
-      const model = await createTabularClassificationCustomModel({
+      const { model, history } = await createTabularClassificationCustomModel({
         dataset_processed: dataset_processed,
         learningRate     : _learningRate,
         numberOfEpoch    : _numberOfEpoch,
@@ -216,6 +216,7 @@ export default function TabularClassification (props) {
       /**@type {_Types.TabularClassificationGeneratedModel_t} */
       const newModel = {
         model        : model,
+        history      : history,
         layerList    : _layerList,
         learningRate : _learningRate,
         testSize     : _testSize,
@@ -245,12 +246,12 @@ export default function TabularClassification (props) {
     e.preventDefault()
     if (dataset === UPLOAD) {
       if (datasets.length === 0) {
-        await alertHelper.alertError('Primero debes de cargar un dataset')
+        await alertHelper.alertError('First you must load a dataset')
         return
       }
     }
     if (Model === undefined) {
-      await alertHelper.alertError('Primero debes de entrenar el modelo')
+      await alertHelper.alertError('First you must load a model')
       return
     }
     try {

@@ -11,7 +11,7 @@ import { VERBOSE } from '@/CONSTANTS'
 import AlertHelper from '@utils/alertHelper'
 import TestComponentEasy from '@components/TestComponentEasy'
 import { MODEL_1_SALARY, MODEL_2_AUTO_MPG, MODEL_3_HOUSING_PRICES } from '@/DATA_MODEL'
-import { createLinearRegressionCustomModel } from '@/core/controller/01-linear-regression/LinearRegressionModelController'
+import { createRegressionCustomModel } from '@/core/controller/01-regression/RegressionModelController'
 import { DataFrameSetCellValue } from '@/core/dataframe/DataFrameUtils'
 
 export default function TestPageEasy () {
@@ -207,7 +207,7 @@ export default function TestPageEasy () {
     console.log({ scaler, X, y })
     
 
-    const model = await createLinearRegressionCustomModel({
+    const {model} = await createRegressionCustomModel({
       dataset_processed: salary,
       learningRate     : 0.01,
       momentum         : 0,
@@ -232,7 +232,7 @@ export default function TestPageEasy () {
     console.log({ 
       // @ts-ignore
       predict_3: model.predict( tfjs.tensor2d([years_n])).dataSync()[0],
-      objetivo : 13 
+      target   : 13 
     })
   }
   
@@ -242,8 +242,8 @@ export default function TestPageEasy () {
       'C': [10, 20, 30, 40],
       'D': [1.2, 3.45, 60.1, 45],
       'E': ['test', 'train', 'test', 'train']
-      }
-    const df = new dfd.DataFrame()
+    }
+    const df = new dfd.DataFrame(data)
     const encoder = new dfd.LabelEncoder()
     encoder.fit(df.values)
     console.log({c: encoder.classes})
@@ -259,7 +259,7 @@ export default function TestPageEasy () {
     const { scaler, X, y } = auto.data_processed
     console.log({ scaler, X, y })
     
-    const model = await createLinearRegressionCustomModel({
+    const {model} = await createRegressionCustomModel({
       dataset_processed: auto,
       name_model       : 'Auto MPG',
       learningRate     : 0.01,
@@ -305,7 +305,7 @@ export default function TestPageEasy () {
     const { scaler, encoders, X, y } = housing_prices.data_processed
     console.log({ scaler, encoders, X, y })
     
-    const model = await createLinearRegressionCustomModel({
+    const {model} = await createRegressionCustomModel({
       name_model       : 'Housing Prices',
       dataset_processed: housing_prices,
       learningRate     : 0.02,

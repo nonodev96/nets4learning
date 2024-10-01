@@ -60,7 +60,7 @@ export default function TestPageAdvanced () {
 
               <hr />
 
-              <DragAndDrop id={'drop-zone-linear-regression-dataset'}
+              <DragAndDrop id={'drop-zone-regression-dataset'}
                    name={'csv'}
                    accept={{ 'text/csv': ['.csv'], 'text/json': ['.json'] }}
                    text={t('drag-and-drop.csv')}

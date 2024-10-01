@@ -243,3 +243,8 @@ h6 {
 .border_green {
   border: 1px solid lime;
 }
+
+.n4l-table-cell {
+  font-family: monospace;
+  white-space: nowrap;
+}

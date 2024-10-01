@@ -14,21 +14,21 @@
       "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "conventionalCommits.scopes": [
-      "LinearRegression"
+      "Regression"
     ],
     "CodeGPT.apiKey": "Ollama",
     "CodeGPT.Autocomplete.maxTokens": 496,
     "favorites.resources": [
       {
-        "filePath": "public/datasets/01-linear-regression",
+        "filePath": "public/datasets/01-regression",
         "group": "Default"
       },
       {
-        "filePath": "src/core/controller/01-linear-regression",
+        "filePath": "src/core/controller/01-regression",
         "group": "Default"
       },
       {
-        "filePath": "src/pages/playground/1_LinearRegression",
+        "filePath": "src/pages/playground/1_Regression",
         "group": "Default"
       }
     ],

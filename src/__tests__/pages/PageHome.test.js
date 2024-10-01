@@ -8,8 +8,8 @@ describe('Page Home', () => {
     const HTML_InitialMenu = getByTestId('Test-InitialMenu')
     expect(HTML_InitialMenu).toBeInTheDocument()
 
-    const Button_InitialMenu_LinearRegression = getByTestId('Test-InitialMenu-LinearRegression')
-    await waitFor(() => fireEvent.click(Button_InitialMenu_LinearRegression))
+    const Button_InitialMenu_Regression = getByTestId('Test-InitialMenu-Regression')
+    await waitFor(() => fireEvent.click(Button_InitialMenu_Regression))
     _debug()
   })
 })

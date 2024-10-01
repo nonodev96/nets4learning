@@ -95,19 +95,19 @@ export default function Home () {
             </Card>
           </>
         )
-      case TASKS.LINEAR_REGRESSION:
+      case TASKS.REGRESSION:
         return (
           <>
             <Card className={'border-danger'}>
               <Card.Header>
-                <h2><Trans i18nKey={'pages.index.linear-regression.1-title'} /></h2>
+                <h2><Trans i18nKey={'pages.index.regression.1-title'} /></h2>
               </Card.Header>
               <Card.Body>
-                <Card.Text><Trans i18nKey={'pages.index.linear-regression.1-description-1'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.regression.1-description-1'} /></Card.Text>
                 <div className="d-flex gap-2 justify-content-center">
                   <Button data-testid={'Test-GoTo-SelectModel-LinearRegression'}
                           onClick={() => handleClick_TrainEdit(SELECTOR.MODEL)}>
-                    <Trans i18nKey={'pages.index.linear-regression.1-button'} />
+                    <Trans i18nKey={'pages.index.regression.1-button'} />
                   </Button>
                 </div>
               </Card.Body>
@@ -115,25 +115,25 @@ export default function Home () {
 
             <Card className={'border-danger mt-3'}>
               <Card.Header>
-                <h2><Trans i18nKey={'pages.index.linear-regression.2-title'} /></h2>
+                <h2><Trans i18nKey={'pages.index.regression.2-title'} /></h2>
               </Card.Header>
               <Card.Body>
-                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-1'} /></Card.Text>
-                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-2'} /></Card.Text>
-                <Card.Text><Trans i18nKey={'pages.index.linear-regression.2-description-list.title'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.regression.2-description-1'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.regression.2-description-2'} /></Card.Text>
+                <Card.Text><Trans i18nKey={'pages.index.regression.2-description-list.title'} /></Card.Text>
                 <Row>
                   <Col>
                     <ul>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.1'} /></li>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.2'} /></li>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.3'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.1'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.2'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.3'} /></li>
                     </ul>
                   </Col>
                   <Col>
                     <ul>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.4'} /></li>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.5'} /></li>
-                      <li><Trans i18nKey={'pages.index.linear-regression.2-description-list.6'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.4'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.5'} /></li>
+                      <li><Trans i18nKey={'pages.index.regression.2-description-list.6'} /></li>
                     </ul>
                   </Col>
                 </Row>
@@ -243,8 +243,8 @@ export default function Home () {
                 <Button variant={'danger'}
                         size={'lg'}
                         data-testid={'Test-InitialMenu-LinearRegression'}
-                        onClick={() => handleClick_OpenCardModel(TASKS.LINEAR_REGRESSION)}>
-                  <Trans i18nKey={'pages.index.linear-regression.1-title'} />
+                        onClick={() => handleClick_OpenCardModel(TASKS.REGRESSION)}>
+                  <Trans i18nKey={'pages.index.regression.1-title'} />
                 </Button>
               </div>
             </Col>

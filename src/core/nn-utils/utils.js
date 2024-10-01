@@ -28,3 +28,13 @@ export function F_FILTER_Categorical (value, _index, _array) {
   // }
   return value.column_type === 'Categorical' || value.column_type === 'Binary'
 }
+
+
+export function shuffleArray(array) {
+  let currentIndex = array.length
+  while (currentIndex != 0) {
+    let randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex--
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+  }
+}

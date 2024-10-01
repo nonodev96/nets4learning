@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import { Card, Form } from 'react-bootstrap'
 
+import * as _Types from '@core/types'
 import { VERBOSE } from '@/CONSTANTS'
 import { NEURAL_NETWORK_MODES, NeuralNetwork } from './NeuralNetwork'
 import WaitingPlaceholder from '@components/loading/WaitingPlaceholder'
-import * as _Types from '@core/types'
 
 /**
  * @typedef N4LLayerDesignProps_t
  * @property {Array<_Types.CustomParamsLayerModel_t>} layers
  * @property {boolean} [show=true]
- * @property {boolean} [ready=true]
  * @property {string} [glossary_action='']
  * @property {string} [manual_action='']
  * @property {Array} [actions=[]]
@@ -27,7 +26,6 @@ export default function N4LLayerDesign(props) {
   const {
     layers,
     show = true,
-    ready = true,
     glossary_action = '',
     manual_action = '', 
     actions = []
@@ -37,8 +35,9 @@ export default function N4LLayerDesign(props) {
   const { t } = useTranslation()
 
   const [mode, setMode] = useState(NEURAL_NETWORK_MODES.COMPACT)
+  const networkRef = useRef()
 
-  const handleChange_mode = (e) => {
+  const handleChange_mode = async (e) => {
     setMode(e.target.value)
   }
 
@@ -60,11 +59,12 @@ export default function N4LLayerDesign(props) {
           </Form.Group>
         </div>
       </Card.Header>
-      <Card.Body id={'LinearRegressionLayerDesign'}>
+      <Card.Body id={'RegressionLayerDesign'}>
         {show && <>
         <NeuralNetwork id_parent={'vis-network'}
                        layers={layers}
-                       mode={mode} />
+                       mode={mode}
+                       networkRef={networkRef} />
         </>}
         {!show && <>
           <WaitingPlaceholder i18nKey_title={'pages.playground.generator.waiting-for-process'} />

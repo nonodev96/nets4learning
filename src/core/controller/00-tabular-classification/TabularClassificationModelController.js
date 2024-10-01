@@ -23,7 +23,7 @@ import * as _Types from '@core/types'
 /**
  *
  * @param {CustomTabularClassification_DatasetParams_t} params
- * @returns {Promise<tfjs.Sequential>}
+ * @returns {Promise<{model: tfjs.Sequential, history: tfjs.History}>}
  */
 export async function createTabularClassificationCustomModel (params) {
   const {
@@ -42,6 +42,7 @@ export async function createTabularClassificationCustomModel (params) {
 
   const { data_processed } = dataset_processed
   const { X, y } = data_processed
+  // @ts-ignore
   const [XTrain, XTest, yTrain, yTest] = sk.trainTestSplit(X.values, y.values, testSize)
   const XTrain_tensor = tfjs.tensor(XTrain)
   const XTest_tensor = tfjs.tensor(XTest)
@@ -81,7 +82,7 @@ export async function createTabularClassificationCustomModel (params) {
       'onEpochEnd'
     ]
   })
-  await model.fit(XTrain_tensor, yTrain_tensor, {
+  const history = await model.fit(XTrain_tensor, yTrain_tensor, {
     batchSize     : 32,
     shuffle       : true,
     validationData: [XTest_tensor, yTest_tensor],
@@ -108,5 +109,8 @@ export async function createTabularClassificationCustomModel (params) {
   // const classNames = Object.keys(encoders[column_name_target].encoder.$labels)
   // await tfvis.show.perClassAccuracy(container, classAccuracy, classNames)
 
-  return model
+  return {
+    model,
+    history
+  }
 }

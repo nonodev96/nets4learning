@@ -122,11 +122,12 @@ export default function ImageClassification (props) {
         idMetricsList: idMetricsList,
         layers       : Layers,
       }
-      const model = await iModelInstance.current.TRAIN_MODEL(params)
+      const { model, history } = await iModelInstance.current.TRAIN_MODEL(params)
       setModel(model)
       setGeneratedModels(oldModels => [...oldModels, {
-        model : model,
-        params: {
+        model  : model,
+        history: history,
+        params : {
           learning_rate  : LearningRate,
           n_epochs       : NumberEpochs,
           test_size      : TestSize,

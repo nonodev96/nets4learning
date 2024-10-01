@@ -144,7 +144,7 @@
     "download-dataset-ecoli": "Ecoli data set",
     "download": {
       "dataset": {
-        "1-linear-regression": {
+        "1-regression": {
           "salary": "Salary data set",
           "auto-mpg": "Fuel consumption data set",
           "housing-prices": "House Prices Dataset",
@@ -291,7 +291,7 @@
     "datasets": "Data sets",
     "theme": "Theme",
     "dataframe": "DataFrame",
-    "analyze": "Analyze"
+    "analyze": "EDA"
   },
   "footer": {
     "description-app": "Web platform for the design and execution of deep learning models.",
@@ -326,7 +326,7 @@
     "2": "Object identification",
     "3": "Image classification",
     "tabular-classification": "Tabular classification",
-    "linear-regression": "Regression",
+    "regression": "Regression",
     "object-detection": "Object identification",
     "image-classification": "Image classifier"
   },
@@ -528,7 +528,7 @@
         }
       }
     },
-    "1-linear-regression": {
+    "1-regression": {
       "salary": {
         "title": "Salary for years of experience",
         "description": {
@@ -1434,7 +1434,7 @@
         },
         "2-button": "Create and train a model"
       },
-      "linear-regression": {
+      "regression": {
         "1-title": "Regression",
         "2-title": "Design, create, and edit an architecture to calculate a regression",
         "1-description-1": "Regression is a task to determine a specific numerical value (dependent variable) from its characteristics (independent variables).",
@@ -1497,7 +1497,7 @@
       "form-option-_-1": "Select a dataset",
       "form-upload-description": "Now if you wish you can load your own architecture, otherwise click on continuing and an architecture will be loaded by example default.",
       "form-submit": "Continue",
-      "1-linear-regression": {
+      "1-regression": {
         "csv": "Upload dataset - CSV",
         "csv-text": "Upload a file with a dataset treated in <Oce> .CSV format </code>"
       }
@@ -1734,12 +1734,12 @@
         },
         "waiting-for-models": "Waiting for the creation of a model"
       },
-      "1-linear-regression": {
+      "1-regression": {
         "generator": {
           "manual": {
             "title": "Model generator manual",
-            "simple-linear-regression": "Simple linear regression",
-            "multiple-linear-regression": "Multiple linear regression",
+            "simple-regression": "Simple linear regression",
+            "multiple-regression": "Multiple linear regression",
             "details-edit-layers": {
               "title": "Editor of the Layers",
               "text": {
@@ -1795,8 +1795,8 @@
               }
             }
           },
-          "simple-linear-regression": "Simple linear regression",
-          "multiple-linear-regression": "Multiple linear regression"
+          "simple-regression": "Simple linear regression",
+          "multiple-regression": "Multiple linear regression"
         },
         "dataframe": {
           "title": "Processed dataframe"
@@ -1964,7 +1964,7 @@
         "2-description-4": "We must press the \"Create and train model\" button to start the neural network training process. If all the configuration and selection of the functions is correct then an entry with the trained model will be added to the table below.",
         "2-description-5": "Once a model has been trained from the data, we can make predictions. To do this, a dynamic form is included with the characteristics of the data set. The accuracy of the model in prediction may be higher or lower depending on the training and the selected options."
       },
-      "1-linear-regression": {
+      "1-regression": {
         "title": "Regression",
         "1-title": "Pre-trained models",
         "1-description": {
@@ -2029,7 +2029,7 @@
         "text-3": "Once you have a set of data labeled, an machine learning algorithm is used to train a model that can predict the label of new data sets. This model can be used to perform precise and fast predictions on new data instances.",
         "text-4": "Tabular classification is a very useful technique to solve classification problems in a wide variety of fields, such as medicine, electronic commerce, banking, safety and many others."
       },
-      "linear-regression": {
+      "regression": {
         "title": "Regression",
         "text": {
           "0": "Regression is a statistical analysis method used in machine learning to model the linear relationship between an independent variable and a dependent variable, seeking to find the best straight line that fits the data and allows predictions to be made.",
@@ -2352,7 +2352,8 @@
       "download": "Download",
       "features": "Features",
       "open-visor": "Open visor",
-      "close-visor": "Close visor"
+      "close-visor": "Close visor",
+      "history": "History"
     }
   },
   "hr": {
@@ -2366,7 +2367,7 @@
     "tasks": "Tasks",
     "00-tabular-classification": "Tabular Classification",
     "tutorial-00-tabular-classification": "Train a model for Tabular classification",
-    "01-linear-regression": "Regression",
+    "01-regression": "Regression",
     "02-object-detection": "Object Detection",
     "03-image-classification": "Image Classification",
     "optimization-function": "Optimization functions",
