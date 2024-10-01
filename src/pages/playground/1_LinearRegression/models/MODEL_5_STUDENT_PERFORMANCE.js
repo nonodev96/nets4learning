@@ -112,7 +112,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
    * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/student-performance/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-regression/student-performance/'
     const student_info = 'student.names'
     const mat_csv = 'student-mat-2024.csv'
     const por_csv = 'student-por-2024.csv'
@@ -260,7 +260,7 @@ export default class MODEL_5_STUDENT_PERFORMANCE extends I_MODEL_LINEAR_REGRESSI
    * @return {Promise<_Types.CustomModel_t[]>}
    */
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/student-performance'
+    const path = process.env.REACT_APP_PATH + '/models/01-regression/student-performance'
     const mat_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-mat.json')
     const por_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-por.json')
     const models = {

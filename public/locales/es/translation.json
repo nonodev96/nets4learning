@@ -322,11 +322,11 @@
   },
   "modality": {
     "0": "Clasificación tabular",
-    "1": "Regresión lineal",
+    "1": "Regresión",
     "2": "Identificación de objetos",
     "3": "Clasificación de imágenes",
     "tabular-classification": "Clasificación tabular",
-    "linear-regression": "Regresión lineal",
+    "linear-regression": "Regresión",
     "object-detection": "Identificación de objetos",
     "image-classification": "Clasificador de imágenes"
   },
@@ -547,7 +547,7 @@
           "details-2-output": {
             "title": "Datos de salida",
             "list": {
-              "0": "Regresión lineal calculada (<b>Salary</b>)"
+              "0": "Regresión calculada (<b>Salary</b>)"
             }
           },
           "details-3-references": {
@@ -597,7 +597,7 @@
           "details-2": {
             "title": "Datos de salida",
             "list": {
-              "0": "Regresión lineal calculada (<b>MPG</b>)"
+              "0": "Regresión calculada (<b>MPG</b>)"
             }
           },
           "details-3": {
@@ -660,12 +660,12 @@
             "title": "Datos de salida",
             "california": {
               "list": {
-                "0": "Regresión lineal calculada"
+                "0": "Regresión calculada"
               }
             },
             "boston": {
               "list": {
-                "0": "Regresión lineal calculada"
+                "0": "Regresión calculada"
               }
             }
           },
@@ -717,7 +717,7 @@
           "details-2-output": {
             "title": "Datos de salida",
             "list": {
-              "0": "Regresión lineal calculada"
+              "0": "Regresión calculada"
             }
           },
           "details-3-references": {
@@ -778,7 +778,7 @@
           "details-2-output": {
             "title": "Datos de salida",
             "list": {
-              "0": "Regresión lineal calculada"
+              "0": "Regresión calculada"
             }
           },
           "details-3-references": {
@@ -819,7 +819,7 @@
           "details-2-output": {
             "title": "Datos de salida",
             "list": {
-              "0": "Regresión lineal calculada"
+              "0": "Regresión calculada"
             }
           },
           "details-3-references": {
@@ -887,7 +887,7 @@
           },
           "predict-and-visualizer": {
             "title": "Predicción y visualización",
-            "content": "Una vez cargado nuestro modelo para la regresión lineal puedes realizar predicciones y visualizar los resultados"
+            "content": "Una vez cargado nuestro modelo para la regresión puedes realizar predicciones y visualizar los resultados"
           }
         }
       }
@@ -1189,7 +1189,7 @@
           },
           "classify": {
             "title": "Predicción y visualización",
-            "content": "Una vez cargado nuestro modelo para la regresión lineal puedes realizar predicciones y visualizar los resultados"
+            "content": "Una vez cargado nuestro modelo para la regresión puedes realizar predicciones y visualizar los resultados"
           }
         }
       }
@@ -1435,22 +1435,22 @@
         "2-button": "Crear y entrenar un modelo"
       },
       "linear-regression": {
-        "1-title": "Regresión linear",
-        "2-title": "Diseñar, crear y editar una arquitectura para calcular una regresión lineal",
-        "1-description-1": "La regresión lineal es una tarea para determinar un valor numérico específico (variable dependiente) a partir de sus características (variables independientes).",
+        "1-title": "Regresión",
+        "2-title": "Diseñar, crear y editar una arquitectura para calcular una regresión",
+        "1-description-1": "La regresión es una tarea para determinar un valor numérico específico (variable dependiente) a partir de sus características (variables independientes).",
         "1-description-2": "Es una tarea predictiva que tiene como salida una variable continua, donde se busca encontrar una línea recta que mejor se ajuste a los datos y permita predecir el valor numérico de la variable dependiente en función de las variables independientes.",
         "1-button": "Modelos pre-entrenados",
         "2-description-1": "A través de esta herramienta podemos crear una red neuronal para realizar prediciones.",
         "2-description-2": "Definir las variables independientes, que se utilizarán en el modelo, definir la variable dependiente, que será el valor numérico que se busca predecir.",
         "2-description-3": null,
         "2-description-list": {
-          "1": "Establecer una función de activación o una función lineal para las capas de la regresión lineal.",
+          "1": "Establecer una función de activación o una función lineal para las capas de la regresión.",
           "2": "Definir el valor de la tasa de aprendizaje.",
           "3": "Definir el número de épocas.",
-          "4": "Definir el optimizador.",
+          "4": "Regresión",
           "5": "Definir la función de perdida",
           "6": "Defininir la métrica para la evaluación",
-          "title": "Para aplicar la regresión lineal y modelar la relación entre variables, debemos seguir los siguientes pasos:"
+          "title": "Para aplicar la regresión y modelar la relación entre variables, debemos seguir los siguientes pasos:"
         }
       },
       "object-detection": {
@@ -1738,8 +1738,8 @@
         "generator": {
           "manual": {
             "title": "Manual del generador de modelos",
-            "simple-linear-regression": "Regresión linear simple",
-            "multiple-linear-regression": "Regresión linear multiple",
+            "simple-linear-regression": "Regresión simple",
+            "multiple-linear-regression": "Regresión multiple",
             "details-edit-layers": {
               "title": "Editor de las capas",
               "text": {
@@ -1795,8 +1795,8 @@
               }
             }
           },
-          "simple-linear-regression": "Regresión linear simple",
-          "multiple-linear-regression": "Regresión linear multiple"
+          "simple-linear-regression": "Regresión simple",
+          "multiple-linear-regression": "Regresión multiple"
         },
         "dataframe": {
           "title": "Dataframe procesado"
@@ -1965,7 +1965,7 @@
         "2-description-5": "Una vez entrenado un modelo a partir de los datos podremos realizar predicciones, para ello se incluye un formulario dinámico con las características del conjunto de datos. La precisión del modelo en la predicción podrá ser mayor o menor en función del entrenamiento y las opciones seleccionadas."
       },
       "1-linear-regression": {
-        "title": "Regresión lineal",
+        "title": "Regresión",
         "1-title": "Modelos pre-entrenados",
         "1-description": {
           "0": "Debemos acceder a la sección de modelos pre-entrenados y seleccionar uno de los disponibles.",
@@ -1975,7 +1975,7 @@
         "2-title": "Entrenar modelos",
         "2-description": {
           "0": "La sección cuenta con la posibilidad subir tus conjuntos de datos, conjuntos de datos preparados, descripciones, herramientas de visualización gráficas y de estadísticas.",
-          "1": "Cuenta con un generador de modelos de regresión lineal. Gestiona capas de la red neuronal, hiperparámetros, funciones de optimización, funciones de perdida y de métricas. así como el selector de características.",
+          "1": "Cuenta con un generador de modelos de regresión. Gestiona capas de la red neuronal, hiperparámetros, funciones de optimización, funciones de perdida y de métricas. así como el selector de características.",
           "2": "Debemos pulsar el botón de \"Crear y entrenar modelo\" para que se inicie el proceso de entrenamiento de la red neuronal. Si toda la configuración y selección de las funciones es correcta entonces se añadirá en la la lista una entrada con el modelos entrenado.",
           "3": "Para la predicción se usa el grafico de dispersión creando una linea"
         },
@@ -2030,12 +2030,12 @@
         "text-4": "La clasificación tabular es una técnica muy útil para resolver problemas de clasificación en una amplia variedad de campos, como la medicina, el comercio electrónico, la banca, la seguridad y muchos otros."
       },
       "linear-regression": {
-        "title": "Regresión lineal",
+        "title": "Regresión",
         "text": {
-          "0": "La regresión lineal es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación lineal entre una variable independiente y una variable dependiente, buscando encontrar la mejor línea recta que ajuste los datos y permita hacer predicciones.",
-          "1": "En la regresión lineal, los datos se representan generalmente como puntos dispersos en un plano cartesiano, donde la variable independiente se coloca en el eje X y la variable dependiente en el eje Y. El objetivo es encontrar la ecuación de una línea recta (y = mx + b) que minimice la distancia entre esta línea y los puntos de datos. Una vez que se ha obtenido esta ecuación, se puede utilizar para hacer predicciones sobre valores futuros de la variable dependiente en función de los valores de la variable independiente.",
-          "2": "Por ejemplo, si estamos analizando la relación entre la cantidad de publicidad en un sitio web y las ventas de un producto, la cantidad de publicidad sería la variable independiente, y las ventas del producto serían la variable dependiente. La regresión lineal nos ayudaría a determinar si existe una relación lineal entre la inversión en publicidad y las ventas, y si es así, nos permitiría predecir las ventas futuras en función del gasto en publicidad.",
-          "3": "La regresión lineal es una herramienta poderosa en el análisis de datos y se utiliza en una variedad de campos, incluyendo la economía, la ciencia social, la investigación médica y muchas otras disciplinas para comprender y predecir relaciones entre variables."
+          "0": "La regresión es un método de análisis estadístico utilizado en el aprendizaje automático para modelar la relación lineal entre una variable independiente y una variable dependiente, buscando encontrar la mejor línea recta que ajuste los datos y permita hacer predicciones.",
+          "1": "En la regresión, los datos se representan generalmente como puntos dispersos en un plano cartesiano, donde la variable independiente se coloca en el eje X y la variable dependiente en el eje Y. El objetivo es encontrar la ecuación de una línea recta (y = mx + b) que minimice la distancia entre esta línea y los puntos de datos. Una vez que se ha obtenido esta ecuación, se puede utilizar para hacer predicciones sobre valores futuros de la variable dependiente en función de los valores de la variable independiente.",
+          "2": "Por ejemplo, si estamos analizando la relación entre la cantidad de publicidad en un sitio web y las ventas de un producto, la cantidad de publicidad sería la variable independiente, y las ventas del producto serían la variable dependiente. La regresión nos ayudaría a determinar si existe una relación lineal entre la inversión en publicidad y las ventas, y si es así, nos permitiría predecir las ventas futuras en función del gasto en publicidad.",
+          "3": "La regresión es una herramienta poderosa en el análisis de datos y se utiliza en una variedad de campos, incluyendo la economía, la ciencia social, la investigación médica y muchas otras disciplinas para comprender y predecir relaciones entre variables."
         }
       },
       "object-identification": {
@@ -2366,7 +2366,7 @@
     "tasks": "Tareas",
     "00-tabular-classification": "Clasificación Tabular",
     "tutorial-00-tabular-classification": "Entrenar un modelo para clasificación tabular",
-    "01-linear-regression": "Regresión Lineal",
+    "01-linear-regression": "Regresión",
     "02-object-detection": "Detección de objetos",
     "03-image-classification": "Clasificación de imágenes",
     "optimization-function": "Funciones de optimización",

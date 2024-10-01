@@ -17,7 +17,7 @@ const PageHome = lazy(() => import( './pages/_home/Home'))
 const PageMenuSelectModel = lazy(() => import( './pages/menu/MenuSelectModel'))
 const PageMenuSelectDataset = lazy(() => import( './pages/menu/MenuSelectDataset'))
 const PagePlayground = lazy(() => import( './pages/playground/Playground'))
-const PageDescriptionLinearRegression = lazy(() => import( './pages/playground/1_LinearRegression/description/DescriptionLinearRegression'))
+const PageDescriptionRegression = lazy(() => import( './pages/playground/1_LinearRegression/description/DescriptionRegression'))
 const PageManual = lazy(() => import( './pages/manual/Manual'))
 const PageGlossary = lazy(() => import( './pages/glossary/Glossary'))
 const PageDatasets = lazy(() => import( './pages/datasets/Datasets'))
@@ -51,7 +51,7 @@ function App() {
             <Route exact path={'/select-dataset/:id'} component={PageMenuSelectDataset}></Route>
             <Route exact path={'/select-model/:id'} component={PageMenuSelectModel}></Route>
             <Route exact path={'/playground/:id/:option/:example'} component={PagePlayground}></Route>
-            <Route exact path={'/playground/description-linear-regression'} component={PageDescriptionLinearRegression}></Route>
+            <Route exact path={'/playground/description-regression'} component={PageDescriptionRegression}></Route>
             <Route exact path={'/manual/'} component={PageManual}></Route>
             <Route exact path={'/glossary'} component={PageGlossary}></Route>
             <Route exact path={'/datasets'} component={PageDatasets}></Route>

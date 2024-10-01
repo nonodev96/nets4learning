@@ -105,6 +105,11 @@ export default function LinearRegressionDatasetProcessForm() {
         return prevState
       }
 
+      const new_path = prevState.data[prevState.index].path
+      const new_csv = prevState.data[prevState.index].csv
+      const new_info = prevState.data[prevState.index].info
+      const new_container_info = prevState.data[prevState.index].container_info
+
       /**
        * @type {_Types.DatasetProcessed_t}
        */
@@ -115,10 +120,10 @@ export default function LinearRegressionDatasetProcessForm() {
         dataframe_processed : dataframe_processed,
         dataset             : new_dataset,
         dataset_transforms  : new_dataset_transforms,
-        path                : '',
-        csv                 : 'new.csv',
-        info                : 'new',
-        container_info      : '',
+        path                : new_path,
+        csv                 : new_csv,
+        info                : new_info,
+        container_info      : new_container_info,
         data_processed      : {
           dataframe_X       : new_dataframe_X,
           dataframe_y       : new_dataframe_y,

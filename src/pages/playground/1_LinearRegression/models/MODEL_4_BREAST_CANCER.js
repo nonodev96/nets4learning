@@ -152,7 +152,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/breast-cancer/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-regression/breast-cancer/'
     const bcw_info = 'breast-cancer-wisconsin.names'
     const bcw_csv = 'breast-cancer-wisconsin.csv'
     const wdbc_info = 'wdbc.names'
@@ -416,7 +416,7 @@ export default class MODEL_4_BREAST_CANCER extends I_MODEL_LINEAR_REGRESSION {
    * @return {Promise<_Types.CustomModel_t[]>}
    */
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/breast-cancer'
+    const path = process.env.REACT_APP_PATH + '/models/01-regression/breast-cancer'
     const models = {
       'breast-cancer-wisconsin.csv': [],
       'wpbc.csv'                   : [],

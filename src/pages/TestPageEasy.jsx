@@ -21,7 +21,7 @@ export default function TestPageEasy () {
   const { t } = useTranslation()
 
   const handleClick_init = async () => {
-    // const filename = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/auto-mpg.csv'
+    // const filename = process.env.REACT_APP_PATH + '/datasets/01-regression/auto-mpg/auto-mpg.csv'
 
   }
 

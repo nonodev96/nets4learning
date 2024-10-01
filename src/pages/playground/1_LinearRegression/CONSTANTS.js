@@ -1,9 +1,9 @@
 // 0 - 1 --> 0 - 100
 const DEFAULT_LEARNING_RATE = 1
 // 1 - Inf(1000)
-const DEFAULT_NUMBER_OF_EPOCHS = 5
+const DEFAULT_NUMBER_OF_EPOCHS = 50
 // 0 - 1 --> 0 - 100
-const DEFAULT_TEST_SIZE = 30
+const DEFAULT_TEST_SIZE = 10
 // TYPE_OPTIMIZER.key
 const DEFAULT_ID_OPTIMIZER = 'train-rmsprop'
 // TYPE_LOSSES.key
@@ -12,7 +12,7 @@ const DEFAULT_ID_LOSS = 'losses-meanSquaredError'
 const DEFAULT_ID_METRICS = ['metrics-meanAbsoluteError', 'metrics-meanSquaredError']
 // 
 const DEFAULT_LAYERS = [
-  { is_disabled: false, units: 20, activation: 'relu'    },
+  { is_disabled: false, units: 20, activation: 'sigmoid' },
   { is_disabled: false, units: 20, activation: 'sigmoid' },
   { is_disabled: true,  units: 1,  activation: 'linear'  },
 ]

@@ -75,9 +75,14 @@ export async function createTabularClassificationCustomModel (params) {
     name: 'Training',
     tab : name_model,
   }
-  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { callbacks: [/* 'onBatchEnd', */ 'onEpochEnd'] })
+  const fitCallbacks = tfvis.show.fitCallbacks(fit_callbacks_container, fit_callbacks_metrics_labels, { 
+    callbacks: [
+      'onBatchEnd', 
+      'onEpochEnd'
+    ]
+  })
   await model.fit(XTrain_tensor, yTrain_tensor, {
-    // batchSize     : 32,
+    batchSize     : 32,
     shuffle       : true,
     validationData: [XTest_tensor, yTest_tensor],
     epochs        : numberOfEpoch,

@@ -107,7 +107,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/housing-prices/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-regression/housing-prices/'
 
     // ------------------------
     // #region Boston housing
@@ -256,7 +256,7 @@ export default class MODEL_3_HOUSING_PRICES extends I_MODEL_LINEAR_REGRESSION {
    * @return {Promise<_Types.CustomModel_t[]>}
    */
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/housing-dataset'
+    const path = process.env.REACT_APP_PATH + '/models/01-regression/housing-dataset'
     const model = await tfjs.loadLayersModel(path + '/0/lr-model-0.json')
     const models = {
       'boston-housing-2020.csv': [

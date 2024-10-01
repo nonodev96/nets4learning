@@ -93,7 +93,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/auto-mpg/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-regression/auto-mpg/'
     const auto_info = 'auto-mpg.names'
     const auto_csv = 'auto-mpg.csv'
 
@@ -159,7 +159,7 @@ export default class MODEL_2_AUTO_MPG extends I_MODEL_LINEAR_REGRESSION {
    * @return {Promise<_Types.CustomModel_t[]>}
    */
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/auto-mpg'
+    const path = process.env.REACT_APP_PATH + '/models/01-regression/auto-mpg'
     const model = await tfjs.loadLayersModel(path + '/0/lr-model-0.json')
     const models = {
       'auto-mpg.csv': [

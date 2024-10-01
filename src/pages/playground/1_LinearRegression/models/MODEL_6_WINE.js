@@ -92,7 +92,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
    * @returns {Promise<_Types.DatasetProcessed_t[]>}
    */
   async DATASETS () {
-    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-linear-regression/wine-quality/'
+    const path_datasets = process.env.REACT_APP_PATH + '/datasets/01-regression/wine-quality/'
 
     const info = 'wine-quality.names'
     const red_dataset_csv  = 'wine-quality-red.csv'
@@ -217,7 +217,7 @@ export default class MODEL_WINE extends I_MODEL_LINEAR_REGRESSION {
   }
 
   async MODELS (dataset) {
-    const path = process.env.REACT_APP_PATH + '/models/01-linear-regression/wine'
+    const path = process.env.REACT_APP_PATH + '/models/01-regression/wine'
     const red_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-red.json')
     const white_model_0 = await tfjs.loadLayersModel(path + '/0/lr-model-white.json')
     const models = {

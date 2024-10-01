@@ -188,7 +188,7 @@ export default function Datasets () {
                             <td>{_value.size}</td>
                             <td><a className="link-secondary" href={_value.url_original} rel="noreferrer" target="_blank">{t('Reference')}</a></td>
                             <td>
-                              <a download href={process.env.REACT_APP_PATH + '/datasets/01-linear-regression/' + _value.url_download}
+                              <a download href={process.env.REACT_APP_PATH + '/datasets/01-regression/' + _value.url_download}
                                  className={'btn btn-outline-primary btn-sm mt-2'}>
                                 {t('download')}
                               </a>
