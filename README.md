@@ -8,14 +8,6 @@ tabular classification, image classifier or object identification.
 
 There are some classical problems prepared and reviewed to make predictions, the tool has the feature to pre process data sets that the user uploads, train models and predict in which class it would be classified.
 
-<!-- 
-![sitemap](public/sitemap.png)
-
-## Architecture Playground
-
-![Architecture Playground](public/docs/n4l.svg)
--->
-
 ## Datasets and Models
 
 1. Tabular classification
