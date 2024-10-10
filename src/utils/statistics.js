@@ -1,6 +1,8 @@
+import * as _dfd from 'danfojs'
+
 /**
  *
- * @param {dfd.DataFrame} dataframe
+ * @param {_dfd.DataFrame} dataframe
  * @param {string} column_name_x
  * @param {string} column_name_y
  * @return {number}

@@ -76,7 +76,7 @@ export class MODEL_2_FACE_MESH extends I_MODEL_OBJECT_DETECTION {
      */
     const mediaPipeFaceMeshMediaPipeModelConfig = {
       runtime        : 'mediapipe',
-      solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
+      solutionPath   : 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619',
       refineLandmarks: true,
       maxFaces       : 4,
     }

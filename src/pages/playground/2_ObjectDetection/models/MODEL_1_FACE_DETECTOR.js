@@ -79,7 +79,7 @@ export class MODEL_1_FACE_DETECTOR extends I_MODEL_OBJECT_DETECTION {
      */
     const mediaPipeFaceDetectorMediaPipeModelConfig = {
       runtime     : 'mediapipe',
-      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
+      solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@0.4.1646425229',
       modelType   : 'full',
       maxFaces    : 4,
     }
