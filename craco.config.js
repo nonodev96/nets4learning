@@ -1,5 +1,6 @@
-const cracoAlias = require('craco-alias')
+const CracoAlias = require('craco-alias')
 const CracoEnvPlugin = require('craco-plugin-env')
+// const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   presets: 'es2017',
@@ -13,6 +14,17 @@ module.exports = {
         test: /face-api\.esm\.js/, 
         type: 'javascript/esm'
       })
+      // webpackConfig.optimization = {
+      //   minimize : true,
+      //   minimizer: [new TerserPlugin({
+      //     terserOptions: {
+      //       keep_fnames: /binaryAccuracy|binaryCrossentropy|categoricalAccuracy|categoricalCrossentropy|cosineProximity|meanAbsoluteError|meanAbsolutePercentageError|meanSquaredError|precision|recall|sparseCategoricalAccuracy/,
+      //       compress   : {
+      //         drop_console: true
+      //       }
+      //     },
+      //   })]
+      // }
       return webpackConfig
     },
   },
@@ -46,7 +58,7 @@ module.exports = {
       },
     },
     {
-      plugin : cracoAlias,
+      plugin : CracoAlias,
       options: {
         baseUrl: './src',
         source : 'jsconfig',

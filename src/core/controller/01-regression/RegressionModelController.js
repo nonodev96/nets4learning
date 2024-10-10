@@ -68,6 +68,9 @@ export async function createRegressionCustomModel (params) {
   const optimizer = createOptimizer(idOptimizer, { learningRate, momentum })
   const loss = createLoss(idLoss, {})
   const metrics = createMetrics(idMetrics, {})
+  
+  console.debug({ optimizer, loss, metrics})
+  
   model.compile({ optimizer, loss, metrics })
 
   // @ts-ignore

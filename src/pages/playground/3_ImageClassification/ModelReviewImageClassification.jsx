@@ -3,6 +3,7 @@ import { Button, Card, Col, Container, Modal, Row } from 'react-bootstrap'
 import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import * as _chartjs from 'chart.js'
+import * as _tfjs from '@tensorflow/tfjs'
 import { useHistory } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import ReactGA from 'react-ga4'
@@ -32,6 +33,9 @@ export default function ModelReviewImageClassification ({ dataset }) {
   const history = useHistory()
 
   const iModelRef = useRef(new I_MODEL_IMAGE_CLASSIFICATION(t))
+  /**
+   * @type {ReturnType<typeof useRef<_tfjs.LayersModel>>}
+   */
   const iModelRef_model = useRef()
 
   const iChartRef_modal = useRef()
